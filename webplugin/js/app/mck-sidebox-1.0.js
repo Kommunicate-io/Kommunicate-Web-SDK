@@ -6931,7 +6931,6 @@ const firstVisibleMsg = {
             var $li_mck_group_info = $applozic('#li-mck-group-info');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_group_search_tab = $applozic('#mck-group-search-tab');
-            var $mck_no_search_groups = $applozic('#mck-no-search-groups');
             var $mck_group_search_list = $applozic('#mck-group-search-list');
             var $mck_group_menu_options = $applozic('.mck-group-menu-options');
             var $mck_group_search_input = $applozic('#mck-group-search-input');
@@ -6943,14 +6942,11 @@ const firstVisibleMsg = {
             var $mck_contact_search_input = $applozic('#mck-contact-search-input');
             var $mck_autosuggest_search_input = $applozic('#mck-autosuggest-search-input');
             var $mck_autosuggest_metadata = $applozic('#mck-autosuggest-metadata');
-            var $mck_no_search_contacts = $applozic('#mck-no-search-contacts');
             var $mck_search_tab_link = $applozic('#mck-search-tab-box li a');
-            var $mck_search_tabview_box = $applozic('#mck-search-tabview-box');
             var $mck_sidebox_search = $applozic('#mck-sidebox-search');
 
             var $mck_loading = $applozic('#mck-contact-loading');
             var $mck_typing_label = $applozic('#mck-typing-label');
-            var $mck_price_widget = $applozic('#mck-price-widget');
             var $mck_msg_response = $applozic('#mck-msg-response');
 
             var $mck_response_text = $applozic('#mck_response_text');
@@ -6958,20 +6954,15 @@ const firstVisibleMsg = {
             var $mck_search_loading = $applozic('#mck-search-loading');
             var $mck_tab_individual = $applozic('#mck-tab-individual');
 
-            var $mck_attachfile_box = $applozic('#mck-attachfile-box');
-            var $mck_atttachmenu_box = $applozic('#mck-location-sharing-box');
             var $mck_sidebox_content = $applozic('#mck-sidebox-content');
 
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
-            var $mck_tab_conversation = $applozic('#mck-tab-conversation');
 
             var $mck_conversation_header = $applozic('#mck-conversation-header');
 
             var $mck_conversation_list = $applozic('#mck-conversation-list');
 
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
-            var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form');
-            var $mck_btn_clear_messages = $applozic('#mck-btn-clear-messages');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
 
@@ -11687,13 +11678,11 @@ const firstVisibleMsg = {
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_member_List = $applozic('#mck-group-member-list');
-            var $mck_group_update_panel = $applozic('#mck-group-update-panel');
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
             var $mck_group_create_title = $applozic('#mck-group-create-title');
             var $mck_group_menu_options = $applozic('.mck-group-menu-options');
             var $mck_group_member_search = $applozic('#mck-group-member-search');
             var $mck_btn_group_icon_save = $applozic('#mck-btn-group-icon-save');
-            var $mck_group_add_member_box = $applozic('#mck-group-add-member-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_group_title = $applozic('#mck-group-name-sec .mck-group-title');
             var $mck_group_info_icon_loading = $applozic('#mck-group-info-icon-loading');
@@ -11701,9 +11690,6 @@ const firstVisibleMsg = {
             var $mck_group_create_icon_loading = $applozic('#mck-group-create-icon-loading');
             var $mck_group_info_icon = $applozic('#mck-group-info-icon-box .mck-group-icon');
             var $mck_group_create_icon = $applozic('#mck-group-create-icon-box .mck-group-icon');
-            var $mck_group_create_overlay_box = $applozic(
-                '#mck-group-create-icon-box .mck-overlay-box'
-            );
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
             var warningBox = document.getElementById('mck-char-warning');
             var groupContactbox =
