@@ -2366,7 +2366,10 @@ const firstVisibleMsg = {
                         'n-vis',
                         'vis'
                     );
-                    window.Applozic.ALSocket.reconnect();
+                    setTimeout(() => {
+                        console.log('reaconnecting socket');
+                        window.Applozic.ALSocket.reconnect();
+                    }, 500);
                 });
                 w.addEventListener('offline', function () {
                     kommunicateCommons.modifyClassList(
