@@ -3245,7 +3245,6 @@ const firstVisibleMsg = {
             var $mck_group_back_link = $applozic('#mck-group-back-link');
             var $mck_btn_leave_group = $applozic('#mck-btn-leave-group');
             var $mck_sidebox_content = $applozic('.mck-sidebox-content');
-            var $mck_no_more_messages = $applozic('#mck-no-more-messages');
             var $mck_group_add_member = $applozic('#mck-group-add-member');
             var $mck_contacts_content = $applozic('#mck-contacts-content');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
@@ -5884,10 +5883,6 @@ const firstVisibleMsg = {
                                 isMessages = false;
                                 if (individual) {
                                     if (params.startTime) {
-                                        // $mck_no_more_messages.removeClass('n-vis').addClass('vis');
-                                        // $mck_no_more_messages.fadeOut(5000, function () {
-                                        //     $mck_no_more_messages.removeClass('vis').addClass('n-vis');
-                                        // });
                                         $mck_tab_option_panel.data('datetime', '');
                                     } else if (
                                         !params.isGroup &&
