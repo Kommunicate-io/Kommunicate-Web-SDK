@@ -5142,13 +5142,12 @@ const firstVisibleMsg = {
                         (alUserService.MCK_USER_DETAIL_MAP[messagePxy.to].deletedAtTime ||
                             isUserDeleted === true)
                     ) {
-                        $mck_msg_error
-                            .html(MCK_LABELS['user.delete'])
-                            .removeClass('n-vis')
-                            .addClass('vis');
-                        $applozic('#mck-tab-status').removeClass('vis').addClass('n-vis');
-                        $mck_msg_form.removeClass('vis').addClass('n-vis');
-                        $li_mck_block_user.removeClass('vis').addClass('n-vis');
+                        $mck_msg_error.html(MCK_LABELS['user.delete']);
+                        kommunicateCommons.setVisibility({ id: ['mck-msg-error'] }, true);
+                        kommunicateCommons.setVisibility(
+                            { id: ['mck-tab-status', 'mck-msg-form', 'li-mck-block-user'] },
+                            false
+                        );
                         return;
                     }
                 }
@@ -7361,29 +7360,38 @@ const firstVisibleMsg = {
                 _this.clearMessageField(false);
                 _this.addDraftMessage(params.tabId);
                 $mck_msg_error.html('');
-                $mck_msg_error.removeClass('vis').addClass('n-vis');
                 $mck_response_text.html('');
-                $mck_msg_response.removeClass('vis').addClass('n-vis');
                 $mck_msg_form[0].reset();
-                $mck_msg_form.removeClass('n-vis').addClass('vis');
                 $mck_msg_inner.html('');
                 $mck_msg_error.removeClass('mck-no-mb');
-                $mck_contacts_content.removeClass('n-vis').addClass('vis');
-                $modal_footer_content.removeClass('vis').addClass('n-vis');
-                $applozic('#mck-sidebox-ft').removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility(
+                    {
+                        id: [
+                            'mck-msg-error',
+                            'mck-msg-response',
+                            'mck-sidebox-ft',
+                            'mck-sidebox-search',
+                            'mck-group-info-tab',
+                            'mck-product-box',
+                            'mck-loading',
+                        ],
+                    },
+                    false
+                );
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-msg-form', 'mck-contacts-content', 'mck-sidebox-content'] },
+                    true
+                );
                 // render quick replies
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
-                $mck_sidebox_search.removeClass('vis').addClass('n-vis');
-                $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_content.removeClass('n-vis').addClass('vis');
-                $mck_product_box.removeClass('vis').addClass('n-vis');
                 $mck_conversation_header.addClass('n-vis');
-                $mck_loading.removeClass('vis').addClass('n-vis');
                 $mck_msg_inner.removeClass('mck-group-inner');
-                $mck_tab_status.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-tab-status'], class: ['mck-typing-box'] },
+                    false
+                );
                 $mck_tab_title.removeClass('mck-tab-title-w-status');
                 $mck_tab_title.removeClass('mck-tab-title-w-typing');
-                $mck_typing_box.removeClass('vis').addClass('n-vis');
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
@@ -7398,11 +7406,18 @@ const firstVisibleMsg = {
                     $mck_msg_inner.data('mck-topicid', params.topicId);
                     $mck_tab_option_panel.data('tabId', params.tabId);
                     $mck_tab_option_panel.removeClass('n-vis').addClass('vis');
-                    $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                    $modal_footer_content.removeClass('n-vis').addClass('vis');
-                    $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('vis');
-                    $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
-                    $mck_group_menu_options.removeClass('vis').addClass('n-vis');
+                    kommunicateCommons.setVisibility({ id: ['mck-contacts-content'] }, false);
+                    kommunicateCommons.modifyClassList(
+                        { class: ['.mck-box-ft .mck-box-form'] },
+                        'vis',
+                        'n-vis',
+                        true
+                    );
+                    kommunicateCommons.setVisibility(
+                        { id: ['mck-sidebox-ft', 'mck-btn-clear-messages'] },
+                        true
+                    );
+                    kommunicateCommons.setVisibility({ class: ['mck-group-menu-options'] }, false);
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['mck-waiting-queue'],
@@ -7412,10 +7427,10 @@ const firstVisibleMsg = {
                     );
                     if (params.isGroup) {
                         $mck_msg_inner.addClass('mck-group-inner');
-                        $li_mck_block_user.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility({ id: ['li-mck-block-user'] }, false);
                         KommunicateUI.activateTypingField();
                     } else {
-                        $li_mck_block_user.removeClass('n-vis').addClass('vis');
+                        kommunicateCommons.setVisibility({ id: ['li-mck-block-user'] }, true);
                     }
                     if (!params.topicId && params.conversationId) {
                         var conversationPxy = MCK_CONVERSATION_MAP[params.conversationId];
