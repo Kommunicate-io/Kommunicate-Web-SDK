@@ -109,16 +109,22 @@ Kommunicate.attachmentEventHandler = {
         if (Kommunicate.internetStatus) {
             if (!stopUploadIconHidden && uploadIconHidden) {
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                $applozic('.km-progress-stop-upload-icon-' + msgkey)
-                    .removeClass('vis')
-                    .addClass('n-vis');
-                $applozic('.km-progress-upload-icon-' + msgkey)
-                    .removeClass('n-vis')
-                    .addClass('vis');
+                kommunicateCommons.modifyClassList(
+                    { class: ['km-progress-stop-upload-icon-' + msgkey] },
+                    'n-vis',
+                    'vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    { class: ['km-progress-upload-icon-' + msgkey] },
+                    'vis',
+                    'n-vis'
+                );
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                $applozic('.mck-timestamp-' + msgkey)
-                    .removeClass('n-vis')
-                    .addClass('vis');
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-timestamp-' + msgkey] },
+                    'vis',
+                    'n-vis'
+                );
                 deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'block';
             } else {
                 var fileName = attachmentDiv[0].dataset.filename;
@@ -158,10 +164,17 @@ Kommunicate.attachmentEventHandler = {
                         .closest('.km-msg-box-progressMeter')
                         .children()
                         .removeClass('km-progress-meter-back-drop');
-                    $applozic(e.target).closest('.km-msg-box-progressMeter').addClass('n-vis');
-                    $applozic('.mck-timestamp-' + msgkey)
-                        .removeClass('n-vis')
-                        .addClass('vis');
+                    kommunicateCommons.modifyClassList(
+                        { class: ['km-msg-box-progressMeter'] },
+                        'n-vis',
+                        'vis',
+                        true
+                    );
+                    kommunicateCommons.modifyClassList(
+                        { class: ['mck-timestamp-' + msgkey] },
+                        'vis',
+                        'n-vis'
+                    );
                     deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display =
                         'none';
                 } else if (thumbnailUrl && groupId && msgkey && file) {
@@ -187,9 +200,11 @@ Kommunicate.attachmentEventHandler = {
                     };
                     KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     $applozic.fn.applozic('uploadAttachemnt', params);
-                    $applozic('.mck-timestamp-' + msgkey)
-                        .removeClass('n-vis')
-                        .addClass('vis');
+                    kommunicateCommons.modifyClassList(
+                        { class: ['mck-timestamp-' + msgkey] },
+                        'vis',
+                        'n-vis'
+                    );
                     deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display =
                         'none';
                     delete KM_PENDING_ATTACHMENT_FILE[msgkey];
@@ -256,12 +271,16 @@ Kommunicate.attachmentEventHandler = {
                 'vis',
                 'n-vis'
             );
-            $applozic('.km-attachment-cancel-icon-' + msgKey)
-                .removeClass('vis')
-                .addClass('n-vis');
-            $applozic('.km-attachment-upload-icon-' + msgKey)
-                .removeClass('n-vis')
-                .addClass('vis');
+            kommunicateCommons.modifyClassList(
+                { class: ['km-attachment-cancel-icon-' + msgKey] },
+                'n-vis',
+                'vis'
+            );
+            kommunicateCommons.modifyClassList(
+                { class: ['km-attachment-upload-icon-' + msgKey] },
+                'vis',
+                'n-vis'
+            );
             deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'block';
         } else {
             var fileName = attachmentDiv[0].dataset.filename;
@@ -297,12 +316,16 @@ Kommunicate.attachmentEventHandler = {
                     optns: optns,
                 };
                 $applozic.fn.applozic('submitMessage', params);
-                $applozic('.km-attachment-cancel-icon-' + msgKey)
-                    .removeClass('vis')
-                    .addClass('n-vis');
-                $applozic('.km-attachment-upload-icon-' + msgKey)
-                    .removeClass('vis')
-                    .addClass('n-vis');
+                kommunicateCommons.modifyClassList(
+                    { class: ['km-attachment-cancel-icon-' + msgKey] },
+                    'n-vis',
+                    'vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    { class: ['km-attachment-upload-icon-' + msgKey] },
+                    'n-vis',
+                    'vis'
+                );
                 deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'none';
                 kommunicateCommons.modifyClassList(
                     { class: ['mck-timestamp-' + msgKey] },
@@ -347,8 +370,7 @@ Kommunicate.attachmentEventHandler = {
 Kommunicate.richMsgEventHandler = {
     disabledCTAMap: [],
     svg: {
-        arrow:
-            '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 10 19"><path fill="#1c1c1c" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>',
+        arrow: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 10 19"><path fill="#1c1c1c" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>',
     },
     initializeSlick: function ($cardMessageContainer) {
         if ($cardMessageContainer.length > 0) {
@@ -704,11 +726,17 @@ Kommunicate.richMsgEventHandler = {
             email[0].value == '' ||
             phone[0].value == ''
         ) {
-            $applozic(e.target)
-                .closest('.km-guest-details-container')
-                .find('.km-mandatory-field-error')
-                .removeClass('n-vis')
-                .addClass('vis');
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [
+                        $applozic(e.target)
+                            .closest('.km-guest-details-container')
+                            .find('.km-mandatory-field-error')[0].classList[0],
+                    ],
+                },
+                'vis',
+                'n-vis'
+            );
             return;
         }
         Kommunicate.richMsgEventHandler.handleDisableCTA(e);
