@@ -10172,6 +10172,47 @@ const firstVisibleMsg = {
                     $textMessage.html('');
                 }
             };
+            _this.toggleSearchView = function (showContact) {
+                var showIds = showContact
+                        ? [
+                              'mck-contact-search-list',
+                              'mck-contact-search-input-box',
+                          ]
+                        : [
+                              'mck-group-search-list',
+                              'mck-group-search-input-box',
+                          ],
+                    hideIds = showContact
+                        ? [
+                              'mck-group-search-list',
+                              'mck-group-search-input-box',
+                          ]
+                        : [
+                              'mck-contact-search-list',
+                              'mck-contact-search-input-box',
+                          ];
+                kommunicateCommons.setVisibility({ id: hideIds }, false);
+                kommunicateCommons.setVisibility({ id: showIds }, true);
+                if (showContact) {
+                    $mck_contact_search_list.html('');
+                } else {
+                    $mck_group_search_list.html('');
+                }
+                kommunicateCommons.setVisibility(
+                    {
+                        id: [
+                            'mck-contacts-content',
+                            'mck-sidebox-content',
+                            'mck-group-info-tab',
+                        ],
+                    },
+                    false
+                );
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-sidebox-search', 'mck-search-loading'] },
+                    true
+                );
+            };
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
                     userIdArray = [];
@@ -10181,16 +10222,7 @@ const firstVisibleMsg = {
                     $mck_search_tab_link.removeClass('active');
                     $mck_contact_search_tab.addClass('active');
                 }
-                $mck_group_search_list.removeClass('vis').addClass('n-vis');
-                $mck_contact_search_list.removeClass('n-vis').addClass('vis');
-                $mck_group_search_input_box.removeClass('vis').addClass('n-vis');
-                $mck_contact_search_input_box.removeClass('n-vis').addClass('vis');
-                $mck_contact_search_list.html('');
-                $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_content.removeClass('vis').addClass('n-vis');
-                $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_search.removeClass('n-vis').addClass('vis');
-                $mck_search_loading.removeClass('n-vis').addClass('vis');
+                _this.toggleSearchView(true);
                 if (MCK_CONTACT_ARRAY.length !== 0) {
                     mckMessageLayout.addContactsToSearchList();
                 } else if (!IS_MCK_OWN_CONTACTS) {
@@ -10210,16 +10242,7 @@ const firstVisibleMsg = {
                     $mck_search_tab_link.removeClass('active');
                     $mck_group_search_tab.addClass('active');
                 }
-                $mck_contact_search_list.removeClass('vis').addClass('n-vis');
-                $mck_group_search_list.removeClass('n-vis').addClass('vis');
-                $mck_contact_search_input_box.removeClass('vis').addClass('n-vis');
-                $mck_group_search_input_box.removeClass('n-vis').addClass('vis');
-                $mck_group_search_list.html('');
-                $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_content.removeClass('vis').addClass('n-vis');
-                $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_search.removeClass('n-vis').addClass('vis');
-                $mck_search_loading.removeClass('n-vis').addClass('vis');
+                _this.toggleSearchView(false);
                 if (MCK_GROUP_ARRAY.length > 0) {
                     $applozic.each(MCK_GROUP_ARRAY, function (i, group) {
                         groupIdArray.push(group.contactId);
