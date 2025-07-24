@@ -12408,11 +12408,18 @@ const firstVisibleMsg = {
                     .appendTo('#mck-group-member-search-list');
             };
             _this.loadCreateGroupTab = function () {
-                kommunicateCommons.setVisibility({ id: ['mck-contacts-content'] }, false);
-                kommunicateCommons.setVisibility({ id: ['mck-sidebox-content'] }, false);
-                kommunicateCommons.setVisibility({ id: ['mck-sidebox-search'] }, false);
-                kommunicateCommons.setVisibility({ id: ['mck-group-info-tab'] }, false);
-                kommunicateCommons.setVisibility({ id: ['mck-group-create-icon-loading'] }, false);
+                kommunicateCommons.setVisibility(
+                    {
+                        id: [
+                            'mck-contacts-content',
+                            'mck-sidebox-content',
+                            'mck-sidebox-search',
+                            'mck-group-info-tab',
+                            'mck-group-create-icon-loading',
+                        ],
+                    },
+                    false
+                );
                 $mck_group_create_icon.data('iconurl', '');
                 $mck_group_create_title.html('');
                 kommunicateCommons.modifyClassList(
@@ -12427,16 +12434,20 @@ const firstVisibleMsg = {
             _this.loadGroupInfo = function (params) {
                 if (params.groupId) {
                     $mck_group_title.attr('contenteditable', false);
-                    kommunicateCommons.setVisibility({ id: ['mck-group-name-save'] }, false);
-                    kommunicateCommons.setVisibility({ id: ['mck-group-name-edit'] }, true);
-                    kommunicateCommons.setVisibility({ id: ['mck-contacts-content'] }, false);
-                    kommunicateCommons.setVisibility({ id: ['mck-sidebox-search'] }, false);
-                    kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, false);
-                    kommunicateCommons.setVisibility({ id: ['mck-btn-group-icon-save'] }, false);
                     kommunicateCommons.setVisibility(
-                        { id: ['mck-group-info-icon-loading'] },
+                        {
+                            id: [
+                                'mck-group-name-save',
+                                'mck-contacts-content',
+                                'mck-sidebox-search',
+                                'mck-group-update-panel',
+                                'mck-btn-group-icon-save',
+                                'mck-group-info-icon-loading',
+                            ],
+                        },
                         false
                     );
+                    kommunicateCommons.setVisibility({ id: ['mck-group-name-edit'] }, true);
                     $mck_group_info_tab.data('mck-id', params.groupId);
                     $mck_group_info_icon.data('iconurl', '');
                     if (params.conversationId) {
