@@ -8481,18 +8481,25 @@ const firstVisibleMsg = {
                         var triggerNextIntent = false;
                     }
                     $mck_text_box.addClass('mck-text-box').removeClass('n-vis');
-                    // store field metadata for rich message inputs
-                    var errorMessage = fieldValidation
-                        ? fieldMetadata.validation.errorText
-                        : null;
+                    // if trigger next event is true then set the data attribute for triggerNextEvent
+                    if (triggerNextIntent) {
+                        $mck_text_box.data('trigger', triggerNextIntent);
+                    } else {
+                        $mck_text_box.data('trigger', null);
+                    }
+                    //if update user details is true then set the data attribute for updateuserdetails
+                    if (updateUserDetails) {
+                        $mck_text_box.data('updateUserDetails', updateUserDetails);
+                    } else {
+                        $mck_text_box.data('updateUserDetails', null);
+                    }
+                    var errorMessage = fieldValidation ? fieldMetadata.validation.errorText : null;
                     $mck_text_box.data({
-                        trigger: triggerNextIntent || null,
-                        updateUserDetails: updateUserDetails || null,
                         validation: fieldValidation || null,
                         errorMessage: errorMessage,
-                        field: field,
-                        fieldType: fieldType,
                     });
+                    $mck_text_box.data('field', field);
+                    $mck_text_box.data('fieldType', fieldType);
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
                     !firstVisibleMsg.containsField &&
