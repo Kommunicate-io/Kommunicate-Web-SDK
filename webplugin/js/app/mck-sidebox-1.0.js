@@ -8070,7 +8070,6 @@ const firstVisibleMsg = {
                 if (
                     msg.groupId &&
                     msg.contentType !== 4 &&
-                    contact.type !== 7 &&
                     (msg.type === 0 || msg.type === 4 || msg.type === 6)
                 ) {
                     displayName = _this.getTabDisplayName(msg.to, false);
@@ -9269,14 +9268,9 @@ const firstVisibleMsg = {
                     } else {
                         imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
                     }
-                } else if (contact.isGroup && contact.type !== 7) {
+                } else if (contact.isGroup) {
                     imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
                 } else {
-                    if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
-                        mckGroupService.getContactFromGroupOfTwo(contact, function (user) {
-                            contact = mckMessageLayout.fetchContact(user);
-                        });
-                    }
                     if (typeof MCK_GETUSERIMAGE === 'function') {
                         var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
                         if (imgsrc && typeof imgsrc !== 'undefined') {
@@ -10069,17 +10063,7 @@ const firstVisibleMsg = {
                     olStatus = 'vis';
                     prepend = true;
                 }
-                if (contact.type === 7 && contact.members.length > 1) {
-                    var contacts;
-                    var group = mckGroupUtils.getGroup(message.groupId);
-                    mckGroupService.getContactFromGroupOfTwo(group, function (user) {
-                        contacts = mckMessageLayout.fetchContact(user);
-                    });
-                    if (isGroupTab && IS_MCK_OL_STATUS && w.MCK_OL_MAP[contacts.contactId]) {
-                        olStatus = 'vis';
-                        prepend = true;
-                    }
-                }
+                
                 var isContHeader = 'n-vis';
                 if (typeof conversationPxy === 'object' && IS_MCK_TOPIC_HEADER) {
                     var topicDetail = MCK_TOPIC_DETAIL_MAP[conversationPxy.topicId];
@@ -10638,7 +10622,7 @@ const firstVisibleMsg = {
                                 ? 'Image attachment'
                                 : 'File attachment';
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
+                    if (contact.isGroup && contact.type !== 3) {
                         var msgFrom =
                             message.to.split(',')[0] === MCK_USER_ID
                                 ? 'Me'
@@ -10945,30 +10929,10 @@ const firstVisibleMsg = {
                                             return;
                                         }
                                     } else {
-                                        if (contact.type === 7) {
-                                            var contacts;
-                                            var group = mckGroupUtils.getGroup(message.groupId);
-                                            mckGroupService.getContactFromGroupOfTwo(
-                                                group,
-                                                function (user) {
-                                                    contacts = mckMessageLayout.fetchContact(user);
-                                                }
-                                            );
-                                            mckUserUtils.lastSeenOfGroupOfTwo(contacts.contactId);
-                                            mckMessageLayout.addMessage(
-                                                message,
-                                                contact,
-                                                true,
-                                                true,
-                                                validated
-                                            );
-                                        }
-
                                         if (
                                             !message.metadata ||
                                             (message.metadata.category !== 'HIDDEN' &&
-                                                message.metadata.hide !== 'true' &&
-                                                contact.type !== 7) ||
+                                                message.metadata.hide !== 'true') ||
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty('KM_ASSIGN_TO') ||
                                                     message.metadata.hasOwnProperty(
@@ -11319,18 +11283,6 @@ const firstVisibleMsg = {
                         }
                     }
                 });
-            };
-            _this.lastSeenOfGroupOfTwo = function (tabId) {
-                if (w.MCK_OL_MAP[tabId]) {
-                    $mck_tab_status.attr('title', MCK_LABELS['online']).html(MCK_LABELS['online']);
-                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
-                } else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
-                    var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
-                    $mck_tab_status.html(lastSeenAt);
-                    $mck_tab_status.attr('title', lastSeenAt);
-                    $mck_tab_title.addClass('mck-tab-title-w-status');
-                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
-                }
             };
             _this.toggleBlockUser = function (tabId, isBlocked) {
                 if (isBlocked) {
