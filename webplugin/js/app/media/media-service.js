@@ -230,14 +230,14 @@ Kommunicate.mediaService = {
                         if (REMAINING_TIME <= 0) {
                             clearTimeout(playPauseInterval);
                             playPausetimerState = TIMER_STATE.EXPIRED;
-                            pauseBtn.addClass('n-vis');
-                            playBtn.removeClass('n-vis');
+                            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, false);
+                            kommunicateCommons.setVisibility({ id: ['play-btn'] }, true);
                         }
                     } else if (playPausetimerState == TIMER_STATE.PAUSED) {
                         START_TIME += 1000;
                     }
                 }, 1000);
-                timeRemainingTimer.removeClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['time-remaining'] }, true);
             }
         }
         function startRecording() {
@@ -249,12 +249,9 @@ Kommunicate.mediaService = {
             );
 
             // hide
-            kommunicateCommons.setVisibility(
-                { id: ['play-btn', 'pause-btn', 'send-btn'] },
-                false
-            );
-            timeElapsedTimer.removeClass('n-vis');
-            timeRemainingTimer.removeClass('n-vis');
+            kommunicateCommons.setVisibility({ id: ['play-btn', 'pause-btn', 'send-btn'] }, false);
+            kommunicateCommons.setVisibility({ id: ['time-elapsed'] }, true);
+            kommunicateCommons.setVisibility({ id: ['time-remaining'] }, true);
 
             Fr.voice.record(
                 LIVE_OUTPUT,
@@ -347,16 +344,16 @@ Kommunicate.mediaService = {
         function onPlayBtnClick(e) {
             var prevStateOfTimer = playPausetimerState;
             playPausetimerState = TIMER_STATE.RUNNING;
-            playBtn.addClass('n-vis');
-            pauseBtn.removeClass('n-vis');
+            kommunicateCommons.setVisibility({ id: ['play-btn'] }, false);
+            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, true);
             audioBlob && $applozic('#recorder-audio')[0].play();
             prevStateOfTimer == TIMER_STATE.EXPIRED && playPauseTimer();
         }
         function onPauseBtnClick(e) {
             $applozic('#recorder-audio')[0].pause();
             playPausetimerState = TIMER_STATE.PAUSED;
-            pauseBtn.addClass('n-vis');
-            playBtn.removeClass('n-vis');
+            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, false);
+            kommunicateCommons.setVisibility({ id: ['play-btn'] }, true);
         }
 
         document.querySelector('.mck-mic-animation-container .voiceNote').onclick = function () {
