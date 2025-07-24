@@ -12408,27 +12408,35 @@ const firstVisibleMsg = {
                     .appendTo('#mck-group-member-search-list');
             };
             _this.loadCreateGroupTab = function () {
-                $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_content.removeClass('vis').addClass('n-vis');
-                $mck_sidebox_search.removeClass('vis').addClass('n-vis');
-                $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_group_create_icon_loading.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-contacts-content'] }, false);
+                kommunicateCommons.setVisibility({ id: ['mck-sidebox-content'] }, false);
+                kommunicateCommons.setVisibility({ id: ['mck-sidebox-search'] }, false);
+                kommunicateCommons.setVisibility({ id: ['mck-group-info-tab'] }, false);
+                kommunicateCommons.setVisibility({ id: ['mck-group-create-icon-loading'] }, false);
                 $mck_group_create_icon.data('iconurl', '');
                 $mck_group_create_title.html('');
-                $mck_group_create_overlay_box.removeClass('n-vis');
+                kommunicateCommons.modifyClassList(
+                    { class: ['#mck-group-create-icon-box .mck-overlay-box'] },
+                    '',
+                    'n-vis',
+                    true
+                );
                 $mck_gc_overlay_label.html(MCK_LABELS['add.group.icon']);
                 $mck_group_create_icon.html(mckGroupService.getGroupDefaultIcon());
             };
             _this.loadGroupInfo = function (params) {
                 if (params.groupId) {
                     $mck_group_title.attr('contenteditable', false);
-                    $mck_group_name_save.removeClass('vis').addClass('n-vis');
-                    $mck_group_name_edit.removeClass('n-vis').addClass('vis');
-                    $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                    $mck_sidebox_search.removeClass('vis').addClass('n-vis');
-                    $mck_group_update_panel.removeClass('vis').addClass('n-vis');
-                    $mck_btn_group_icon_save.removeClass('vis').addClass('n-vis');
-                    $mck_group_info_icon_loading.removeClass('vis').addClass('n-vis');
+                    kommunicateCommons.setVisibility({ id: ['mck-group-name-save'] }, false);
+                    kommunicateCommons.setVisibility({ id: ['mck-group-name-edit'] }, true);
+                    kommunicateCommons.setVisibility({ id: ['mck-contacts-content'] }, false);
+                    kommunicateCommons.setVisibility({ id: ['mck-sidebox-search'] }, false);
+                    kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, false);
+                    kommunicateCommons.setVisibility({ id: ['mck-btn-group-icon-save'] }, false);
+                    kommunicateCommons.setVisibility(
+                        { id: ['mck-group-info-icon-loading'] },
+                        false
+                    );
                     $mck_group_info_tab.data('mck-id', params.groupId);
                     $mck_group_info_icon.data('iconurl', '');
                     if (params.conversationId) {
@@ -12440,9 +12448,10 @@ const firstVisibleMsg = {
                         $mck_group_info_icon.html(mckGroupService.getGroupImage(group.imageUrl));
                         $mck_group_title.html(group.displayName);
                         _this.addMembersToGroupInfoList(group);
-                        group.adminName === MCK_USER_ID
-                            ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis')
-                            : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility(
+                            { id: ['mck-group-add-member-box'] },
+                            group.adminName === MCK_USER_ID
+                        );
                     } else {
                         mckGroupService.getGroupFeed({
                             groupId: params.groupId,
