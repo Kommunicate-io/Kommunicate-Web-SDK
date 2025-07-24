@@ -8871,18 +8871,30 @@ const firstVisibleMsg = {
                 }
 
                 if (msg.fileMeta) {
-                    $applozic('.' + replyId + ' .mck-file-text')
-                        .removeClass('n-vis')
-                        .addClass('vis');
+                    kommunicateCommons.setVisibility(
+                        { class: ['.' + replyId + ' .mck-file-text'] },
+                        true,
+                        true
+                    );
                     if ($textMessage.html() === '') {
-                        $textMessage.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility(
+                            { class: ['.' + replyId + ' .mck-msg-content'] },
+                            false,
+                            true
+                        );
                     }
                 }
                 if (msg.contentType === 2) {
-                    $textMessage.removeClass('vis').addClass('n-vis');
-                    $applozic('.' + replyId + ' .mck-file-text')
-                        .removeClass('n-vis')
-                        .addClass('vis');
+                    kommunicateCommons.setVisibility(
+                        { class: ['.' + replyId + ' .mck-msg-content'] },
+                        false,
+                        true
+                    );
+                    kommunicateCommons.setVisibility(
+                        { class: ['.' + replyId + ' .mck-file-text'] },
+                        true,
+                        true
+                    );
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(
@@ -9663,7 +9675,7 @@ const firstVisibleMsg = {
                     return userIdArray.indexOf(item) === pos;
                 });
                 uniqueUserIdArray.sort();
-                $mck_search_loading.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-search-loading'] }, false);
 
                 if (uniqueUserIdArray.length > 0) {
                     $applozic.each(uniqueUserIdArray, function (i, userId) {
@@ -10234,7 +10246,7 @@ const firstVisibleMsg = {
                 } else if (!IS_MCK_OWN_CONTACTS) {
                     mckContactService.loadContacts();
                 } else {
-                    $mck_search_loading.removeClass('vis').addClass('n-vis');
+                    kommunicateCommons.setVisibility({ id: ['mck-search-loading'] }, false);
                     kommunicateCommons.setVisibility({ id: ['mck-no-search-contacts'] }, true);
                 }
                 $mck_contact_search_input.focus();
@@ -10274,7 +10286,7 @@ const firstVisibleMsg = {
                     $searchId: $mck_group_search_input,
                     isContactSearch: true,
                 });
-                $mck_search_loading.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-search-loading'] }, false);
             };
             _this.addConversationMenu = function (tabId, isGroup) {
                 var currTabId = $mck_msg_inner.data('mck-id');
