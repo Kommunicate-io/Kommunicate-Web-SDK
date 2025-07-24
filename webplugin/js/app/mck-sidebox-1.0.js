@@ -6095,23 +6095,6 @@ const firstVisibleMsg = {
                                                 } else {
                                                     mckGroupLayout.addGroupStatus(group);
                                                     var validated = true;
-                                                    var contact;
-                                                    if (group.type === 7) {
-                                                        $li_mck_group_info
-                                                            .removeClass('vis')
-                                                            .addClass('n-vis');
-                                                        mckGroupService.getContactFromGroupOfTwo(
-                                                            group,
-                                                            function (user) {
-                                                                contact = mckMessageLayout.fetchContact(
-                                                                    user
-                                                                );
-                                                            }
-                                                        );
-                                                        mckUserUtils.lastSeenOfGroupOfTwo(
-                                                            contact.contactId
-                                                        );
-                                                    }
                                                     if (
                                                         window.applozic.PRODUCT_ID ==
                                                             'kommunicate' &&
@@ -12050,10 +12033,6 @@ const firstVisibleMsg = {
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
                     $mck_tab_status.removeClass('vis').addClass('n-vis');
                 }
-                if (group.type === 7) {
-                    $mck_tab_status.html('');
-                    $mck_group_menu_options.removeClass('vis').addClass('n-vis');
-                }
             };
             _this.disableGroupTab = function () {
                 $mck_msg_error.html(MCK_LABELS['group.chat.disabled']);
@@ -13837,11 +13816,6 @@ const firstVisibleMsg = {
                                                 displayName + ' ' + MCK_LABELS['is.typing']
                                             );
                                         }
-                                        if (group.type === 7) {
-                                            $mck_tab_title.addClass('mck-tab-title-w-typing');
-                                            $mck_typing_label.html(MCK_LABELS['is.typing']);
-                                            $mck_tab_status.html('');
-                                        }
                                     }
                                 } else {
                                     $mck_tab_title.addClass('mck-tab-title-w-typing');
@@ -13861,8 +13835,7 @@ const firstVisibleMsg = {
                             $mck_typing_box.removeClass('vis').addClass('n-vis');
                             typingService.hideTypingIndicator();
                             if (
-                                $mck_tab_title.hasClass('mck-tab-title-w-status') &&
-                                (typeof group === 'undefined' || group.type != 7)
+                                $mck_tab_title.hasClass('mck-tab-title-w-status')
                             ) {
                                 // $mck_tab_status.removeClass('n-vis').addClass('vis');
                             }
