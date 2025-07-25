@@ -1,5 +1,4 @@
 var MCK_GROUP_MAP = [];
-var MCK_CLIENT_GROUP_MAP = [];
 var MCK_EVENT_HISTORY = [];
 var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * 54;
 var count = 0;
@@ -527,7 +526,6 @@ const firstVisibleMsg = {
         var mckUtils = new MckUtils();
         var mckMapLayout = new MckMapLayout();
         var mckUserUtils = new MckUserUtils();
-        var mckMapService = new MckMapService();
         var mckGroupService = new MckGroupService();
         var mckGroupUtils = new MckGroupUtils();
         var mckGroupLayout = new MckGroupLayout();
@@ -4864,13 +4862,15 @@ const firstVisibleMsg = {
                                     errMsg = MCK_LABELS['lead.collection'].commonErrorMsg;
                                 }
                                 $applozic('#mck-form-field-error-alert').html(errMsg);
-                                $applozic('#mck-form-field-error-alert-box')
-                                    .removeClass('n-vis')
-                                    .addClass('vis');
+                                kommunicateCommons.setVisibility(
+                                    { id: ['mck-form-field-error-alert-box'] },
+                                    true
+                                );
                                 setTimeout(function () {
-                                    $applozic('#mck-form-field-error-alert-box')
-                                        .removeClass('vis')
-                                        .addClass('n-vis');
+                                    kommunicateCommons.setVisibility(
+                                        { id: ['mck-form-field-error-alert-box'] },
+                                        false
+                                    );
                                 }, 2000);
                                 return false;
                             }
@@ -6966,7 +6966,6 @@ const firstVisibleMsg = {
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var LINK_EXPRESSION =
                 /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-            var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
@@ -8013,7 +8012,6 @@ const firstVisibleMsg = {
                               ? 'n-vis'
                               : 'vis';
                 }
-                var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var msgBoxColorStyle = '';
                 var statusIcon = 'mck-pending-icon';
@@ -11326,10 +11324,10 @@ const firstVisibleMsg = {
                             typeof alUserService.MCK_USER_DETAIL_MAP[tabId] !== 'undefined' &&
                             userDetail.connected
                         ) {
-                            $this.removeClass('n-vis').addClass('vis');
+                            kommunicateCommons.classListChanger(this, 'vis', 'n-vis');
                             $this.next().html('(' + MCK_LABELS['online'] + ')');
                         } else {
-                            $this.removeClass('vis').addClass('n-vis');
+                            kommunicateCommons.classListChanger(this, 'n-vis', 'vis');
                             $this.next().html('(Offline)');
                         }
                     }
@@ -11736,7 +11734,11 @@ const firstVisibleMsg = {
                     .find('.mck-group-change-role-box');
                 var role = $applozic(this).parents('.mck-li-group-member').data('role');
                 $changeRoleBox.find('select').val(role);
-                $changeRoleBox.removeClass('n-vis').addClass('vis');
+                kommunicateCommons.classListChanger(
+                    $changeRoleBox[0],
+                    'vis',
+                    'n-vis'
+                );
                 kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, true);
             });
             $mck_btn_group_update.on('click', function () {
