@@ -11324,10 +11324,20 @@ const firstVisibleMsg = {
                             typeof alUserService.MCK_USER_DETAIL_MAP[tabId] !== 'undefined' &&
                             userDetail.connected
                         ) {
-                            kommunicateCommons.classListChanger(this, 'vis', 'n-vis');
+                            var htmlId = mckContactUtils.formatContactId('' + tabId);
+                            kommunicateCommons.setVisibility(
+                                { class: ['.mck-user-ol-status.' + htmlId] },
+                                true,
+                                true
+                            );
                             $this.next().html('(' + MCK_LABELS['online'] + ')');
                         } else {
-                            kommunicateCommons.classListChanger(this, 'n-vis', 'vis');
+                            var htmlId = mckContactUtils.formatContactId('' + tabId);
+                            kommunicateCommons.setVisibility(
+                                { class: ['.mck-user-ol-status.' + htmlId] },
+                                false,
+                                true
+                            );
                             $this.next().html('(Offline)');
                         }
                     }
@@ -11341,14 +11351,18 @@ const firstVisibleMsg = {
                     kommunicateCommons.setVisibility({ id: ['mck-msg-form'] }, false);
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
                     kommunicateCommons.setVisibility({ id: ['mck-tab-status'] }, false);
-                    $mck_typing_box.removeClass('vis').addClass('n-vis');
+                    kommunicateCommons.setVisibility(
+                        { class: ['mck-typing-box'] },
+                        false
+                    );
                     $mck_message_inner.data('blocked', true);
                     $mck_block_button
                         .html(MCK_LABELS['unblock.user'])
                         .attr('title', MCK_LABELS['unblock.user']);
                 } else {
                     $mck_msg_error.html('');
-                    $mck_msg_error.removeClass('vis').addClass('n-vis').removeClass('mck-no-mb');
+                    kommunicateCommons.setVisibility({ id: ['mck-msg-error'] }, false);
+                    $mck_msg_error.removeClass('mck-no-mb');
                     kommunicateCommons.setVisibility({ id: ['mck-msg-form'] }, true);
                     $mck_message_inner.data('blocked', false);
                     $mck_block_button
@@ -11734,10 +11748,9 @@ const firstVisibleMsg = {
                     .find('.mck-group-change-role-box');
                 var role = $applozic(this).parents('.mck-li-group-member').data('role');
                 $changeRoleBox.find('select').val(role);
-                kommunicateCommons.classListChanger(
-                    $changeRoleBox[0],
-                    'vis',
-                    'n-vis'
+                kommunicateCommons.setVisibility(
+                    { id: [$changeRoleBox.attr('id')] },
+                    true
                 );
                 kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, true);
             });
@@ -12746,10 +12759,10 @@ const firstVisibleMsg = {
                 }
                 kommunicateCommons.assignMessageTarget(messagePxy);
                 $mck_msg_sbmt.attr('disabled', true);
-                $mck_msg_error.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-msg-error'] }, false);
                 $mck_msg_error.html('');
                 $mck_response_text.html('');
-                $mck_msg_response.removeClass('vis').addClass('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-msg-response'] }, false);
                 mckMessageService.sendMessage(messagePxy);
                 $mck_loc_box.mckModal('hide');
             });
@@ -13897,7 +13910,10 @@ const firstVisibleMsg = {
                             }
                         } else {
                             $mck_tab_title.removeClass('mck-tab-title-w-typing');
-                            $mck_typing_box.removeClass('vis').addClass('n-vis');
+                            kommunicateCommons.setVisibility(
+                                { class: ['mck-typing-box'] },
+                                false
+                            );
                             typingService.hideTypingIndicator();
                             if ($mck_tab_title.hasClass('mck-tab-title-w-status')) {
                                 // $mck_tab_status.removeClass('n-vis').addClass('vis');
@@ -14204,7 +14220,10 @@ const firstVisibleMsg = {
                             MCK_BLOCKED_BY_MAP[contact.contactId] = true;
                             $mck_tab_title.removeClass('mck-tab-title-w-status');
                             $mck_tab_status.removeClass('vis').addClass('n-vis');
-                            $mck_typing_box.removeClass('vis').addClass('n-vis');
+                            kommunicateCommons.setVisibility(
+                                { class: ['mck-typing-box'] },
+                                false
+                            );
                         }
                     } else {
                         $applozic('#li-user-' + contact.htmlId + ' .mck-ol-status')
