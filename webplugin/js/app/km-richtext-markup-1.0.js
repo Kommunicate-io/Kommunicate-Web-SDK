@@ -26,19 +26,18 @@ Kommunicate.markup = {
 </div>`
         );
     },
+    starSvg: '<svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="{{class}}"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+    getStarsMarkup: function (starObj) {
+        var html = '';
+        for (var i = 1; i <= 5; i++) {
+            html += '<span>' + this.starSvg.replace('{{class}}', starObj['star' + i]) + '</span>';
+        }
+        return html;
+    },
     getHotelCardTemplate: function (options, sessionId) {
-        var star = {
-            star1: 'km-star-empty',
-            star2: 'km-star-empty',
-            star3: 'km-star-empty',
-            star4: 'km-star-empty',
-            star5: 'km-star-empty',
-        };
-        if (options.StarRating) {
-            //populate the star rating
-            for (var i = 0; i < options.StarRating; i++) {
-                star['star' + (i + 1)] = 'km-star-filled';
-            }
+        var star = {};
+        for (var i = 1; i <= 5; i++) {
+            star['star' + i] = i <= (options.StarRating || 0) ? 'km-star-filled' : 'km-star-empty';
         }
         //Note: Setting price as 8%, modify it to change price calculation logic.
         var price =
@@ -61,48 +60,9 @@ Kommunicate.markup = {
             <h1 class="km-card-message-body-title">` +
             options.HotelName +
             `</h1>
-            <div class="km-card-message-body-ratings">
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="` +
-            star.star1 +
-            `">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="` +
-            star.star2 +
-            `">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="` +
-            star.star3 +
-            `">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="` +
-            star.star4 +
-            `">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="` +
-            star.star5 +
-            `">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </span>
-            </div>
+            <div class="km-card-message-body-ratings">` +
+            Kommunicate.markup.getStarsMarkup(star) +
+            `</div>
             <div class="km-card-message-body-address">
                 <span class="km-card-message-body-address-icon">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24">
