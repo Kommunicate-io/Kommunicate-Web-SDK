@@ -422,6 +422,17 @@ KommunicateUtils = {
             return false;
         }
     },
+    convertDateToTimeZone: function (date, timeZone) {
+        var invDate = new Date(date.toLocaleString('en-US', { timeZone: timeZone }));
+        var diff = invDate.getTime() - date.getTime();
+        return new Date(date.getTime() - diff);
+    },
+    getDateWithTimeInZone: function (baseDate, time, timeZone) {
+        var tzDate = this.convertDateToTimeZone(baseDate, timeZone);
+        var parts = (time || '00:00').split(':');
+        tzDate.setHours(parseInt(parts[0], 10) || 0, parseInt(parts[1], 10) || 0, 0, 0);
+        return tzDate;
+    },
     isActiveConversationNeedsToBeOpened: function (activeConversationInfo, data) {
         var userId = kmCookieStorage.getCookie(
             KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
