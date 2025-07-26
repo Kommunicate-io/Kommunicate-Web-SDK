@@ -162,7 +162,8 @@ class TypingService {
     };
 
     scrollToTheCurrentMsg = (msgElement, msgKey) => {
-        kommunicateCommons.classListChanger(msgElement, 'vis', 'n-vis');
+        // ensure the message is visible before scrolling
+        kommunicateCommons.setVisibility(msgElement, true);
         this.scrollToView(this.appOptions.showMsgFromStart, msgKey);
     };
 

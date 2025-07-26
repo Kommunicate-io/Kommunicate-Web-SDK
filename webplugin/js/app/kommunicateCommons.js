@@ -85,6 +85,8 @@ function KommunicateCommons() {
     };
 
     _this.classListChanger = function (elem, add, remove) {
+        // classList.add ignores duplicate entries, ensuring classes are not
+        // appended more than once when this helper is reused
         add && elem.classList.add(add);
         remove && elem.classList.remove(remove);
     };
