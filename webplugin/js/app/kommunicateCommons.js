@@ -148,49 +148,37 @@ function KommunicateCommons() {
             : false;
     };
     _this.getTimeOrDate = function (createdAtTime) {
-        var timeStampLabels = MCK_LABELS['time.stamp'];
+        var labels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
-        var currentTime = new Date(),
-            secondsPast = Math.max(0, (currentTime.getTime() - timeStamp.getTime()) / 1000);
-        if (secondsPast < 60) {
-            return (
-                parseInt(secondsPast) +
-                ' ' +
-                (parseInt(secondsPast) <= 1
-                    ? timeStampLabels['sec.ago']
-                    : timeStampLabels['secs.ago'])
-            );
+        var currentTime = new Date();
+        var secondsPast = Math.max(0, (currentTime - timeStamp) / 1000);
+        var ranges = [
+            [60, 1, 'sec.ago', 'secs.ago'],
+            [3600, 60, 'min.ago', 'mins.ago'],
+            [172800, 3600, 'hr.ago', 'hrs.ago'],
+        ];
+
+        for (var i = 0; i < ranges.length; i++) {
+            if (secondsPast < ranges[i][0]) {
+                var count = parseInt(secondsPast / ranges[i][1]);
+                return (
+                    count +
+                    ' ' +
+                    (count <= 1 ? labels[ranges[i][2]] : labels[ranges[i][3]])
+                );
+            }
         }
-        if (secondsPast < 3600) {
-            return (
-                parseInt(secondsPast / 60) +
-                ' ' +
-                (parseInt(secondsPast / 60) <= 1
-                    ? timeStampLabels['min.ago']
-                    : timeStampLabels['mins.ago'])
-            );
-        }
-        if (secondsPast <= 172800) {
-            return (
-                parseInt(secondsPast / 3600) +
-                ' ' +
-                (parseInt(secondsPast / 3600) <= 1
-                    ? timeStampLabels['hr.ago']
-                    : timeStampLabels['hrs.ago'])
-            );
-        }
-        if (secondsPast > 172800) {
-            day = timeStamp.getDate();
-            month = timeStamp
-                .toDateString()
-                .match(/ [a-zA-Z]*/)[0]
-                .replace(' ', '');
-            year =
-                timeStamp.getFullYear() == currentTime.getFullYear()
-                    ? ''
-                    : ' ' + timeStamp.getFullYear();
-            return day + ' ' + month + year;
-        }
+
+        var day = timeStamp.getDate();
+        var month = timeStamp
+            .toDateString()
+            .match(/ [a-zA-Z]*/)[0]
+            .replace(' ', '');
+        var year =
+            timeStamp.getFullYear() === currentTime.getFullYear()
+                ? ''
+                : ' ' + timeStamp.getFullYear();
+        return day + ' ' + month + year;
     };
 
     _this.setWidgetStateOpen = function (isWidgetOpen) {

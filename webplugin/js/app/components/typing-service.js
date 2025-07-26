@@ -162,7 +162,7 @@ class TypingService {
     };
 
     scrollToTheCurrentMsg = (msgElement, msgKey) => {
-        msgElement.classList.remove('n-vis');
+        kommunicateCommons.classListChanger(msgElement, 'vis', 'n-vis');
         this.scrollToView(this.appOptions.showMsgFromStart, msgKey);
     };
 

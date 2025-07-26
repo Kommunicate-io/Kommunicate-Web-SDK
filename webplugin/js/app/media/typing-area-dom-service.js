@@ -66,7 +66,10 @@ Kommunicate.typingAreaService = {
                 document
                     .querySelector('#mck-mic-btn-container')
                     .classList.add('mck-dropdown-toggle');
-                document.querySelector('#mck-mic-options-dropup').classList.remove('n-vis');
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-mic-options-dropup'] },
+                    true
+                );
                 document
                     .querySelector('.mck-mic-animation-container svg#mck-mic-btn')
                     .classList.add('availableOptions');
