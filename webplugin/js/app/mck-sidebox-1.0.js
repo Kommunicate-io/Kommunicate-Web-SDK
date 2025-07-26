@@ -631,8 +631,10 @@ const firstVisibleMsg = {
         _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
             kommunicateCommons.setVisibility({ class: ['mck-box-form'] }, true);
-            $applozic('#mck-contact-loading').addClass('n-vis');
-            $applozic('#mck-contacts-content').addClass('n-vis');
+            kommunicateCommons.setVisibility(
+                { id: ['mck-contact-loading', 'mck-contacts-content'] },
+                false
+            );
         };
 
         _this.mckLaunchSideboxChat = function () {
@@ -2212,10 +2214,7 @@ const firstVisibleMsg = {
                     var popUpcloseButton = document.getElementById('km-popup-close-button');
                     kommunicateIframe.style.boxShadow = 'none';
                     POPUP_WIDGET && (popUpcloseButton.style.display = 'none');
-                    kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+                    kommunicateCommons.resetIframeClasses(kommunicateIframe);
                 }
                 kmChatLoginModal.style.display = 'none';
                 kommunicateCommons.setVisibility(
@@ -2557,10 +2556,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
-                    kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+                    kommunicateCommons.resetIframeClasses(kommunicateIframe);
                     kommunicateCommons.modifyClassList(
                         { id: ['applozic-badge-count'] },
                         '',
@@ -3243,7 +3239,6 @@ const firstVisibleMsg = {
             var $mck_price_text_box = $applozic('#mck-price-text-box');
             var $mck_sidebox_search = $applozic('#mck-sidebox-search');
             var $mck_btn_group_info = $applozic('#mck-group-info-btn');
-            var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_btn_group_exit = $applozic('#mck-btn-group-exit');
             var $mck_group_back_link = $applozic('#mck-group-back-link');
             var $mck_btn_leave_group = $applozic('#mck-btn-leave-group');
@@ -4490,7 +4485,10 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
-                    $mck_business_hours_box.addClass('n-vis');
+                    kommunicateCommons.setVisibility(
+                        { id: ['km-business-hour-box'] },
+                        false
+                    );
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['km-widget-options'],
@@ -7396,7 +7394,10 @@ const firstVisibleMsg = {
                 );
                 // render quick replies
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
-                $mck_conversation_header.addClass('n-vis');
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-conversation-header'] },
+                    false
+                );
                 $mck_msg_inner.removeClass('mck-group-inner');
                 kommunicateCommons.setVisibility(
                     { id: ['mck-tab-status'], class: ['mck-typing-box'] },
@@ -10295,12 +10296,18 @@ const firstVisibleMsg = {
                     tabConvArray.length === 0 ||
                     tabConvArray.length === 1
                 ) {
+                    kommunicateCommons.setVisibility(
+                        { id: ['mck-conversation-list'] },
+                        false
+                    );
                     $product_box_caret.addClass('n-vis');
                     $mck_product_box.addClass('mck-product-box-wc');
-                    $mck_conversation_list.addClass('n-vis');
                     return;
                 }
-                $mck_conversation_list.removeClass('n-vis');
+                kommunicateCommons.setVisibility(
+                    { id: ['mck-conversation-list'] },
+                    true
+                );
                 $product_box_caret.removeClass('n-vis');
                 $mck_product_box.removeClass('mck-product-box-wc');
                 $applozic.each(tabConvArray, function (i, convPxy) {
@@ -10494,7 +10501,10 @@ const firstVisibleMsg = {
                     // $mck_no_messages.removeClass('n-vis').addClass('vis');
                     //   $mck_msg_inner.html('<div class="mck-no-data-text mck-text-muted">No messages yet!</div>');
                     kommunicateCommons.setVisibility({ id: ['mck-message-cell'] }, true);
-                    $mck_tab_message_option.removeClass('vis').addClass('n-vis');
+                    kommunicateCommons.setVisibility(
+                        { class: ['mck-tab-message-option'] },
+                        false
+                    );
                 }
             };
             _this.removedDeletedMessage = function (key, tabId, isGroup) {
@@ -10504,7 +10514,10 @@ const firstVisibleMsg = {
                     $divMessage.remove();
                     if ($mck_msg_inner.is(':empty')) {
                         kommunicateCommons.setVisibility({ id: ['mck-message-cell'] }, true);
-                        $mck_tab_message_option.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility(
+                            { class: ['mck-tab-message-option'] },
+                            false
+                        );
                     }
                 } else if (typeof tabId !== 'undefined') {
                     var mckContactListLength = $applozic('#mck-contact-list').length;
@@ -11245,7 +11258,10 @@ const firstVisibleMsg = {
                         $applozic("#mck-message-cell .mck-message-inner div[name='message']")
                             .length === 0
                     ) {
-                        $mck_tab_message_option.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility(
+                            { class: ['mck-tab-message-option'] },
+                            false
+                        );
                         // $mck_no_messages.removeClass('n-vis').addClass('vis');
                         //   $mck_msg_inner.html('<div class="mck-no-data-text mck-text-muted">No messages yet!</div>');
                     }
@@ -11501,7 +11517,10 @@ const firstVisibleMsg = {
                         }
                     },
                     error: function () {
-                        $mck_search_loading.removeClass('vis').addClass('n-vis');
+                        kommunicateCommons.setVisibility(
+                            { id: ['mck-search-loading'] },
+                            false
+                        );
                         w.console.log('Unable to load contacts. Please reload page.');
                     },
                 });
@@ -13848,9 +13867,8 @@ const firstVisibleMsg = {
                         var kommunicateIframe = parent.document.getElementById(
                             'kommunicate-widget-iframe'
                         );
-                        kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+                        kommunicateCommons.resetIframeClasses(kommunicateIframe);
                         kommunicateIframe.classList.remove('km-iframe-notification');
-                        kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
                         document.getElementById('km-popup-close-button').style.display = 'none';
                         _this.hideMessagePreview();
                         kommunicateCommons.modifyClassList(

@@ -126,6 +126,16 @@ function KommunicateCommons() {
         _this.modifyClassList(elem, add, remove, useQuerySelector);
     };
 
+    _this.resetIframeClasses = function (iframe) {
+        if (!iframe) return;
+        iframe.classList.add('km-iframe-closed');
+        iframe.classList.remove(
+            'kommunicate-iframe-enable-media-query',
+            'km-iframe-dimension-with-popup',
+            'km-iframe-dimension-no-popup'
+        );
+    };
+
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
      value passed is just a object or not. */
     _this.isObject = function (object) {
