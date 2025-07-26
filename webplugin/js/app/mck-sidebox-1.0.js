@@ -3487,7 +3487,7 @@ const firstVisibleMsg = {
                         team.timezone
                     );
 
-                    const agentDay = userMessageTimeInAgentTz.day();
+                    const agentDay = userMessageTimeInAgentTz.getDay();
 
                     // Check if business hours exist for this day
                     let isCurrentDayMappingPresent = true;
