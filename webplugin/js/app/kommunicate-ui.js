@@ -46,7 +46,7 @@ KommunicateUI = {
         var intentOptions = document.getElementById('mck-intent-options');
         var replyOption = kommunicate._globals.replyMenu;
         if (replyOption && intentOptions) {
-            for (var i = 0; i <= replyOption.length; i++) {
+            for (var i = 0; i < replyOption.length; i++) {
                 var listElement = document.createElement('li');
                 listElement.innerText = replyOption[i];
                 listElement.addEventListener('click', function (e) {
@@ -931,7 +931,7 @@ KommunicateUI = {
         var intentList = document.getElementById('mck-intent-options');
         if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
             kommunicateCommons.setVisibility({ id: ['mck-quick-replies-box'] }, true);
-            for (var i = 0; i <= quickReplies.length - 1; i++) {
+            for (var i = 0; i < quickReplies.length; i++) {
                 var li = document.createElement('li');
                 li.innerText = quickReplies[i];
                 intentList.appendChild(li);
@@ -1572,11 +1572,7 @@ KommunicateUI = {
         ) {
             var startConversationButton = document.getElementById('mck-contacts-content');
             var backButton = document.querySelector('.mck-back-btn-container');
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-contacts-content'] },
-                'force-n-vis',
-                ''
-            );
+            kommunicateCommons.modifyClassList({ id: ['mck-contacts-content'] }, 'force-n-vis', '');
             hasMultipleConversations
                 ? kommunicateCommons.modifyClassList(
                       { class: ['.mck-back-btn-container'] },

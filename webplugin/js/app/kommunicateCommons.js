@@ -110,7 +110,7 @@ function KommunicateCommons() {
                     ? document.querySelectorAll(className)
                     : document.getElementsByClassName(className);
 
-                for (let i = 0; i <= el.length - 1; i++) {
+                for (let i = 0; i < el.length; i++) {
                     el && list.push(el[i]);
                 }
             });
@@ -173,11 +173,7 @@ function KommunicateCommons() {
         for (var i = 0; i < ranges.length; i++) {
             if (secondsPast < ranges[i][0]) {
                 var count = parseInt(secondsPast / ranges[i][1]);
-                return (
-                    count +
-                    ' ' +
-                    (count <= 1 ? labels[ranges[i][2]] : labels[ranges[i][3]])
-                );
+                return count + ' ' + (count <= 1 ? labels[ranges[i][2]] : labels[ranges[i][3]]);
             }
         }
 
@@ -281,10 +277,7 @@ function KommunicateCommons() {
         }
         var url = options.url || '';
         if (!/^https?:\/\//.test(url)) {
-            url =
-                Kommunicate.getBaseUrl() +
-                (url.charAt(0) === '/' ? '' : '/') +
-                url;
+            url = Kommunicate.getBaseUrl() + (url.charAt(0) === '/' ? '' : '/') + url;
         }
         var ajaxOptions = {
             headers: options.headers || {},

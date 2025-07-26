@@ -26,7 +26,6 @@ Kommunicate.attachmentService = {
                 thumbnailUrl: reader.result,
                 contentType: file.type,
                 isUploaded: false,
-                contentType: file.type,
                 stopUpload: false,
                 name: file.name,
             });
