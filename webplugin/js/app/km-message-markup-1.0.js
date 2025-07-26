@@ -83,7 +83,7 @@ Kommunicate.messageTemplate = {
                     data.blobKey = data.fileMeta.blobKey;
                 }
                 return Mustache.to_html(
-                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(data),
+                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(),
                     data
                 );
             default:
