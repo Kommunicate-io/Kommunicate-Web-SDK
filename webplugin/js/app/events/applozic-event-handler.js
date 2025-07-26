@@ -2,10 +2,14 @@ Kommunicate.KmEventHandler = {
     openChatOnNotification: function (message) {
         if (!(document.getElementById('mck-sidebox').style.display === 'block')) {
             if (message && message.groupId) {
-                document.getElementById('launcher-agent-img-container').classList.remove('vis');
-                document.getElementById('launcher-agent-img-container').classList.add('n-vis');
-                document.getElementById('launcher-svg-container').classList.remove('n-vis');
-                document.getElementById('launcher-svg-container').classList.add('vis');
+                kommunicateCommons.setVisibility(
+                    { id: ['launcher-agent-img-container'] },
+                    false
+                );
+                kommunicateCommons.setVisibility(
+                    { id: ['launcher-svg-container'] },
+                    true
+                );
                 window.Kommunicate.openConversation(message.groupId);
             } else {
                 window.Kommunicate.openDirectConversation(message.to);
@@ -21,12 +25,12 @@ Kommunicate.KmEventHandler = {
         } else if (
             document.getElementById('launcher-agent-img-container').classList.contains('vis')
         ) {
-            document
-                .querySelector('#mck-sidebox-launcher #launcher-svg-container')
-                .classList.add('n-vis');
-            document
-                .querySelector('#mck-sidebox-launcher #launcher-svg-container')
-                .classList.remove('vis');
+            kommunicateCommons.modifyClassList(
+                { class: ['#mck-sidebox-launcher #launcher-svg-container'] },
+                'n-vis',
+                'vis',
+                true
+            );
         }
     },
     onMessageReceived: function (message, toggleSound) {

@@ -161,7 +161,8 @@ Kommunicate.popupChatTemplate = {
         Kommunicate['chatPopupActions'] = {};
 
         if (Array.isArray(buttonDetails) && buttonDetails.length) {
-            for (var i = 0; i < 2 && i < buttonDetails.length; i++) {
+            // popup currently renders a maximum of two action buttons
+            for (var i = 0; i < buttonDetails.length && i < 2; i++) {
                 actionButton[i].label = buttonDetails[i].label;
                 Kommunicate['chatPopupActions'][i] =
                     typeof buttonDetails[i].onClickAction == 'function'

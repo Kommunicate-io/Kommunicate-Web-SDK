@@ -686,9 +686,11 @@ Kommunicate.richMsgEventHandler = {
         var fieldName = name.toLowerCase().replace(/ +/g, '');
         var container = form.getElementsByClassName('mck-form-' + fieldName + '-error-container');
         if (container.length) {
-            validationFailed
-                ? container[0].classList.remove('n-vis')
-                : container[0].classList.add('n-vis');
+            kommunicateCommons.setVisibility(
+                { class: ['.mck-form-' + fieldName + '-error-container'] },
+                validationFailed,
+                true
+            );
         }
 
         var element = form.getElementsByClassName(

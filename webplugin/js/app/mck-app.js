@@ -441,7 +441,7 @@ function ApplozicSidebox() {
                 var churnCust = document.getElementById('km-churn-customer');
                 if (churnCust) {
                     linkForChurn && linkForChurn.setAttribute('href', poweredByUrl);
-                    churnCust.classList.remove('n-vis');
+                    kommunicateCommons.setVisibility({ id: ['km-churn-customer'] }, true);
                 }
             }
 
@@ -661,7 +661,7 @@ function ApplozicSidebox() {
     function preLoadLauncherIconInterval() {
         var launcherInterval = setInterval(function () {
             if (document.getElementById('mck-sidebox-launcher')) {
-                document.getElementById('mck-sidebox-launcher').classList.remove('n-vis');
+                kommunicateCommons.setVisibility({ id: ['mck-sidebox-launcher'] }, true);
                 document
                     .getElementById('mck-sidebox-launcher')
                     .classList.add('km-launcher-animation');
