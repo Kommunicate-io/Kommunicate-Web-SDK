@@ -1572,10 +1572,24 @@ KommunicateUI = {
         ) {
             var startConversationButton = document.getElementById('mck-contacts-content');
             var backButton = document.querySelector('.mck-back-btn-container');
-            startConversationButton.classList.add('force-n-vis');
+            kommunicateCommons.modifyClassList(
+                { id: ['mck-contacts-content'] },
+                'force-n-vis',
+                ''
+            );
             hasMultipleConversations
-                ? backButton.classList.remove('force-n-vis')
-                : backButton.classList.add('force-n-vis');
+                ? kommunicateCommons.modifyClassList(
+                      { class: ['.mck-back-btn-container'] },
+                      '',
+                      'force-n-vis',
+                      true
+                  )
+                : kommunicateCommons.modifyClassList(
+                      { class: ['.mck-back-btn-container'] },
+                      'force-n-vis',
+                      '',
+                      true
+                  );
         }
     },
 

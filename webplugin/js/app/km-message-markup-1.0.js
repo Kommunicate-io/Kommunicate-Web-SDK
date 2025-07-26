@@ -2,7 +2,7 @@ Kommunicate.messageTemplate = {
     getAttachmentTemplate: function () {
         return `<div class="mck-file-text mck-attachment {{attachmentClass}} notranslate mck-attachment-{{key}}" data-groupId="{{groupId}}" data-filemetakey="{{fileMetaKey}}" data-stopupload="{{fileMeta.stopUpload}}" data-filename="{{fileMeta.name}}" data-thumbnailUrl="{{fileMeta.thumbnailUrl}}"  data-filetype="{{fileMeta.contentType}}" data-fileurl="{{fileUrl}" data-filesize="{{fileMeta.size}}+" data-msgkey ="{{key}}"><div>{{{fileExpr}}}</div><div class="{{attachmentDownloadClass}}">{{{downloadMediaUrlExpr}}}</div></div>`;
     },
-    getAttachmentApplicationTemplate: function (attachment) {
+    getAttachmentApplicationTemplate: function () {
         return `<div class="km-attachment-wrapper mck-attachment {{attachmentClass}} notranslate mck-attachment-{{key}}" data-groupId="{{groupId}}" data-filemetakey="{{fileMetaKey}}" data-filename="{{fileMeta.name}}" data-thumbnailUrl="{{fileMeta.thumbnailUrl}}"  data-filetype="{{fileMeta.contentType}}" data-fileurl="{{fileUrl}" data-filesize="{{fileMeta.size}}+" data-msgkey ="{{key}}"><div class="mck-msg-box vis {{previewContainerClass}}" data-groupId="{{groupId}}" data-filemetakey="{{fileMetaKey}}">
         <svg width="9" height="9" class="km-attachment-icon km-attachment-cancel-icon km-attachment-cancel-icon-{{key}} {{cancelIconClass}}" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.7338 0.275312C11.3788 -0.0796375 10.8055 -0.0796375 10.4505 0.275312L6 4.71672L1.54949 0.266213C1.19454 -0.0887375 0.621163 -0.0887375 0.266213 0.266213C-0.0887375 0.621163 -0.0887375 1.19454 0.266213 1.54949L4.71672 6L0.266213 10.4505C-0.0887375 10.8055 -0.0887375 11.3788 0.266213 11.7338C0.621163 12.0887 1.19454 12.0887 1.54949 11.7338L6 7.28328L10.4505 11.7338C10.8055 12.0887 11.3788 12.0887 11.7338 11.7338C12.0887 11.3788 12.0887 10.8055 11.7338 10.4505L7.28328 6L11.7338 1.54949C12.0796 1.20364 12.0796 0.621162 11.7338 0.275312Z" fill="white"/></svg>
         <svg width="16" height="16" class="km-attachment-icon km-attachment-upload-icon km-attachment-upload-icon-{{key}} {{uploadIconClass}}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.55556 0 0 3.55556 0 8C0 12.4444 3.55556 16 8 16C12.4444 16 16 12.4444 16 8C16 3.55556 12.4444 0 8 0ZM5.88889 5.44444L7.88889 3.22222C7.88889 3.11111 8 3.11111 8.11111 3.11111C8.22222 3.11111 8.22222 3.11111 8.33333 3.22222L10.3333 5.44444C10.4444 5.55556 10.4444 5.66667 10.3333 5.77778C10.3333 5.88889 10.2222 5.88889 10.1111 5.88889H8.88889V9.44444C8.88889 9.55556 8.77778 9.66667 8.66667 9.66667H7.55556C7.44445 9.66667 7.33333 9.55556 7.33333 9.44444V5.88889H6.22222C6.11111 5.88889 6 5.77778 6 5.77778C5.77778 5.66667 5.77778 5.55556 5.88889 5.44444ZM12.2222 11.4444C12.2222 11.7778 12 12 11.6667 12H4.44444C4.11111 12 3.88889 11.7778 3.88889 11.4444V9.22222H5V10.8889H11.1111V9.22222H12.2222V11.4444Z" fill="white"/></svg><a class="km-attachment-preview-href-{{key}} {{fileEncClass}}" href="{{fileMeta.url}}" target="_blank" download data-blobkey="{{blobKey}}"><svg width="16" height="16" class="km-attachment-download-icon-{{key}} km-attachment-download-icon {{downloadIconClass}}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM11.6 12H5V11.1H11.6V12ZM8.3 10.1L5 6.8H6.9V4H9.7V6.8H11.6L8.3 10.1Z" fill="white"></path></svg>
@@ -83,7 +83,7 @@ Kommunicate.messageTemplate = {
                     data.blobKey = data.fileMeta.blobKey;
                 }
                 return Mustache.to_html(
-                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(data),
+                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(),
                     data
                 );
             default:
@@ -112,6 +112,22 @@ Kommunicate.messageTemplate = {
 };
 
 Kommunicate.popupChatTemplate = {
+    createActionButtons: function (actions) {
+        var markup = '<div id="chat-popup-actionable-btn-container">';
+        for (var i = 0; i < actions.length; i++) {
+            if (actions[i].label) {
+                markup +=
+                    '<button id="chat-popup-actionable-btn-' +
+                    (i + 1) +
+                    '" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[' +
+                    i +
+                    ']()">' +
+                    actions[i].label +
+                    '</button>';
+            }
+        }
+        return markup + '</div>';
+    },
     getPopupChatTemplate: function (popupWidgetContent, chatWidget, isAnonymousChat) {
         var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
         var chatPopupTemplateMarkup = '';
@@ -138,43 +154,24 @@ Kommunicate.popupChatTemplate = {
             popupMessageContent = popupMessageContent[randomIndex];
         }
 
-        var actionButton = {
-            0: {
-                label: '',
-                onClickAction: function () {},
-            },
-            1: {
-                label: '',
-                onClickAction: function () {},
-            },
-        };
+        var actionButton = [
+            { label: '', onClickAction: function () {} },
+            { label: '', onClickAction: function () {} },
+        ];
         Kommunicate['chatPopupActions'] = {};
 
         if (Array.isArray(buttonDetails) && buttonDetails.length) {
-            for (var i = 0; i < buttonDetails.length; i++) {
-                if (i <= 1) {
-                    actionButton[i].label = buttonDetails[i].label;
-                    if (typeof buttonDetails[i].onClickAction == 'function') {
-                        Kommunicate['chatPopupActions'][i] = buttonDetails[i].onClickAction;
-                    } else {
-                        Kommunicate['chatPopupActions'][i] = actionButton[i].onClickAction;
-                    }
-                } else {
-                    break;
-                }
+            // popup currently renders a maximum of two action buttons
+            for (var i = 0; i < buttonDetails.length && i < 2; i++) {
+                actionButton[i].label = buttonDetails[i].label;
+                Kommunicate['chatPopupActions'][i] =
+                    typeof buttonDetails[i].onClickAction == 'function'
+                        ? buttonDetails[i].onClickAction
+                        : actionButton[i].onClickAction;
             }
         }
 
-        var actionableButtonTemplateMarkup =
-            '<div id="chat-popup-actionable-btn-container">' +
-            (actionButton[0].label &&
-                '<button id="chat-popup-actionable-btn-1" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[0]()">' +
-                    actionButton[0].label +
-                    '</button>') +
-            (actionButton[1].label &&
-                '<button id="chat-popup-actionable-btn-2" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[1]()">' +
-                    actionButton[1].label +
-                    '</button></div>');
+        var actionableButtonTemplateMarkup = this.createActionButtons(actionButton);
 
         if (isPopupEnabled) {
             var launcherClass = isAnonymousChat

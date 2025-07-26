@@ -29,8 +29,17 @@ function ZendeskChatService() {
         });
 
         // Hide back button
-        document.getElementById('mck-contacts-content').classList.add('force-n-vis');
-        document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
+        kommunicateCommons.modifyClassList(
+            { id: ['mck-contacts-content'] },
+            'force-n-vis',
+            ''
+        );
+        kommunicateCommons.modifyClassList(
+            { class: ['.mck-back-btn-container'] },
+            'force-n-vis',
+            '',
+            true
+        );
     };
 
     _this.loadZopimSDK = function () {
