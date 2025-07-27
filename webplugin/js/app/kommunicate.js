@@ -752,9 +752,8 @@ $applozic.extend(true, Kommunicate, {
 
         if (isCtaMultiContainerExist) {
             quickReplyCtaPrevSibling.style.display = 'block';
-            kommunicateCommons.setVisibility(
+            kommunicateCommons.hide(
                 { class: ['.mck-msg-box-rich-text-container.km-cta-multi-button-container'] },
-                false,
                 true
             );
             return;
