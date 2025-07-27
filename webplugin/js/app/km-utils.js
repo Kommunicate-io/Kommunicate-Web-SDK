@@ -423,9 +423,12 @@ KommunicateUtils = {
         }
     },
     convertDateToTimeZone: function (date, timeZone) {
-        var invDate = new Date(date.toLocaleString('en-US', { timeZone: timeZone }));
-        var diff = invDate.getTime() - date.getTime();
-        return new Date(date.getTime() - diff);
+        return new Date(
+            date.toLocaleString('en-US', {
+                timeZone: timeZone,
+                hour12: false,
+            })
+        );
     },
     getDateWithTimeInZone: function (baseDate, time, timeZone) {
         var tzDate = this.convertDateToTimeZone(baseDate, timeZone);
