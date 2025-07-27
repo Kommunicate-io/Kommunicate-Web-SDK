@@ -166,20 +166,20 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail = {}) {
-        const settings = appOptionSession.getPropertyDataFromSession('settings');
-        if (!settings) {
+        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
+        if (!kommunicateSettings) {
             return conversationDetail;
         }
 
         // Update welcome message only if some value for it is coming in
         // conversationDetails parameter or kommunicateSettings.
         conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE || settings.WELCOME_MESSAGE;
+            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
 
         conversationDetail.defaultAssignee =
-            conversationDetail.assignee ?? settings.defaultAssignee;
+            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
 
-        const propertyMap = {
+        var propertyMap = {
             agentIds: 'defaultAgentIds',
             botIds: 'defaultBotIds',
             skipRouting: 'skipRouting',
@@ -189,8 +189,8 @@ $applozic.extend(true, Kommunicate, {
         };
 
         Object.keys(propertyMap).forEach(function (key) {
-            const fallbackKey = propertyMap[key];
-            conversationDetail[key] = conversationDetail[key] ?? settings[fallbackKey];
+            var fallbackKey = propertyMap[key];
+            conversationDetail[key] = conversationDetail[key] || kommunicateSettings[fallbackKey];
         });
 
         return conversationDetail;
