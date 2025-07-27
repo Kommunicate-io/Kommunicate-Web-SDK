@@ -19,10 +19,8 @@ Kommunicate.KmEventHandler = {
         } else if (
             document.getElementById('launcher-agent-img-container').classList.contains('vis')
         ) {
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.hide(
                 { class: ['#mck-sidebox-launcher #launcher-svg-container'] },
-                'n-vis',
-                'vis',
                 true
             );
         }

@@ -804,11 +804,9 @@ const firstVisibleMsg = {
             mckNotificationService.init();
             mckMapLayout.init();
             !MCK_ATTACHMENT &&
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-attachfile-box', 'mck-file-up'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.hide({
+                    id: ['mck-attachfile-box', 'mck-file-up'],
+                });
             !IS_CAPTURE_PHOTO &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attach-img-box', 'mck-img-file-up'] },
@@ -829,11 +827,9 @@ const firstVisibleMsg = {
                 window.frameElement.getAttribute('data-protocol') == 'file:' &&
                 !window.top.hasOwnProperty('cordova')
             ) {
-                kommunicateCommons.modifyClassList(
-                    { id: ['km-local-file-system-warning'] },
-                    'vis',
-                    'n-vis'
-                );
+                kommunicateCommons.show({
+                    id: ['km-local-file-system-warning'],
+                });
             }
             document.addEventListener('keydown', function (e) {
                 document.body.classList.add('accesibility');
@@ -2313,19 +2309,15 @@ const firstVisibleMsg = {
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log('online');
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-internet-disconnect-msg'] },
-                        'n-vis',
-                        'vis'
-                    );
+                    kommunicateCommons.hide({
+                        id: ['km-internet-disconnect-msg'],
+                    });
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-internet-disconnect-msg'] },
-                        'vis',
-                        'n-vis'
-                    );
+                    kommunicateCommons.show({
+                        id: ['km-internet-disconnect-msg'],
+                    });
                     console.log('offline');
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
@@ -2937,22 +2929,14 @@ const firstVisibleMsg = {
                 });
                 for (var i = 0; i < ratingStars.length; i++) {
                     ratingStars[i].addEventListener('click', function (e) {
-                        kommunicateCommons.modifyClassList({ id: ['csat-2'] }, '', 'n-vis');
-                        kommunicateCommons.modifyClassList(
-                            { id: ['mck-rate-conversation'] },
-                            'n-vis',
-                            ''
-                        );
+                        kommunicateCommons.hide({ id: ['csat-2'] });
+                        kommunicateCommons.hide({ id: ['mck-rate-conversation'] });
                         kommunicateCommons.modifyClassList(
                             { class: ['mck-rating-box'] },
                             '',
                             'selected'
                         );
-                        kommunicateCommons.modifyClassList(
-                            { class: ['mck-feedback-text-wrapper'] },
-                            '',
-                            'n-vis'
-                        );
+                        kommunicateCommons.hide({ class: ['mck-feedback-text-wrapper'] });
                         e.currentTarget.classList.add('selected');
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
@@ -7057,7 +7041,7 @@ const firstVisibleMsg = {
                 var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
                 if (data.currentCTA) {
-                    kommunicateCommons.modifyClassList({ id: ['km-faq'] }, 'n-vis');
+                    kommunicateCommons.hide({ id: ['km-faq'] });
                     // kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
 
                     switch (true) {
@@ -7075,7 +7059,7 @@ const firstVisibleMsg = {
                 var isIterable = true;
                 var restartConversationBtn = document.getElementById(id);
                 if (restartConversationBtn && restartConversationBtn.classList.contains('n-vis')) {
-                    kommunicateCommons.modifyClassList({ id: [id] }, '', 'n-vis');
+                    kommunicateCommons.show({ id: [id] });
                 }
 
                 CURRENT_GROUP_DATA.groupMembers &&
@@ -7095,14 +7079,14 @@ const firstVisibleMsg = {
                     CURRENT_GROUP_DATA.conversationAssignee &&
                     CURRENT_GROUP_DATA.initialBot.userId
                 ) {
-                    kommunicateCommons.modifyClassList({ id: [id] }, '', 'n-vis');
+                    kommunicateCommons.hide({ id: [id] });
                     restartConversationBtn &&
                         restartConversationBtn.addEventListener(
                             'click',
                             mckMessageService.restartConversation
                         );
                 } else {
-                    kommunicateCommons.modifyClassList({ id: [id] }, 'n-vis', '');
+                    kommunicateCommons.hide({ id: [id] });
                 }
             };
 
@@ -7123,7 +7107,7 @@ const firstVisibleMsg = {
                 */
                 if (CSAT_ENABLED && !isConvRated && HEADER_CTA.CSAT_RATING !== primaryCTA) {
                     enableDropdown = true;
-                    kommunicateCommons.modifyClassList({ id: ['km-csat-trigger'] }, '', 'n-vis');
+                    kommunicateCommons.hide({ id: ['km-csat-trigger'] });
                 }
                 if (appOptions.restartConversationByUser) {
                     var restartConversationBtn = document.getElementById('km-restart-conversation');
@@ -7146,22 +7130,14 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.conversationAssignee ==
                             CURRENT_GROUP_DATA.initialBot.userId
                     ) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            '',
-                            'n-vis'
-                        );
+                        kommunicateCommons.hide({ id: ['km-restart-conversation'] });
                         restartConversationBtn &&
                             restartConversationBtn.addEventListener(
                                 'click',
                                 mckMessageService.restartConversation
                             );
                     } else {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            'n-vis',
-                            ''
-                        );
+                        kommunicateCommons.hide({ id: ['km-restart-conversation'] });
                     }
 
                     if (HEADER_CTA.RESTART_CONVERSATION !== primaryCTA) {
@@ -7174,11 +7150,7 @@ const firstVisibleMsg = {
                 if (VOICE_OUTPUT_ENABLED && HEADER_CTA.TTS !== primaryCTA) {
                     enableDropdown = true;
                     KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput);
-                    kommunicateCommons.modifyClassList(
-                        { id: ['user-overide-voice-output'] },
-                        '',
-                        'n-vis'
-                    );
+                    kommunicateCommons.hide({ id: ['user-overide-voice-output'] });
                 }
 
                 if (
@@ -7187,11 +7159,7 @@ const firstVisibleMsg = {
                     !convTransferred
                 ) {
                     enableDropdown = true;
-                    kommunicateCommons.modifyClassList(
-                        { class: ['km-option-talk-to-human'] },
-                        '',
-                        'n-vis'
-                    );
+                    kommunicateCommons.hide({ class: ['km-option-talk-to-human'] });
                 }
                 // hasArticles initially will be undefined and after the faq load it will be boolean
                 if (
@@ -7200,7 +7168,7 @@ const firstVisibleMsg = {
                         kommunicate._globals.hasArticles === true)
                 ) {
                     enableDropdown = true;
-                    kommunicateCommons.modifyClassList({ class: ['km-option-faq'] }, '', 'n-vis');
+                    kommunicateCommons.hide({ class: ['km-option-faq'] });
                 }
 
                 var addClass = enableDropdown ? 'vis' : 'n-vis';
@@ -7339,7 +7307,7 @@ const firstVisibleMsg = {
                 document.getElementById('mck-char-warning') &&
                     document.getElementById('mck-char-warning').classList.add('n-vis');
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
-                kommunicateCommons.modifyClassList({ id: ['km-faq'] }, 'n-vis', '');
+                kommunicateCommons.hide({ id: ['km-faq'] });
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -7356,13 +7324,7 @@ const firstVisibleMsg = {
                     );
                     kommunicateCommons.show({ id: ['mck-sidebox-ft', 'mck-btn-clear-messages'] });
                     kommunicateCommons.hide({ class: ['mck-group-menu-options'] });
-                    kommunicateCommons.modifyClassList(
-                        {
-                            id: ['mck-waiting-queue'],
-                        },
-                        'n-vis',
-                        'vis'
-                    );
+                    kommunicateCommons.hide({ id: ['mck-waiting-queue'] });
                     if (params.isGroup) {
                         $mck_msg_inner.addClass('mck-group-inner');
                         kommunicateCommons.hide({ id: ['li-mck-block-user'] });
@@ -11805,7 +11767,7 @@ const firstVisibleMsg = {
                 );
             };
             _this.removeWarningsFromTextBox = function () {
-                kommunicateCommons.modifyClassList({ id: ['mck-char-warning'] }, 'n-vis', '');
+                kommunicateCommons.hide({ id: ['mck-char-warning'] });
                 var textBox = document.getElementById('mck-text-box');
                 var spanContent;
                 if (document.getElementById('mck-text-warning-span')) {
