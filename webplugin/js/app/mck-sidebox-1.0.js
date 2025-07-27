@@ -3528,13 +3528,18 @@ const firstVisibleMsg = {
                                 .split('-')
                                 .map((time) => `${time.substring(0, 2)}:${time.substring(2)}`);
 
+                            const prevDate = (() => {
+                                const d = new Date(userMessageTimeInAgentTz);
+                                d.setDate(d.getDate() - 1);
+                                return d;
+                            })();
                             const prevStartOfDay = KommunicateUtils.getDateWithTimeInZone(
-                                new Date(userMessageTimeInAgentTz.getTime() - 24 * 60 * 60 * 1000),
+                                new Date(prevDate),
                                 prevStart,
                                 team.timezone
                             );
                             let prevEndOfDay = KommunicateUtils.getDateWithTimeInZone(
-                                new Date(userMessageTimeInAgentTz.getTime() - 24 * 60 * 60 * 1000),
+                                new Date(prevDate),
                                 prevEnd,
                                 team.timezone
                             );
