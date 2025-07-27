@@ -21,5 +21,8 @@ customHeaders:
   - pattern: "**/*min.css"
     headers: *common_headers
 
+  - pattern: "**/*.svg"
+    headers: *common_headers
+
   - pattern: "resources/**/*.html"
     headers: *common_headers

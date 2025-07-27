@@ -3444,6 +3444,7 @@ const firstVisibleMsg = {
                     $mck_sidebox.mckModal();
                     $mck_msg_inner.html('');
                 }
+                $mck_msg_to.removeAttr('disabled');
                 $mck_msg_to.focus();
             };
             _this.isWithinBusinessHours = function (team) {
@@ -7237,6 +7238,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.isWidgetOpen()) &&
                     _this.handleLoadTab();
                 mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                $mck_msg_to.removeAttr('disabled');
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     params.isGroup &&
                     params.tabId &&
