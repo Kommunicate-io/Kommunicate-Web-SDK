@@ -474,15 +474,17 @@ function ApplozicSidebox() {
                 options.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
-            options['appSettings'] = $applozic.extend(true, data, options.appSettings);
-
-            options['agentId'] = options.appSettings.agentId;
-            options['agentName'] = options.appSettings.agentName;
-            options['widgetSettings'] = widgetSettings;
-            options['customerCreatedAt'] = options.appSettings.customerCreatedAt;
-            options['collectFeedback'] = options.appSettings.collectFeedback;
-            options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
-            options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            options.appSettings = $applozic.extend(true, data, options.appSettings);
+            const appSettings = options.appSettings;
+            Object.assign(options, {
+                agentId: appSettings.agentId,
+                agentName: appSettings.agentName,
+                widgetSettings,
+                customerCreatedAt: appSettings.customerCreatedAt,
+                collectFeedback: appSettings.collectFeedback,
+                isCsatAvailable: appSettings.isCsatAvailable,
+                chatPopupMessage: appSettings.chatPopupMessage,
+            });
 
             const pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'
