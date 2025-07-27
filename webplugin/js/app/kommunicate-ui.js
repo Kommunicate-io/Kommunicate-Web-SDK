@@ -202,14 +202,10 @@ KommunicateUI = {
         }
     },
     displayProgressMeter: function (key, uploadStatus) {
-        kommunicateCommons.modifyClassList({ class: ['progress-meter-' + key] }, 'vis', 'n-vis');
+        kommunicateCommons.setVisibility({ class: ['progress-meter-' + key] }, true);
         var nextElem = $applozic('.mck-attachment-' + key).next();
         nextElem.length &&
-            kommunicateCommons.modifyClassList(
-                { class: [nextElem[0].classList[0]] },
-                'vis',
-                'n-vis'
-            );
+            kommunicateCommons.setVisibility({ class: [nextElem[0].classList[0]] }, true);
         kommunicateCommons.setVisibility(
             { class: ['.mck-attachment-' + key + ' .mck-image-download'] },
             false,
@@ -221,33 +217,17 @@ KommunicateUI = {
         if (uploadStatus) {
             var nextElem = $applozic('.mck-attachment-' + key).next();
             nextElem.length &&
-                kommunicateCommons.modifyClassList(
-                    { class: [nextElem[0].classList[0]] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.setVisibility({ class: [nextElem[0].classList[0]] }, false);
         }
     },
     displayUploadIconForAttachment: function (key, uploadStatus) {
-        kommunicateCommons.modifyClassList(
-            { class: ['km-progress-upload-icon-' + key] },
-            'vis',
-            'n-vis'
-        );
-        kommunicateCommons.modifyClassList(
-            { class: ['km-progress-stop-upload-icon-' + key] },
-            'n-vis',
-            'vis'
-        );
+        kommunicateCommons.setVisibility({ class: ['km-progress-upload-icon-' + key] }, true);
+        kommunicateCommons.setVisibility({ class: ['km-progress-stop-upload-icon-' + key] }, false);
         Kommunicate.attachmentEventHandler.progressMeter(100, key);
         if (!uploadStatus) {
             var nextElem = $applozic('.mck-attachment-' + key).next();
             nextElem.length &&
-                kommunicateCommons.modifyClassList(
-                    { class: [nextElem[0].classList[0]] },
-                    'vis',
-                    'n-vis'
-                );
+                kommunicateCommons.setVisibility({ class: [nextElem[0].classList[0]] }, true);
         }
     },
     updateImageAttachmentPreview: function (fileMeta, key) {
@@ -367,7 +347,7 @@ KommunicateUI = {
             typingService.resetState();
 
             // remove n-vis
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: [
                         'km-contact-search-input-box',
@@ -378,12 +358,11 @@ KommunicateUI = {
                     ],
                     class: ['mck-conversation-back-btn', 'km-contact-input-container'],
                 },
-                'vis',
-                'n-vis'
+                true
             );
 
             // add n-vis
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: [
                         'km-faq',
@@ -400,8 +379,7 @@ KommunicateUI = {
                         'km-header-cta',
                     ],
                 },
-                'n-vis',
-                'vis'
+                false
             );
 
             if (isFaqCategoryPresent) {
@@ -428,19 +406,17 @@ KommunicateUI = {
 
         // on click of FAQ category card the FAQ list for that category will open
         $applozic(d).on('click', '.km-faq-category-card', function () {
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: ['km-faq-category-list-container'],
                 },
-                'n-vis',
-                'vis'
+                false
             );
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: ['km-faq-list-container'],
                 },
-                'vis',
-                'n-vis'
+                true
             );
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-list');
@@ -457,11 +433,11 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = true;
             KommunicateUI.hideAwayMessage();
             KommunicateUI.hideLeadCollectionTemplate();
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: ['km-widget-options'],
                 },
-                'n-vis'
+                false
             );
             typingService.resetState();
             if (MCK_EVENT_HISTORY.length >= 2) {
@@ -469,7 +445,7 @@ KommunicateUI = {
                     KommunicateUI.showHeader();
 
                     // remove n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: [
                                 'km-faqdiv',
@@ -478,18 +454,16 @@ KommunicateUI = {
                             ],
                             class: ['km-contact-input-container'],
                         },
-                        'vis',
-                        'n-vis'
+                        true
                     );
 
                     // add n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['km-faq-list-container'],
                             class: ['km-no-results-found-container'],
                         },
-                        'n-vis',
-                        'vis'
+                        false
                     );
 
                     $applozic('#mck-msg-new').attr('disabled', false);
@@ -499,23 +473,21 @@ KommunicateUI = {
                     KommunicateUI.showHeader();
 
                     // remove n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['km-faqdiv', 'km-contact-search-input-box'],
                             class: ['km-contact-input-container'],
                         },
-                        'vis',
-                        'n-vis'
+                        true
                     );
 
                     // add n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['km-faqanswer'],
                             class: ['km-no-results-found-container'],
                         },
-                        'n-vis',
-                        'vis'
+                        false
                     );
 
                     $applozic('#mck-msg-new').attr('disabled', false);
@@ -523,7 +495,7 @@ KommunicateUI = {
                     return;
                 } else if (typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'object') {
                     // remove n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['mck-tab-conversation', 'km-faq'],
                             class: [
@@ -532,18 +504,16 @@ KommunicateUI = {
                                 'mck-agent-status-text',
                             ],
                         },
-                        'vis',
-                        'n-vis'
+                        true
                     );
 
                     // add n-vis
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['faq-common'],
                             class: ['km-no-results-found-container', 'km-talk-to-human-div'],
                         },
-                        'n-vis',
-                        'vis'
+                        false
                     );
                     var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                     document.getElementById('mck-tab-title').textContent = '';
@@ -566,17 +536,16 @@ KommunicateUI = {
                     KommunicateUI.isFAQPrimaryCTA()
                 );
 
-                kommunicateCommons.modifyClassList(
+                kommunicateCommons.setVisibility(
                     {
                         id: ['mck-rate-conversation'],
                         class: ['mck-conversation'],
                     },
-                    'vis',
-                    'n-vis'
+                    true
                 );
 
                 // add n-vis
-                kommunicateCommons.modifyClassList(
+                kommunicateCommons.setVisibility(
                     {
                         id: [
                             'faq-common',
@@ -592,8 +561,7 @@ KommunicateUI = {
                             'mck-agent-status-indicator',
                         ],
                     },
-                    'n-vis',
-                    'vis'
+                    false
                 );
 
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
@@ -684,19 +652,17 @@ KommunicateUI = {
                 if (!document.querySelector('#km-faq-category-list-container.n-vis')) {
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                         MCK_EVENT_HISTORY.push('km-faq-list');
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['km-faq-category-list-container'],
                         },
-                        'n-vis',
-                        'vis'
+                        false
                     );
-                    kommunicateCommons.modifyClassList(
+                    kommunicateCommons.setVisibility(
                         {
                             id: ['km-faq-list-container'],
                         },
-                        'vis',
-                        'n-vis'
+                        true
                     );
                 }
                 if (e.which == 32 || e.which == 13) {
@@ -717,12 +683,11 @@ KommunicateUI = {
         });
     },
     faqEmptyState: function () {
-        kommunicateCommons.modifyClassList(
+        kommunicateCommons.setVisibility(
             {
                 class: ['km-no-results-found-container', 'km-talk-to-human-div'],
             },
-            'vis',
-            'n-vis'
+            true
         );
         document.querySelector('.km-talk-to-human-div p').innerHTML = MCK_LABELS['no-faq-found'];
         document.querySelector('.km-no-results-found p').innerHTML = MCK_LABELS['faq-empty-state'];
@@ -737,32 +702,29 @@ KommunicateUI = {
     },
     searchFaqUI: function (response) {
         if (response.data && response.data.length === 0) {
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     class: ['km-no-results-found-container', 'km-talk-to-human-div'],
                 },
-                'vis',
-                'n-vis'
+                true
             );
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['no-faq-found'];
             document.querySelector('.km-no-results-found p').innerHTML = 'NO RESULTS FOUND';
         } else {
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     class: ['km-no-results-found-container'],
                 },
-                'n-vis',
-                'vis'
+                false
             );
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['looking.for.something.else'];
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     class: ['km-talk-to-human-div'],
                 },
-                'vis',
-                'n-vis'
+                true
             );
         }
         document.getElementById('km-faq-list-container').innerHTML = '';

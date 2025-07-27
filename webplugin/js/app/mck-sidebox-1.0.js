@@ -7765,7 +7765,7 @@ const firstVisibleMsg = {
                     'vis mck-no-mb',
                     'n-vis'
                 );
-                kommunicateCommons.modifyClassList({ id: ['mck-msg-form'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['mck-msg-form'] }, false);
             };
             _this.addTooltip = function (msgKey) {
                 $applozic('.' + msgKey + ' .mck-pending-icon').attr('title', 'pending');
@@ -12128,7 +12128,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onAddedGroupMember = function (response, params) {
-                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['mck-contact-loading'] }, false);
                 if (typeof response === 'object') {
                     if (response.status === 'error') {
                         alert('Unable to process your request. ' + response.errorMessage);
@@ -12171,7 +12171,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onRemovedGroupMember = function (response, params) {
-                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['mck-contact-loading'] }, false);
                 if (typeof response === 'object') {
                     if (response.status === 'error') {
                         alert('Unable to process your request. ' + response.errorMessage);
@@ -12220,7 +12220,7 @@ const firstVisibleMsg = {
                     KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
                 }
 
-                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['mck-contact-loading'] }, false);
                 if (response.status === 'success') {
                     var groupFeed = response.data;
                     var conversationPxy = groupFeed.conversationPxy;
@@ -12273,7 +12273,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onUpdateGroupInfo = function (response, params) {
-                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['mck-contact-loading'] }, false);
                 $mck_btn_group_update.attr('disabled', false).html('Update');
                 kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, false);
                 if (typeof response === 'object') {
