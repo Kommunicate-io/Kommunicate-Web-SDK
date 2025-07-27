@@ -493,30 +493,41 @@ function ApplozicSidebox() {
                 typeof options.defaultConversationMetadata == 'object'
                     ? options.defaultConversationMetadata
                     : {};
-            applyWidgetSetting('fileUpload');
-            applyWidgetSetting('connectSocketOnWidgetClick');
-            applyWidgetSetting('voiceInput');
-            applyWidgetSetting('voiceOutput');
-            applyWidgetSetting('attachment');
-            applyWidgetSetting('hidePostCTA');
-            applyWidgetSetting('zendeskChatSdkKey');
-            applyWidgetSetting('capturePhoto');
-            applyWidgetSetting('captureVideo');
-            applyWidgetSetting('hidePostFormSubmit');
-            applyWidgetSetting('disableFormPostSubmit');
-            applyWidgetSetting('timeFormat24Hours');
-            applyWidgetSetting('voiceNote');
-            applyWidgetSetting('attachmentHandler', function (file) {
-                return file;
-            });
-            applyWidgetSetting('defaultUploadOverride');
-            applyWidgetSetting('maxAttachmentSize');
-            applyWidgetSetting('maxAttachmentSizeErrorMsg');
-            applyWidgetSetting('checkboxAsMultipleButton');
+            const widgetSettingConfigs = [
+                'fileUpload',
+                'connectSocketOnWidgetClick',
+                'voiceInput',
+                'voiceOutput',
+                'attachment',
+                'hidePostCTA',
+                'zendeskChatSdkKey',
+                'capturePhoto',
+                'captureVideo',
+                'hidePostFormSubmit',
+                'disableFormPostSubmit',
+                'timeFormat24Hours',
+                'voiceNote',
+                [
+                    'attachmentHandler',
+                    function (file) {
+                        return file;
+                    },
+                ],
+                'defaultUploadOverride',
+                'maxAttachmentSize',
+                'maxAttachmentSizeErrorMsg',
+                'checkboxAsMultipleButton',
 
-            // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
-            applyWidgetSetting('staticTopMessage');
-            applyWidgetSetting('staticTopIcon');
+                // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
+                'staticTopMessage',
+                'staticTopIcon',
+            ];
+
+            widgetSettingConfigs.forEach(function (item) {
+                Array.isArray(item)
+                    ? applyWidgetSetting(item[0], item[1])
+                    : applyWidgetSetting(item);
+            });
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
@@ -533,7 +544,8 @@ function ApplozicSidebox() {
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
-                const details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
+                const details =
+                    kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
                 details.sessionTimeout = sessionTimeout;
                 kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
