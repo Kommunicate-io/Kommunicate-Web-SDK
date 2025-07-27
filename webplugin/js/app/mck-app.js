@@ -441,7 +441,7 @@ function ApplozicSidebox() {
                 var churnCust = document.getElementById('km-churn-customer');
                 if (churnCust) {
                     linkForChurn && linkForChurn.setAttribute('href', poweredByUrl);
-                    kommunicateCommons.setVisibility({ id: ['km-churn-customer'] }, true);
+                    kommunicateCommons.show({ id: ['km-churn-customer'] });
                 }
             }
 
@@ -452,9 +452,8 @@ function ApplozicSidebox() {
                 !allowedDomains.some(isSubDomain);
             // exclude kommunicate.io from restricted domains for
             // the chatbot preview feature
-            var isCurrentDomainKommunicate = KommunicateConstants.KOMMUNICATE_DOMAINS.some(
-                isSubDomain
-            );
+            var isCurrentDomainKommunicate =
+                KommunicateConstants.KOMMUNICATE_DOMAINS.some(isSubDomain);
             // Remove scripts if disableChatWidget property is enabled
             // or domain restrictions are enabled
             if ((disableChatWidget || isCurrentDomainDisabled) && !isCurrentDomainKommunicate) {
@@ -661,7 +660,7 @@ function ApplozicSidebox() {
     function preLoadLauncherIconInterval() {
         var launcherInterval = setInterval(function () {
             if (document.getElementById('mck-sidebox-launcher')) {
-                kommunicateCommons.setVisibility({ id: ['mck-sidebox-launcher'] }, true);
+                kommunicateCommons.show({ id: ['mck-sidebox-launcher'] });
                 document
                     .getElementById('mck-sidebox-launcher')
                     .classList.add('km-launcher-animation');

@@ -126,6 +126,14 @@ function KommunicateCommons() {
         _this.modifyClassList(elem, add, remove, useQuerySelector);
     };
 
+    _this.show = function (elem, useQuerySelector = false) {
+        _this.setVisibility(elem, true, useQuerySelector);
+    };
+
+    _this.hide = function (elem, useQuerySelector = false) {
+        _this.setVisibility(elem, false, useQuerySelector);
+    };
+
     _this.resetIframeClasses = function (iframe) {
         if (!iframe) return;
         iframe.classList.add('km-iframe-closed');
