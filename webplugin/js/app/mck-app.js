@@ -399,31 +399,35 @@ function ApplozicSidebox() {
 
     async function mckInitSidebox(data, randomUserId) {
         try {
-            var options = applozic._globals;
+            const options = applozic._globals;
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
             }
-            var widgetSettings = data.chatWidget;
-            var disableChatWidget =
+            const widgetSettings = data.chatWidget;
+            const disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
                     : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
 
-            var allowedDomains = widgetSettings.allowedDomains;
-            var hostname = parent.window.location.hostname.toLowerCase();
+            const allowedDomains = widgetSettings.allowedDomains;
+            const hostname = parent.window.location.hostname.toLowerCase();
 
             // check if the current hostname is equal to or a subdomain
             // e.g. www.google.com is a subdomain of google.com
-            var isSubDomain = function (domain) {
-                return (
-                    hostname == domain ||
-                    (hostname.length > domain.length &&
-                        hostname.substr(hostname.length - domain.length - 1) == '.' + domain)
-                );
+            const isSubDomain = (domain) =>
+                hostname === domain ||
+                (hostname.length > domain.length &&
+                    hostname.substr(hostname.length - domain.length - 1) === '.' + domain);
+
+            const isSettingEnable = (key) =>
+                options[key] != null ? options[key] : widgetSettings && widgetSettings[key];
+
+            const applyWidgetSetting = (key, defaultValue) => {
+                if (options[key] === undefined || options[key] === null) {
+                    const widgetValue = widgetSettings && widgetSettings[key];
+                    options[key] = widgetValue !== undefined ? widgetValue : defaultValue;
+                }
             };
-            function isSettingEnable(key) {
-                return options[key] != null ? options[key] : widgetSettings && widgetSettings[key];
-            }
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
 
@@ -466,7 +470,7 @@ function ApplozicSidebox() {
                 (sentryConfig.enabled = false);
             sentryConfig.enabled && loadErrorTracking(randomUserId, data);
 
-            var sessionTimeout =
+            const sessionTimeout =
                 options.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
@@ -480,7 +484,7 @@ function ApplozicSidebox() {
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
 
-            var pseudoNameEnabled =
+            const pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
@@ -489,85 +493,30 @@ function ApplozicSidebox() {
                 typeof options.defaultConversationMetadata == 'object'
                     ? options.defaultConversationMetadata
                     : {};
-            options.fileUpload =
-                options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
-            options.connectSocketOnWidgetClick =
-                options.connectSocketOnWidgetClick != null
-                    ? options.connectSocketOnWidgetClick
-                    : widgetSettings && widgetSettings.connectSocketOnWidgetClick;
-            options.voiceInput =
-                options.voiceInput != null
-                    ? options.voiceInput
-                    : widgetSettings && widgetSettings.voiceInput;
-            options.voiceOutput =
-                options.voiceOutput != null
-                    ? options.voiceOutput
-                    : widgetSettings && widgetSettings.voiceOutput;
-            options.attachment =
-                options.attachment != null
-                    ? options.attachment
-                    : widgetSettings && widgetSettings.attachment;
-            options.hidePostCTA =
-                options.hidePostCTA != null
-                    ? options.hidePostCTA
-                    : widgetSettings && widgetSettings.hidePostCTA;
-            options.zendeskChatSdkKey =
-                options.zendeskChatSdkKey != null
-                    ? options.zendeskChatSdkKey
-                    : widgetSettings && widgetSettings.zendeskChatSdkKey;
-            options.capturePhoto =
-                options.capturePhoto != null
-                    ? options.capturePhoto
-                    : widgetSettings && widgetSettings.capturePhoto;
-            options.captureVideo =
-                options.captureVideo != null
-                    ? options.captureVideo
-                    : widgetSettings && widgetSettings.captureVideo;
-            options.hidePostFormSubmit =
-                options.hidePostFormSubmit != null
-                    ? options.hidePostFormSubmit
-                    : widgetSettings && widgetSettings.hidePostFormSubmit;
-            options.disableFormPostSubmit =
-                options.disableFormPostSubmit ||
-                (widgetSettings && widgetSettings.disableFormPostSubmit);
-            options.timeFormat24Hours =
-                options.timeFormat24Hours != null
-                    ? options.timeFormat24Hours
-                    : widgetSettings && widgetSettings.timeFormat24Hours;
-            options.voiceNote =
-                options.voiceNote != null
-                    ? options.voiceNote
-                    : widgetSettings && widgetSettings.voiceNote;
-            options.attachmentHandler =
-                options.attachmentHandler != null
-                    ? options.attachmentHandler
-                    : function (file) {
-                          return file;
-                      };
-            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
-
-            options.maxAttachmentSize =
-                options.maxAttachmentSize != null
-                    ? options.maxAttachmentSize
-                    : widgetSettings && widgetSettings.maxAttachmentSize;
-            options.maxAttachmentSizeErrorMsg =
-                options.maxAttachmentSizeErrorMsg != null
-                    ? options.maxAttachmentSizeErrorMsg
-                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
-
-            options.checkboxAsMultipleButton =
-                options.checkboxAsMultipleButton ||
-                (widgetSettings && widgetSettings.checkboxAsMultipleButton);
+            applyWidgetSetting('fileUpload');
+            applyWidgetSetting('connectSocketOnWidgetClick');
+            applyWidgetSetting('voiceInput');
+            applyWidgetSetting('voiceOutput');
+            applyWidgetSetting('attachment');
+            applyWidgetSetting('hidePostCTA');
+            applyWidgetSetting('zendeskChatSdkKey');
+            applyWidgetSetting('capturePhoto');
+            applyWidgetSetting('captureVideo');
+            applyWidgetSetting('hidePostFormSubmit');
+            applyWidgetSetting('disableFormPostSubmit');
+            applyWidgetSetting('timeFormat24Hours');
+            applyWidgetSetting('voiceNote');
+            applyWidgetSetting('attachmentHandler', function (file) {
+                return file;
+            });
+            applyWidgetSetting('defaultUploadOverride');
+            applyWidgetSetting('maxAttachmentSize');
+            applyWidgetSetting('maxAttachmentSizeErrorMsg');
+            applyWidgetSetting('checkboxAsMultipleButton');
 
             // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
-            options.staticTopMessage =
-                options.staticTopMessage != null
-                    ? options.staticTopMessage
-                    : widgetSettings && widgetSettings.staticTopMessage;
-            options.staticTopIcon =
-                options.staticTopIcon != null
-                    ? options.staticTopIcon
-                    : widgetSettings && widgetSettings.staticTopIcon;
+            applyWidgetSetting('staticTopMessage');
+            applyWidgetSetting('staticTopIcon');
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
@@ -584,27 +533,27 @@ function ApplozicSidebox() {
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
-                var details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
+                const details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
                 details.sessionTimeout = sessionTimeout;
                 kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
-                var accessTokenFromCookie = kmCookieStorage.getCookie(
+                const accessTokenFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.ACCESS_TOKEN
                 );
-                var userIdFromCookie = kmCookieStorage.getCookie(
+                const userIdFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
-                var displayNameFromCookie = kmCookieStorage.getCookie(
+                const displayNameFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
                 );
-                var isAnonymousUser = !options.userId;
+                const isAnonymousUser = !options.userId;
                 options['userId'] = !isAnonymousUser
                     ? options.userId
                     : userIdFromCookie || randomUserId;
-                var displayName = isAnonymousUser
+                const displayName = isAnonymousUser
                     ? pseudoNameEnabled
                         ? displayNameFromCookie || data.userName
                         : ''
