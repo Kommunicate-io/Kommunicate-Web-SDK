@@ -2217,10 +2217,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.resetIframeClasses(kommunicateIframe);
                 }
                 kmChatLoginModal.style.display = 'none';
-                kommunicateCommons.setVisibility(
-                    { id: ['km-anonymous-chat-launcher'] },
-                    true
-                );
+                kommunicateCommons.setVisibility({ id: ['km-anonymous-chat-launcher'] }, true);
             };
 
             _this.onInitApp = function (data) {
@@ -3485,13 +3482,12 @@ const firstVisibleMsg = {
                     ) {
                         return true;
                     }
-                    const userTimestamp = new Date().toISOString().slice(0, 19);
-                    // Convert user's message time to the agent's timezone
-                    const userMessageTimeInAgentTz = moment
-                        .tz(userTimestamp, 'UTC')
-                        .tz(team.timezone);
+                    const userMessageTimeInAgentTz = KommunicateUtils.convertDateToTimeZone(
+                        new Date(),
+                        team.timezone
+                    );
 
-                    const agentDay = userMessageTimeInAgentTz.day();
+                    const agentDay = userMessageTimeInAgentTz.getDay();
 
                     // Check if business hours exist for this day
                     let isCurrentDayMappingPresent = true;
@@ -3508,61 +3504,53 @@ const firstVisibleMsg = {
                         return true;
                     }
 
-                    const startOfDay = moment.tz(
-                        `${userMessageTimeInAgentTz.format('YYYY-MM-DD')} ${start}`,
-                        'YYYY-MM-DD HH:mm',
+                    const startOfDay = KommunicateUtils.getDateWithTimeInZone(
+                        userMessageTimeInAgentTz,
+                        start,
                         team.timezone
                     );
-                    let endOfDay = moment.tz(
-                        `${userMessageTimeInAgentTz.format('YYYY-MM-DD')} ${end}`,
-                        'YYYY-MM-DD HH:mm',
+                    let endOfDay = KommunicateUtils.getDateWithTimeInZone(
+                        userMessageTimeInAgentTz,
+                        end,
                         team.timezone
                     );
 
-                    if (isCurrentDayMappingPresent && startOfDay.isAfter(endOfDay)) {
+                    if (isCurrentDayMappingPresent && startOfDay > endOfDay) {
                         // Move endOfDay to the next day
-                        endOfDay = endOfDay.clone().add(1, 'day');
+                        endOfDay.setDate(endOfDay.getDate() + 1);
                     }
 
                     // If the user's time is before the start of the current day's business hours
-                    if (
-                        !isCurrentDayMappingPresent ||
-                        userMessageTimeInAgentTz.isBefore(startOfDay)
-                    ) {
+                    if (!isCurrentDayMappingPresent || userMessageTimeInAgentTz < startOfDay) {
                         const previousDay = (agentDay - 1 + 7) % 7; // Get the previous day
                         if (team.businessHourMap.hasOwnProperty(previousDay)) {
                             const [prevStart, prevEnd] = team.businessHourMap[previousDay]
                                 .split('-')
                                 .map((time) => `${time.substring(0, 2)}:${time.substring(2)}`);
 
-                            const prevStartOfDay = moment.tz(
-                                `${userMessageTimeInAgentTz
-                                    .clone()
-                                    .subtract(1, 'day')
-                                    .format('YYYY-MM-DD')} ${prevStart}`,
-                                'YYYY-MM-DD HH:mm',
+                            const prevDate = (() => {
+                                const d = new Date(userMessageTimeInAgentTz);
+                                d.setDate(d.getDate() - 1);
+                                return d;
+                            })();
+                            const prevStartOfDay = KommunicateUtils.getDateWithTimeInZone(
+                                new Date(prevDate),
+                                prevStart,
                                 team.timezone
                             );
-                            let prevEndOfDay = moment.tz(
-                                `${userMessageTimeInAgentTz
-                                    .clone()
-                                    .subtract(1, 'day')
-                                    .format('YYYY-MM-DD')} ${prevEnd}`,
-                                'YYYY-MM-DD HH:mm',
+                            let prevEndOfDay = KommunicateUtils.getDateWithTimeInZone(
+                                new Date(prevDate),
+                                prevEnd,
                                 team.timezone
                             );
 
-                            if (prevStartOfDay.isAfter(prevEndOfDay)) {
-                                prevEndOfDay = prevEndOfDay.clone().add(1, 'day');
+                            if (prevStartOfDay > prevEndOfDay) {
+                                prevEndOfDay.setDate(prevEndOfDay.getDate() + 1);
                             }
 
                             if (
-                                userMessageTimeInAgentTz.isBetween(
-                                    prevStartOfDay,
-                                    prevEndOfDay,
-                                    'minute',
-                                    '[]'
-                                )
+                                userMessageTimeInAgentTz >= prevStartOfDay &&
+                                userMessageTimeInAgentTz <= prevEndOfDay
                             ) {
                                 return true;
                             }
@@ -3573,7 +3561,10 @@ const firstVisibleMsg = {
                         return false;
                     }
 
-                    return userMessageTimeInAgentTz.isBetween(startOfDay, endOfDay, 'minute', '[]');
+                    return (
+                        userMessageTimeInAgentTz >= startOfDay &&
+                        userMessageTimeInAgentTz <= endOfDay
+                    );
                 } catch (e) {
                     // if there is any error in formatting the business hours allow the user to chat
                     console.error('Error while checking business hours', e);
@@ -4485,10 +4476,7 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
-                    kommunicateCommons.setVisibility(
-                        { id: ['km-business-hour-box'] },
-                        false
-                    );
+                    kommunicateCommons.setVisibility({ id: ['km-business-hour-box'] }, false);
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['km-widget-options'],
@@ -5533,9 +5521,7 @@ const firstVisibleMsg = {
                             KommunicateUI.deleteProgressMeter(messagePxy.key, true);
                             kommunicateCommons.modifyClassList(
                                 {
-                                    class: [
-                                        '.km-attachment-download-icon-' + messagePxy.key,
-                                    ],
+                                    class: ['.km-attachment-download-icon-' + messagePxy.key],
                                 },
                                 'vis',
                                 'n-vis',
@@ -6162,7 +6148,11 @@ const firstVisibleMsg = {
                                                         );
                                                         if (group.type !== 6) {
                                                             kommunicateCommons.setVisibility(
-                                                                { class: ['.mck-tab-message-option'] },
+                                                                {
+                                                                    class: [
+                                                                        '.mck-tab-message-option',
+                                                                    ],
+                                                                },
                                                                 true,
                                                                 true
                                                             );
@@ -7394,10 +7384,7 @@ const firstVisibleMsg = {
                 );
                 // render quick replies
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
-                kommunicateCommons.setVisibility(
-                    { id: ['mck-conversation-header'] },
-                    false
-                );
+                kommunicateCommons.setVisibility({ id: ['mck-conversation-header'] }, false);
                 $mck_msg_inner.removeClass('mck-group-inner');
                 kommunicateCommons.setVisibility(
                     { id: ['mck-tab-status'], class: ['mck-typing-box'] },
@@ -10296,18 +10283,12 @@ const firstVisibleMsg = {
                     tabConvArray.length === 0 ||
                     tabConvArray.length === 1
                 ) {
-                    kommunicateCommons.setVisibility(
-                        { id: ['mck-conversation-list'] },
-                        false
-                    );
+                    kommunicateCommons.setVisibility({ id: ['mck-conversation-list'] }, false);
                     $product_box_caret.addClass('n-vis');
                     $mck_product_box.addClass('mck-product-box-wc');
                     return;
                 }
-                kommunicateCommons.setVisibility(
-                    { id: ['mck-conversation-list'] },
-                    true
-                );
+                kommunicateCommons.setVisibility({ id: ['mck-conversation-list'] }, true);
                 $product_box_caret.removeClass('n-vis');
                 $mck_product_box.removeClass('mck-product-box-wc');
                 $applozic.each(tabConvArray, function (i, convPxy) {
@@ -10501,10 +10482,7 @@ const firstVisibleMsg = {
                     // $mck_no_messages.removeClass('n-vis').addClass('vis');
                     //   $mck_msg_inner.html('<div class="mck-no-data-text mck-text-muted">No messages yet!</div>');
                     kommunicateCommons.setVisibility({ id: ['mck-message-cell'] }, true);
-                    kommunicateCommons.setVisibility(
-                        { class: ['mck-tab-message-option'] },
-                        false
-                    );
+                    kommunicateCommons.setVisibility({ class: ['mck-tab-message-option'] }, false);
                 }
             };
             _this.removedDeletedMessage = function (key, tabId, isGroup) {
@@ -11389,10 +11367,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.setVisibility({ id: ['mck-msg-form'] }, false);
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
                     kommunicateCommons.setVisibility({ id: ['mck-tab-status'] }, false);
-                    kommunicateCommons.setVisibility(
-                        { class: ['mck-typing-box'] },
-                        false
-                    );
+                    kommunicateCommons.setVisibility({ class: ['mck-typing-box'] }, false);
                     $mck_message_inner.data('blocked', true);
                     $mck_block_button
                         .html(MCK_LABELS['unblock.user'])
@@ -11517,10 +11492,7 @@ const firstVisibleMsg = {
                         }
                     },
                     error: function () {
-                        kommunicateCommons.setVisibility(
-                            { id: ['mck-search-loading'] },
-                            false
-                        );
+                        kommunicateCommons.setVisibility({ id: ['mck-search-loading'] }, false);
                         w.console.log('Unable to load contacts. Please reload page.');
                     },
                 });
@@ -11789,10 +11761,7 @@ const firstVisibleMsg = {
                     .find('.mck-group-change-role-box');
                 var role = $applozic(this).parents('.mck-li-group-member').data('role');
                 $changeRoleBox.find('select').val(role);
-                kommunicateCommons.setVisibility(
-                    { id: [$changeRoleBox.attr('id')] },
-                    true
-                );
+                kommunicateCommons.setVisibility({ id: [$changeRoleBox.attr('id')] }, true);
                 kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, true);
             });
             $mck_btn_group_update.on('click', function () {
@@ -12159,11 +12128,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onAddedGroupMember = function (response, params) {
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-contact-loading'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
                 if (typeof response === 'object') {
                     if (response.status === 'error') {
                         alert('Unable to process your request. ' + response.errorMessage);
@@ -12206,11 +12171,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onRemovedGroupMember = function (response, params) {
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-contact-loading'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
                 if (typeof response === 'object') {
                     if (response.status === 'error') {
                         alert('Unable to process your request. ' + response.errorMessage);
@@ -12259,11 +12220,7 @@ const firstVisibleMsg = {
                     KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
                 }
 
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-contact-loading'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
                 if (response.status === 'success') {
                     var groupFeed = response.data;
                     var conversationPxy = groupFeed.conversationPxy;
@@ -12316,11 +12273,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.onUpdateGroupInfo = function (response, params) {
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-contact-loading'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.modifyClassList({ id: ['mck-contact-loading'] }, 'n-vis', 'vis');
                 $mck_btn_group_update.attr('disabled', false).html('Update');
                 kommunicateCommons.setVisibility({ id: ['mck-group-update-panel'] }, false);
                 if (typeof response === 'object') {
@@ -13991,10 +13944,7 @@ const firstVisibleMsg = {
                             }
                         } else {
                             $mck_tab_title.removeClass('mck-tab-title-w-typing');
-                            kommunicateCommons.setVisibility(
-                                { class: ['mck-typing-box'] },
-                                false
-                            );
+                            kommunicateCommons.setVisibility({ class: ['mck-typing-box'] }, false);
                             typingService.hideTypingIndicator();
                             if ($mck_tab_title.hasClass('mck-tab-title-w-status')) {
                                 // $mck_tab_status.removeClass('n-vis').addClass('vis');
@@ -14301,10 +14251,7 @@ const firstVisibleMsg = {
                             MCK_BLOCKED_BY_MAP[contact.contactId] = true;
                             $mck_tab_title.removeClass('mck-tab-title-w-status');
                             $mck_tab_status.removeClass('vis').addClass('n-vis');
-                            kommunicateCommons.setVisibility(
-                                { class: ['mck-typing-box'] },
-                                false
-                            );
+                            kommunicateCommons.setVisibility({ class: ['mck-typing-box'] }, false);
                         }
                     } else {
                         $applozic('#li-user-' + contact.htmlId + ' .mck-ol-status')

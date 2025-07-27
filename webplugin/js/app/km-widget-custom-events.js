@@ -64,157 +64,52 @@ var kmWidgetEvents = {
     https://developers.google.com/tag-platform/gtagjs/reference#event
    
 */
+var WIDGET_EVENT_CATEGORY = 'Kommunicate_widget';
+
+function createWidgetEvent(action, label) {
+    return {
+        data: {
+            eventCategory: WIDGET_EVENT_CATEGORY,
+            eventAction: action,
+            eventLabel: label,
+        },
+        eventFunction: null,
+    };
+}
+
 var eventMapping = {
-    onChatWidgetOpen: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_open',
-            eventLabel: 'Chat Widget Open',
-        },
-        eventFunction: null,
-    },
-    onChatWidgetClose: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_close',
-            eventLabel: 'Chat Widget Close',
-        },
-        eventFunction: null,
-    },
-    onRichMessageButtonClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_rich_message_button_click',
-            eventLabel: 'RichMessage Button Click',
-        },
-        eventFunction: null,
-    },
-    onFaqClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_faq_click',
-            eventLabel: 'FAQ Menu',
-        },
-        eventFunction: null,
-    },
-    onRateConversationClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_CSAT_started',
-            eventLabel: 'CSAT Start',
-        },
-        eventFunction: null,
-    },
-    onSubmitRatingClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_CSAT_submit',
-            eventLabel: 'CSAT Submit',
-        },
-        eventFunction: null,
-    },
-    onShowResolvedClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_resolve_click',
-            eventLabel: 'Show Resolve',
-        },
-        eventFunction: null,
-    },
-    onStartNewConversation: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_start_new_conversation',
-            eventLabel: 'Conversation Start',
-        },
-        eventFunction: null,
-    },
-    onGreetingMessageNotificationClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_greeting_message_click',
-            eventLabel: 'Greeting Message Click',
-        },
-        eventFunction: null,
-    },
-    onRestartConversationClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_restart_conversation',
-            eventLabel: 'Conversation Restart',
-        },
-        eventFunction: null,
-    },
-    onRateConversationEmoticonsClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_ratings_conversation',
-            eventLabel: 'Rating Conversation',
-        },
-        eventFunction: null,
-    },
-    onLocationIconClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_location_share',
-            eventLabel: 'Location Share',
-        },
-        eventFunction: null,
-    },
-    onAttachmentClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_send_attachment',
-            eventLabel: 'Attachment Icon Click',
-        },
-        eventFunction: null,
-    },
-    onCameraButtonClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_camera_icon_click',
-            eventLabel: 'Camera Button Click',
-        },
-        eventFunction: null,
-    },
-    onNotificationClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_notification_click',
-            eventLabel: 'Notification',
-        },
-        eventFunction: null,
-    },
-    onVoiceIconClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_voice_input',
-            eventLabel: 'VoiceInput',
-        },
-        eventFunction: null,
-    },
-    onMessageSent: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_message_sent',
-            eventLabel: 'Message Sent',
-        },
-        eventFunction: null,
-    },
-    onMessageReceived: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_message_received',
-            eventLabel: 'Message Received',
-        },
-        eventFunction: null,
-    },
-    onFeedbackClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_feedback_click',
-            eventLabel: 'Feedback Clicked',
-        },
-        eventFunction: null,
-    },
+    onChatWidgetOpen: createWidgetEvent('km_widget_open', 'Chat Widget Open'),
+    onChatWidgetClose: createWidgetEvent('km_widget_close', 'Chat Widget Close'),
+    onRichMessageButtonClick: createWidgetEvent(
+        'km_widget_rich_message_button_click',
+        'RichMessage Button Click'
+    ),
+    onFaqClick: createWidgetEvent('km_widget_faq_click', 'FAQ Menu'),
+    onRateConversationClick: createWidgetEvent('km_widget_CSAT_started', 'CSAT Start'),
+    onSubmitRatingClick: createWidgetEvent('km_widget_CSAT_submit', 'CSAT Submit'),
+    onShowResolvedClick: createWidgetEvent('km_widget_resolve_click', 'Show Resolve'),
+    onStartNewConversation: createWidgetEvent(
+        'km_widget_start_new_conversation',
+        'Conversation Start'
+    ),
+    onGreetingMessageNotificationClick: createWidgetEvent(
+        'km_widget_greeting_message_click',
+        'Greeting Message Click'
+    ),
+    onRestartConversationClick: createWidgetEvent(
+        'km_widget_restart_conversation',
+        'Conversation Restart'
+    ),
+    onRateConversationEmoticonsClick: createWidgetEvent(
+        'km_widget_ratings_conversation',
+        'Rating Conversation'
+    ),
+    onLocationIconClick: createWidgetEvent('km_widget_location_share', 'Location Share'),
+    onAttachmentClick: createWidgetEvent('km_widget_send_attachment', 'Attachment Icon Click'),
+    onCameraButtonClick: createWidgetEvent('km_widget_camera_icon_click', 'Camera Button Click'),
+    onNotificationClick: createWidgetEvent('km_widget_notification_click', 'Notification'),
+    onVoiceIconClick: createWidgetEvent('km_widget_voice_input', 'VoiceInput'),
+    onMessageSent: createWidgetEvent('km_widget_message_sent', 'Message Sent'),
+    onMessageReceived: createWidgetEvent('km_widget_message_received', 'Message Received'),
+    onFeedbackClick: createWidgetEvent('km_widget_feedback_click', 'Feedback Clicked'),
 };

@@ -26,7 +26,14 @@ Kommunicate.markup = {
 </div>`
         );
     },
-    starSvg: '<svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="{{class}}"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+    starSvg:
+        '<svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="{{class}}"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>',
+    stringifyMetadata: function (metadata) {
+        return typeof metadata === 'object' ? JSON.stringify(metadata) : metadata;
+    },
+    parsePayload: function (payload) {
+        return typeof payload === 'string' ? JSON.parse(payload) : payload || {};
+    },
     getStarsMarkup: function (starObj) {
         var html = '';
         for (var i = 1; i <= 5; i++) {
@@ -578,28 +585,25 @@ Kommunicate.markup = {
 
 Kommunicate.markup.buttonContainerTemplate = function (options) {
     var containerMarkup = '<div class="km-cta-multi-button-container">';
-    var payload = JSON.parse(options.payload);
+    var payload = Kommunicate.markup.parsePayload(options.payload);
     var formData = options.formData || '';
     var buttonClass = 'km-add-more-rooms ';
     buttonClass +=
         payload.length == 1
             ? 'km-cta-button-1 km-custom-widget-border-color'
             : payload.length == 2
-            ? 'km-cta-button-2 km-custom-widget-border-color'
-            : 'km-cta-button-many km-custom-widget-border-color';
+              ? 'km-cta-button-2 km-custom-widget-border-color'
+              : 'km-cta-button-many km-custom-widget-border-color';
     var requestType = options.requestType;
     for (var i = 0; i < payload.length; i++) {
-        payload[i].replyMetadata =
-            typeof payload[i].replyMetadata == 'object'
-                ? JSON.stringify(payload[i].replyMetadata)
-                : payload[i].replyMetadata;
+        payload[i].replyMetadata = Kommunicate.markup.stringifyMetadata(payload[i].replyMetadata);
         containerMarkup += Kommunicate.markup.getButtonTemplate(
             payload[i],
             requestType,
             buttonClass
         );
         if (payload[i].type != 'link' && formData) {
-            formData = JSON.parse(formData);
+            formData = Kommunicate.markup.parsePayload(formData);
             Object.keys(formData).length > 0 &&
                 (containerMarkup += Kommunicate.markup.getFormMarkup(options));
         }
@@ -608,10 +612,11 @@ Kommunicate.markup.buttonContainerTemplate = function (options) {
     return containerMarkup;
 };
 Kommunicate.markup.getFormMarkup = function (options) {
-    var payload =
-        typeof options.payload == 'string' ? JSON.parse(options.payload) : options.payload;
+    var payload = Kommunicate.markup.parsePayload(options.payload);
     var formData =
-        payload && options.formData ? JSON.parse(options.formData || '{}') : payload.formData || '';
+        payload && options.formData
+            ? Kommunicate.markup.parsePayload(options.formData || '{}')
+            : payload.formData || '';
     var formMarkup = '';
     if (formData) {
         formMarkup +=
@@ -629,7 +634,7 @@ Kommunicate.markup.getFormMarkup = function (options) {
     }
 };
 Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) {
-    var payload = JSON.parse(options.payload);
+    var payload = Kommunicate.markup.parsePayload(options.payload);
     var buttonClass;
     var hidePostCTA = kommunicate._globals.hidePostCTA;
     switch (template) {
@@ -645,14 +650,11 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) 
             payload.length == 1
                 ? 'km-cta-button-1'
                 : payload.length == 2
-                ? 'km-cta-button-2'
-                : 'km-cta-button-many');
+                  ? 'km-cta-button-2'
+                  : 'km-cta-button-many');
 
     for (var i = 0; i < payload.length; i++) {
-        payload[i].replyMetadata =
-            typeof payload[i].replyMetadata == 'object'
-                ? JSON.stringify(payload[i].replyMetadata)
-                : payload[i].replyMetadata;
+        payload[i].replyMetadata = Kommunicate.markup.stringifyMetadata(payload[i].replyMetadata);
         payload[i].buttonClass = buttonClass;
         payload[i].hidePostCTA = hidePostCTA;
     }
@@ -717,10 +719,9 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                 item.description &&
                     (item.description = kommunicateCommons.removeHtmlTag(item.description));
                 if (item.action && item.action.replyMetadata) {
-                    item.replyMetadata =
-                        typeof item.action.replyMetadata == 'object'
-                            ? JSON.stringify(item.action.replyMetadata)
-                            : item.action.replyMetadata;
+                    item.replyMetadata = Kommunicate.markup.stringifyMetadata(
+                        item.action.replyMetadata
+                    );
                 }
                 //checking for type
                 if (item.action && item.action.type == 'link') {
@@ -753,10 +754,9 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                 button.target = Kommunicate.markup.getLinkTarget(button.action);
                 button.buttonClass = buttonClass[button.action.type];
                 if (button.action && button.action.replyMetadata) {
-                    button.replyMetadata =
-                        typeof button.action.replyMetadata == 'object'
-                            ? JSON.stringify(button.action.replyMetadata)
-                            : button.action.replyMetadata;
+                    button.replyMetadata = Kommunicate.markup.stringifyMetadata(
+                        button.action.replyMetadata
+                    );
                 }
                 button.action && (button.updateLanguage = button.action.updateLanguage);
                 if (
@@ -796,10 +796,7 @@ Kommunicate.markup.getDialogboxContainer = function (metadata) {
 
         json.buttons.length > 0 &&
             json.buttons.forEach(function (element) {
-                element.replyMetadata =
-                    typeof element.replyMetadata == 'object'
-                        ? JSON.stringify(element.replyMetadata)
-                        : element.replyMetadata;
+                element.replyMetadata = Kommunicate.markup.stringifyMetadata(element.replyMetadata);
             });
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
     }
@@ -807,7 +804,7 @@ Kommunicate.markup.getDialogboxContainer = function (metadata) {
 };
 Kommunicate.markup.getImageContainer = function (options) {
     if (options && options.payload) {
-        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = Kommunicate.markup.parsePayload(options.payload);
         options.payload = JSON.parse(JSON.stringify(payload));
         options.payload?.forEach((payload) => {
             payload.type = payload.url?.split('.').pop()?.toLowerCase();
@@ -828,7 +825,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var data = {};
     var isActionObject = false;
     if (options && options.payload) {
-        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = Kommunicate.markup.parsePayload(options.payload);
         options.payload = payload;
         options.buttons = [];
         if (kommunicateCommons.isObject(options.payload[0].data)) {
@@ -948,7 +945,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
         return cardFooter;
     };
     if (options && options.payload) {
-        var cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        var cards = Kommunicate.markup.parsePayload(options.payload);
         options.payload = cards;
         for (var i = 0; i < cards.length; i++) {
             var item = cards[i];
@@ -1012,12 +1009,14 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
         (buttonPayloadList.length == 1
             ? 'km-cta-button-1'
             : buttonPayloadList.length == 2
-            ? 'km-cta-button-2'
-            : 'km-cta-button-many');
+              ? 'km-cta-button-2'
+              : 'km-cta-button-many');
     for (var i = 0; i < buttonPayloadList.length; i++) {
         var singlePayload = buttonPayloadList[i];
         typeof (singlePayload.replyMetadata == 'object') &&
-            (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
+            (singlePayload.replyMetadata = Kommunicate.markup.stringifyMetadata(
+                singlePayload.replyMetadata
+            ));
         !singlePayload.type &&
             singlePayload.action &&
             (singlePayload.type = singlePayload.action.type);
@@ -1025,7 +1024,9 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
             singlePayload.action &&
             singlePayload.action.replyMetadata &&
             kommunicateCommons.isObject(singlePayload.action.replyMetadata) &&
-            (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
+            (singlePayload.replyMetadata = Kommunicate.markup.stringifyMetadata(
+                singlePayload.action.replyMetadata
+            ));
         singlePayload.hidePostCTA = false;
         if (singlePayload.type == 'link' || singlePayload.type == 'submit') {
             singlePayload.url =
@@ -1057,7 +1058,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
 };
 Kommunicate.markup.getVideoMarkup = function (options) {
     if (options && options.payload) {
-        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = Kommunicate.markup.parsePayload(options.payload);
         for (var i = 0; i < payload.length; i++) {
             var video = payload[i];
             video.width = video.width || '100%';
