@@ -196,21 +196,17 @@ class AnswerFeedback {
 
             this.putIconInsideSticker(stickySticker, iconToAdd);
 
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.hide(
                 {
                     class: [feedbackContainerSelector],
                 },
-                'n-vis',
-                'vis',
                 true
             );
 
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.show(
                 {
                     class: [stickyStickerSelector],
                 },
-                'vis',
-                'n-vis',
                 true
             );
 
@@ -221,21 +217,17 @@ class AnswerFeedback {
         notHelpfulButton.addEventListener('click', setFeedback.bind(null, 0));
 
         stickySticker.addEventListener('click', (e) => {
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.show(
                 {
                     class: [feedbackContainerSelector],
                 },
-                'vis',
-                'n-vis',
                 true
             );
 
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.hide(
                 {
                     class: [stickyStickerSelector],
                 },
-                'n-vis',
-                'vis',
                 true
             );
 

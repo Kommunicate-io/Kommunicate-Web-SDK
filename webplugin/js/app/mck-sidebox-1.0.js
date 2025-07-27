@@ -804,11 +804,9 @@ const firstVisibleMsg = {
             mckNotificationService.init();
             mckMapLayout.init();
             !MCK_ATTACHMENT &&
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-attachfile-box', 'mck-file-up'] },
-                    'n-vis',
-                    'vis'
-                );
+                kommunicateCommons.hide({
+                    id: ['mck-attachfile-box', 'mck-file-up'],
+                });
             !IS_CAPTURE_PHOTO &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attach-img-box', 'mck-img-file-up'] },
@@ -829,11 +827,9 @@ const firstVisibleMsg = {
                 window.frameElement.getAttribute('data-protocol') == 'file:' &&
                 !window.top.hasOwnProperty('cordova')
             ) {
-                kommunicateCommons.modifyClassList(
-                    { id: ['km-local-file-system-warning'] },
-                    'vis',
-                    'n-vis'
-                );
+                kommunicateCommons.show({
+                    id: ['km-local-file-system-warning'],
+                });
             }
             document.addEventListener('keydown', function (e) {
                 document.body.classList.add('accesibility');
@@ -2313,19 +2309,15 @@ const firstVisibleMsg = {
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log('online');
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-internet-disconnect-msg'] },
-                        'n-vis',
-                        'vis'
-                    );
+                    kommunicateCommons.hide({
+                        id: ['km-internet-disconnect-msg'],
+                    });
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-internet-disconnect-msg'] },
-                        'vis',
-                        'n-vis'
-                    );
+                    kommunicateCommons.show({
+                        id: ['km-internet-disconnect-msg'],
+                    });
                     console.log('offline');
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
