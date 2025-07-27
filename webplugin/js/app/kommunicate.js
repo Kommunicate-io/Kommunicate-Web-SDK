@@ -165,26 +165,34 @@ $applozic.extend(true, Kommunicate, {
             );
         }
     },
-    updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
-        if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
+    updateConversationDetail: function (conversationDetail = {}) {
+        const settings = appOptionSession.getPropertyDataFromSession('settings');
+        if (!settings) {
             return conversationDetail;
         }
-        // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
+
+        // Update welcome message only if some value for it is coming in
+        // conversationDetails parameter or kommunicateSettings.
         conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
+            conversationDetail.WELCOME_MESSAGE || settings.WELCOME_MESSAGE;
+
         conversationDetail.defaultAssignee =
-            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
-        conversationDetail.agentIds =
-            conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
-        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
-        conversationDetail.skipRouting =
-            conversationDetail.skipRouting || kommunicateSettings.skipRouting;
-        conversationDetail.skipBotEvent =
-            conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
-        conversationDetail.customWelcomeEvent =
-            conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
-        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
+            conversationDetail.assignee ?? settings.defaultAssignee;
+
+        const propertyMap = {
+            agentIds: 'defaultAgentIds',
+            botIds: 'defaultBotIds',
+            skipRouting: 'skipRouting',
+            skipBotEvent: 'skipBotEvent',
+            customWelcomeEvent: 'customWelcomeEvent',
+            teamId: 'teamId',
+        };
+
+        Object.keys(propertyMap).forEach(function (key) {
+            const fallbackKey = propertyMap[key];
+            conversationDetail[key] = conversationDetail[key] ?? settings[fallbackKey];
+        });
+
         return conversationDetail;
     },
     openConversationList: function () {
