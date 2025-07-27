@@ -326,10 +326,14 @@ KommunicateUtils = {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
     },
-    triggerCustomEvent: function (eventName, options, kmPluginVersion) {
-        options = typeof options == 'object' ? options : {};
-        options.bubbles = options.bubbles || true;
-        options.cancelable = options.cancelable || true;
+    triggerCustomEvent: function (eventName, options = {}, kmPluginVersion) {
+        options = typeof options === 'object' ? options : {};
+        if (!Object.prototype.hasOwnProperty.call(options, 'bubbles')) {
+            options.bubbles = true;
+        }
+        if (!Object.prototype.hasOwnProperty.call(options, 'cancelable')) {
+            options.cancelable = true;
+        }
 
         if (
             navigator.userAgent.indexOf('MSIE') !== -1 ||
@@ -406,7 +410,7 @@ KommunicateUtils = {
     },
     isValidTimeZone: function (tzId) {
         if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
-            console.log(
+            console.warn(
                 'not able to validate the timezone in this environment, skipping validation for timezone ',
                 tzId
             );
@@ -416,7 +420,7 @@ KommunicateUtils = {
             Intl.DateTimeFormat(undefined, { timeZone: tzId });
             return true;
         } catch (ex) {
-            console.log(
+            console.error(
                 'ERROR: time zone is not registered into IANA timezone db. can not set the user timezone. more detail about timezone db https://www.iana.org/time-zones'
             );
             return false;
@@ -448,23 +452,32 @@ KommunicateUtils = {
         );
     },
     isURL: function (str) {
-        var pattern = new RegExp(
-            '^(https?:\\/\\/)?' + // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-                '(\\#[-a-z\\d_]*)?$',
-            'i'
-        ); // fragment locator
-        return pattern.test(str);
+        try {
+            new URL(str);
+            return true;
+        } catch (e) {
+            try {
+                new URL('http://' + str);
+                return true;
+            } catch (err) {
+                return false;
+            }
+        }
     },
     formatParams: function (params) {
+        if (!params || typeof params !== 'object') {
+            return '';
+        }
         return (
             '?' +
             Object.keys(params)
                 .map(function (key) {
-                    return key + '=' + encodeURIComponent(params[key]);
+                    const value = params[key];
+                    return (
+                        encodeURIComponent(key) +
+                        '=' +
+                        encodeURIComponent(value == null ? '' : value)
+                    );
                 })
                 .join('&')
         );
@@ -507,7 +520,6 @@ KommunicateUtils = {
             console.debug("Encryption not enabled, can't load crypto-js");
             return;
         }
-
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
     },
     sendErrorToSentry: function (error) {
