@@ -230,28 +230,24 @@ Kommunicate.mediaService = {
                         if (REMAINING_TIME <= 0) {
                             clearTimeout(playPauseInterval);
                             playPausetimerState = TIMER_STATE.EXPIRED;
-                            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, false);
-                            kommunicateCommons.setVisibility({ id: ['play-btn'] }, true);
+                            kommunicateCommons.hide({ id: ['pause-btn'] });
+                            kommunicateCommons.show({ id: ['play-btn'] });
                         }
                     } else if (playPausetimerState == TIMER_STATE.PAUSED) {
                         START_TIME += 1000;
                     }
                 }, 1000);
-                kommunicateCommons.setVisibility({ id: ['time-remaining'] }, true);
+                kommunicateCommons.show({ id: ['time-remaining'] });
             }
         }
         function startRecording() {
             Kommunicate.typingAreaService.showRecorder();
             // show
-            kommunicateCommons.setVisibility(
-                { id: ['delete-recording', 'mck-stop-recording', 'audiodiv'] },
-                true
-            );
+            kommunicateCommons.show({ id: ['delete-recording', 'mck-stop-recording', 'audiodiv'] });
 
             // hide
-            kommunicateCommons.setVisibility({ id: ['play-btn', 'pause-btn', 'send-btn'] }, false);
-            kommunicateCommons.setVisibility({ id: ['time-elapsed'] }, true);
-            kommunicateCommons.setVisibility({ id: ['time-remaining'] }, true);
+            kommunicateCommons.hide({ id: ['play-btn', 'pause-btn', 'send-btn'] });
+            kommunicateCommons.show({ id: ['time-elapsed', 'time-remaining'] });
 
             Fr.voice.record(
                 LIVE_OUTPUT,
@@ -292,16 +288,12 @@ Kommunicate.mediaService = {
         }
         function stopRecording(e) {
             // show
-            kommunicateCommons.setVisibility(
-                { id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'] },
-                true
-            );
+            kommunicateCommons.show({
+                id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'],
+            });
 
             // hide
-            kommunicateCommons.setVisibility(
-                { id: ['pause-btn', 'mck-stop-recording', 'time-elapsed'] },
-                false
-            );
+            kommunicateCommons.hide({ id: ['pause-btn', 'mck-stop-recording', 'time-elapsed'] });
             clearInterval(recorderInterval);
             $applozic('#wave-front-progressBar').width('0%');
             timeRemainingTimer.text('00:00');
@@ -344,16 +336,16 @@ Kommunicate.mediaService = {
         function onPlayBtnClick(e) {
             var prevStateOfTimer = playPausetimerState;
             playPausetimerState = TIMER_STATE.RUNNING;
-            kommunicateCommons.setVisibility({ id: ['play-btn'] }, false);
-            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, true);
+            kommunicateCommons.hide({ id: ['play-btn'] });
+            kommunicateCommons.show({ id: ['pause-btn'] });
             audioBlob && $applozic('#recorder-audio')[0].play();
             prevStateOfTimer == TIMER_STATE.EXPIRED && playPauseTimer();
         }
         function onPauseBtnClick(e) {
             $applozic('#recorder-audio')[0].pause();
             playPausetimerState = TIMER_STATE.PAUSED;
-            kommunicateCommons.setVisibility({ id: ['pause-btn'] }, false);
-            kommunicateCommons.setVisibility({ id: ['play-btn'] }, true);
+            kommunicateCommons.hide({ id: ['pause-btn'] });
+            kommunicateCommons.show({ id: ['play-btn'] });
         }
 
         document.querySelector('.mck-mic-animation-container .voiceNote').onclick = function () {

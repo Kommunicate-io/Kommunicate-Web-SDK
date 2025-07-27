@@ -2,14 +2,8 @@ Kommunicate.KmEventHandler = {
     openChatOnNotification: function (message) {
         if (!(document.getElementById('mck-sidebox').style.display === 'block')) {
             if (message && message.groupId) {
-                kommunicateCommons.setVisibility(
-                    { id: ['launcher-agent-img-container'] },
-                    false
-                );
-                kommunicateCommons.setVisibility(
-                    { id: ['launcher-svg-container'] },
-                    true
-                );
+                kommunicateCommons.hide({ id: ['launcher-agent-img-container'] });
+                kommunicateCommons.show({ id: ['launcher-svg-container'] });
                 window.Kommunicate.openConversation(message.groupId);
             } else {
                 window.Kommunicate.openDirectConversation(message.to);

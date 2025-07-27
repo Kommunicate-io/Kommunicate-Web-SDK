@@ -66,10 +66,7 @@ Kommunicate.typingAreaService = {
                 document
                     .querySelector('#mck-mic-btn-container')
                     .classList.add('mck-dropdown-toggle');
-                kommunicateCommons.setVisibility(
-                    { id: ['mck-mic-options-dropup'] },
-                    true
-                );
+                kommunicateCommons.show({ id: ['mck-mic-options-dropup'] });
                 document
                     .querySelector('.mck-mic-animation-container svg#mck-mic-btn')
                     .classList.add('availableOptions');
@@ -79,25 +76,25 @@ Kommunicate.typingAreaService = {
         }
     },
     hideMicButton: function () {
-        kommunicateCommons.setVisibility({ id: ['mck-mic-animation-container'] }, false);
+        kommunicateCommons.hide({ id: ['mck-mic-animation-container'] });
     },
     showMicButton: function () {
         if (appOption && (appOption.voiceInput || appOption.voiceNote)) {
-            kommunicateCommons.setVisibility({ id: ['mck-mic-animation-container'] }, true);
+            kommunicateCommons.show({ id: ['mck-mic-animation-container'] });
         }
     },
     hideMiceRecordingAnimation: function () {
-        kommunicateCommons.setVisibility({ id: ['mck-animation-outer'] }, false);
+        kommunicateCommons.hide({ id: ['mck-animation-outer'] });
     },
     showMicRcordingAnimation: function () {
-        kommunicateCommons.setVisibility({ id: ['mck-animation-outer'] }, true);
+        kommunicateCommons.show({ id: ['mck-animation-outer'] });
     },
     showRecorder: function () {
-        kommunicateCommons.setVisibility({ id: ['mck-textbox-container'] }, false);
-        kommunicateCommons.setVisibility({ id: ['km-voice-recorder'] }, true);
+        kommunicateCommons.hide({ id: ['mck-textbox-container'] });
+        kommunicateCommons.show({ id: ['km-voice-recorder'] });
     },
     hideRecorder: function () {
-        kommunicateCommons.setVisibility({ id: ['mck-textbox-container'] }, true);
-        kommunicateCommons.setVisibility({ id: ['km-voice-recorder'] }, false);
+        kommunicateCommons.show({ id: ['mck-textbox-container'] });
+        kommunicateCommons.hide({ id: ['km-voice-recorder'] });
     },
 };
