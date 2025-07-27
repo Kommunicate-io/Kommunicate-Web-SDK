@@ -247,8 +247,7 @@ Kommunicate.mediaService = {
 
             // hide
             kommunicateCommons.hide({ id: ['play-btn', 'pause-btn', 'send-btn'] });
-            kommunicateCommons.show({ id: ['time-elapsed'] });
-            kommunicateCommons.show({ id: ['time-remaining'] });
+            kommunicateCommons.show({ id: ['time-elapsed', 'time-remaining'] });
 
             Fr.voice.record(
                 LIVE_OUTPUT,

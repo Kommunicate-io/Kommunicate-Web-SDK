@@ -7456,10 +7456,11 @@ const firstVisibleMsg = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     kommunicateCommons.hide({ id: ['mck-tab-individual'] });
-                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show({ id: ['km-faq'] });
-                    kommunicateCommons.show({
-                        id: ['mck-tab-conversation', 'mck-search-tabview-box'],
-                    });
+                    var idsToShow = ['mck-tab-conversation', 'mck-search-tabview-box'];
+                    if (KommunicateUI.isFAQPrimaryCTA()) {
+                        idsToShow.push('km-faq');
+                    }
+                    kommunicateCommons.show({ id: idsToShow });
                     kommunicateCommons.hide({ id: ['mck-product-box'] });
                     $mck_msg_inner.data('mck-id', '');
                     $mck_msg_inner.data('mck-conversationid', '');
@@ -9788,8 +9789,10 @@ const firstVisibleMsg = {
                             tabId: contact.contactId,
                             isGroup: contact.isGroup,
                         });
-                        kommunicateCommons.show({ class: ['.mck-box-ft .mck-box-form'] });
-                        kommunicateCommons.show({ id: ['mck-sidebox-ft'] });
+                        kommunicateCommons.show({
+                            class: ['.mck-box-ft .mck-box-form'],
+                            id: ['mck-sidebox-ft'],
+                        });
                     } else {
                         mckGroupLayout.addGroupMemberFromSearch(contact.contactId);
                     }
@@ -9861,8 +9864,10 @@ const firstVisibleMsg = {
                                     isGroup: false,
                                     isSearch: true,
                                 });
-                                kommunicateCommons.show({ class: ['.mck-box-ft .mck-box-form'] });
-                                kommunicateCommons.show({ id: ['mck-sidebox-ft'] });
+                                kommunicateCommons.show({
+                                    class: ['.mck-box-ft .mck-box-form'],
+                                    id: ['mck-sidebox-ft'],
+                                });
                             }
                         }
                         $mck_contact_search_input.val('');
@@ -10111,8 +10116,9 @@ const firstVisibleMsg = {
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
                     userIdArray = [];
-                kommunicateCommons.hide({ id: ['mck-no-search-contacts'] });
-                kommunicateCommons.hide({ id: ['mck-no-search-groups'] });
+                kommunicateCommons.hide({
+                    id: ['mck-no-search-contacts', 'mck-no-search-groups'],
+                });
                 if (!$mck_contact_search_tab.hasClass('active')) {
                     $mck_search_tab_link.removeClass('active');
                     $mck_contact_search_tab.addClass('active');
@@ -10131,8 +10137,9 @@ const firstVisibleMsg = {
             _this.addGroupsToGroupSearchList = function () {
                 var groupsArray = [],
                     groupIdArray = [];
-                kommunicateCommons.hide({ id: ['mck-no-search-contacts'] });
-                kommunicateCommons.hide({ id: ['mck-no-search-groups'] });
+                kommunicateCommons.hide({
+                    id: ['mck-no-search-contacts', 'mck-no-search-groups'],
+                });
                 if (!$mck_group_search_tab.hasClass('active')) {
                     $mck_search_tab_link.removeClass('active');
                     $mck_group_search_tab.addClass('active');
@@ -11246,8 +11253,10 @@ const firstVisibleMsg = {
                     $mck_msg_error.addClass('mck-no-mb');
                     kommunicateCommons.hide({ id: ['mck-msg-form'] });
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
-                    kommunicateCommons.hide({ id: ['mck-tab-status'] });
-                    kommunicateCommons.hide({ class: ['mck-typing-box'] });
+                    kommunicateCommons.hide({
+                        id: ['mck-tab-status'],
+                        class: ['mck-typing-box'],
+                    });
                     $mck_message_inner.data('blocked', true);
                     $mck_block_button
                         .html(MCK_LABELS['unblock.user'])
@@ -11641,8 +11650,9 @@ const firstVisibleMsg = {
                     .find('.mck-group-change-role-box');
                 var role = $applozic(this).parents('.mck-li-group-member').data('role');
                 $changeRoleBox.find('select').val(role);
-                kommunicateCommons.show({ id: [$changeRoleBox.attr('id')] });
-                kommunicateCommons.show({ id: ['mck-group-update-panel'] });
+                kommunicateCommons.show({
+                    id: [$changeRoleBox.attr('id'), 'mck-group-update-panel'],
+                });
             });
             $mck_btn_group_update.on('click', function () {
                 var users = [];

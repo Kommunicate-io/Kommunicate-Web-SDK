@@ -202,10 +202,10 @@ KommunicateUI = {
         }
     },
     displayProgressMeter: function (key, uploadStatus) {
-        kommunicateCommons.show({ class: ['progress-meter-' + key] });
+        var classes = ['progress-meter-' + key, '.mck-attachment-' + key + ' .mck-image-download'];
         var nextElem = $applozic('.mck-attachment-' + key).next();
-        nextElem.length && kommunicateCommons.show({ class: [nextElem[0].classList[0]] });
-        kommunicateCommons.show({ class: ['.mck-attachment-' + key + ' .mck-image-download'] });
+        nextElem.length && classes.push(nextElem[0].classList[0]);
+        kommunicateCommons.show({ class: classes });
     },
     deleteProgressMeter: function (key, uploadStatus) {
         $applozic('.progress-meter-' + key).remove();
@@ -702,8 +702,11 @@ KommunicateUI = {
     showChat: function () {
         kommunicateCommons.setWidgetStateOpen(true);
         kommunicateCommons.hide({ id: ['faq-common'] });
-        kommunicateCommons.show({ class: ['mck-conversation'] });
-        KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show({ id: ['km-faq'] });
+        var ids = [];
+        if (KommunicateUI.isFAQPrimaryCTA()) {
+            ids.push('km-faq');
+        }
+        kommunicateCommons.show({ class: ['mck-conversation'], id: ids });
         $applozic('#mck-msg-new').attr('disabled', false);
         if (
             $applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 &&
