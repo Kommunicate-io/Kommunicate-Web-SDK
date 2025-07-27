@@ -320,46 +320,41 @@ KommunicateUI = {};
 /**all  utilities*/
 KommunicateUtils = {
     getRandomId: function () {
-        if (window.crypto && window.crypto.getRandomValues) {
-            var array = new Uint8Array(16);
-            window.crypto.getRandomValues(array);
-            return Array.prototype.map
-                .call(array, function (dec) {
-                    return dec.toString(16).padStart(2, '0');
-                })
-                .join('');
-        }
         var text = '';
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (var i = 0; i < 32; i++) {
+        for (var i = 0; i < 32; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
         return text;
     },
     triggerCustomEvent: function (eventName, options, kmPluginVersion) {
         options = typeof options == 'object' ? options : {};
-        options.bubbles = options.bubbles !== false;
-        options.cancelable = options.cancelable !== false;
+        options.bubbles = options.bubbles || true;
+        options.cancelable = options.cancelable || true;
 
-        var parentWindow = kmPluginVersion === 'v2' ? window.parent.document : window;
-        var eventDetail = {
-            detail: options.data || {},
-            bubbles: options.bubbles,
-            cancelable: options.cancelable,
-        };
-        var evt;
-        if (typeof CustomEvent === 'function') {
-            evt = new CustomEvent(eventName, eventDetail);
+        if (
+            navigator.userAgent.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Trident/') > 0
+        ) {
+            /* Microsoft Internet Explorer detected in. */
+            var evt =
+                kmPluginVersion === 'v2'
+                    ? window.parent.document.createEvent('Event')
+                    : document.createEvent('Event');
+            evt.initEvent(eventName, options.bubbles, options.cancelable);
+            kmPluginVersion === 'v2'
+                ? window.parent.document.dispatchEvent(evt)
+                : window.dispatchEvent(evt);
         } else {
-            evt = document.createEvent('CustomEvent');
-            evt.initCustomEvent(
-                eventName,
-                eventDetail.bubbles,
-                eventDetail.cancelable,
-                eventDetail.detail
+            var parentWindow = kmPluginVersion === 'v2' ? window.parent.document : window;
+            //Custom event trigger
+            parentWindow.dispatchEvent(
+                new CustomEvent(eventName, {
+                    detail: options.data || {},
+                    bubbles: options.bubbles || true,
+                    cancelable: options.cancelable || true,
+                })
             );
         }
-        parentWindow.dispatchEvent(evt);
     },
     getSettings: function (key) {
         var settings = appOptionSession.getPropertyDataFromSession('settings');
