@@ -506,15 +506,6 @@ KommunicateUtils = {
             console.debug("Encryption not enabled, can't load crypto-js");
             return;
         }
-        if (
-            typeof applozicSideBox === 'undefined' ||
-            !THIRD_PARTY_SCRIPTS ||
-            !THIRD_PARTY_SCRIPTS.crypto
-        ) {
-            console.error('Unable to load crypto-js due to missing dependencies');
-            return;
-        }
-
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
     },
     sendErrorToSentry: function (error) {
