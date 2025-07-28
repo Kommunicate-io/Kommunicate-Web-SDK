@@ -224,10 +224,15 @@ function ApplozicSidebox() {
 
         var updateIconsSvgPath = function updateIconsSvgPath() {
             var icons = document.querySelectorAll('use[href^="icons.svg"]');
+            if (!icons.length) {
+                return;
+            }
+            var base = MCK_SIDEBOX_HTML.substring(0, MCK_SIDEBOX_HTML.lastIndexOf('/'));
+            var sprite = base + '/icons.svg';
             for (var i = 0; i < icons.length; i++) {
                 var href = icons[i].getAttribute('href');
                 var iconId = href.split('#')[1];
-                icons[i].setAttribute('href', window.MCK_STATICPATH + '/build/icons.svg#' + iconId);
+                icons[i].setAttribute('href', sprite + '#' + iconId);
             }
         };
 
