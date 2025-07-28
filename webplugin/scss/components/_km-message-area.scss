@@ -23,6 +23,7 @@
 
 .mck-msg-box {
     padding: 8px;
+    position: relative;
     border: 0px;
     border-radius: 3px;
     display: inline-block;
@@ -36,12 +37,13 @@
     height: 14px;
 }
 .km-answer-feedback {
+    position: absolute;
+    bottom: 5px;
+    right: 0;
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
-    position: absolute;
-    bottom: 5px;
     // Removed position, right, bottom, and max-width
     & svg {
         stroke: $text-primary-color;
