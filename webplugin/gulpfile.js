@@ -262,7 +262,7 @@ const generateBuildFiles = () => {
         `mck-sidebox.${version}.html`
     );
     // copy shared sprite file to build resources
-    copyFileToBuild('template/icons.svg', `${resourceLocation}/icons.svg`);
+    copyFileToBuild('css/app/images/icons.svg', `${resourceLocation}/css/app/images/icons.svg`);
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
         if (err) {
@@ -360,6 +360,10 @@ const deleteFilesUsingPath = (path) => {
 
 const copyFileToBuild = (src, dest) => {
     // console.log(`Copying file from ${src} to ${dest}`);
+    const destDir = path.dirname(dest);
+    if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+    }
     fs.copyFile(path.join(__dirname, src), dest, (err) => {
         if (err) {
             console.log(`error while generating ${dest}`, err);
