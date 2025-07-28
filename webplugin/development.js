@@ -120,10 +120,6 @@ const combineJsFiles = async () => {
 };
 
 const copyFileToBuild = (src, dest, isFullPathExist) => {
-    const destDir = path.dirname(dest);
-    if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true });
-    }
     fs.copyFile(isFullPathExist ? src : path.join(__dirname, src), dest, (err) => {
         if (err) {
             console.log(`error while generating ${dest}`, err);
