@@ -38,10 +38,12 @@
 .km-answer-feedback {
     position: absolute;
     bottom: 5px;
+    right: 0;
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
+    max-width: 200px;
 
     & svg {
         stroke: $text-primary-color;
