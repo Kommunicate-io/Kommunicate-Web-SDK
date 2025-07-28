@@ -167,10 +167,10 @@ class AnswerFeedback {
         const feedbackElement = msgContainer.querySelector('.km-answer-feedback');
 
         if (!msgBox || !feedbackElement) return;
-        const msgBoxWidth = msgBox.offsetWidth;
-
-        const feedbackWidth = msgBoxWidth + 40;
-        feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
+        // const msgBoxWidth = msgBox.offsetWidth;
+        // feedbackElement.style.right = `${msgBoxWidth}px`;
+        // const feedbackWidth = msgBoxWidth + 40;
+        // feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
     };
 
     attachEventListeners = (data) => {
