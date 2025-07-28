@@ -20,7 +20,6 @@ if (typeof jQuery !== 'undefined') {
         return;
     }
 })(window);
-
 var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
 applozicSideBox.load();
