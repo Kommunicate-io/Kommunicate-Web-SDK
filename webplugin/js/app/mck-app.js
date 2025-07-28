@@ -222,7 +222,7 @@ function ApplozicSidebox() {
         };
 
         var updateIconsSvgPath = function updateIconsSvgPath() {
-            var icons = document.querySelectorAll('use[href^="../css/app/images/icons.svg"]');
+            var icons = document.querySelectorAll('use[href^="css/app/images/icons.svg"]');
             if (!icons.length) {
                 return;
             }
