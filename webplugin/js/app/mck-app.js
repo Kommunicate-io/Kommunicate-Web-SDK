@@ -222,7 +222,24 @@ function ApplozicSidebox() {
             }
         };
 
-        var script = String(scriptData) + 'detectBrowserAndMakeUiVisible();';
+        var updateIconsSvgPath = function updateIconsSvgPath() {
+            var icons = document.querySelectorAll('use[href^="icons.svg"]');
+            if (!icons.length) {
+                return;
+            }
+            var base = MCK_SIDEBOX_HTML.substring(0, MCK_SIDEBOX_HTML.lastIndexOf('/'));
+            var sprite = base + '/icons.svg';
+            for (var i = 0; i < icons.length; i++) {
+                var href = icons[i].getAttribute('href');
+                var iconId = href.split('#')[1];
+                icons[i].setAttribute('href', sprite + '#' + iconId);
+            }
+        };
+
+        var script =
+            String(scriptData) +
+            String(updateIconsSvgPath) +
+            'detectBrowserAndMakeUiVisible();updateIconsSvgPath();';
         var tag = document.createElement('script');
         tag.innerHTML = script;
         return tag;
