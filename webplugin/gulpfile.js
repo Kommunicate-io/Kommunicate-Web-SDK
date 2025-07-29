@@ -289,7 +289,8 @@ const generateBuildFiles = () => {
         }
         var mckApp = data
             .replace('KOMMUNICATE_MIN_CSS', `"${pathToResource}/kommunicate.${version}.min.css"`)
-            .replace(/MCK_SIDEBOX_HTML/g, `"${pathToResource}/mck-sidebox.${version}.html"`);
+            .replace(/MCK_SIDEBOX_HTML/g, `"${pathToResource}/mck-sidebox.${version}.html"`)
+            .replace('ICONS_SVG_PATH', `"${pathToResource}/css/app/images/icons.svg"`);
         fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err, data) {
             if (err) {
                 console.log('mck-file generation error');

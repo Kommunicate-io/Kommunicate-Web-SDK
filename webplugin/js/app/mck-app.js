@@ -22,6 +22,7 @@ if (typeof jQuery !== 'undefined') {
 })(window);
 var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
+var ICONS_SVG_PATH = 'ICONS_SVG_PATH';
 applozicSideBox.load();
 function ApplozicSidebox() {
     var mck_external_scripts = [
@@ -222,12 +223,11 @@ function ApplozicSidebox() {
         };
 
         var updateIconsSvgPath = function updateIconsSvgPath() {
-            var icons = document.querySelectorAll('use[href^="css/app/images/icons.svg"]');
+            var icons = document.querySelectorAll('use[href*="icons.svg"]');
             if (!icons.length) {
                 return;
             }
-            var base = MCK_SIDEBOX_HTML.substring(0, MCK_SIDEBOX_HTML.lastIndexOf('/'));
-            var sprite = base + '/css/app/images/icons.svg';
+            var sprite = ICONS_SVG_PATH;
             for (var i = 0; i < icons.length; i++) {
                 var href = icons[i].getAttribute('href');
                 var iconId = href.split('#')[1];
