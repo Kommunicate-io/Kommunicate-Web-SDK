@@ -159,7 +159,7 @@ const generateBuildFiles = () => {
         }
     );
     // copy shared sprite file to build resources
-    copyFileToBuild('css/app/images/icons.svg', `${resourceLocation}/css/app/images/icons.svg`);
+    copyFileToBuild('css/app/images/icons.svg', `${resourceLocation}/icons.svg`);
 
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
@@ -186,7 +186,7 @@ const generateBuildFiles = () => {
         var mckApp = data
             .replace('KOMMUNICATE_MIN_CSS', `"${pathToResource}/kommunicate.${version}.min.css"`)
             .replace(/MCK_SIDEBOX_HTML/g, `"${pathToResource}/mck-sidebox.${version}.html"`)
-            .replace('ICONS_SVG_PATH', `"${pathToResource}/css/app/images/icons.svg"`);
+            .replace('ICONS_SVG_PATH', `"${pathToResource}/icons.svg"`);
         fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
             if (err) {
                 console.log('mck-file generation error');
