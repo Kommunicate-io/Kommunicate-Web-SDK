@@ -120,6 +120,10 @@ const combineJsFiles = async () => {
 };
 
 const copyFileToBuild = (src, dest, isFullPathExist) => {
+    const destDir = path.dirname(dest);
+    if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+    }
     fs.copyFile(isFullPathExist ? src : path.join(__dirname, src), dest, (err) => {
         if (err) {
             console.log(`error while generating ${dest}`, err);
@@ -158,6 +162,7 @@ const generateBuildFiles = () => {
             console.log('mck-sidebox.html generated successfully');
         }
     );
+    copyFileToBuild('css/app/images/icons.svg', `${resourceLocation}/css/app/images/icons.svg`);
 
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {

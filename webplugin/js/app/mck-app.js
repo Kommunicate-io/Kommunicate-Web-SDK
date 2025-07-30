@@ -227,7 +227,7 @@ function ApplozicSidebox() {
                 return;
             }
             var base = MCK_SIDEBOX_HTML.substring(0, MCK_SIDEBOX_HTML.lastIndexOf('/'));
-            var sprite = base + '/../css/app/images/icons.svg';
+            var sprite = base + '/css/app/images/icons.svg';
             for (var i = 0; i < icons.length; i++) {
                 var href = icons[i].getAttribute('href');
                 var iconId = href.split('#')[1];
