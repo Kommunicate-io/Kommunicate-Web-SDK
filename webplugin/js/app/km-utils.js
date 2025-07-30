@@ -585,7 +585,7 @@ KommunicateUtils = {
             .split('\n')
             .map((line) => line.replace(/^\s*-\s*/, '- ').trimEnd()) // Trim right-side spaces
             .filter((line) => line !== '') // Remove empty lines
-            .join('\n');
+            .join('\n\n');
     },
 
     containsRawHTML: function (text) {
