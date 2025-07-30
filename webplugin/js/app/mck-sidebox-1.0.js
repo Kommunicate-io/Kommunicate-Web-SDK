@@ -2374,7 +2374,7 @@ const firstVisibleMsg = {
                         const maxAttempts = 10;
 
                         const reconnectInterval = setInterval(() => {
-                            if (IS_SOCKET_INITIALIZED || IS_SOCKET_CONNECTED) {
+                            if (window.Applozic.ALSocket.stompClient.connected) {
                                 console.log('Socket already connected. Stopping retry.');
                                 clearInterval(reconnectInterval);
                                 return;
