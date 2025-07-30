@@ -2366,10 +2366,31 @@ const firstVisibleMsg = {
                         'n-vis',
                         'vis'
                     );
-                    setTimeout(() => {
-                        console.log('reaconnecting socket');
-                        window.Applozic.ALSocket.reconnect();
-                    }, 500);
+                    if (!IS_SOCKET_CONNECTED) {
+                        console.log('Attempting socket reconnection');
+
+                        let reconnectAttempts = 0;
+                        const maxAttempts = 10;
+
+                        const reconnectInterval = setInterval(() => {
+                            if (IS_SOCKET_INITIALIZED || IS_SOCKET_CONNECTED) {
+                                console.log('Socket already connected. Stopping retry.');
+                                clearInterval(reconnectInterval);
+                                return;
+                            }
+
+                            console.log(`Reconnecting socket... attempt ${reconnectAttempts + 1}`);
+                            window.Applozic.ALSocket.reconnect();
+
+                            reconnectAttempts++;
+                            if (reconnectAttempts >= maxAttempts) {
+                                clearInterval(reconnectInterval);
+                                console.warn('Max reconnect attempts reached.');
+                            }
+                        }, 1000);
+                    } else {
+                        console.log('Socket already connected');
+                    }
                 });
                 w.addEventListener('offline', function () {
                     kommunicateCommons.modifyClassList(
