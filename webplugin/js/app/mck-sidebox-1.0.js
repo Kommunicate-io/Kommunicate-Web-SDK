@@ -11001,7 +11001,8 @@ const firstVisibleMsg = {
                             : 'user_' + contact.contactId;
                         if (isValidMeta) {
                             if (message.contentType !== 10 && message.contentType !== 102) {
-                                mckMessageLayout.incrementUnreadCount(ucTabId);
+                                !message.tokenMessage &&
+                                    mckMessageLayout.incrementUnreadCount(ucTabId);
                             }
                             if (
                                 !(document.getElementById('mck-sidebox').style.display === 'block')
