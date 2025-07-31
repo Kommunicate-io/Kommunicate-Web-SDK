@@ -169,7 +169,7 @@ class AnswerFeedback {
         if (!msgBox || !feedbackElement) return;
         const msgBoxWidth = msgBox.offsetWidth;
         feedbackElement.style.right = `${msgBoxWidth}px`;
-        const feedbackWidth = msgBoxWidth + 10;
+        const feedbackWidth = msgBoxWidth + 40;
         feedbackElement.style.left = `${feedbackWidth}px`;
     };
 
