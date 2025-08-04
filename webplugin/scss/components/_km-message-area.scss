@@ -29,6 +29,7 @@
     max-width: 85%;
     min-height: 20px;
     border: 0px solid $input-border-color;
+    position: relative;
 }
 .km-answer-feedback-button {
     cursor: pointer;
@@ -42,6 +43,11 @@
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
+    display: flex;
+    margin-top: 2px;
+    margin-left: auto;
+    margin-right: 0;
+    width: fit-content;
 
     & svg {
         stroke: $text-primary-color;
@@ -49,6 +55,11 @@
             fill: #000;
         }
     }
+}
+.mck-msg-box + .km-answer-feedback {
+    /* Ensures feedback aligns width-wise to the bubble */
+    max-width: 85%;
+    margin-left: auto;
 }
 
 .mck-rich-msg-box {
