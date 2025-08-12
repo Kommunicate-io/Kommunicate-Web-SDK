@@ -10,7 +10,7 @@
         var SEARCH_ELASTIC = '/kb/_search';
 
         function hideFAQBtn() {
-            kommunicateCommons.hideElement($applozic('.km-option-faq'));
+            kommunicateCommons.hide('.km-option-faq');
             kommunicate._globals.hasArticles = false;
         }
 

@@ -5,6 +5,7 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    var $applozic = window.$applozic || window.$;
     KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
@@ -117,12 +118,12 @@ function KommunicateCommons() {
         });
     };
 
-    _this.showElement = function (element) {
-        element.removeClass('n-vis').addClass('vis');
+    _this.show = function (element) {
+        return $applozic(element).removeClass('n-vis').addClass('vis');
     };
 
-    _this.hideElement = function (element) {
-        element.removeClass('vis').addClass('n-vis');
+    _this.hide = function (element) {
+        return $applozic(element).removeClass('vis').addClass('n-vis');
     };
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
