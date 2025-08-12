@@ -117,6 +117,14 @@ function KommunicateCommons() {
         });
     };
 
+    _this.showElement = function (element) {
+        element.removeClass('n-vis').addClass('vis');
+    };
+
+    _this.hideElement = function (element) {
+        element.removeClass('vis').addClass('n-vis');
+    };
+
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
      value passed is just a object or not. */
     _this.isObject = function (object) {
