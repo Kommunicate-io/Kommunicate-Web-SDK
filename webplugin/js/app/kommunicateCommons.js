@@ -119,14 +119,9 @@ function KommunicateCommons() {
     };
 
     _this.show = function (element) {
-        var elems =
-            typeof element === 'string'
-                ? document.querySelectorAll(element)
-                : element && element.jquery
-                ? element.toArray()
-                : element;
+        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
         if (!elems) return elems;
-        (elems.length !== undefined ? elems : [elems]).forEach(function (el) {
+        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
             el.classList.remove('n-vis');
             el.classList.add('vis');
         });
@@ -134,14 +129,9 @@ function KommunicateCommons() {
     };
 
     _this.hide = function (element) {
-        var elems =
-            typeof element === 'string'
-                ? document.querySelectorAll(element)
-                : element && element.jquery
-                ? element.toArray()
-                : element;
+        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
         if (!elems) return elems;
-        (elems.length !== undefined ? elems : [elems]).forEach(function (el) {
+        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
             el.classList.remove('vis');
             el.classList.add('n-vis');
         });
