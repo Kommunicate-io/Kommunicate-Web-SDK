@@ -25,7 +25,7 @@ function KmNavBar(mckMsgLayout) {
             !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation();
 
         if (shouldShowHeaderCTA) {
-            kommunicateCommons.show($applozic('.km-header-cta'));
+            kommunicateCommons.show('.km-header-cta');
         }
     };
 

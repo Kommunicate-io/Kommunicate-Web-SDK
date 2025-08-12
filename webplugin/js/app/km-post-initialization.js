@@ -11,8 +11,8 @@ Kommunicate.postPluginInitialization = function (err, data) {
     var primaryCTA = kommunicate?._globals?.primaryCTA;
 
     if (primaryCTA && primaryCTA !== 'FAQ') {
-        kommunicateCommons.show($applozic('.km-kb-container'));
-        kommunicateCommons.hide($applozic('#km-faq'));
+        kommunicateCommons.show('.km-kb-container');
+        kommunicateCommons.hide('#km-faq');
     }
     if (kommunicate?._globals?.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;
@@ -32,13 +32,13 @@ Kommunicate.getFaqList = function (data, categoryName) {
                 response.data.length > 0 &&
                 $applozic('.km-kb-container').hasClass('n-vis')
             ) {
-                kommunicateCommons.show($applozic('.km-kb-container'));
+                kommunicateCommons.show('.km-kb-container');
                 KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
             }
 
             // hide the dropdown faq button if no articles there
             if (response.data.length === 0) {
-                kommunicateCommons.hide($applozic('.km-option-faq'));
+                kommunicateCommons.hide('.km-option-faq');
             }
 
             response.data.length
@@ -105,7 +105,7 @@ Kommunicate.getFaqCategories = function (data) {
             });
 
             if ($applozic('.km-kb-container').hasClass('n-vis') && initializeFAQ) {
-                kommunicateCommons.show($applozic('.km-kb-container'));
+                kommunicateCommons.show('.km-kb-container');
                 KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
                 KommunicateUI.setFAQButtonText();
             }
