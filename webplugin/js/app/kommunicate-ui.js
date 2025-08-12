@@ -240,12 +240,12 @@ KommunicateUI = {
                 thumbnailUrl
             );
     },
-    hideFileBox: function (file, $file_box, $mck_file_upload) {
+    hideFileBox: function (file, fileBoxSelector, $mck_file_upload) {
         if (KommunicateUI.isAttachmentV2(file.type)) {
-            kommunicateCommons.hide($file_box);
+            kommunicateCommons.hide(fileBoxSelector);
             $mck_file_upload.attr('disabled', false);
         } else {
-            kommunicateCommons.show($file_box);
+            kommunicateCommons.show(fileBoxSelector);
         }
     },
     isAttachmentV2: function (mediaType) {
