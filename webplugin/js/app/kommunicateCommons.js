@@ -118,24 +118,22 @@ function KommunicateCommons() {
         });
     };
 
-    _this.show = function (element) {
+    function changeVisibility(element, addClass, removeClass) {
         var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
         if (!elems) return elems;
         (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
-            el.classList.remove('n-vis');
-            el.classList.add('vis');
+            el.classList.remove(removeClass);
+            el.classList.add(addClass);
         });
         return elems;
+    }
+
+    _this.show = function (element) {
+        return changeVisibility(element, 'vis', 'n-vis');
     };
 
     _this.hide = function (element) {
-        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
-        if (!elems) return elems;
-        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
-            el.classList.remove('vis');
-            el.classList.add('n-vis');
-        });
-        return elems;
+        return changeVisibility(element, 'n-vis', 'vis');
     };
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
