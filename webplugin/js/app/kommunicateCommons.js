@@ -117,22 +117,23 @@ function KommunicateCommons() {
         });
     };
 
-    function changeVisibility(element, addClass, removeClass) {
-        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
-        if (!elems) return elems;
-        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
-            el.classList.remove(removeClass);
-            el.classList.add(addClass);
+    function changeVisibility(elements, addClass, removeClass) {
+        (Array.isArray(elements) ? elements : [elements]).forEach(function (element) {
+            var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
+            if (!elems) return;
+            (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
+                el.classList.remove(removeClass);
+                el.classList.add(addClass);
+            });
         });
-        return elems;
     }
 
-    _this.show = function (element) {
-        return changeVisibility(element, 'vis', 'n-vis');
+    _this.show = function () {
+        changeVisibility(Array.from(arguments), 'vis', 'n-vis');
     };
 
-    _this.hide = function (element) {
-        return changeVisibility(element, 'n-vis', 'vis');
+    _this.hide = function () {
+        changeVisibility(Array.from(arguments), 'n-vis', 'vis');
     };
 
     _this.setMessagePxyRecipient = function (messagePxy) {
@@ -154,19 +155,10 @@ function KommunicateCommons() {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
-    _this.isUrlValid = function (url) {
-        if (!url) return false;
-        try {
-            new URL(url);
-            return true;
-        } catch (e) {
-            return false;
-        }
-    };
     _this.isMessageContainsUrl = function (message) {
         if (!message) return false;
         var extractedUrl = message.match(/((https?|ftp):\/\/[^\s]+)/i);
-        return extractedUrl && _this.isUrlValid(extractedUrl[0]) ? extractedUrl[0] : false;
+        return extractedUrl && KommunicateUtils.isURL(extractedUrl[0]) ? extractedUrl[0] : false;
     };
     _this.getTimeOrDate = function (createdAtTime) {
         var labels = MCK_LABELS['time.stamp'];
