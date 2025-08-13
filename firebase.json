@@ -50,6 +50,10 @@
           {
             "key": "Cache-Control",
             "value": "public, max-age=31536000"
+          },
+          {
+            "key": "Cross-Origin-Resource-Policy",
+            "value": "cross-origin"
           }
         ]
       },

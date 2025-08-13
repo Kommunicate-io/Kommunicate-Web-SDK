@@ -22,18 +22,16 @@ app.use('/', routes.home);
 
 const fileMaxAge = process.env.NODE_ENV && 2538000000; // 30 days cache period which is converted in milliseconds
 //static paths
-app.use(
-    '/plugin',
-    express.static(path.join(__dirname, '../webplugin'), {
-        maxAge: fileMaxAge,
-    })
-);
-app.use(
-    '/plugin/sidebox',
-    express.static(path.join(__dirname, '../webplugin'), {
-        maxAge: fileMaxAge,
-    })
-);
+const staticOptions = {
+    maxAge: fileMaxAge,
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.svg')) {
+            res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+        }
+    },
+};
+app.use('/plugin', express.static(path.join(__dirname, '../webplugin'), staticOptions));
+app.use('/plugin/sidebox', express.static(path.join(__dirname, '../webplugin'), staticOptions));
 
 //Listen for requests
 var server = app.listen(app.get('port'), function () {
