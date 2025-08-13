@@ -13484,11 +13484,7 @@ const firstVisibleMsg = {
                 }
 
                 $mck_msg_preview_visual_indicator_text.html(htmlPayload);
-                kommunicateCommons.modifyClassList(
-                    { id: ['mck-msg-preview-visual-indicator'] },
-                    'vis',
-                    'n-vis'
-                );
+                kommunicateCommons.show('#mck-msg-preview-visual-indicator');
             };
 
             _this.formatMessageForNotification = function (msg) {
