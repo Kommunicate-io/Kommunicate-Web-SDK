@@ -6006,10 +6006,10 @@ const firstVisibleMsg = {
                                                                 'mck-tab-title-w-status'
                                                             );
                                                             kommunicateCommons.hide(
-                                                                $mck_tab_status
+                                                                '#mck-tab-status'
                                                             );
                                                             kommunicateCommons.hide(
-                                                                $mck_typing_box
+                                                                '.mck-typing-box'
                                                             );
                                                             $mck_msg_inner.data('blocked', false);
                                                         } else {
@@ -6966,7 +6966,6 @@ const firstVisibleMsg = {
             var $mck_tab_title = $applozic('#mck-tab-title');
             var $mck_tab_status = $applozic('#mck-tab-status');
             var $mck_msg_cell = $applozic('#mck-message-cell');
-            var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_no_messages = $applozic('#mck-no-messages');
             var $mck_product_box = $applozic('#mck-product-box');
             var $mck_product_icon = $applozic('.mck-product-icon');
