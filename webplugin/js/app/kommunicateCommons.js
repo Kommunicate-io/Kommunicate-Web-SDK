@@ -127,13 +127,17 @@ function KommunicateCommons() {
         return elems;
     }
 
-    _this.show = function (element) {
+    _this.showElement = function (element) {
         return changeVisibility(element, 'vis', 'n-vis');
     };
 
-    _this.hide = function (element) {
+    _this.hideElement = function (element) {
         return changeVisibility(element, 'n-vis', 'vis');
     };
+
+    // Backwards compatibility
+    _this.show = _this.showElement;
+    _this.hide = _this.hideElement;
 
     _this.setMessagePxyRecipient = function (messagePxy) {
         var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');

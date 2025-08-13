@@ -241,11 +241,12 @@ KommunicateUI = {
             );
     },
     hideFileBox: function (file, fileBoxSelector, $mck_file_upload) {
-        if (KommunicateUI.isAttachmentV2(file.type)) {
-            kommunicateCommons.hide(fileBoxSelector);
+        var type = file && file.type;
+        if (KommunicateUI.isAttachmentV2(type)) {
+            kommunicateCommons.hideElement(fileBoxSelector);
             $mck_file_upload.attr('disabled', false);
         } else {
-            kommunicateCommons.show(fileBoxSelector);
+            kommunicateCommons.showElement(fileBoxSelector);
         }
     },
     isAttachmentV2: function (mediaType) {
