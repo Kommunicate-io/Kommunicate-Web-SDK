@@ -9187,47 +9187,39 @@ const firstVisibleMsg = {
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
-                    if (message.fileMeta.contentType.indexOf('image') !== -1) {
+                    var meta = message.fileMeta;
+                    var size = alFileService.getFilePreviewSize(meta.size);
+                    if (meta.contentType.indexOf('image') !== -1) {
                         return (
                             '<span>photo</span> <img src="' +
                             MCK_FILE_URL +
                             FILE_PREVIEW_URL +
-                            message.fileMeta.blobKey +
+                            meta.blobKey +
                             '" class="mck-image-reply move-right"/>'
                         );
-                    } else if (message.fileMeta.contentType.indexOf('audio') !== -1) {
-                        return (
-                            '<span>audio</span><span class="mck-file-detail move-right"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
-                            message.fileMeta.name +
-                            '</span>&nbsp;<span class="file-size">' +
-                            alFileService.getFilePreviewSize(message.fileMeta.size) +
-                            '</span></span>'
-                        );
-                    } else {
-                        return (
-                            '<span class="mck-file-detail move-right"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
-                            message.fileMeta.name +
-                            '</span>&nbsp;<span class="file-size">' +
-                            alFileService.getFilePreviewSize(message.fileMeta.size) +
-                            '</span></span>'
-                        );
                     }
-                    return '';
+                    var fileDetail =
+                        '<span class="mck-file-detail move-right"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
+                        meta.name +
+                        '</span>&nbsp;<span class="file-size">' +
+                        size +
+                        '</span></span>';
+                    return meta.contentType.indexOf('audio') !== -1
+                        ? '<span>audio</span>' + fileDetail
+                        : fileDetail;
                 }
                 if (message.contentType === 2) {
                     var geoLoc = $applozic.parseJSON(message.message);
+                    var coords = geoLoc.lat + ',' + geoLoc.lon;
                     return (
                         '<span>location</span><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
-                        geoLoc.lat +
-                        ',' +
-                        geoLoc.lon +
+                        coords +
                         '&maptype=roadmap&markers=color:red|' +
-                        geoLoc.lat +
-                        ',' +
-                        geoLoc.lon +
+                        coords +
                         '" class="mck-image-reply move-right"/>'
                     );
                 }
+                return '';
             };
 
             _this.getImageForReplyMessage = function (message) {
@@ -10175,6 +10167,13 @@ const firstVisibleMsg = {
                     $textMessage.html('');
                 }
             };
+            _this.openSearchView = function () {
+                kommunicateCommons.hide('#mck-contacts-content');
+                kommunicateCommons.hide('#mck-sidebox-content');
+                kommunicateCommons.hide('#mck-group-info-tab');
+                kommunicateCommons.show('#mck-sidebox-search');
+                kommunicateCommons.show('#mck-search-loading');
+            };
             _this.addContactsToContactSearchList = function () {
                 kommunicateCommons.hide('#mck-no-search-contacts');
                 kommunicateCommons.hide('#mck-no-search-groups');
@@ -10187,11 +10186,7 @@ const firstVisibleMsg = {
                 kommunicateCommons.hide('#mck-group-search-input-box');
                 kommunicateCommons.show('#mck-contact-search-input-box');
                 $mck_contact_search_list.html('');
-                kommunicateCommons.hide('#mck-contacts-content');
-                kommunicateCommons.hide('#mck-sidebox-content');
-                kommunicateCommons.hide('#mck-group-info-tab');
-                kommunicateCommons.show('#mck-sidebox-search');
-                kommunicateCommons.show('#mck-search-loading');
+                _this.openSearchView();
                 if (MCK_CONTACT_ARRAY.length !== 0) {
                     mckMessageLayout.addContactsToSearchList();
                 } else if (!IS_MCK_OWN_CONTACTS) {
@@ -10216,11 +10211,7 @@ const firstVisibleMsg = {
                 kommunicateCommons.hide('#mck-contact-search-input-box');
                 kommunicateCommons.show('#mck-group-search-input-box');
                 $mck_group_search_list.html('');
-                kommunicateCommons.hide('#mck-contacts-content');
-                kommunicateCommons.hide('#mck-sidebox-content');
-                kommunicateCommons.hide('#mck-group-info-tab');
-                kommunicateCommons.show('#mck-sidebox-search');
-                kommunicateCommons.show('#mck-search-loading');
+                _this.openSearchView();
                 if (MCK_GROUP_ARRAY.length > 0) {
                     $applozic.each(MCK_GROUP_ARRAY, function (i, group) {
                         groupIdArray.push(group.contactId);
