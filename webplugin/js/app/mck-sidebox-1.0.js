@@ -8716,11 +8716,11 @@ const firstVisibleMsg = {
                         .removeClass('n-vis')
                         .addClass('vis');
                     if ($textMessage.html() === '') {
-                        kommunicateCommons.hide('#li-' + contHtmlExpr + ' .msgTextExpr');
+                        $textMessage.removeClass('vis').addClass('n-vis');
                     }
                 }
                 if (msg.contentType === 2) {
-                    kommunicateCommons.hide('#li-' + contHtmlExpr + ' .msgTextExpr');
+                    $textMessage.removeClass('vis').addClass('n-vis');
                     $applozic('.' + replyId + ' .mck-file-text')
                         .removeClass('n-vis')
                         .addClass('vis');
