@@ -3,86 +3,27 @@
  */
 
 Kommunicate.attachEvents = function ($applozic) {
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-increment-guest-count',
-        Kommunicate.richMsgEventHandler.incrementGuestCount
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-decrement-guest-count',
-        Kommunicate.richMsgEventHandler.decrementGuestCount
-    ); //
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-btn-add-more-rooms',
-        Kommunicate.richMsgEventHandler.addMoreRoom
-    ); //
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-done-button',
-        Kommunicate.richMsgEventHandler.processSelectedRoom
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-card-message-footer-button',
-        Kommunicate.richMsgEventHandler.processHotelBookClick
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.mck-form-submit-button',
-        Kommunicate.richMsgEventHandler.handleFormSubmit
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-cta-button',
-        Kommunicate.richMsgEventHandler.handleRichButtonClick
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-submit-person-detail',
-        Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-block-room-button',
-        Kommunicate.richMsgEventHandler.processBookRoomClick
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-quick-replies',
-        Kommunicate.richMsgEventHandler.processQuickReplies
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-list-item-handler',
-        Kommunicate.richMsgEventHandler.processClickOnListItem
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-list-button-item-handler',
-        Kommunicate.richMsgEventHandler.processClickOnButtonItem
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-faq-dialog-button',
-        Kommunicate.richMsgEventHandler.processClickOnDialogButton
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-progress-meter-container',
-        Kommunicate.attachmentEventHandler.manageUploadAttachment
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-link-button',
-        Kommunicate.richMsgEventHandler.handleLinkButtonClick
-    );
-    $applozic('#mck-message-cell').on(
-        'click',
-        '.km-attachment-icon',
-        Kommunicate.attachmentEventHandler.handleSendingAttachment
-    );
+    var handlers = [
+        ['.km-increment-guest-count', Kommunicate.richMsgEventHandler.incrementGuestCount],
+        ['.km-decrement-guest-count', Kommunicate.richMsgEventHandler.decrementGuestCount],
+        ['.km-btn-add-more-rooms', Kommunicate.richMsgEventHandler.addMoreRoom],
+        ['.km-done-button', Kommunicate.richMsgEventHandler.processSelectedRoom],
+        ['.km-card-message-footer-button', Kommunicate.richMsgEventHandler.processHotelBookClick],
+        ['.mck-form-submit-button', Kommunicate.richMsgEventHandler.handleFormSubmit],
+        ['.km-cta-button', Kommunicate.richMsgEventHandler.handleRichButtonClick],
+        ['.km-submit-person-detail', Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail],
+        ['.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick],
+        ['.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies],
+        ['.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem],
+        ['.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem],
+        ['.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton],
+        ['.km-progress-meter-container', Kommunicate.attachmentEventHandler.manageUploadAttachment],
+        ['.km-link-button', Kommunicate.richMsgEventHandler.handleLinkButtonClick],
+        ['.km-attachment-icon', Kommunicate.attachmentEventHandler.handleSendingAttachment],
+    ];
+    handlers.forEach(function (h) {
+        $applozic('#mck-message-cell').on('click', h[0], h[1]);
+    });
 };
 
 /**

@@ -3303,7 +3303,6 @@ const firstVisibleMsg = {
             var $mck_loading = $applozic('#mck-contact-loading');
             var $mck_form_field = $applozic('#mck-msg-form #mck-file-input');
             var $mck_block_button = $applozic('#mck-block-button');
-            var $li_mck_group_info = $applozic('#li-mck-group-info');
             var $mck_response_text = $applozic('#mck_response_text');
             var $mck_contact_search = $applozic('.mck-contact-search');
             var $mck_group_search = $applozic('.mck-group-search');
@@ -6132,21 +6131,6 @@ const firstVisibleMsg = {
                                                 } else {
                                                     mckGroupLayout.addGroupStatus(group);
                                                     var validated = true;
-                                                    var contact;
-                                                    if (group.type === 7) {
-                                                        kommunicateCommons.hide($li_mck_group_info);
-                                                        mckGroupService.getContactFromGroupOfTwo(
-                                                            group,
-                                                            function (user) {
-                                                                contact = mckMessageLayout.fetchContact(
-                                                                    user
-                                                                );
-                                                            }
-                                                        );
-                                                        mckUserUtils.lastSeenOfGroupOfTwo(
-                                                            contact.contactId
-                                                        );
-                                                    }
                                                     if (
                                                         window.applozic.PRODUCT_ID ==
                                                             'kommunicate' &&
@@ -6158,7 +6142,7 @@ const firstVisibleMsg = {
                                                             group.users[MCK_USER_ID].role === 0
                                                         ) {
                                                             kommunicateCommons.hide(
-                                                                $li_mck_group_info
+                                                                '#li-mck-group-info'
                                                             );
                                                         }
                                                     }
@@ -6979,7 +6963,6 @@ const firstVisibleMsg = {
             var $mck_product_down_key = $applozic('.mck-product-rt-down .mck-product-key');
             var $mck_product_down_value = $applozic('.mck-product-rt-down .mck-product-value');
 
-            var $li_mck_group_info = $applozic('#li-mck-group-info');
             var $li_mck_leave_group = $applozic('#li-mck-leave-group');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_group_search_tab = $applozic('#mck-group-search-tab');
@@ -7446,8 +7429,7 @@ const firstVisibleMsg = {
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
-                document.getElementById('mck-char-warning') &&
-                    document.getElementById('mck-char-warning').classList.add('n-vis');
+                kommunicateCommons.hide('#mck-char-warning');
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
                 kommunicateCommons.modifyClassList({ id: ['km-faq'] }, 'n-vis', '');
                 if (params.tabId) {
@@ -8125,7 +8107,6 @@ const firstVisibleMsg = {
                 if (
                     msg.groupId &&
                     msg.contentType !== 4 &&
-                    contact.type !== 7 &&
                     (msg.type === 0 || msg.type === 4 || msg.type === 6)
                 ) {
                     displayName = _this.getTabDisplayName(msg.to, false);
@@ -9344,14 +9325,9 @@ const firstVisibleMsg = {
                     } else {
                         imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
                     }
-                } else if (contact.isGroup && contact.type !== 7) {
+                } else if (contact.isGroup) {
                     imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
                 } else {
-                    if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
-                        mckGroupService.getContactFromGroupOfTwo(contact, function (user) {
-                            contact = mckMessageLayout.fetchContact(user);
-                        });
-                    }
                     if (typeof MCK_GETUSERIMAGE === 'function') {
                         var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
                         if (imgsrc && typeof imgsrc !== 'undefined') {
@@ -10139,17 +10115,6 @@ const firstVisibleMsg = {
                     olStatus = 'vis';
                     prepend = true;
                 }
-                if (contact.type === 7 && contact.members.length > 1) {
-                    var contacts;
-                    var group = mckGroupUtils.getGroup(message.groupId);
-                    mckGroupService.getContactFromGroupOfTwo(group, function (user) {
-                        contacts = mckMessageLayout.fetchContact(user);
-                    });
-                    if (isGroupTab && IS_MCK_OL_STATUS && w.MCK_OL_MAP[contacts.contactId]) {
-                        olStatus = 'vis';
-                        prepend = true;
-                    }
-                }
                 var isContHeader = 'n-vis';
                 if (typeof conversationPxy === 'object' && IS_MCK_TOPIC_HEADER) {
                     var topicDetail = MCK_TOPIC_DETAIL_MAP[conversationPxy.topicId];
@@ -10432,8 +10397,7 @@ const firstVisibleMsg = {
                     $mck_text_box.blur();
                 }
                 document.getElementById('mck-text-box').setAttribute('data-quick-reply', false);
-                document.getElementById('mck-char-warning') &&
-                    document.getElementById('mck-char-warning').classList.add('n-vis');
+                kommunicateCommons.hide('#mck-char-warning');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
@@ -10633,8 +10597,7 @@ const firstVisibleMsg = {
                     }
                     if (
                         contact.isGroup &&
-                        contact.type !== KommunicateConstants.GROUP_TYPE.SELLER &&
-                        contact.type !== KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO
+                        contact.type !== KommunicateConstants.GROUP_TYPE.SELLER
                     ) {
                         var msgFrom =
                             message.to.split(',')[0] === MCK_USER_ID
@@ -10687,7 +10650,7 @@ const firstVisibleMsg = {
                                 ? 'Image attachment'
                                 : 'File attachment';
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
+                    if (contact.isGroup && contact.type !== 3) {
                         var msgFrom =
                             message.to.split(',')[0] === MCK_USER_ID
                                 ? 'Me'
@@ -10995,30 +10958,10 @@ const firstVisibleMsg = {
                                             return;
                                         }
                                     } else {
-                                        if (contact.type === 7) {
-                                            var contacts;
-                                            var group = mckGroupUtils.getGroup(message.groupId);
-                                            mckGroupService.getContactFromGroupOfTwo(
-                                                group,
-                                                function (user) {
-                                                    contacts = mckMessageLayout.fetchContact(user);
-                                                }
-                                            );
-                                            mckUserUtils.lastSeenOfGroupOfTwo(contacts.contactId);
-                                            mckMessageLayout.addMessage(
-                                                message,
-                                                contact,
-                                                true,
-                                                true,
-                                                validated
-                                            );
-                                        }
-
                                         if (
                                             !message.metadata ||
                                             (message.metadata.category !== 'HIDDEN' &&
-                                                message.metadata.hide !== 'true' &&
-                                                contact.type !== 7) ||
+                                                message.metadata.hide !== 'true') ||
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty('KM_ASSIGN_TO') ||
                                                     message.metadata.hasOwnProperty(
@@ -11367,18 +11310,6 @@ const firstVisibleMsg = {
                         }
                     }
                 });
-            };
-            _this.lastSeenOfGroupOfTwo = function (tabId) {
-                if (w.MCK_OL_MAP[tabId]) {
-                    $mck_tab_status.attr('title', MCK_LABELS['online']).html(MCK_LABELS['online']);
-                    // kommunicateCommons.show('#mck-tab-status');
-                } else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
-                    var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
-                    $mck_tab_status.html(lastSeenAt);
-                    $mck_tab_status.attr('title', lastSeenAt);
-                    $mck_tab_title.addClass('mck-tab-title-w-status');
-                    // kommunicateCommons.show('#mck-tab-status');
-                }
             };
             _this.toggleBlockUser = function (tabId, isBlocked) {
                 if (isBlocked) {
@@ -11915,7 +11846,7 @@ const firstVisibleMsg = {
                 });
             };
             _this.removeWarningsFromTextBox = function () {
-                kommunicateCommons.modifyClassList({ id: ['mck-char-warning'] }, 'n-vis', '');
+                kommunicateCommons.hide('#mck-char-warning');
                 var textBox = document.getElementById('mck-text-box');
                 var spanContent;
                 if (document.getElementById('mck-text-warning-span')) {
@@ -12051,10 +11982,6 @@ const firstVisibleMsg = {
                 } else {
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
                     kommunicateCommons.hide('#mck-tab-status');
-                }
-                if (group.type === 7) {
-                    $mck_tab_status.html('');
-                    kommunicateCommons.hide('.mck-group-menu-options');
                 }
             };
             _this.disableGroupTab = function () {
@@ -13822,11 +13749,6 @@ const firstVisibleMsg = {
                                             $mck_typing_label.html(
                                                 displayName + ' ' + MCK_LABELS['is.typing']
                                             );
-                                        }
-                                        if (group.type === 7) {
-                                            $mck_tab_title.addClass('mck-tab-title-w-typing');
-                                            $mck_typing_label.html(MCK_LABELS['is.typing']);
-                                            $mck_tab_status.html('');
                                         }
                                     }
                                 } else {
