@@ -457,6 +457,9 @@ KommunicateUtils = {
             return false;
         }
     },
+    getBooleanOption: function (value, defaultValue) {
+        return typeof value === 'boolean' ? value : defaultValue;
+    },
     formatParams: function (params) {
         return (
             '?' +
