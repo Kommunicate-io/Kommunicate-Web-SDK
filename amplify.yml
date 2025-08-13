@@ -39,5 +39,5 @@ frontend:
     cache:
         paths:
             - node_modules/**/*
-            - webplugin/template/mck-icons.svg
+            - webplugin/template/mck-icons.js
             # - package-lock.json

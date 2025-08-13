@@ -40,6 +40,10 @@ function ApplozicSidebox() {
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
+        {
+            name: 'mck-icons',
+            url: MCK_STATICPATH + '/build/mck-icons.js',
+        },
     ];
     var mck_style_loader = [
         {

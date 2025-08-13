@@ -1,3 +1,8 @@
+(function () {
+    var insert = function () {
+        var div = document.createElement('div');
+        div.style.display = 'none';
+        div.innerHTML = `
 <svg xmlns="http://www.w3.org/2000/svg">
     <symbol id="icon-1" viewBox="0 0 24 24">
         <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
@@ -475,3 +480,12 @@
         <path d="M0 0h24v24H0z" fill="none" />
     </symbol>
 </svg>
+`;
+        document.body.insertBefore(div, document.body.firstChild);
+    };
+    if (document.body) {
+        insert();
+    } else {
+        document.addEventListener('DOMContentLoaded', insert);
+    }
+})();

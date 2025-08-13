@@ -172,15 +172,6 @@ const combineJsFiles = async () => {
 
 const minifyHtml = (paths, outputDir, fileName) => {
     gulp.src(paths)
-        .pipe(
-            tap((file) => {
-                file.contents = Buffer.from(
-                    file.contents
-                        .toString()
-                        .replace(/MCK_ICON_SVG/g, `${pathToResource}/mck-icons.svg`)
-                );
-            })
-        )
         .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
         .on('error', console.error)
         .pipe(concat(fileName))
@@ -270,8 +261,8 @@ const generateBuildFiles = () => {
         resourceLocation,
         `mck-sidebox.${version}.html`
     );
-    // Copy SVG icons sprite to build folder.
-    copyFileToBuild('template/mck-icons.svg', `${resourceLocation}/mck-icons.svg`);
+    // Copy SVG icons script to build folder.
+    copyFileToBuild('template/mck-icons.js', `${resourceLocation}/mck-icons.js`);
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
         if (err) {
