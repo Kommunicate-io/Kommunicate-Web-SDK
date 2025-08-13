@@ -50,10 +50,16 @@ Kommunicate.attachmentEventHandler = {
         if (Kommunicate.internetStatus) {
             if (!stopUploadIconHidden && uploadIconHidden) {
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                kommunicateCommons.hide('.km-progress-stop-upload-icon-' + msgkey);
-                kommunicateCommons.show('.km-progress-upload-icon-' + msgkey);
+                $applozic('.km-progress-stop-upload-icon-' + msgkey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
+                $applozic('.km-progress-upload-icon-' + msgkey)
+                    .removeClass('n-vis')
+                    .addClass('vis');
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                kommunicateCommons.show('.mck-timestamp-' + msgkey);
+                $applozic('.mck-timestamp-' + msgkey)
+                    .removeClass('n-vis')
+                    .addClass('vis');
                 deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'block';
             } else {
                 var fileName = attachmentDiv[0].dataset.filename;
@@ -93,10 +99,10 @@ Kommunicate.attachmentEventHandler = {
                         .closest('.km-msg-box-progressMeter')
                         .children()
                         .removeClass('km-progress-meter-back-drop');
-                    kommunicateCommons.hide(
-                        $applozic(e.target).closest('.km-msg-box-progressMeter')
-                    );
-                    kommunicateCommons.show('.mck-timestamp-' + msgkey);
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').addClass('n-vis');
+                    $applozic('.mck-timestamp-' + msgkey)
+                        .removeClass('n-vis')
+                        .addClass('vis');
                     deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display =
                         'none';
                 } else if (thumbnailUrl && groupId && msgkey && file) {
@@ -122,7 +128,9 @@ Kommunicate.attachmentEventHandler = {
                     };
                     KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     $applozic.fn.applozic('uploadAttachemnt', params);
-                    kommunicateCommons.show('.mck-timestamp-' + msgkey);
+                    $applozic('.mck-timestamp-' + msgkey)
+                        .removeClass('n-vis')
+                        .addClass('vis');
                     deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display =
                         'none';
                     delete KM_PENDING_ATTACHMENT_FILE[msgkey];
@@ -174,15 +182,27 @@ Kommunicate.attachmentEventHandler = {
 
         if (stopSending) {
             KommunicateUI.updateAttachmentStopUploadStatus(msgKey, true);
-            kommunicateCommons.hide({
-                class: [
-                    'km-attachment-progress-bar-success-' + msgKey,
-                    'km-attachment-progress-bar-wrapper-' + msgKey,
-                ],
-            });
-            kommunicateCommons.show({ class: ['mck-timestamp-' + msgKey] });
-            kommunicateCommons.hide('.km-attachment-cancel-icon-' + msgKey);
-            kommunicateCommons.show('.km-attachment-upload-icon-' + msgKey);
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [
+                        'km-attachment-progress-bar-success-' + msgKey,
+                        'km-attachment-progress-bar-wrapper-' + msgKey,
+                    ],
+                },
+                'n-vis',
+                'vis'
+            );
+            kommunicateCommons.modifyClassList(
+                { class: ['mck-timestamp-' + msgKey] },
+                'vis',
+                'n-vis'
+            );
+            $applozic('.km-attachment-cancel-icon-' + msgKey)
+                .removeClass('vis')
+                .addClass('n-vis');
+            $applozic('.km-attachment-upload-icon-' + msgKey)
+                .removeClass('n-vis')
+                .addClass('vis');
             deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'block';
         } else {
             var fileName = attachmentDiv[0].dataset.filename;
@@ -218,10 +238,18 @@ Kommunicate.attachmentEventHandler = {
                     optns: optns,
                 };
                 $applozic.fn.applozic('submitMessage', params);
-                kommunicateCommons.hide('.km-attachment-cancel-icon-' + msgKey);
-                kommunicateCommons.hide('.km-attachment-upload-icon-' + msgKey);
+                $applozic('.km-attachment-cancel-icon-' + msgKey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
+                $applozic('.km-attachment-upload-icon-' + msgKey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
                 deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'none';
-                kommunicateCommons.hide({ class: ['mck-timestamp-' + msgKey] });
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-timestamp-' + msgKey] },
+                    'n-vis',
+                    'vis'
+                );
             } else if (thumbnailUrl && groupId && msgKey && file) {
                 messagePxy = {
                     contentType: 1,
@@ -245,7 +273,11 @@ Kommunicate.attachmentEventHandler = {
                 };
                 KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
                 $applozic.fn.applozic('uploadAttachemnt', params);
-                kommunicateCommons.show({ class: ['mck-timestamp-' + msgKey] });
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-timestamp-' + msgKey] },
+                    'vis',
+                    'n-vis'
+                );
                 deliveryStatusDiv[0].querySelector('.mck-sending-failed').style.display = 'none';
                 delete KM_PENDING_ATTACHMENT_FILE[msgKey];
             }
@@ -613,11 +645,11 @@ Kommunicate.richMsgEventHandler = {
             email[0].value == '' ||
             phone[0].value == ''
         ) {
-            kommunicateCommons.show(
-                e.target
-                    .closest('.km-guest-details-container')
-                    .querySelector('.km-mandatory-field-error')
-            );
+            $applozic(e.target)
+                .closest('.km-guest-details-container')
+                .find('.km-mandatory-field-error')
+                .removeClass('n-vis')
+                .addClass('vis');
             return;
         }
         Kommunicate.richMsgEventHandler.handleDisableCTA(e);
