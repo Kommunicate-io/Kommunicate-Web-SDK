@@ -5,7 +5,6 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
-    var $applozic = window.$applozic || window.$;
     KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
@@ -212,7 +211,7 @@ function KommunicateCommons() {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
             KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK && isWidgetOpen
-                ? $applozic.fn.applozic('initializeSocketConnection', false)
+                ? (window.$applozic || window.$).fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
                   isWidgetOpen &&
                   window.Applozic.ALSocket.checkConnected(true);
