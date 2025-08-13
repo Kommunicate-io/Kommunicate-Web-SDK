@@ -118,7 +118,26 @@ function KommunicateCommons() {
     };
 
     function changeVisibility(element, addClass, removeClass) {
-        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
+        var elems;
+        if (typeof element === 'string') {
+            elems = document.querySelectorAll(element);
+        } else if (element && (element.id || element.class)) {
+            elems = [];
+            element.id &&
+                element.id.forEach(function (id) {
+                    var el = document.getElementById(id);
+                    el && elems.push(el);
+                });
+            element.class &&
+                element.class.forEach(function (className) {
+                    var list = document.getElementsByClassName(className);
+                    for (var i = 0; i < list.length; i++) {
+                        elems.push(list[i]);
+                    }
+                });
+        } else {
+            elems = element;
+        }
         if (!elems) return elems;
         (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
             el.classList.remove(removeClass);
