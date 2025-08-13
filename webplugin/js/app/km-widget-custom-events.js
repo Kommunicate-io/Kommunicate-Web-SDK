@@ -16,8 +16,8 @@ var kmWidgetEvents = {
         try {
             if (kmWidgetEvents.gaTrackingId() && typeof window.top.gtag !== 'undefined') {
                 window.top.gtag('event', eventObject.data.eventAction, {
-                    category: eventObject.data.eventCategory,
-                    label: eventObject.data.eventLabel,
+                    event_category: eventObject.data.eventCategory,
+                    event_label: eventObject.data.eventLabel,
                     value: eventObject.data.eventValue || '',
                 });
             }
@@ -28,17 +28,19 @@ var kmWidgetEvents = {
     eventTracking: function (eventObject, customLabel, customValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
         if (kommunicateCommons.isObject(eventObject)) {
+            var data = Object.assign({}, eventObject.data);
             if (customLabel) {
-                eventObject.data.eventLabel = customLabel;
+                data.eventLabel = customLabel;
             }
             if (customValue) {
-                eventObject.data.eventValue = customValue;
+                data.eventValue = customValue;
             }
-            kmWidgetEvents.gaTrackingId() && kmWidgetEvents.sendEventToGoogleAnalytics(eventObject);
+            kmWidgetEvents.gaTrackingId() &&
+                kmWidgetEvents.sendEventToGoogleAnalytics({ data: data });
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
                 try {
-                    eventObject.eventFunction(eventObject.data);
+                    eventObject.eventFunction(data);
                 } catch (error) {
                     console.error(error);
                 }

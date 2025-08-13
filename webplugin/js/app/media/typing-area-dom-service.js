@@ -76,22 +76,18 @@ Kommunicate.typingAreaService = {
         }
     },
     hideMicButton: function () {
-        kommunicateCommons.modifyClassList({ id: ['mck-mic-animation-container'] }, 'n-vis', 'vis');
+        kommunicateCommons.hide('#mck-mic-animation-container');
     },
     showMicButton: function () {
         if (appOption && (appOption.voiceInput || appOption.voiceNote)) {
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-mic-animation-container'] },
-                'vis',
-                'n-vis'
-            );
+            kommunicateCommons.show('#mck-mic-animation-container');
         }
     },
     hideMiceRecordingAnimation: function () {
-        kommunicateCommons.modifyClassList({ id: ['mck-animation-outer'] }, 'n-vis', 'vis');
+        kommunicateCommons.hide('#mck-animation-outer');
     },
     showMicRcordingAnimation: function () {
-        kommunicateCommons.modifyClassList({ id: ['mck-animation-outer'] }, 'vis', 'n-vis');
+        kommunicateCommons.show('#mck-animation-outer');
     },
     showRecorder: function () {
         document.querySelector('#mck-textbox-container').classList.add('n-vis');

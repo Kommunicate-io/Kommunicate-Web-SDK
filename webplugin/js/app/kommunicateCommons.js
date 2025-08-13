@@ -117,22 +117,24 @@ function KommunicateCommons() {
         });
     };
 
-    function changeVisibility(element, addClass, removeClass) {
-        var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
-        if (!elems) return elems;
-        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
-            el.classList.remove(removeClass);
-            el.classList.add(addClass);
+    function changeVisibility(elements, addClass, removeClass) {
+        (Array.isArray(elements) ? elements : [elements]).forEach(function (element) {
+            var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
+            if (!elems) return;
+            (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
+                if (!el || !el.classList) return;
+                el.classList.remove(removeClass);
+                el.classList.add(addClass);
+            });
         });
-        return elems;
     }
 
-    _this.show = function (element) {
-        return changeVisibility(element, 'vis', 'n-vis');
+    _this.show = function () {
+        changeVisibility(Array.from(arguments), 'vis', 'n-vis');
     };
 
-    _this.hide = function (element) {
-        return changeVisibility(element, 'n-vis', 'vis');
+    _this.hide = function () {
+        changeVisibility(Array.from(arguments), 'n-vis', 'vis');
     };
 
     _this.setMessagePxyRecipient = function (messagePxy) {
@@ -154,67 +156,37 @@ function KommunicateCommons() {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
-    _this.isUrlValid = function (url) {
-        if (!url) return false;
-        return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
-            url
-        );
-    };
     _this.isMessageContainsUrl = function (message) {
-        var urlReg = new RegExp(
-            '([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+'
-        );
-        var extractedUrl = message ? message.match(urlReg) : '';
-        return message && extractedUrl
-            ? this.isUrlValid(extractedUrl[0])
-                ? extractedUrl[0]
-                : false
-            : false;
+        if (!message) return false;
+        var extractedUrl = message.match(/((https?|ftp):\/\/[^\s]+)/i);
+        return extractedUrl && KommunicateUtils.isURL(extractedUrl[0]) ? extractedUrl[0] : false;
     };
     _this.getTimeOrDate = function (createdAtTime) {
-        var timeStampLabels = MCK_LABELS['time.stamp'];
+        var labels = MCK_LABELS['time.stamp'];
+        var secondsPast = Math.max(0, (Date.now() - new Date(createdAtTime).getTime()) / 1000);
+        var seconds = Math.floor(secondsPast);
+        if (seconds < 60) {
+            return seconds + ' ' + (seconds <= 1 ? labels['sec.ago'] : labels['secs.ago']);
+        }
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 60) {
+            return minutes + ' ' + (minutes <= 1 ? labels['min.ago'] : labels['mins.ago']);
+        }
+        var hours = Math.floor(minutes / 60);
+        if (hours <= 48) {
+            return hours + ' ' + (hours <= 1 ? labels['hr.ago'] : labels['hrs.ago']);
+        }
         var timeStamp = new Date(createdAtTime);
-        var currentTime = new Date(),
-            secondsPast = Math.max(0, (currentTime.getTime() - timeStamp.getTime()) / 1000);
-        if (secondsPast < 60) {
-            return (
-                parseInt(secondsPast) +
-                ' ' +
-                (parseInt(secondsPast) <= 1
-                    ? timeStampLabels['sec.ago']
-                    : timeStampLabels['secs.ago'])
-            );
-        }
-        if (secondsPast < 3600) {
-            return (
-                parseInt(secondsPast / 60) +
-                ' ' +
-                (parseInt(secondsPast / 60) <= 1
-                    ? timeStampLabels['min.ago']
-                    : timeStampLabels['mins.ago'])
-            );
-        }
-        if (secondsPast <= 172800) {
-            return (
-                parseInt(secondsPast / 3600) +
-                ' ' +
-                (parseInt(secondsPast / 3600) <= 1
-                    ? timeStampLabels['hr.ago']
-                    : timeStampLabels['hrs.ago'])
-            );
-        }
-        if (secondsPast > 172800) {
-            day = timeStamp.getDate();
-            month = timeStamp
-                .toDateString()
-                .match(/ [a-zA-Z]*/)[0]
-                .replace(' ', '');
-            year =
-                timeStamp.getFullYear() == currentTime.getFullYear()
-                    ? ''
-                    : ' ' + timeStamp.getFullYear();
-            return day + ' ' + month + year;
-        }
+        var day = timeStamp.getDate();
+        var month = timeStamp
+            .toDateString()
+            .match(/ [a-zA-Z]*/)[0]
+            .replace(' ', '');
+        var year =
+            timeStamp.getFullYear() == new Date().getFullYear()
+                ? ''
+                : ' ' + timeStamp.getFullYear();
+        return day + ' ' + month + year;
     };
 
     _this.setWidgetStateOpen = function (isWidgetOpen) {
