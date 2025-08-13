@@ -107,7 +107,7 @@ function KommunicateCommons() {
                     ? document.querySelectorAll(className)
                     : document.getElementsByClassName(className);
 
-                for (let i = 0; i <= el.length - 1; i++) {
+                for (let i = 0; i < el.length; i++) {
                     el && list.push(el[i]);
                 }
             });
@@ -133,6 +133,19 @@ function KommunicateCommons() {
 
     _this.hide = function (element) {
         return changeVisibility(element, 'n-vis', 'vis');
+    };
+
+    _this.setMessagePxyRecipient = function (messagePxy) {
+        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var $mck_msg_to = $applozic('#mck-msg-to');
+        if (!$mck_msg_inner.length || !$mck_msg_to.length) {
+            return;
+        }
+        if ($mck_msg_inner.data('isgroup') === true) {
+            messagePxy.groupId = $mck_msg_to.val();
+        } else {
+            messagePxy.to = $mck_msg_to.val();
+        }
     };
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
@@ -211,7 +224,7 @@ function KommunicateCommons() {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
             KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK && isWidgetOpen
-                ? (window.$applozic || window.$).fn.applozic('initializeSocketConnection', false)
+                ? $applozic.fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
                   isWidgetOpen &&
                   window.Applozic.ALSocket.checkConnected(true);

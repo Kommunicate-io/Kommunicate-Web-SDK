@@ -503,14 +503,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     sendMessage: function (messagePxy) {
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-        var $mck_msg_to = $applozic('#mck-msg-to');
-
-        if ($mck_msg_inner.data('isgroup') === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
+        kommunicateCommons.setMessagePxyRecipient(messagePxy);
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
     getRichTextMessageTemplate: function (message) {

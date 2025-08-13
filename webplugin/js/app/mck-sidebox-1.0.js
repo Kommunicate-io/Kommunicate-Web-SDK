@@ -5002,11 +5002,7 @@ const firstVisibleMsg = {
                             $mck_autosuggest_search_input.data('prev-msgkey', '');
                         }
                         _this.hideAutoSuggestionBoxEnableTxtBox();
-                        if ($mck_msg_inner.data('isgroup') === true) {
-                            messagePxy.groupId = $mck_msg_to.val();
-                        } else {
-                            messagePxy.to = $mck_msg_to.val();
-                        }
+                        kommunicateCommons.setMessagePxyRecipient(messagePxy);
                         $mck_msg_sbmt.attr('disabled', true);
                         kommunicateCommons.hide('#mck-msg-error');
                         $mck_msg_error.html('');
@@ -5455,11 +5451,7 @@ const firstVisibleMsg = {
                     }
                     messagePxy.conversationPxy = conversationPxy;
                 }
-                if ($mck_msg_inner.data('isgroup') === true) {
-                    messagePxy.groupId = $mck_msg_to.val();
-                } else {
-                    messagePxy.to = $mck_msg_to.val();
-                }
+                kommunicateCommons.setMessagePxyRecipient(messagePxy);
                 _this.sendMessage(messagePxy);
             };
             _this.sendWelcomeMessage = function (params) {
@@ -12759,11 +12751,7 @@ const firstVisibleMsg = {
                     }
                     messagePxy.conversationPxy = conversationPxy;
                 }
-                if ($mck_msg_inner.data('isgroup') === true) {
-                    messagePxy.groupId = $mck_msg_to.val();
-                } else {
-                    messagePxy.to = $mck_msg_to.val();
-                }
+                kommunicateCommons.setMessagePxyRecipient(messagePxy);
                 $mck_msg_sbmt.attr('disabled', true);
                 kommunicateCommons.hide('#mck-msg-error');
                 $mck_msg_error.html('');
