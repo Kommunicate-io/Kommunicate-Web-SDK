@@ -28,10 +28,10 @@ Kommunicate.markup = {
     },
     getHotelCardTemplate: function (options, sessionId) {
         var starClasses = Array(5).fill('km-star-empty');
-        if (options.StarRating) {
-            for (var i = 0; i < options.StarRating && i < starClasses.length; i++) {
-                starClasses[i] = 'km-star-filled';
-            }
+        var rating = Math.floor(Number(options.StarRating) || 0);
+        rating = Math.max(0, Math.min(rating, starClasses.length));
+        for (var i = 0; i < rating; i++) {
+            starClasses[i] = 'km-star-filled';
         }
         var starMarkup = '';
         starClasses.forEach(function (cls) {
