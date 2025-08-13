@@ -173,22 +173,19 @@ $applozic.extend(true, Kommunicate, {
         if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
             return conversationDetail;
         }
-        // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
-        conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
-        conversationDetail.defaultAssignee =
-            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
-        conversationDetail.agentIds =
-            conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
-        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
-        conversationDetail.skipRouting =
-            conversationDetail.skipRouting || kommunicateSettings.skipRouting;
-        conversationDetail.skipBotEvent =
-            conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
-        conversationDetail.customWelcomeEvent =
-            conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
-        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
-        return conversationDetail;
+        return {
+            ...conversationDetail,
+            WELCOME_MESSAGE:
+                conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE,
+            defaultAssignee: conversationDetail.assignee || kommunicateSettings.defaultAssignee,
+            agentIds: conversationDetail.agentIds || kommunicateSettings.defaultAgentIds,
+            botIds: conversationDetail.botIds || kommunicateSettings.defaultBotIds,
+            skipRouting: conversationDetail.skipRouting || kommunicateSettings.skipRouting,
+            skipBotEvent: conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent,
+            customWelcomeEvent:
+                conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent,
+            teamId: conversationDetail.teamId || kommunicateSettings.teamId,
+        };
     },
     openConversationList: function () {
         kommunicateCommons.setWidgetStateOpen(true);

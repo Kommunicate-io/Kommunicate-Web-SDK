@@ -2076,8 +2076,7 @@ const firstVisibleMsg = {
                         _this.setLeadCollectionLabels();
                         kmChatLoginModal.style.visibility = 'visible';
                         kmChatLoginModal.style.display = 'none';
-                        kmAnonymousChatLauncher.classList.remove('n-vis');
-                        kmAnonymousChatLauncher.classList.add('vis');
+                        kommunicateCommons.show(kmAnonymousChatLauncher);
                         document
                             .getElementById('km-modal-close')
                             .addEventListener('click', _this.closeLeadCollectionWindow);
@@ -2115,8 +2114,7 @@ const firstVisibleMsg = {
                                     }
                                     kmChatLoginModal.style.display = 'block';
                                     !POPUP_WIDGET &&
-                                        (kmAnonymousChatLauncher.classList.remove('vis'),
-                                        kmAnonymousChatLauncher.classList.add('n-vis'));
+                                        kommunicateCommons.hide(kmAnonymousChatLauncher);
                                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                                 }
                             );
@@ -2250,8 +2248,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
-                kmAnonymousChatLauncher.classList.remove('n-vis');
-                kmAnonymousChatLauncher.classList.add('vis');
+                kommunicateCommons.show(kmAnonymousChatLauncher);
             };
 
             _this.onInitApp = function (data) {
@@ -2996,7 +2993,7 @@ const firstVisibleMsg = {
                 sendFeedbackComment.addEventListener('click', function () {
                     const isAnyRatingSelected = document.querySelector('.mck-rating-box.selected');
                     if (!isAnyRatingSelected) {
-                        ratingErrorMsgContainer.classList.remove('n-vis');
+                        kommunicateCommons.show(ratingErrorMsgContainer);
                         return;
                     }
                     kmWidgetEvents.eventTracking(eventMapping.onSubmitRatingClick);
@@ -3046,7 +3043,7 @@ const firstVisibleMsg = {
                         );
                         e.currentTarget.classList.add('selected');
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
-                            ratingErrorMsgContainer.classList.add('n-vis');
+                            kommunicateCommons.hide(ratingErrorMsgContainer);
                         if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                             if (e.currentTarget.classList[2] == 'selected') {
                                 var ratingValue = parseInt(e.currentTarget.dataset.rating);
@@ -3160,7 +3157,7 @@ const firstVisibleMsg = {
                 $applozic('#mck-sidebox-launcher').remove();
                 $applozic('body').append(_this.getLauncherHtml());
                 mckNotificationService.init();
-                document.querySelector('#mck-sidebox-launcher').classList.remove('n-vis');
+                kommunicateCommons.show('#mck-sidebox-launcher');
             };
             _this.tabFocused = function () {
                 var hidden = 'hidden';
@@ -3889,14 +3886,16 @@ const firstVisibleMsg = {
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
-                    document.getElementById('launcher-agent-img-container').classList.add('n-vis');
-                    document.getElementById('launcher-agent-img-container').classList.remove('vis');
+                    kommunicateCommons.hide(
+                        document.getElementById('launcher-agent-img-container')
+                    );
                     if (typeof CUSTOM_CHAT_LAUNCHER !== 'undefined') {
-                        document
-                            .getElementById('mck-sidebox-launcher')
-                            .childNodes[0].childNodes[0].classList.remove('n-vis');
+                        kommunicateCommons.show(
+                            document.getElementById('mck-sidebox-launcher').childNodes[0]
+                                .childNodes[0]
+                        );
                     } else {
-                        document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                        kommunicateCommons.show('#launcher-svg-container');
                     }
                 });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
@@ -4144,7 +4143,7 @@ const firstVisibleMsg = {
                                     ')';
                             }
                             document.getElementById('mck-char-count').innerHTML = remtxt;
-                            warningBox.classList.remove('n-vis');
+                            kommunicateCommons.show(warningBox);
                             if (!warningBox.classList.contains('mck-warning-slide-up')) {
                                 warningBox.classList.add('mck-warning-slide-up');
                                 warningBox.classList.remove('mck-warning-slide-down');
@@ -4158,7 +4157,7 @@ const firstVisibleMsg = {
                                 warningBox.classList.add('mck-warning-slide-down');
                                 warningBox.classList.remove('mck-warning-slide-up');
                                 setTimeout(function () {
-                                    warningBox.classList.add('n-vis');
+                                    kommunicateCommons.hide(warningBox);
                                 }, 700);
                             }
                         }
