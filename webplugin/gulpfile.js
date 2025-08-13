@@ -261,6 +261,8 @@ const generateBuildFiles = () => {
         resourceLocation,
         `mck-sidebox.${version}.html`
     );
+    // Copy SVG icons sprite to build folder.
+    copyFileToBuild('template/mck-icons.svg', `${resourceLocation}/mck-icons.svg`);
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
         if (err) {
