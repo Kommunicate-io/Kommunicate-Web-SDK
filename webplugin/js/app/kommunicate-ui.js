@@ -1587,7 +1587,7 @@ KommunicateUI = {
 
                         var selectors = ['.mck-agent-image-container', '.mck-agent-status-text'];
                         KommunicateUI.isFAQPrimaryCTA() && selectors.push('#km-faq');
-                        kommunicateCommons.show(selectors);
+                        kommunicateCommons.show.apply(kommunicateCommons, selectors);
                     }
                 }
             },

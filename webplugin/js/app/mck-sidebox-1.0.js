@@ -10031,8 +10031,8 @@ const firstVisibleMsg = {
                     showSelectors = showGroup
                         ? ['#mck-group-search-list', '#mck-group-search-input-box']
                         : ['#mck-contact-search-list', '#mck-contact-search-input-box'];
-                kommunicateCommons.hide.apply(null, hideSelectors);
-                kommunicateCommons.show.apply(null, showSelectors);
+                kommunicateCommons.hide.apply(kommunicateCommons, hideSelectors);
+                kommunicateCommons.show.apply(kommunicateCommons, showSelectors);
             };
             _this.addContactsToContactSearchList = function () {
                 kommunicateCommons.hide('#mck-no-search-contacts', '#mck-no-search-groups');
