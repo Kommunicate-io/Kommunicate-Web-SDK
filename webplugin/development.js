@@ -148,16 +148,19 @@ const generateBuildFiles = () => {
     });
 
     // Generate mck-sidebox.html file for build folder.
-    fs.copyFile(
-        path.join(__dirname, 'template/mck-sidebox.html'),
-        `${resourceLocation}/mck-sidebox.${version}.html`,
-        (err) => {
+    fs.readFile(path.join(__dirname, 'template/mck-sidebox.html'), 'utf8', (err, data) => {
+        if (err) {
+            console.log('error while generating mck-sidebox.html', err);
+            return;
+        }
+        const withSpritePath = data.replace(/MCK_ICON_SVG/g, `${pathToResource}/mck-icons.svg`);
+        fs.writeFile(`${resourceLocation}/mck-sidebox.${version}.html`, withSpritePath, (err) => {
             if (err) {
                 console.log('error while generating mck-sidebox.html', err);
             }
             console.log('mck-sidebox.html generated successfully');
-        }
-    );
+        });
+    });
 
     // Copy SVG icons sprite to build folder.
     copyFileToBuild('template/mck-icons.svg', `${resourceLocation}/mck-icons.svg`);

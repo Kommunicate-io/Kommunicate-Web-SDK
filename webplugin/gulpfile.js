@@ -172,6 +172,15 @@ const combineJsFiles = async () => {
 
 const minifyHtml = (paths, outputDir, fileName) => {
     gulp.src(paths)
+        .pipe(
+            tap((file) => {
+                file.contents = Buffer.from(
+                    file.contents
+                        .toString()
+                        .replace(/MCK_ICON_SVG/g, `${pathToResource}/mck-icons.svg`)
+                );
+            })
+        )
         .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
         .on('error', console.error)
         .pipe(concat(fileName))
