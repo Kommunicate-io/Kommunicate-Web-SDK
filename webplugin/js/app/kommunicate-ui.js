@@ -885,7 +885,7 @@ KommunicateUI = {
     loadQuickReplies: function (quickReplies) {
         var intentList = document.getElementById('mck-intent-options');
         if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
-            kommunicateCommons.modifyClassList({ id: ['mck-quick-replies-box'] }, 'vis', 'n-vis');
+            kommunicateCommons.show('#mck-quick-replies-box');
             for (var i = 0; i < quickReplies.length; i++) {
                 var li = document.createElement('li');
                 li.innerText = quickReplies[i];
@@ -1560,27 +1560,15 @@ KommunicateUI = {
                     ) {
                         waitingQueueNumber.innerHTML =
                             '#' + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
-                        kommunicateCommons.modifyClassList(
-                            {
-                                id: ['mck-waiting-queue'],
-                            },
-                            'vis',
-                            'n-vis'
+                        kommunicateCommons.show('#mck-waiting-queue');
+                        kommunicateCommons.hide(
+                            '.mck-agent-image-container',
+                            '.mck-agent-status-text'
                         );
-                        kommunicateCommons.modifyClassList(
-                            {
-                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
-                            },
-                            'n-vis',
-                            'vis'
-                        );
-                        kommunicateCommons.modifyClassList(
-                            {
-                                class: ['km-option-talk-to-human'],
-                                id: ['km-talk-to-human', 'km-restart-conversation'],
-                            },
-                            'n-vis',
-                            'vis'
+                        kommunicateCommons.hide(
+                            '.km-option-talk-to-human',
+                            '#km-talk-to-human',
+                            '#km-restart-conversation'
                         );
                         CURRENT_GROUP_DATA.isWaitingQueue = true;
                         headerTabTitle.innerHTML =
@@ -1592,24 +1580,14 @@ KommunicateUI = {
                             KommunicateUI.updateScroll(messageBody);
                         }
                     } else {
-                        kommunicateCommons.modifyClassList(
-                            {
-                                id: ['mck-waiting-queue'],
-                            },
-                            'n-vis',
-                            'vis'
-                        );
+                        kommunicateCommons.hide('#mck-waiting-queue');
 
                         headerTabTitle = document.getElementById('mck-tab-title');
                         headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
 
-                        var updateClasses = {
-                            class: ['mck-agent-image-container', 'mck-agent-status-text'],
-                        };
-
-                        KommunicateUI.isFAQPrimaryCTA() && (updateClasses.id = ['km-faq']);
-
-                        kommunicateCommons.modifyClassList(updateClasses, 'vis', 'n-vis');
+                        var selectors = ['.mck-agent-image-container', '.mck-agent-status-text'];
+                        KommunicateUI.isFAQPrimaryCTA() && selectors.push('#km-faq');
+                        kommunicateCommons.show.apply(kommunicateCommons, selectors);
                     }
                 }
             },

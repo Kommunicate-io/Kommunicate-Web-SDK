@@ -169,26 +169,22 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
-        if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
+        var settings = appOptionSession.getPropertyDataFromSession('settings') || {};
+        if (!Object.keys(settings).length) {
             return conversationDetail;
         }
-        // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
-        conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
-        conversationDetail.defaultAssignee =
-            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
-        conversationDetail.agentIds =
-            conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
-        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
-        conversationDetail.skipRouting =
-            conversationDetail.skipRouting || kommunicateSettings.skipRouting;
-        conversationDetail.skipBotEvent =
-            conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
-        conversationDetail.customWelcomeEvent =
-            conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
-        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
-        return conversationDetail;
+        return {
+            ...conversationDetail,
+            WELCOME_MESSAGE: conversationDetail.WELCOME_MESSAGE ?? settings.WELCOME_MESSAGE,
+            defaultAssignee: conversationDetail.assignee ?? settings.defaultAssignee,
+            agentIds: conversationDetail.agentIds ?? settings.defaultAgentIds,
+            botIds: conversationDetail.botIds ?? settings.defaultBotIds,
+            skipRouting: conversationDetail.skipRouting ?? settings.skipRouting,
+            skipBotEvent: conversationDetail.skipBotEvent ?? settings.skipBotEvent,
+            customWelcomeEvent:
+                conversationDetail.customWelcomeEvent ?? settings.customWelcomeEvent,
+            teamId: conversationDetail.teamId ?? settings.teamId,
+        };
     },
     openConversationList: function () {
         kommunicateCommons.setWidgetStateOpen(true);
