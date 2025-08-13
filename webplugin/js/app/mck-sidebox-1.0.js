@@ -11712,6 +11712,7 @@ const firstVisibleMsg = {
             var $mck_group_create_title = $applozic('#mck-group-create-title');
             var $mck_group_member_search = $applozic('#mck-group-member-search');
             var $mck_btn_group_icon_save = $applozic('#mck-btn-group-icon-save');
+            var $mck_btn_group_update = $applozic('#mck-btn-group-update');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_group_title = $applozic('#mck-group-name-sec .mck-group-title');
             var $mck_group_info_icon = $applozic('#mck-group-info-icon-box .mck-group-icon');
