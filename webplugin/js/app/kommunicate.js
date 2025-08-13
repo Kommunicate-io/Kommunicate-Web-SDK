@@ -169,22 +169,21 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
-        if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
+        var settings = appOptionSession.getPropertyDataFromSession('settings') || {};
+        if (!Object.keys(settings).length) {
             return conversationDetail;
         }
         return {
             ...conversationDetail,
-            WELCOME_MESSAGE:
-                conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE,
-            defaultAssignee: conversationDetail.assignee || kommunicateSettings.defaultAssignee,
-            agentIds: conversationDetail.agentIds || kommunicateSettings.defaultAgentIds,
-            botIds: conversationDetail.botIds || kommunicateSettings.defaultBotIds,
-            skipRouting: conversationDetail.skipRouting || kommunicateSettings.skipRouting,
-            skipBotEvent: conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent,
+            WELCOME_MESSAGE: conversationDetail.WELCOME_MESSAGE ?? settings.WELCOME_MESSAGE,
+            defaultAssignee: conversationDetail.assignee ?? settings.defaultAssignee,
+            agentIds: conversationDetail.agentIds ?? settings.defaultAgentIds,
+            botIds: conversationDetail.botIds ?? settings.defaultBotIds,
+            skipRouting: conversationDetail.skipRouting ?? settings.skipRouting,
+            skipBotEvent: conversationDetail.skipBotEvent ?? settings.skipBotEvent,
             customWelcomeEvent:
-                conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent,
-            teamId: conversationDetail.teamId || kommunicateSettings.teamId,
+                conversationDetail.customWelcomeEvent ?? settings.customWelcomeEvent,
+            teamId: conversationDetail.teamId ?? settings.teamId,
         };
     },
     openConversationList: function () {

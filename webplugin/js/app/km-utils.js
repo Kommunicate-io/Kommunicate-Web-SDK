@@ -450,9 +450,8 @@ KommunicateUtils = {
     },
     isURL: function (str) {
         try {
-            // URL constructor throws if the string is not a valid URL
-            new URL(str);
-            return true;
+            var url = new URL(str);
+            return url.protocol === 'http:' || url.protocol === 'https:';
         } catch (e) {
             return false;
         }

@@ -122,6 +122,7 @@ function KommunicateCommons() {
             var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
             if (!elems) return;
             (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
+                if (!el || !el.classList) return;
                 el.classList.remove(removeClass);
                 el.classList.add(addClass);
             });
