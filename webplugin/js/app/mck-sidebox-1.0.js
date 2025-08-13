@@ -2249,10 +2249,7 @@ const firstVisibleMsg = {
                     var popUpcloseButton = document.getElementById('km-popup-close-button');
                     kommunicateIframe.style.boxShadow = 'none';
                     POPUP_WIDGET && (popUpcloseButton.style.display = 'none');
-                    kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+                    Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
                 kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -2616,10 +2613,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
-                    kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
-                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+                    Kommunicate.setDefaultIframeConfigForClosedChat();
                     kommunicateCommons.modifyClassList(
                         { id: ['applozic-badge-count'] },
                         '',
