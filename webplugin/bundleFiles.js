@@ -21,6 +21,7 @@ const MAIL_PARSER_FILES = [
 exports.SENTRY_SCRIPT = [path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')];
 
 exports.THIRD_PARTY_SCRIPTS = [
+    path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
     path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
     path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
     path.resolve(__dirname, 'lib/js/mustache.js'),
