@@ -243,10 +243,10 @@ KommunicateUI = {
     hideFileBox: function (file, fileBoxSelector, $mck_file_upload) {
         var type = file && file.type;
         if (KommunicateUI.isAttachmentV2(type)) {
-            kommunicateCommons.hideElement(fileBoxSelector);
+            kommunicateCommons.hide(fileBoxSelector);
             $mck_file_upload.attr('disabled', false);
         } else {
-            kommunicateCommons.showElement(fileBoxSelector);
+            kommunicateCommons.show(fileBoxSelector);
         }
     },
     isAttachmentV2: function (mediaType) {
