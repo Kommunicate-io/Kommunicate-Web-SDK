@@ -1892,7 +1892,6 @@ const firstVisibleMsg = {
             var refreshIntervalId, offlineIntervalId;
             var $mck_file_menu = $applozic('#mck-file-menu');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            var $mck_tab_individual = $applozic('#mck-tab-individual');
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
             var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
@@ -2688,7 +2687,6 @@ const firstVisibleMsg = {
                 var sideboxLauncher = document.getElementById('mck-sidebox-launcher');
                 var sideboxCloseButton = document.getElementById('km-chat-widget-close-button');
                 var parentBody = parent && parent.document.body;
-                var parentHead = parent && parent.document.head;
                 var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
 
                 sideboxLauncher.addEventListener('click', function () {
@@ -3298,79 +3296,48 @@ const firstVisibleMsg = {
             var $mck_search = $applozic('#mck-search');
             var $mck_msg_to = $applozic('#mck-msg-to');
             var $mck_msg_new = $applozic('#mck-msg-new');
-            var $mck_audio = $applozic('#mck-audio');
-            var $mck_mike_btn = $applozic('#mck-mike-btn');
             var $mck_sidebox = $applozic('#mck-sidebox');
             var $mck_file_box = $applozic('#mck-file-box');
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_box_form = $applozic('.mck-box-form');
             var $mck_msg_form = $applozic('#mck-msg-form');
-            var $mck_msg_form_req = $applozic('.mck-text-req-error');
             var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
             var $mck_new_group = $applozic('#mck-new-group');
             var $mck_tab_title = $applozic('#mck-tab-title');
             var $mck_msg_error = $applozic('#mck-msg-error');
             var $mck_btn_attach = $applozic('#mck-btn-attach');
-            var $mck_tab_status = $applozic('#mck-tab-status');
-            var $mck_msg_cell = $applozic('#mck-message-cell');
-            var $mck_typing_box = $applozic('.mck-typing-box');
-            var $mck_gms_loading = $applozic('#mck-gms-loading');
             var $mck_group_title = $applozic('#mck-group-title');
             var $mck_loading = $applozic('#mck-contact-loading');
-            var $mck_no_messages = $applozic('#mck-no-messages');
-            var $mck_group_search = $applozic('.mck-group-search');
-            var $mck_city_search = $applozic('.mck-city-search');
-            var $mck_msg_response = $applozic('#mck-msg-response');
             var $mck_form_field = $applozic('#mck-msg-form #mck-file-input');
             var $mck_block_button = $applozic('#mck-block-button');
-            var $li_mck_block_user = $applozic('#li-mck-block-user');
             var $li_mck_group_info = $applozic('#li-mck-group-info');
             var $mck_response_text = $applozic('#mck_response_text');
             var $mck_contact_search = $applozic('.mck-contact-search');
+            var $mck_msg_error = $applozic('#mck-msg-error');
+            var $mck_tab_title = $applozic('#mck-tab-title');
+            var $mck_tab_status = $applozic('#mck-tab-status');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_price_text_box = $applozic('#mck-price-text-box');
-            var $mck_sidebox_search = $applozic('#mck-sidebox-search');
             var $mck_btn_group_info = $applozic('#mck-group-info-btn');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_btn_group_exit = $applozic('#mck-btn-group-exit');
             var $mck_group_back_link = $applozic('#mck-group-back-link');
             var $mck_btn_leave_group = $applozic('#mck-btn-leave-group');
-            var $mck_sidebox_content = $applozic('.mck-sidebox-content');
-            var $mck_no_more_messages = $applozic('#mck-no-more-messages');
             var $mck_group_add_member = $applozic('#mck-group-add-member');
-            var $mck_contacts_content = $applozic('#mck-contacts-content');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
-            var $mck_no_conversations = $applozic('#mck-no-conversations');
             var $mck_group_create_title = $applozic('#mck-group-create-title');
-            var $mck_group_menu_options = $applozic('.mck-group-menu-options');
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
-            var $mck_group_admin_options = $applozic('.mck-group-admin-options');
             var $mck_group_member_search = $applozic('#mck-group-member-search');
             var $mck_autosuggest_search_input = $applozic('#mck-autosuggest-search-input');
             var $mck_autosuggest_metadata = $applozic('#mck-autosuggest-metadata');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            var $mck_search_inner = $applozic('#mck-search-cell .mck-message-inner');
-            var $mck_no_more_conversations = $applozic('#mck-no-more-conversations');
-            var $mck_gm_search_box = $applozic('#mck-gm-search-box');
-            var $mck_group_member_search_list = $applozic('#mck-group-member-search-list');
-            var $mck_no_gsm_text = $applozic('#mck-no-gsm-text');
             const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
             var MESSAGE_LIST_URL = '/rest/ws/message/v3/list';
-            var UPDATE_REPLY_MAP = '/rest/ws/message/detail';
-            var TOPIC_ID_URL = '/rest/ws/conversation/topicId';
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
-            var CONVERSATION_ID_URL = '/rest/ws/conversation/id';
-            var MESSAGE_READ_UPDATE_URL = '/rest/ws/message/read';
-            var CONVERSATION_FETCH_URL = '/rest/ws/conversation/get';
             var MESSAGE_ADD_INBOX_URL = '/rest/ws/message/add/inbox';
-            var MESSAGE_DELIVERY_UPDATE_URL = '/rest/ws/message/delivered';
-            var CONVERSATION_CLOSE_UPDATE_URL = '/rest/ws/conversation/close';
-            var CONVERSATION_DELETE_URL = '/rest/ws/message/delete/conversation';
-            var CONVERSATION_READ_UPDATE_URL = '/rest/ws/message/read/conversation';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
             var CHANGE_BOT = '/rest/ws/group/assignee/change';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
@@ -3379,7 +3346,6 @@ const firstVisibleMsg = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
-            var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change';
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
             const BUSINESS_HOURS_URL = '/rest/ws/team/business-settings';
             _this.resetMessageSentToHumanAgent = function () {
@@ -7082,33 +7048,21 @@ const firstVisibleMsg = {
             var $li_mck_block_user = $applozic('#li-mck-block-user');
 
             var $mck_search_loading = $applozic('#mck-search-loading');
-            var $mck_tab_individual = $applozic('#mck-tab-individual');
 
             var $mck_attachfile_box = $applozic('#mck-attachfile-box');
-            var $mck_atttachmenu_box = $applozic('#mck-location-sharing-box');
-            var $mck_sidebox_content = $applozic('#mck-sidebox-content');
-
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
-            var $mck_tab_conversation = $applozic('#mck-tab-conversation');
-
             var $mck_conversation_header = $applozic('#mck-conversation-header');
-            var $mck_no_conversations = $applozic('#mck-no-conversations');
 
             var $mck_conversation_list = $applozic('#mck-conversation-list');
 
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
             var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form-container');
-            var $mck_btn_clear_messages = $applozic('#mck-btn-clear-messages');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             const voiceInterface = document.querySelector('#mck-voice-interface');
 
-            var $mck_msg_new = $applozic('#mck-msg-new');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
-            var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-            var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
-            var typingIndicatorStartTime = null;
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
@@ -8004,7 +7958,6 @@ const firstVisibleMsg = {
                     return;
                 }
                 var metadatarepiledto = '';
-                var replymessage = '';
                 var replyMsg = '';
                 var msgpreview = '';
                 var textreply = 'vis';
@@ -8114,7 +8067,6 @@ const firstVisibleMsg = {
                             ? 'n-vis'
                             : 'vis';
                 }
-                var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var msgBoxColorStyle = '';
                 var statusIcon = 'mck-pending-icon';
@@ -9038,9 +8990,6 @@ const firstVisibleMsg = {
                 var isGroupTab = contact.isGroup;
                 var displayName = _this.getTabDisplayName(contact.contactId, isGroupTab);
                 var imgsrctag = _this.getContactImageLink(contact, displayName);
-                var ucTabId = isGroupTab
-                    ? 'group_' + contact.contactId
-                    : 'user_' + contact.contactId;
                 var contHtmlExpr = isGroupTab
                     ? 'gs-group-' + contact.htmlId
                     : 'cs-user-' + contact.htmlId;
@@ -10295,8 +10244,6 @@ const firstVisibleMsg = {
                 }
             };
             _this.addContactsToContactSearchList = function () {
-                var contactsArray = [],
-                    userIdArray = [];
                 kommunicateCommons.hide('#mck-no-search-contacts');
                 kommunicateCommons.hide('#mck-no-search-groups');
                 if (!$mck_contact_search_tab.hasClass('active')) {
@@ -11407,11 +11354,9 @@ const firstVisibleMsg = {
 
         function MckUserUtils() {
             var _this = this;
-            var $mck_msg_form = $applozic('#mck-msg-form');
             var $mck_msg_error = $applozic('#mck-msg-error');
             var $mck_tab_title = $applozic('#mck-tab-title');
             var $mck_tab_status = $applozic('#mck-tab-status');
-            var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_block_button = $applozic('#mck-block-button');
             var $mck_message_inner = $applozic('#mck-message-cell .mck-message-inner');
 
@@ -11531,21 +11476,8 @@ const firstVisibleMsg = {
 
         function MckContactService() {
             var _this = this;
-            var $mck_search_List = $applozic('#mck-search-list');
-            var $mck_sidebox_search = $applozic('#mck-sidebox-search');
-            var $mck_search_loading = $applozic('#mck-search-loading');
-            var $mck_search_inner = $applozic('#mck-search-cell .mck-message-inner');
-            var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            var $mck_tab_message_option = $applozic('.mck-tab-message-option');
-            var $mck_loading = $applozic('#mck-contact-loading');
-            var USER_BLOCK_URL = '/rest/ws/user/block';
-            var CONTACT_NAME_URL = '/rest/ws/user/info';
-            var USER_DETAIL_URL = '/rest/ws/user/v2/detail';
-            var CONTACT_LIST_URL = '/rest/ws/user/filter';
-            var USER_STATUS_URL = '/rest/ws/user/chat/status';
             var USER_DISPLAY_NAME_UPDATE = '/rest/ws/user/name';
             var USER_IDENTITY_UPDATE_URL = '/rest/ws/user/change/identifier';
-            var FRIEND_LIST_URL = '/rest/ws/group/';
             _this.getContactDisplayName = function (userIdArray) {
                 var mckContactNameArray = [];
                 window.Applozic.ALApiService.getContactDisplayName({
@@ -11800,51 +11732,24 @@ const firstVisibleMsg = {
                 3: MCK_LABELS['member'],
             };
 
-            var $mck_msg_form = $applozic('#mck-msg-form');
-            var $mck_msg_error = $applozic('#mck-msg-error');
-            var $mck_tab_title = $applozic('#mck-tab-title');
-            var $mck_tab_status = $applozic('#mck-tab-status');
-            var $mck_no_gsm_text = $applozic('#mck-no-gsm-text');
-            var $mck_gms_loading = $applozic('#mck-gms-loading');
-            var $mck_loading = $applozic('#mck-contact-loading');
-            var $mck_tab_menu_box = $applozic('#mck-tab-menu-box');
-            var $mck_search_loading = $applozic('#mck-search-loading');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
-            var $mck_sidebox_search = $applozic('#mck-sidebox-search');
             var $mck_group_back_link = $applozic('#mck-group-back-link');
             var $mck_group_name_edit = $applozic('#mck-group-name-edit');
             var $mck_group_name_save = $applozic('#mck-group-name-save');
-            var $mck_sidebox_content = $applozic('#mck-sidebox-content');
-            var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
-            var $mck_contacts_content = $applozic('#mck-contacts-content');
-            var $mck_btn_group_update = $applozic('#mck-btn-group-update');
-            var $mck_group_create_type = $applozic('#mck-group-create-type');
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_member_List = $applozic('#mck-group-member-list');
-            var $mck_group_update_panel = $applozic('#mck-group-update-panel');
-            var $mck_tab_message_option = $applozic('.mck-tab-message-option');
             var $mck_group_create_title = $applozic('#mck-group-create-title');
-            var $mck_group_menu_options = $applozic('.mck-group-menu-options');
             var $mck_group_member_search = $applozic('#mck-group-member-search');
             var $mck_btn_group_icon_save = $applozic('#mck-btn-group-icon-save');
-            var $mck_group_info_icon_box = $applozic('#mck-group-info-icon-box');
-            var $mck_group_admin_options = $applozic('.mck-group-admin-options');
-            var $mck_group_add_member_box = $applozic('#mck-group-add-member-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_group_title = $applozic('#mck-group-name-sec .mck-group-title');
-            var $mck_group_create_icon_box = $applozic('#mck-group-create-icon-box');
-            var $mck_group_info_icon_loading = $applozic('#mck-group-info-icon-loading');
-            var $mck_gm_search_box = $applozic('#mck-gm-search-box');
-            var $mck_group_member_search_list = $applozic('#mck-group-member-search-list');
-            var $mck_group_create_icon_loading = $applozic('#mck-group-create-icon-loading');
             var $mck_group_info_icon = $applozic('#mck-group-info-icon-box .mck-group-icon');
             var $mck_group_create_icon = $applozic('#mck-group-create-icon-box .mck-group-icon');
             var $mck_group_create_overlay_box = $applozic(
                 '#mck-group-create-icon-box .mck-overlay-box'
             );
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
-            var warningBox = document.getElementById('mck-char-warning');
             var groupContactbox =
                 '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}" data-role="${roleVal}" data-alpha="${contFirstAlphaExpr}">' +
                 '<div class="mck-row mck-group-member-info" title="${contNameExpr}">' +
@@ -12833,14 +12738,11 @@ const firstVisibleMsg = {
         }
 
         function MckMapService() {
-            var _this = this;
             var $mck_msg_to = $applozic('#mck-msg-to');
-            var $mck_btn_loc = $applozic('#mck-btn-loc');
             var $mck_loc_box = $applozic('#mck-loc-box');
             var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
             var $mck_msg_error = $applozic('#mck-msg-error');
             var $mck_loc_submit = $applozic('#mck-loc-submit');
-            var $mck_msg_response = $applozic('#mck-msg-response');
             var $mck_response_text = $applozic('#mck_response_text');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             $mck_loc_submit.on('click', function () {
@@ -12880,7 +12782,6 @@ const firstVisibleMsg = {
 
         function MckFileService() {
             var _this = this;
-            var ONE_KB = 1024;
             var ONE_MB = 1048576;
             var UPLOAD_VIA = ['CREATE', 'UPDATE'];
             var $file_box = $applozic('#mck-file-box');
@@ -12898,19 +12799,14 @@ const firstVisibleMsg = {
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_info_icon_box = $applozic('#mck-group-info-icon-box');
-            var $mck_btn_group_icon_save = $applozic('#mck-btn-group-icon-save');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_group_create_icon_box = $applozic('#mck-group-create-icon-box');
-            var $mck_group_info_icon_loading = $applozic('#mck-group-info-icon-loading');
-            var $mck_group_create_icon_loading = $applozic('#mck-group-create-icon-loading');
             var $mck_group_info_icon = $applozic('#mck-group-info-icon-box .mck-group-icon');
             var $mck_group_create_icon = $applozic('#mck-group-create-icon-box .mck-group-icon');
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
-            var FILE_DELETE_URL = '/rest/ws/aws/file/delete';
-            var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
             var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
             var mck_filebox_tmpl =
                 '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' +
@@ -13113,7 +13009,6 @@ const firstVisibleMsg = {
                             '.km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-' +
                                 messagePxy.key
                         ));
-                    var $file_progress = $applozic('.mck-file-box.' + randomId + ' .km-progress');
                     var $file_remove = $applozic('.mck-file-box.' + randomId + ' .mck-remove-file');
                     $file_progressbar.css('width', '0%');
                     messagePxy &&
@@ -13258,7 +13153,6 @@ const firstVisibleMsg = {
                             '.km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-' +
                                 messagePxy.key
                         ));
-                    var $file_progress = $applozic('.mck-file-box.' + randomId + ' .km-progress');
                     var $file_remove = $applozic('.mck-file-box.' + randomId + ' .mck-remove-file');
                     $file_progressbar.css('width', '0%');
                     messagePxy &&
@@ -13474,7 +13368,6 @@ const firstVisibleMsg = {
                 $applozic.tmpl('fileboxTemplate', fileboxList).appendTo('#mck-file-box');
                 var $fileContainer = $applozic('.mck-file-box.' + fileboxId);
                 var $file_remove = $fileContainer.find('.mck-remove-file');
-                var $file_progress = $fileContainer.find('.progress');
                 if (typeof file.fileMeta === 'object') {
                     $fileContainer.data('mckblob', file.fileMeta.blobKey);
                     $mck_text_box.removeAttr('required');
@@ -13548,30 +13441,8 @@ const firstVisibleMsg = {
 
         function MckNotificationService() {
             var _this = this;
-            var $mck_sidebox;
-            var $mck_msg_inner;
-            var $mck_msg_preview;
-            var $mck_preview_icon;
-            var $mck_preview_name;
-            var $mck_group_info_tab;
-            var MCK_SW_SUBSCRIPTION;
-            var $mck_sidebox_launcher;
-            var $mck_preview_msg_content;
-            var $mck_preview_file_content;
-            var $mck_msg_preview_visual_indicator;
             var $mck_msg_preview_visual_indicator_text;
-            var MCK_SW_REGISTER_URL = '/rest/ws/plugin/update/sw/id';
             _this.init = function () {
-                $mck_sidebox = $applozic('#mck-sidebox');
-                // $mck_msg_preview = $applozic("#mck-msg-preview");
-                $mck_group_info_tab = $applozic('#mck-group-info-tab');
-                $mck_sidebox_launcher = $applozic('#mck-sidebox-launcher');
-                $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-                // $mck_preview_icon = $applozic("#mck-msg-preview .mck-preview-icon");
-                // $mck_preview_name = $applozic("#mck-msg-preview .mck-preview-cont-name");
-                // $mck_preview_msg_content = $applozic("#mck-msg-preview .mck-preview-msg-content");
-                // $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
-                $mck_msg_preview_visual_indicator = $applozic('#mck-msg-preview-visual-indicator');
                 $mck_msg_preview_visual_indicator_text = $applozic(
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
                 );
@@ -13923,12 +13794,9 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_sidebox = $applozic('#mck-sidebox');
             var $mck_tab_title = $applozic('#mck-tab-title');
-            var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_tab_status = $applozic('#mck-tab-status');
-            var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_typing_label = $applozic('#mck-typing-label');
             var $mck_message_inner = $applozic('#mck-message-cell .mck-message-inner');
-            var $mck_msg_inner_content = $applozic('.mck-message-inner');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
 
             _this.connectToSocket = function (isFetchMessages) {
@@ -14073,8 +13941,6 @@ const firstVisibleMsg = {
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);
-                        var $mck_sidebox_content = $applozic('#mck-sidebox-content');
-                        var tabId = $mck_message_inner.data('mck-id');
                         if (messageType === 'APPLOZIC_01' || messageType === 'MESSAGE_RECEIVED') {
                             var messageFeed = mckMessageLayout.getMessageFeed(message);
                             events.onMessageReceived({
@@ -14444,8 +14310,6 @@ const firstVisibleMsg = {
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);
-                        var $mck_sidebox_content = $applozic('#mck-sidebox-content');
-                        var tabId = $mck_message_inner.data('mck-id');
                         if (
                             resp.message.metadata &&
                             resp.message.metadata.actionRequest &&
