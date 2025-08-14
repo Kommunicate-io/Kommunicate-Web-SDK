@@ -34,6 +34,7 @@ exports.THIRD_PARTY_SCRIPTS = [
 ];
 
 exports.PLUGIN_JS_FILES = [
+    path.resolve(__dirname, 'template/mck-icons.js'),
     path.resolve(__dirname, 'js/app/components/custom-element.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),

@@ -261,13 +261,6 @@ const generateBuildFiles = () => {
         resourceLocation,
         `mck-sidebox.${version}.html`
     );
-    // Minify and copy SVG icons script to build folder with version.
-    minifyJS(
-        path.join(__dirname, 'template/mck-icons.js'),
-        resourceLocation,
-        `mck-icons.${version}.min.js`,
-        true
-    );
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
         if (err) {
@@ -294,8 +287,7 @@ const generateBuildFiles = () => {
         }
         var mckApp = data
             .replace('KOMMUNICATE_MIN_CSS', `"${pathToResource}/kommunicate.${version}.min.css"`)
-            .replace('MCK_SIDEBOX_HTML', `"${pathToResource}/mck-sidebox.${version}.html"`)
-            .replace('MCK_ICONS_JS', `"${pathToResource}/mck-icons.${version}.min.js"`);
+            .replace('MCK_SIDEBOX_HTML', `"${pathToResource}/mck-sidebox.${version}.html"`);
         fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err, data) {
             if (err) {
                 console.log('mck-file generation error');
