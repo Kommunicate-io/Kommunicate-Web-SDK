@@ -478,7 +478,7 @@ KommunicateUtils = {
     isCurrentAssigneeBot: function () {
         if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
             var currentConversationAssignee = {};
-            for (var i = 0; i <= CURRENT_GROUP_DATA.groupMembers.length; i++) {
+            for (var i = 0; i < CURRENT_GROUP_DATA.groupMembers.length; i++) {
                 if (
                     CURRENT_GROUP_DATA.groupMembers[i] &&
                     CURRENT_GROUP_DATA.groupMembers[i].userId ==

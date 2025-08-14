@@ -107,7 +107,7 @@ function KommunicateCommons() {
                     ? document.querySelectorAll(className)
                     : document.getElementsByClassName(className);
 
-                for (let i = 0; i <= el.length - 1; i++) {
+                for (let i = 0; i < el.length; i++) {
                     el && list.push(el[i]);
                 }
             });
@@ -115,6 +115,64 @@ function KommunicateCommons() {
         list.forEach(function (node) {
             _this.classListChanger(node, addClass, removeClass);
         });
+    };
+
+    function changeVisibility(element, addClass, removeClass) {
+        var elems;
+        if (typeof element === 'string') {
+            elems = document.querySelectorAll(element);
+        } else if (element && (element.id || element.class)) {
+            elems = [];
+            element.id &&
+                element.id.forEach(function (id) {
+                    var el = document.getElementById(id);
+                    el && elems.push(el);
+                });
+            element.class &&
+                element.class.forEach(function (className) {
+                    var list = document.getElementsByClassName(className);
+                    for (var i = 0; i < list.length; i++) {
+                        elems.push(list[i]);
+                    }
+                });
+        } else {
+            elems = element;
+        }
+        if (!elems) return elems;
+        (elems instanceof Element ? [elems] : Array.from(elems)).forEach(function (el) {
+            el.classList.remove(removeClass);
+            el.classList.add(addClass);
+        });
+        return elems;
+    }
+
+    _this.show = function (element) {
+        return changeVisibility(element, 'vis', 'n-vis');
+    };
+
+    _this.hide = function (element) {
+        return changeVisibility(element, 'n-vis', 'vis');
+    };
+
+    _this.setMessagePxyRecipient = function (messagePxy) {
+        var $applozic = window.$applozic;
+        if (typeof $applozic !== 'function') return;
+        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var $mck_msg_to = $applozic('#mck-msg-to');
+        if (!$mck_msg_inner.length || !$mck_msg_to.length) return;
+        var isGroupFlag = $mck_msg_inner.data('isgroup');
+        var isGroup = false;
+        if (typeof isGroupFlag === 'string') {
+            isGroup = ['true', '1'].indexOf(isGroupFlag.toLowerCase()) > -1;
+        } else {
+            isGroup = Boolean(isGroupFlag);
+        }
+        var value = $mck_msg_to.val();
+        if (isGroup) {
+            messagePxy.groupId = value;
+        } else {
+            messagePxy.to = value;
+        }
     };
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
@@ -130,9 +188,7 @@ function KommunicateCommons() {
         );
     };
     _this.isMessageContainsUrl = function (message) {
-        var urlReg = new RegExp(
-            '([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+'
-        );
+        var urlReg = /(https?:\/\/[^\s]+)/i;
         var extractedUrl = message ? message.match(urlReg) : '';
         return message && extractedUrl
             ? this.isUrlValid(extractedUrl[0])

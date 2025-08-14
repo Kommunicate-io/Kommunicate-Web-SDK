@@ -78,7 +78,6 @@ exports.PLUGIN_CSS_FILES = [
     path.resolve(__dirname, 'css/app/mck-sidebox-1.0.css'),
     path.resolve(__dirname, 'css/app/km-voice-note.css'),
     path.resolve(__dirname, 'css/app/km-rich-message.css'),
-    // path.resolve(__dirname, 'css/app/km-login-model.css'),
     path.resolve(__dirname, 'lib/css/tiny-slider-2.9.2.css'),
     path.resolve(__dirname, 'css/app/km-sidebox.css'),
     // path.resolve(__dirname, 'lib/css/intl-tel-lib.css'),

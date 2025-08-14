@@ -177,7 +177,9 @@ $applozic.extend(true, Kommunicate, {
         conversationDetail.WELCOME_MESSAGE =
             conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
         conversationDetail.defaultAssignee =
-            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
+            conversationDetail.defaultAssignee ??
+            conversationDetail.assignee ??
+            kommunicateSettings.defaultAssignee;
         conversationDetail.agentIds =
             conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
@@ -503,14 +505,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     sendMessage: function (messagePxy) {
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-        var $mck_msg_to = $applozic('#mck-msg-to');
-
-        if ($mck_msg_inner.data('isgroup') === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
+        kommunicateCommons.setMessagePxyRecipient(messagePxy);
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
     getRichTextMessageTemplate: function (message) {
@@ -643,6 +638,17 @@ $applozic.extend(true, Kommunicate, {
               popUpCloseButton && (popUpCloseButton.style.display = 'flex'))
             : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+    },
+    setDefaultIframeConfigForClosedChat: function () {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        if (kommunicateIframe) {
+            kommunicateIframe.classList.add('km-iframe-closed');
+            kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+            kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
+            kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+        }
+        var popUpCloseButton = parent.document.querySelector('#km-popup-close-button');
+        popUpCloseButton && (popUpCloseButton.style.display = 'none');
     },
     // add css to style component in window
     customizeWidgetCss: function (classSettings) {
