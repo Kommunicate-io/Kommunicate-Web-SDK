@@ -138,15 +138,38 @@ function KommunicateCommons() {
     };
 
     _this.setMessagePxyRecipient = function (messagePxy) {
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-        var $mck_msg_to = $applozic('#mck-msg-to');
-        if (!$mck_msg_inner.length || !$mck_msg_to.length) {
+        if (typeof window.$applozic !== 'function') {
             return;
         }
-        if ($mck_msg_inner.data('isgroup') === true) {
-            messagePxy.groupId = $mck_msg_to.val();
+
+        var $ = window.$applozic;
+        var $mck_msg_inner = $('#mck-message-cell .mck-message-inner');
+        var $mck_msg_to = $('#mck-msg-to');
+
+        if (!$mck_msg_inner || !$mck_msg_inner.length || !$mck_msg_to || !$mck_msg_to.length) {
+            return;
+        }
+
+        var isgroupVal =
+            typeof $mck_msg_inner.data === 'function' ? $mck_msg_inner.data('isgroup') : undefined;
+        var isGroup = false;
+        if (typeof isgroupVal !== 'undefined') {
+            var normalized = String(isgroupVal).toLowerCase();
+            isGroup =
+                normalized === 'true' ||
+                normalized === '1' ||
+                isgroupVal === true ||
+                isgroupVal === 1;
+        }
+
+        if (isGroup) {
+            if (typeof $mck_msg_to.val === 'function') {
+                messagePxy.groupId = $mck_msg_to.val();
+            }
         } else {
-            messagePxy.to = $mck_msg_to.val();
+            if (typeof $mck_msg_to.val === 'function') {
+                messagePxy.to = $mck_msg_to.val();
+            }
         }
     };
 
@@ -158,7 +181,7 @@ function KommunicateCommons() {
     };
     _this.isMessageContainsUrl = function (message) {
         if (!message) return false;
-        var extractedUrl = message.match(/((https?|ftp):\/\/[^\s]+)/i);
+        var extractedUrl = message.match(/(https?:\/\/[^\s]+)/i);
         return extractedUrl && KommunicateUtils.isURL(extractedUrl[0]) ? extractedUrl[0] : false;
     };
     _this.getTimeOrDate = function (createdAtTime) {
