@@ -42,7 +42,7 @@ function ApplozicSidebox() {
         },
         {
             name: 'mck-icons',
-            url: MCK_STATICPATH + '/build/mck-icons.js',
+            url: MCK_ICONS_JS,
         },
     ];
     var mck_style_loader = [
