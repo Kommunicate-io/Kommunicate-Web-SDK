@@ -156,8 +156,9 @@ const generateBuildFiles = () => {
         fs.writeFile(`${resourceLocation}/mck-sidebox.${version}.html`, data, (err) => {
             if (err) {
                 console.log('error while generating mck-sidebox.html', err);
+                return;
             }
-            console.log('mck-sidebox.html generated successfully');
+            console.log(`mck-sidebox.html generated successfully (v${version})`);
         });
     });
 
