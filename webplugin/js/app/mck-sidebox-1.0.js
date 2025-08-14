@@ -7289,6 +7289,8 @@ const firstVisibleMsg = {
                     $mck_msg_inner.data('mck-conversationid', params.conversationId);
                     $mck_msg_inner.data('mck-topicid', params.topicId);
                     $mck_tab_option_panel.data('tabId', params.tabId);
+                    var tabOptionPanel = document.getElementById('mck-tab-option-panel');
+                    tabOptionPanel && (tabOptionPanel.style.display = 'block');
                     kommunicateCommons.show('#mck-tab-option-panel');
                     kommunicateCommons.hide('#mck-contacts-content');
                     $modal_footer_content.removeClass('n-vis');
@@ -7387,6 +7389,9 @@ const firstVisibleMsg = {
                     $mck_msg_inner.data('mck-topicid', '');
                     kommunicateCommons.hide('#mck-price-widget');
                     $mck_msg_inner.removeClass('mck-msg-w-panel');
+                    var tabOptionPanel = document.getElementById('mck-tab-option-panel');
+                    tabOptionPanel &&
+                        tabOptionPanel.style.setProperty('display', 'none', 'important');
                     kommunicateCommons.hide('#mck-tab-option-panel', '#mck-btn-clear-messages');
                     $mck_msg_to.val('');
 
@@ -11742,6 +11747,9 @@ const firstVisibleMsg = {
                             '.mck-group-menu-options',
                             '.mck-tab-message-option'
                         );
+                        var tabOptionPanel = document.getElementById('mck-tab-option-panel');
+                        tabOptionPanel &&
+                            tabOptionPanel.style.setProperty('display', 'none', 'important');
                         kommunicateCommons.hide('#mck-tab-option-panel');
                         if (typeof OPEN_GROUP_SUBSCRIBER_MAP[group.contactId] === 'undefined') {
                             window.Applozic.ALSocket.subscribeToOpenGroup(group);
@@ -11762,6 +11770,9 @@ const firstVisibleMsg = {
                             !MCK_OPEN_GROUP_SETTINGS.allowInfoAccessGroupMembers &&
                             MCK_OPEN_GROUP_SETTINGS.deleteChatAccess !== 2
                         ) {
+                            var tabOptionPanel = document.getElementById('mck-tab-option-panel');
+                            tabOptionPanel &&
+                                tabOptionPanel.style.setProperty('display', 'none', 'important');
                             kommunicateCommons.hide('#mck-tab-option-panel');
                         }
                     }
