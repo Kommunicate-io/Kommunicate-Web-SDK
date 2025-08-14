@@ -29,14 +29,13 @@ var kmWidgetEvents = {
         // Any other analytics tool related code can be add here no need to paste it in every function
         if (kommunicateCommons.isObject(eventObject)) {
             var data = Object.assign({}, eventObject.data);
-            if (customLabel) {
+            if (customLabel !== undefined) {
                 data.eventLabel = customLabel;
             }
-            if (customValue) {
+            if (customValue !== undefined) {
                 data.eventValue = customValue;
             }
-            kmWidgetEvents.gaTrackingId() &&
-                kmWidgetEvents.sendEventToGoogleAnalytics({ data: data });
+            kmWidgetEvents.sendEventToGoogleAnalytics({ data: data });
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
                 try {

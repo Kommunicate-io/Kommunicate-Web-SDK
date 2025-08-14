@@ -176,7 +176,10 @@ $applozic.extend(true, Kommunicate, {
         return {
             ...conversationDetail,
             WELCOME_MESSAGE: conversationDetail.WELCOME_MESSAGE ?? settings.WELCOME_MESSAGE,
-            defaultAssignee: conversationDetail.assignee ?? settings.defaultAssignee,
+            defaultAssignee:
+                conversationDetail.defaultAssignee ??
+                conversationDetail.assignee ??
+                settings.defaultAssignee,
             agentIds: conversationDetail.agentIds ?? settings.defaultAgentIds,
             botIds: conversationDetail.botIds ?? settings.defaultBotIds,
             skipRouting: conversationDetail.skipRouting ?? settings.skipRouting,
