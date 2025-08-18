@@ -168,9 +168,92 @@ class AnswerFeedback {
 
         if (!msgBox || !feedbackElement) return;
         const msgBoxWidth = msgBox.offsetWidth;
+        const msgBoxHeight = msgBox.offsetHeight;
+        const richMsgBox = msgContainer.querySelector('.mck-msg-box-rich-text-container');
+        const attachmentBox = msgContainer.querySelector('.mck-attachment-box');
+        const msgText = msgContainer.querySelector('.mck-msg-text');
 
-        const feedbackWidth = msgBoxWidth + 40;
-        feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
+        let finalWidth = msgBoxWidth;
+        if (richMsgBox && richMsgBox.offsetWidth > 0) {
+            finalWidth = Math.max(finalWidth, richMsgBox.offsetWidth);
+        }
+
+        if (attachmentBox && attachmentBox.offsetWidth > 0) {
+            finalWidth = Math.max(finalWidth, attachmentBox.offsetWidth);
+        }
+
+        if (msgText && msgText.offsetWidth > 0) {
+            finalWidth = Math.max(finalWidth, msgText.offsetWidth);
+        }
+
+        const containerWidth = msgContainer.offsetWidth;
+        const maxAllowedWidth = containerWidth - 60; // Leave some margin
+        const feedbackWidth = Math.min(Math.max(finalWidth + 40, 120), maxAllowedWidth);
+
+        feedbackElement.style.left = `${feedbackWidth}px`;
+        if (msgBoxHeight > 0) {
+            feedbackElement.style.bottom = '5px';
+        }
+        feedbackElement.style.visibility = 'visible';
+    };
+
+    retryFeedbackPositioning = (msgKey, maxRetries = 3, delay = 100) => {
+        let retryCount = 0;
+
+        const attemptPositioning = () => {
+            const msgContainer = document.querySelector(`[data-msgKey='${msgKey}']`);
+            if (!msgContainer) return;
+
+            const msgBox = msgContainer.querySelector('.mck-msg-box');
+            if (!msgBox || msgBox.offsetWidth === 0) {
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    setTimeout(attemptPositioning, delay);
+                }
+                return;
+            }
+            this.handleFeedbackPositioning(msgKey);
+            this.setupMutationObserver(msgKey, msgContainer);
+        };
+
+        attemptPositioning();
+    };
+
+    setupMutationObserver = (msgKey, msgContainer) => {
+        const observer = new MutationObserver((mutations) => {
+            let shouldReposition = false;
+
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                    const target = mutation.target;
+                    if (
+                        target.classList.contains('mck-msg-box') ||
+                        target.classList.contains('mck-msg-box-rich-text-container') ||
+                        target.classList.contains('mck-attachment-box') ||
+                        target.classList.contains('mck-msg-text')
+                    ) {
+                        shouldReposition = true;
+                    }
+                }
+            });
+
+            if (shouldReposition) {
+                clearTimeout(this.repositionTimeout);
+                this.repositionTimeout = setTimeout(() => {
+                    this.handleFeedbackPositioning(msgKey);
+                }, 50);
+            }
+        });
+
+        observer.observe(msgContainer, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'style'],
+        });
+
+        if (!this.observers) this.observers = {};
+        this.observers[msgKey] = observer;
     };
 
     attachEventListeners = (data) => {
@@ -185,10 +268,8 @@ class AnswerFeedback {
         const helpfulButton = msgContainer.querySelector('.answer-feedback-helpful');
         const notHelpfulButton = msgContainer.querySelector('.answer-feedback-not-helpful');
 
-        // Handle feedback positioning after the element is rendered
-        setTimeout(() => {
-            this.handleFeedbackPositioning(msg.key);
-        }, 0);
+        // Handle feedback positioning after the element is rendered with retry mechanism
+        this.retryFeedbackPositioning(msg.key);
 
         const setFeedback = (feedback) => {
             const iconToAdd = KommunicateConstants.ANSWER_FEEDBACK_ICONS[feedback];

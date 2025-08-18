@@ -42,6 +42,9 @@
     justify-content: flex-end;
     align-items: center;
     gap: 6px;
+    z-index: 10;
+    pointer-events: auto;
+    transition: left 0.1s ease-out;
 
     & svg {
         stroke: $text-primary-color;
