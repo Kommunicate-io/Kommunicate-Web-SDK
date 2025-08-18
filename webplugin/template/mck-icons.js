@@ -1,6 +1,10 @@
 (function () {
     var insert = function () {
+        if (document.getElementById('mck-icon-sprite')) {
+            return;
+        }
         var div = document.createElement('div');
+        div.id = 'mck-icon-sprite';
         div.style.display = 'none';
         div.innerHTML = `
 <svg xmlns="http://www.w3.org/2000/svg">
@@ -405,6 +409,9 @@
 `;
         document.body.insertBefore(div, document.body.firstChild);
     };
+    if (document.getElementById('mck-icon-sprite')) {
+        return;
+    }
     if (document.body) {
         insert();
     } else {
