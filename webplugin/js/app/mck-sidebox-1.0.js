@@ -20,6 +20,17 @@ const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
 const TALK_TO_HUMAN = 'Talk to human';
 
+// DataTransferItemList in some browsers doesn't implement forEach.
+// This polyfill ensures paste handlers using `items.forEach` don't crash.
+if (
+    typeof window !== 'undefined' &&
+    window.DataTransferItemList &&
+    window.DataTransferItemList.prototype &&
+    !window.DataTransferItemList.prototype.forEach
+) {
+    window.DataTransferItemList.prototype.forEach = Array.prototype.forEach;
+}
+
 var userOverride = {
     voiceOutput: true,
 };
