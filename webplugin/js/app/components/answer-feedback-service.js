@@ -23,6 +23,7 @@ class AnswerFeedback {
          * @type {Array.<string>}
          */
         this.msgKeyMap = [];
+        this.repositionTimeouts = Object.create(null);
     }
 
     /**
@@ -222,24 +223,28 @@ class AnswerFeedback {
     setupMutationObserver = (msgKey, msgContainer) => {
         const observer = new MutationObserver((mutations) => {
             let shouldReposition = false;
-
-            mutations.forEach((mutation) => {
+            for (const mutation of mutations) {
                 if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                    const target = mutation.target;
+                    const el =
+                        mutation.target.nodeType === 1
+                            ? mutation.target
+                            : mutation.target.parentElement;
                     if (
-                        target.classList.contains('mck-msg-box') ||
-                        target.classList.contains('mck-msg-box-rich-text-container') ||
-                        target.classList.contains('mck-attachment-box') ||
-                        target.classList.contains('mck-msg-text')
+                        el &&
+                        el.closest?.(
+                            '.mck-msg-box, .mck-msg-box-rich-text-container, .mck-attachment-box, .mck-msg-text'
+                        )
                     ) {
                         shouldReposition = true;
+                        break;
                     }
                 }
-            });
+            }
 
             if (shouldReposition) {
-                clearTimeout(this.repositionTimeout);
-                this.repositionTimeout = setTimeout(() => {
+                if (!this.repositionTimeouts) this.repositionTimeouts = {};
+                clearTimeout(this.repositionTimeouts[msgKey]);
+                this.repositionTimeouts[msgKey] = setTimeout(() => {
                     this.handleFeedbackPositioning(msgKey);
                 }, 50);
             }
@@ -253,8 +258,21 @@ class AnswerFeedback {
         });
 
         if (!this.observers) this.observers = {};
+        // Disconnect any existing observer for this message to avoid leaks/duplicates
+        this.observers[msgKey]?.disconnect();
         this.observers[msgKey] = observer;
     };
+
+    disconnectObserver(msgKey) {
+        if (this.observers?.[msgKey]) {
+            this.observers[msgKey].disconnect();
+            delete this.observers[msgKey];
+        }
+        if (this.repositionTimeouts?.[msgKey]) {
+            clearTimeout(this.repositionTimeouts[msgKey]);
+            delete this.repositionTimeouts[msgKey];
+        }
+    }
 
     attachEventListeners = (data) => {
         const { msg } = data;

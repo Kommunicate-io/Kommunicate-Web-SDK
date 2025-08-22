@@ -66,9 +66,33 @@ window['APPLOZIC'] ||
                 },
                 onMessageDeleted: function (obj) {
                     w.console.log(obj);
+                    if (
+                        window.Kommunicate &&
+                        window.Kommunicate.ui &&
+                        window.Kommunicate.ui.answerFeedbackService
+                    ) {
+                        window.Kommunicate.ui.answerFeedbackService.disconnectObserver(
+                            obj.messageKey
+                        );
+                    }
                 },
                 onConversationDeleted: function (obj) {
                     w.console.log(obj);
+                    // Clean up all observers for the conversation
+                    if (
+                        window.Kommunicate &&
+                        window.Kommunicate.ui &&
+                        window.Kommunicate.ui.answerFeedbackService
+                    ) {
+                        var observers = window.Kommunicate.ui.answerFeedbackService.observers;
+                        if (observers) {
+                            Object.keys(observers).forEach(function (msgKey) {
+                                window.Kommunicate.ui.answerFeedbackService.disconnectObserver(
+                                    msgKey
+                                );
+                            });
+                        }
+                    }
                 },
                 onUserConnect: function (obj) {
                     w.console.log(obj);
@@ -279,6 +303,14 @@ window['APPLOZIC'] ||
                         data: data,
                         success: function (data) {
                             resp.status = data === 'success' ? 'success' : 'error';
+                            if (
+                                resp.status === 'success' &&
+                                window.Kommunicate &&
+                                window.Kommunicate.ui &&
+                                window.Kommunicate.ui.answerFeedbackService
+                            ) {
+                                window.Kommunicate.ui.answerFeedbackService.disconnectObserver(key);
+                            }
                             if (typeof callback === 'function') {
                                 callback(resp);
                             }
@@ -500,16 +532,43 @@ window['APPLOZIC'] ||
                                 messageKey: resp.message.split(',')[0],
                             });
                         } else if (messageType === 'APPLOZIC_05') {
+                            const messageKey = resp.message.split(',')[0];
                             events.onMessageDeleted({
-                                messageKey: resp.message.split(',')[0],
+                                messageKey: messageKey,
                                 userKey: resp.message.split(',')[1],
                             });
+                            // Cleanup observer for deleted message
+                            if (
+                                window.Kommunicate &&
+                                window.Kommunicate.ui &&
+                                window.Kommunicate.ui.answerFeedbackService
+                            ) {
+                                window.Kommunicate.ui.answerFeedbackService.disconnectObserver(
+                                    messageKey
+                                );
+                            }
                         } else if (messageType === 'APPLOZIC_06') {
                             var userId = resp.message;
                             if (typeof userId !== 'undefined') {
                                 events.onConversationDeleted({
                                     userKey: userId,
                                 });
+                                // Cleanup all observers when conversation is deleted
+                                if (
+                                    window.Kommunicate &&
+                                    window.Kommunicate.ui &&
+                                    window.Kommunicate.ui.answerFeedbackService
+                                ) {
+                                    var observers =
+                                        window.Kommunicate.ui.answerFeedbackService.observers;
+                                    if (observers) {
+                                        Object.keys(observers).forEach(function (msgKey) {
+                                            window.Kommunicate.ui.answerFeedbackService.disconnectObserver(
+                                                msgKey
+                                            );
+                                        });
+                                    }
+                                }
                             }
                         } else if (messageType === 'APPLOZIC_11') {
                             events.onUserConnect({
