@@ -8449,10 +8449,11 @@ const firstVisibleMsg = {
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 
-                answerFeedbackService.attachEventListeners({
-                    msg,
-                    assigneeKey: groupAssigneeKey,
-                });
+                showHelpfulButtons &&
+                    answerFeedbackService.attachEventListeners({
+                        msg,
+                        assigneeKey: groupAssigneeKey,
+                    });
 
                 kmMailProcessor.processMail(msg, contact, emlMessage);
 
