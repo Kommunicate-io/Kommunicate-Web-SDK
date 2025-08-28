@@ -12754,7 +12754,7 @@ const firstVisibleMsg = {
                     $file_progressbar.css('width', '0%');
                     messagePxy &&
                         Kommunicate.attachmentEventHandler.progressMeter(0, messagePxy.key);
-                    kommunicateCommons.show('.mck-file-box.' + randomId + ' .km-progress');
+                    kommunicateCommons.show('#mck-filebox-' + randomId + ' .km-progress');
                     $file_remove.attr('disabled', true);
                     $mck_file_upload.attr('disabled', true);
                     KommunicateUI.hideFileBox(file, '#mck-file-box', $mck_file_upload);
@@ -12816,7 +12816,7 @@ const firstVisibleMsg = {
                             $mck_msg_sbmt.attr('disabled', false);
                             delete TAB_FILE_DRAFT[uniqueId];
                             $file_name.html(fileExpr);
-                            kommunicateCommons.hide('.mck-file-box.' + randomId + ' .km-progress');
+                            kommunicateCommons.hide('#mck-filebox-' + randomId + ' .km-progress');
                             kommunicateCommons.hide('.mck-file-box .km-progress');
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
@@ -12896,7 +12896,7 @@ const firstVisibleMsg = {
                     $file_progressbar.css('width', '0%');
                     messagePxy &&
                         Kommunicate.attachmentEventHandler.progressMeter(0, messagePxy.key);
-                    kommunicateCommons.show('.mck-file-box.' + randomId + ' .km-progress');
+                    kommunicateCommons.show('#mck-filebox-' + randomId + ' .km-progress');
                     $file_remove.attr('disabled', true);
                     $mck_file_upload.attr('disabled', true);
                     KommunicateUI.hideFileBox(file, '#mck-file-box', $mck_file_upload);
@@ -12979,7 +12979,7 @@ const firstVisibleMsg = {
                             $mck_msg_sbmt.attr('disabled', false);
                             delete TAB_FILE_DRAFT[uniqueId];
                             $file_name.html(fileExpr);
-                            kommunicateCommons.hide('.mck-file-box.' + randomId + ' .km-progress');
+                            kommunicateCommons.hide('#mck-filebox-' + randomId + ' .km-progress');
                             kommunicateCommons.hide('.mck-file-box .km-progress');
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
