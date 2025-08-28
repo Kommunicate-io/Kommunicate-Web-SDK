@@ -2945,6 +2945,16 @@ const firstVisibleMsg = {
                     };
                     _this.sendFeedback(feedbackObject);
                 });
+                function updateStarFillFromValue(val) {
+                    try {
+                        var labels = document.querySelectorAll('.star-rating label');
+                        var n = parseInt(val, 10) || 0;
+                        labels.forEach(function (lbl, idx) {
+                            lbl.classList.toggle('filled', idx <= n - 1);
+                        });
+                    } catch (err) {}
+                }
+
                 for (var i = 0; i < ratingStars.length; i++) {
                     ratingStars[i].addEventListener('click', function (e) {
                         kommunicateCommons.show('#csat-2');
@@ -2956,6 +2966,10 @@ const firstVisibleMsg = {
                         );
                         kommunicateCommons.show('.mck-feedback-text-wrapper');
                         e.currentTarget.classList.add('selected');
+                        // Ensure stars 1..N appear filled immediately
+                        updateStarFillFromValue(
+                            e.currentTarget.value || e.currentTarget.dataset.rating
+                        );
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             kommunicateCommons.hide(ratingErrorMsgContainer);
                         if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
