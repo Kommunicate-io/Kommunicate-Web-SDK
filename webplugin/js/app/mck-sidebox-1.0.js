@@ -2270,8 +2270,8 @@ const firstVisibleMsg = {
                             null,
                             function (err, checkIfUserHasConversations) {
                                 err && console.log(err);
-                                checkIfUserHasConversations &&
-                                    KommunicateCommons.IS_WIDGET_OPEN &&
+                                (checkIfUserHasConversations ||
+                                    KommunicateCommons.IS_WIDGET_OPEN) &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
                                         IS_REINITIALIZE
@@ -2313,7 +2313,7 @@ const firstVisibleMsg = {
                         const maxAttempts = 10;
 
                         const reconnectInterval = setInterval(() => {
-                            if (window.Applozic.ALSocket.stompClient.connected) {
+                            if (window.Applozic.ALSocket?.stompClient?.connected) {
                                 console.log('Socket already connected. Stopping retry.');
                                 clearInterval(reconnectInterval);
                                 return;
