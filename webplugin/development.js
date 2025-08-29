@@ -148,16 +148,19 @@ const generateBuildFiles = () => {
     });
 
     // Generate mck-sidebox.html file for build folder.
-    fs.copyFile(
-        path.join(__dirname, 'template/mck-sidebox.html'),
-        `${resourceLocation}/mck-sidebox.${version}.html`,
-        (err) => {
+    fs.readFile(path.join(__dirname, 'template/mck-sidebox.html'), 'utf8', (err, data) => {
+        if (err) {
+            console.log('error while generating mck-sidebox.html', err);
+            return;
+        }
+        fs.writeFile(`${resourceLocation}/mck-sidebox.${version}.html`, data, (err) => {
             if (err) {
                 console.log('error while generating mck-sidebox.html', err);
+                return;
             }
-            console.log('mck-sidebox.html generated successfully');
-        }
-    );
+            console.log(`mck-sidebox.html generated successfully (v${version})`);
+        });
+    });
 
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
