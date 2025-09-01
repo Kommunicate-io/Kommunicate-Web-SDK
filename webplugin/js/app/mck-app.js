@@ -587,6 +587,8 @@ function ApplozicSidebox() {
 
             options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
             options.voiceChatApiKey = options.voiceChatApiKey || data.voiceChatApiKey;
+            options.storageSuffix =
+                typeof options.storageSuffix == 'string' ? options.storageSuffix : '';
             appOptionSession.deletePropertyDataFromSession('settings');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
