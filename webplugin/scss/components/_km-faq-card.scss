@@ -36,12 +36,11 @@
 .km-faq-list--body_que-ans {
     padding: 10px 12px;
     /*width: calc(100% - 106px);*/
-    max-height: auto;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
 }
 .km-faq-list--body_que-ans * {
-    white-space: wrap;
+    white-space: normal;
 }
 .km-faq-list--body_list li > a:hover {
     background-color: #efefef;
@@ -56,7 +55,7 @@
     .km-faq-list--body_ans {
         color: $text-primary-color;
         font-size: $heading-secondary;
-        white-space: wrap;
+        white-space: normal;
         overflow: hidden;
     }
 
