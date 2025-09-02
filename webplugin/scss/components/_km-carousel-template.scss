@@ -45,9 +45,7 @@
         margin-top: 4px;
         font-weight: 400;
         overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        white-space: wrap;
         padding-right: 20px;
     }
 
@@ -63,7 +61,6 @@
         overflow: hidden;
         position: relative;
         line-height: 14.4px;
-        max-height: 43.2px;
         margin-right: 12px;
         padding-right: 12px;
         margin-top: 4px;
