@@ -36,16 +36,12 @@
 .km-faq-list--body_que-ans {
     padding: 10px 12px;
     /*width: calc(100% - 106px);*/
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-height: 51px;
+    max-height: auto;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
 }
 .km-faq-list--body_que-ans * {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    white-space: wrap;
 }
 .km-faq-list--body_list li > a:hover {
     background-color: #efefef;
@@ -60,8 +56,7 @@
     .km-faq-list--body_ans {
         color: $text-primary-color;
         font-size: $heading-secondary;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: wrap;
         overflow: hidden;
     }
 

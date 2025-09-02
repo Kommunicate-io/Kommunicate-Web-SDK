@@ -33,11 +33,10 @@
         font-stretch: normal;
         line-height: normal;
         letter-spacing: 0.6px;
-        text-overflow: ellipsis;
+
         overflow: hidden;
-        white-space: nowrap;
+        white-space: wrap;
         max-width: 220px;
-        text-overflow: ellipsis;
     }
     &-sub-title {
         font-size: $heading-secondary;
@@ -75,7 +74,7 @@
         text-overflow: ellipsis;
 
         &-wrapper {
-            height: 44px;
+            min-height: 44px;
         }
 
         &:before {
