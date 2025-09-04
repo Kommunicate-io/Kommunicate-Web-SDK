@@ -841,7 +841,15 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        if (kommunicate._globals.noFocus || kommunicateCommons.checkIfDeviceIsHandheld()) {
+        var isTouchDevice =
+            typeof window !== 'undefined' &&
+            window.matchMedia &&
+            window.matchMedia('(pointer:coarse)').matches;
+        if (
+            kommunicate._globals.noFocus ||
+            kommunicateCommons.checkIfDeviceIsHandheld() ||
+            isTouchDevice
+        ) {
             return;
         }
         $applozic('#mck-text-box').focus();
