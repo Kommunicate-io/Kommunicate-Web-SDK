@@ -374,6 +374,7 @@ $applozic.extend(true, Kommunicate, {
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmCookieStorage.deleteUserCookiesOnLogout();
+        appOptionSession.removeAppInstanceCount();
         window.Sentry && window.Sentry.close();
         parent.window && parent.window.removeKommunicateScripts();
     },
