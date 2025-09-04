@@ -840,7 +840,8 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        !kommunicateCommons.checkIfDeviceIsHandheld() && $applozic('#mck-text-box').focus();
+        var isTouchDevice = kommunicateCommons.isTouchDevice();
+        !isTouchDevice && $applozic('#mck-text-box').focus();
     },
     setAvailabilityStatus: function (status) {
         kommunicateCommons.show('.mck-agent-image-container');
@@ -1333,7 +1334,7 @@ KommunicateUI = {
         var isPopupEnabled =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.popup &&
-            (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
+            (kommunicateCommons.isTouchDevice() ? enableGreetingMessage : true);
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey =
             (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) ||

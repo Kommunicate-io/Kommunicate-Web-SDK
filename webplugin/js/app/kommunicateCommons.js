@@ -247,6 +247,15 @@ function KommunicateCommons() {
         return check;
     };
 
+    _this.isTouchDevice = function () {
+        return (
+            _this.checkIfDeviceIsHandheld() ||
+            (typeof window !== 'undefined' &&
+                window.matchMedia &&
+                window.matchMedia('(pointer:coarse)').matches)
+        );
+    };
+
     _this.removeHtmlTag = function (html) {
         var temporalDivElement = document.createElement('div');
         temporalDivElement.innerHTML = html;

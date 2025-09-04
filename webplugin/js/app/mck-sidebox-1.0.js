@@ -630,8 +630,7 @@ const firstVisibleMsg = {
         var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick || false;
         var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
-        kommunicateCommons.checkIfDeviceIsHandheld() &&
-            (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
+        kommunicateCommons.isTouchDevice() && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
 
         _this.toggleMediaOptions = function () {
             var mckTypingBox = document.getElementById('mck-text-box');
@@ -2499,7 +2498,7 @@ const firstVisibleMsg = {
             };
 
             _this.configurePopupWidget = function () {
-                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                !kommunicateCommons.isTouchDevice() &&
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-sidebox'] },
                         'popup-enabled',
@@ -2601,12 +2600,12 @@ const firstVisibleMsg = {
                 var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
 
                 sideboxLauncher.addEventListener('click', function () {
-                    kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    kommunicateCommons.isTouchDevice() &&
                         (parentBody && parentBody.classList.add('mck-restrict-scroll'),
                         parentHtmlTag && parentHtmlTag.classList.add('mck-restrict-scroll'));
                 });
                 sideboxCloseButton.addEventListener('click', function () {
-                    kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    kommunicateCommons.isTouchDevice() &&
                         (parentBody && parentBody.classList.remove('mck-restrict-scroll'),
                         parentHtmlTag && parentHtmlTag.classList.remove('mck-restrict-scroll'));
                 });
