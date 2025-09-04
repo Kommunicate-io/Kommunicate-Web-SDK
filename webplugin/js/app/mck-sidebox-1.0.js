@@ -437,6 +437,10 @@ const firstVisibleMsg = {
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
+        const IS_MULTI_WIDGET =
+            typeof applozic._globals.storageSuffix == 'string'
+                ? Boolean(applozic._globals.storageSuffix)
+                : false;
         var INTL_TEL_INSTANCE;
         //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_VOLUME =
@@ -3804,7 +3808,7 @@ const firstVisibleMsg = {
                     if (err || !result || !result.response) {
                         console.log('error while fetching group detail by type', err);
                         return;
-                    } else if (result.response.length == 0) {
+                    } else if (result.response.length == 0 || IS_MULTI_WIDGET) {
                         var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                         mckMessageService.createNewConversation(
                             conversationDetail,

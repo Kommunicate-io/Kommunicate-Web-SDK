@@ -29,6 +29,26 @@ class KmSessionStorage extends KmStorage {
 
         sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
     };
+
+    setAppInstanceCount = () => {
+        sessionStorage.setItem(
+            'kmAppInstanceCount',
+            (parseInt(sessionStorage.getItem('kmAppInstanceCount') || '0') + 1).toString()
+        );
+    };
+
+    getAppInstanceCount = () => {
+        return parseInt(sessionStorage.getItem('kmAppInstanceCount') || 0);
+    };
+
+    removeAppInstanceCount = (clear) => {
+        const count = parseInt(sessionStorage.getItem('kmAppInstanceCount') || '0');
+        if (count > 1 && !clear) {
+            sessionStorage.setItem('kmAppInstanceCount', (count - 1).toString());
+        } else {
+            sessionStorage.removeItem('kmAppInstanceCount');
+        }
+    };
 }
 
 const appOptionSession = new KmSessionStorage();

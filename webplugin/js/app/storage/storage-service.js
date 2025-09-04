@@ -2,13 +2,13 @@ class KmStorage {
     constructor(key) {
         this.appId = applozic._globals.appId;
 
-        const storageSuffix = applozic._globals.storageSuffix
+        this.storageSuffix = applozic._globals.storageSuffix
             ? `-${applozic._globals.storageSuffix}`
             : '';
 
         this.userSessionKey = `${key || KommunicateConstants.KOMMUNICATE_SESSION_KEY}-${
             this.appId
-        }${storageSuffix}`;
+        }${this.storageSuffix}`;
     }
 
     isSessionStorageAvailable = function () {

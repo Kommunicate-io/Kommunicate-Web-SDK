@@ -29,6 +29,7 @@ function ApplozicSidebox() {
         {
             name: 'applozic-min-js',
             url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.8.min.js',
+            // url: 'http://localhost:2299/applozic.chat.min.js',
             alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.8.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
@@ -403,6 +404,8 @@ function ApplozicSidebox() {
 
     async function mckInitSidebox(data, randomUserId) {
         try {
+            appOptionSession.setAppInstanceCount();
+
             var options = applozic._globals;
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
@@ -823,6 +826,7 @@ function ApplozicSidebox() {
             var details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
             kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
+            appOptionSession.removeAppInstanceCount(true);
         });
     }
 }
