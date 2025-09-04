@@ -221,6 +221,14 @@ function KommunicateCommons() {
         return check;
     };
 
+    _this.isTouchDevice = function () {
+        return (
+            typeof window !== 'undefined' &&
+            window.matchMedia &&
+            window.matchMedia('(pointer:coarse)').matches
+        );
+    };
+
     _this.removeHtmlTag = function (html) {
         var temporalDivElement = document.createElement('div');
         temporalDivElement.innerHTML = html;

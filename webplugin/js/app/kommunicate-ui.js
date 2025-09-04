@@ -841,14 +841,10 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        var isTouchDevice =
-            typeof window !== 'undefined' &&
-            window.matchMedia &&
-            window.matchMedia('(pointer:coarse)').matches;
         if (
             kommunicate._globals.noFocus ||
             kommunicateCommons.checkIfDeviceIsHandheld() ||
-            isTouchDevice
+            kommunicateCommons.isTouchDevice()
         ) {
             return;
         }

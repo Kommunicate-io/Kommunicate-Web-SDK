@@ -3,11 +3,7 @@ var appOption = appOptionSession.getPropertyDataFromSession('appOptions') || app
 Kommunicate.typingAreaService = {
     populateText: function (text) {
         $applozic('#mck-text-box').text(text);
-        var isTouchDevice =
-            typeof window !== 'undefined' &&
-            window.matchMedia &&
-            window.matchMedia('(pointer:coarse)').matches;
-        if (!kommunicateCommons.checkIfDeviceIsHandheld() && !isTouchDevice) {
+        if (!kommunicateCommons.checkIfDeviceIsHandheld() && !kommunicateCommons.isTouchDevice()) {
             $applozic('#mck-text-box').focus();
         }
         this.setCursorAtTheEndOfInputString();
