@@ -231,9 +231,6 @@ function KommunicateCommons() {
     };
 
     _this.checkIfDeviceIsHandheld = function () {
-        if (typeof window === 'undefined' || typeof navigator === 'undefined') {
-            return false;
-        }
         var check = false;
         (function (deviceInfo) {
             if (
@@ -248,21 +245,6 @@ function KommunicateCommons() {
             }
         })(navigator.userAgent || navigator.vendor || window.opera);
         return check;
-    };
-
-    _this.isTouchDevice = function () {
-        if (typeof window === 'undefined' || typeof navigator === 'undefined') {
-            return false;
-        }
-        if (window.matchMedia) {
-            if (
-                window.matchMedia('(pointer: coarse)').matches ||
-                window.matchMedia('(any-pointer: coarse)').matches
-            ) {
-                return true;
-            }
-        }
-        return _this.checkIfDeviceIsHandheld();
     };
 
     _this.removeHtmlTag = function (html) {
