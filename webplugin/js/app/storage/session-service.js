@@ -42,7 +42,7 @@ class KmSessionStorage extends KmStorage {
     };
 
     getAppInstanceCount = () => {
-        return parseInt(sessionStorage.getItem(this.getAppInstanceCountKey()) || 0);
+        return parseInt(sessionStorage.getItem(this.getAppInstanceCountKey()) || '0', 10);
     };
 
     removeAppInstanceCount = (clear) => {
