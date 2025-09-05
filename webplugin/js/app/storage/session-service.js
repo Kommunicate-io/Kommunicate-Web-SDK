@@ -30,23 +30,28 @@ class KmSessionStorage extends KmStorage {
         sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
     };
 
+    getAppInstanceCountKey = () => {
+        const appId = applozic._globals.appId;
+
+        return `kmAppInstanceCount-${appId}`;
+    };
+
     setAppInstanceCount = () => {
-        sessionStorage.setItem(
-            'kmAppInstanceCount',
-            (parseInt(sessionStorage.getItem('kmAppInstanceCount') || '0') + 1).toString()
-        );
+        const key = this.getAppInstanceCountKey();
+        sessionStorage.setItem(key, (parseInt(sessionStorage.getItem(key) || '0') + 1).toString());
     };
 
     getAppInstanceCount = () => {
-        return parseInt(sessionStorage.getItem('kmAppInstanceCount') || 0);
+        return parseInt(sessionStorage.getItem(this.getAppInstanceCountKey()) || 0);
     };
 
     removeAppInstanceCount = (clear) => {
-        const count = parseInt(sessionStorage.getItem('kmAppInstanceCount') || '0');
+        const key = this.getAppInstanceCountKey();
+        const count = parseInt(sessionStorage.getItem(key) || '0');
         if (count > 1 && !clear) {
-            sessionStorage.setItem('kmAppInstanceCount', (count - 1).toString());
+            sessionStorage.setItem(key, (count - 1).toString());
         } else {
-            sessionStorage.removeItem('kmAppInstanceCount');
+            sessionStorage.removeItem(key);
         }
     };
 }
