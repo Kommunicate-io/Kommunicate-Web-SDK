@@ -3456,7 +3456,7 @@ const firstVisibleMsg = {
                     $mck_sidebox.mckModal();
                     $mck_msg_inner.html('');
                 }
-                $mck_msg_to.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() && $mck_msg_to.focus();
             };
             _this.isWithinBusinessHours = function (team) {
                 try {
@@ -7214,7 +7214,7 @@ const firstVisibleMsg = {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
                 }
-                $mck_msg_to.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() && $mck_msg_to.focus();
             };
 
             _this.loadTab = function (params, callback) {

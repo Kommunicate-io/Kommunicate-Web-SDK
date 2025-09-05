@@ -11,9 +11,6 @@ Kommunicate.typingAreaService = {
     setCursorAtTheEndOfInputString: function (el) {
         el = el || document.getElementById('mck-text-box');
         if (el.childNodes.length !== 0) {
-            if (kommunicateCommons.checkIfDeviceIsHandheld()) {
-                return;
-            }
             el.focus();
             if (
                 typeof window.getSelection != 'undefined' &&
