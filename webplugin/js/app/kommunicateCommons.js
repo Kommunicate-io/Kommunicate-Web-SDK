@@ -231,21 +231,24 @@ function KommunicateCommons() {
     };
 
     _this.checkIfDeviceIsHandheld = function () {
-        // 1) Chromium UA-Client Hints
-        try {
-            if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
-                return navigator.userAgentData.mobile;
-            }
-        } catch (e) {}
+        // Guard for SSR/non-browser environments
+        if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+            return false;
+        }
 
+        // 1) Chromium UA-Client Hints
+        var uaData = navigator.userAgentData;
+        if (uaData && typeof uaData.mobile === 'boolean') {
+            return uaData.mobile;
+        }
+
+        // Acquire UA string once after environment checks
         var ua = navigator.userAgent || navigator.vendor || window.opera || '';
 
         // 2) iPadOS 13+ reports as Mac; detect via touch points
-        try {
-            if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) {
-                return true;
-            }
-        } catch (e) {}
+        if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) {
+            return true;
+        }
 
         // 3) User-Agent fallback for phones and tablets
         var isPhone = /Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
@@ -255,11 +258,12 @@ function KommunicateCommons() {
         }
 
         // 4) Coarse pointer as last resort
-        try {
-            if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-                return true;
-            }
-        } catch (e) {}
+        if (
+            typeof window.matchMedia === 'function' &&
+            window.matchMedia('(pointer: coarse)').matches
+        ) {
+            return true;
+        }
 
         return false;
     };
