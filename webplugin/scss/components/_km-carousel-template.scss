@@ -33,11 +33,10 @@
         font-stretch: normal;
         line-height: normal;
         letter-spacing: 0.6px;
-        text-overflow: ellipsis;
+
         overflow: hidden;
-        white-space: nowrap;
+        white-space: normal;
         max-width: 220px;
-        text-overflow: ellipsis;
     }
     &-sub-title {
         font-size: $heading-secondary;
@@ -45,10 +44,8 @@
         letter-spacing: 0.5px;
         margin-top: 4px;
         font-weight: 400;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+
+        white-space: normal;
         padding-right: 20px;
     }
 
@@ -64,7 +61,6 @@
         overflow: hidden;
         position: relative;
         line-height: 14.4px;
-        max-height: 43.2px;
         margin-right: 12px;
         padding-right: 12px;
         margin-top: 4px;
@@ -72,10 +68,8 @@
         letter-spacing: 0.5px;
         height: auto;
         white-space: pre-line;
-        text-overflow: ellipsis;
-
         &-wrapper {
-            height: 44px;
+            min-height: 44px;
         }
 
         &:before {
