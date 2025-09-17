@@ -17,6 +17,9 @@ class MckVoice {
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
         this.messagesQueue = [];
+        this.visualizerCleanup = null;
+        this.queueToken = 0;
+        this.currentTtsAbortController = null;
 
         // to check if audio is empty before sending to server
         this.hasSoundDetected = false;
@@ -30,14 +33,34 @@ class MckVoice {
         try {
             this.messagesQueue.push({ msg, displayName });
             if (this.messagesQueue.length === 1) {
-                this.processNextMessage(msg, displayName);
+                const token = this.queueToken;
+                this.processNextMessage(msg, displayName, token);
+                return;
             }
+            console.log('Already processing a message, queued this message.', this.messagesQueue);
         } catch (err) {
             console.error(err);
         }
     }
 
-    async processNextMessage(msg, displayName) {
+    preConnectDomain() {
+        const head = document.head || document.getElementsByTagName('head')[0];
+
+        if (head.querySelector('link[href="https://api.elevenlabs.io"]')) {
+            return;
+        }
+
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = 'https://api.elevenlabs.io';
+        link.crossOrigin = 'anonymous';
+
+        head.appendChild(link);
+    }
+    async processNextMessage(msg, displayName, token = this.queueToken) {
+        if (token !== this.queueToken) {
+            return;
+        }
         try {
             const rawMessage = typeof msg.message === 'string' ? msg.message : '';
             const messageWithoutSource = rawMessage
@@ -47,15 +70,37 @@ class MckVoice {
             this.agentOrBotName = displayName;
             this.agentOrBotLastMsg = messageWithoutSource;
 
-            const response = await kmVoice.textToSpeechStream(messageWithoutSource);
+            this.abortCurrentTts();
+            const controller = new AbortController();
+            this.currentTtsAbortController = controller;
 
-            this.playAudioWithMediaSource(response);
+            const response = await kmVoice.textToSpeechStream(messageWithoutSource, {
+                signal: controller.signal,
+            });
+
+            if (token !== this.queueToken) {
+                this.abortCurrentTts();
+                return;
+            }
+
+            this.playAudioWithMediaSource(response, token);
         } catch (err) {
             console.error(err);
+            this.currentTtsAbortController = null;
+            this.cleanupVisualizer();
+            this.advanceQueue({
+                onEmpty: () => {
+                    this.removeAllAnimation();
+                    this.hideRepeatControls();
+                },
+            });
         }
     }
 
-    async playAudioWithMediaSource(response) {
+    async playAudioWithMediaSource(response, token = this.queueToken) {
+        if (token !== this.queueToken) {
+            return;
+        }
         const audio = new Audio();
         this.audioElement = audio;
 
@@ -71,6 +116,20 @@ class MckVoice {
             });
 
             await sourceOpenPromise;
+
+            if (token !== this.queueToken) {
+                try {
+                    if (mediaSource.readyState === 'open') {
+                        mediaSource.endOfStream();
+                    }
+                } catch (e) {
+                    console.error('Failed to end media source on stale token:', e);
+                }
+                this.audioElement = null;
+                audio.src = '';
+                URL.revokeObjectURL(mediaSourceUrl);
+                return;
+            }
 
             const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
             const bufferQueue = [];
@@ -98,10 +157,22 @@ class MckVoice {
 
             const reader = response.body.getReader();
 
-            audio.onerror = (e) => {
+            audio.addEventListener('error', (e) => {
                 console.error(e, 'media source play error');
+                if (token !== this.queueToken) {
+                    return;
+                }
+                this.cleanupVisualizer();
                 this.audioElement = null;
-            };
+                this.currentTtsAbortController = null;
+                URL.revokeObjectURL(mediaSourceUrl);
+                this.advanceQueue({
+                    onEmpty: () => {
+                        this.removeAllAnimation();
+                        this.hideRepeatControls();
+                    },
+                });
+            });
 
             audio.addEventListener(
                 'canplay',
@@ -118,63 +189,79 @@ class MckVoice {
             );
 
             audio.addEventListener('ended', () => {
-                this.messagesQueue.shift();
-
-                if (this.messagesQueue.length > 0) {
-                    const nextMsg = this.messagesQueue[0];
-
-                    // Clean up visualizer before starting next message
-                    if (this.visualizerCleanup) {
-                        this.visualizerCleanup();
-                        this.visualizerCleanup = null;
-                    }
-
-                    this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                if (token !== this.queueToken) {
                     return;
                 }
+                this.currentTtsAbortController = null;
+                this.cleanupVisualizer();
 
-                const lastMsgElement = document.querySelector('.last-message-text');
+                this.advanceQueue({
+                    onEmpty: () => {
+                        const lastMsgElement = document.querySelector('.last-message-text');
 
-                lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
-                    this.agentOrBotLastMsg.slice(0, 100) +
-                    (this.agentOrBotLastMsg.length > 100 ? '...' : '')
-                }`;
+                        if (lastMsgElement) {
+                            lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
+                                this.agentOrBotLastMsg.slice(0, 100) +
+                                (this.agentOrBotLastMsg.length > 100 ? '...' : '')
+                            }`;
 
-                lastMsgElement.classList.remove('mck-hidden');
-                const finalBlob = new Blob(fullChunks, { type: 'audio/mpeg' });
-                const blobUrl = URL.createObjectURL(finalBlob);
+                            lastMsgElement.classList.remove('mck-hidden');
+                        }
 
-                this.agentOrBotLastMsgAudio = blobUrl;
+                        const finalBlob = new Blob(fullChunks, { type: 'audio/mpeg' });
+                        const blobUrl = URL.createObjectURL(finalBlob);
 
-                document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
+                        this.agentOrBotLastMsgAudio = blobUrl;
 
-                // Clean up visualizer but don't remove animation yet
-                if (this.visualizerCleanup) {
-                    this.visualizerCleanup();
-                    this.visualizerCleanup = null;
-                }
+                        document
+                            .getElementById('mck-voice-repeat-last-msg')
+                            ?.classList.remove('mck-hidden');
 
-                // Hide other rings
-                kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
+                        // Hide other rings
+                        kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
 
-                // Apply receding animation to the first ring
-                const ring1 = document.querySelector('.voice-ring-1');
-                ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
-                ring1.classList.add('ring-recede');
+                        // Apply receding animation to the first ring
+                        const ring1 = document.querySelector('.voice-ring-1');
+                        ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+                        ring1.classList.add('ring-recede');
 
-                console.log('Playback ended, starting recede animation');
+                        console.log('Playback ended, starting recede animation');
 
-                // Wait for animation to complete before removing all classes
-                setTimeout(() => {
-                    ring1.classList.remove('ring-recede');
-                    this.removeAllAnimation();
-                }, 800); // Match this to animation duration in CSS
+                        // Wait for animation to complete before removing all classes
+                        setTimeout(() => {
+                            ring1.classList.remove('ring-recede');
+                            this.removeAllAnimation();
+                        }, 800); // Match this to animation duration in CSS
+                    },
+                });
+
                 this.audioElement = null;
+                URL.revokeObjectURL(mediaSourceUrl);
             });
 
-            async function processStream() {
+            const processStream = async () => {
                 while (true) {
+                    if (token !== this.queueToken) {
+                        try {
+                            await reader.cancel();
+                            if (mediaSource.readyState === 'open') {
+                                mediaSource.endOfStream();
+                            }
+                        } catch (error) {}
+                        URL.revokeObjectURL(mediaSourceUrl);
+                        return;
+                    }
                     const { done, value } = await reader.read();
+                    if (token !== this.queueToken) {
+                        try {
+                            await reader.cancel();
+                            if (mediaSource.readyState === 'open') {
+                                mediaSource.endOfStream();
+                            }
+                        } catch (error) {}
+                        URL.revokeObjectURL(mediaSourceUrl);
+                        return;
+                    }
                     if (done) {
                         isStreamEnded = true;
                         if (bufferQueue.length === 0 && !sourceBuffer.updating) {
@@ -196,9 +283,11 @@ class MckVoice {
                         }
                     }
                 }
-            }
+            };
 
-            processStream();
+            processStream().catch((error) => {
+                console.error('Error while processing audio stream:', error);
+            });
         } catch (err) {
             console.error(err);
             if (mediaSource.readyState === 'open') {
@@ -206,6 +295,7 @@ class MckVoice {
                     mediaSource.endOfStream();
                 } catch (e) {}
             }
+            URL.revokeObjectURL(mediaSourceUrl);
         }
     }
 
@@ -232,10 +322,7 @@ class MckVoice {
                 const lastMsgElement = document.querySelector('.last-message-text');
 
                 // Clean up visualizer but don't remove animation yet
-                if (this.visualizerCleanup) {
-                    this.visualizerCleanup();
-                    this.visualizerCleanup = null;
-                }
+                this.cleanupVisualizer();
 
                 lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
                     this.agentOrBotLastMsg.slice(0, 100) +
@@ -292,7 +379,7 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
-            this.stopRecording(true);
+            this.resetState();
 
             kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body');
 
@@ -307,7 +394,7 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
-            this.stopRecording(true);
+            this.resetState();
             kommunicateCommons.modifyClassList(
                 { class: ['mck-voice-repeat-last-msg', 'last-message-text'] },
                 'mck-hidden'
@@ -513,6 +600,101 @@ class MckVoice {
             ring.style.opacity = '';
             ring.style.zIndex = '';
         });
+    }
+
+    abortCurrentTts() {
+        if (!this.currentTtsAbortController) {
+            return;
+        }
+
+        try {
+            this.currentTtsAbortController.abort();
+        } catch (error) {
+            console.error('Error while aborting TTS request:', error);
+        } finally {
+            this.currentTtsAbortController = null;
+        }
+    }
+
+    resetState() {
+        try {
+            this.stopRecording(true);
+        } catch (error) {
+            console.error('Error while stopping recording during reset:', error);
+        }
+
+        this.abortCurrentTts();
+        this.queueToken += 1;
+        this.stopAudio();
+        this.cleanupVisualizer();
+        this.removeAllAnimation();
+        this.hideRepeatControls();
+
+        this.messagesQueue.length = 0;
+        this.audioChunks = [];
+        this.isRecording = false;
+        if (this.stream) {
+            try {
+                this.stream.getTracks().forEach((track) => track.stop());
+            } catch (error) {
+                console.error('Error while stopping audio tracks during reset:', error);
+            }
+        }
+        this.stream = null;
+        if (this.silenceTimer) {
+            clearInterval(this.silenceTimer);
+            this.silenceTimer = null;
+        }
+        this.hasSoundDetected = false;
+        this.soundSamples = 0;
+        this.totalSamples = 0;
+        this.agentOrBotName = '';
+        this.agentOrBotLastMsg = '';
+        this.agentOrBotLastMsgAudio = null;
+        this.audioElement = null;
+        this.mediaRecorder = null;
+    }
+
+    cleanupVisualizer() {
+        if (!this.visualizerCleanup) {
+            return;
+        }
+
+        try {
+            this.visualizerCleanup();
+        } catch (error) {
+            console.error('Error while cleaning up visualizer:', error);
+        } finally {
+            this.visualizerCleanup = null;
+        }
+    }
+
+    hideRepeatControls() {
+        const repeatBtn = document.getElementById('mck-voice-repeat-last-msg');
+        repeatBtn && repeatBtn.classList.add('mck-hidden');
+
+        const lastMsgElement = document.querySelector('.last-message-text');
+        if (lastMsgElement) {
+            lastMsgElement.classList.add('mck-hidden');
+            lastMsgElement.innerHTML = '';
+        }
+    }
+
+    advanceQueue({ onEmpty } = {}) {
+        const token = this.queueToken;
+        if (this.messagesQueue.length > 0) {
+            this.messagesQueue.shift();
+        }
+
+        if (this.messagesQueue.length > 0) {
+            const nextMsg = this.messagesQueue[0];
+            this.processNextMessage(nextMsg.msg, nextMsg.displayName, token);
+            return;
+        }
+
+        if (typeof onEmpty === 'function') {
+            onEmpty();
+        }
     }
 
     createAudioVisualizer(audioElement) {

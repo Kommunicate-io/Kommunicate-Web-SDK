@@ -2551,6 +2551,9 @@ const firstVisibleMsg = {
                 function closeChatBox() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                     kommunicateCommons.setWidgetStateOpen(false);
+                    if (appOptions.voiceChat) {
+                        mckVoice.resetState();
+                    }
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
                     Kommunicate.setDefaultIframeConfigForClosedChat();
@@ -2562,11 +2565,12 @@ const firstVisibleMsg = {
                 closeButton.addEventListener('click', closeChatBox);
 
                 if (appOptions.voiceChat) {
+                    mckVoice.preConnectDomain();
                     mckVoice.addEventListeners();
                     document
                         .querySelector('.mck-voice-interface-back-btn')
                         .addEventListener('click', function () {
-                            mckVoice.stopRecording(true);
+                            mckVoice.resetState();
 
                             kommunicateCommons.hide('#mck-voice-interface');
 
@@ -7310,7 +7314,9 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('#mck-tab-option-panel');
                     kommunicateCommons.hide('#mck-contacts-content');
                     $modal_footer_content.removeClass('n-vis');
-                    kommunicateCommons.show('#mck-sidebox-ft');
+                    kommunicateCommons.hide('#mck-voice-interface');
+                    document.querySelector('.mck-box-top')?.classList.remove('n-vis');
+                    kommunicateCommons.show('.mck-box-body', '#mck-sidebox-ft');
 
                     appOptions.voiceChat && mckVoice.showMic(appOptions);
                     kommunicateCommons.show('#mck-btn-clear-messages');

@@ -4,7 +4,12 @@ class Voice {
 
     textToSpeechStream(
         text = '',
-        { voiceId = 'pMsXgVXv3BLzUgSXRplE', outputFormat = 'mp3_22050_32', voiceSettings } = {}
+        {
+            voiceId = 'pMsXgVXv3BLzUgSXRplE',
+            outputFormat = 'mp3_22050_32',
+            voiceSettings,
+            signal,
+        } = {}
     ) {
         const query = new URLSearchParams({
             output_format: outputFormat,
@@ -32,6 +37,7 @@ class Voice {
             headers: headers,
             body: JSON.stringify(payload),
             cache: 'no-store',
+            signal,
         })
             .then((response) => {
                 if (!response.ok) {
