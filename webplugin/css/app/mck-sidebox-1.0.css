@@ -5780,3 +5780,34 @@ div#mck-waiting-queue {
     width: 200px;
 }
 /* ----------------------------------------------------------------- */
+#mck-voice-interface .mck-voice-interface-body .mck-voice-status-text {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    color: #ffffff;
+    opacity: 0.85;
+    min-height: 20px;
+}
+
+#mck-voice-interface .mck-voice-interface-footer-buttons > button {
+    cursor: pointer;
+}
+
+#mck-voice-interface .mck-voice-interface-footer-buttons > button:disabled,
+#mck-voice-interface .mck-voice-interface-footer-buttons > button.mck-voice-btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+#mck-voice-interface .mck-voice-interface-footer-buttons > button .mck-voice-btn-text {
+    font-size: 14px;
+    font-weight: 600;
+}
+#mck-voice-interface .mck-voice-interface-back-btn {
+    gap: 8px;
+}
+
+#mck-voice-interface .mck-voice-interface-back-btn .mck-voice-btn-text {
+    font-size: 14px;
+    font-weight: 600;
+}

@@ -219,10 +219,14 @@ class KMLabel {
                 notHelpful: 'Not Helpful',
             },
             'voiceInterface': {
+                ready: 'Tap the mic to talk to the bot',
                 speak: 'Click to Speak',
                 chat: 'Click to Chat',
                 back: 'Back',
                 repeatLastMsg: 'Hear response again',
+                listening: 'Listening...',
+                thinking: 'Thinking...',
+                speaking: 'Speaking...',
             },
         };
     }
@@ -348,14 +352,48 @@ class KMLabel {
         document.getElementById('km-option-faq-text').innerHTML =
             MCK_LABELS['conversation.header.dropdown'].FAQ;
 
-        document.getElementById('mck-voice-speak-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].speak;
-        document.getElementById('mck-voice-chat-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].chat;
-        document.getElementById('mck-voice-interface-back-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].back;
-        document.getElementById('mck-voice-repeat-last-msg').innerHTML +=
-            MCK_LABELS['voiceInterface'].repeatLastMsg;
+        const voiceLabels = MCK_LABELS['voiceInterface'] || {};
+
+        const voiceStatusText = document.getElementById('mck-voice-status-text');
+        if (voiceStatusText) {
+            voiceStatusText.innerText = voiceLabels.ready || '';
+        }
+
+        const speakBtn = document.getElementById('mck-voice-speak-btn');
+        const speakBtnLabel = document.getElementById('mck-voice-speak-btn-label');
+        if (speakBtn) {
+            speakBtn.setAttribute('aria-label', voiceLabels.speak || 'Click to Speak');
+        }
+        if (speakBtnLabel) {
+            speakBtnLabel.innerText = voiceLabels.speak || 'Click to Speak';
+        }
+
+        const chatBtn = document.getElementById('mck-voice-chat-btn');
+        const chatBtnLabel = document.getElementById('mck-voice-chat-btn-label');
+        if (chatBtn) {
+            chatBtn.setAttribute('aria-label', voiceLabels.chat || 'Click to Chat');
+        }
+        if (chatBtnLabel) {
+            chatBtnLabel.innerText = voiceLabels.chat || 'Click to Chat';
+        }
+
+        const backBtn = document.getElementById('mck-voice-interface-back-btn');
+        const backBtnLabel = document.getElementById('mck-voice-interface-back-btn-label');
+        if (backBtn) {
+            backBtn.setAttribute('aria-label', voiceLabels.back || 'Back');
+        }
+        if (backBtnLabel) {
+            backBtnLabel.innerText = voiceLabels.back || 'Back';
+        }
+
+        const repeatBtn = document.getElementById('mck-voice-repeat-last-msg');
+        if (repeatBtn && !repeatBtn.dataset.labelApplied) {
+            repeatBtn.insertAdjacentText(
+                'beforeend',
+                voiceLabels.repeatLastMsg || 'Hear response again'
+            );
+            repeatBtn.dataset.labelApplied = 'true';
+        }
     }
 }
 

@@ -20,6 +20,7 @@ class MckVoice {
         this.visualizerCleanup = null;
         this.queueToken = 0;
         this.currentTtsAbortController = null;
+        this.currentVoiceStatus = 'idle';
 
         // to check if audio is empty before sending to server
         this.hasSoundDetected = false;
@@ -27,6 +28,8 @@ class MckVoice {
         this.totalSamples = 0;
 
         this.audioElement = null;
+
+        this.updateVoiceStatus('idle');
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -37,7 +40,6 @@ class MckVoice {
                 this.processNextMessage(msg, displayName, token);
                 return;
             }
-            console.log('Already processing a message, queued this message.', this.messagesQueue);
         } catch (err) {
             console.error(err);
         }
@@ -70,6 +72,8 @@ class MckVoice {
             this.agentOrBotName = displayName;
             this.agentOrBotLastMsg = messageWithoutSource;
 
+            this.updateVoiceStatus('thinking');
+
             this.abortCurrentTts();
             const controller = new AbortController();
             this.currentTtsAbortController = controller;
@@ -92,6 +96,7 @@ class MckVoice {
                 onEmpty: () => {
                     this.removeAllAnimation();
                     this.hideRepeatControls();
+                    this.updateVoiceStatus('idle');
                 },
             });
         }
@@ -225,8 +230,6 @@ class MckVoice {
                         ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                         ring1.classList.add('ring-recede');
 
-                        console.log('Playback ended, starting recede animation');
-
                         // Wait for animation to complete before removing all classes
                         setTimeout(() => {
                             ring1.classList.remove('ring-recede');
@@ -311,12 +314,10 @@ class MckVoice {
 
             await audio.play().catch(console.error);
 
-            audio.onplay = () => {
-                console.log('Playback started');
-            };
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
                 this.audioElement = null;
+                this.updateVoiceStatus('idle');
             };
             audio.onended = () => {
                 const lastMsgElement = document.querySelector('.last-message-text');
@@ -342,21 +343,22 @@ class MckVoice {
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
 
-                console.log('Playback ended, starting recede animation');
-
                 // Remove ring-recede class after animation completes
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                 }, 1500); // Match this to animation duration in CSS
                 this.audioElement = null;
+                this.updateVoiceStatus('idle');
             };
         } catch (error) {
             console.error('Playback failed:', error);
+            this.updateVoiceStatus('idle');
         }
     }
 
     addEventListeners() {
         const self = this;
+        this.updateVoiceStatus(this.currentVoiceStatus || 'idle');
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             kommunicateCommons.hide('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
 
@@ -490,12 +492,15 @@ class MckVoice {
                         this.soundSamples = 0;
                         this.totalSamples = 0;
                         this.removeAllAnimation();
+                        this.updateVoiceStatus('idle');
                         return false; // Indicate empty recording
                     }
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
                     this.totalSamples = 0;
+
+                    this.updateVoiceStatus('thinking');
 
                     const data = await kmVoice.speechToText(audioBlob);
 
@@ -513,9 +518,16 @@ class MckVoice {
                 console.error(error);
                 this.removeAllAnimation();
                 confirm('Failed to process the audio please try again after some time');
+                this.updateVoiceStatus('idle');
             } finally {
                 // Clean up the stream tracks
-                this.stream.getTracks().forEach((track) => track.stop());
+                if (this.stream) {
+                    try {
+                        this.stream.getTracks().forEach((track) => track.stop());
+                    } catch (cleanupError) {
+                        console.error('Error while stopping stream tracks:', cleanupError);
+                    }
+                }
                 this.stream = null;
                 this.isRecording = false;
 
@@ -545,6 +557,7 @@ class MckVoice {
             );
             ring.classList.add(`thinking-voice-ring`, `thinking-voice-ring-${i + 1}`);
         });
+        this.updateVoiceStatus('thinking');
     }
 
     addSpeakingAnimation() {
@@ -569,6 +582,7 @@ class MckVoice {
                 ring.classList.add('n-vis');
             }
         });
+        this.updateVoiceStatus('speaking');
     }
 
     addListeningAnimation() {
@@ -581,6 +595,7 @@ class MckVoice {
             );
             ring.classList.add(`listening-ring`, `listening-ring-${i + 1}`);
         });
+        this.updateVoiceStatus('listening');
     }
 
     removeAllAnimation() {
@@ -600,6 +615,61 @@ class MckVoice {
             ring.style.opacity = '';
             ring.style.zIndex = '';
         });
+    }
+
+    getVoiceLabel(key, fallback = '') {
+        const labelSource =
+            (window.MCK_LABELS && window.MCK_LABELS.voiceInterface) ||
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceInterface) ||
+            {};
+        return labelSource[key] || fallback;
+    }
+
+    updateVoiceStatus(state = 'idle') {
+        this.currentVoiceStatus = state;
+
+        const statusEl = document.getElementById('mck-voice-status-text');
+        const speakBtn = document.getElementById('mck-voice-speak-btn');
+        const speakBtnLabel = document.getElementById('mck-voice-speak-btn-label');
+
+        const statusTextMap = {
+            listening: this.getVoiceLabel('listening', 'Listening...'),
+            thinking: this.getVoiceLabel('thinking', 'Thinking...'),
+            speaking: this.getVoiceLabel('speaking', 'Speaking...'),
+            idle: this.getVoiceLabel('ready', this.getVoiceLabel('speak', 'Click to Speak')),
+        };
+
+        const statusText = statusTextMap[state] || statusTextMap.idle;
+
+        if (statusEl) {
+            statusEl.textContent = statusText;
+            statusEl.classList.toggle('mck-hidden', !statusText);
+            statusEl.dataset.state = state;
+        }
+
+        let speakText = this.getVoiceLabel('speak', 'Click to Speak');
+        let speakDisabled = false;
+
+        if (state === 'listening') {
+            speakText = statusTextMap.listening;
+            speakDisabled = true;
+        } else if (state === 'thinking') {
+            speakText = statusTextMap.thinking;
+            speakDisabled = true;
+        }
+
+        if (speakBtn) {
+            speakBtn.disabled = speakDisabled;
+            speakBtn.setAttribute('aria-disabled', speakDisabled);
+            speakBtn.classList.toggle('mck-voice-btn-disabled', speakDisabled);
+            speakBtn.setAttribute('aria-label', speakText);
+        }
+
+        if (speakBtnLabel) {
+            speakBtnLabel.textContent = speakText;
+        }
     }
 
     abortCurrentTts() {
@@ -653,6 +723,8 @@ class MckVoice {
         this.agentOrBotLastMsgAudio = null;
         this.audioElement = null;
         this.mediaRecorder = null;
+
+        this.updateVoiceStatus('idle');
     }
 
     cleanupVisualizer() {
@@ -695,6 +767,8 @@ class MckVoice {
         if (typeof onEmpty === 'function') {
             onEmpty();
         }
+
+        this.updateVoiceStatus('idle');
     }
 
     createAudioVisualizer(audioElement) {
@@ -910,6 +984,7 @@ class MckVoice {
     showMic(appOptions) {
         if (appOptions.voiceChat) {
             kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
+            this.updateVoiceStatus(this.currentVoiceStatus || 'idle');
         }
     }
 }
