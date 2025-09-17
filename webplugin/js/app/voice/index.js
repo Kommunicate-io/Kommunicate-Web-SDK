@@ -4,15 +4,9 @@ class Voice {
 
     textToSpeechStream(
         text = '',
-        {
-            voiceId = 'pMsXgVXv3BLzUgSXRplE',
-            optimizeLatencyLevel = 4,
-            outputFormat = 'mp3_44100_64',
-            voiceSettings,
-        } = {}
+        { voiceId = 'pMsXgVXv3BLzUgSXRplE', outputFormat = 'mp3_22050_32', voiceSettings } = {}
     ) {
         const query = new URLSearchParams({
-            optimize_streaming_latency: optimizeLatencyLevel,
             output_format: outputFormat,
         }).toString();
 
@@ -26,6 +20,7 @@ class Voice {
 
         const payload = {
             text: text,
+            model_id: 'eleven_flash_v2_5',
         };
 
         if (voiceSettings) {

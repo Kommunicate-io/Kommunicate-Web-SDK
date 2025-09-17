@@ -39,10 +39,10 @@ class MckVoice {
 
     async processNextMessage(msg, displayName) {
         try {
-            const messageWithoutSource = msg.message.replace(
-                /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
-                ''
-            );
+            const rawMessage = typeof msg.message === 'string' ? msg.message : '';
+            const messageWithoutSource = rawMessage
+                .replace(/(?:\r?\n|\r)+\s*(?:\*\*)?Sources:\s*[\s\S]*$/, '')
+                .trim();
 
             this.agentOrBotName = displayName;
             this.agentOrBotLastMsg = messageWithoutSource;
