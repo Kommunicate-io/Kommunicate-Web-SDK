@@ -151,6 +151,10 @@
         // animation: speak-pulse-collapse 2s infinite ease-in-out;
     }
 
+    .speaking-voice-ring-basic {
+        animation: speak-pulse-collapse 1.2s infinite ease-in-out;
+    }
+
     .ring-recede {
         animation: ring-recede-animation 0.8s forwards ease-out;
     }

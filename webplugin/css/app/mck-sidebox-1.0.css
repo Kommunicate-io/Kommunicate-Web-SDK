@@ -5811,3 +5811,6 @@ div#mck-waiting-queue {
     font-size: 14px;
     font-weight: 600;
 }
+#mck-voice-interface .speaking-voice-ring-basic {
+    animation: speak-pulse-collapse 1.2s infinite ease-in-out;
+}
