@@ -2,21 +2,41 @@ class Voice {
     _VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
     _VOICE_PLATFORM_API_KEY = kommunicate._globals.voiceChatApiKey;
 
-    textToSpeechStream(text = '') {
-        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
+    textToSpeechStream(
+        text = '',
+        {
+            voiceId = 'pMsXgVXv3BLzUgSXRplE',
+            optimizeLatencyLevel = 4,
+            outputFormat = 'mp3_44100_64',
+            voiceSettings,
+        } = {}
+    ) {
+        const query = new URLSearchParams({
+            optimize_streaming_latency: optimizeLatencyLevel,
+            output_format: outputFormat,
+        }).toString();
+
+        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/${voiceId}/stream?${query}`;
 
         const headers = {
             'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
-            'Accept': 'application/json',
+            'Accept': 'audio/mpeg',
             'Content-Type': 'application/json',
         };
+
+        const payload = {
+            text: text,
+        };
+
+        if (voiceSettings) {
+            payload.voice_settings = voiceSettings;
+        }
 
         return fetch(apiUrl, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({
-                text: text,
-            }),
+            body: JSON.stringify(payload),
+            cache: 'no-store',
         })
             .then((response) => {
                 if (!response.ok) {
