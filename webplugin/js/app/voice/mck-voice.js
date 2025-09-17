@@ -21,6 +21,9 @@ class MckVoice {
         this.queueToken = 0;
         this.currentTtsAbortController = null;
         this.currentVoiceStatus = 'idle';
+        this.silenceAudioContext = null;
+        this.silenceNodes = null;
+        this.silenceTimer = null;
 
         // to check if audio is empty before sending to server
         this.hasSoundDetected = false;
@@ -106,6 +109,18 @@ class MckVoice {
         if (token !== this.queueToken) {
             return;
         }
+
+        const supportsMse =
+            typeof window !== 'undefined' &&
+            window.MediaSource &&
+            typeof window.MediaSource.isTypeSupported === 'function' &&
+            window.MediaSource.isTypeSupported('audio/mpeg');
+
+        if (!supportsMse) {
+            await this.playAudioWithoutMediaSource(response, token);
+            return;
+        }
+
         const audio = new Audio();
         this.audioElement = audio;
 
@@ -136,7 +151,32 @@ class MckVoice {
                 return;
             }
 
-            const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+            let sourceBuffer;
+            try {
+                sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+            } catch (sourceErr) {
+                console.warn('Falling back to non-MSE playback', sourceErr);
+                if (mediaSource.readyState === 'open') {
+                    try {
+                        mediaSource.endOfStream();
+                    } catch (e) {}
+                }
+                try {
+                    audio.pause();
+                } catch (pauseErr) {}
+                audio.src = '';
+                this.audioElement = null;
+                URL.revokeObjectURL(mediaSourceUrl);
+                await this.playAudioWithoutMediaSource(response, token);
+                return;
+            }
+            try {
+                if (sourceBuffer.mode !== 'sequence') {
+                    sourceBuffer.mode = 'sequence';
+                }
+            } catch (modeError) {
+                console.debug('Unable to set sourceBuffer mode to sequence', modeError);
+            }
             const bufferQueue = [];
             let isStreamEnded = false;
             let hasPlaybackStarted = false;
@@ -161,6 +201,8 @@ class MckVoice {
             });
 
             const reader = response.body.getReader();
+            const cloneChunk = (chunk) =>
+                chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength);
 
             audio.addEventListener('error', (e) => {
                 console.error(e, 'media source play error');
@@ -185,13 +227,22 @@ class MckVoice {
                     if (!hasPlaybackStarted) {
                         this.addSpeakingAnimation();
                         audio.play().catch(console.error);
-                        // Initialize audio visualizer for dynamic animation
                         this.visualizerCleanup = this.createAudioVisualizer(audio);
                         hasPlaybackStarted = true;
                     }
                 },
                 { once: true }
             );
+
+            audio.addEventListener('pause', () => {
+                if (token !== this.queueToken) {
+                    return;
+                }
+
+                if (!audio.ended) {
+                    this.updateVoiceStatus('idle');
+                }
+            });
 
             audio.addEventListener('ended', () => {
                 if (token !== this.queueToken) {
@@ -234,7 +285,7 @@ class MckVoice {
                         setTimeout(() => {
                             ring1.classList.remove('ring-recede');
                             this.removeAllAnimation();
-                        }, 800); // Match this to animation duration in CSS
+                        }, 800);
                     },
                 });
 
@@ -275,14 +326,15 @@ class MckVoice {
                         return;
                     }
 
-                    fullChunks.push(value);
+                    const buffer = cloneChunk(value);
+                    fullChunks.push(buffer);
                     if (sourceBuffer.updating || bufferQueue.length > 0) {
-                        bufferQueue.push(value);
+                        bufferQueue.push(buffer);
                     } else {
                         try {
-                            sourceBuffer.appendBuffer(value);
+                            sourceBuffer.appendBuffer(buffer);
                         } catch (error) {
-                            bufferQueue.push(value);
+                            bufferQueue.push(buffer);
                         }
                     }
                 }
@@ -298,8 +350,134 @@ class MckVoice {
                     mediaSource.endOfStream();
                 } catch (e) {}
             }
+            try {
+                audio.pause();
+            } catch (pauseErr) {}
+            audio.src = '';
+            this.audioElement = null;
             URL.revokeObjectURL(mediaSourceUrl);
         }
+    }
+
+    async playAudioWithoutMediaSource(response, token = this.queueToken) {
+        if (token !== this.queueToken) {
+            return;
+        }
+
+        const audio = new Audio();
+        this.audioElement = audio;
+
+        let blobUrl = '';
+        try {
+            const finalBlob = await response.blob();
+            if (token !== this.queueToken) {
+                return;
+            }
+
+            if (!finalBlob || finalBlob.size === 0) {
+                console.warn('Received empty audio stream');
+                this.updateVoiceStatus('idle');
+                return;
+            }
+
+            blobUrl = URL.createObjectURL(finalBlob);
+        } catch (error) {
+            console.error('Failed to buffer audio stream for fallback playback:', error);
+            this.updateVoiceStatus('idle');
+            return;
+        }
+
+        audio.src = blobUrl;
+        audio.load();
+
+        audio.addEventListener(
+            'canplay',
+            () => {
+                this.addSpeakingAnimation();
+                const playPromise = audio.play();
+                if (playPromise && playPromise.catch) {
+                    playPromise.catch((err) => {
+                        console.error(err);
+                        this.updateVoiceStatus('idle');
+                    });
+                }
+                this.visualizerCleanup = this.createAudioVisualizer(audio);
+            },
+            { once: true }
+        );
+
+        audio.addEventListener('error', (e) => {
+            console.error(e, 'audio playback error (fallback)');
+            if (token !== this.queueToken) {
+                return;
+            }
+            this.cleanupVisualizer();
+            this.audioElement = null;
+            this.currentTtsAbortController = null;
+            URL.revokeObjectURL(blobUrl);
+            this.advanceQueue({
+                onEmpty: () => {
+                    this.removeAllAnimation();
+                    this.hideRepeatControls();
+                },
+            });
+        });
+
+        audio.addEventListener('pause', () => {
+            if (token !== this.queueToken) {
+                return;
+            }
+
+            if (!audio.ended) {
+                this.updateVoiceStatus('idle');
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            if (token !== this.queueToken) {
+                return;
+            }
+
+            this.currentTtsAbortController = null;
+            this.cleanupVisualizer();
+
+            this.advanceQueue({
+                onEmpty: () => {
+                    const lastMsgElement = document.querySelector('.last-message-text');
+
+                    if (lastMsgElement) {
+                        lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
+                            this.agentOrBotLastMsg.slice(0, 100) +
+                            (this.agentOrBotLastMsg.length > 100 ? '...' : '')
+                        }`;
+
+                        lastMsgElement.classList.remove('mck-hidden');
+                    }
+
+                    this.agentOrBotLastMsgAudio = blobUrl;
+
+                    document
+                        .getElementById('mck-voice-repeat-last-msg')
+                        ?.classList.remove('mck-hidden');
+
+                    kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
+
+                    const ring1 = document.querySelector('.voice-ring-1');
+                    ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+                    ring1.classList.add('ring-recede');
+
+                    setTimeout(() => {
+                        ring1.classList.remove('ring-recede');
+                        this.removeAllAnimation();
+                    }, 800);
+                },
+            });
+            this.audioElement = null;
+            if (this.messagesQueue.length > 0) {
+                URL.revokeObjectURL(blobUrl);
+            }
+            this.updateVoiceStatus('idle');
+        });
     }
 
     async repeatLastMsgAudio(blobUrl) {
@@ -531,11 +709,7 @@ class MckVoice {
                 this.stream = null;
                 this.isRecording = false;
 
-                // Clear any silence detection timers
-                if (this.silenceTimer) {
-                    clearInterval(this.silenceTimer);
-                    this.silenceTimer = null;
-                }
+                this.cleanupSilenceDetection();
             }
         };
 
@@ -672,6 +846,33 @@ class MckVoice {
         }
     }
 
+    cleanupSilenceDetection() {
+        if (this.silenceTimer) {
+            clearInterval(this.silenceTimer);
+            this.silenceTimer = null;
+        }
+
+        if (this.silenceNodes) {
+            const { analyser, microphone, scriptProcessor } = this.silenceNodes;
+            try {
+                microphone && microphone.disconnect();
+                analyser && analyser.disconnect();
+                scriptProcessor && scriptProcessor.disconnect();
+            } catch (disconnectError) {
+                console.error('Error disconnecting silence detection nodes:', disconnectError);
+            }
+            this.silenceNodes = null;
+        }
+
+        if (this.silenceAudioContext) {
+            const contextToClose = this.silenceAudioContext;
+            contextToClose.close().catch((closeError) => {
+                console.error('Error closing silence detection context:', closeError);
+            });
+            this.silenceAudioContext = null;
+        }
+    }
+
     abortCurrentTts() {
         if (!this.currentTtsAbortController) {
             return;
@@ -699,6 +900,7 @@ class MckVoice {
         this.cleanupVisualizer();
         this.removeAllAnimation();
         this.hideRepeatControls();
+        this.cleanupSilenceDetection();
 
         this.messagesQueue.length = 0;
         this.audioChunks = [];
@@ -893,70 +1095,167 @@ class MckVoice {
             return () => {};
         }
     }
-    setupSilenceDetection(stream) {
-        // Create audio context
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const microphone = audioContext.createMediaStreamSource(stream);
-        const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
 
-        analyser.smoothingTimeConstant = 0.8;
-        analyser.fftSize = 1024;
+    async setupSilenceDetection(stream) {
+        const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
 
-        microphone.connect(analyser);
-        analyser.connect(scriptProcessor);
-        scriptProcessor.connect(audioContext.destination);
+        if (!AudioContextCtor) {
+            console.warn('AudioContext not supported, disabling silence detection');
+            return;
+        }
 
-        const silenceDetection = () => {
-            const array = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(array);
-            let values = 0;
+        this.cleanupSilenceDetection();
 
-            const length = array.length;
-            for (let i = 0; i < length; i++) {
-                values += array[i];
-            }
+        try {
+            // Create audio context
+            const audioContext = new AudioContextCtor();
 
-            const average = values / length;
-            const volume = average / 255; // Convert to a value between 0 and 1
-            this.totalSamples++;
+            // Firefox-specific: Handle suspended state with robust error handling
+            if (audioContext.state === 'suspended') {
+                console.log('AudioContext is suspended, attempting to resume...');
 
-            // Check if the current volume is below the silence threshold
+                try {
+                    // Create a timeout promise for Firefox's sometimes-hanging resume()
+                    const timeoutPromise = new Promise((_, reject) => {
+                        setTimeout(() => reject(new Error('AudioContext resume timeout')), 3000);
+                    });
 
-            if (volume > this._SILENCE_THRESHOLD) {
-                this.hasSoundDetected = true;
-                this.soundSamples++;
-                this.silenceStart = null;
-            } else {
-                if (this.silenceStart === null) {
-                    this.silenceStart = Date.now();
-                    console.debug('Silence detected, starting timer');
-                } else {
-                    const silenceDuration = Date.now() - this.silenceStart;
-                    if (silenceDuration >= this._SILENCE_DURATION) {
-                        console.debug('User silent for 3 seconds, stopping recording');
-                        this.stopRecording();
-                        this.addThinkingAnimation();
+                    const resumePromise = audioContext.resume();
+
+                    // Race the resume against timeout
+                    await Promise.race([resumePromise, timeoutPromise]);
+
+                    console.log('AudioContext resumed successfully for silence detection');
+                } catch (resumeError) {
+                    console.error('Failed to resume AudioContext:', resumeError);
+
+                    // Firefox fallback: try creating a new context
+                    try {
+                        await audioContext.close();
+                        const newContext = new AudioContextCtor();
+
+                        if (newContext.state === 'running') {
+                            console.log('Created new running AudioContext as fallback');
+                            // Replace the suspended context with the new one
+                            audioContext = newContext;
+                        } else {
+                            throw new Error('New AudioContext also suspended');
+                        }
+                    } catch (fallbackError) {
+                        console.error('AudioContext fallback failed:', fallbackError);
+                        return; // Give up on silence detection
                     }
                 }
             }
-        };
 
-        // Check for silence every 300ms
-        this.silenceTimer = setInterval(silenceDetection, 300);
-
-        // Clean up when recording stops
-        scriptProcessor.onaudioprocess = () => {
-            if (!this.isRecording) {
-                if (this.silenceTimer) {
-                    clearInterval(this.silenceTimer);
-                    this.silenceTimer = null;
-                }
-                microphone.disconnect();
-                analyser.disconnect();
-                scriptProcessor.disconnect();
+            // Verify the context is actually running before proceeding
+            if (audioContext.state !== 'running') {
+                console.warn('AudioContext not running, disabling silence detection');
+                audioContext.close();
+                return;
             }
-        };
+
+            const analyser = audioContext.createAnalyser();
+            analyser.smoothingTimeConstant = 0.8;
+            analyser.fftSize = 1024;
+
+            // Create MediaStreamSource - this is where Firefox can have issues
+            let microphone;
+            try {
+                microphone = audioContext.createMediaStreamSource(stream);
+            } catch (sourceError) {
+                console.error('Failed to create MediaStreamSource:', sourceError);
+                audioContext.close();
+                return;
+            }
+
+            // Firefox sometimes has issues with ScriptProcessor - use AnalyserNode directly
+            let scriptProcessor = null;
+
+            try {
+                // Try to create ScriptProcessor (deprecated but sometimes more reliable in Firefox)
+                if (audioContext.createScriptProcessor) {
+                    scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+                    microphone.connect(analyser);
+                    analyser.connect(scriptProcessor);
+                    scriptProcessor.connect(audioContext.destination);
+
+                    console.log('Using ScriptProcessor for silence detection');
+                }
+            } catch (scriptError) {
+                console.warn('ScriptProcessor failed, using direct polling:', scriptError);
+                // Fallback: just connect microphone to analyser without script processor
+                microphone.connect(analyser);
+                scriptProcessor = null;
+            }
+
+            this.silenceAudioContext = audioContext;
+            this.silenceNodes = { analyser, microphone, scriptProcessor };
+
+            const silenceDetection = () => {
+                // Check if we're still recording and context is still valid
+                if (!this.isRecording || audioContext.state !== 'running') {
+                    this.cleanupSilenceDetection();
+                    return;
+                }
+
+                try {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+
+                    let values = 0;
+                    const length = array.length;
+
+                    for (let i = 0; i < length; i++) {
+                        values += array[i];
+                    }
+
+                    const average = values / length;
+                    const volume = average / 255; // Convert to a value between 0 and 1
+                    this.totalSamples++;
+
+                    // Check if the current volume is below the silence threshold
+                    if (volume > this._SILENCE_THRESHOLD) {
+                        this.hasSoundDetected = true;
+                        this.soundSamples++;
+                        this.silenceStart = null;
+                    } else {
+                        if (this.silenceStart === null) {
+                            this.silenceStart = Date.now();
+                            console.debug('Silence detected, starting timer');
+                        } else {
+                            const silenceDuration = Date.now() - this.silenceStart;
+                            if (silenceDuration >= this._SILENCE_DURATION) {
+                                console.debug('User silent for 3 seconds, stopping recording');
+                                this.stopRecording();
+                                this.addThinkingAnimation();
+                            }
+                        }
+                    }
+                } catch (analysisError) {
+                    console.error('Error in silence analysis:', analysisError);
+                    this.cleanupSilenceDetection();
+                }
+            };
+
+            // Check for silence every 300ms
+            this.silenceTimer = setInterval(silenceDetection, 300);
+
+            // Set up cleanup handler if using ScriptProcessor
+            if (scriptProcessor) {
+                scriptProcessor.onaudioprocess = () => {
+                    if (!this.isRecording) {
+                        this.cleanupSilenceDetection();
+                    }
+                };
+            }
+
+            console.log('Silence detection setup complete');
+        } catch (setupError) {
+            console.error('Failed to setup silence detection:', setupError);
+            this.cleanupSilenceDetection();
+        }
     }
 
     stopRecording(forceStop = false) {
