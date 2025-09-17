@@ -128,7 +128,7 @@
         }
 
         a {
-            color: $text-primary-color;
+            color: $ancor-link-primary-color;
             text-decoration: none;
             &:hover {
                 color: rgb(218, 85, 47);
@@ -179,4 +179,21 @@
 
 .mck-conversation-transferred {
     margin: 12px 0;
+}
+
+.mck-box-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.mck-voice-web {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    min-width: 53px;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
 }

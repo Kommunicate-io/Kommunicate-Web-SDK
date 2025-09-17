@@ -28,8 +28,8 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.8.min.js',
-            alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.8.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.9.min.js',
+            alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.9.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
@@ -346,6 +346,10 @@ function ApplozicSidebox() {
                 promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js));
             }
 
+            if (options.voiceChat) {
+                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js));
+            }
+
             await Promise.all(promises);
         } catch (err) {
             console.error(err);
@@ -399,6 +403,8 @@ function ApplozicSidebox() {
 
     async function mckInitSidebox(data, randomUserId) {
         try {
+            appOptionSession.setAppInstanceCount();
+
             var options = applozic._globals;
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
@@ -581,6 +587,10 @@ function ApplozicSidebox() {
                 'anonymousUserIdForPreChatLead'
             );
 
+            options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
+            options.voiceChatApiKey = options.voiceChatApiKey || data.voiceChatApiKey;
+            options.storageSuffix =
+                typeof options.storageSuffix == 'string' ? options.storageSuffix : '';
             appOptionSession.deletePropertyDataFromSession('settings');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
@@ -815,6 +825,7 @@ function ApplozicSidebox() {
             var details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
             kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
+            appOptionSession.removeAppInstanceCount(true);
         });
     }
 }

@@ -253,7 +253,7 @@ const generateBuildFiles = () => {
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
     // copy applozic.chat.{version}.min.js to build
-    copyFileToBuild('js/app/applozic.chat-6.2.6.min.js', `${buildDir}/applozic.chat-6.2.6.min.js`);
+    copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
 
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(
@@ -323,6 +323,7 @@ const generateFilesByVersion = (location) => {
                     JSON.stringify({
                         BRANCH: KM_RELEASE_BRANCH,
                         ENVIRONMENT: process.env.NODE_ENV,
+                        PRODUCT: process.env.PRODUCT || 'kommunicate',
                     })
                 );
 

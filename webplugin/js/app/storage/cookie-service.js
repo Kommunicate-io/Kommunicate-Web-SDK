@@ -1,6 +1,7 @@
 class KmCookieStorage extends KmStorage {
     constructor() {
         super();
+        this.cookieNamePrefix = this.appId;
     }
 
     /* There is no need to decode the cookie because we are not encoding the cookie */
@@ -10,7 +11,7 @@ class KmCookieStorage extends KmStorage {
         let name = skipPrefix ? cname : cookiePrefix + cname;
 
         if (!isOld) {
-            name += '-' + this.appId + '=';
+            name += '-' + this.cookieNamePrefix + '=';
         } else {
             name += '=';
         }
@@ -45,6 +46,16 @@ class KmCookieStorage extends KmStorage {
     };
 
     deleteCookie = (cookie, isOld) => {
+        const appInstanceCount = appOptionSession.getAppInstanceCount();
+
+        if (this.storageSuffix && appInstanceCount > 1 && !isOld) {
+            console.debug(
+                `Not deleting cookie ${cookie} as it's a multi user session`,
+                appInstanceCount
+            );
+            return;
+        }
+
         const { name, path, secure, domain } = this.getCookieParams(cookie, isOld);
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${path}${
             secure ? ';secure' : ''
@@ -65,17 +76,25 @@ class KmCookieStorage extends KmStorage {
         return parent.window.location.protocol == 'https:';
     };
 
-    deleteUserCookiesOnLogout = () =>
+    deleteUserCookiesOnLogout = () => {
+        const appInstanceCount = appOptionSession.getAppInstanceCount();
+
+        if (this.storageSuffix && appInstanceCount > 1) {
+            console.debug("Not deleting cookies as it's a multi user session", appInstanceCount);
+            return;
+        }
+
         Object.values(KommunicateConstants.COOKIES).forEach((cookie) => {
             this.deleteCookie({ name: cookie, domain: MCK_COOKIE_DOMAIN });
         });
+    };
 
     getCookieParams = (cookie, isDelete = false) => {
         let cookiePrefix = this.getCookiePrefix();
         let name = cookie && cookie.skipPrefix ? cookie.name : cookiePrefix + cookie.name;
 
         if (!isDelete) {
-            name += '-' + this.appId;
+            name += '-' + this.cookieNamePrefix;
         }
 
         const path = cookie.path || '/';

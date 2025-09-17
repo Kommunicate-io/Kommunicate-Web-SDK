@@ -305,6 +305,10 @@ KommunicateConstants = {
         'business_monthly_v8_inr',
         'business_yearly_v8_inr',
     ]),
+    PRODUCTS: {
+        KOMMUNICATE: 'kommunicate',
+        AGENTICFIRST: 'agenticFirst',
+    },
 };
 
 /**
@@ -330,6 +334,12 @@ KommunicateUtils = {
         for (var i = 0; i < 32; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
+    },
+    getProduct: function () {
+        return MCK_ENV_DETAILS.PRODUCT;
+    },
+    isAgenticFirst: function () {
+        return this.getProduct() == KommunicateConstants.PRODUCTS.AGENTICFIRST;
     },
     triggerCustomEvent: function (eventName, options, kmPluginVersion) {
         options = typeof options == 'object' ? options : {};
@@ -575,7 +585,7 @@ KommunicateUtils = {
             .split('\n')
             .map((line) => line.replace(/^\s*-\s*/, '- ').trimEnd()) // Trim right-side spaces
             .filter((line) => line !== '') // Remove empty lines
-            .join('\n');
+            .join('\n\n');
     },
 
     containsRawHTML: function (text) {

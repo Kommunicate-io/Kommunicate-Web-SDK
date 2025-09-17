@@ -9,6 +9,7 @@ function KmCustomTheme() {
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
         WIDGET_SETTINGS && _this.changeColorTheme();
+        _this.fillSvgsTheme();
     };
 
     _this.KmCustomImageIcon = function (widgetImageLink) {
@@ -101,5 +102,12 @@ function KmCustomTheme() {
         for (var i = 0; i < messageBoxTop.length; i++) {
             messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
         }
+    };
+
+    _this.fillSvgsTheme = function () {
+        document.querySelectorAll('path[data-custom-fill]').forEach((path) => {
+            const primaryColor = WIDGET_SETTINGS.primaryColor || DEFAULT_BACKGROUND_COLOR;
+            path.setAttribute('fill', primaryColor);
+        });
     };
 }
