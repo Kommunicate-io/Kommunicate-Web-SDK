@@ -14024,7 +14024,7 @@ const firstVisibleMsg = {
                                     $mck_tab_title.removeClass('mck-tab-title-w-typing');
                                     typingService.hideTypingIndicator();
                                     $mck_typing_label.html(MCK_LABELS['typing']);
-                                }, 20000);
+                                }, typingService.TYPING_TIMEOUT_MILLISEC);
                                 typingService.addTimeoutIds(timeoutId);
                             }
                         } else {

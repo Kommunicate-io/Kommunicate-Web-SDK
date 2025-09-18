@@ -10,6 +10,7 @@ class TypingService {
         this.alreadyScrolledFirstMsg = false;
         this.cumulativeHeight = 0;
         this.isKmTalkToHumanMsg = false;
+        this.TYPING_TIMEOUT_MILLISEC = 20000; // 20 seconds
     }
 
     init(appOptions = {}) {
@@ -82,7 +83,7 @@ class TypingService {
         const id = setTimeout(() => {
             this.hideTypingIndicator();
             console.warn('Hiding typing indicator due to timeout');
-        }, 20000);
+        }, this.TYPING_TIMEOUT_MILLISEC);
         this.addTimeoutIds(id);
     };
 
