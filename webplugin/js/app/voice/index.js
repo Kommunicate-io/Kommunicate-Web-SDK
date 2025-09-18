@@ -6,6 +6,7 @@ class Voice {
         text = '',
         {
             voiceId = 'pMsXgVXv3BLzUgSXRplE',
+            modelId = 'eleven_turbo_v2',
             outputFormat = 'mp3_22050_32',
             voiceSettings,
             signal,
@@ -25,18 +26,20 @@ class Voice {
 
         const payload = {
             text: text,
-            model_id: 'eleven_flash_v2_5',
-            voice_settings: {
-                stability: 0.55,
-                similarity_boost: 0.8,
-                use_speaker_boost: true,
-            },
         };
+
+        const configuredModelId =
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChatModel) ||
+            modelId;
+
+        payload.model_id = configuredModelId;
 
         if (voiceSettings) {
             payload.voice_settings = voiceSettings;
         }
-
+        console.log(payload, 'calling stream', 'Test time');
         return fetch(apiUrl, {
             method: 'POST',
             headers: headers,
@@ -48,7 +51,7 @@ class Voice {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
+                console.log(response, 'stream', 'Test time');
                 return response;
             })
             .catch((error) => {
@@ -75,12 +78,14 @@ class Voice {
             redirect: 'follow',
             headers: headers,
         };
+        console.log(requestOptions, 'calling stt', 'Test time');
 
         return fetch(apiUrl, requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(response, 'speechToText', 'Test time');
                 return response.json();
             })
             .then((data) => {
