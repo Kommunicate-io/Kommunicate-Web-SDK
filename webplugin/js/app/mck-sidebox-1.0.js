@@ -5769,7 +5769,8 @@ const firstVisibleMsg = {
                             data &&
                             data.groupFeeds[0] &&
                             data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
+                        CURRENT_GROUP_DATA.groupMembers =
+                            data.groupFeeds?.[0]?.groupUsers || data.userDetails || [];
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
@@ -7556,6 +7557,8 @@ const firstVisibleMsg = {
                                         KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             }
 
+                            // if socket is disconnected and list api gets called then we should hide indicator
+                            typingService.hideTypingIndicator();
                             _this.addMessage(
                                 message,
                                 contact,
@@ -10843,6 +10846,7 @@ const firstVisibleMsg = {
                                                     true,
                                                     validated
                                                 );
+
                                                 typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(false);
@@ -13601,7 +13605,7 @@ const firstVisibleMsg = {
                                     $mck_tab_title.removeClass('mck-tab-title-w-typing');
                                     typingService.hideTypingIndicator();
                                     $mck_typing_label.html(MCK_LABELS['typing']);
-                                }, 10000);
+                                }, typingService.TYPING_TIMEOUT_MILLISEC);
                                 typingService.addTimeoutIds(timeoutId);
                             }
                         } else {
