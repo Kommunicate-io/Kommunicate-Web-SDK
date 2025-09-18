@@ -5773,7 +5773,8 @@ const firstVisibleMsg = {
                             data &&
                             data.groupFeeds[0] &&
                             data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
+                        CURRENT_GROUP_DATA.groupMembers =
+                            data.groupFeeds[0]?.groupUsers || data.userDetails || [];
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
@@ -10845,6 +10846,7 @@ const firstVisibleMsg = {
                                                     true,
                                                     validated
                                                 );
+
                                                 typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(false);
