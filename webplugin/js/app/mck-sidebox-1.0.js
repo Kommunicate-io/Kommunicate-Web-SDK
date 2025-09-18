@@ -11,6 +11,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA = {};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
+var IS_SOCKET_INITIALIZING = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
@@ -619,6 +620,7 @@ const firstVisibleMsg = {
                             ) {
                                 window.Applozic.ALSocket.disconnect();
                                 window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED = true;
+                                IS_SOCKET_INITIALIZING = false;
                                 IS_SOCKET_CONNECTED = false;
                                 console.debug('disconnected');
                             }
@@ -699,15 +701,23 @@ const firstVisibleMsg = {
                     kommunicate.reloadWidget();
                     return;
                 }
+                IS_SOCKET_INITIALIZING = false;
                 IS_SOCKET_CONNECTED = false;
                 if (navigator.onLine) {
-                    window.Applozic.ALSocket.reconnect();
+                    try {
+                        IS_SOCKET_INITIALIZING = true;
+                        window.Applozic.ALSocket.reconnect();
+                    } catch (error) {
+                        IS_SOCKET_INITIALIZING = false;
+                        throw error;
+                    }
                 }
                 SOCKET_RECONNECT_FAIL_COUNT++;
                 SOCKET_RECONNECT_FAIL_COUNT > 2 &&
                     kommunicateCommons.show('#km-socket-disconnect-msg');
             },
             onConnect: function (resp) {
+                IS_SOCKET_INITIALIZING = false;
                 IS_SOCKET_CONNECTED = true;
                 console.debug('connected..');
                 kommunicateCommons.hide('#km-local-file-system-warning');
@@ -1206,6 +1216,7 @@ const firstVisibleMsg = {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 kmLocalStorage.removeItemFromLocalStorage('feedbackGroups');
                 window.Applozic.ALSocket.disconnect();
+                IS_SOCKET_INITIALIZING = false;
                 appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
@@ -1834,9 +1845,28 @@ const firstVisibleMsg = {
         };
 
         _this.initializeSocketConnection = function (isReInit) {
-            isReInit
-                ? window.Applozic.ALSocket.reconnect()
-                : window.Applozic.ALSocket.init(MCK_APP_ID, INIT_APP_DATA, EVENTS);
+            if (IS_SOCKET_CONNECTED && !isReInit) {
+                return;
+            }
+
+            if (IS_SOCKET_INITIALIZING) {
+                console.debug('Socket initialization already in progress.');
+                return;
+            }
+
+            IS_SOCKET_INITIALIZING = true;
+
+            try {
+                if (isReInit) {
+                    window.Applozic.ALSocket.reconnect();
+                } else {
+                    window.Applozic.ALSocket.init(MCK_APP_ID, INIT_APP_DATA, EVENTS);
+                }
+            } catch (error) {
+                IS_SOCKET_INITIALIZING = false;
+                throw error;
+            }
+
             // Disconnect open sockets if user has no conversations.
             CONNECT_SOCKET_ON_WIDGET_CLICK &&
                 !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
@@ -2323,8 +2353,19 @@ const firstVisibleMsg = {
                                 return;
                             }
 
+                            if (IS_SOCKET_INITIALIZING) {
+                                console.log('Socket initialization in progress. Skipping retry.');
+                                return;
+                            }
+
                             console.log(`Reconnecting socket... attempt ${reconnectAttempts + 1}`);
-                            window.Applozic.ALSocket.reconnect();
+                            try {
+                                IS_SOCKET_INITIALIZING = true;
+                                window.Applozic.ALSocket.reconnect();
+                            } catch (error) {
+                                IS_SOCKET_INITIALIZING = false;
+                                throw error;
+                            }
 
                             reconnectAttempts++;
                             if (reconnectAttempts >= maxAttempts) {
@@ -13548,7 +13589,16 @@ const firstVisibleMsg = {
                     }
                 }
                 if (!window.Applozic.ALSocket.stompClient.connected) {
-                    window.Applozic.ALSocket.reconnect();
+                    if (IS_SOCKET_INITIALIZING) {
+                        return;
+                    }
+                    try {
+                        IS_SOCKET_INITIALIZING = true;
+                        window.Applozic.ALSocket.reconnect();
+                    } catch (error) {
+                        IS_SOCKET_INITIALIZING = false;
+                        throw error;
+                    }
                 }
             };
             _this.onTypingStatus = function (resp) {
