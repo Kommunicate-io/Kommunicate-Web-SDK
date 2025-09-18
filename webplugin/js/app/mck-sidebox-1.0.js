@@ -14016,6 +14016,9 @@ const firstVisibleMsg = {
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);
+
+                        const tabId = $mck_message_inner.data('mck-id');
+
                         if (
                             resp.message.metadata &&
                             resp.message.metadata.actionRequest &&
