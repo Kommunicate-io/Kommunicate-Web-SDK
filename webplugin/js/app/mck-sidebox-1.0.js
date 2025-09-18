@@ -7557,6 +7557,8 @@ const firstVisibleMsg = {
                                         KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             }
 
+                            // if socket is disconnected and list api gets called then we should hide indicator
+                            typingService.hideTypingIndicator();
                             _this.addMessage(
                                 message,
                                 contact,
