@@ -47,9 +47,9 @@ class TypingService {
     };
 
     hideTypingIndicator = () => {
+        this.typingIndicatorStartTime = null;
         this.clearTimeoutIds();
         if (document.querySelector('.km-typing-wrapper')) {
-            this.typingIndicatorStartTime = null;
             $applozic('.km-typing-wrapper').remove();
         }
     };
@@ -65,7 +65,6 @@ class TypingService {
 
         if (!document.querySelector('.km-typing-wrapper')) {
             const $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            this.typingIndicatorStartTime = new Date();
             $mck_msg_inner.append(
                 '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
             );
@@ -77,14 +76,14 @@ class TypingService {
                     0
                 );
             }
-            const id = setTimeout(() => {
-                if (document.querySelector('.km-typing-wrapper')) {
-                    this.typingIndicatorStartTime = null;
-                    $applozic('.km-typing-wrapper').remove();
-                }
-            }, 15000);
-            this.addTimeoutIds(id);
         }
+
+        this.typingIndicatorStartTime = new Date();
+        const id = setTimeout(() => {
+            this.hideTypingIndicator();
+            console.warn('Hiding typing indicator due to timeout');
+        }, 20000);
+        this.addTimeoutIds(id);
     };
 
     processMessageTimerDelay = () => {
