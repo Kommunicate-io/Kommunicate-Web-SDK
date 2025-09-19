@@ -9,8 +9,9 @@ const config = {
     reporter: 'html',
     use: {
         ignoreHTTPSErrors: true,
-        headless: false,
+        headless: true,
         screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
         trace: 'on',
     },
 
@@ -29,6 +30,7 @@ const config = {
             use: {
                 browserName: 'webkit',
                 viewport: { width: 1280, height: 720 },
+                permissions: ['geolocation'],
             },
         },
         {
