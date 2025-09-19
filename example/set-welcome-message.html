@@ -1,0 +1,36 @@
+<h1>This sample code will help you to set the welcome message for different web pages</h1>
+
+<script type="text/javascript">
+    (function (d, m) {
+        var pagelist = {
+            'PAGE URL1': 'WELCOME MESSAGE FOR PAGE-1',
+            'PAGE URL2': 'WELCOME MESSAGE FOR PAGE-2',
+        };
+
+        //Add the PAGE URL and respective welcome message in the above section
+
+        var kommunicateSettings = {
+            appId: 'APP_ID',
+            popupWidget: true,
+            automaticChatOpenOnNavigation: true,
+            onInit: function () {
+                var defaultSettings = {
+                    WELCOME_MESSAGE: pagelist[window.location.pathname],
+                    //page URL array
+                };
+
+                if (pagelist[window.location.pathname]) {
+                    Kommunicate.updateSettings(defaultSettings);
+                }
+            },
+        };
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'https://widget.kommunicate.io/v2/kommunicate.app';
+        var h = document.getElementsByTagName('head')[0];
+        h.appendChild(s);
+        window.kommunicate = m;
+        m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+</script>

@@ -34,7 +34,7 @@ function ApplozicSidebox() {
         },
         {
             name: 'maps',
-            url: 'https://maps.google.com/maps/api/js?libraries=places',
+            url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
@@ -433,6 +433,24 @@ function ApplozicSidebox() {
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
 
+            //to check if the customer has been churned then show the churn banner
+            if (data.currentActivatedPlan == 'churn') {
+                var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+                var utmSourceUrl = kommunicateIframe
+                    ? kommunicateIframe.getAttribute('data-url') || parent.window.location.href
+                    : w.location.href;
+                var poweredByUrl =
+                    'https://www.kommunicate.io/poweredby?utm_source=' +
+                    utmSourceUrl +
+                    '&utm_medium=webplugin&utm_campaign=deactivation';
+                var linkForChurn = document.getElementById('deactivate-link');
+                var churnCust = document.getElementById('km-churn-customer');
+                if (churnCust) {
+                    linkForChurn && linkForChurn.setAttribute('href', poweredByUrl);
+                    churnCust.classList.remove('n-vis');
+                }
+            }
+
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled =
                 Array.isArray(allowedDomains) &&
@@ -555,6 +573,10 @@ function ApplozicSidebox() {
             options.rtl = isSettingEnable('rtl');
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ?? 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
+
+            options.anonymousUserIdForPreChatLead = isSettingEnable(
+                'anonymousUserIdForPreChatLead'
+            );
 
             options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
             options.voiceChatApiKey = options.voiceChatApiKey || data.voiceChatApiKey;
@@ -708,8 +730,8 @@ function ApplozicSidebox() {
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
-            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) ||
-            userId;
+            options.userId ||
+            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
 
         try {
             const sentryGlobalScope = Sentry.getGlobalScope();
@@ -725,8 +747,8 @@ function ApplozicSidebox() {
                 username: userId,
             });
         } catch (error) {
-            console.log('Error in initializing sentry', error);
-            KommunicateUtils.sendErrorToSentry(error);
+            console.error('Error in initializing sentry', error);
+            // KommunicateUtils.sendErrorToSentry(error);
         }
     }
     function saveUserCookies(kommunicateSettings) {
