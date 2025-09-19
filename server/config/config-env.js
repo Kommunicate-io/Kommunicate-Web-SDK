@@ -87,14 +87,14 @@ const configEnv = {
             },
         },
     },
-    staging: {
+    release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
-            botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'https://widget-staging.kommunicate.io',
-            dashboardUrl: 'https://dashboard-staging.kommunicate.io',
+            applozicBaseUrl: 'https://chat-release.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
+            botPlatformApi: 'https://bots-release.kommunicate.io',
+            hostUrl: 'https://widget-release.kommunicate.io',
+            dashboardUrl: 'https://dashboard-master.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -107,36 +107,6 @@ const configEnv = {
                 PROJECT: 'test-widget',
                 ORG: 'kommunicateio',
                 PROJECT: 'widget-test',
-                AUTH_TOKEN:
-                    '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',
-                enabled: false,
-            },
-            aws: {
-                cdnUrl: 'https://cdn-test.kommunicate.io',
-                bucket: 'kom-test-cdn',
-            },
-        },
-    },
-
-    release: {
-        port: '3031',
-        urls: {
-            applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
-            botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'https://widget-release.kommunicate.io',
-            dashboardUrl: 'https://dashboard-test.kommunicate.io',
-        },
-        pluginProperties: {
-            pseudoNameEnabled: true,
-        },
-        thirdPartyIntegration: {
-            sentry: {
-                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
-                dsn:
-                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
-                PROJECT: 'widget-test',
-                ORG: 'kommunicateio',
                 AUTH_TOKEN:
                     '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',
                 enabled: false,
@@ -164,7 +134,7 @@ const configEnv = {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -219,7 +189,7 @@ const configEnv = {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -248,7 +218,7 @@ const configEnv = {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -260,13 +230,15 @@ const configEnv = {
             },
         },
     },
-    prod_ire: {
+
+    prod_eu: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://chat-ire.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-ire.kommunicate.io',
-            hostUrl: 'https://widget-ire.kommunicate.io',
-            dashboardUrl: 'https://dashboard-ire.kommunicate.io',
+            applozicBaseUrl: 'https://chat-eu.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-eu.kommunicate.io',
+            botPlatformApi: 'https://bots-eu.kommunicate.io',
+            hostUrl: 'https://widget-eu.kommunicate.io',
+            dashboardUrl: 'https://dashboard-eu.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -276,7 +248,7 @@ const configEnv = {
                 plugin: {
                     nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                     dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                    enabled: true,
+                    enabled: false,
                     AUTH_TOKEN:
                         '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',
                     PROJECT: 'chat-widget',
@@ -289,6 +261,7 @@ const configEnv = {
             },
         },
     },
+
     prod_enterprise: {
         port: '3033',
         urls: {
@@ -305,7 +278,7 @@ const configEnv = {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -324,7 +297,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-beta.kommunicate.io',
-            dashboardUrl: 'https://dashboard-beta.kommunicate.io',
+            dashboardUrl: 'https://beta.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -333,7 +306,7 @@ const configEnv = {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
