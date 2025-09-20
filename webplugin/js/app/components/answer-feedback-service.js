@@ -179,7 +179,9 @@ class AnswerFeedback {
         const msgBoxWidth = msgBox.offsetWidth;
 
         const feedbackWidth = msgBoxWidth + 40;
-        feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
+        if (feedbackWidth > 120) {
+            feedbackElement.style.left = `${feedbackWidth}px`;
+        }
     };
 
     attachEventListeners = (data) => {
