@@ -8664,6 +8664,11 @@ const firstVisibleMsg = {
                             table:hover {
                                 cursor: pointer;
                             }
+                             img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }   
                         
                    
                         `;
