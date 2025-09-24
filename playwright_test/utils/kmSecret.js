@@ -5,7 +5,7 @@
  */
 
 export const APP_ID = {
-    kmAppId: '2d7975a1ad839fb0a9d8753c4e4432858',
+    kmAppId: '25a8b220c6c9df9396582e1c60fd146bf',
 };
 
 export const URL = {

@@ -5,7 +5,7 @@
  */
 
 export const LOCATORS = {
-    envBtn: '#local',
+    envBtn: '#test',
     appIdField: '#app-id-input',
     scriptFiled: '.km-options',
     launchWidgetBtn: '#run-script-button',
