@@ -5444,7 +5444,7 @@ div[name='message']:last-child {
     }
     .mck-sidebox.fade.in.popup-enabled .mck-close-btn,
     #km-chat-login-modal.km-sidemodal .mck-close-btn {
-        width: 0 !important;
+        width: min-content !important;
         overflow: hidden;
     }
 }
