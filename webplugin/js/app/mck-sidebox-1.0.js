@@ -9645,7 +9645,8 @@ const firstVisibleMsg = {
                           params.source
                       ))
                     : '';
-                $mck_autosuggest_search_input.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    $mck_autosuggest_search_input.focus();
             };
 
             _this.processAutosuggestData = function (data) {
