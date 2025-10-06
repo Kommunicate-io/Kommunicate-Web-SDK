@@ -2038,7 +2038,8 @@ const firstVisibleMsg = {
                         _this.setLeadCollectionLabels();
                         kmChatLoginModal.style.visibility = 'visible';
                         kmChatLoginModal.style.display = 'none';
-                        kommunicateCommons.show(kmAnonymousChatLauncher);
+                        kmAnonymousChatLauncher.classList.remove('n-vis');
+                        kmAnonymousChatLauncher.classList.add('vis');
                         document
                             .getElementById('km-modal-close')
                             .addEventListener('click', _this.closeLeadCollectionWindow);
@@ -2076,7 +2077,8 @@ const firstVisibleMsg = {
                                     }
                                     kmChatLoginModal.style.display = 'block';
                                     !POPUP_WIDGET &&
-                                        kommunicateCommons.hide(kmAnonymousChatLauncher);
+                                        (kmAnonymousChatLauncher.classList.remove('vis'),
+                                        kmAnonymousChatLauncher.classList.add('n-vis'));
                                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                                 }
                             );
@@ -2198,7 +2200,6 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                var kmAnonymousChatLauncher = document.getElementById('km-anonymous-chat-launcher');
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -2210,7 +2211,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
-                kommunicateCommons.show(kmAnonymousChatLauncher);
+                kommunicateCommons.show('#km-anonymous-chat-launcher');
             };
 
             _this.onInitApp = function (data) {
@@ -9649,7 +9650,8 @@ const firstVisibleMsg = {
                           params.source
                       ))
                     : '';
-                $mck_autosuggest_search_input.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    $mck_autosuggest_search_input.focus();
             };
 
             _this.processAutosuggestData = function (data) {
