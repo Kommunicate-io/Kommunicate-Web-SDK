@@ -9,5 +9,5 @@ export const APP_ID = {
 };
 
 export const URL = {
-    kmWidgetURL: 'https://test.prochnost.tk/widget-test',
+    kmWidgetURL: 'https://master.d34s8r9w413nqy.amplifyapp.com/',
 };

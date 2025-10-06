@@ -4,13 +4,16 @@ const { devices } = require('@playwright/test');
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
+    // Test directory
+    testDir: './tests',
     // Options shared for all projects.
     timeout: 30000,
     reporter: 'html',
     use: {
         ignoreHTTPSErrors: true,
-        headless: false,
+        headless: true,
         screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
         trace: 'on',
     },
 
@@ -29,6 +32,7 @@ const config = {
             use: {
                 browserName: 'webkit',
                 viewport: { width: 1280, height: 720 },
+                permissions: ['geolocation'],
             },
         },
         {
