@@ -1863,7 +1863,8 @@ const firstVisibleMsg = {
                 }
             } catch (error) {
                 IS_SOCKET_INITIALIZING = false;
-                throw error;
+                console.error('[KM] Socket init/reconnect threw synchronously:', error);
+                return;
             }
 
             // Disconnect open sockets if user has no conversations.
@@ -2364,7 +2365,8 @@ const firstVisibleMsg = {
                                 window.Applozic.ALSocket.reconnect();
                             } catch (error) {
                                 IS_SOCKET_INITIALIZING = false;
-                                throw error;
+                                // throw error;
+                                console.error('Socket reconnection error:', error);
                             }
 
                             reconnectAttempts++;
