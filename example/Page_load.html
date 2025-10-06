@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Open Chat widget on page load</title>
+    </head>
+    <body>
+        <h1>This sample code will help you to open the chat widget automatically on page load</h1>
+
+        <script type="text/javascript">
+            (function (d, m) {
+                var kommunicateSettings = {
+                    appId: 'kommunicate-support',
+                    popupWidget: true,
+                    automaticChatOpenOnNavigation: true,
+                    onInit: function () {
+                        Kommunicate.launchConversation();
+                    },
+                };
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://widget.kommunicate.io/v2/kommunicate.app';
+                var h = document.getElementsByTagName('head')[0];
+                h.appendChild(s);
+                window.kommunicate = m;
+                m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        </script>
+
+        <h1>
+            Note: Please replace "kommunicate-support" with your account APP_ID from the
+            <a href="https://dashboard.kommunicate.io/settings/install"> Install </a>
+            section to get your APP_ID
+        </h1>
+    </body>
+</html>

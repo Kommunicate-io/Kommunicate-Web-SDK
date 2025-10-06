@@ -579,7 +579,6 @@ const firstVisibleMsg = {
             typeof appOptions.useBranding == 'boolean' ? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
-        var DISABLE_TEXT_AREA = appOptions.disableTextArea;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -2069,7 +2068,8 @@ const firstVisibleMsg = {
                         _this.setLeadCollectionLabels();
                         kmChatLoginModal.style.visibility = 'visible';
                         kmChatLoginModal.style.display = 'none';
-                        kommunicateCommons.show(kmAnonymousChatLauncher);
+                        kmAnonymousChatLauncher.classList.remove('n-vis');
+                        kmAnonymousChatLauncher.classList.add('vis');
                         document
                             .getElementById('km-modal-close')
                             .addEventListener('click', _this.closeLeadCollectionWindow);
@@ -2107,7 +2107,8 @@ const firstVisibleMsg = {
                                     }
                                     kmChatLoginModal.style.display = 'block';
                                     !POPUP_WIDGET &&
-                                        kommunicateCommons.hide(kmAnonymousChatLauncher);
+                                        (kmAnonymousChatLauncher.classList.remove('vis'),
+                                        kmAnonymousChatLauncher.classList.add('n-vis'));
                                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                                 }
                             );
@@ -2229,7 +2230,6 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                var kmAnonymousChatLauncher = document.getElementById('km-anonymous-chat-launcher');
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -2241,7 +2241,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
-                kommunicateCommons.show(kmAnonymousChatLauncher);
+                kommunicateCommons.show('#km-anonymous-chat-launcher');
             };
 
             _this.onInitApp = function (data) {
@@ -2484,9 +2484,7 @@ const firstVisibleMsg = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
-
                 // calling Kommunicate for post initialization processing. error first style.
-
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     userId: MCK_USER_ID,
@@ -2797,7 +2795,7 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase();
+                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(' ', '-');
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId);
 
@@ -3483,7 +3481,7 @@ const firstVisibleMsg = {
                 var metadata = {};
                 var field = '';
                 KM_PRELEAD_COLLECTION.map(function (element) {
-                    field = element.field && element.field.toLowerCase();
+                    field = element.field && element.field.toLowerCase().replace(' ', '-');
                     if (KM_USER_DETAIL.indexOf(field) === -1) {
                         metadata[element.field] = $applozic('#km-' + field).val();
                     }
@@ -4418,6 +4416,7 @@ const firstVisibleMsg = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
+                    const anonymousUserIdForPreChatLead = appOptions.anonymousUserIdForPreChatLead;
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
@@ -4426,17 +4425,23 @@ const firstVisibleMsg = {
                             // get number in international format as a string
                             contactNumber = INTL_TEL_INSTANCE.getNumber();
                         }
-                        userId = contactNumber;
+                        if (!anonymousUserIdForPreChatLead) {
+                            userId = contactNumber;
+                        }
+
                         // Remove listener from phone number
                         document
                             .getElementById('km-phone')
                             .removeEventListener('keydown', _this.phoneNumberValidation);
                     }
                     if (email) {
-                        userId = email;
+                        const userIdForCookie = anonymousUserIdForPreChatLead ? userId : email;
+
+                        userId = userIdForCookie;
+
                         kmCookieStorage.setCookie({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                            value: email,
+                            value: userIdForCookie,
                             expiresInDays: 30,
                             domain: MCK_COOKIE_DOMAIN,
                         });
@@ -5810,7 +5815,8 @@ const firstVisibleMsg = {
                             data &&
                             data.groupFeeds[0] &&
                             data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
+                        CURRENT_GROUP_DATA.groupMembers =
+                            data.groupFeeds?.[0]?.groupUsers || data.userDetails || [];
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
@@ -7427,7 +7433,6 @@ const firstVisibleMsg = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
-                            data: params,
                         });
                         mckMessageService.handleBusinessHours();
                     }
@@ -7597,6 +7602,8 @@ const firstVisibleMsg = {
                                         KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             }
 
+                            // if socket is disconnected and list api gets called then we should hide indicator
+                            typingService.hideTypingIndicator();
                             _this.addMessage(
                                 message,
                                 contact,
@@ -8699,6 +8706,11 @@ const firstVisibleMsg = {
                             table:hover {
                                 cursor: pointer;
                             }
+                             img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }   
                         
                    
                         `;
@@ -9060,7 +9072,6 @@ const firstVisibleMsg = {
                 }
                 return '';
             };
-
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
@@ -9680,7 +9691,8 @@ const firstVisibleMsg = {
                           params.source
                       ))
                     : '';
-                $mck_autosuggest_search_input.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    $mck_autosuggest_search_input.focus();
             };
 
             _this.processAutosuggestData = function (data) {
@@ -10884,6 +10896,7 @@ const firstVisibleMsg = {
                                                     true,
                                                     validated
                                                 );
+
                                                 typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(false);
@@ -13651,7 +13664,7 @@ const firstVisibleMsg = {
                                     $mck_tab_title.removeClass('mck-tab-title-w-typing');
                                     typingService.hideTypingIndicator();
                                     $mck_typing_label.html(MCK_LABELS['typing']);
-                                }, 10000);
+                                }, typingService.TYPING_TIMEOUT_MILLISEC);
                                 typingService.addTimeoutIds(timeoutId);
                             }
                         } else {

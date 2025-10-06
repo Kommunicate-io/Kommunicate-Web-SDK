@@ -699,6 +699,9 @@
     width: 100%;
     height: auto;
 }
+.km-kb-container {
+    display: flex !important;
+}
 
 #mck-email-error-alert-box .svg-container {
     width: 45px;
