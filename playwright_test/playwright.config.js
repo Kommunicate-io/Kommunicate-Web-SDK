@@ -4,6 +4,8 @@ const { devices } = require('@playwright/test');
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
+    // Test directory
+    testDir: './tests',
     // Options shared for all projects.
     timeout: 30000,
     reporter: 'html',
