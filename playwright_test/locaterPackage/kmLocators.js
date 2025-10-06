@@ -5,7 +5,7 @@
  */
 
 export const LOCATORS = {
-    envBtn: '#test',
+    envBtn: '#test', // update the locators to test diff env
     appIdField: '#app-id-input',
     scriptFiled: '.km-options',
     launchWidgetBtn: '#run-script-button',
