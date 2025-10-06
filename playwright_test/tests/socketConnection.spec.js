@@ -59,7 +59,7 @@ const configureWidgetPreview = async (page) => {
     await page.type(LOCATORS.scriptFiled, SCRIPT.kmAllBooleanIsTrue);
     await page.click(LOCATORS.launchWidgetBtn);
 
-    const iframeLocator = page.frameLocator(WIDGET_LOCATORS.kmIframe);
+    const iframeLocator = await page.frameLocator(WIDGET_LOCATORS.kmIframe);
     const launcher = iframeLocator.locator(WIDGET_LOCATORS.kmLaunchWidget);
     const getCloseButtonLocator = () =>
         page.frameLocator(WIDGET_LOCATORS.kmIframe).locator('#km-chat-widget-close-button');
