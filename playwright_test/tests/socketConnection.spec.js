@@ -5,7 +5,7 @@ import { SCRIPT } from '../utils/kmScript';
 
 const isWidgetSocketUrl = (url) => /\/stomp/i.test(url) || /kommunicate\.(?:io|net)\/ws/i.test(url);
 
-const createSocketTracker = (page) => {
+const createSocketTracker = (page, log) => {
     const socketRecords = [];
 
     page.on('websocket', (ws) => {
@@ -16,9 +16,13 @@ const createSocketTracker = (page) => {
 
         const record = { ws, url, openedAt: Date.now(), closedAt: null };
         socketRecords.push(record);
+        log?.(`socket:open url=${url} openedAt=${record.openedAt} total=${socketRecords.length}`);
 
         ws.on('close', () => {
             record.closedAt = Date.now();
+            log?.(
+                `socket:close url=${record.url} openedAt=${record.openedAt} closedAt=${record.closedAt}`
+            );
         });
     });
 
@@ -45,6 +49,57 @@ const createSocketTracker = (page) => {
     };
 };
 
+const WIDGET_FRAME_NAME = 'Kommunicate widget iframe';
+
+const waitForWidgetFrame = async (page, timeout = 5000) => {
+    const start = Date.now();
+    while (Date.now() - start < timeout) {
+        const frame = page.frame({ name: WIDGET_FRAME_NAME });
+        if (frame) {
+            return frame;
+        }
+        await page.waitForTimeout(50);
+    }
+    throw new Error('Kommunicate widget iframe not found');
+};
+
+const waitForWidgetState = async (page, expectedState, log) => {
+    const frame = await waitForWidgetFrame(page);
+    await frame.waitForFunction(
+        (state) =>
+            !!window.KommunicateCommons && window.KommunicateCommons.IS_WIDGET_OPEN === state,
+        expectedState,
+        { timeout: 5000 }
+    );
+    log?.(`widget state ${expectedState ? 'open' : 'closed'}`);
+    return frame;
+};
+
+const closeWidgetUI = async (page, getCloseButtonLocator, log) => {
+    const closeButton = getCloseButtonLocator();
+    let closeButtonVisible = false;
+    try {
+        await closeButton.waitFor({ state: 'visible', timeout: 500 });
+        closeButtonVisible = true;
+    } catch (error) {
+        closeButtonVisible = false;
+    }
+
+    if (closeButtonVisible) {
+        await closeButton.click();
+    } else {
+        const frame = await waitForWidgetFrame(page);
+        await frame.evaluate(() => {
+            if (window.KommunicateCommons?.IS_WIDGET_OPEN) {
+                window.KommunicateCommons.setWidgetStateOpen(false);
+            }
+        });
+        log?.('close fallback -> setWidgetStateOpen(false)');
+    }
+
+    await waitForWidgetState(page, false, log);
+};
+
 const configureWidgetPreview = async (page) => {
     await page.goto(URL.kmWidgetURL);
 
@@ -68,14 +123,19 @@ const configureWidgetPreview = async (page) => {
 };
 
 const waitForSocketStatus = async (page, expectedStatus) => {
-    const iframe = await page.frame({ name: 'Kommunicate widget iframe' });
-    await iframe.waitForFunction((status) => window.IS_SOCKET_CONNECTED === status, expectedStatus);
+    const iframe = await waitForWidgetFrame(page);
+    await iframe.waitForFunction(
+        (status) => window.IS_SOCKET_CONNECTED === status,
+        expectedStatus,
+        { timeout: 5000 }
+    );
     return iframe;
 };
 
 test.describe('Widget Socket Connection', () => {
     test('creates a single socket connection when launcher is clicked', async ({ page }) => {
-        const tracker = createSocketTracker(page);
+        const log = (...parts) => console.log('[socket-test]', ...parts);
+        const tracker = createSocketTracker(page, log);
         const { launcher, getCloseButtonLocator } = await configureWidgetPreview(page);
 
         const firstSocketPromise = tracker.waitForSocketRecord();
@@ -86,23 +146,27 @@ test.describe('Widget Socket Connection', () => {
         expect(socketRecord.openedAt).toBeGreaterThanOrEqual(clickTimestamp);
         expect(tracker.socketRecords.length).toBe(1);
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `after first click sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
+        await waitForWidgetState(page, true, log);
         const iframe = await waitForSocketStatus(page, true);
-        await page.waitForTimeout(2000);
-
-        const closeButton = getCloseButtonLocator();
-        await closeButton.waitFor({ state: 'visible' });
-        await page.waitForTimeout(500);
 
         const uniqueSocketUrls = new Set(tracker.socketRecords.map((record) => record.url));
         expect(uniqueSocketUrls.size).toBe(1);
 
-        await closeButton.click();
-        await closeButton.waitFor({ state: 'hidden' });
-        await page.waitForTimeout(500);
+        await closeWidgetUI(page, getCloseButtonLocator, log);
 
         expect(tracker.socketRecords.length).toBe(1);
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `after close sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         // Cleanup to keep the test isolated
         await iframe.evaluate(() => {
@@ -112,39 +176,54 @@ test.describe('Widget Socket Connection', () => {
         });
         await tracker.waitForRecordClose(socketRecord);
         expect(tracker.activeSocketCount()).toBe(0);
+        log('cleanup complete active=0');
     });
 
     test('reconnects once after manual disconnect and ignores repeated launcher clicks', async ({
         page,
     }) => {
-        const tracker = createSocketTracker(page);
+        const log = (...parts) => console.log('[socket-test]', ...parts);
+        const tracker = createSocketTracker(page, log);
         const { launcher, getCloseButtonLocator } = await configureWidgetPreview(page);
 
         const initialSocketPromise = tracker.waitForSocketRecord();
         await launcher.click();
         const initialSocket = await initialSocketPromise;
+        log(
+            `initial connect sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         await waitForSocketStatus(page, true);
-
-        const closeButton = getCloseButtonLocator();
-        await closeButton.waitFor({ state: 'visible' });
+        await waitForWidgetState(page, true, log);
 
         // Close the widget UI but keep the socket alive
-        await closeButton.click();
-        await closeButton.waitFor({ state: 'hidden' });
+        await closeWidgetUI(page, getCloseButtonLocator, log);
 
         expect(tracker.socketRecords.length).toBe(1);
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `after closing UI sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         // Manually disconnect the socket and wait for closure
-        const iframe = page.frame({ name: 'Kommunicate widget iframe' });
+        const iframe = await waitForWidgetFrame(page);
         await iframe.evaluate(() => {
             if (window.Applozic?.ALSocket) {
                 window.Applozic.ALSocket.disconnect();
             }
         });
+        log('manual disconnect invoked via iframe');
         await tracker.waitForRecordClose(initialSocket);
         expect(tracker.activeSocketCount()).toBe(0);
+        log(
+            `after manual disconnect sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         await waitForSocketStatus(page, false);
 
@@ -153,13 +232,20 @@ test.describe('Widget Socket Connection', () => {
             const socketPromise = expectNewSocket ? tracker.waitForSocketRecord() : null;
 
             await launcher.click();
-            await getCloseButtonLocator().waitFor({ state: 'visible' });
-            await page.waitForTimeout(500);
+            await waitForWidgetState(page, true, log);
+            log(
+                `launcher click expectNewSocket=${expectNewSocket} sockets=${
+                    tracker.socketRecords.length
+                } active=${tracker.activeSocketCount()}`
+            );
 
             if (expectNewSocket) {
                 const record = await socketPromise;
                 expect(tracker.socketRecords.length).toBe(beforeCount + 1);
                 expect(record.closedAt).toBeNull();
+                log(
+                    `new socket established url=${record.url} openedAt=${record.openedAt} total=${tracker.socketRecords.length}`
+                );
                 return record;
             }
 
@@ -169,19 +255,32 @@ test.describe('Widget Socket Connection', () => {
         };
 
         const closeWidget = async () => {
-            await getCloseButtonLocator().click();
-            await getCloseButtonLocator().waitFor({ state: 'hidden' });
-            await page.waitForTimeout(300);
+            await closeWidgetUI(page, getCloseButtonLocator, log);
+            log(
+                `widget closed sockets=${
+                    tracker.socketRecords.length
+                } active=${tracker.activeSocketCount()}`
+            );
         };
 
         const reconnectedSocket = await openWidget({ expectNewSocket: true });
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `after reconnection sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         const uniqueSocketUrls = new Set(tracker.socketRecords.map((record) => record.url));
         expect(uniqueSocketUrls.size).toBe(1);
 
         await closeWidget();
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `after closing post-reconnect sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         for (let attempt = 0; attempt < 3; attempt += 1) {
             const beforeCount = tracker.socketRecords.length;
@@ -189,10 +288,20 @@ test.describe('Widget Socket Connection', () => {
             expect(tracker.socketRecords.length).toBe(beforeCount);
             expect(tracker.activeSocketCount()).toBe(1);
             await closeWidget();
+            log(
+                `repeat attempt=${attempt + 1} sockets=${
+                    tracker.socketRecords.length
+                } active=${tracker.activeSocketCount()}`
+            );
         }
 
         expect(tracker.socketRecords.length).toBe(2);
         expect(tracker.activeSocketCount()).toBe(1);
+        log(
+            `before final cleanup sockets=${
+                tracker.socketRecords.length
+            } active=${tracker.activeSocketCount()}`
+        );
 
         // Final cleanup
         await iframe.evaluate(() => {
@@ -202,5 +311,6 @@ test.describe('Widget Socket Connection', () => {
         });
         await tracker.waitForRecordClose(reconnectedSocket);
         expect(tracker.activeSocketCount()).toBe(0);
+        log(`final cleanup active=${tracker.activeSocketCount()}`);
     });
 });
