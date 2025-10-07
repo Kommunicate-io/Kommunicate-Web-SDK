@@ -125,7 +125,6 @@ test.describe('Widget Socket Connection', () => {
         const initialSocket = await initialSocketPromise;
 
         await waitForSocketStatus(page, true);
-        await page.waitForTimeout(1000);
 
         const closeButton = getCloseButtonLocator();
         await closeButton.waitFor({ state: 'visible' });
@@ -133,13 +132,12 @@ test.describe('Widget Socket Connection', () => {
         // Close the widget UI but keep the socket alive
         await closeButton.click();
         await closeButton.waitFor({ state: 'hidden' });
-        await page.waitForTimeout(500);
 
         expect(tracker.socketRecords.length).toBe(1);
         expect(tracker.activeSocketCount()).toBe(1);
 
         // Manually disconnect the socket and wait for closure
-        const iframe = await page.frame({ name: 'Kommunicate widget iframe' });
+        const iframe = page.frame({ name: 'Kommunicate widget iframe' });
         await iframe.evaluate(() => {
             if (window.Applozic?.ALSocket) {
                 window.Applozic.ALSocket.disconnect();
