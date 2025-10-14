@@ -49,10 +49,6 @@ function ApplozicSidebox() {
     ];
     var mck_third_party_scripts = [
         {
-            name: 'locationPicker',
-            url: MCK_STATICPATH + '/lib/js/locationpicker.jquery.min.js',
-        },
-        {
             name: 'emojiLibrary',
             url: MCK_STATICPATH + '/lib/js/mck-emojis.min.js',
         },
@@ -276,9 +272,7 @@ function ApplozicSidebox() {
             MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(document.domain);
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
-                if (data.name === 'locationPicker') {
-                    options.locShare && mckLoadScript(data.url);
-                } else if (data.name === 'emojiLibrary') {
+                if (data.name === 'emojiLibrary') {
                     options.emojilibrary && mckLoadScript(data.url, null, true);
                 } else {
                     mckLoadScript(data.url);

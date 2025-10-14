@@ -12387,6 +12387,12 @@ const firstVisibleMsg = {
             var $mck_btn_attach = $applozic('#mck-btn-attach');
             var $mckMapContent = $applozic('#mck-map-content');
             var $mck_loc_address = $applozic('#mck-loc-address');
+            var mapInstance = null;
+            var mapMarker = null;
+            var addressAutocomplete = null;
+            var manualAddressHandlersBound = false;
+            var isAddressSelectionFromAutocomplete = false;
+            var AdvancedMarkerElement = null;
             _this.init = function () {
                 if (IS_MCK_LOCSHARE && w.google && typeof w.google.maps === 'object') {
                     GEOCODER = new w.google.maps.Geocoder();
@@ -12454,54 +12460,257 @@ const firstVisibleMsg = {
                 $mck_loc_lon.trigger('change');
                 if (CURR_LOC_ADDRESS) {
                     $mck_loc_address.val(CURR_LOC_ADDRESS);
-                } else if (GEOCODER) {
-                    var latlng = {
-                        lat: MCK_CURR_LATITIUDE,
-                        lng: MCK_CURR_LONGITUDE,
-                    };
-                    GEOCODER.geocode(
+                }
+                if (mapMarker) {
+                    syncMarkerPosition(
                         {
-                            location: latlng,
+                            lat: MCK_CURR_LATITIUDE,
+                            lng: MCK_CURR_LONGITUDE,
                         },
-                        function (results, status) {
-                            if (status === 'OK') {
-                                if (results[1]) {
-                                    CURR_LOC_ADDRESS = results[1].formatted_address;
-                                }
-                            }
+                        {
+                            pan: true,
                         }
                     );
                 }
+                reverseGeocodeLatLng({
+                    lat: MCK_CURR_LATITIUDE,
+                    lng: MCK_CURR_LONGITUDE,
+                });
             };
             _this.openMapBox = function () {
-                var pickerOptions = {
-                    location: {
-                        latitude: MCK_CURR_LATITIUDE,
-                        longitude: MCK_CURR_LONGITUDE,
-                    },
-                    radius: 0,
-                    scrollwheel: true,
-                    inputBinding: {
-                        latitudeInput: $mck_loc_lat,
-                        longitudeInput: $mck_loc_lon,
-                        locationNameInput: $mck_loc_address,
-                    },
-                    enableAutocomplete: true,
-                    enableReverseGeocode: true,
-                    onchanged: function (currentLocation) {
-                        MCK_CURR_LATITIUDE = currentLocation.latitude;
-                        MCK_CURR_LONGITUDE = currentLocation.longitude;
-                    },
-                };
-                if (MCK_GOOGLE_API_KEY) {
-                    pickerOptions.mapId = MCK_GOOGLE_API_KEY;
+                if (!w.google || !w.google.maps) {
+                    $mck_loc_box.mckModal();
+                    return;
                 }
-                $mckMapContent.locationpicker(pickerOptions);
-                $mck_loc_box.on('shown.bs.mck-box', function () {
-                    $mckMapContent.locationpicker('autosize');
+                if (!GEOCODER) {
+                    GEOCODER = new w.google.maps.Geocoder();
+                }
+                var initialLatLng = {
+                    lat: MCK_CURR_LATITIUDE || 0,
+                    lng: MCK_CURR_LONGITUDE || 0,
+                };
+                if (!AdvancedMarkerElement && w.google && w.google.maps && w.google.maps.marker) {
+                    AdvancedMarkerElement = w.google.maps.marker.AdvancedMarkerElement || null;
+                }
+                if (!mapInstance) {
+                    initializeMap(initialLatLng);
+                    initializeAutocomplete();
+                    initializeAddressManualHandlers();
+                } else {
+                    mapInstance.setCenter(initialLatLng);
+                    updateMarkerPosition(initialLatLng);
+                }
+                syncMarkerPosition(initialLatLng, {
+                    pan: false,
+                    address: CURR_LOC_ADDRESS || ($mck_loc_address.val() || '').trim(),
                 });
+                if (!CURR_LOC_ADDRESS) {
+                    reverseGeocodeLatLng(initialLatLng);
+                }
+                $mck_loc_box.off('shown.bs.mck-box', handleLocModalShown);
+                $mck_loc_box.on('shown.bs.mck-box', handleLocModalShown);
                 $mck_loc_box.mckModal();
             };
+            function handleLocModalShown() {
+                $mck_loc_box.off('shown.bs.mck-box', handleLocModalShown);
+                if (mapInstance && w.google && w.google.maps && w.google.maps.event) {
+                    w.google.maps.event.trigger(mapInstance, 'resize');
+                    mapInstance.setCenter({
+                        lat: MCK_CURR_LATITIUDE,
+                        lng: MCK_CURR_LONGITUDE,
+                    });
+                }
+            }
+            function initializeMap(latLng) {
+                var mapOptions = {
+                    center: latLng,
+                    zoom: 14,
+                    fullscreenControl: false,
+                    streetViewControl: false,
+                    mapTypeControl: false,
+                    mapId: MCK_GOOGLE_API_KEY,
+                };
+
+                mapInstance = new w.google.maps.Map($mckMapContent[0], mapOptions);
+                if (AdvancedMarkerElement) {
+                    mapMarker = new AdvancedMarkerElement({
+                        map: mapInstance,
+                        position: latLng,
+                        gmpDraggable: true,
+                    });
+                    mapMarker.addListener('dragend', function (event) {
+                        var position = getMarkerLatLng(event && event.latLng);
+                        syncMarkerPosition(position, {
+                            pan: true,
+                        });
+                        reverseGeocodeLatLng(position);
+                    });
+                } else {
+                    mapMarker = new w.google.maps.Marker({
+                        map: mapInstance,
+                        position: latLng,
+                        draggable: true,
+                    });
+                    mapMarker.addListener('dragend', function (event) {
+                        var position = getMarkerLatLng(event && event.latLng);
+                        syncMarkerPosition(position, {
+                            pan: true,
+                        });
+                        reverseGeocodeLatLng(position);
+                    });
+                }
+                mapInstance.addListener('click', function (event) {
+                    syncMarkerPosition(event.latLng, {
+                        pan: true,
+                    });
+                    reverseGeocodeLatLng(event.latLng);
+                });
+            }
+            function initializeAutocomplete() {
+                if (
+                    addressAutocomplete ||
+                    !$mck_loc_address.length ||
+                    !w.google.maps.places ||
+                    !mapInstance
+                ) {
+                    return;
+                }
+                addressAutocomplete = new w.google.maps.places.Autocomplete($mck_loc_address[0], {
+                    fields: ['geometry', 'formatted_address', 'name'],
+                });
+                addressAutocomplete.bindTo('bounds', mapInstance);
+                addressAutocomplete.addListener('place_changed', function () {
+                    var place = addressAutocomplete.getPlace();
+                    if (!place || !place.geometry || !place.geometry.location) {
+                        return;
+                    }
+                    isAddressSelectionFromAutocomplete = true;
+                    var formatted = place.formatted_address || place.name || CURR_LOC_ADDRESS || '';
+                    syncMarkerPosition(place.geometry.location, {
+                        pan: true,
+                        address: formatted,
+                    });
+                    setTimeout(function () {
+                        isAddressSelectionFromAutocomplete = false;
+                    }, 0);
+                });
+            }
+            function initializeAddressManualHandlers() {
+                if (manualAddressHandlersBound) {
+                    return;
+                }
+                manualAddressHandlersBound = true;
+                $mck_loc_address.on('keydown', function (event) {
+                    if (event.key === 'Enter' || event.keyCode === 13) {
+                        event.preventDefault();
+                        var address = ($mck_loc_address.val() || '').trim();
+                        if (address) {
+                            geocodeAddress(address);
+                        }
+                    }
+                });
+                $mck_loc_address.on('blur', function () {
+                    if (isAddressSelectionFromAutocomplete) {
+                        return;
+                    }
+                    var address = ($mck_loc_address.val() || '').trim();
+                    if (address && address !== CURR_LOC_ADDRESS) {
+                        geocodeAddress(address);
+                    }
+                });
+            }
+            function getMarkerLatLng(fallbackLatLng) {
+                if (fallbackLatLng) {
+                    return fallbackLatLng;
+                }
+                if (!mapMarker) {
+                    return null;
+                }
+                if (typeof mapMarker.getPosition === 'function') {
+                    return mapMarker.getPosition();
+                }
+                return mapMarker.position || null;
+            }
+            function updateMarkerPosition(target) {
+                if (!mapMarker || !target) {
+                    return;
+                }
+                if (typeof mapMarker.setPosition === 'function') {
+                    mapMarker.setPosition(target);
+                } else {
+                    mapMarker.position = target;
+                }
+            }
+            function geocodeAddress(address) {
+                if (!GEOCODER || !address) {
+                    return;
+                }
+                GEOCODER.geocode(
+                    {
+                        address: address,
+                    },
+                    function (results, status) {
+                        if (status === 'OK' && results && results.length) {
+                            var result = results[0];
+                            syncMarkerPosition(result.geometry.location, {
+                                pan: true,
+                                address: result.formatted_address,
+                            });
+                        }
+                    }
+                );
+            }
+            function reverseGeocodeLatLng(latLng) {
+                if (!GEOCODER || !latLng) {
+                    return;
+                }
+                var target = toPlainLatLng(latLng);
+                GEOCODER.geocode(
+                    {
+                        location: target,
+                    },
+                    function (results, status) {
+                        if (status === 'OK' && results && results.length) {
+                            CURR_LOC_ADDRESS = results[0].formatted_address;
+                            $mck_loc_address.val(CURR_LOC_ADDRESS);
+                        }
+                    }
+                );
+            }
+            function syncMarkerPosition(latLng, options) {
+                if (latLng == null) {
+                    return;
+                }
+                var target = toPlainLatLng(latLng);
+                MCK_CURR_LATITIUDE = target.lat;
+                MCK_CURR_LONGITUDE = target.lng;
+                $mck_loc_lat.val(target.lat);
+                $mck_loc_lon.val(target.lng);
+                $mck_loc_lat.trigger('change');
+                $mck_loc_lon.trigger('change');
+                if (options && typeof options.address !== 'undefined') {
+                    CURR_LOC_ADDRESS = options.address || '';
+                    $mck_loc_address.val(CURR_LOC_ADDRESS);
+                }
+                updateMarkerPosition(target);
+                if (mapInstance && (!options || options.pan !== false)) {
+                    mapInstance.panTo(target);
+                }
+            }
+            function toPlainLatLng(latLng) {
+                if (!latLng) {
+                    return {
+                        lat: 0,
+                        lng: 0,
+                    };
+                }
+                var lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
+                var lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+                return {
+                    lat: parseFloat(lat) || 0,
+                    lng: parseFloat(lng) || 0,
+                };
+            }
         }
 
         function MckMapService() {
