@@ -4431,34 +4431,7 @@ const firstVisibleMsg = {
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
                     const anonymousUserIdForPreChatLead = appOptions.anonymousUserIdForPreChatLead;
-                    // Validate email (require domain and TLD)
-                    if (email) {
-                        var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-                        if (!emailRegex.test(String(email).toLowerCase())) {
-                            $error_chat_login.removeClass('hide').addClass('show');
-                            $error_chat_login.html(MCK_LABELS['lead.collection'].errorEmail);
-                            return false;
-                        }
-                    }
 
-                    // Validate phone number if provided
-                    if (contactNumber) {
-                        var isPhoneValid = true;
-                        if (typeof INTL_TEL_INSTANCE !== 'undefined' && INTL_TEL_INSTANCE) {
-                            isPhoneValid = INTL_TEL_INSTANCE.isValidNumber();
-                        } else {
-                            var digitsOnly = (contactNumber + '').replace(/\D/g, '');
-                            isPhoneValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
-                        }
-                        if (!isPhoneValid) {
-                            $error_chat_login.removeClass('hide').addClass('show');
-                            $error_chat_login.html(
-                                MCK_LABELS['lead.collection'].commonErrorMsg ||
-                                    'Please enter a valid phone number'
-                            );
-                            return false;
-                        }
-                    }
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
