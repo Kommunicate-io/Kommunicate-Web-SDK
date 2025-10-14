@@ -12389,7 +12389,8 @@ const firstVisibleMsg = {
             var $mck_loc_address = $applozic('#mck-loc-address');
             var mapInstance = null;
             var mapMarker = null;
-            var addressAutocomplete = null;
+            var placeAutocompleteElement = null;
+            var placeAutocompleteInput = null;
             var manualAddressHandlersBound = false;
             var isAddressSelectionFromAutocomplete = false;
             var AdvancedMarkerElement = null;
@@ -12502,7 +12503,7 @@ const firstVisibleMsg = {
                 }
                 syncMarkerPosition(initialLatLng, {
                     pan: false,
-                    address: CURR_LOC_ADDRESS || ($mck_loc_address.val() || '').trim(),
+                    address: CURR_LOC_ADDRESS || getAddressFieldValue(),
                 });
                 if (!CURR_LOC_ADDRESS) {
                     reverseGeocodeLatLng(initialLatLng);
@@ -12568,56 +12569,142 @@ const firstVisibleMsg = {
             }
             function initializeAutocomplete() {
                 if (
-                    addressAutocomplete ||
+                    placeAutocompleteElement ||
                     !$mck_loc_address.length ||
                     !w.google.maps.places ||
+                    !w.google.maps.places.PlaceAutocompleteElement ||
                     !mapInstance
                 ) {
                     return;
                 }
-                addressAutocomplete = new w.google.maps.places.Autocomplete($mck_loc_address[0], {
-                    fields: ['geometry', 'formatted_address', 'name'],
-                });
-                addressAutocomplete.bindTo('bounds', mapInstance);
-                addressAutocomplete.addListener('place_changed', function () {
-                    var place = addressAutocomplete.getPlace();
-                    if (!place || !place.geometry || !place.geometry.location) {
-                        return;
-                    }
-                    isAddressSelectionFromAutocomplete = true;
-                    var formatted = place.formatted_address || place.name || CURR_LOC_ADDRESS || '';
-                    syncMarkerPosition(place.geometry.location, {
-                        pan: true,
-                        address: formatted,
+                try {
+                    placeAutocompleteElement = new w.google.maps.places.PlaceAutocompleteElement();
+                } catch (error) {
+                    placeAutocompleteElement = null;
+                    return;
+                }
+                var originalInput = $mck_loc_address[0];
+                if (!originalInput || !originalInput.parentNode) {
+                    placeAutocompleteElement = null;
+                    return;
+                }
+                placeAutocompleteElement.id = 'mck-loc-address-autocomplete';
+                placeAutocompleteElement.className = originalInput.className || '';
+                placeAutocompleteElement.placeholder =
+                    originalInput.getAttribute('placeholder') || '';
+                placeAutocompleteElement.setAttribute(
+                    'aria-label',
+                    originalInput.getAttribute('aria-label') || 'Enter a location'
+                );
+                if (originalInput.value) {
+                    placeAutocompleteElement.value = originalInput.value;
+                }
+                originalInput.parentNode.insertBefore(placeAutocompleteElement, originalInput);
+                $mck_loc_address.hide();
+                ensurePlaceAutocompleteInput();
+                placeAutocompleteElement.addEventListener(
+                    'gmp-select',
+                    handlePlaceAutocompleteSelection
+                );
+            }
+            function handlePlaceAutocompleteSelection(event) {
+                var prediction = event && event.placePrediction;
+                if (!prediction || typeof prediction.toPlace !== 'function') {
+                    return;
+                }
+                var place = prediction.toPlace();
+                isAddressSelectionFromAutocomplete = true;
+                place
+                    .fetchFields({
+                        fields: ['location', 'formattedAddress', 'displayName'],
+                    })
+                    .then(function () {
+                        if (!place.location) {
+                            return;
+                        }
+                        var formatted =
+                            place.formattedAddress || place.displayName || CURR_LOC_ADDRESS || '';
+                        syncMarkerPosition(place.location, {
+                            pan: true,
+                            address: formatted,
+                        });
+                    })
+                    .catch(function (error) {
+                        console.error('PlaceAutocompleteElement selection error', error);
+                    })
+                    .then(function () {
+                        setTimeout(function () {
+                            isAddressSelectionFromAutocomplete = false;
+                        }, 0);
                     });
-                    setTimeout(function () {
-                        isAddressSelectionFromAutocomplete = false;
-                    }, 0);
-                });
             }
             function initializeAddressManualHandlers() {
                 if (manualAddressHandlersBound) {
                     return;
                 }
+                var manualTarget = placeAutocompleteElement || $mck_loc_address[0];
+                if (!manualTarget) {
+                    return;
+                }
                 manualAddressHandlersBound = true;
-                $mck_loc_address.on('keydown', function (event) {
-                    if (event.key === 'Enter' || event.keyCode === 13) {
-                        event.preventDefault();
-                        var address = ($mck_loc_address.val() || '').trim();
-                        if (address) {
-                            geocodeAddress(address);
-                        }
-                    }
-                });
-                $mck_loc_address.on('blur', function () {
-                    if (isAddressSelectionFromAutocomplete) {
-                        return;
-                    }
-                    var address = ($mck_loc_address.val() || '').trim();
-                    if (address && address !== CURR_LOC_ADDRESS) {
+                manualTarget.addEventListener('keydown', handleManualAddressKeyDown, true);
+                manualTarget.addEventListener('blur', handleManualAddressBlur, true);
+            }
+            function handleManualAddressKeyDown(event) {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    event.preventDefault();
+                    var address = (getAddressFieldValue() || '').trim();
+                    if (address) {
                         geocodeAddress(address);
                     }
-                });
+                }
+            }
+            function handleManualAddressBlur() {
+                if (isAddressSelectionFromAutocomplete) {
+                    return;
+                }
+                var address = (getAddressFieldValue() || '').trim();
+                if (address && address !== CURR_LOC_ADDRESS) {
+                    geocodeAddress(address);
+                }
+            }
+            function ensurePlaceAutocompleteInput() {
+                if (
+                    !placeAutocompleteElement ||
+                    typeof placeAutocompleteElement.querySelector !== 'function'
+                ) {
+                    placeAutocompleteInput = null;
+                    return null;
+                }
+                if (!placeAutocompleteInput || !placeAutocompleteInput.isConnected) {
+                    placeAutocompleteInput = placeAutocompleteElement.querySelector('input');
+                }
+                return placeAutocompleteInput;
+            }
+            function getAddressFieldValue() {
+                if (
+                    placeAutocompleteElement &&
+                    typeof placeAutocompleteElement.value === 'string'
+                ) {
+                    return placeAutocompleteElement.value;
+                }
+                var input = ensurePlaceAutocompleteInput();
+                if (input && typeof input.value === 'string') {
+                    return input.value;
+                }
+                return ($mck_loc_address.val() || '').toString();
+            }
+            function setAddressFieldValue(address) {
+                var value = address || '';
+                $mck_loc_address.val(value);
+                if (placeAutocompleteElement) {
+                    placeAutocompleteElement.value = value;
+                } else {
+                    var input = ensurePlaceAutocompleteInput();
+                    if (input) {
+                        input.value = value;
+                    }
+                }
             }
             function getMarkerLatLng(fallbackLatLng) {
                 if (fallbackLatLng) {
@@ -12672,7 +12759,7 @@ const firstVisibleMsg = {
                     function (results, status) {
                         if (status === 'OK' && results && results.length) {
                             CURR_LOC_ADDRESS = results[0].formatted_address;
-                            $mck_loc_address.val(CURR_LOC_ADDRESS);
+                            setAddressFieldValue(CURR_LOC_ADDRESS);
                         }
                     }
                 );
@@ -12690,7 +12777,9 @@ const firstVisibleMsg = {
                 $mck_loc_lon.trigger('change');
                 if (options && typeof options.address !== 'undefined') {
                     CURR_LOC_ADDRESS = options.address || '';
-                    $mck_loc_address.val(CURR_LOC_ADDRESS);
+                    setAddressFieldValue(CURR_LOC_ADDRESS);
+                } else if (CURR_LOC_ADDRESS) {
+                    setAddressFieldValue(CURR_LOC_ADDRESS);
                 }
                 updateMarkerPosition(target);
                 if (mapInstance && (!options || options.pan !== false)) {
