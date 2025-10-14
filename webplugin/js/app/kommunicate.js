@@ -857,4 +857,50 @@ $applozic.extend(true, Kommunicate, {
             return 'PERMISSION_DENIED';
         }
     },
+    getTimeToLoadChatByDays: function () {
+        // Validate input parameter
+
+        const days = kommunicate._globals.loadChatByDays;
+        if (days === undefined || days === null) {
+            throw new Error('Days parameter is required');
+        }
+
+        // Convert string to number if needed
+        let numericDays;
+        if (typeof days === 'string') {
+            numericDays = parseInt(days, 10);
+        } else if (typeof days === 'number') {
+            numericDays = days;
+        } else {
+            throw new Error(
+                'Days parameter must be a number or string that can be converted to a number'
+            );
+        }
+
+        // Validate that conversion was successful
+        if (isNaN(numericDays)) {
+            throw new Error('Invalid days value: cannot convert to a valid number');
+        }
+
+        // Validate that it's a positive integer
+        if (!Number.isInteger(numericDays) || numericDays <= 0) {
+            throw new Error('Days must be a positive integer');
+        }
+
+        // Optional: Set reasonable upper limit (e.g., 365 days = 1 year)
+        if (numericDays > 365) {
+            throw new Error('Days cannot exceed 365');
+        }
+
+        // Set endTime to today at 23:59:00
+        const today = new Date();
+        today.setHours(23, 59, 0, 0); // Set to 23:59:00.000
+        const endTime = today.getTime();
+
+        // Calculate startTime by going back the specified number of days
+        const daysInMilliseconds = numericDays * 24 * 60 * 60 * 1000;
+        const startTime = endTime - daysInMilliseconds;
+
+        return { startTime, endTime };
+    },
 });
