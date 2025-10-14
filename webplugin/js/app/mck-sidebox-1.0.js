@@ -5739,10 +5739,13 @@ const firstVisibleMsg = {
                     }
                 } else {
                     CONTACT_SYNCING = true;
-                    if (params.startTime) {
+
+                    if (appOptions.loadChatByDays && params.startTime && params.endTime) {
+                        reqData += `&startTime=${params.startTime}&endTime=${params.endTime}&mainPageSize=30`;
+                    } else if (params.startTime) {
                         reqData += '&endTime=' + params.startTime;
+                        reqData += '&mainPageSize=30';
                     }
-                    reqData += '&mainPageSize=30';
                 }
                 if (!params.startTime && !params.allowReload) {
                     $mck_msg_inner.html('');
@@ -7458,6 +7461,17 @@ const firstVisibleMsg = {
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
+
+                    //
+                    if (appOptions.loadChatByDays && !params.tabId) {
+                        try {
+                            const { startTime, endTime } = Kommunicate.getTimeToLoadChatByDays();
+                            params.startTime = startTime;
+                            params.endTime = endTime;
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    }
                     mckMessageService.loadMessageList(params, callback);
                 }
                 document.getElementById('mck-submit-comment').removeAttribute('disabled');

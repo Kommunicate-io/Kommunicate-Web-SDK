@@ -583,6 +583,7 @@ function ApplozicSidebox() {
             options.storageSuffix =
                 typeof options.storageSuffix == 'string' ? options.storageSuffix : '';
             appOptionSession.deletePropertyDataFromSession('settings');
+            options.loadChatByDays = isSettingEnable('loadChatByDays');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
