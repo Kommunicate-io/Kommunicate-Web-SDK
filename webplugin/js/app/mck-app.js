@@ -34,7 +34,7 @@ function ApplozicSidebox() {
         },
         {
             name: 'maps',
-            url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
+            url: 'https://maps.googleapis.com/maps/api/js?libraries=places,marker',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
@@ -95,7 +95,8 @@ function ApplozicSidebox() {
             }
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
-            script.async = false;
+            script.async = true;
+            script.defer = true;
             script.type = 'text/javascript';
             externalFileDetails &&
                 externalFileDetails.crossOrigin &&
@@ -105,7 +106,7 @@ function ApplozicSidebox() {
                     externalFileDetails.url +
                     '&key=' +
                     externalFileDetails.googleApiKey +
-                    '&callback=Function.prototype';
+                    '&callback=Function.prototype&loading=async';
             } else {
                 script.src = externalFileDetails.url;
             }

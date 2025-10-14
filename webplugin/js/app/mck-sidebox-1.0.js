@@ -12474,7 +12474,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.openMapBox = function () {
-                $mckMapContent.locationpicker({
+                var pickerOptions = {
                     location: {
                         latitude: MCK_CURR_LATITIUDE,
                         longitude: MCK_CURR_LONGITUDE,
@@ -12492,7 +12492,11 @@ const firstVisibleMsg = {
                         MCK_CURR_LATITIUDE = currentLocation.latitude;
                         MCK_CURR_LONGITUDE = currentLocation.longitude;
                     },
-                });
+                };
+                if (MCK_GOOGLE_API_KEY) {
+                    pickerOptions.mapId = MCK_GOOGLE_API_KEY;
+                }
+                $mckMapContent.locationpicker(pickerOptions);
                 $mck_loc_box.on('shown.bs.mck-box', function () {
                     $mckMapContent.locationpicker('autosize');
                 });
