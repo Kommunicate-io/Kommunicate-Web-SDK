@@ -2785,10 +2785,7 @@ const firstVisibleMsg = {
                     kmChatInput.setAttribute('placeholder', preLeadCollection.placeholder || '');
                     kmChatInput.setAttribute('aria-label', preLeadCollection.field);
                     if (preLeadCollection.type == 'email') {
-                        kmChatInput.setAttribute(
-                            'pattern',
-                            '^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$'
-                        );
+                        kmChatInput.setAttribute('pattern', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$');
                         kmChatInput.setAttribute('title', '');
                         kmChatInput.setAttribute(
                             'oninvalid',
@@ -2813,6 +2810,7 @@ const firstVisibleMsg = {
                     $applozic('.km-last-child').append(kmInputField);
                 }
                 _this.addPhoneNumberValidation(enableCountryCode);
+                _this.addPreChatInlineValidation();
             };
 
             _this.addPhoneNumberValidation = function (enableCountryCode) {
@@ -2847,6 +2845,63 @@ const firstVisibleMsg = {
 
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.addPreChatInlineValidation = function () {
+                var $error = $applozic('#km-error-chat-login');
+                var emailField = document.getElementById('km-email');
+                var phoneField = document.getElementById('km-phone');
+
+                if (emailField) {
+                    var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+                    var handleEmailValidation = function () {
+                        var value = (emailField.value || '').toLowerCase();
+                        if (!value) {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                            return;
+                        }
+                        if (!emailRegex.test(value)) {
+                            $error.removeClass('hide').addClass('show');
+                            $error.html(MCK_LABELS['lead.collection'].errorEmail);
+                        } else {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                        }
+                    };
+                    emailField.addEventListener('input', handleEmailValidation);
+                    emailField.addEventListener('blur', handleEmailValidation);
+                }
+
+                if (phoneField) {
+                    var handlePhoneValidation = function () {
+                        var value = phoneField.value || '';
+                        if (!value) {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                            return;
+                        }
+                        var isValid = true;
+                        if (typeof INTL_TEL_INSTANCE !== 'undefined' && INTL_TEL_INSTANCE) {
+                            isValid = INTL_TEL_INSTANCE.isValidNumber();
+                        } else {
+                            var digitsOnly = value.replace(/\D/g, '');
+                            isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
+                        }
+                        if (!isValid) {
+                            $error.removeClass('hide').addClass('show');
+                            $error.html(
+                                MCK_LABELS['lead.collection'].commonErrorMsg ||
+                                    'Please enter a valid phone number'
+                            );
+                        } else {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                        }
+                    };
+                    phoneField.addEventListener('input', handlePhoneValidation);
+                    phoneField.addEventListener('blur', handlePhoneValidation);
+                }
             };
 
             _this.createSelectFieldDropdown = function (options, selectElement) {
@@ -4376,6 +4431,34 @@ const firstVisibleMsg = {
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
                     const anonymousUserIdForPreChatLead = appOptions.anonymousUserIdForPreChatLead;
+                    // Validate email (require domain and TLD)
+                    if (email) {
+                        var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+                        if (!emailRegex.test(String(email).toLowerCase())) {
+                            $error_chat_login.removeClass('hide').addClass('show');
+                            $error_chat_login.html(MCK_LABELS['lead.collection'].errorEmail);
+                            return false;
+                        }
+                    }
+
+                    // Validate phone number if provided
+                    if (contactNumber) {
+                        var isPhoneValid = true;
+                        if (typeof INTL_TEL_INSTANCE !== 'undefined' && INTL_TEL_INSTANCE) {
+                            isPhoneValid = INTL_TEL_INSTANCE.isValidNumber();
+                        } else {
+                            var digitsOnly = (contactNumber + '').replace(/\D/g, '');
+                            isPhoneValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
+                        }
+                        if (!isPhoneValid) {
+                            $error_chat_login.removeClass('hide').addClass('show');
+                            $error_chat_login.html(
+                                MCK_LABELS['lead.collection'].commonErrorMsg ||
+                                    'Please enter a valid phone number'
+                            );
+                            return false;
+                        }
+                    }
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
