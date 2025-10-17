@@ -2853,7 +2853,7 @@ const firstVisibleMsg = {
                 var phoneField = document.getElementById('km-phone');
 
                 if (emailField) {
-                    var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
                     var handleEmailValidation = function () {
                         var value = (emailField.value || '').toLowerCase();
                         if (!value) {
