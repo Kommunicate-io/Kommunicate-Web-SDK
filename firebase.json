@@ -2,100 +2,90 @@
   "hosting": {
     "site": "${_FIREBASE_SITE_ID}",
     "public": "webplugin/build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "headers": [
       {
         "source": "**",
         "headers": [
-          {
-            "key": "Access-Control-Allow-Origin",
-            "value": "*"
-          }
+          { "key": "Access-Control-Allow-Origin", "value": "*" }
         ]
       },
       {
         "source": "/v2/kommunicate.app",
         "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/javascript"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=180"
-          }
+          { "key": "Content-Type", "value": "text/javascript" },
+          { "key": "Cache-Control", "value": "public, max-age=300" }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=300" }
+        ]
+      },
+      {
+        "source": "resources/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=86400" }
         ]
       },
       {
         "source": "**/*.js",
         "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000"
-          }
+          { "key": "Cache-Control", "value": "public, max-age=31536000" }
         ]
       },
       {
-        "source": "**/*min.css",
+        "source": "**/*.css",
         "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000"
-          }
-        ]
-      },
-      {
-        "source": "resources/**/*.html",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000"
-          }
+          { "key": "Cache-Control", "value": "public, max-age=31536000" }
         ]
       }
     ],
+
     "rewrites": [
       {
-        "source": "/<*>",
-        "destination": "/index.html",
-        "type": "404"
-      },
-      {
-        "source": "/robots.txt",
-        "destination": "/robots.txt",
-        "type": "200"
+        "source": "/",
+        "destination": "/index.html"
       },
       {
         "source": "/chat",
-        "destination": "/chat.html",
-        "type": "200"
+        "destination": "/chat.html"
       },
       {
         "source": "/v2/kommunicate.app",
-        "destination": "/index.html",
-        "type": "200"
+        "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
     ],
+
     "redirects": [
       {
         "source": "/kommunicate.app",
         "destination": "/v2/kommunicate.app",
-        "type": "301"
+        "type": 301
       },
       {
         "source": "/v1/kommunicate.app",
         "destination": "/v2/kommunicate.app",
-        "type": "301"
+        "type": 301
       },
       {
         "source": "/plugin/lib/js/locationpicker.jquery.min.js",
         "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
-        "type": "301"
+        "type": 301
       },
       {
         "source": "/plugin/lib/js/mck-emojis.min.js",
         "destination": "/resources/third-party-scripts/mck-emojis.min.js",
-        "type": "301"
+        "type": 301
       }
     ]
   }
