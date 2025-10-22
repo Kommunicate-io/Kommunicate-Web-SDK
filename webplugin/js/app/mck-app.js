@@ -34,7 +34,7 @@ function ApplozicSidebox() {
         },
         {
             name: 'maps',
-            url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
+            url: 'https://maps.googleapis.com/maps/api/js?libraries=places,marker',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
@@ -48,10 +48,6 @@ function ApplozicSidebox() {
         },
     ];
     var mck_third_party_scripts = [
-        {
-            name: 'locationPicker',
-            url: MCK_STATICPATH + '/lib/js/locationpicker.jquery.min.js',
-        },
         {
             name: 'emojiLibrary',
             url: MCK_STATICPATH + '/lib/js/mck-emojis.min.js',
@@ -95,7 +91,8 @@ function ApplozicSidebox() {
             }
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
-            script.async = false;
+            script.async = true;
+            script.defer = true;
             script.type = 'text/javascript';
             externalFileDetails &&
                 externalFileDetails.crossOrigin &&
@@ -105,7 +102,7 @@ function ApplozicSidebox() {
                     externalFileDetails.url +
                     '&key=' +
                     externalFileDetails.googleApiKey +
-                    '&callback=Function.prototype';
+                    '&callback=Function.prototype&loading=async';
             } else {
                 script.src = externalFileDetails.url;
             }
@@ -275,9 +272,7 @@ function ApplozicSidebox() {
             MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(document.domain);
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
-                if (data.name === 'locationPicker') {
-                    options.locShare && mckLoadScript(data.url);
-                } else if (data.name === 'emojiLibrary') {
+                if (data.name === 'emojiLibrary') {
                     options.emojilibrary && mckLoadScript(data.url, null, true);
                 } else {
                     mckLoadScript(data.url);

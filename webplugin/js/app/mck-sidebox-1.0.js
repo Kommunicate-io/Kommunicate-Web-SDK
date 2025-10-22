@@ -449,6 +449,14 @@ const firstVisibleMsg = {
             : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = IS_MCK_VISITOR ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = IS_MCK_LOCSHARE ? appOptions.googleApiKey : 'NO_ACCESS';
+        if (typeof w.MCK_CURR_LATITIUDE !== 'number') {
+            var initialLatitude = parseFloat(w.MCK_CURR_LATITIUDE);
+            w.MCK_CURR_LATITIUDE = !isNaN(initialLatitude) ? initialLatitude : 0;
+        }
+        if (typeof w.MCK_CURR_LONGITUDE !== 'number') {
+            var initialLongitude = parseFloat(w.MCK_CURR_LONGITUDE);
+            w.MCK_CURR_LONGITUDE = !isNaN(initialLongitude) ? initialLongitude : 0;
+        }
         var MCK_SOURCE = typeof appOptions.source === 'undefined' ? 1 : appOptions.source;
         var IS_MCK_TOPIC_BOX =
             typeof appOptions.topicBox === 'boolean' ? appOptions.topicBox : false;
@@ -530,9 +538,7 @@ const firstVisibleMsg = {
         var MCK_TAB_CONVERSATION_MAP = new Array();
         var mckInit = new MckInit();
         var mckUtils = new MckUtils();
-        var mckMapLayout = new MckMapLayout();
         var mckUserUtils = new MckUserUtils();
-        var mckMapService = new MckMapService();
         var mckGroupService = new MckGroupService();
         var mckGroupUtils = new MckGroupUtils();
         var mckGroupLayout = new MckGroupLayout();
@@ -545,6 +551,68 @@ const firstVisibleMsg = {
         var alFileService = new AlFileService();
         var kmCustomTheme = new KmCustomTheme();
         var kommunicateCommons = new KommunicateCommons();
+        var mapFactory = w.KommunicateMapFactory || {
+            createLayout: function () {
+                return {
+                    init: function () {},
+                    fileMenuReposition: function () {},
+                    fileMenuToggle: function () {},
+                    openMapBox: function () {},
+                };
+            },
+            createService: function () {
+                return {};
+            },
+        };
+        var mapState = {
+            getLocation: function () {
+                var lat = parseFloat(w.MCK_CURR_LATITIUDE);
+                var lng = parseFloat(w.MCK_CURR_LONGITUDE);
+                return {
+                    lat: !isNaN(lat) ? lat : 0,
+                    lng: !isNaN(lng) ? lng : 0,
+                };
+            },
+            setLocation: function (coords) {
+                if (!coords) {
+                    return;
+                }
+                var normalizedLat = parseFloat(coords.lat);
+                var normalizedLng = parseFloat(coords.lng);
+                if (!isNaN(normalizedLat)) {
+                    w.MCK_CURR_LATITIUDE = normalizedLat;
+                }
+                if (!isNaN(normalizedLng)) {
+                    w.MCK_CURR_LONGITUDE = normalizedLng;
+                }
+            },
+        };
+        var mckMapLayout = mapFactory.createLayout({
+            $applozic: $applozic,
+            kommunicateCommons: kommunicateCommons,
+            mckMapUtils: w.mckMapUtils,
+            state: mapState,
+            getMapConfig: function () {
+                return {
+                    isLocShare: IS_MCK_LOCSHARE,
+                    googleApiKey: MCK_GOOGLE_API_KEY,
+                };
+            },
+            logger: function () {
+                if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+                    console.warn.apply(console, arguments);
+                }
+            },
+        });
+        var mckMapService = mapFactory.createService({
+            $applozic: $applozic,
+            kommunicateCommons: kommunicateCommons,
+            mckMapUtils: w.mckMapUtils,
+            mckMessageService: mckMessageService,
+            getTopicDetailMap: function () {
+                return MCK_TOPIC_DETAIL_MAP;
+            },
+        });
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
@@ -12370,173 +12438,6 @@ const firstVisibleMsg = {
                 }
                 $mck_gm_search_box.mckModal('hide');
             };
-        }
-
-        function MckMapLayout() {
-            var _this = this;
-            var GEOCODER = '';
-            var CURR_LOC_ADDRESS = '';
-            var IS_LOC_SHARE_INIT = false;
-            var $mck_my_loc = $applozic('#mck-my-loc');
-            var $mck_loc_box = $applozic('#mck-loc-box');
-            var $mck_loc_lat = $applozic('#mck-loc-lat');
-            var $mck_loc_lon = $applozic('#mck-loc-lon');
-            var $mck_btn_loc = $applozic('#mck-btn-loc');
-            var $mck_footer = $applozic('#mck-sidebox-ft');
-            var $mck_file_menu = $applozic('#mck-file-menu');
-            var $mck_btn_attach = $applozic('#mck-btn-attach');
-            var $mckMapContent = $applozic('#mck-map-content');
-            var $mck_loc_address = $applozic('#mck-loc-address');
-            _this.init = function () {
-                if (IS_MCK_LOCSHARE && w.google && typeof w.google.maps === 'object') {
-                    GEOCODER = new w.google.maps.Geocoder();
-                    $mck_btn_attach.on('click', function () {
-                        _this.fileMenuToggle();
-                    });
-                    $mck_btn_loc.on('click', function (e) {
-                        e.preventDefault();
-                        kmWidgetEvents.eventTracking(eventMapping.onLocationIconClick);
-                        if (IS_LOC_SHARE_INIT) {
-                            $mck_loc_box.mckModal();
-                        } else {
-                            mckMapUtils.getCurrentLocation(
-                                _this.onGetCurrLocation,
-                                _this.onErrorCurrLocation
-                            );
-                            IS_LOC_SHARE_INIT = true;
-                        }
-                    });
-                }
-                $mck_my_loc.on('click', function () {
-                    mckMapUtils.getCurrentLocation(
-                        _this.onGetMyCurrLocation,
-                        _this.onErrorMyCurrLocation
-                    );
-                });
-            };
-            _this.fileMenuReposition = function () {
-                var offset = $mck_footer.offset();
-                offset.bottom = w.innerHeight - offset.top;
-                $mck_file_menu.css({
-                    bottom: offset.bottom > 51 ? offset.bottom : 51,
-                    right: 0,
-                });
-            };
-            _this.fileMenuToggle = function () {
-                if ($mck_btn_attach.hasClass('on')) {
-                    $mck_btn_attach.removeClass('on');
-                    kommunicateCommons.hide($mck_file_menu);
-                } else {
-                    _this.fileMenuReposition();
-                    $mck_btn_attach.addClass('on');
-                    kommunicateCommons.show($mck_file_menu);
-                }
-            };
-            _this.onGetCurrLocation = function (loc) {
-                MCK_CURR_LATITIUDE = loc.coords.latitude;
-                MCK_CURR_LONGITUDE = loc.coords.longitude;
-                _this.openMapBox();
-            };
-            _this.onErrorCurrLocation = function () {
-                MCK_CURR_LATITIUDE = 46.15242437752303;
-                MCK_CURR_LONGITUDE = 2.7470703125;
-                _this.openMapBox();
-            };
-            _this.onErrorMyCurrLocation = function (err) {
-                alert('Unable to retrieve your location. ERROR(' + err.code + '): ' + err.message);
-            };
-            _this.onGetMyCurrLocation = function (loc) {
-                MCK_CURR_LATITIUDE = loc.coords.latitude;
-                MCK_CURR_LONGITUDE = loc.coords.longitude;
-                $mck_loc_lat.val(MCK_CURR_LATITIUDE);
-                $mck_loc_lon.val(MCK_CURR_LONGITUDE);
-                $mck_loc_lat.trigger('change');
-                $mck_loc_lon.trigger('change');
-                if (CURR_LOC_ADDRESS) {
-                    $mck_loc_address.val(CURR_LOC_ADDRESS);
-                } else if (GEOCODER) {
-                    var latlng = {
-                        lat: MCK_CURR_LATITIUDE,
-                        lng: MCK_CURR_LONGITUDE,
-                    };
-                    GEOCODER.geocode(
-                        {
-                            location: latlng,
-                        },
-                        function (results, status) {
-                            if (status === 'OK') {
-                                if (results[1]) {
-                                    CURR_LOC_ADDRESS = results[1].formatted_address;
-                                }
-                            }
-                        }
-                    );
-                }
-            };
-            _this.openMapBox = function () {
-                $mckMapContent.locationpicker({
-                    location: {
-                        latitude: MCK_CURR_LATITIUDE,
-                        longitude: MCK_CURR_LONGITUDE,
-                    },
-                    radius: 0,
-                    scrollwheel: true,
-                    inputBinding: {
-                        latitudeInput: $mck_loc_lat,
-                        longitudeInput: $mck_loc_lon,
-                        locationNameInput: $mck_loc_address,
-                    },
-                    enableAutocomplete: true,
-                    enableReverseGeocode: true,
-                    onchanged: function (currentLocation) {
-                        MCK_CURR_LATITIUDE = currentLocation.latitude;
-                        MCK_CURR_LONGITUDE = currentLocation.longitude;
-                    },
-                });
-                $mck_loc_box.on('shown.bs.mck-box', function () {
-                    $mckMapContent.locationpicker('autosize');
-                });
-                $mck_loc_box.mckModal();
-            };
-        }
-
-        function MckMapService() {
-            var $mck_msg_to = $applozic('#mck-msg-to');
-            var $mck_loc_box = $applozic('#mck-loc-box');
-            var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
-            var $mck_msg_error = $applozic('#mck-msg-error');
-            var $mck_loc_submit = $applozic('#mck-loc-submit');
-            var $mck_response_text = $applozic('#mck_response_text');
-            var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            $mck_loc_submit.on('click', function () {
-                var messagePxy = {
-                    type: 5,
-                    contentType: 2,
-                    message: w.JSON.stringify(mckMapUtils.getSelectedLocation()),
-                };
-                var conversationId = $mck_msg_inner.data('mck-conversationid');
-                var topicId = $mck_msg_inner.data('mck-topicid');
-                if (conversationId) {
-                    messagePxy.conversationId = conversationId;
-                } else if (topicId) {
-                    var conversationPxy = {
-                        topicId: topicId,
-                    };
-                    var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
-                    if (typeof topicDetail === 'object') {
-                        conversationPxy.topicDetail = w.JSON.stringify(topicDetail);
-                    }
-                    messagePxy.conversationPxy = conversationPxy;
-                }
-                kommunicateCommons.setMessagePxyRecipient(messagePxy);
-                $mck_msg_sbmt.attr('disabled', true);
-                kommunicateCommons.hide('#mck-msg-error');
-                $mck_msg_error.html('');
-                $mck_response_text.html('');
-                kommunicateCommons.hide('#mck-msg-response');
-                mckMessageService.sendMessage(messagePxy);
-                $mck_loc_box.mckModal('hide');
-            });
         }
 
         function MckFileService() {

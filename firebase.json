@@ -88,11 +88,6 @@
         "type": "301"
       },
       {
-        "source": "/plugin/lib/js/locationpicker.jquery.min.js",
-        "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
-        "type": "301"
-      },
-      {
         "source": "/plugin/lib/js/mck-emojis.min.js",
         "destination": "/resources/third-party-scripts/mck-emojis.min.js",
         "type": "301"
