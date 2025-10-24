@@ -2533,6 +2533,66 @@ const firstVisibleMsg = {
                 // handle click events for openning and closing of sidebox
                 kommunicateIframe.style.display = 'block';
                 var popUpcloseButton = document.getElementById('km-popup-close-button');
+                // Trigger a fresh conversation when files are dragged onto the launcher.
+                var fileDragConversationTriggered = false;
+
+                function isFileDragEvent(event) {
+                    if (!event || !event.dataTransfer) {
+                        return false;
+                    }
+                    var types = event.dataTransfer.types;
+                    if (!types) {
+                        return false;
+                    }
+                    if (typeof types.includes === 'function') {
+                        return types.includes('Files');
+                    }
+                    if (typeof types.indexOf === 'function') {
+                        return types.indexOf('Files') !== -1;
+                    }
+                    if (typeof types.contains === 'function') {
+                        return types.contains('Files');
+                    }
+                    return false;
+                }
+
+                function handleFileDragIntent(event, shouldCreateConversation) {
+                    if (!isFileDragEvent(event)) {
+                        return false;
+                    }
+                    event.preventDefault();
+                    const hasGroupId = CURRENT_GROUP_DATA.tabId;
+
+                    if (shouldCreateConversation && !fileDragConversationTriggered) {
+                        fileDragConversationTriggered = true;
+                        if (!kommunicateCommons.isWidgetOpen()) {
+                            chatbox.click();
+                        }
+
+                        if (hasGroupId) {
+                            kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
+                            return;
+                        }
+                        kommunicate.startConversation();
+                    }
+                    return true;
+                }
+
+                chatbox.addEventListener('dragenter', function (event) {
+                    handleFileDragIntent(event, true);
+                });
+                chatbox.addEventListener('dragover', function (event) {
+                    handleFileDragIntent(event, false);
+                });
+                chatbox.addEventListener('drop', function (event) {
+                    handleFileDragIntent(event, false) && (fileDragConversationTriggered = false);
+                });
+                chatbox.addEventListener('dragleave', function (event) {
+                    isFileDragEvent(event) && event.preventDefault();
+                });
+                document.addEventListener('dragend', function () {
+                    fileDragConversationTriggered = false;
+                });
                 chatbox.addEventListener('click', function () {
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
