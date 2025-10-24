@@ -2534,7 +2534,12 @@ const firstVisibleMsg = {
                 kommunicateIframe.style.display = 'block';
                 var popUpcloseButton = document.getElementById('km-popup-close-button');
                 // Trigger a fresh conversation when files are dragged onto the launcher.
-                var fileDragConversationTriggered = false;
+                var fileDropConversationPromise = null;
+                var fileDropPendingFiles = [];
+                var isFileDropProcessing = false;
+                var FILE_DROP_CONVERSATION_TIMEOUT = 8000;
+                var FILE_DROP_CONVERSATION_POLL_INTERVAL = 150;
+                var widgetOpenOnDragStart = null;
 
                 function isFileDragEvent(event) {
                     if (!event || !event.dataTransfer) {
@@ -2556,22 +2561,131 @@ const firstVisibleMsg = {
                     return false;
                 }
 
+                function resetFileDropState() {
+                    fileDropConversationPromise = null;
+                    fileDropPendingFiles = [];
+                    isFileDropProcessing = false;
+                    widgetOpenOnDragStart = null;
+                }
+
+                function normalizeConversationId(possibleId) {
+                    if (!possibleId) {
+                        return null;
+                    }
+                    if (typeof possibleId === 'object') {
+                        if (possibleId.data && possibleId.data.value) {
+                            return possibleId.data.value;
+                        }
+                        if (possibleId.groupId) {
+                            return possibleId.groupId;
+                        }
+                        if (possibleId.id) {
+                            return possibleId.id;
+                        }
+                    }
+                    return possibleId;
+                }
+
+                function waitForConversationToLoad(conversationId) {
+                    var expectedId = normalizeConversationId(conversationId);
+                    return new Promise(function (resolve, reject) {
+                        var elapsed = 0;
+                        (function poll() {
+                            var activeId = $applozic('#mck-message-cell .mck-message-inner').data(
+                                'mck-id'
+                            );
+                            if (
+                                activeId &&
+                                (!expectedId || String(activeId) === String(expectedId))
+                            ) {
+                                resolve(activeId);
+                                return;
+                            }
+                            elapsed += FILE_DROP_CONVERSATION_POLL_INTERVAL;
+                            if (elapsed >= FILE_DROP_CONVERSATION_TIMEOUT) {
+                                reject(
+                                    new Error('Conversation not ready for dropped file attachment.')
+                                );
+                                return;
+                            }
+                            setTimeout(poll, FILE_DROP_CONVERSATION_POLL_INTERVAL);
+                        })();
+                    });
+                }
+
+                function ensureConversationForFileDrop() {
+                    if (!fileDropConversationPromise) {
+                        var activeConversationId = getActiveConversationId();
+                        if (activeConversationId) {
+                            Kommunicate.openConversation(activeConversationId);
+                        } else {
+                            kommunicateIframe.classList.remove(
+                                'km-iframe-dimension-with-popup',
+                                'chat-popup-widget-horizontal'
+                            );
+
+                            kommunicateCommons.hide('#chat-popup-widget-container');
+                            kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+                            Kommunicate.launchConversation();
+                        }
+
+                        fileDropConversationPromise = new Promise(function (resolve, reject) {
+                            var isResolved = false;
+                            var pollInterval = setInterval(function () {
+                                var activeConversationId = getActiveConversationId();
+                                if (activeConversationId) {
+                                    isResolved = true;
+                                    clearInterval(pollInterval);
+                                    timeoutHandle && clearTimeout(timeoutHandle);
+                                    resolve(activeConversationId);
+                                }
+                            }, FILE_DROP_CONVERSATION_POLL_INTERVAL);
+                            var timeoutHandle = setTimeout(function () {
+                                if (!isResolved) {
+                                    clearInterval(pollInterval);
+                                    reject(
+                                        new Error(
+                                            'Timed out creating conversation for dropped file.'
+                                        )
+                                    );
+                                }
+                            }, FILE_DROP_CONVERSATION_TIMEOUT);
+                        });
+                    }
+                    return fileDropConversationPromise;
+                }
+
                 function handleFileDragIntent(event, shouldCreateConversation) {
                     if (!isFileDragEvent(event)) {
                         return false;
                     }
                     event.preventDefault();
-                    const hasGroupId = CURRENT_GROUP_DATA.tabId;
-
-                    if (shouldCreateConversation && !fileDragConversationTriggered) {
-                        fileDragConversationTriggered = true;
-                        if (hasGroupId) {
-                            kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
-                            return;
-                        }
-                        kommunicate.startConversation();
+                    var widgetOpen = kommunicateCommons.isWidgetOpen();
+                    if (shouldCreateConversation && widgetOpenOnDragStart === null) {
+                        widgetOpenOnDragStart = widgetOpen;
                     }
-                    return true;
+                    if (widgetOpenOnDragStart) {
+                        resetFileDropState();
+                        return false;
+                    }
+                    return !widgetOpen;
+                }
+
+                function flushPendingFileDropQueue(conversationId) {
+                    if (!fileDropPendingFiles.length) {
+                        return Promise.resolve();
+                    }
+                    return waitForConversationToLoad(conversationId)
+                        .then(function () {
+                            while (fileDropPendingFiles.length) {
+                                var fileToUpload = fileDropPendingFiles.shift();
+                                mckFileService.uploadFileFunction(null, fileToUpload);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                            fileDropPendingFiles = [];
+                        });
                 }
 
                 chatbox.addEventListener('dragenter', function (event) {
@@ -2581,14 +2695,59 @@ const firstVisibleMsg = {
                     handleFileDragIntent(event, false);
                 });
                 chatbox.addEventListener('drop', function (event) {
-                    handleFileDragIntent(event, false) && (fileDragConversationTriggered = false);
+                    processLauncherFileDrop(event);
                 });
                 chatbox.addEventListener('dragleave', function (event) {
-                    isFileDragEvent(event) && event.preventDefault();
+                    if (isFileDragEvent(event)) {
+                        event.preventDefault();
+                        widgetOpenOnDragStart = null;
+                    }
                 });
                 document.addEventListener('dragend', function () {
-                    fileDragConversationTriggered = false;
+                    if (!isFileDropProcessing) {
+                        resetFileDropState();
+                    }
                 });
+
+                function processLauncherFileDrop(event) {
+                    if (!handleFileDragIntent(event, false)) {
+                        resetFileDropState();
+                        return;
+                    }
+                    var files =
+                        event && event.dataTransfer && event.dataTransfer.files
+                            ? Array.prototype.slice.call(event.dataTransfer.files)
+                            : [];
+                    if (!files.length) {
+                        resetFileDropState();
+                        return;
+                    }
+                    isFileDropProcessing = true;
+                    fileDropPendingFiles = fileDropPendingFiles.concat(files);
+                    ensureConversationForFileDrop()
+                        .catch(function (error) {
+                            console.error(error);
+                            return null;
+                        })
+                        .then(function (conversationId) {
+                            return flushPendingFileDropQueue(conversationId);
+                        })
+                        .finally(function () {
+                            resetFileDropState();
+                        });
+                }
+
+                function getActiveConversationId() {
+                    if (CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId) {
+                        return CURRENT_GROUP_DATA.tabId;
+                    }
+                    var activeId = $applozic('#mck-message-cell .mck-message-inner').data('mck-id');
+                    if (activeId) {
+                        return activeId;
+                    }
+                    return null;
+                }
+
                 chatbox.addEventListener('click', function () {
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
