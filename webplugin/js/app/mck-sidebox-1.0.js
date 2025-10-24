@@ -2565,10 +2565,6 @@ const firstVisibleMsg = {
 
                     if (shouldCreateConversation && !fileDragConversationTriggered) {
                         fileDragConversationTriggered = true;
-                        if (!kommunicateCommons.isWidgetOpen()) {
-                            chatbox.click();
-                        }
-
                         if (hasGroupId) {
                             kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
                             return;
