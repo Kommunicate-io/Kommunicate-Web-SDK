@@ -166,6 +166,10 @@ function getCurrentBranch() {
             return process.env.AWS_BRANCH;
         }
 
+        if (process.env.BRANCH) {
+            return process.env.BRANCH;
+        }
+
         if (process.env.NODE_ENV != 'development') {
             return version;
         }
