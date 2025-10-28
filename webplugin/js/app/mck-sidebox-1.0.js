@@ -2591,9 +2591,7 @@ const firstVisibleMsg = {
                     return new Promise(function (resolve, reject) {
                         var elapsed = 0;
                         (function poll() {
-                            var activeId = $applozic('#mck-message-cell .mck-message-inner').data(
-                                'mck-id'
-                            );
+                            var activeId = getActiveConversationId();
                             if (
                                 activeId &&
                                 (!expectedId || String(activeId) === String(expectedId))
@@ -2626,7 +2624,14 @@ const firstVisibleMsg = {
 
                             kommunicateCommons.hide('#chat-popup-widget-container');
                             kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
-                            Kommunicate.launchConversation();
+                            const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                            mckMessageService.createNewConversation(
+                                conversationDetail,
+                                function (groupId) {
+                                    /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
+                                    console.log('Conversation created for dropped file:', groupId);
+                                }
+                            );
                         }
 
                         fileDropConversationPromise = new Promise(function (resolve, reject) {
