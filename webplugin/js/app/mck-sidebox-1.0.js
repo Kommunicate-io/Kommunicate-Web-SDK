@@ -5130,8 +5130,6 @@ const firstVisibleMsg = {
                     }
                 });
                 $mck_msg_form.submit(function () {
-                    // If autosuggest input is active, mirror its value to the hidden text box
-                    // so submissions from Enter key or the send button use the current text.
                     if ($mck_autosuggest_search_input && $mck_autosuggest_search_input.hasClass('mck-text-box')) {
                         $mck_text_box.text($mck_autosuggest_search_input.val());
                     }
@@ -9924,8 +9922,6 @@ const firstVisibleMsg = {
             $mck_autosuggest_search_input.on('keyup', function (e) {
                 mckMessageService.toggleMediaOptions(this);
                 $mck_text_box.text($mck_autosuggest_search_input.val());
-                // Safely check if the autosuggest menu is visible. In cases where
-                // the menu element doesn't exist yet, avoid accessing `.style` on null.
                 var $menuEl = $('ul.mcktypeahead.mck-auto-suggest-menu');
                 var isMenuOpen = $menuEl.length > 0 && $menuEl.is(':visible');
                 if (!isMenuOpen && e.keyCode === 13) {
