@@ -5130,6 +5130,11 @@ const firstVisibleMsg = {
                     }
                 });
                 $mck_msg_form.submit(function () {
+                    // If autosuggest input is active, mirror its value to the hidden text box
+                    // so submissions from Enter key or the send button use the current text.
+                    if ($mck_autosuggest_search_input && $mck_autosuggest_search_input.hasClass('mck-text-box')) {
+                        $mck_text_box.text($mck_autosuggest_search_input.val());
+                    }
                     if (window.Applozic.ALSocket.mck_typing_status === 1) {
                         window.Applozic.ALSocket.sendTypingStatus(
                             0,
@@ -9919,13 +9924,14 @@ const firstVisibleMsg = {
             $mck_autosuggest_search_input.on('keyup', function (e) {
                 mckMessageService.toggleMediaOptions(this);
                 $mck_text_box.text($mck_autosuggest_search_input.val());
-                if (
-                    !(
-                        document.querySelector('ul.mcktypeahead.mck-auto-suggest-menu').style
-                            .display === 'block'
-                    ) &&
-                    e.keyCode === 13
-                ) {
+                // Safely check if the autosuggest menu is visible. In cases where
+                // the menu element doesn't exist yet, avoid accessing `.style` on null.
+                var menuEl = document.querySelector('ul.mcktypeahead.mck-auto-suggest-menu');
+                var isMenuOpen = false;
+                if (menuEl && menuEl.style) {
+                    isMenuOpen = menuEl.style.display === 'block';
+                }
+                if (!isMenuOpen && e.keyCode === 13) {
                     e.preventDefault();
                     $mck_text_box.submit();
                     mckMessageLayout.clearMessageField(true);
