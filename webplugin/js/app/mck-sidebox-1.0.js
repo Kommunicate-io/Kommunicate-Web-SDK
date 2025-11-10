@@ -9926,11 +9926,8 @@ const firstVisibleMsg = {
                 $mck_text_box.text($mck_autosuggest_search_input.val());
                 // Safely check if the autosuggest menu is visible. In cases where
                 // the menu element doesn't exist yet, avoid accessing `.style` on null.
-                var menuEl = document.querySelector('ul.mcktypeahead.mck-auto-suggest-menu');
-                var isMenuOpen = false;
-                if (menuEl && menuEl.style) {
-                    isMenuOpen = menuEl.style.display === 'block';
-                }
+                var $menuEl = $('ul.mcktypeahead.mck-auto-suggest-menu');
+                var isMenuOpen = $menuEl.length > 0 && $menuEl.is(':visible');
                 if (!isMenuOpen && e.keyCode === 13) {
                     e.preventDefault();
                     $mck_text_box.submit();
