@@ -2619,7 +2619,16 @@ const firstVisibleMsg = {
                             'chat-popup-widget-horizontal'
                         );
                         kommunicateCommons.hide('#chat-popup-widget-container');
-                        kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+                        kommunicateCommons.setWidgetStateOpen(true);
+                        kommunicateIframe.classList.remove('km-iframe-closed');
+                        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+                        kommunicateCommons.hide('#applozic-badge-count');
+                        kommunicateIframe.style.width = '';
+                        POPUP_WIDGET
+                            ? (kommunicateIframe.classList.add('km-iframe-dimension-with-popup'),
+                              (popUpcloseButton.style.display = 'flex'))
+                            : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+
                         const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
 
                         fileDropConversationPromise = new Promise(function (resolve, reject) {
