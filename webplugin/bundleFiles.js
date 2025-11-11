@@ -173,6 +173,7 @@ exports.getDynamicLoadFiles = function (dir) {
 
 function getCurrentBranch() {
     try {
+        console.log(process.env, 'env detail');
         if (process.env.AWS_BRANCH) {
             return process.env.AWS_BRANCH;
         }
