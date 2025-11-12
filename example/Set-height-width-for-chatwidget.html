@@ -1,48 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-   <head>
-      <title>Set height and width for Chat widget </title>
-   </head>
-   <body>
-      <h1> This sample code will help you to change the height and width of chat widget using CSS</h1>
+    <head>
+        <title>Set height and width for Chat widget</title>
+    </head>
+    <body>
+        <h1>
+            This sample code will help you to change the height and width of chat widget using CSS
+        </h1>
 
-< script type = "text/javascript" >
-	(function (d, m) {
-		var kommunicateSettings = {
-			"appId": "kommunicate-support",
-			"popupWidget": true,
-			"automaticChatOpenOnNavigation": true,
-			"onInit": function () {
-				var style = document.createElement('style');
-				var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width: 390px!important;box-shadow: rgba(0, 0, 0, 0.3) 0px 1.5rem 2rem!important;max-height:calc(100% - 30px) !important;}";
-				style.type = 'text/css';
-				style.innerHTML = classSettings;
-				document.getElementsByTagName('head')[0].appendChild(style);
-				KommunicateGlobal.document.getElementById('mck-sidebox-launcher').addEventListener('click', function () {
-					var testClick = parent.document.getElementById("kommunicate-widget-iframe");
-					testClick.classList.add("change-kommunicate-iframe-height");
-				});
-				KommunicateGlobal.document.getElementById('km-chat-widget-close-button').addEventListener('click', function () {
-					var testClick = parent.document.getElementById("kommunicate-widget-iframe");
-					testClick.classList.remove("change-kommunicate-iframe-height");
-				});
-			}
-		};
-		var s = document.createElement("script");
-		s.type = "text/javascript";
-		s.async = true;
-		s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
-		var h = document.getElementsByTagName("head")[0];
-		h.appendChild(s);
-		window.kommunicate = m;
-		m._globals = kommunicateSettings;
-	})(document, window.kommunicate || {}); 
-</script>
+        <script type="text/javascript">
+            (function (d, m) {
+                var kommunicateSettings = {
+                    appId: 'kommunicate-support',
+                    popupWidget: true,
+                    automaticChatOpenOnNavigation: true,
+                    onInit: function () {
+                        var style = document.createElement('style');
+                        var classSettings =
+                            '.change-kommunicate-iframe-height{height:100%!important;width: 390px!important;box-shadow: rgba(0, 0, 0, 0.3) 0px 1.5rem 2rem!important;max-height:calc(100% - 30px) !important;}';
+                        style.type = 'text/css';
+                        style.innerHTML = classSettings;
+                        document.getElementsByTagName('head')[0].appendChild(style);
+                        KommunicateGlobal.document
+                            .getElementById('mck-sidebox-launcher')
+                            .addEventListener('click', function () {
+                                var testClick = parent.document.getElementById(
+                                    'kommunicate-widget-iframe'
+                                );
+                                testClick.classList.add('change-kommunicate-iframe-height');
+                            });
+                        KommunicateGlobal.document
+                            .getElementById('km-chat-widget-close-button')
+                            .addEventListener('click', function () {
+                                var testClick = parent.document.getElementById(
+                                    'kommunicate-widget-iframe'
+                                );
+                                testClick.classList.remove('change-kommunicate-iframe-height');
+                            });
+                    },
+                };
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://widget.kommunicate.io/v2/kommunicate.app';
+                var h = document.getElementsByTagName('head')[0];
+                h.appendChild(s);
+                window.kommunicate = m;
+                m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        </script>
 
-<h1> Note: Please replace "kommunicate-support" with your account APP_ID from the <a href="https://dashboard.kommunicate.io/settings/install"> Install </a>
-     section to get your APP_ID
-<hr>
-    Change the value of "width" and "height" variable as per your need.
-      </h1>
-   </body>
+        <h1>
+            Note: Please replace "kommunicate-support" with your account APP_ID from the
+            <a href="https://dashboard.kommunicate.io/settings/install"> Install </a>
+            section to get your APP_ID
+            <hr />
+            Change the value of "width" and "height" variable as per your need.
+        </h1>
+    </body>
 </html>
