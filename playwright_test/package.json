@@ -11,6 +11,6 @@
     "@playwright/test": "1.30.0"
   },
   "dependencies": {
-    "playwright": "1.30.0"
+    "playwright": "1.55.1"
   }
 }
