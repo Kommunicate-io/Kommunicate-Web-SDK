@@ -28,7 +28,7 @@ frontend:
                 # Kommunicate Prod Canada
                 - if [ "${BUILD_ENV}" = "prod-cn" ]; then npm run build-prod-cn; fi
                 # Kommunicate beta
-                - if [ "${BUILD_ENV}" = "prod_beta" ]; then npm run build-beta; fi
+                - if [ "${BUILD_ENV}" = "prod-beta" ]; then npm run build-beta; fi
                 # If no environment variable is provided then build kommunicate test bundle.
                 - if [ "${BUILD_ENV}" = "" ]; then npm run build-test; fi
     artifacts:

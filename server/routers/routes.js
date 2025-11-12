@@ -20,5 +20,4 @@ home.get('/kommunicate.app', function (req, res) {
     home.handle(req, res);
 });
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
-
 home.get('/chat', webpluginController.getPluginHTML);

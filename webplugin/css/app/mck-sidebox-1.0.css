@@ -93,6 +93,16 @@
     z-index: -1;
 }
 
+#mck-text-box[contenteditable='true']:not(:empty)::before {
+    content: '';
+    position: relative;
+    z-index: -1;
+}
+
+.mck-running-on > a:hover {
+    text-decoration: underline;
+    color: #5553b7 !important;
+}
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
@@ -3540,6 +3550,7 @@ ul.mck-intent-menu > li:hover {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 2;
 }
 
 .mck-sidebox-search .mck-loading {
@@ -4579,8 +4590,9 @@ textarea::placeholder {
 .mck-sidebox.fade.in.popup-enabled
     .mck-name-status-container
     #mck-tab-title.mck-title-width-with-faq {
-    width: 205px;
+    width: min-content !important;
 }
+
 .mck-sidebox.fade.in.popup-enabled
     .mck-name-status-container
     #mck-tab-title.mck-title-width-with-faq-close-btn {
@@ -5432,7 +5444,7 @@ div[name='message']:last-child {
     }
     .mck-sidebox.fade.in.popup-enabled .mck-close-btn,
     #km-chat-login-modal.km-sidemodal .mck-close-btn {
-        width: 0 !important;
+        width: min-content !important;
         overflow: hidden;
     }
 }

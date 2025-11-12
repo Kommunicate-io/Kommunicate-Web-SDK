@@ -43,7 +43,7 @@ steps:
           npm run build-prod-agenticfirst;
         elif [ "${_BUILD_ENV}" = "prod-eu" ]; then 
           npm run build-prod-eu;
-        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then 
+        elif [ "${_BUILD_ENV}" = "prod_cn" ]; then 
           npm run build-prod-cn;
         elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
           npm run build-beta;

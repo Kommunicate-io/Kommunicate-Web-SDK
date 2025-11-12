@@ -1,6 +1,6 @@
 const KM_SENTRY_CONFIG = {
     dsn: MCK_THIRD_PARTY_INTEGRATION.sentry.dsn,
-    debug: true,
+    debug: false,
     tracesSampleRate: 1,
     replaysSessionSampleRate: 0.0,
     replaysOnErrorSampleRate: 1,

@@ -1,105 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        <title>Kommunicate plugin</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kommunicate plugin</title>
-</head>
+    <body>
+        <div id="error-msg"></div>
+        <script type="text/javascript">
+            function splitByComma(inputString) {
+                if (!inputString) return;
 
-<body>
-    <div id="error-msg"></div>
-    <script type="text/javascript">
-        function splitByComma(inputString){
-            if(!inputString) return;
+                inputString = inputString.split(',');
+                inputString = inputString.map((each) => each.trim());
+                return inputString;
+            }
+            let params = new URLSearchParams(window.location.search);
+            let appId = params.get('appId');
+            let noFocus = params.get('noFocus');
+            let botIds = splitByComma(params.get('botIds'));
+            let agentIds = splitByComma(params.get('agentIds'));
+            let assignee = params.get('assignee');
+            let teamId = params.get('teamId');
+            let skipRouting = params.get('skipRouting');
+            let referer = window.document.referrer;
 
-            inputString = inputString.split(',');
-            inputString = inputString.map(each => each.trim());
-            return inputString;
-        }
-        let params = new URLSearchParams(window.location.search);
-        let appId = params.get('appId');
-        let botIds = splitByComma(params.get('botIds'));
-        let agentIds = splitByComma(params.get('agentIds'));
-        let assignee = params.get('assignee');
-        let teamId = params.get('teamId');
-        let skipRouting = params.get('skipRouting');
-        let referer = window.document.referrer;
-
-        if (!appId) {
-            document.getElementById('error-msg').innerText = "no app id"
-        } else {
-            (function (d, m) {
-                let defaultSettings = {};
-                if (botIds) {
-                    defaultSettings["defaultBotIds"] = botIds;
-                };
-                if (agentIds){
-                    defaultSettings["defaultAgentIds"] = agentIds;
-                }
-                if (assignee){
-                    defaultSettings["defaultAssignee"] = assignee;
-                }
-                if (teamId){
-                    defaultSettings["teamId"] = teamId;
-                }
-                if (skipRouting){
-                    defaultSettings["skipRouting"] = !!skipRouting;
-                }
-                
-                var kommunicateSettings = {
-                    "appId": appId, // replace this with your application id
-                    "onInit": function () {
-                        if (JSON.stringify(defaultSettings) != '{}') {
-                            Kommunicate.updateSettings(defaultSettings);
-                        }
-                        var iframeStyle = document.createElement('style');
-                        var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
-                        iframeStyle.type = 'text/css';
-                        iframeStyle.innerHTML = classSettings;
-                        document.getElementsByTagName('head')[0].appendChild(iframeStyle);
-                        var launcherIconStyle = "@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}";
-                        Kommunicate.customizeWidgetCss(launcherIconStyle);
-                        var iframe = document.getElementById("kommunicate-widget-iframe"),
-                            launcher = KommunicateGlobal.document.getElementById('mck-sidebox-launcher'),
-                            preChatPopup = KommunicateGlobal.document.querySelector('#chat-popup-widget-container .chat-popup-widget-text-wrapper'),
-                            closeButton = KommunicateGlobal.document.getElementById('km-chat-widget-close-button');
-                        [launcher, preChatPopup].forEach(function (element) {
-                            element && element.addEventListener('click', function () {
-                                iframe.classList.add("change-kommunicate-iframe-height");
-                            });
-                        });
-                        //to show the pre chat lead collection Form if enabled
-                        var preChatLauncher = window.KommunicateGlobal.window.document.getElementById("km-anonymous-chat-launcher")
-                        if (window.KommunicateGlobal && preChatLauncher) {
-                            var intervalForPreChatLead = setTimeout(function () {
-                                preChatLauncher.click()
-                                iframe.classList.add("change-kommunicate-iframe-height");
-                                var preChatLeadScreenId = window.KommunicateGlobal.window.document.getElementById("km-chat-login-modal")
-                                var cssForPreChatLeadScreen = "#km-chat-login-modal{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}"
-                                preChatLeadScreenId && Kommunicate.customizeWidgetCss(cssForPreChatLeadScreen);
-                                window.KommunicateGlobal.window.document.getElementById("km-modal-close").style.display = "none"
-                            }, 100);
-                            preChatLauncher.addEventListener("click", function () {
-                                { clearInterval(intervalForPreChatLead) }
-                            })
-                        }
-                        closeButton.parentElement.style.display = "none";
-                        Kommunicate.launchConversation();
-                        var launcherIcon = KommunicateGlobal.document.getElementById('mck-sidebox-launcher')
-                        launcherIcon && launcherIcon.click();
+            if (!appId) {
+                document.getElementById('error-msg').innerText = 'no app id';
+            } else {
+                (function (d, m) {
+                    let defaultSettings = {};
+                    if (botIds) {
+                        defaultSettings['defaultBotIds'] = botIds;
                     }
-                };
-                var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-                s.src = '/v2/kommunicate.app';
-                var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
-                window.kommunicate = m; m._globals = kommunicateSettings;
-                window.kommunicate.IFRAME_OVERRIDES = {}; window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL = referer;
-            })(document, window.kommunicate || {});
-        }
+                    if (agentIds) {
+                        defaultSettings['defaultAgentIds'] = agentIds;
+                    }
+                    if (assignee) {
+                        defaultSettings['defaultAssignee'] = assignee;
+                    }
+                    if (teamId) {
+                        defaultSettings['teamId'] = teamId;
+                    }
+                    if (skipRouting) {
+                        defaultSettings['skipRouting'] = !!skipRouting;
+                    }
 
-    </script>
-</body>
-
+                    var kommunicateSettings = {
+                        noFocus: noFocus === 'true', // params will be string and we need noFocus value as boolean
+                        appId: appId, // replace this with your application id
+                        onInit: function () {
+                            if (JSON.stringify(defaultSettings) != '{}') {
+                                Kommunicate.updateSettings(defaultSettings);
+                            }
+                            var iframeStyle = document.createElement('style');
+                            var classSettings =
+                                '.change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}';
+                            iframeStyle.type = 'text/css';
+                            iframeStyle.innerHTML = classSettings;
+                            document.getElementsByTagName('head')[0].appendChild(iframeStyle);
+                            var launcherIconStyle =
+                                '@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}';
+                            Kommunicate.customizeWidgetCss(launcherIconStyle);
+                            var iframe = document.getElementById('kommunicate-widget-iframe'),
+                                launcher = KommunicateGlobal.document.getElementById(
+                                    'mck-sidebox-launcher'
+                                ),
+                                preChatPopup = KommunicateGlobal.document.querySelector(
+                                    '#chat-popup-widget-container .chat-popup-widget-text-wrapper'
+                                ),
+                                closeButton = KommunicateGlobal.document.getElementById(
+                                    'km-chat-widget-close-button'
+                                );
+                            [launcher, preChatPopup].forEach(function (element) {
+                                element &&
+                                    element.addEventListener('click', function () {
+                                        iframe.classList.add('change-kommunicate-iframe-height');
+                                    });
+                            });
+                            //to show the pre chat lead collection Form if enabled
+                            var preChatLauncher = window.KommunicateGlobal.window.document.getElementById(
+                                'km-anonymous-chat-launcher'
+                            );
+                            if (window.KommunicateGlobal && preChatLauncher) {
+                                var intervalForPreChatLead = setTimeout(function () {
+                                    preChatLauncher.click();
+                                    iframe.classList.add('change-kommunicate-iframe-height');
+                                    var preChatLeadScreenId = window.KommunicateGlobal.window.document.getElementById(
+                                        'km-chat-login-modal'
+                                    );
+                                    var cssForPreChatLeadScreen =
+                                        '#km-chat-login-modal{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}';
+                                    preChatLeadScreenId &&
+                                        Kommunicate.customizeWidgetCss(cssForPreChatLeadScreen);
+                                    window.KommunicateGlobal.window.document.getElementById(
+                                        'km-modal-close'
+                                    ).style.display = 'none';
+                                }, 100);
+                                preChatLauncher.addEventListener('click', function () {
+                                    {
+                                        clearInterval(intervalForPreChatLead);
+                                    }
+                                });
+                            }
+                            closeButton.parentElement.style.display = 'none';
+                            Kommunicate.launchConversation();
+                            var launcherIcon = KommunicateGlobal.document.getElementById(
+                                'mck-sidebox-launcher'
+                            );
+                            launcherIcon && launcherIcon.click();
+                        },
+                    };
+                    var s = document.createElement('script');
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = '/v2/kommunicate.app';
+                    var h = document.getElementsByTagName('head')[0];
+                    h.appendChild(s);
+                    window.kommunicate = m;
+                    m._globals = kommunicateSettings;
+                    window.kommunicate.IFRAME_OVERRIDES = {};
+                    window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL = referer;
+                })(document, window.kommunicate || {});
+            }
+        </script>
+    </body>
 </html>

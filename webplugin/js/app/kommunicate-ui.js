@@ -840,7 +840,10 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        !kommunicateCommons.checkIfDeviceIsHandheld() && $applozic('#mck-text-box').focus();
+        if (kommunicate._globals.noFocus || kommunicateCommons.checkIfDeviceIsHandheld()) {
+            return;
+        }
+        $applozic('#mck-text-box').focus();
     },
     setAvailabilityStatus: function (status) {
         kommunicateCommons.show('.mck-agent-image-container');
@@ -1532,6 +1535,7 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
     },
+
     handleWaitingQueueMessage: function () {
         var group = CURRENT_GROUP_DATA;
         var groupId = group && group.tabId;

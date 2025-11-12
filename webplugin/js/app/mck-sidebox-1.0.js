@@ -449,6 +449,14 @@ const firstVisibleMsg = {
             : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = IS_MCK_VISITOR ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = IS_MCK_LOCSHARE ? appOptions.googleApiKey : 'NO_ACCESS';
+        if (typeof w.MCK_CURR_LATITIUDE !== 'number') {
+            var initialLatitude = parseFloat(w.MCK_CURR_LATITIUDE);
+            w.MCK_CURR_LATITIUDE = !isNaN(initialLatitude) ? initialLatitude : 0;
+        }
+        if (typeof w.MCK_CURR_LONGITUDE !== 'number') {
+            var initialLongitude = parseFloat(w.MCK_CURR_LONGITUDE);
+            w.MCK_CURR_LONGITUDE = !isNaN(initialLongitude) ? initialLongitude : 0;
+        }
         var MCK_SOURCE = typeof appOptions.source === 'undefined' ? 1 : appOptions.source;
         var IS_MCK_TOPIC_BOX =
             typeof appOptions.topicBox === 'boolean' ? appOptions.topicBox : false;
@@ -530,9 +538,7 @@ const firstVisibleMsg = {
         var MCK_TAB_CONVERSATION_MAP = new Array();
         var mckInit = new MckInit();
         var mckUtils = new MckUtils();
-        var mckMapLayout = new MckMapLayout();
         var mckUserUtils = new MckUserUtils();
-        var mckMapService = new MckMapService();
         var mckGroupService = new MckGroupService();
         var mckGroupUtils = new MckGroupUtils();
         var mckGroupLayout = new MckGroupLayout();
@@ -545,6 +551,68 @@ const firstVisibleMsg = {
         var alFileService = new AlFileService();
         var kmCustomTheme = new KmCustomTheme();
         var kommunicateCommons = new KommunicateCommons();
+        var mapFactory = w.KommunicateMapFactory || {
+            createLayout: function () {
+                return {
+                    init: function () {},
+                    fileMenuReposition: function () {},
+                    fileMenuToggle: function () {},
+                    openMapBox: function () {},
+                };
+            },
+            createService: function () {
+                return {};
+            },
+        };
+        var mapState = {
+            getLocation: function () {
+                var lat = parseFloat(w.MCK_CURR_LATITIUDE);
+                var lng = parseFloat(w.MCK_CURR_LONGITUDE);
+                return {
+                    lat: !isNaN(lat) ? lat : 0,
+                    lng: !isNaN(lng) ? lng : 0,
+                };
+            },
+            setLocation: function (coords) {
+                if (!coords) {
+                    return;
+                }
+                var normalizedLat = parseFloat(coords.lat);
+                var normalizedLng = parseFloat(coords.lng);
+                if (!isNaN(normalizedLat)) {
+                    w.MCK_CURR_LATITIUDE = normalizedLat;
+                }
+                if (!isNaN(normalizedLng)) {
+                    w.MCK_CURR_LONGITUDE = normalizedLng;
+                }
+            },
+        };
+        var mckMapLayout = mapFactory.createLayout({
+            $applozic: $applozic,
+            kommunicateCommons: kommunicateCommons,
+            mckMapUtils: w.mckMapUtils,
+            state: mapState,
+            getMapConfig: function () {
+                return {
+                    isLocShare: IS_MCK_LOCSHARE,
+                    googleApiKey: MCK_GOOGLE_API_KEY,
+                };
+            },
+            logger: function () {
+                if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+                    console.warn.apply(console, arguments);
+                }
+            },
+        });
+        var mckMapService = mapFactory.createService({
+            $applozic: $applozic,
+            kommunicateCommons: kommunicateCommons,
+            mckMapUtils: w.mckMapUtils,
+            mckMessageService: mckMessageService,
+            getTopicDetailMap: function () {
+                return MCK_TOPIC_DETAIL_MAP;
+            },
+        });
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
@@ -578,7 +646,6 @@ const firstVisibleMsg = {
             typeof appOptions.useBranding == 'boolean' ? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
-        var DISABLE_TEXT_AREA = appOptions.disableTextArea;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -2039,7 +2106,8 @@ const firstVisibleMsg = {
                         _this.setLeadCollectionLabels();
                         kmChatLoginModal.style.visibility = 'visible';
                         kmChatLoginModal.style.display = 'none';
-                        kommunicateCommons.show(kmAnonymousChatLauncher);
+                        kmAnonymousChatLauncher.classList.remove('n-vis');
+                        kmAnonymousChatLauncher.classList.add('vis');
                         document
                             .getElementById('km-modal-close')
                             .addEventListener('click', _this.closeLeadCollectionWindow);
@@ -2077,7 +2145,8 @@ const firstVisibleMsg = {
                                     }
                                     kmChatLoginModal.style.display = 'block';
                                     !POPUP_WIDGET &&
-                                        kommunicateCommons.hide(kmAnonymousChatLauncher);
+                                        (kmAnonymousChatLauncher.classList.remove('vis'),
+                                        kmAnonymousChatLauncher.classList.add('n-vis'));
                                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                                 }
                             );
@@ -2199,7 +2268,6 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                var kmAnonymousChatLauncher = document.getElementById('km-anonymous-chat-launcher');
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -2211,7 +2279,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
-                kommunicateCommons.show(kmAnonymousChatLauncher);
+                kommunicateCommons.show('#km-anonymous-chat-launcher');
             };
 
             _this.onInitApp = function (data) {
@@ -2443,9 +2511,7 @@ const firstVisibleMsg = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
-
                 // calling Kommunicate for post initialization processing. error first style.
-
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     userId: MCK_USER_ID,
@@ -2535,6 +2601,226 @@ const firstVisibleMsg = {
                 // handle click events for openning and closing of sidebox
                 kommunicateIframe.style.display = 'block';
                 var popUpcloseButton = document.getElementById('km-popup-close-button');
+                // Trigger a fresh conversation when files are dragged onto the launcher.
+                var fileDropConversationPromise = null;
+                var fileDropPendingFiles = [];
+                var isFileDropProcessing = false;
+                var FILE_DROP_CONVERSATION_TIMEOUT = 8000;
+                var FILE_DROP_CONVERSATION_POLL_INTERVAL = 150;
+                var widgetOpenOnDragStart = null;
+
+                function isFileDragEvent(event) {
+                    if (!event || !event.dataTransfer) {
+                        return false;
+                    }
+                    var types = event.dataTransfer.types;
+                    if (!types) {
+                        return false;
+                    }
+                    if (typeof types.includes === 'function') {
+                        return types.includes('Files');
+                    }
+                    if (typeof types.indexOf === 'function') {
+                        return types.indexOf('Files') !== -1;
+                    }
+                    if (typeof types.contains === 'function') {
+                        return types.contains('Files');
+                    }
+                    return false;
+                }
+
+                function resetFileDropState() {
+                    fileDropConversationPromise = null;
+                    fileDropPendingFiles = [];
+                    isFileDropProcessing = false;
+                    widgetOpenOnDragStart = null;
+                }
+
+                function normalizeConversationId(possibleId) {
+                    if (!possibleId) {
+                        return null;
+                    }
+                    if (typeof possibleId === 'object') {
+                        if (possibleId.data && possibleId.data.value) {
+                            return possibleId.data.value;
+                        }
+                        if (possibleId.groupId) {
+                            return possibleId.groupId;
+                        }
+                        if (possibleId.id) {
+                            return possibleId.id;
+                        }
+                    }
+                    return possibleId;
+                }
+
+                function waitForConversationToLoad(conversationId) {
+                    var expectedId = normalizeConversationId(conversationId);
+                    return new Promise(function (resolve, reject) {
+                        var elapsed = 0;
+                        (function poll() {
+                            var activeId = getActiveConversationId();
+                            if (
+                                activeId &&
+                                (!expectedId || String(activeId) === String(expectedId))
+                            ) {
+                                resolve(activeId);
+                                return;
+                            }
+                            elapsed += FILE_DROP_CONVERSATION_POLL_INTERVAL;
+                            if (elapsed >= FILE_DROP_CONVERSATION_TIMEOUT) {
+                                reject(
+                                    new Error('Conversation not ready for dropped file attachment.')
+                                );
+                                return;
+                            }
+                            setTimeout(poll, FILE_DROP_CONVERSATION_POLL_INTERVAL);
+                        })();
+                    });
+                }
+
+                function ensureConversationForFileDrop() {
+                    if (!fileDropConversationPromise) {
+                        var activeConversationId = getActiveConversationId();
+                        if (activeConversationId) {
+                            Kommunicate.openConversation(activeConversationId);
+                        } else {
+                            kommunicateIframe.classList.remove(
+                                'km-iframe-dimension-with-popup',
+                                'chat-popup-widget-horizontal'
+                            );
+
+                            kommunicateCommons.hide('#chat-popup-widget-container');
+                            kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+                            const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                            mckMessageService.createNewConversation(
+                                conversationDetail,
+                                function (groupId) {
+                                    /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
+                                    console.log('Conversation created for dropped file:', groupId);
+                                }
+                            );
+                        }
+
+                        fileDropConversationPromise = new Promise(function (resolve, reject) {
+                            var isResolved = false;
+                            var pollInterval = setInterval(function () {
+                                var activeConversationId = getActiveConversationId();
+                                if (activeConversationId) {
+                                    isResolved = true;
+                                    clearInterval(pollInterval);
+                                    timeoutHandle && clearTimeout(timeoutHandle);
+                                    resolve(activeConversationId);
+                                }
+                            }, FILE_DROP_CONVERSATION_POLL_INTERVAL);
+                            var timeoutHandle = setTimeout(function () {
+                                if (!isResolved) {
+                                    clearInterval(pollInterval);
+                                    reject(
+                                        new Error(
+                                            'Timed out creating conversation for dropped file.'
+                                        )
+                                    );
+                                }
+                            }, FILE_DROP_CONVERSATION_TIMEOUT);
+                        });
+                    }
+                    return fileDropConversationPromise;
+                }
+
+                function handleFileDragIntent(event, shouldCreateConversation) {
+                    if (!isFileDragEvent(event)) {
+                        return false;
+                    }
+                    event.preventDefault();
+                    var widgetOpen = kommunicateCommons.isWidgetOpen();
+                    if (shouldCreateConversation && widgetOpenOnDragStart === null) {
+                        widgetOpenOnDragStart = widgetOpen;
+                    }
+                    if (widgetOpenOnDragStart) {
+                        resetFileDropState();
+                        return false;
+                    }
+                    return !widgetOpen;
+                }
+
+                function flushPendingFileDropQueue(conversationId) {
+                    if (!fileDropPendingFiles.length) {
+                        return Promise.resolve();
+                    }
+                    return waitForConversationToLoad(conversationId)
+                        .then(function () {
+                            while (fileDropPendingFiles.length) {
+                                var fileToUpload = fileDropPendingFiles.shift();
+                                mckFileService.uploadFileFunction(null, fileToUpload);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                            fileDropPendingFiles = [];
+                        });
+                }
+
+                chatbox.addEventListener('dragenter', function (event) {
+                    handleFileDragIntent(event, true);
+                });
+                chatbox.addEventListener('dragover', function (event) {
+                    handleFileDragIntent(event, false);
+                });
+                chatbox.addEventListener('drop', function (event) {
+                    processLauncherFileDrop(event);
+                });
+                chatbox.addEventListener('dragleave', function (event) {
+                    if (isFileDragEvent(event)) {
+                        event.preventDefault();
+                        widgetOpenOnDragStart = null;
+                    }
+                });
+                document.addEventListener('dragend', function () {
+                    if (!isFileDropProcessing) {
+                        resetFileDropState();
+                    }
+                });
+
+                function processLauncherFileDrop(event) {
+                    if (!handleFileDragIntent(event, false)) {
+                        resetFileDropState();
+                        return;
+                    }
+                    var files =
+                        event && event.dataTransfer && event.dataTransfer.files
+                            ? Array.prototype.slice.call(event.dataTransfer.files)
+                            : [];
+                    if (!files.length) {
+                        resetFileDropState();
+                        return;
+                    }
+                    isFileDropProcessing = true;
+                    fileDropPendingFiles = fileDropPendingFiles.concat(files);
+                    ensureConversationForFileDrop()
+                        .catch(function (error) {
+                            console.error(error);
+                            return null;
+                        })
+                        .then(function (conversationId) {
+                            return flushPendingFileDropQueue(conversationId);
+                        })
+                        .finally(function () {
+                            resetFileDropState();
+                        });
+                }
+
+                function getActiveConversationId() {
+                    if (CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId) {
+                        return CURRENT_GROUP_DATA.tabId;
+                    }
+                    var activeId = $applozic('#mck-message-cell .mck-message-inner').data('mck-id');
+                    if (activeId) {
+                        return activeId;
+                    }
+                    return null;
+                }
+
                 chatbox.addEventListener('click', function () {
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
@@ -2760,7 +3046,7 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase();
+                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(' ', '-');
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId);
 
@@ -2791,10 +3077,7 @@ const firstVisibleMsg = {
                     kmChatInput.setAttribute('placeholder', preLeadCollection.placeholder || '');
                     kmChatInput.setAttribute('aria-label', preLeadCollection.field);
                     if (preLeadCollection.type == 'email') {
-                        kmChatInput.setAttribute(
-                            'pattern',
-                            '^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$'
-                        );
+                        kmChatInput.setAttribute('pattern', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$');
                         kmChatInput.setAttribute('title', '');
                         kmChatInput.setAttribute(
                             'oninvalid',
@@ -2819,6 +3102,7 @@ const firstVisibleMsg = {
                     $applozic('.km-last-child').append(kmInputField);
                 }
                 _this.addPhoneNumberValidation(enableCountryCode);
+                _this.addPreChatInlineValidation();
             };
 
             _this.addPhoneNumberValidation = function (enableCountryCode) {
@@ -2853,6 +3137,63 @@ const firstVisibleMsg = {
 
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.addPreChatInlineValidation = function () {
+                var $error = $applozic('#km-error-chat-login');
+                var emailField = document.getElementById('km-email');
+                var phoneField = document.getElementById('km-phone');
+
+                if (emailField) {
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+                    var handleEmailValidation = function () {
+                        var value = (emailField.value || '').toLowerCase();
+                        if (!value) {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                            return;
+                        }
+                        if (!emailRegex.test(value)) {
+                            $error.removeClass('hide').addClass('show');
+                            $error.html(MCK_LABELS['lead.collection'].errorEmail);
+                        } else {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                        }
+                    };
+                    emailField.addEventListener('input', handleEmailValidation);
+                    emailField.addEventListener('blur', handleEmailValidation);
+                }
+
+                if (phoneField) {
+                    var handlePhoneValidation = function () {
+                        var value = phoneField.value || '';
+                        if (!value) {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                            return;
+                        }
+                        var isValid = true;
+                        if (typeof INTL_TEL_INSTANCE !== 'undefined' && INTL_TEL_INSTANCE) {
+                            isValid = INTL_TEL_INSTANCE.isValidNumber();
+                        } else {
+                            var digitsOnly = value.replace(/\D/g, '');
+                            isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
+                        }
+                        if (!isValid) {
+                            $error.removeClass('hide').addClass('show');
+                            $error.html(
+                                MCK_LABELS['lead.collection'].commonErrorMsg ||
+                                    'Please enter a valid phone number'
+                            );
+                        } else {
+                            $error.removeClass('show').addClass('hide');
+                            $error.html('');
+                        }
+                    };
+                    phoneField.addEventListener('input', handlePhoneValidation);
+                    phoneField.addEventListener('blur', handlePhoneValidation);
+                }
             };
 
             _this.createSelectFieldDropdown = function (options, selectElement) {
@@ -3446,7 +3787,7 @@ const firstVisibleMsg = {
                 var metadata = {};
                 var field = '';
                 KM_PRELEAD_COLLECTION.map(function (element) {
-                    field = element.field && element.field.toLowerCase();
+                    field = element.field && element.field.toLowerCase().replace(' ', '-');
                     if (KM_USER_DETAIL.indexOf(field) === -1) {
                         metadata[element.field] = $applozic('#km-' + field).val();
                     }
@@ -3464,7 +3805,7 @@ const firstVisibleMsg = {
                     $mck_sidebox.mckModal();
                     $mck_msg_inner.html('');
                 }
-                $mck_msg_to.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() && $mck_msg_to.focus();
             };
             _this.isWithinBusinessHours = function (team) {
                 try {
@@ -4381,6 +4722,8 @@ const firstVisibleMsg = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
+                    const anonymousUserIdForPreChatLead = appOptions.anonymousUserIdForPreChatLead;
+
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
@@ -4389,17 +4732,23 @@ const firstVisibleMsg = {
                             // get number in international format as a string
                             contactNumber = INTL_TEL_INSTANCE.getNumber();
                         }
-                        userId = contactNumber;
+                        if (!anonymousUserIdForPreChatLead) {
+                            userId = contactNumber;
+                        }
+
                         // Remove listener from phone number
                         document
                             .getElementById('km-phone')
                             .removeEventListener('keydown', _this.phoneNumberValidation);
                     }
                     if (email) {
-                        userId = email;
+                        const userIdForCookie = anonymousUserIdForPreChatLead ? userId : email;
+
+                        userId = userIdForCookie;
+
                         kmCookieStorage.setCookie({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                            value: email,
+                            value: userIdForCookie,
                             expiresInDays: 30,
                             domain: MCK_COOKIE_DOMAIN,
                         });
@@ -5738,10 +6087,13 @@ const firstVisibleMsg = {
                     }
                 } else {
                     CONTACT_SYNCING = true;
-                    if (params.startTime) {
+
+                    if (appOptions.loadChatByDays && params.startTime && params.endTime) {
+                        reqData += `&startTime=${params.startTime}&endTime=${params.endTime}&mainPageSize=30`;
+                    } else if (params.startTime) {
                         reqData += '&endTime=' + params.startTime;
+                        reqData += '&mainPageSize=30';
                     }
-                    reqData += '&mainPageSize=30';
                 }
                 if (!params.startTime && !params.allowReload) {
                     $mck_msg_inner.html('');
@@ -5773,7 +6125,8 @@ const firstVisibleMsg = {
                             data &&
                             data.groupFeeds[0] &&
                             data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
+                        CURRENT_GROUP_DATA.groupMembers =
+                            data.groupFeeds?.[0]?.groupUsers || data.userDetails || [];
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
@@ -7222,7 +7575,7 @@ const firstVisibleMsg = {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
                 }
-                $mck_msg_to.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() && $mck_msg_to.focus();
             };
 
             _this.loadTab = function (params, callback) {
@@ -7392,7 +7745,6 @@ const firstVisibleMsg = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
-                            data: params,
                         });
                         mckMessageService.handleBusinessHours();
                     }
@@ -7459,6 +7811,17 @@ const firstVisibleMsg = {
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
+
+                    //
+                    if (appOptions.loadChatByDays && !params.tabId) {
+                        try {
+                            const { startTime, endTime } = Kommunicate.getTimeToLoadChatByDays();
+                            params.startTime = startTime;
+                            params.endTime = endTime;
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    }
                     mckMessageService.loadMessageList(params, callback);
                 }
                 document.getElementById('mck-submit-comment').removeAttribute('disabled');
@@ -7562,6 +7925,8 @@ const firstVisibleMsg = {
                                         KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             }
 
+                            // if socket is disconnected and list api gets called then we should hide indicator
+                            typingService.hideTypingIndicator();
                             _this.addMessage(
                                 message,
                                 contact,
@@ -8664,6 +9029,11 @@ const firstVisibleMsg = {
                             table:hover {
                                 cursor: pointer;
                             }
+                             img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }   
                         
                    
                         `;
@@ -9025,7 +9395,6 @@ const firstVisibleMsg = {
                 }
                 return '';
             };
-
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
@@ -9645,7 +10014,8 @@ const firstVisibleMsg = {
                           params.source
                       ))
                     : '';
-                $mck_autosuggest_search_input.focus();
+                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                    $mck_autosuggest_search_input.focus();
             };
 
             _this.processAutosuggestData = function (data) {
@@ -10849,6 +11219,7 @@ const firstVisibleMsg = {
                                                     true,
                                                     validated
                                                 );
+
                                                 typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(false);
@@ -12365,173 +12736,6 @@ const firstVisibleMsg = {
             };
         }
 
-        function MckMapLayout() {
-            var _this = this;
-            var GEOCODER = '';
-            var CURR_LOC_ADDRESS = '';
-            var IS_LOC_SHARE_INIT = false;
-            var $mck_my_loc = $applozic('#mck-my-loc');
-            var $mck_loc_box = $applozic('#mck-loc-box');
-            var $mck_loc_lat = $applozic('#mck-loc-lat');
-            var $mck_loc_lon = $applozic('#mck-loc-lon');
-            var $mck_btn_loc = $applozic('#mck-btn-loc');
-            var $mck_footer = $applozic('#mck-sidebox-ft');
-            var $mck_file_menu = $applozic('#mck-file-menu');
-            var $mck_btn_attach = $applozic('#mck-btn-attach');
-            var $mckMapContent = $applozic('#mck-map-content');
-            var $mck_loc_address = $applozic('#mck-loc-address');
-            _this.init = function () {
-                if (IS_MCK_LOCSHARE && w.google && typeof w.google.maps === 'object') {
-                    GEOCODER = new w.google.maps.Geocoder();
-                    $mck_btn_attach.on('click', function () {
-                        _this.fileMenuToggle();
-                    });
-                    $mck_btn_loc.on('click', function (e) {
-                        e.preventDefault();
-                        kmWidgetEvents.eventTracking(eventMapping.onLocationIconClick);
-                        if (IS_LOC_SHARE_INIT) {
-                            $mck_loc_box.mckModal();
-                        } else {
-                            mckMapUtils.getCurrentLocation(
-                                _this.onGetCurrLocation,
-                                _this.onErrorCurrLocation
-                            );
-                            IS_LOC_SHARE_INIT = true;
-                        }
-                    });
-                }
-                $mck_my_loc.on('click', function () {
-                    mckMapUtils.getCurrentLocation(
-                        _this.onGetMyCurrLocation,
-                        _this.onErrorMyCurrLocation
-                    );
-                });
-            };
-            _this.fileMenuReposition = function () {
-                var offset = $mck_footer.offset();
-                offset.bottom = w.innerHeight - offset.top;
-                $mck_file_menu.css({
-                    bottom: offset.bottom > 51 ? offset.bottom : 51,
-                    right: 0,
-                });
-            };
-            _this.fileMenuToggle = function () {
-                if ($mck_btn_attach.hasClass('on')) {
-                    $mck_btn_attach.removeClass('on');
-                    kommunicateCommons.hide($mck_file_menu);
-                } else {
-                    _this.fileMenuReposition();
-                    $mck_btn_attach.addClass('on');
-                    kommunicateCommons.show($mck_file_menu);
-                }
-            };
-            _this.onGetCurrLocation = function (loc) {
-                MCK_CURR_LATITIUDE = loc.coords.latitude;
-                MCK_CURR_LONGITUDE = loc.coords.longitude;
-                _this.openMapBox();
-            };
-            _this.onErrorCurrLocation = function () {
-                MCK_CURR_LATITIUDE = 46.15242437752303;
-                MCK_CURR_LONGITUDE = 2.7470703125;
-                _this.openMapBox();
-            };
-            _this.onErrorMyCurrLocation = function (err) {
-                alert('Unable to retrieve your location. ERROR(' + err.code + '): ' + err.message);
-            };
-            _this.onGetMyCurrLocation = function (loc) {
-                MCK_CURR_LATITIUDE = loc.coords.latitude;
-                MCK_CURR_LONGITUDE = loc.coords.longitude;
-                $mck_loc_lat.val(MCK_CURR_LATITIUDE);
-                $mck_loc_lon.val(MCK_CURR_LONGITUDE);
-                $mck_loc_lat.trigger('change');
-                $mck_loc_lon.trigger('change');
-                if (CURR_LOC_ADDRESS) {
-                    $mck_loc_address.val(CURR_LOC_ADDRESS);
-                } else if (GEOCODER) {
-                    var latlng = {
-                        lat: MCK_CURR_LATITIUDE,
-                        lng: MCK_CURR_LONGITUDE,
-                    };
-                    GEOCODER.geocode(
-                        {
-                            location: latlng,
-                        },
-                        function (results, status) {
-                            if (status === 'OK') {
-                                if (results[1]) {
-                                    CURR_LOC_ADDRESS = results[1].formatted_address;
-                                }
-                            }
-                        }
-                    );
-                }
-            };
-            _this.openMapBox = function () {
-                $mckMapContent.locationpicker({
-                    location: {
-                        latitude: MCK_CURR_LATITIUDE,
-                        longitude: MCK_CURR_LONGITUDE,
-                    },
-                    radius: 0,
-                    scrollwheel: true,
-                    inputBinding: {
-                        latitudeInput: $mck_loc_lat,
-                        longitudeInput: $mck_loc_lon,
-                        locationNameInput: $mck_loc_address,
-                    },
-                    enableAutocomplete: true,
-                    enableReverseGeocode: true,
-                    onchanged: function (currentLocation) {
-                        MCK_CURR_LATITIUDE = currentLocation.latitude;
-                        MCK_CURR_LONGITUDE = currentLocation.longitude;
-                    },
-                });
-                $mck_loc_box.on('shown.bs.mck-box', function () {
-                    $mckMapContent.locationpicker('autosize');
-                });
-                $mck_loc_box.mckModal();
-            };
-        }
-
-        function MckMapService() {
-            var $mck_msg_to = $applozic('#mck-msg-to');
-            var $mck_loc_box = $applozic('#mck-loc-box');
-            var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
-            var $mck_msg_error = $applozic('#mck-msg-error');
-            var $mck_loc_submit = $applozic('#mck-loc-submit');
-            var $mck_response_text = $applozic('#mck_response_text');
-            var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            $mck_loc_submit.on('click', function () {
-                var messagePxy = {
-                    type: 5,
-                    contentType: 2,
-                    message: w.JSON.stringify(mckMapUtils.getSelectedLocation()),
-                };
-                var conversationId = $mck_msg_inner.data('mck-conversationid');
-                var topicId = $mck_msg_inner.data('mck-topicid');
-                if (conversationId) {
-                    messagePxy.conversationId = conversationId;
-                } else if (topicId) {
-                    var conversationPxy = {
-                        topicId: topicId,
-                    };
-                    var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
-                    if (typeof topicDetail === 'object') {
-                        conversationPxy.topicDetail = w.JSON.stringify(topicDetail);
-                    }
-                    messagePxy.conversationPxy = conversationPxy;
-                }
-                kommunicateCommons.setMessagePxyRecipient(messagePxy);
-                $mck_msg_sbmt.attr('disabled', true);
-                kommunicateCommons.hide('#mck-msg-error');
-                $mck_msg_error.html('');
-                $mck_response_text.html('');
-                kommunicateCommons.hide('#mck-msg-response');
-                mckMessageService.sendMessage(messagePxy);
-                $mck_loc_box.mckModal('hide');
-            });
-        }
-
         function MckFileService() {
             var _this = this;
             var ONE_MB = 1048576;
@@ -13607,7 +13811,7 @@ const firstVisibleMsg = {
                                     $mck_tab_title.removeClass('mck-tab-title-w-typing');
                                     typingService.hideTypingIndicator();
                                     $mck_typing_label.html(MCK_LABELS['typing']);
-                                }, 10000);
+                                }, typingService.TYPING_TIMEOUT_MILLISEC);
                                 typingService.addTimeoutIds(timeoutId);
                             }
                         } else {
@@ -14022,6 +14226,9 @@ const firstVisibleMsg = {
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);
+
+                        const tabId = $mck_message_inner.data('mck-id');
+
                         if (
                             resp.message.metadata &&
                             resp.message.metadata.actionRequest &&

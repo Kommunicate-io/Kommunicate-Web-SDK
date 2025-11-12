@@ -502,7 +502,7 @@
                         </div>
                     </div>
 
-                    <div id="mck-contact-loading" class="mck-loading">
+                    <div id="mck-contact-loading" class="mck-loading n-vis">
                         <svg
                             focusable="false"
                             aria-hidden="true"
@@ -511,7 +511,15 @@
                             width="50"
                             height="50"
                         >
-                            <use xlink:href="#icon-15" href="#icon-15"></use>
+                            <circle
+                                class="mck-spinner-path"
+                                cx="50"
+                                cy="50"
+                                r="20"
+                                fill="none"
+                                stroke-width="2"
+                                stroke-miterlimit="10"
+                            />
                         </svg>
                     </div>
                     <div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
@@ -1797,6 +1805,7 @@
                         class="mck-box-close"
                         data-dismiss="mckbox"
                         aria-label="Close"
+                        data-testid="mck-loc-top-close"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1849,6 +1858,7 @@
                     aria-label="Close"
                     tabindex="0"
                     role="button"
+                    data-testid="mck-loc-bottom-close"
                 >
                     Close
                 </button>

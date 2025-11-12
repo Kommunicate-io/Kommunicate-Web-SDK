@@ -136,6 +136,17 @@ Kommunicate.client = {
                              callback(response.data.value);
                          }
                      })*/
+                } else if (
+                    response.status === 'error' &&
+                    conversationDetail.clientGroupId &&
+                    response.errorMessage === 'group already exists'
+                ) {
+                    Kommunicate.openConversation(null, {
+                        clientGroupId: conversationDetail.clientGroupId,
+                    });
+                    if (typeof callback == 'function') {
+                        callback(response);
+                    }
                 }
             },
         };
@@ -191,26 +202,6 @@ Kommunicate.client = {
             type: 'get',
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
-            },
-            success: function (result) {
-                callback(null, result);
-            },
-            error: function (err) {
-                callback(err);
-            },
-        });
-    },
-
-    resolveConversation: function (options, callback) {
-        $applozic.ajax({
-            url:
-                KM_PLUGIN_SETTINGS.applozicBaseUrl +
-                '/rest/ws/group/status/change?groupId=' +
-                options.groupId +
-                '&status=2',
-            type: 'patch',
-            headers: {
-                'Application-Key': kommunicate._globals.appId,
             },
             success: function (result) {
                 callback(null, result);
