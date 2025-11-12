@@ -5130,6 +5130,9 @@ const firstVisibleMsg = {
                     }
                 });
                 $mck_msg_form.submit(function () {
+                    if ($mck_autosuggest_search_input && $mck_autosuggest_search_input.hasClass('mck-text-box')) {
+                        $mck_text_box.text($mck_autosuggest_search_input.val());
+                    }
                     if (window.Applozic.ALSocket.mck_typing_status === 1) {
                         window.Applozic.ALSocket.sendTypingStatus(
                             0,
@@ -9919,13 +9922,9 @@ const firstVisibleMsg = {
             $mck_autosuggest_search_input.on('keyup', function (e) {
                 mckMessageService.toggleMediaOptions(this);
                 $mck_text_box.text($mck_autosuggest_search_input.val());
-                if (
-                    !(
-                        document.querySelector('ul.mcktypeahead.mck-auto-suggest-menu').style
-                            .display === 'block'
-                    ) &&
-                    e.keyCode === 13
-                ) {
+                var $menuEl = $('ul.mcktypeahead.mck-auto-suggest-menu');
+                var isMenuOpen = $menuEl.length > 0 && $menuEl.is(':visible');
+                if (!isMenuOpen && e.keyCode === 13) {
                     e.preventDefault();
                     $mck_text_box.submit();
                     mckMessageLayout.clearMessageField(true);
