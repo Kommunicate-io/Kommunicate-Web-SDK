@@ -19,7 +19,7 @@ frontend:
                 - if [ "${BUILD_ENV}" = "staging" ]; then npm run build-staging; fi
                 # Kommunicate Prod
                 - if [ "${BUILD_ENV}" = "prod" ]; then npm run build-prod; fi
-                 # Kommunicate Enterprise
+                  # Kommunicate Enterprise
                 - if [ "${BUILD_ENV}" = "prod-enterprise" ]; then npm run build-prod-enterprise; fi
                 # Kommunicate Prod Mumbai
                 - if [ "${BUILD_ENV}" = "prod-in" ]; then npm run build-prod-in; fi
@@ -27,8 +27,8 @@ frontend:
                 - if [ "${BUILD_ENV}" = "prod-eu" ]; then npm run build-prod-eu; fi
                 # Kommunicate Prod Canada
                 - if [ "${BUILD_ENV}" = "prod-cn" ]; then npm run build-prod-cn; fi
-                # Kommunicate beta 
-                - if [ "${BUILD_ENV}" = "prod_beta" ]; then npm run build-beta; fi
+                # Kommunicate beta
+                - if [ "${BUILD_ENV}" = "prod-beta" ]; then npm run build-beta; fi
                 # If no environment variable is provided then build kommunicate test bundle.
                 - if [ "${BUILD_ENV}" = "" ]; then npm run build-test; fi
     artifacts:

@@ -25,7 +25,7 @@ function KmNavBar(mckMsgLayout) {
             !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation();
 
         if (shouldShowHeaderCTA) {
-            $applozic('.km-header-cta').addClass('vis').removeClass('n-vis');
+            kommunicateCommons.show('.km-header-cta');
         }
     };
 
@@ -35,16 +35,9 @@ function KmNavBar(mckMsgLayout) {
             if (talkToHumanButton) {
                 talkToHumanButton.disabled = false;
             }
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['km-talk-to-human'],
-                    class: ['km-option-talk-to-human'],
-                },
-                'n-vis',
-                'vis'
-            );
+            kommunicateCommons.show('#km-talk-to-human', '.km-option-talk-to-human');
         } else if (HEADER_CTA.TALK_TO_HUMAN === appOptions.primaryCTA) {
-            kommunicateCommons.modifyClassList({ id: ['km-talk-to-human'] }, 'vis', 'n-vis');
+            kommunicateCommons.hide('#km-talk-to-human');
         }
     };
 }

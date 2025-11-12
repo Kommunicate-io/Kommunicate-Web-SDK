@@ -169,26 +169,25 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
-        if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
+        var settings = appOptionSession.getPropertyDataFromSession('settings') || {};
+        if (!Object.keys(settings).length) {
             return conversationDetail;
         }
-        // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
-        conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
-        conversationDetail.defaultAssignee =
-            conversationDetail.assignee || kommunicateSettings.defaultAssignee;
-        conversationDetail.agentIds =
-            conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
-        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
-        conversationDetail.skipRouting =
-            conversationDetail.skipRouting || kommunicateSettings.skipRouting;
-        conversationDetail.skipBotEvent =
-            conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
-        conversationDetail.customWelcomeEvent =
-            conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
-        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
-        return conversationDetail;
+        return {
+            ...conversationDetail,
+            WELCOME_MESSAGE: conversationDetail.WELCOME_MESSAGE ?? settings.WELCOME_MESSAGE,
+            defaultAssignee:
+                conversationDetail.defaultAssignee ??
+                conversationDetail.assignee ??
+                settings.defaultAssignee,
+            agentIds: conversationDetail.agentIds ?? settings.defaultAgentIds,
+            botIds: conversationDetail.botIds ?? settings.defaultBotIds,
+            skipRouting: conversationDetail.skipRouting ?? settings.skipRouting,
+            skipBotEvent: conversationDetail.skipBotEvent ?? settings.skipBotEvent,
+            customWelcomeEvent:
+                conversationDetail.customWelcomeEvent ?? settings.customWelcomeEvent,
+            teamId: conversationDetail.teamId ?? settings.teamId,
+        };
     },
     openConversationList: function () {
         kommunicateCommons.setWidgetStateOpen(true);
@@ -508,14 +507,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     sendMessage: function (messagePxy) {
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-        var $mck_msg_to = $applozic('#mck-msg-to');
-
-        if ($mck_msg_inner.data('isgroup') === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
+        kommunicateCommons.setMessagePxyRecipient(messagePxy);
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
     getRichTextMessageTemplate: function (message) {
@@ -648,6 +640,17 @@ $applozic.extend(true, Kommunicate, {
               popUpCloseButton && (popUpCloseButton.style.display = 'flex'))
             : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+    },
+    setDefaultIframeConfigForClosedChat: function () {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        if (kommunicateIframe) {
+            kommunicateIframe.classList.add('km-iframe-closed');
+            kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+            kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
+            kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+        }
+        var popUpCloseButton = parent.document.querySelector('#km-popup-close-button');
+        popUpCloseButton && (popUpCloseButton.style.display = 'none');
     },
     // add css to style component in window
     customizeWidgetCss: function (classSettings) {
@@ -853,5 +856,51 @@ $applozic.extend(true, Kommunicate, {
             console.debug('Error while fetching location', error);
             return 'PERMISSION_DENIED';
         }
+    },
+    getTimeToLoadChatByDays: function () {
+        // Validate input parameter
+
+        const days = kommunicate._globals.loadChatByDays;
+        if (days === undefined || days === null) {
+            throw new Error('Days parameter is required');
+        }
+
+        // Convert string to number if needed
+        let numericDays;
+        if (typeof days === 'string') {
+            numericDays = parseInt(days, 10);
+        } else if (typeof days === 'number') {
+            numericDays = days;
+        } else {
+            throw new Error(
+                'Days parameter must be a number or string that can be converted to a number'
+            );
+        }
+
+        // Validate that conversion was successful
+        if (isNaN(numericDays)) {
+            throw new Error('Invalid days value: cannot convert to a valid number');
+        }
+
+        // Validate that it's a positive integer
+        if (!Number.isInteger(numericDays) || numericDays <= 0) {
+            throw new Error('Days must be a positive integer');
+        }
+
+        // Optional: Set reasonable upper limit (e.g., 365 days = 1 year)
+        if (numericDays > 365) {
+            throw new Error('Days cannot exceed 365');
+        }
+
+        // Set endTime to today at 23:59:00
+        const today = new Date();
+        today.setHours(23, 59, 0, 0); // Set to 23:59:00.000
+        const endTime = today.getTime();
+
+        // Calculate startTime by going back the specified number of days
+        const daysInMilliseconds = numericDays * 24 * 60 * 60 * 1000;
+        const startTime = endTime - daysInMilliseconds;
+
+        return { startTime, endTime };
     },
 });

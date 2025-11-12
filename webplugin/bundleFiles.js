@@ -34,6 +34,7 @@ exports.THIRD_PARTY_SCRIPTS = [
 ];
 
 exports.PLUGIN_JS_FILES = [
+    path.resolve(__dirname, 'template/mck-icons.js'),
     path.resolve(__dirname, 'js/app/components/custom-element.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
@@ -78,7 +79,6 @@ exports.PLUGIN_CSS_FILES = [
     path.resolve(__dirname, 'css/app/mck-sidebox-1.0.css'),
     path.resolve(__dirname, 'css/app/km-voice-note.css'),
     path.resolve(__dirname, 'css/app/km-rich-message.css'),
-    // path.resolve(__dirname, 'css/app/km-login-model.css'),
     path.resolve(__dirname, 'lib/css/tiny-slider-2.9.2.css'),
     path.resolve(__dirname, 'css/app/km-sidebox.css'),
     // path.resolve(__dirname, 'lib/css/intl-tel-lib.css'),
@@ -174,6 +174,10 @@ function getCurrentBranch() {
     try {
         if (process.env.AWS_BRANCH) {
             return process.env.AWS_BRANCH;
+        }
+
+        if (process.env.BRANCH) {
+            return process.env.BRANCH;
         }
 
         if (process.env.NODE_ENV != 'development') {

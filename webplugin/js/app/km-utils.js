@@ -449,16 +449,15 @@ KommunicateUtils = {
         );
     },
     isURL: function (str) {
-        var pattern = new RegExp(
-            '^(https?:\\/\\/)?' + // protocol
-                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-                '(\\#[-a-z\\d_]*)?$',
-            'i'
-        ); // fragment locator
-        return pattern.test(str);
+        try {
+            var url = new URL(str);
+            return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch (e) {
+            return false;
+        }
+    },
+    getBooleanOption: function (value, defaultValue) {
+        return typeof value === 'boolean' ? value : defaultValue;
     },
     formatParams: function (params) {
         return (
@@ -478,7 +477,7 @@ KommunicateUtils = {
     isCurrentAssigneeBot: function () {
         if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
             var currentConversationAssignee = {};
-            for (var i = 0; i <= CURRENT_GROUP_DATA.groupMembers.length; i++) {
+            for (var i = 0; i < CURRENT_GROUP_DATA.groupMembers.length; i++) {
                 if (
                     CURRENT_GROUP_DATA.groupMembers[i] &&
                     CURRENT_GROUP_DATA.groupMembers[i].userId ==

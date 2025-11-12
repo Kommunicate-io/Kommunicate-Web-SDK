@@ -498,26 +498,17 @@ function ApplozicSidebox() {
                     : {};
             options.fileUpload =
                 options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
-            options.connectSocketOnWidgetClick =
-                options.connectSocketOnWidgetClick != null
-                    ? options.connectSocketOnWidgetClick
-                    : widgetSettings && widgetSettings.connectSocketOnWidgetClick;
-            options.voiceInput =
-                options.voiceInput != null
-                    ? options.voiceInput
-                    : widgetSettings && widgetSettings.voiceInput;
-            options.voiceOutput =
-                options.voiceOutput != null
-                    ? options.voiceOutput
-                    : widgetSettings && widgetSettings.voiceOutput;
-            options.attachment =
-                options.attachment != null
-                    ? options.attachment
-                    : widgetSettings && widgetSettings.attachment;
-            options.hidePostCTA =
-                options.hidePostCTA != null
-                    ? options.hidePostCTA
-                    : widgetSettings && widgetSettings.hidePostCTA;
+            [
+                'connectSocketOnWidgetClick',
+                'voiceInput',
+                'voiceOutput',
+                'attachment',
+                'hidePostCTA',
+            ].forEach(function (key) {
+                if (options[key] == null) {
+                    options[key] = widgetSettings && widgetSettings[key];
+                }
+            });
             options.zendeskChatSdkKey =
                 options.zendeskChatSdkKey != null
                     ? options.zendeskChatSdkKey
@@ -592,6 +583,7 @@ function ApplozicSidebox() {
             options.storageSuffix =
                 typeof options.storageSuffix == 'string' ? options.storageSuffix : '';
             appOptionSession.deletePropertyDataFromSession('settings');
+            options.loadChatByDays = isSettingEnable('loadChatByDays');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);

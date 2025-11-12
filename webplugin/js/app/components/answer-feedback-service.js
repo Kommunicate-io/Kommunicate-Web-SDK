@@ -161,6 +161,15 @@ class AnswerFeedback {
 
     handleFeedbackPositioning = (msgKey) => {
         const msgContainer = document.querySelector(`[data-msgKey='${msgKey}']`);
+        const feedbackContainerSelector = `[data-msgKey="${msgKey}"] .km-answer-feedback`;
+        kommunicateCommons.modifyClassList(
+            {
+                class: [feedbackContainerSelector],
+            },
+            'vis',
+            'n-vis',
+            true
+        );
         if (!msgContainer) return;
 
         const msgBox = msgContainer.querySelector('.mck-msg-box');
@@ -170,7 +179,9 @@ class AnswerFeedback {
         const msgBoxWidth = msgBox.offsetWidth;
 
         const feedbackWidth = msgBoxWidth + 40;
-        feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
+        if (feedbackWidth > 120) {
+            feedbackElement.style.left = `${feedbackWidth}px`;
+        }
     };
 
     attachEventListeners = (data) => {
@@ -185,10 +196,20 @@ class AnswerFeedback {
         const helpfulButton = msgContainer.querySelector('.answer-feedback-helpful');
         const notHelpfulButton = msgContainer.querySelector('.answer-feedback-not-helpful');
 
-        // Handle feedback positioning after the element is rendered
+        // Initially hide the feedback container
+        kommunicateCommons.modifyClassList(
+            {
+                class: [feedbackContainerSelector],
+            },
+            'n-vis',
+            'vis',
+            true
+        );
+
+        // Handle feedback positioning after the element is rendered and then show the container
         setTimeout(() => {
             this.handleFeedbackPositioning(msg.key);
-        }, 0);
+        }, 500);
 
         const setFeedback = (feedback) => {
             const iconToAdd = KommunicateConstants.ANSWER_FEEDBACK_ICONS[feedback];

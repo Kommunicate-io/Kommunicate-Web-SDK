@@ -117,14 +117,25 @@
     display: none;
 }
 
-.star-rating label svg {
+.star-rating label {
     cursor: pointer;
 }
 
-.star-rating label.filled svg path {
-    fill: #ffc045;
+.star-rating label svg,
+.star-rating label svg use {
+    pointer-events: none;
 }
 
-.star-rating label svg path {
-    fill: #b3b3b3;
+.star-rating label svg {
+    color: #b3b3b3;
+}
+.star-rating label svg use {
+    color: #b3b3b3;
+}
+
+.star-rating label.filled svg {
+    color: #ffc045;
+}
+.star-rating label.filled svg use {
+    color: #ffc045;
 }

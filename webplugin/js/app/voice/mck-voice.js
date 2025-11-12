@@ -155,10 +155,7 @@ class MckVoice {
                 }
 
                 // Hide other rings
-                kommunicateCommons.modifyClassList(
-                    { class: ['voice-ring-2', 'voice-ring-3'] },
-                    'n-vis'
-                );
+                kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
 
                 // Apply receding animation to the first ring
                 const ring1 = document.querySelector('.voice-ring-1');
@@ -251,10 +248,7 @@ class MckVoice {
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
                 // Hide other rings
-                kommunicateCommons.modifyClassList(
-                    { class: ['voice-ring-2', 'voice-ring-3'] },
-                    'n-vis'
-                );
+                kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
 
                 // Apply receding animation to the first ring
                 const ring1 = document.querySelector('.voice-ring-1');
@@ -277,20 +271,10 @@ class MckVoice {
     addEventListeners() {
         const self = this;
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['mck-sidebox-ft'],
-                    class: ['mck-box-body', 'mck-box-top'],
-                },
-                'n-vis'
-            );
+            kommunicateCommons.hide('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
 
-            kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'vis', 'n-vis');
-            kommunicateCommons.modifyClassList(
-                { class: ['voice-ring-2', 'voice-ring-3'] },
-                '',
-                'n-vis'
-            );
+            kommunicateCommons.show('#mck-voice-interface');
+            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
             kommunicateCommons.modifyClassList(
                 { class: ['voice-ring-1'] },
                 '',
@@ -310,14 +294,7 @@ class MckVoice {
         document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
             this.stopRecording(true);
 
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['mck-sidebox-ft'],
-                    class: ['mck-box-body'],
-                },
-                'vis',
-                'n-vis'
-            );
+            kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body');
 
             document.querySelector('.mck-box-top').classList.remove('n-vis');
 
@@ -326,7 +303,7 @@ class MckVoice {
                 'mck-hidden'
             );
 
-            kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'n-vis', 'vis');
+            kommunicateCommons.hide('#mck-voice-interface');
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
@@ -336,11 +313,7 @@ class MckVoice {
                 'mck-hidden'
             );
 
-            kommunicateCommons.modifyClassList(
-                { class: ['voice-ring-2', 'voice-ring-3'] },
-                '',
-                'n-vis'
-            );
+            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
             kommunicateCommons.modifyClassList(
                 { class: ['voice-ring-1'] },
                 '',

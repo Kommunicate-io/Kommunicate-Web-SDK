@@ -10,7 +10,7 @@
         var SEARCH_ELASTIC = '/kb/_search';
 
         function hideFAQBtn() {
-            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+            kommunicateCommons.hide('.km-option-faq');
             kommunicate._globals.hasArticles = false;
         }
 
