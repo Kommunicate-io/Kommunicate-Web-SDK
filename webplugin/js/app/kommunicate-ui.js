@@ -793,12 +793,32 @@ KommunicateUI = {
         );
     },
 
-    showChat: function () {
+    showChat: function (options) {
+        var keepConversationHeader = false;
+        if (typeof options === 'boolean') {
+            keepConversationHeader = options;
+        } else if (options && typeof options.keepConversationHeader !== 'undefined') {
+            keepConversationHeader = options.keepConversationHeader;
+        }
+        var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
+        var shouldShowConversationListHeader = keepConversationHeader && isModernLayout;
+        var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
         kommunicateCommons.hide('#faq-common');
         kommunicateCommons.show('.mck-conversation');
-        if (kommunicateCommons.isModernLayoutEnabled()) {
-            kommunicateCommons.hide('#mck-tab-conversation');
+        if (isModernLayout) {
+            if (shouldShowConversationListHeader) {
+                kommunicateCommons.show('#mck-tab-conversation');
+                kommunicateCommons.hide('#mck-tab-individual');
+            } else {
+                kommunicateCommons.hide('#mck-tab-conversation');
+                kommunicateCommons.show('#mck-tab-individual');
+            }
+        }
+        if (shouldShowChatHeader) {
+            kommunicateCommons.show('#mck-tab-individual');
+            kommunicateCommons.show('#mck-tab-individual .mck-name-status-container');
+            kommunicateCommons.show('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
         }
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);

@@ -1,6 +1,8 @@
 .km-bottom-tab-wrapper {
     padding: 12px 20px 20px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid rgba(4, 68, 77, 0.08);
     display: flex;
     justify-content: center;
@@ -9,13 +11,17 @@
 .km-bottom-tab-bar {
     width: 100%;
     max-width: 360px;
+    margin: 0 auto;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
     padding: 10px 14px;
     border-radius: 28px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
     border: 1px solid rgba(4, 68, 77, 0.08);
 }
