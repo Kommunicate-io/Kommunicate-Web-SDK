@@ -42,7 +42,7 @@
     &.active {
         background: $primary-color;
         color: $text-secondary-color;
-        box-shadow: 0 8px 18px rgba(95, 70, 248, 0.35);
+        box-shadow: 0 8px 18px rgba($primary-color, 0.35);
     }
 }
 

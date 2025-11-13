@@ -624,12 +624,13 @@ const firstVisibleMsg = {
             if (!$tabs.length) {
                 return;
             }
+            var themeBgClass = 'km-custom-widget-background-color';
             var $targetTab = $tabs.filter('[data-tab="' + tabType + '"]');
             if (!$targetTab.length) {
                 $targetTab = $tabs.filter('[data-tab="conversations"]');
             }
-            $tabs.removeClass('active').attr('aria-selected', 'false');
-            $targetTab.addClass('active').attr('aria-selected', 'true');
+            $tabs.removeClass('active ' + themeBgClass).attr('aria-selected', 'false');
+            $targetTab.addClass('active ' + themeBgClass).attr('aria-selected', 'true');
         }
 
         function showBottomTabs() {
@@ -639,6 +640,10 @@ const firstVisibleMsg = {
         function hideBottomTabs() {
             kommunicateCommons.hide('.km-bottom-tab-wrapper');
         }
+
+        setBottomTabState(
+            ($applozic('.km-bottom-tab.active').data('tab') || 'conversations').toString()
+        );
 
         function handleBottomTabChange(tabType, options) {
             options = options || {};
