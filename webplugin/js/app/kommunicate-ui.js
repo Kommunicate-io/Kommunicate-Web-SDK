@@ -329,6 +329,12 @@ KommunicateUI = {
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             KommunicateUI.showHeader();
             KommunicateUI.toggleModernFaqBackButton(false);
+            if (kommunicateCommons.isModernLayoutEnabled()) {
+                var conversationTitle = document.getElementById('mck-conversation-title');
+                conversationTitle && (conversationTitle.textContent = MCK_LABELS['faq']);
+                kommunicateCommons.show('#mck-tab-conversation');
+                kommunicateCommons.hide('#mck-tab-individual');
+            }
             KommunicateUI.awayMessageScroll = true;
             if (isFaqCategoryPresent) {
                 MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
@@ -410,6 +416,7 @@ KommunicateUI = {
                 'vis',
                 'n-vis'
             );
+            KommunicateUI.toggleModernFaqBackButton(true);
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-list');
             var categoryName = this.getAttribute('data-category-name');
@@ -489,7 +496,7 @@ KommunicateUI = {
 
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
-                    KommunicateUI.toggleModernFaqBackButton(false);
+                    KommunicateUI.toggleModernFaqBackButton(true);
                     return;
                 } else if (typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'object') {
                     // remove n-vis
@@ -790,6 +797,9 @@ KommunicateUI = {
         kommunicateCommons.setWidgetStateOpen(true);
         kommunicateCommons.hide('#faq-common');
         kommunicateCommons.show('.mck-conversation');
+        if (kommunicateCommons.isModernLayoutEnabled()) {
+            kommunicateCommons.hide('#mck-tab-conversation');
+        }
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
         if (

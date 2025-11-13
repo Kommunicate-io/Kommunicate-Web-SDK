@@ -658,6 +658,17 @@ const firstVisibleMsg = {
             if (tabType === 'conversations') {
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
+                if (kommunicateCommons.isModernLayoutEnabled()) {
+                    setTimeout(function () {
+                        var lastTabId =
+                            window.$applozic &&
+                            $applozic('#mck-message-cell .mck-message-inner').data('mck-id');
+                        if (lastTabId) {
+                            kommunicateCommons.show('#mck-tab-individual');
+                            kommunicateCommons.hide('#mck-tab-conversation');
+                        }
+                    }, 0);
+                }
             }
 
             if (tabType === 'faqs') {
