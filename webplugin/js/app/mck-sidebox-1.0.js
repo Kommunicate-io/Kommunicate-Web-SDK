@@ -8574,6 +8574,99 @@ const firstVisibleMsg = {
                               .tmpl('messageTemplate', msgList)
                               .prependTo('#mck-message-cell .mck-message-inner');
                 }
+                // Normalize embedded video iframes (e.g., YouTube) to avoid player configuration errors
+                try {
+                    var $container = $applozic('#mck-message-cell .' + msg.key);
+                    $container
+                        .find('iframe.mck-rich-video-iframe')
+                        .each(function () {
+                            try {
+                                var src = this.getAttribute('src') || '';
+                                var normalized = (function (src) {
+                                    try {
+                                        var u = new URL(src, window.location.href);
+                                        var host = (u.hostname || '').replace(/^www\./, '');
+                                        var isYT =
+                                            host.indexOf('youtube.com') !== -1 ||
+                                            host.indexOf('youtu.be') !== -1 ||
+                                            host.indexOf('youtube-nocookie.com') !== -1;
+                                        if (!isYT) return src;
+
+                                        function toSeconds(t) {
+                                            if (!t) return null;
+                                            if (/^\d+$/.test(t)) return parseInt(t, 10);
+                                            var h = 0,
+                                                m = 0,
+                                                s = 0;
+                                            var mh = t.match(/(\d+)h/);
+                                            var mm = t.match(/(\d+)m/);
+                                            var ms = t.match(/(\d+)s/);
+                                            if (mh) h = parseInt(mh[1], 10);
+                                            if (mm) m = parseInt(mm[1], 10);
+                                            if (ms) s = parseInt(ms[1], 10);
+                                            var total = h * 3600 + m * 60 + s;
+                                            return total || null;
+                                        }
+
+                                        var id = '';
+                                        var params = u.searchParams || new URLSearchParams('');
+                                        if (host === 'youtu.be') {
+                                            id = (u.pathname.split('/')[1] || '').split('?')[0];
+                                        } else if (u.pathname.indexOf('/embed/') === 0) {
+                                            id = (u.pathname.split('/embed/')[1] || '').split('/')[0];
+                                        } else if (u.pathname.indexOf('/watch') === 0) {
+                                            id = params.get('v') || '';
+                                        } else if (u.pathname.indexOf('/shorts/') === 0) {
+                                            id = (u.pathname.split('/shorts/')[1] || '').split('/')[0];
+                                        }
+
+                                        var list = params.get('list');
+                                        var start = params.get('start') || params.get('t');
+                                        var startSec = toSeconds(start);
+
+                                        var embedBase = 'https://www.youtube-nocookie.com';
+                                        var embedUrl = '';
+                                        if (list && !id) {
+                                            embedUrl =
+                                                embedBase +
+                                                '/embed/videoseries?list=' +
+                                                encodeURIComponent(list);
+                                        } else if (id) {
+                                            id = id.split('?')[0].split('&')[0];
+                                            embedUrl = embedBase + '/embed/' + id;
+                                            var qp = [];
+                                            if (list) qp.push('list=' + encodeURIComponent(list));
+                                            if (startSec != null) qp.push('start=' + startSec);
+                                            qp.push('rel=0');
+                                            qp.push('modestbranding=1');
+                                            qp.push('playsinline=1');
+                                            try {
+                                                var origin = parent && parent.location && parent.location.origin;
+                                                if (origin && origin !== 'null') {
+                                                    qp.push('origin=' + encodeURIComponent(origin));
+                                                }
+                                            } catch (e) {}
+                                            if (qp.length) embedUrl += '?' + qp.join('&');
+                                        }
+                                        return embedUrl || src;
+                                    } catch (e) {
+                                        return src;
+                                    }
+                                })(src);
+                                if (normalized !== src) this.setAttribute('src', normalized);
+                                this.setAttribute(
+                                    'allow',
+                                    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                                );
+                                this.setAttribute('allowfullscreen', 'true');
+                                this.setAttribute(
+                                    'referrerpolicy',
+                                    'strict-origin-when-cross-origin'
+                                );
+                                this.setAttribute('title', this.getAttribute('title') || 'Video');
+                            } catch (e) {}
+                        });
+                } catch (e) {}
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 
