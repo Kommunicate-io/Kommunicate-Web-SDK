@@ -481,6 +481,21 @@ function ApplozicSidebox() {
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            options.appSettings = options.appSettings || {};
+            options.appSettings.chatWidget = options.appSettings.chatWidget || widgetSettings || {};
+            var resolvedDesignLayoutName =
+                options.designLayoutName ||
+                options?.appSettings?.designLayoutName ||
+                options?.appSettings?.chatWidget?.designLayoutName ||
+                widgetSettings?.designLayoutName ||
+                KommunicateConstants.DESIGN_LAYOUTS.MODERN ||
+                'modern';
+            options.designLayoutName = resolvedDesignLayoutName;
+            options.appSettings.designLayoutName = resolvedDesignLayoutName;
+            options.appSettings.chatWidget.designLayoutName = resolvedDesignLayoutName;
+            if (widgetSettings) {
+                widgetSettings.designLayoutName = resolvedDesignLayoutName;
+            }
 
             var pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'

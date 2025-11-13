@@ -78,6 +78,7 @@ const firstVisibleMsg = {
         msgTriggerTimeout: 0,
         labels: kmLabel.getLabels(),
         useBranding: true,
+        designLayoutName: 'default',
         openGroupSettings: {
             deleteChatAccess: 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
             allowInfoAccessGroupMembers: true,
@@ -617,6 +618,55 @@ const firstVisibleMsg = {
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
         var zendeskChatService = (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
+
+        function setBottomTabState(tabType) {
+            var $tabs = $applozic('.km-bottom-tab');
+            if (!$tabs.length) {
+                return;
+            }
+            var $targetTab = $tabs.filter('[data-tab="' + tabType + '"]');
+            if (!$targetTab.length) {
+                $targetTab = $tabs.filter('[data-tab="conversations"]');
+            }
+            $tabs.removeClass('active').attr('aria-selected', 'false');
+            $targetTab.addClass('active').attr('aria-selected', 'true');
+        }
+
+        function handleBottomTabChange(tabType, options) {
+            options = options || {};
+            setBottomTabState(tabType);
+
+            if (tabType === 'faqs') {
+                kommunicateCommons.hide('#km-whats-new-placeholder');
+                if (!options.skipFaqTrigger) {
+                    var $faqButton = $applozic('#km-faq');
+                    if ($faqButton && $faqButton.length) {
+                        $faqButton.trigger('click');
+                        return;
+                    }
+                }
+                kommunicateCommons.hide('.mck-conversation');
+                kommunicateCommons.show('#faq-common');
+                return;
+            }
+
+            if (tabType === 'whats-new') {
+                kommunicateCommons.hide('#faq-common');
+                kommunicateCommons.hide('.mck-conversation');
+                kommunicateCommons.show('#km-whats-new-placeholder');
+                return;
+            }
+
+            kommunicateCommons.hide('#km-whats-new-placeholder');
+            kommunicateCommons.hide('#faq-common');
+            kommunicateCommons.show('.mck-conversation');
+            if (
+                typeof KommunicateUI !== 'undefined' &&
+                typeof KommunicateUI.showChat === 'function'
+            ) {
+                KommunicateUI.showChat();
+            }
+        }
         var kmNavBar = new KmNavBar(mckMessageLayout);
         const answerFeedbackService = new AnswerFeedback(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
@@ -4170,6 +4220,21 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-contact-list');
                 });
 
+                $applozic(d).on('click', '.km-bottom-tab', function (e) {
+                    e.preventDefault();
+                    var tabType = $applozic(this).data('tab') || 'conversations';
+                    handleBottomTabChange(tabType);
+                });
+
+                $applozic(d).on('click', '#km-faq', function () {
+                    handleBottomTabChange('faqs', { skipFaqTrigger: true });
+                });
+
+                $applozic(d).on('click', '#km-faq-option', function (e) {
+                    e.preventDefault();
+                    handleBottomTabChange('faqs');
+                });
+
                 $mck_group_search.click(function () {
                     mckMessageLayout.addGroupsToGroupSearchList();
                 });
@@ -5130,7 +5195,10 @@ const firstVisibleMsg = {
                     }
                 });
                 $mck_msg_form.submit(function () {
-                    if ($mck_autosuggest_search_input && $mck_autosuggest_search_input.hasClass('mck-text-box')) {
+                    if (
+                        $mck_autosuggest_search_input &&
+                        $mck_autosuggest_search_input.hasClass('mck-text-box')
+                    ) {
                         $mck_text_box.text($mck_autosuggest_search_input.val());
                     }
                     if (window.Applozic.ALSocket.mck_typing_status === 1) {

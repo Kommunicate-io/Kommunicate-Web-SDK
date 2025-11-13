@@ -1,0 +1,56 @@
+.km-bottom-tab-wrapper {
+    padding: 12px 20px 20px;
+    background: #ffffff;
+    border-top: 1px solid rgba(4, 68, 77, 0.08);
+    display: flex;
+    justify-content: center;
+}
+
+.km-bottom-tab-bar {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 28px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
+    border: 1px solid rgba(4, 68, 77, 0.08);
+}
+
+.km-bottom-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    color: $text-tertiary-color;
+    border-radius: 999px;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &.active {
+        background: $primary-color;
+        color: $text-secondary-color;
+        box-shadow: 0 8px 18px rgba(95, 70, 248, 0.35);
+    }
+}
+
+.km-whats-new-placeholder {
+    margin: 20px;
+    padding: 24px;
+    border-radius: 20px;
+    background: rgba(95, 70, 248, 0.08);
+    color: $text-primary-color;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.mck-sidebox .mck-sidebox-content {
+    padding-bottom: 30px;
+}

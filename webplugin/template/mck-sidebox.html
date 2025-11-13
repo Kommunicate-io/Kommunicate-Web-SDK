@@ -1365,6 +1365,37 @@
                     This is a required field
                 </div>
             </div>
+            <div class="km-bottom-tab-wrapper">
+                <div class="km-bottom-tab-bar" role="tablist" aria-label="Widget navigation">
+                    <button
+                        type="button"
+                        class="km-bottom-tab active"
+                        data-tab="conversations"
+                        role="tab"
+                        aria-selected="true"
+                    >
+                        Conversations
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="faqs"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        FAQs
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="whats-new"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        What's New
+                    </button>
+                </div>
+            </div>
             <div
                 id="mck-voice-interface"
                 class="n-vis mck-voice-interface km-custom-widget-background-color"
@@ -1774,238 +1805,244 @@
                 </button>
             </div>
         </div>
-    </div>
-</div>
-<div
-    id="mck-loc-box"
-    class="mck-box mck-loc-box fade"
-    aria-hidden="false"
-    style="visibility: hidden"
->
-    <div class="mck-box-dialog mck-box-md">
-        <div class="mck-box-content">
-            <div class="mck-box-top mck-row">
-                <div class="blk-lg-10">
-                    <h4 class="mck-box-title">Share Location</h4>
-                </div>
-                <div class="blk-lg-2">
-                    <button
-                        type="button"
-                        class="mck-box-close"
-                        data-dismiss="mckbox"
-                        aria-label="Close"
-                        data-testid="mck-loc-top-close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div class="mck-form-group">
-                    <div class="blk-lg-12">
-                        <input
-                            id="mck-loc-address"
-                            type="text"
-                            class="mck-form-control"
-                            placeholder="Enter a location"
-                            autocomplete="off"
-                        />
-                    </div>
-                </div>
-                <div id="mck-map-content" class="mck-loc-content"></div>
-                <div class="n-vis">
-                    <label class="blk-sm-2 mck-control-label">Lat.:</label>
-                    <div class="blk-sm-3">
-                        <input type="text" id="mck-loc-lat" class="mck-form-control" />
-                    </div>
-                    <label class="blk-sm-2 mck-control-label">Long.:</label>
-                    <div class="blk-sm-3">
-                        <input type="text" id="mck-loc-lon" class="mck-form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="mck-box-footer">
-                <button id="mck-my-loc" type="button" class="mck-my-loc mck-btn mck-btn-green">
-                    My Location
-                </button>
-                <button
-                    id="mck-loc-submit"
-                    type="button"
-                    class="mck-btn mck-btn-blue mck-loc-submit move-right"
-                    aria-disabled="false"
-                    aria-label="Send Location"
-                    tabindex="0"
-                >
-                    Send
-                </button>
-                <button
-                    id="mck-btn-close-loc-box"
-                    type="button"
-                    class="mck-btn mck-btn-default move-right"
-                    data-dismiss="mckbox"
-                    aria-disabled="false"
-                    aria-label="Close"
-                    tabindex="0"
-                    role="button"
-                    data-testid="mck-loc-bottom-close"
-                >
-                    Close
-                </button>
-            </div>
+        <div id="km-whats-new-placeholder" class="km-whats-new-placeholder n-vis">
+            <p>What's New coming soon.</p>
         </div>
     </div>
-</div>
-<div
-    id="mck-gm-search-box"
-    class="mck-box mck-gm-search-box fade"
-    aria-hidden="true"
-    style="visibility: hidden"
->
-    <div class="mck-box-dialog mck-box-sm">
-        <div class="mck-box-content">
-            <div class="mck-box-top mck-row">
-                <div class="blk-lg-3">
-                    <svg
-                        focusable="false"
-                        aria-hidden="true"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                    >
-                        <use xlink:href="#icon-58" href="#icon-58"></use>
-                    </svg>
-                </div>
-                <div class="blk-lg-7">
-                    <h4 class="mck-box-title">Add Member</h4>
-                </div>
-                <div class="blk-lg-2">
-                    <button
-                        type="button"
-                        class="mck-box-close"
-                        data-dismiss="mckbox"
-                        aria-label="Close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div class="mck-form-group">
-                    <div class="mck-input-group blk-lg-12">
-                        <input
-                            id="mck-group-member-search"
-                            type="text"
-                            data-provide="typeahead"
-                            placeholder="Search..."
-                        />
-                        <span class="mck-search-icon">
-                            <a href="#" role="link" class="mck-group-member-search-link">
-                                <span class="mck-icon-search"></span>
-                            </a>
-                        </span>
+    <div
+        id="mck-loc-box"
+        class="mck-box mck-loc-box fade"
+        aria-hidden="false"
+        style="visibility: hidden"
+    >
+        <div class="mck-box-dialog mck-box-md">
+            <div class="mck-box-content">
+                <div class="mck-box-top mck-row">
+                    <div class="blk-lg-10">
+                        <h4 class="mck-box-title">Share Location</h4>
                     </div>
-                </div>
-                <div class="mck-tab-cell">
-                    <div class="mck-message-inner">
-                        <ul
-                            id="mck-group-member-search-list"
-                            class="mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"
-                        ></ul>
-                        <div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">
-                            No contacts yet!
-                        </div>
-                    </div>
-                    <div id="mck-gms-loading" class="mck-loading n-vis">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            class="mck-circular-spinner"
-                            viewBox="25 25 50 50"
-                            width="50"
-                            height="50"
+                    <div class="blk-lg-2">
+                        <button
+                            type="button"
+                            class="mck-box-close"
+                            data-dismiss="mckbox"
+                            aria-label="Close"
+                            data-testid="mck-loc-top-close"
                         >
-                            <use xlink:href="#icon-53" href="#icon-53"></use>
-                        </svg>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div
-    id="km-chat-login-modal"
-    class="km-sidemodal km-modal"
-    role="main"
-    aria-live="polite"
-    style="visibility: hidden"
->
-    <div class="km-modal-dialog km-modal-sm">
-        <div class="km-modal-content">
-            <div class="km-sidemodal--modal-header km-custom-widget-background-color">
-                <div
-                    class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate"
-                >
-                    <div
-                        id="km-tab-title"
-                        class="mck-tab-title mck-truncate mck-display-name"
-                    ></div>
-                </div>
-                <div class="blk-lg-2 mck-close-btn">
-                    <button
-                        type="button"
-                        id="km-modal-close"
-                        class="mck-box-close km-close-sidebox move-right"
-                        data-dismiss="mckbox"
-                        tabindex="0"
-                        aria-label="Close"
-                        aria-hidden="false"
-                        role="button"
-                    >
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            fill="#FFFFFF"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            focusable="false"
-                            aria-hidden="true"
-                        >
-                            <use xlink:href="#icon-10" href="#icon-10"></use>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="km-modal-body">
-                <div class="km-section-title">
-                    <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
-                </div>
-                <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
-                <div class="km-modal-form">
-                    <form id="km-form-chat-login" class="km-vertical">
-                        <div class="km-form-group km-form-group-container">
+                <div class="mck-box-body">
+                    <div class="mck-form-group">
+                        <div class="blk-lg-12">
                             <input
-                                class="km-form-control km-input-width n-vis"
-                                id="km-userId"
-                                name="km-userId"
+                                id="mck-loc-address"
+                                type="text"
+                                class="mck-form-control"
+                                placeholder="Enter a location"
+                                autocomplete="off"
                             />
                         </div>
-                        <div
-                            class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"
-                        ></div>
-                        <div class="km-form-group km-text-center">
-                            <button
-                                type="submit"
-                                id="km-submit-chat-login"
-                                class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
-                                tabindex="0"
-                                role="button"
-                            ></button>
+                    </div>
+                    <div id="mck-map-content" class="mck-loc-content"></div>
+                    <div class="n-vis">
+                        <label class="blk-sm-2 mck-control-label">Lat.:</label>
+                        <div class="blk-sm-3">
+                            <input type="text" id="mck-loc-lat" class="mck-form-control" />
                         </div>
-                    </form>
+                        <label class="blk-sm-2 mck-control-label">Long.:</label>
+                        <div class="blk-sm-3">
+                            <input type="text" id="mck-loc-lon" class="mck-form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mck-box-footer">
+                    <button id="mck-my-loc" type="button" class="mck-my-loc mck-btn mck-btn-green">
+                        My Location
+                    </button>
+                    <button
+                        id="mck-loc-submit"
+                        type="button"
+                        class="mck-btn mck-btn-blue mck-loc-submit move-right"
+                        aria-disabled="false"
+                        aria-label="Send Location"
+                        tabindex="0"
+                    >
+                        Send
+                    </button>
+                    <button
+                        id="mck-btn-close-loc-box"
+                        type="button"
+                        class="mck-btn mck-btn-default move-right"
+                        data-dismiss="mckbox"
+                        aria-disabled="false"
+                        aria-label="Close"
+                        tabindex="0"
+                        role="button"
+                        data-testid="mck-loc-bottom-close"
+                    >
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+    <div
+        id="mck-gm-search-box"
+        class="mck-box mck-gm-search-box fade"
+        aria-hidden="true"
+        style="visibility: hidden"
+    >
+        <div class="mck-box-dialog mck-box-sm">
+            <div class="mck-box-content">
+                <div class="mck-box-top mck-row">
+                    <div class="blk-lg-3">
+                        <svg
+                            focusable="false"
+                            aria-hidden="true"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                        >
+                            <use xlink:href="#icon-58" href="#icon-58"></use>
+                        </svg>
+                    </div>
+                    <div class="blk-lg-7">
+                        <h4 class="mck-box-title">Add Member</h4>
+                    </div>
+                    <div class="blk-lg-2">
+                        <button
+                            type="button"
+                            class="mck-box-close"
+                            data-dismiss="mckbox"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="mck-box-body">
+                    <div class="mck-form-group">
+                        <div class="mck-input-group blk-lg-12">
+                            <input
+                                id="mck-group-member-search"
+                                type="text"
+                                data-provide="typeahead"
+                                placeholder="Search..."
+                            />
+                            <span class="mck-search-icon">
+                                <a href="#" role="link" class="mck-group-member-search-link">
+                                    <span class="mck-icon-search"></span>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mck-tab-cell">
+                        <div class="mck-message-inner">
+                            <ul
+                                id="mck-group-member-search-list"
+                                class="mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"
+                            ></ul>
+                            <div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">
+                                No contacts yet!
+                            </div>
+                        </div>
+                        <div id="mck-gms-loading" class="mck-loading n-vis">
+                            <svg
+                                focusable="false"
+                                aria-hidden="true"
+                                class="mck-circular-spinner"
+                                viewBox="25 25 50 50"
+                                width="50"
+                                height="50"
+                            >
+                                <use xlink:href="#icon-53" href="#icon-53"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="km-chat-login-modal"
+        class="km-sidemodal km-modal"
+        role="main"
+        aria-live="polite"
+        style="visibility: hidden"
+    >
+        <div class="km-modal-dialog km-modal-sm">
+            <div class="km-modal-content">
+                <div class="km-sidemodal--modal-header km-custom-widget-background-color">
+                    <div
+                        class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate"
+                    >
+                        <div
+                            id="km-tab-title"
+                            class="mck-tab-title mck-truncate mck-display-name"
+                        ></div>
+                    </div>
+                    <div class="blk-lg-2 mck-close-btn">
+                        <button
+                            type="button"
+                            id="km-modal-close"
+                            class="mck-box-close km-close-sidebox move-right"
+                            data-dismiss="mckbox"
+                            tabindex="0"
+                            aria-label="Close"
+                            aria-hidden="false"
+                            role="button"
+                        >
+                            <svg
+                                focusable="false"
+                                aria-hidden="true"
+                                fill="#FFFFFF"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-10" href="#icon-10"></use>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="km-modal-body">
+                    <div class="km-section-title">
+                        <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
+                    </div>
+                    <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
+                    <div class="km-modal-form">
+                        <form id="km-form-chat-login" class="km-vertical">
+                            <div class="km-form-group km-form-group-container">
+                                <input
+                                    class="km-form-control km-input-width n-vis"
+                                    id="km-userId"
+                                    name="km-userId"
+                                />
+                            </div>
+                            <div
+                                class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"
+                            ></div>
+                            <div class="km-form-group km-text-center">
+                                <button
+                                    type="submit"
+                                    id="km-submit-chat-login"
+                                    class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
+                                    tabindex="0"
+                                    role="button"
+                                ></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="km-anonymous-chat-launcher"
+        class="km-anonymous-chat-launcher km-hide-logo n-vis"
+    ></div>
 </div>
-<div id="km-anonymous-chat-launcher" class="km-anonymous-chat-launcher km-hide-logo n-vis"></div>

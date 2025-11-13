@@ -14,6 +14,30 @@ function KommunicateCommons() {
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
     };
 
+    _this.getDesignLayoutName = function () {
+        var layoutFromGlobals =
+            (Kommunicate &&
+                Kommunicate._globals &&
+                (Kommunicate._globals.designLayoutName ||
+                    (Kommunicate._globals.appSettings &&
+                        (Kommunicate._globals.appSettings.designLayoutName ||
+                            Kommunicate._globals.appSettings.chatWidget?.designLayoutName)))) ||
+            null;
+        return (
+            layoutFromGlobals ||
+            (KommunicateConstants.DESIGN_LAYOUTS && KommunicateConstants.DESIGN_LAYOUTS.MODERN) ||
+            'modern'
+        );
+    };
+
+    _this.isModernLayoutEnabled = function () {
+        return (
+            _this.getDesignLayoutName() ===
+            ((KommunicateConstants.DESIGN_LAYOUTS && KommunicateConstants.DESIGN_LAYOUTS.MODERN) ||
+                'modern')
+        );
+    };
+
     _this.isTrialPlan = function (pricingPackage) {
         var isTrialPlan = false;
         if (pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL) {
@@ -304,7 +328,6 @@ function KommunicateCommons() {
             },
             type: 'GET',
             url: Kommunicate.getBaseUrl() + '/rest/ws/feedback/v2/' + tabId,
-            global: false,
             contentType: 'application/json',
             success: onSuccessCallback,
             error: function (err) {
