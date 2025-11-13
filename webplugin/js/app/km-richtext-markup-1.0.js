@@ -550,17 +550,26 @@ Kommunicate.markup = {
         return `
         {{#payload}}  
         <div class= "mck-rich-video-container">
-            <a href={{url}} target="_blank">{{url}}</a>
+            <a href="{{displayUrl}}" target="_blank" rel="noopener noreferrer">{{displayUrl}}</a>
         {{#source}}
-            <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+            <iframe 
+                class="mck-rich-video-iframe"
+                width="{{width}}" 
+                height="{{height}}" 
+                src="{{iframeSrc}}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+                title="Video player"
+            ></iframe>
         {{/source}}
         {{^source}}
-        <video width="{{width||100%}}" height="{{height||250px}}" controls class= "mck-rich-video">
+        <video width="{{width}}" height="{{height}}" controls class= "mck-rich-video">
              <source src="{{url}}" type="{{type||''}}">
          </video>
         {{/source}}
         {{#caption}}
-        <div class="km-template-video-caption-wrapper" style="width:{{width||100%}};">
+        <div class="km-template-video-caption-wrapper" style="width:{{width}};">
            <p class="km-template-video-caption">{{caption}}</p>
         </div>
         {{/caption}}
@@ -1057,12 +1066,92 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     return buttonContainerHtml + '</div>';
 };
 Kommunicate.markup.getVideoMarkup = function (options) {
+    function toSeconds(t) {
+        // supports 1h2m3s, 2m3s, 75s, or plain seconds
+        if (!t) return null;
+        if (/^\d+$/.test(t)) return parseInt(t, 10);
+        var h = 0,
+            m = 0,
+            s = 0;
+        var mh = t.match(/(\d+)h/);
+        var mm = t.match(/(\d+)m/);
+        var ms = t.match(/(\d+)s/);
+        if (mh) h = parseInt(mh[1], 10);
+        if (mm) m = parseInt(mm[1], 10);
+        if (ms) s = parseInt(ms[1], 10);
+        var total = h * 3600 + m * 60 + s;
+        return total || null;
+    }
+
+    function normalizeYouTubeUrl(url) {
+        try {
+            var original = url;
+            var u = new URL(url);
+            var host = u.hostname.replace(/^www\./, '');
+            var id = '';
+            var params = new URLSearchParams(u.search);
+            // Extract start time if present
+            var start = params.get('start') || params.get('t');
+            var startSec = toSeconds(start);
+
+            if (host === 'youtu.be') {
+                id = u.pathname.split('/')[1] || '';
+            } else if (host === 'youtube.com' || host === 'm.youtube.com') {
+                if (u.pathname.indexOf('/watch') === 0) {
+                    id = params.get('v') || '';
+                } else if (u.pathname.indexOf('/embed/') === 0) {
+                    id = u.pathname.split('/embed/')[1] || '';
+                } else if (u.pathname.indexOf('/shorts/') === 0) {
+                    id = u.pathname.split('/shorts/')[1] || '';
+                }
+            }
+
+            // handle playlist
+            var list = params.get('list');
+            var embedBase = 'https://www.youtube-nocookie.com';
+            var embedUrl = '';
+            if (list && !id) {
+                embedUrl = embedBase + '/embed/videoseries?list=' + encodeURIComponent(list);
+            } else if (id) {
+                // remove any extra path/query fragments from id
+                id = id.split('?')[0].split('&')[0];
+                embedUrl = embedBase + '/embed/' + id;
+                var qp = [];
+                if (list) qp.push('list=' + encodeURIComponent(list));
+                if (startSec != null) qp.push('start=' + startSec);
+                // modest branding for cleaner UI
+                qp.push('rel=0');
+                qp.push('modestbranding=1');
+                if (qp.length) embedUrl += '?' + qp.join('&');
+            }
+
+            return embedUrl || original;
+        } catch (e) {
+            return url; // fallback to original on parse issues
+        }
+    }
+
     if (options && options.payload) {
         var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         for (var i = 0; i < payload.length; i++) {
             var video = payload[i];
+            // ensure dimensions always present for template
             video.width = video.width || '100%';
             video.height = video.height || '250px';
+
+            // Preserve original URL for display while normalizing iframe source when needed
+            video.displayUrl = video.url;
+            video.iframeSrc = video.url;
+
+            if (video.source && typeof video.url === 'string') {
+                var lower = video.url.toLowerCase();
+                if (
+                    lower.indexOf('youtube.com') !== -1 ||
+                    lower.indexOf('youtu.be') !== -1
+                ) {
+                    video.iframeSrc = normalizeYouTubeUrl(video.url);
+                }
+            }
         }
         options.payload = payload;
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
