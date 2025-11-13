@@ -328,6 +328,7 @@ KommunicateUI = {
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             KommunicateUI.showHeader();
+            KommunicateUI.toggleModernFaqBackButton(false);
             KommunicateUI.awayMessageScroll = true;
             if (isFaqCategoryPresent) {
                 MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
@@ -461,6 +462,7 @@ KommunicateUI = {
 
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
+                    KommunicateUI.toggleModernFaqBackButton(false);
                     return;
                 } else if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'km-faq-list') {
                     KommunicateUI.showHeader();
@@ -487,6 +489,7 @@ KommunicateUI = {
 
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
+                    KommunicateUI.toggleModernFaqBackButton(false);
                     return;
                 } else if (typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'object') {
                     // remove n-vis
@@ -614,6 +617,7 @@ KommunicateUI = {
                         kommunicateCommons.show('#mck-tab-individual');
                         kommunicateCommons.hide('#mck-tab-conversation');
                         kommunicateCommons.hide('#mck-no-conversations');
+                        KommunicateUI.toggleModernFaqBackButton(true);
                         $applozic('#km-faqanswer .km-faqanswer').linkify({
                             target: '_blank',
                         });
@@ -806,6 +810,18 @@ KommunicateUI = {
         kommunicateCommons.show('#mck-tab-individual');
         kommunicateCommons.hide('#mck-tab-conversation');
         $applozic('#mck-msg-new').attr('disabled', false);
+    },
+    toggleModernFaqBackButton: function (showButton) {
+        if (!kommunicateCommons.isModernLayoutEnabled()) {
+            return;
+        }
+        var backContainer = document.querySelector(
+            '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
+        );
+        if (!backContainer) {
+            return;
+        }
+        showButton ? backContainer.classList.remove('n-vis') : backContainer.classList.add('n-vis');
     },
 
     isFAQPrimaryCTA: function () {
