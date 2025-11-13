@@ -171,6 +171,7 @@ class KMLabel {
                 ACTIVE_CONVERSATIONS: 'Active conversations',
                 HIDE_RESOLVED: 'Hide resolved',
                 SHOW_RESOLVED: 'Show resolved',
+                RESOLVED_TAG: 'Resolved',
             },
             'rich.form': {
                 errorText: 'Please enter valid data',
@@ -246,6 +247,14 @@ class KMLabel {
         $applozic('#mck-msg-new, #mck-sidebox-search .mck-box-title')
             .html(MCK_LABELS['start.new'])
             .attr('title', MCK_LABELS['start.new']);
+        if (
+            MCK_LABELS['filter.conversation.list'] &&
+            MCK_LABELS['filter.conversation.list'].RESOLVED_TAG
+        ) {
+            $applozic('.mck-conversation-status-badge.vis')
+                .attr('title', MCK_LABELS['filter.conversation.list'].RESOLVED_TAG)
+                .attr('aria-label', MCK_LABELS['filter.conversation.list'].RESOLVED_TAG);
+        }
         $applozic('#mck-contact-search-tab strong')
             .html(MCK_LABELS['search.contacts'])
             .attr('title', MCK_LABELS['search.contacts']);

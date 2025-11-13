@@ -7435,6 +7435,8 @@ const firstVisibleMsg = {
                 '</ul>' +
                 '</div>' +
                 '</div>';
+            var resolvedBadgeIcon =
+                '<svg class="mck-conversation-status-icon" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M4.666 8.066L2.4 5.8 1.333 6.866l3.333 3.334 6-6L9.6 3.133z" fill="currentColor"></path></svg>';
             var contactbox =
                 '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
@@ -7445,7 +7447,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span><span class="mck-conversation-status-time">${msgCreatedDateExpr}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
@@ -10475,6 +10477,11 @@ const firstVisibleMsg = {
                         Kommunicate.conversationHelper.status.CLOSED
                         ? 'mck-conversation-resolved'
                         : 'mck-conversation-open';
+                var isResolvedConversation = statusClass === 'mck-conversation-resolved';
+                var resolvedTagText =
+                    (MCK_LABELS['filter.conversation.list'] &&
+                        MCK_LABELS['filter.conversation.list'].RESOLVED_TAG) ||
+                    'Resolved';
 
                 $applozic('#li-' + contHtmlExpr + ' .mck-group-count-text').html(groupUserCount);
                 $applozic('#li-' + contHtmlExpr + ' .mck-group-count-box')
@@ -10524,6 +10531,9 @@ const firstVisibleMsg = {
                             : '',
                         conversationStatusClass: statusClass,
                         isConversationInWaitingQueue: isConversationInWaitingQueue,
+                        resolvedTagClass: isResolvedConversation ? 'vis' : 'n-vis',
+                        resolvedTagText: resolvedTagText,
+                        resolvedTagIcon: resolvedBadgeIcon,
                     },
                 ];
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data(

@@ -119,3 +119,44 @@
         }
     }
 }
+
+.mck-conversation-resolved {
+    opacity: 1;
+}
+
+.mck-cont-msg-date {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.mck-conversation-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 0;
+    color: #1f8f51;
+    background: rgba(31, 143, 81, 0.15);
+
+    &.n-vis {
+        display: none;
+    }
+
+    .mck-conversation-status-icon {
+        width: 12px;
+        height: 12px;
+        display: block;
+    }
+}
+
+.mck-conversation-status-time {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
