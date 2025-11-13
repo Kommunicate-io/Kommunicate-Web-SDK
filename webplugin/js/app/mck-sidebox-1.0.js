@@ -8641,9 +8641,12 @@ const firstVisibleMsg = {
                                             qp.push('modestbranding=1');
                                             qp.push('playsinline=1');
                                             try {
-                                                var origin = parent && parent.location && parent.location.origin;
-                                                if (origin && origin !== 'null') {
-                                                    qp.push('origin=' + encodeURIComponent(origin));
+                                                var ref = document.referrer
+                                                    ? new URL(document.referrer).origin
+                                                    : '';
+                                                if (ref) {
+                                                    qp.push('origin=' + encodeURIComponent(ref));
+                                                    qp.push('enablejsapi=1');
                                                 }
                                             } catch (e) {}
                                             if (qp.length) embedUrl += '?' + qp.join('&');

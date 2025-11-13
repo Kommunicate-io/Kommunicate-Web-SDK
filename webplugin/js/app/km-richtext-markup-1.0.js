@@ -1122,6 +1122,15 @@ Kommunicate.markup.getVideoMarkup = function (options) {
                 // modest branding for cleaner UI
                 qp.push('rel=0');
                 qp.push('modestbranding=1');
+                qp.push('playsinline=1');
+                // If parent site strips referrer, pass explicit origin for YT config
+                try {
+                    var ref = document.referrer ? new URL(document.referrer).origin : '';
+                    if (ref) {
+                        qp.push('origin=' + encodeURIComponent(ref));
+                        qp.push('enablejsapi=1');
+                    }
+                } catch (e) {}
                 if (qp.length) embedUrl += '?' + qp.join('&');
             }
 
