@@ -320,8 +320,8 @@ KommunicateUI = {
         var data = {};
         data.appId = kommunicate._globals.appId;
 
-        // On Click of FAQ button the FAQ category List will open.
-        $applozic(d).on('click', '#km-faq', function () {
+        // On Click of FAQ button (header or dropdown) the FAQ category List will open.
+        $applozic(d).on('click', '#km-faq, #km-faq-option', function () {
             var isFaqCategoryPresent =
                 kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
