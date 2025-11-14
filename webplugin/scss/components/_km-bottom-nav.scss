@@ -46,75 +46,72 @@
     }
 }
 
-.km-whats-new-placeholder {
-    margin: 20px;
-    padding: 24px;
-    border-radius: 24px;
-    background: #ffffff;
-    box-shadow: 0 30px 80px rgba(52, 63, 107, 0.12);
+.km-whats-new-placeholder,
+.km-whats-new-placeholder-block {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     color: $text-primary-color;
     font-size: 14px;
     line-height: 1.6;
 }
 
-.km-whats-new-footnote {
-    margin-top: 18px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #a0a7bb;
-
-    svg {
-        stroke: currentColor;
-    }
-}
-
 .km-whats-new-empty {
     text-align: center;
-    color: #8d95ad;
+    color: #9aa2c3;
 }
 
 .km-whats-new-list {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
 }
 
 .km-whats-new-card {
-    border: 1px solid rgba(228, 232, 247, 0.9);
-    border-radius: 18px;
-    padding: 16px 18px;
-    background: #fdfdff;
-    box-shadow: 0 6px 16px rgba(77, 100, 162, 0.08);
+    border: 1px solid rgba(114, 134, 211, 0.2);
+    border-radius: 22px;
+    padding: 18px 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+    box-shadow: 0 12px 32px rgba(71, 92, 168, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 35px rgba(61, 77, 125, 0.15);
+    }
 
     h4 {
         margin: 0 0 6px;
-        font-size: 15px;
-        color: $text-primary-color;
+        font-size: 16px;
+        color: #1c2043;
     }
 
     p {
         margin: 0;
-        color: #6f7690;
+        color: #61678a;
     }
 }
 
 .km-whats-new-meta {
     display: inline-block;
     font-size: 12px;
-    color: #9ca3ba;
-    margin-bottom: 8px;
+    color: #8d94b5;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
 .km-whats-new-link {
     display: inline-flex;
-    margin-top: 12px;
+    margin-top: 14px;
     font-weight: 600;
-    color: #f34ea8;
+    color: #584bff;
     text-decoration: none;
 
     &:hover {
