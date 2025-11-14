@@ -6231,8 +6231,12 @@ const firstVisibleMsg = {
                                         }
                                     }
 
-                                    if (data.userDetails.length > 0) {
-                                        $applozic.each(data.userDetails, function (i, userDetail) {
+                                    var userDetailsSafe =
+                                        (data && Array.isArray(data.userDetails))
+                                            ? data.userDetails
+                                            : [];
+                                    if (userDetailsSafe.length > 0) {
+                                        $applozic.each(userDetailsSafe, function (i, userDetail) {
                                             alUserService.MCK_USER_DETAIL_MAP[
                                                 userDetail.userId
                                             ] = userDetail;
@@ -6304,10 +6308,14 @@ const firstVisibleMsg = {
                                     ) {
                                         mckInit.manageOfflineMessageTime(params.tabId);
                                     }
-                                    if (data.conversationPxys.length > 0) {
+                                    var conversationPxysList =
+                                        (data && Array.isArray(data.conversationPxys))
+                                            ? data.conversationPxys
+                                            : [];
+                                    if (conversationPxysList.length > 0) {
                                         var tabConvArray = new Array();
                                         $applozic.each(
-                                            data.conversationPxys,
+                                            conversationPxysList,
                                             function (i, conversationPxy) {
                                                 if (typeof conversationPxy === 'object') {
                                                     tabConvArray.push(conversationPxy);
@@ -6367,8 +6375,12 @@ const firstVisibleMsg = {
                                             );
                                         }
                                     }
-                                    if (data.groupFeeds.length > 0) {
-                                        $applozic.each(data.groupFeeds, function (i, groupFeed) {
+                                    var groupFeeds =
+                                        (data && Array.isArray(data.groupFeeds))
+                                            ? data.groupFeeds
+                                            : [];
+                                    if (groupFeeds.length > 0) {
+                                        $applozic.each(groupFeeds, function (i, groupFeed) {
                                             var group = mckGroupUtils.addGroup(groupFeed);
                                             if (!params.startTime) {
                                                 var membersIds = groupFeed.membersId;
@@ -6467,8 +6479,12 @@ const firstVisibleMsg = {
                                     if (!params.startTime) {
                                         w.MCK_OL_MAP = [];
                                     }
-                                    if (data.userDetails.length > 0) {
-                                        $applozic.each(data.userDetails, function (i, userDetail) {
+                                    var userDetailsList =
+                                        (data && Array.isArray(data.userDetails))
+                                            ? data.userDetails
+                                            : [];
+                                    if (userDetailsList.length > 0) {
+                                        $applozic.each(userDetailsList, function (i, userDetail) {
                                             alUserService.MCK_USER_DETAIL_MAP[
                                                 userDetail.userId
                                             ] = userDetail;
@@ -6501,8 +6517,12 @@ const firstVisibleMsg = {
                                                   );
                                         });
                                     }
-                                    if (data.groupFeeds.length > 0) {
-                                        $applozic.each(data.groupFeeds, function (i, groupFeed) {
+                                    var groupFeedsList =
+                                        (data && Array.isArray(data.groupFeeds))
+                                            ? data.groupFeeds
+                                            : [];
+                                    if (groupFeedsList.length > 0) {
+                                        $applozic.each(groupFeedsList, function (i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount(
                                                 'group_' + groupFeed.id,
                                                 groupFeed.unreadCount,
@@ -6511,9 +6531,17 @@ const firstVisibleMsg = {
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
                                     }
-                                    if (data.blockedUserPxyList.blockedToUserList.length > 0) {
+                                    var blockedToUserList =
+                                        data &&
+                                        data.blockedUserPxyList &&
+                                        Array.isArray(
+                                            data.blockedUserPxyList.blockedToUserList
+                                        )
+                                            ? data.blockedUserPxyList.blockedToUserList
+                                            : [];
+                                    if (blockedToUserList.length > 0) {
                                         $applozic.each(
-                                            data.blockedUserPxyList.blockedToUserList,
+                                            blockedToUserList,
                                             function (i, blockedToUser) {
                                                 if (blockedToUser.userBlocked) {
                                                     MCK_BLOCKED_TO_MAP[
@@ -6523,9 +6551,17 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    if (data.blockedUserPxyList.blockedByUserList.length > 0) {
+                                    var blockedByUserList =
+                                        data &&
+                                        data.blockedUserPxyList &&
+                                        Array.isArray(
+                                            data.blockedUserPxyList.blockedByUserList
+                                        )
+                                            ? data.blockedUserPxyList.blockedByUserList
+                                            : [];
+                                    if (blockedByUserList.length > 0) {
                                         $applozic.each(
-                                            data.blockedUserPxyList.blockedByUserList,
+                                            blockedByUserList,
                                             function (i, blockedByUser) {
                                                 if (blockedByUser.userBlocked) {
                                                     MCK_BLOCKED_BY_MAP[
@@ -6535,9 +6571,9 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    if (data.conversationPxys.length > 0) {
+                                    if (conversationPxysList.length > 0) {
                                         $applozic.each(
-                                            data.conversationPxys,
+                                            conversationPxysList,
                                             function (i, conversationPxy) {
                                                 MCK_CONVERSATION_MAP[
                                                     conversationPxy.id
@@ -6640,20 +6676,22 @@ const firstVisibleMsg = {
                         typeof callback == 'function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-                        for (var key in data.userDetails) {
-                            if (
-                                data.userDetails[key].userId &&
-                                data.userDetails[key].userId ==
-                                    CURRENT_GROUP_DATA.conversationAssignee &&
-                                data.userDetails[key].roleType ==
-                                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
-                            ) {
-                                mckGroupLayout.checkBotDetail(
-                                    CURRENT_GROUP_DATA.conversationAssignee
-                                );
-                                break;
-                            } else {
-                                CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        if (data && data.userDetails) {
+                            for (var key in data.userDetails) {
+                                if (
+                                    data.userDetails[key].userId &&
+                                    data.userDetails[key].userId ==
+                                        CURRENT_GROUP_DATA.conversationAssignee &&
+                                    data.userDetails[key].roleType ==
+                                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                                ) {
+                                    mckGroupLayout.checkBotDetail(
+                                        CURRENT_GROUP_DATA.conversationAssignee
+                                    );
+                                    break;
+                                } else {
+                                    CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                                }
                             }
                         }
                     },
@@ -11386,6 +11424,7 @@ const firstVisibleMsg = {
                 return messageFeed;
             };
             _this.updateUnreadCountonChatIcon = function (userDetails) {
+                userDetails = Array.isArray(userDetails) ? userDetails : [];
                 if (IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED && userDetails.length > 0) {
                     var contactIdWithUnreadMessage = null;
                     var unreadCountForUser = 0;
