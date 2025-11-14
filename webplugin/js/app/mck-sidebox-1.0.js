@@ -740,9 +740,7 @@ const firstVisibleMsg = {
                     kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
                     KommunicateUI.activateTypingField();
 
-                    if (!(data && Array.isArray(data.groupFeeds) && data.groupFeeds.length)) {
-                        kmNavBar.hideAndShowTalkToHumanBtn();
-                    }
+                    !data?.groupFeeds.length && kmNavBar.hideAndShowTalkToHumanBtn();
                 }
             );
             var previewIndicator = '#mck-msg-preview-visual-indicator';
@@ -6114,43 +6112,31 @@ const firstVisibleMsg = {
                     global: false,
                     success: function (data) {
                         var isMessages = true;
-                        // Create safe references for first group feed and first message
-                        var firstGroupFeed =
-                            data &&
-                            Array.isArray(data.groupFeeds) &&
-                            data.groupFeeds.length > 0
-                                ? data.groupFeeds[0]
-                                : undefined;
-                        var firstMessage =
-                            data && Array.isArray(data.message) && data.message.length > 0
-                                ? data.message[0]
-                                : undefined;
-
-                        // Display/hide lead(email) collection template
-                        CURRENT_GROUP_DATA.createdAt = firstGroupFeed && firstGroupFeed.createdAtTime;
+                        //Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.createdAt =
+                            data && data.groupFeeds[0] && data.groupFeeds[0].createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
-                            firstGroupFeed &&
-                            firstGroupFeed.metadata &&
-                            firstGroupFeed.metadata.CONVERSATION_STATUS;
+                            data &&
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata.CONVERSATION_STATUS;
                         CURRENT_GROUP_DATA.conversationAssignee =
-                            firstGroupFeed &&
-                            firstGroupFeed.metadata &&
-                            firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
+                            data &&
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers =
-                            (firstGroupFeed && firstGroupFeed.groupUsers) || data?.userDetails || [];
-                        CURRENT_GROUP_DATA.lastMessagingMember = firstMessage && firstMessage.contactIds;
+                            data.groupFeeds?.[0]?.groupUsers || data.userDetails || [];
+                        CURRENT_GROUP_DATA.lastMessagingMember =
+                            data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
-                            firstGroupFeed &&
-                            firstGroupFeed.metadata &&
-                            firstGroupFeed.metadata.KM_TEAM_ID;
+                            data && data.groupFeeds[0] && data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue && KommunicateUI.handleWaitingQueueMessage();
 
                         const assignee =
-                            firstGroupFeed &&
-                            firstGroupFeed.metadata &&
-                            firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
-                        const groupUsers = data && data.userDetails;
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata &&
+                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                        const groupUsers = data.userDetails;
                         assignee &&
                             groupUsers &&
                             KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
@@ -6233,12 +6219,8 @@ const firstVisibleMsg = {
                                         }
                                     }
 
-                                    var userDetailsSafe =
-                                        (data && Array.isArray(data.userDetails))
-                                            ? data.userDetails
-                                            : [];
-                                    if (userDetailsSafe.length > 0) {
-                                        $applozic.each(userDetailsSafe, function (i, userDetail) {
+                                    if (data.userDetails.length > 0) {
+                                        $applozic.each(data.userDetails, function (i, userDetail) {
                                             alUserService.MCK_USER_DETAIL_MAP[
                                                 userDetail.userId
                                             ] = userDetail;
@@ -6310,14 +6292,10 @@ const firstVisibleMsg = {
                                     ) {
                                         mckInit.manageOfflineMessageTime(params.tabId);
                                     }
-                                    var conversationPxysList =
-                                        (data && Array.isArray(data.conversationPxys))
-                                            ? data.conversationPxys
-                                            : [];
-                                    if (conversationPxysList.length > 0) {
+                                    if (data.conversationPxys.length > 0) {
                                         var tabConvArray = new Array();
                                         $applozic.each(
-                                            conversationPxysList,
+                                            data.conversationPxys,
                                             function (i, conversationPxy) {
                                                 if (typeof conversationPxy === 'object') {
                                                     tabConvArray.push(conversationPxy);
@@ -6377,12 +6355,8 @@ const firstVisibleMsg = {
                                             );
                                         }
                                     }
-                                    var groupFeeds =
-                                        (data && Array.isArray(data.groupFeeds))
-                                            ? data.groupFeeds
-                                            : [];
-                                    if (groupFeeds.length > 0) {
-                                        $applozic.each(groupFeeds, function (i, groupFeed) {
+                                    if (data.groupFeeds.length > 0) {
+                                        $applozic.each(data.groupFeeds, function (i, groupFeed) {
                                             var group = mckGroupUtils.addGroup(groupFeed);
                                             if (!params.startTime) {
                                                 var membersIds = groupFeed.membersId;
@@ -6481,12 +6455,8 @@ const firstVisibleMsg = {
                                     if (!params.startTime) {
                                         w.MCK_OL_MAP = [];
                                     }
-                                    var userDetailsList =
-                                        (data && Array.isArray(data.userDetails))
-                                            ? data.userDetails
-                                            : [];
-                                    if (userDetailsList.length > 0) {
-                                        $applozic.each(userDetailsList, function (i, userDetail) {
+                                    if (data.userDetails.length > 0) {
+                                        $applozic.each(data.userDetails, function (i, userDetail) {
                                             alUserService.MCK_USER_DETAIL_MAP[
                                                 userDetail.userId
                                             ] = userDetail;
@@ -6519,12 +6489,8 @@ const firstVisibleMsg = {
                                                   );
                                         });
                                     }
-                                    var groupFeedsList =
-                                        (data && Array.isArray(data.groupFeeds))
-                                            ? data.groupFeeds
-                                            : [];
-                                    if (groupFeedsList.length > 0) {
-                                        $applozic.each(groupFeedsList, function (i, groupFeed) {
+                                    if (data.groupFeeds.length > 0) {
+                                        $applozic.each(data.groupFeeds, function (i, groupFeed) {
                                             mckMessageLayout.updateUnreadCount(
                                                 'group_' + groupFeed.id,
                                                 groupFeed.unreadCount,
@@ -6533,17 +6499,9 @@ const firstVisibleMsg = {
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
                                     }
-                                    var blockedToUserList =
-                                        data &&
-                                        data.blockedUserPxyList &&
-                                        Array.isArray(
-                                            data.blockedUserPxyList.blockedToUserList
-                                        )
-                                            ? data.blockedUserPxyList.blockedToUserList
-                                            : [];
-                                    if (blockedToUserList.length > 0) {
+                                    if (data.blockedUserPxyList.blockedToUserList.length > 0) {
                                         $applozic.each(
-                                            blockedToUserList,
+                                            data.blockedUserPxyList.blockedToUserList,
                                             function (i, blockedToUser) {
                                                 if (blockedToUser.userBlocked) {
                                                     MCK_BLOCKED_TO_MAP[
@@ -6553,17 +6511,9 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    var blockedByUserList =
-                                        data &&
-                                        data.blockedUserPxyList &&
-                                        Array.isArray(
-                                            data.blockedUserPxyList.blockedByUserList
-                                        )
-                                            ? data.blockedUserPxyList.blockedByUserList
-                                            : [];
-                                    if (blockedByUserList.length > 0) {
+                                    if (data.blockedUserPxyList.blockedByUserList.length > 0) {
                                         $applozic.each(
-                                            blockedByUserList,
+                                            data.blockedUserPxyList.blockedByUserList,
                                             function (i, blockedByUser) {
                                                 if (blockedByUser.userBlocked) {
                                                     MCK_BLOCKED_BY_MAP[
@@ -6573,9 +6523,9 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    if (conversationPxysList.length > 0) {
+                                    if (data.conversationPxys.length > 0) {
                                         $applozic.each(
-                                            conversationPxysList,
+                                            data.conversationPxys,
                                             function (i, conversationPxy) {
                                                 MCK_CONVERSATION_MAP[
                                                     conversationPxy.id
@@ -6627,26 +6577,20 @@ const firstVisibleMsg = {
                                         data
                                     );
                                     var conversationAssignee =
-                                        firstGroupFeed &&
-                                        firstGroupFeed.metadata &&
-                                        firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
-                                    var conversationAssigneeDetails = (data.userDetails || []).filter(
+                                        data.groupFeeds[0] &&
+                                        data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var conversationAssigneeDetails = data.userDetails.filter(
                                         function (item) {
                                             return item.userId == conversationAssignee;
                                         }
                                     )[0];
                                 }
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
-                                if (
-                                    Array.isArray(data.userDetails) &&
-                                    data.userDetails.length > 0 &&
-                                    Array.isArray(data.groupFeeds) &&
-                                    data.groupFeeds.length > 0
-                                ) {
+                                if (data.userDetails.length > 0 && data.groupFeeds.length > 0) {
                                     var name;
                                     var updateConversationHeaderParams = new Object();
-                                    if (firstGroupFeed && firstGroupFeed.name) {
-                                        name = firstGroupFeed.name;
+                                    if (data.groupFeeds[0].name) {
+                                        name = data.groupFeeds[0].name;
                                     } else if (typeof params.groupName !== 'undefined') {
                                         name = params.groupName;
                                     } else {
@@ -6657,9 +6601,10 @@ const firstVisibleMsg = {
                                         );
                                     }
                                     updateConversationHeaderParams.name = name;
-                                    firstGroupFeed &&
+                                    data &&
+                                        data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
-                                            firstGroupFeed.imageUrl);
+                                            data.groupFeeds[0].imageUrl);
                                     !params.isConversationInWaitingQueue &&
                                         mckMessageService.processOnlineStatusChange(
                                             params.tabId,
@@ -6678,22 +6623,20 @@ const firstVisibleMsg = {
                         typeof callback == 'function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-                        if (data && data.userDetails) {
-                            for (var key in data.userDetails) {
-                                if (
-                                    data.userDetails[key].userId &&
-                                    data.userDetails[key].userId ==
-                                        CURRENT_GROUP_DATA.conversationAssignee &&
-                                    data.userDetails[key].roleType ==
-                                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
-                                ) {
-                                    mckGroupLayout.checkBotDetail(
-                                        CURRENT_GROUP_DATA.conversationAssignee
-                                    );
-                                    break;
-                                } else {
-                                    CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                                }
+                        for (var key in data.userDetails) {
+                            if (
+                                data.userDetails[key].userId &&
+                                data.userDetails[key].userId ==
+                                    CURRENT_GROUP_DATA.conversationAssignee &&
+                                data.userDetails[key].roleType ==
+                                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                            ) {
+                                mckGroupLayout.checkBotDetail(
+                                    CURRENT_GROUP_DATA.conversationAssignee
+                                );
+                                break;
+                            } else {
+                                CURRENT_GROUP_DATA.CHAR_CHECK = false;
                             }
                         }
                     },
@@ -7196,15 +7139,7 @@ const firstVisibleMsg = {
                         } else if (data.status === 'error') {
                             if (typeof params.callback === 'function') {
                                 response.status = 'error';
-                                var errDesc =
-                                    data &&
-                                    Array.isArray(data.errorResponse) &&
-                                    data.errorResponse.length > 0 &&
-                                    data.errorResponse[0] &&
-                                    data.errorResponse[0].description
-                                        ? data.errorResponse[0].description
-                                        : 'Unable to process request.';
-                                response.errorMessage = errDesc;
+                                response.errorMessage = data.errorResponse[0].description;
                                 params.callback(response);
                             }
                         }
@@ -7581,14 +7516,14 @@ const firstVisibleMsg = {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-talk-to-human');
                 }
-                // Show FAQ option in dropdown only when FAQs/categories exist
-                if (!KommunicateUI.isFAQPrimaryCTA()) {
-                    if (kommunicate && kommunicate._globals && kommunicate._globals.hasArticles === true) {
-                        enableDropdown = true;
-                        kommunicateCommons.show('.km-option-faq');
-                    } else {
-                        kommunicateCommons.hide('.km-option-faq');
-                    }
+                // hasArticles initially will be undefined and after the faq load it will be boolean
+                if (
+                    !KommunicateUI.isFAQPrimaryCTA() &&
+                    (kommunicate._globals.hasArticles === undefined ||
+                        kommunicate._globals.hasArticles === true)
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.show('.km-option-faq');
                 }
 
                 if (enableDropdown) {
@@ -7816,11 +7751,7 @@ const firstVisibleMsg = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     kommunicateCommons.hide('#mck-tab-individual');
-                    KommunicateUI.isFAQPrimaryCTA() &&
-                        kommunicate &&
-                        kommunicate._globals &&
-                        kommunicate._globals.hasArticles === true &&
-                        kommunicateCommons.show('#km-faq');
+                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
                     kommunicateCommons.show('#mck-tab-conversation');
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
@@ -7873,11 +7804,7 @@ const firstVisibleMsg = {
                               TOKENIZE_RESPONSE: false,
                               isConversationAssigneeBot: false,
                           });
-                    KommunicateUI.isFAQPrimaryCTA() &&
-                        kommunicate &&
-                        kommunicate._globals &&
-                        kommunicate._globals.hasArticles === true &&
-                        kommunicateCommons.show('#km-faq');
+                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
@@ -7953,18 +7880,11 @@ const firstVisibleMsg = {
                 var contact = isGroup
                     ? mckGroupUtils.getGroup(tabId)
                     : mckMessageLayout.fetchContact(tabId);
-                if (
-                    scroll &&
-                    data &&
-                    Array.isArray(data.message) &&
-                    data.message.length > 0 &&
-                    data.message[0]
-                ) {
+                scroll &&
                     $mck_msg_inner.data(
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                }
                 if (allowReload) {
                     scroll = false;
                     data && data.message && (data.message = data.message.reverse());
@@ -11441,7 +11361,6 @@ const firstVisibleMsg = {
                 return messageFeed;
             };
             _this.updateUnreadCountonChatIcon = function (userDetails) {
-                userDetails = Array.isArray(userDetails) ? userDetails : [];
                 if (IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED && userDetails.length > 0) {
                     var contactIdWithUnreadMessage = null;
                     var unreadCountForUser = 0;
@@ -11698,11 +11617,7 @@ const firstVisibleMsg = {
                     baseUrl: MCK_BASE_URL,
                     success: function (data) {
                         if ($mck_sidebox_search.hasClass('vis')) {
-                            if (
-                                typeof data === 'object' &&
-                                Array.isArray(data.users) &&
-                                data.users.length > 0
-                            ) {
+                            if (typeof data === 'object' && data.users.length > 0) {
                                 $applozic.each(data.users, function (i, user) {
                                     if (typeof user.userId !== 'undefined') {
                                         var contact = mckMessageLayout.getContact('' + user.userId);
@@ -12132,23 +12047,15 @@ const firstVisibleMsg = {
                             Auto human handoff check is removed from the below code if something breaks regarding the same, 
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
                         */
-                        var res =
-                            data && Array.isArray(data.data) && data.data.length > 0
-                                ? data.data[0]
-                                : null;
-                        if (res) {
-                            CURRENT_GROUP_DATA.CHAR_CHECK =
-                                res.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
-                            !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
-                            CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
-                            CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res.generativeResponse || false;
-                            CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                            CURRENT_GROUP_DATA.answerFeedback = res.answerFeedback || false;
-                            CURRENT_GROUP_DATA.isDialogflowCXBot = res.dialogflowCXBot || false;
-                        } else {
-                            CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                            _this.removeWarningsFromTextBox();
-                        }
+                        const res = data.data[0];
+                        CURRENT_GROUP_DATA.CHAR_CHECK =
+                            res?.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
+                        !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
+                        CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
+                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
