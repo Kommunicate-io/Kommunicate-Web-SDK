@@ -7436,7 +7436,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '</div>';
             var resolvedBadgeIcon =
-                '<svg class="mck-conversation-status-icon" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M4.666 8.066L2.4 5.8 1.333 6.866l3.333 3.334 6-6L9.6 3.133z" fill="currentColor"></path></svg>';
+                '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
             var contactbox =
                 '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
