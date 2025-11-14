@@ -13,6 +13,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
+var WHATS_NEW_LIST = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
@@ -90,6 +91,7 @@ const firstVisibleMsg = {
         capturePhoto: false,
         captureVideo: false,
         maxAttachmentSize: 25, // default size is 25MB,
+        whatsNewList: [],
     };
     var message_default_options = {
         messageType: 5,
@@ -645,6 +647,71 @@ const firstVisibleMsg = {
             ($applozic('.km-bottom-tab.active').data('tab') || 'conversations').toString()
         );
 
+        function renderWhatsNewList(items) {
+            var dataSource =
+                Array.isArray(items) && items.length ? items : getConfiguredWhatsNewList();
+            console.debug('[WhatsNew] render initializing', { dataSource });
+            var placeholder = document.getElementById('km-whats-new-placeholder');
+            if (!placeholder) {
+                console.debug('[WhatsNew] placeholder element missing');
+                return;
+            }
+            var listContainer = placeholder.querySelector('.km-whats-new-list');
+            var emptyState = placeholder.querySelector('.km-whats-new-empty');
+            var emptyLabel =
+                (MCK_LABELS && MCK_LABELS['modern.whatsnew.staytuned']) ||
+                "What's New coming soon.";
+            if (emptyState) {
+                emptyState.textContent = emptyLabel;
+            }
+            if (!Array.isArray(dataSource) || !dataSource.length) {
+                console.debug('[WhatsNew] no entries found');
+                emptyState && emptyState.classList.remove('n-vis');
+                listContainer && (listContainer.innerHTML = '');
+                return;
+            }
+            emptyState && emptyState.classList.add('n-vis');
+            if (!listContainer) {
+                listContainer = document.createElement('ul');
+                listContainer.className = 'km-whats-new-list';
+                placeholder.appendChild(listContainer);
+            }
+            var learnMoreLabel =
+                (MCK_LABELS && MCK_LABELS['modern.whatsnew.readmore']) || 'Learn more';
+            listContainer.innerHTML = dataSource
+                .map(function (item) {
+                    if (!item || typeof item !== 'object') {
+                        return '';
+                    }
+                    var title = item.title && kommunicateCommons.formatHtmlTag(item.title.trim());
+                    var description =
+                        item.description &&
+                        kommunicateCommons.formatHtmlTag(item.description.trim());
+                    var meta = item.meta && kommunicateCommons.formatHtmlTag(item.meta.trim());
+                    var link = item.link || item.url;
+                    var linkText = item.linkText
+                        ? kommunicateCommons.formatHtmlTag(item.linkText)
+                        : learnMoreLabel;
+                    var card = '<li class="km-whats-new-card">';
+                    title && (card += '<h4>' + title + '</h4>');
+                    meta && (card += '<span class="km-whats-new-meta">' + meta + '</span>');
+                    description && (card += '<p>' + description + '</p>');
+                    if (link) {
+                        card +=
+                            '<a class="km-whats-new-link" href="' +
+                            link +
+                            '" target="_blank" rel="noopener noreferrer">' +
+                            linkText +
+                            '</a>';
+                    }
+                    card += '</li>';
+                    return card;
+                })
+                .join('');
+        }
+
+        WHATS_NEW_LIST.length && renderWhatsNewList(WHATS_NEW_LIST);
+
         function handleBottomTabChange(tabType, options) {
             options = options || {};
             setBottomTabState(tabType);
@@ -701,6 +768,7 @@ const firstVisibleMsg = {
             }
 
             if (tabType === 'whats-new') {
+                renderWhatsNewList(getConfiguredWhatsNewList());
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
                 kommunicateCommons.hide('#faq-common');
@@ -755,6 +823,31 @@ const firstVisibleMsg = {
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
+        function getConfiguredWhatsNewList() {
+            var potentialSources = [
+                Array.isArray(appOptions.whatsNewList) && appOptions.whatsNewList,
+                w.kommunicate &&
+                    w.kommunicate._globals &&
+                    Array.isArray(w.kommunicate._globals.whatsNewList) &&
+                    w.kommunicate._globals.whatsNewList,
+                w.applozic &&
+                    w.applozic._globals &&
+                    Array.isArray(w.applozic._globals.whatsNewList) &&
+                    w.applozic._globals.whatsNewList,
+                Array.isArray(WHATS_NEW_LIST) && WHATS_NEW_LIST,
+            ].filter(Boolean);
+
+            if (!potentialSources.length) {
+                return [];
+            }
+            var resolvedList = potentialSources.find(function (source) {
+                return source.length;
+            });
+            WHATS_NEW_LIST = resolvedList || potentialSources[0];
+            return WHATS_NEW_LIST;
+        }
+
+        WHATS_NEW_LIST = getConfiguredWhatsNewList();
         var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection
             ? mckMessageService.checkArray(appOptions.preLeadCollection)
             : appOptions.appSettings.collectLead && appOptions.appSettings.leadCollection

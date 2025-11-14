@@ -16,6 +16,8 @@ class KMLabel {
             'modern.nav.faqs': 'FAQs',
             'modern.nav.whatsnew': "What's New",
             'modern.whatsnew.empty': 'Stay tuned for updates.',
+            'modern.whatsnew.staytuned': 'Stay tuned for updates.',
+            'modern.whatsnew.readmore': 'Learn more',
             'start.new': 'Start New Conversation',
             'search.contacts': 'Contacts',
             'search.groups': 'Groups',
