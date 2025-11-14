@@ -4291,15 +4291,22 @@ ul.mck-intent-menu > li:hover {
     flex: 1;
 }
 
+#faq-common {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#km-contact-search-input-box {
+    position: relative;
+    z-index: 1;
+}
+
 #km-faqdiv {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100% - 18px);
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
+    flex: 1;
+    position: relative;
     background-color: #f9f9f9;
 }
 
@@ -4390,10 +4397,10 @@ ul.mck-intent-menu > li:hover {
     color: #555;
     outline: none;
     border: 0;
-    z-index: 2;
+    z-index: auto;
     border-radius: 3px;
     padding: 10px 0px;
-    margin: 0 0 12px 0;
+    margin: 0;
     width: 100%;
     position: relative;
     display: flex;
