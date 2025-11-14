@@ -3,6 +3,20 @@
     Author     : devashish
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --km-font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+        sans-serif;
+    --km-font-title-size: 15px;
+    --km-font-title-weight: 500;
+    --km-font-body-size: 13px;
+    --km-font-meta-size: 12px;
+    --km-font-title-color: #1c2043;
+    --km-font-body-color: #5f6689;
+    --km-font-meta-color: #8d94b5;
+}
+
 .mck-box {
     position: fixed;
     right: 0;
@@ -18,7 +32,7 @@
     vertical-align: middle;
     text-align: left;
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.5);
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--km-font-family);
     font-size: 12px;
     line-height: 20px;
     color: #333;
@@ -5830,6 +5844,42 @@ div#mck-waiting-queue {
     display: inline-flex;
     align-items: center;
     line-height: 1;
+}
+
+/* Unified typography for conversations, FAQs, and What's New */
+.mck-contact-list .mck-cont-name strong,
+.km-faq-category-card-title,
+.km-whats-new-card h4,
+.km-faq-list--body_que {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-title-size);
+    font-weight: var(--km-font-title-weight);
+    color: var(--km-font-title-color);
+    line-height: 1.35;
+}
+
+.mck-cont-msg-wrapper,
+.km-faq-category-card-body,
+.km-whats-new-card p,
+.km-faq-list--body_ans,
+.km-no-results-found p,
+.km-talk-to-human-div p,
+.km-faqsearch-input {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-body-size);
+    color: var(--km-font-body-color);
+    line-height: 1.5;
+}
+
+.mck-contact-list .mck-cont-msg-date,
+.mck-conversation-status-time,
+.km-whats-new-meta,
+.km-faq-category-card-count,
+.km-faqsearch-input::placeholder {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-meta-size);
+    letter-spacing: 0.4px;
+    color: var(--km-font-meta-color);
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */
