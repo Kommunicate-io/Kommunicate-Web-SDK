@@ -71,6 +71,10 @@ Kommunicate.getFaqCategories = function (data) {
         data: { appId: data.appId, baseUrl: Kommunicate.getBaseUrl() },
         success: function (response) {
             var initializeFAQ = false;
+            var articleLabel =
+                (window.MCK_LABELS && MCK_LABELS['modern.faq.category.article']) || 'article';
+            var articlesLabel =
+                (window.MCK_LABELS && MCK_LABELS['modern.faq.category.articles']) || 'articles';
             if (response.data && response.data.length == 1) {
                 // if only 1 category is present then no need to show the category.
                 kommunicate &&
@@ -91,16 +95,36 @@ Kommunicate.getFaqCategories = function (data) {
                 initializeFAQ = true;
                 var categoryName = category.name;
                 var categoryDescription = category.description;
+                var safeCategoryName = kommunicateCommons.formatHtmlTag(categoryName);
+                var safeCategoryDescription = kommunicateCommons.formatHtmlTag(categoryDescription);
+                var articleCount = Number(category.articleCount) || 0;
+                var articleCountLabel = articleCount
+                    ? articleCount +
+                      ' ' +
+                      (articleCount === 1 ? articleLabel : articlesLabel || articleLabel + 's')
+                    : '';
                 $applozic('#km-faq-category-list-container').append(
                     '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="' +
                         categoryName.replace(/ /g, '-') +
                         '">' +
+                        '<div class="km-faq-category-card-content">' +
+                        '<div class="km-faq-category-card-title-row">' +
                         '<div class="km-faq-category-card-title km-custom-widget-text-color">' +
-                        categoryName +
+                        safeCategoryName +
                         '</div>' +
+                        '</div>' +
+                        (articleCountLabel
+                            ? '<div class="km-faq-category-card-count-row">' +
+                              '<span class="km-faq-category-card-count">' +
+                              articleCountLabel +
+                              '</span>' +
+                              '</div>'
+                            : '') +
                         '<div class="km-faq-category-card-body">' +
-                        categoryDescription +
-                        '</div> </div>'
+                        safeCategoryDescription +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
                 );
             });
 

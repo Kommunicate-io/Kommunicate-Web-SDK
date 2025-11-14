@@ -63,38 +63,134 @@
     color: #9aa2c3;
 }
 
-.km-whats-new-list {
+.km-whats-new-list,
+#km-faq-category-list-container {
     list-style: none;
     margin: 0;
-    padding: 12px;
+    padding: 18px 8px 28px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
 }
 
-.km-whats-new-card {
-    border: 1px solid rgba(114, 134, 211, 0.2);
-    border-radius: 22px;
-    padding: 18px 20px;
-    background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-    box-shadow: 0 12px 32px rgba(71, 92, 168, 0.18);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.km-whats-new-card,
+#km-faq-category-list-container .km-faq-category-card {
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 24px;
+    padding: 20px 24px;
+    border: 1px solid rgba(40, 52, 98, 0.08);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.95) 15%,
+        rgba(247, 249, 255, 0.9) 85%
+    );
+    box-shadow: 0 28px 60px rgba(16, 23, 54, 0.14);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 35px rgba(61, 77, 125, 0.15);
+        transform: translateY(-3px);
+        border-color: rgba(40, 52, 98, 0.18);
+        box-shadow: 0 30px 60px rgba(17, 24, 56, 0.24);
     }
 
-    h4 {
+    h4,
+    strong {
         margin: 0 0 6px;
         font-size: 16px;
         color: #1c2043;
+        display: block;
     }
 
-    p {
+    p,
+    span {
         margin: 0;
         color: #61678a;
+        display: block;
     }
+}
+
+.km-faq-category-card {
+    cursor: pointer;
+    border: none !important;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+
+    .km-faq-category-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+        justify-content: flex-start;
+    }
+
+    &.km-custom-widget-border-color {
+        border-color: transparent !important;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+.km-faq-category-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1c2043;
+    margin-bottom: 6px;
+}
+
+.km-faq-category-card-body {
+    color: #5f6689;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.km-faq-category-card-count-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #8d94b5;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 0;
+}
+
+.km-faq-category-card-count {
+    font-weight: 600;
+    color: #4b516d;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.km-faq-category-card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
 }
 
 .km-whats-new-meta {
