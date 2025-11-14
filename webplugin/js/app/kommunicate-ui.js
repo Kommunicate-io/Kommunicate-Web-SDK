@@ -1572,7 +1572,8 @@ KommunicateUI = {
                         kommunicateCommons.hide(
                             '.km-option-talk-to-human',
                             '#km-talk-to-human',
-                            '#km-restart-conversation'
+                            '#km-restart-conversation',
+                            '.km-option-restart-conversation'
                         );
                         CURRENT_GROUP_DATA.isWaitingQueue = true;
                         headerTabTitle.innerHTML =
