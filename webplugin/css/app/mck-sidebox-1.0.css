@@ -4389,18 +4389,27 @@ ul.mck-intent-menu > li:hover {
     font-size: 14px;
     color: #555;
     outline: none;
-    background-color: #fff;
     border: 0;
-    /* position: relative; */
     z-index: 2;
-    /* float: left; */
-    /* display: table-cell; */
     border-radius: 3px;
     padding: 10px 0px;
-    margin: -10px 0px;
+    margin: 0 0 12px 0;
     width: 100%;
-    position: absolute !important;
-    bottom: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.km-faqsearch-field {
+    width: calc(100% - 30px);
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 4px;
+}
+
+.km-faq-search-shell {
+    position: relative;
+    width: 100%;
 }
 
 .km-faqtitle {
@@ -4425,41 +4434,58 @@ ul.mck-intent-menu > li:hover {
 }
 .km-faqsearch-icon {
     position: absolute;
-    left: 25px;
-    top: 23.3px;
-}
-.km-clear-faq-search-icon {
-    position: absolute;
-    top: 12px;
-    right: 25px;
-    width: 25px;
-    text-align: center;
-    height: 38px;
+    left: auto;
+    right: 22px;
+    top: 60%;
+    transform: translateY(-60%);
+    width: 32px;
+    height: 32px;
+    color: #9aa2c3;
     cursor: pointer;
+    transition: color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
-.km-clear-faq-search-icon svg {
-    margin-top: 12px;
-    vertical-align: middle;
+.km-faqsearch-icon__search,
+.km-faqsearch-icon__clear {
+    width: 16px;
+    height: 16px;
+}
+.km-faqsearch-icon__clear {
+    border-radius: 50%;
+    padding: 4px;
+    background: rgba(153, 149, 193, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb8d0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.km-faqsearch-icon__clear:hover {
+    background: rgba(91, 72, 222, 0.12);
+    color: #5b48de;
 }
 
 .km-faqsearch-input {
-    padding: 11px 37px 11px 35px !important;
-    width: calc(100% - 30px) !important;
+    padding: 12px 68px 12px 18px !important;
+    width: 100% !important;
     height: auto;
     background-color: #fff !important;
     color: #696464 !important;
-    box-shadow: none !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
     outline: 0 !important;
-    border: 1px solid #cecbcb !important;
-    margin: 0 0 0 15px !important;
-    border-radius: 4px !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
     box-sizing: border-box !important;
     line-height: normal;
+    font-size: 15px !important;
 }
 .km-faqsearch-input:focus {
-    box-shadow: none !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12) !important;
     outline: none !important;
-    /* border: none!important; */
 }
 
 .mck-title {

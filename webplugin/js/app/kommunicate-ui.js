@@ -553,7 +553,8 @@ KommunicateUI = {
                 MCK_EVENT_HISTORY.length = 0;
                 KommunicateUI.handleConversationBanner();
                 document.querySelector('#km-faq-search-input').value &&
-                    document.querySelector('.km-clear-faq-search-icon').click();
+                    document.querySelector('.km-faqsearch-icon__clear') &&
+                    document.querySelector('.km-faqsearch-icon__clear').click();
                 KommunicateUI.showConversationList();
                 return;
             }
@@ -619,15 +620,24 @@ KommunicateUI = {
             window.open(e.target.href);
         });
 
+        var $faqSearchIcon = $applozic('.km-faqsearch-icon__search');
+        var $faqClearIcon = $applozic('.km-faqsearch-icon__clear');
+
+        function setFaqSearchIconState(hasValue) {
+            if (hasValue) {
+                $faqSearchIcon.addClass('n-vis');
+                $faqClearIcon.removeClass('n-vis');
+            } else {
+                $faqSearchIcon.removeClass('n-vis');
+                $faqClearIcon.addClass('n-vis');
+            }
+        }
+
         $applozic('#km-faq-search-input').keyup(
             kommunicateCommons.debounce(function (e) {
                 var searchQuery = e.target.value;
 
-                if (searchQuery.length > 0) {
-                    kommunicateCommons.show('.km-clear-faq-search-icon');
-                } else {
-                    kommunicateCommons.hide('.km-clear-faq-search-icon');
-                }
+                setFaqSearchIconState(searchQuery.length > 0);
                 if (!document.querySelector('#km-faq-category-list-container.n-vis')) {
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                         MCK_EVENT_HISTORY.push('km-faq-list');
@@ -654,13 +664,30 @@ KommunicateUI = {
             }, 500)
         );
 
-        $applozic(d).on('click', '.km-clear-faq-search-icon', function () {
+        $applozic(d).on('click', '.km-faqsearch-icon__clear', function (evt) {
+            evt.stopPropagation();
             $applozic('#km-faq-search-input').val('');
-            kommunicateCommons.hide('.km-clear-faq-search-icon');
+            setFaqSearchIconState(false);
             // this is being used to simulate an Enter Key Press on the search input.
             var e = jQuery.Event('keyup');
             e.which = 13;
             $applozic('#km-faq-search-input').trigger(e);
+        });
+
+        $applozic(d).on('click', '.km-faqsearch-icon__search', function () {
+            var $searchInput = $applozic('#km-faq-search-input');
+            if (!$searchInput.length) {
+                return;
+            }
+            $searchInput.focus();
+            var searchValue = ($searchInput.val() || '').trim();
+            if (!searchValue) {
+                return;
+            }
+            setFaqSearchIconState(true);
+            var e = jQuery.Event('keyup');
+            e.which = 13;
+            $searchInput.trigger(e);
         });
     },
     faqEmptyState: function () {

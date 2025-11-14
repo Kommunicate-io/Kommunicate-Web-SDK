@@ -438,6 +438,51 @@
                         </div>
                     </div>
                     <div id="faq-common">
+                        <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
+                            <div class="km-faqsearch-field">
+                                <div class="km-contact-input-container km-faq-search-shell">
+                                    <span class="km-faqsearch-icon" role="button" tabindex="0">
+                                        <svg
+                                            focusable="false"
+                                            aria-hidden="true"
+                                            class="km-faqsearch-icon__search"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <use xlink:href="#icon-13" href="#icon-13"></use>
+                                        </svg>
+                                        <svg
+                                            focusable="false"
+                                            aria-hidden="true"
+                                            class="km-faqsearch-icon__clear n-vis"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                                d="M4.5 4.5l7 7m0-7l-7 7"
+                                                stroke="currentColor"
+                                                stroke-width="1.6"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ></path>
+                                        </svg>
+                                    </span>
+                                    <input
+                                        id="km-faq-search-input"
+                                        class="km-faqsearch-input"
+                                        type="text"
+                                        data-provide="typeahead"
+                                        placeholder="Search in FAQs..."
+                                        class="mck-typeahead"
+                                        aria-label="Search in FAQs..."
+                                        tabindex="0"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                         <div class="km-no-results-found-container n-vis">
                             <div class="km-no-results-found">
                                 <svg
@@ -452,54 +497,17 @@
                                 <p>NO RESULTS FOUND</p>
                             </div>
                         </div>
+                        <div class="km-talk-to-human-div n-vis">
+                            <p id="mck-no-faq-found">Looking for something else?</p>
+                            <button class="talk-to-human-link" id="talk-to-human-link">
+                                Talk to an agent
+                            </button>
+                        </div>
                         <div id="km-faqdiv">
                             <div id="km-faq-category-list-container"></div>
                             <ul id="km-faq-list-container" class="km-faq-list-container"></ul>
                         </div>
                         <div id="km-faqanswer" class="km-faqanswer"></div>
-                        <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
-                            <div class="km-talk-to-human-div n-vis">
-                                <p id="mck-no-faq-found">Looking for something else?</p>
-                                <button class="talk-to-human-link" id="talk-to-human-link">
-                                    Talk to an agent
-                                </button>
-                            </div>
-                            <div class="km-contact-input-container">
-                                <span class="km-faqsearch-icon">
-                                    <svg
-                                        focusable="false"
-                                        aria-hidden="true"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <use xlink:href="#icon-13" href="#icon-13"></use>
-                                    </svg>
-                                </span>
-                                <input
-                                    id="km-faq-search-input"
-                                    class="km-faqsearch-input"
-                                    type="text"
-                                    data-provide="typeahead"
-                                    placeholder="Search in FAQs..."
-                                    class="mck-typeahead"
-                                    aria-label="Search in FAQs..."
-                                    tabindex="0"
-                                    autocomplete="off"
-                                />
-                                <span class="km-clear-faq-search-icon n-vis">
-                                    <svg
-                                        focusable="false"
-                                        aria-hidden="true"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 14 14"
-                                    >
-                                        <use xlink:href="#icon-14" href="#icon-14"></use>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
                     </div>
                     <div id="km-whats-new-placeholder" class="km-whats-new-placeholder n-vis">
                         <div class="km-whats-new-empty">What's New coming soon.</div>
