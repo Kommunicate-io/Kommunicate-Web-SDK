@@ -18,17 +18,7 @@ Kommunicate.conversation = {
             return;
         }
 
-        // data.groupFeeds might be undefined or empty (e.g., new/no conversations)
-        var conversationDetail =
-            data && Array.isArray(data.groupFeeds) && data.groupFeeds.length > 0
-                ? data.groupFeeds[0]
-                : null;
-
-        if (!conversationDetail) {
-            // Nothing to evaluate; ensure banner is hidden and exit gracefully
-            KommunicateUI && KommunicateUI.showClosedConversationBanner(false);
-            return;
-        }
+        var conversationDetail = data && data.groupFeeds[0];
 
         const feedbackGroups = kmLocalStorage.getItemFromLocalStorage('feedbackGroups') || {};
         const isConversationRated = feedbackGroups[conversationDetail.id];
