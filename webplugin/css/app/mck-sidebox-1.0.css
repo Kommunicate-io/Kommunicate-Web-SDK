@@ -4401,15 +4401,19 @@ ul.mck-intent-menu > li:hover {
 }
 
 .km-faqsearch-field {
-    width: calc(100% - 30px);
+    width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 0 4px;
+    padding: 0 12px;
 }
 
 .km-faq-search-shell {
     position: relative;
     width: 100%;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
 }
 
 .km-faqtitle {
@@ -4438,15 +4442,16 @@ ul.mck-intent-menu > li:hover {
     right: 22px;
     top: 60%;
     transform: translateY(-60%);
-    width: 32px;
-    height: 32px;
-    color: #9aa2c3;
+    width: 36px;
+    height: 36px;
+    color: #7e73ff;
     cursor: pointer;
-    transition: color 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    background: rgba(126, 115, 255, 0.12);
 }
 .km-faqsearch-icon__search,
 .km-faqsearch-icon__clear {
@@ -4456,25 +4461,26 @@ ul.mck-intent-menu > li:hover {
 .km-faqsearch-icon__clear {
     border-radius: 50%;
     padding: 4px;
-    background: rgba(153, 149, 193, 0.1);
+    background: rgba(126, 115, 255, 0.18);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #bbb8d0;
+    color: #6256e8;
     transition: background 0.15s ease, color 0.15s ease;
 }
-.km-faqsearch-icon__clear:hover {
-    background: rgba(91, 72, 222, 0.12);
-    color: #5b48de;
+.km-faqsearch-icon__clear:hover,
+.km-faqsearch-icon:hover {
+    background: rgba(98, 86, 232, 0.22);
+    color: #4a3ed4;
 }
 
 .km-faqsearch-input {
-    padding: 12px 68px 12px 18px !important;
+    padding: 14px 72px 14px 22px !important;
     width: 100% !important;
     height: auto;
     background-color: #fff !important;
     color: #696464 !important;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
+    box-shadow: none !important;
     outline: 0 !important;
     border: 1px solid rgba(15, 23, 42, 0.08) !important;
     margin: 0 !important;
@@ -4484,8 +4490,12 @@ ul.mck-intent-menu > li:hover {
     font-size: 15px !important;
 }
 .km-faqsearch-input:focus {
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 0 0 2px rgba(126, 115, 255, 0.15) !important;
     outline: none !important;
+}
+.km-faqsearch-input::placeholder {
+    color: #9aa2c3 !important;
+    letter-spacing: 0.3px;
 }
 
 .mck-title {
@@ -4743,25 +4753,55 @@ div#mck-tab-title.mck-tab-title {
 }
 
 .km-no-results-found-container {
-    padding: 10px 25px;
+    padding: 0 20px;
     position: relative;
     z-index: 1;
+    width: 100%;
 }
 .km-no-results-found {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px dashed #c5c5c7;
-    border-radius: 4px;
-    padding: 10px 25px;
+    border-radius: 18px;
+    padding: 18px 20px;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    text-align: center;
+    gap: 12px;
 }
 .km-no-results-found p {
-    margin-top: 10px;
+    margin-top: 4px;
     font-size: 15px;
     margin-bottom: 0px;
-    color: #c5c5c7;
-    letter-spacing: 0.5px;
+    color: #7c829f;
+    letter-spacing: 0.3px;
+}
+.km-no-results-found .km-talk-to-human-div {
+    background: rgba(124, 130, 159, 0.08);
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+.km-no-results-found .km-talk-to-human-div p {
+    color: #555777;
+    letter-spacing: 0.2px;
+    margin: 0;
+}
+.km-no-results-found .km-talk-to-human-div .talk-to-human-link {
+    border-radius: 999px;
+    background: linear-gradient(120deg, #5f46f8, #7c92ff);
+    color: #fff;
+    padding: 8px 18px;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 10px 24px rgba(95, 70, 248, 0.25);
 }
 
 @media only screen and (max-width: 600px) {

@@ -538,7 +538,6 @@ KommunicateUI = {
                         ],
                         class: [
                             'km-no-results-found-container',
-                            'km-talk-to-human-div',
                             'mck-agent-status-text',
                             'mck-agent-image-container',
                             'mck-agent-status-indicator',
@@ -693,7 +692,7 @@ KommunicateUI = {
     faqEmptyState: function () {
         kommunicateCommons.modifyClassList(
             {
-                class: ['km-no-results-found-container', 'km-talk-to-human-div'],
+                class: ['km-no-results-found-container'],
             },
             'vis',
             'n-vis'
@@ -713,7 +712,7 @@ KommunicateUI = {
         if (response.data && response.data.length === 0) {
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['km-no-results-found-container', 'km-talk-to-human-div'],
+                    class: ['km-no-results-found-container'],
                 },
                 'vis',
                 'n-vis'
@@ -731,13 +730,6 @@ KommunicateUI = {
             );
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['looking.for.something.else'];
-            kommunicateCommons.modifyClassList(
-                {
-                    class: ['km-talk-to-human-div'],
-                },
-                'vis',
-                'n-vis'
-            );
         }
         document.getElementById('km-faq-list-container').innerHTML = '';
         $applozic.each(response.data, function (i, faq) {
