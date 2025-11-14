@@ -519,7 +519,11 @@ KommunicateUI = {
                     KommunicateUI.activateTypingField();
                     return;
                 } else {
-                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
+                    KommunicateUI.isFAQPrimaryCTA() &&
+                        kommunicate &&
+                        kommunicate._globals &&
+                        kommunicate._globals.hasArticles === true &&
+                        kommunicateCommons.show('#km-faq');
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     MCK_EVENT_HISTORY.length = 0;
@@ -528,7 +532,10 @@ KommunicateUI = {
             } else {
                 // remove n-vis
 
-                KommunicateUI.isFAQPrimaryCTA()
+                KommunicateUI.isFAQPrimaryCTA() &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.hasArticles === true
                     ? $applozic('#km-faq').addClass('vis')
                     : $applozic('#km-faq').addClass('n-vis');
 
@@ -786,7 +793,11 @@ KommunicateUI = {
         kommunicateCommons.setWidgetStateOpen(true);
         kommunicateCommons.hide('#faq-common');
         kommunicateCommons.show('.mck-conversation');
-        KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
+        KommunicateUI.isFAQPrimaryCTA() &&
+            kommunicate &&
+            kommunicate._globals &&
+            kommunicate._globals.hasArticles === true &&
+            kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
         if (
             $applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 &&

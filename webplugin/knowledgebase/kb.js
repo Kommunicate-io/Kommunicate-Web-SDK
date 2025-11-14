@@ -30,8 +30,21 @@
                     success: function (data) {
                         response.status = 'success';
                         response.data = data.data || [];
+                        // Update FAQ availability flag based on categories
+                        if (response.data.length > 0) {
+                            kommunicate._globals.hasArticles = true;
+                            // Ensure dropdown FAQ option is available when FAQs exist and FAQ isn't primary CTA
+                            if (
+                                typeof KommunicateUI === 'object' &&
+                                !KommunicateUI.isFAQPrimaryCTA()
+                            ) {
+                                kommunicateCommons.show &&
+                                    kommunicateCommons.show('.km-option-faq');
+                            }
+                        } else {
+                            hideFAQBtn();
+                        }
                         if (options.success) {
-                            response.data.length === 0 && hideFAQBtn();
                             options.success(response);
                         }
                         return;

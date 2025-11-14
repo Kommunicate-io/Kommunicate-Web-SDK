@@ -7516,14 +7516,14 @@ const firstVisibleMsg = {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-talk-to-human');
                 }
-                // hasArticles initially will be undefined and after the faq load it will be boolean
-                if (
-                    !KommunicateUI.isFAQPrimaryCTA() &&
-                    (kommunicate._globals.hasArticles === undefined ||
-                        kommunicate._globals.hasArticles === true)
-                ) {
-                    enableDropdown = true;
-                    kommunicateCommons.show('.km-option-faq');
+                // Show FAQ option in dropdown only when FAQs/categories exist
+                if (!KommunicateUI.isFAQPrimaryCTA()) {
+                    if (kommunicate && kommunicate._globals && kommunicate._globals.hasArticles === true) {
+                        enableDropdown = true;
+                        kommunicateCommons.show('.km-option-faq');
+                    } else {
+                        kommunicateCommons.hide('.km-option-faq');
+                    }
                 }
 
                 if (enableDropdown) {
@@ -7751,7 +7751,11 @@ const firstVisibleMsg = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     kommunicateCommons.hide('#mck-tab-individual');
-                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
+                    KommunicateUI.isFAQPrimaryCTA() &&
+                        kommunicate &&
+                        kommunicate._globals &&
+                        kommunicate._globals.hasArticles === true &&
+                        kommunicateCommons.show('#km-faq');
                     kommunicateCommons.show('#mck-tab-conversation');
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
@@ -7804,7 +7808,11 @@ const firstVisibleMsg = {
                               TOKENIZE_RESPONSE: false,
                               isConversationAssigneeBot: false,
                           });
-                    KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
+                    KommunicateUI.isFAQPrimaryCTA() &&
+                        kommunicate &&
+                        kommunicate._globals &&
+                        kommunicate._globals.hasArticles === true &&
+                        kommunicateCommons.show('#km-faq');
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
