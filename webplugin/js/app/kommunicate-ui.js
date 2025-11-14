@@ -719,7 +719,8 @@ KommunicateUI = {
             );
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['no-faq-found'];
-            document.querySelector('.km-no-results-found p').innerHTML = 'NO RESULTS FOUND';
+            document.querySelector('.km-no-results-found p').innerHTML =
+                MCK_LABELS['faq.no.results'] || 'No results found';
         } else {
             kommunicateCommons.modifyClassList(
                 {

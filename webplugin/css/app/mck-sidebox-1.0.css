@@ -4401,10 +4401,10 @@ ul.mck-intent-menu > li:hover {
 }
 
 .km-faqsearch-field {
-    width: 100%;
+    width: calc(100% - 22px);
     max-width: 100%;
     margin: 0 auto;
-    padding: 0 12px;
+    padding: 0;
 }
 
 .km-faq-search-shell {
@@ -4412,7 +4412,7 @@ ul.mck-intent-menu > li:hover {
     width: 100%;
     border-radius: 999px;
     background: #ffffff;
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    border: none;
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
 }
 
@@ -4475,7 +4475,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 .km-faqsearch-input {
-    padding: 14px 72px 14px 22px !important;
+    padding: 14px 58px 14px 20px !important;
     width: 100% !important;
     height: auto;
     background-color: #fff !important;
