@@ -6112,31 +6112,43 @@ const firstVisibleMsg = {
                     global: false,
                     success: function (data) {
                         var isMessages = true;
-                        //Display/hide lead(email) collection template
-                        CURRENT_GROUP_DATA.createdAt =
-                            data && data.groupFeeds[0] && data.groupFeeds[0].createdAtTime;
+                        // Create safe references for first group feed and first message
+                        var firstGroupFeed =
+                            data &&
+                            Array.isArray(data.groupFeeds) &&
+                            data.groupFeeds.length > 0
+                                ? data.groupFeeds[0]
+                                : undefined;
+                        var firstMessage =
+                            data && Array.isArray(data.message) && data.message.length > 0
+                                ? data.message[0]
+                                : undefined;
+
+                        // Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.createdAt = firstGroupFeed && firstGroupFeed.createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
-                            data &&
-                            data.groupFeeds[0] &&
-                            data.groupFeeds[0].metadata.CONVERSATION_STATUS;
+                            firstGroupFeed &&
+                            firstGroupFeed.metadata &&
+                            firstGroupFeed.metadata.CONVERSATION_STATUS;
                         CURRENT_GROUP_DATA.conversationAssignee =
-                            data &&
-                            data.groupFeeds[0] &&
-                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                            firstGroupFeed &&
+                            firstGroupFeed.metadata &&
+                            firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers =
-                            data.groupFeeds?.[0]?.groupUsers || data.userDetails || [];
-                        CURRENT_GROUP_DATA.lastMessagingMember =
-                            data.message[0] && data.message[0].contactIds;
+                            (firstGroupFeed && firstGroupFeed.groupUsers) || data?.userDetails || [];
+                        CURRENT_GROUP_DATA.lastMessagingMember = firstMessage && firstMessage.contactIds;
                         CURRENT_GROUP_DATA.teamId =
-                            data && data.groupFeeds[0] && data.groupFeeds[0].metadata.KM_TEAM_ID;
+                            firstGroupFeed &&
+                            firstGroupFeed.metadata &&
+                            firstGroupFeed.metadata.KM_TEAM_ID;
                         params.isWaitingQueue && KommunicateUI.handleWaitingQueueMessage();
 
                         const assignee =
-                            data.groupFeeds[0] &&
-                            data.groupFeeds[0].metadata &&
-                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        const groupUsers = data.userDetails;
+                            firstGroupFeed &&
+                            firstGroupFeed.metadata &&
+                            firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
+                        const groupUsers = data && data.userDetails;
                         assignee &&
                             groupUsers &&
                             KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
@@ -6577,20 +6589,26 @@ const firstVisibleMsg = {
                                         data
                                     );
                                     var conversationAssignee =
-                                        data.groupFeeds[0] &&
-                                        data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                                    var conversationAssigneeDetails = data.userDetails.filter(
+                                        firstGroupFeed &&
+                                        firstGroupFeed.metadata &&
+                                        firstGroupFeed.metadata.CONVERSATION_ASSIGNEE;
+                                    var conversationAssigneeDetails = (data.userDetails || []).filter(
                                         function (item) {
                                             return item.userId == conversationAssignee;
                                         }
                                     )[0];
                                 }
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
-                                if (data.userDetails.length > 0 && data.groupFeeds.length > 0) {
+                                if (
+                                    Array.isArray(data.userDetails) &&
+                                    data.userDetails.length > 0 &&
+                                    Array.isArray(data.groupFeeds) &&
+                                    data.groupFeeds.length > 0
+                                ) {
                                     var name;
                                     var updateConversationHeaderParams = new Object();
-                                    if (data.groupFeeds[0].name) {
-                                        name = data.groupFeeds[0].name;
+                                    if (firstGroupFeed && firstGroupFeed.name) {
+                                        name = firstGroupFeed.name;
                                     } else if (typeof params.groupName !== 'undefined') {
                                         name = params.groupName;
                                     } else {
@@ -6601,10 +6619,9 @@ const firstVisibleMsg = {
                                         );
                                     }
                                     updateConversationHeaderParams.name = name;
-                                    data &&
-                                        data.groupFeeds[0] &&
+                                    firstGroupFeed &&
                                         (updateConversationHeaderParams.imageUrl =
-                                            data.groupFeeds[0].imageUrl);
+                                            firstGroupFeed.imageUrl);
                                     !params.isConversationInWaitingQueue &&
                                         mckMessageService.processOnlineStatusChange(
                                             params.tabId,
