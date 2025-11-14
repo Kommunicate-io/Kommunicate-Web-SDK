@@ -664,6 +664,7 @@ const firstVisibleMsg = {
                 tabTitleElement.textContent = newTitle;
             }
             if (tabType === 'conversations') {
+                MCK_EVENT_HISTORY.length = 0;
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
                 if (kommunicateCommons.isModernLayoutEnabled()) {
@@ -6712,6 +6713,7 @@ const firstVisibleMsg = {
                                         );
                                     }
                                 }
+                                var conversationAssigneeDetails = null;
                                 if (params.isGroup) {
                                     Kommunicate.conversation.processConversationOpenedFromList(
                                         data
@@ -6719,14 +6721,14 @@ const firstVisibleMsg = {
                                     var conversationAssignee =
                                         data.groupFeeds[0] &&
                                         data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                                    var conversationAssigneeDetails = data.userDetails.filter(
-                                        function (item) {
-                                            return item.userId == conversationAssignee;
-                                        }
-                                    )[0];
+                                    conversationAssigneeDetails = data.userDetails.filter(function (
+                                        item
+                                    ) {
+                                        return item.userId == conversationAssignee;
+                                    })[0];
                                 }
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
-                                if (data.userDetails.length > 0 && data.groupFeeds.length > 0) {
+                                if (data.groupFeeds.length > 0) {
                                     var name;
                                     var updateConversationHeaderParams = new Object();
                                     if (data.groupFeeds[0].name) {
@@ -6745,12 +6747,20 @@ const firstVisibleMsg = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    !params.isConversationInWaitingQueue &&
+                                    if (
+                                        !params.isConversationInWaitingQueue &&
+                                        conversationAssigneeDetails
+                                    ) {
                                         mckMessageService.processOnlineStatusChange(
                                             params.tabId,
                                             conversationAssigneeDetails,
                                             updateConversationHeaderParams
                                         );
+                                    } else {
+                                        mckMessageService.updateConversationHeader(
+                                            updateConversationHeaderParams
+                                        );
+                                    }
                                 }
                             }
                         }
@@ -7907,6 +7917,13 @@ const firstVisibleMsg = {
                         KommunicateUI.toggleModernFaqBackButton(false);
                     KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
                     kommunicateCommons.show('#mck-tab-conversation');
+                    var conversationTitleElement = document.getElementById(
+                        'mck-conversation-title'
+                    );
+                    if (conversationTitleElement) {
+                        conversationTitleElement.textContent =
+                            MCK_LABELS['conversations.title'] || 'Conversations';
+                    }
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
                     $mck_msg_inner.data('mck-id', '');
