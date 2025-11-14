@@ -849,9 +849,8 @@ $applozic.extend(true, Kommunicate, {
             );
             const result = await response.json();
 
-            return result?.results.length
-                ? result.results[0].formatted_address
-                : 'LOCATION_NOT_FOUND';
+            const hasResults = result && Array.isArray(result.results) && result.results.length > 0;
+            return hasResults ? result.results[0].formatted_address : 'LOCATION_NOT_FOUND';
         } catch (error) {
             console.debug('Error while fetching location', error);
             return 'PERMISSION_DENIED';

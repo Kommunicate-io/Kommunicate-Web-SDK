@@ -740,7 +740,9 @@ const firstVisibleMsg = {
                     kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
                     KommunicateUI.activateTypingField();
 
-                    !data?.groupFeeds.length && kmNavBar.hideAndShowTalkToHumanBtn();
+                    if (!(data && Array.isArray(data.groupFeeds) && data.groupFeeds.length)) {
+                        kmNavBar.hideAndShowTalkToHumanBtn();
+                    }
                 }
             );
             var previewIndicator = '#mck-msg-preview-visual-indicator';
@@ -7194,7 +7196,15 @@ const firstVisibleMsg = {
                         } else if (data.status === 'error') {
                             if (typeof params.callback === 'function') {
                                 response.status = 'error';
-                                response.errorMessage = data.errorResponse[0].description;
+                                var errDesc =
+                                    data &&
+                                    Array.isArray(data.errorResponse) &&
+                                    data.errorResponse.length > 0 &&
+                                    data.errorResponse[0] &&
+                                    data.errorResponse[0].description
+                                        ? data.errorResponse[0].description
+                                        : 'Unable to process request.';
+                                response.errorMessage = errDesc;
                                 params.callback(response);
                             }
                         }
@@ -7943,11 +7953,18 @@ const firstVisibleMsg = {
                 var contact = isGroup
                     ? mckGroupUtils.getGroup(tabId)
                     : mckMessageLayout.fetchContact(tabId);
-                scroll &&
+                if (
+                    scroll &&
+                    data &&
+                    Array.isArray(data.message) &&
+                    data.message.length > 0 &&
+                    data.message[0]
+                ) {
                     $mck_msg_inner.data(
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
+                }
                 if (allowReload) {
                     scroll = false;
                     data && data.message && (data.message = data.message.reverse());
@@ -11681,7 +11698,11 @@ const firstVisibleMsg = {
                     baseUrl: MCK_BASE_URL,
                     success: function (data) {
                         if ($mck_sidebox_search.hasClass('vis')) {
-                            if (typeof data === 'object' && data.users.length > 0) {
+                            if (
+                                typeof data === 'object' &&
+                                Array.isArray(data.users) &&
+                                data.users.length > 0
+                            ) {
                                 $applozic.each(data.users, function (i, user) {
                                     if (typeof user.userId !== 'undefined') {
                                         var contact = mckMessageLayout.getContact('' + user.userId);
@@ -12111,15 +12132,23 @@ const firstVisibleMsg = {
                             Auto human handoff check is removed from the below code if something breaks regarding the same, 
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
                         */
-                        const res = data.data[0];
-                        CURRENT_GROUP_DATA.CHAR_CHECK =
-                            res?.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
-                        !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
-                        CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
-                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
-                        CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
-                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
+                        var res =
+                            data && Array.isArray(data.data) && data.data.length > 0
+                                ? data.data[0]
+                                : null;
+                        if (res) {
+                            CURRENT_GROUP_DATA.CHAR_CHECK =
+                                res.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
+                            !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
+                            CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
+                            CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res.generativeResponse || false;
+                            CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
+                            CURRENT_GROUP_DATA.answerFeedback = res.answerFeedback || false;
+                            CURRENT_GROUP_DATA.isDialogflowCXBot = res.dialogflowCXBot || false;
+                        } else {
+                            CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                            _this.removeWarningsFromTextBox();
+                        }
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
