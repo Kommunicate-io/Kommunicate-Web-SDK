@@ -4128,8 +4128,12 @@ ul.mck-intent-menu > li:hover {
     /* width:100% !important; */
 }
 #mck-msg-new {
+    /*
     background-color: #5553b7;
     color: white;
+    */
+    background-color: white !important;
+    color: black;
     border-radius: 26px;
     box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
     height: 42px;
