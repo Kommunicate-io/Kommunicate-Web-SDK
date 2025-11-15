@@ -4,6 +4,7 @@
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('./mck-sidebox-dark.css');
 
 :root {
     --km-font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
@@ -89,34 +90,7 @@
     -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
-.mck-sidebox-launcher:focus {
-    box-shadow: #5553b7 0px 0px 0px 5px;
-}
 
-#mck-text-box[contenteditable='true']::before {
-    content: attr(data-text);
-    color: #949494;
-    opacity: 0.6;
-    /* the properties mentioned below fixes text cursor disappear issue */
-    position: relative;
-    z-index: -1;
-}
-#mck-text-box[contenteditable='true']:not(:empty)::before {
-    content: '';
-    position: relative;
-    z-index: -1;
-}
-
-#mck-text-box[contenteditable='true']:not(:empty)::before {
-    content: '';
-    position: relative;
-    z-index: -1;
-}
-
-.mck-running-on > a:hover {
-    text-decoration: underline;
-    color: #5553b7 !important;
-}
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
@@ -4313,11 +4287,7 @@ ul.mck-intent-menu > li:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
-}
-
-#km-contact-search-input-box {
-    position: relative;
-    z-index: 1;
+    background-color: #f9f9f9;
 }
 
 #km-faqdiv {
@@ -4430,6 +4400,7 @@ ul.mck-intent-menu > li:hover {
     max-width: 100%;
     margin: 0 auto;
     padding: 0;
+    position: relative;
 }
 .km-faqtitle {
     flex: 1;
@@ -4451,14 +4422,13 @@ ul.mck-intent-menu > li:hover {
     display: table-cell;
     cursor: pointer;
 }
-.km-faqsearch-icon {
+.km-faqsearch-icon,
+.km-faqsearch-clear {
     position: absolute;
-    left: auto;
-    right: 22px;
-    top: 60%;
+    top: 57%;
     transform: translateY(-60%);
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     color: #7e73ff;
     cursor: pointer;
     transition: background 0.15s ease, color 0.15s ease;
@@ -4466,31 +4436,30 @@ ul.mck-intent-menu > li:hover {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(126, 115, 255, 0.12);
+}
+.km-faqsearch-icon {
+    left: 16px;
+    right: auto;
+}
+.km-faqsearch-clear {
+    right: 16px;
+    left: auto;
+    /*background: rgba(126, 115, 255, 0.18);*/
+    color: #6256e8;
+}
+.km-faqsearch-icon:hover,
+.km-faqsearch-clear:hover {
+    background: rgba(98, 86, 232, 0.22);
+    color: #4a3ed4;
 }
 .km-faqsearch-icon__search,
 .km-faqsearch-icon__clear {
     width: 16px;
     height: 16px;
 }
-.km-faqsearch-icon__clear {
-    border-radius: 50%;
-    padding: 4px;
-    background: rgba(126, 115, 255, 0.18);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #6256e8;
-    transition: background 0.15s ease, color 0.15s ease;
-}
-.km-faqsearch-icon__clear:hover,
-.km-faqsearch-icon:hover {
-    background: rgba(98, 86, 232, 0.22);
-    color: #4a3ed4;
-}
 
 .km-faqsearch-input {
-    padding: 14px 58px 14px 20px !important;
+    padding: 10px 50px 10px 50px !important;
     width: 100% !important;
     height: auto;
     background-color: #fff !important;
@@ -4688,7 +4657,6 @@ div#mck-tab-title.mck-tab-title {
 }
 
 .km-talk-to-human-div {
-    background-color: #f5f5f5;
     padding: 10px 20px;
     text-align: center;
     display: flex !important;
@@ -4734,14 +4702,17 @@ div#mck-tab-title.mck-tab-title {
 .km-contact-input-container {
     position: relative;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 #km-contact-search-input-box {
     padding-top: 0px;
     padding-left: 0px;
     border-radius: 4px;
     box-shadow: 0 0 3px 1px rgba(124, 122, 122, 0.24);
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 /* #mck-btn-attach {
@@ -4768,7 +4739,6 @@ div#mck-tab-title.mck-tab-title {
 }
 
 .km-no-results-found-container {
-    padding: 0 20px;
     position: relative;
     z-index: 1;
     width: 100%;
@@ -4778,45 +4748,52 @@ div#mck-tab-title.mck-tab-title {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 18px;
-    padding: 18px 20px;
-    border: 1px solid rgba(15, 23, 42, 0.05);
-    background: #ffffff;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    border-radius: 22px;
+    /* background: #ffffff; */
+    /* border: 1px solid #f0f2fc; */
+    /* box-shadow: 0 28px 55px rgba(27, 36, 74, 0.12); */
     text-align: center;
-    gap: 12px;
+    gap: 14px;
+    padding: 28px 26px 32px;
+}
+.km-no-results-found > p:first-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2337;
+    letter-spacing: 0.1px;
+    margin-bottom: 0;
 }
 .km-no-results-found p {
-    margin-top: 4px;
-    font-size: 15px;
+    margin-top: 0px;
+    font-size: 14px;
     margin-bottom: 0px;
-    color: #7c829f;
-    letter-spacing: 0.3px;
+    color: #5b6078;
+    letter-spacing: 0.2px;
 }
 .km-no-results-found .km-talk-to-human-div {
-    background: rgba(124, 130, 159, 0.08);
-    border-radius: 12px;
-    padding: 12px;
+    background: transparent;
+    border-radius: 16px;
+    padding: 0;
     width: 100%;
     display: flex !important;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
     align-items: center;
     justify-content: center;
 }
 .km-no-results-found .km-talk-to-human-div p {
-    color: #555777;
-    letter-spacing: 0.2px;
+    color: #5b6078;
+    letter-spacing: 0.1px;
     margin: 0;
+    font-size: 14px;
 }
 .km-no-results-found .km-talk-to-human-div .talk-to-human-link {
     border-radius: 999px;
-    background: linear-gradient(120deg, #5f46f8, #7c92ff);
     color: #fff;
-    padding: 8px 18px;
-    font-size: 13px;
-    letter-spacing: 0.4px;
-    box-shadow: 0 10px 24px rgba(95, 70, 248, 0.25);
+    padding: 10px 28px;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 16px 28px rgba(15, 23, 42, 0.16);
 }
 
 @media only screen and (max-width: 600px) {

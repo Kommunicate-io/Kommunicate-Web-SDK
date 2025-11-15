@@ -619,15 +619,13 @@ KommunicateUI = {
             window.open(e.target.href);
         });
 
-        var $faqSearchIcon = $applozic('.km-faqsearch-icon__search');
-        var $faqClearIcon = $applozic('.km-faqsearch-icon__clear');
+        var $faqSearchIcon = $applozic('.km-faqsearch-icon');
+        var $faqClearIcon = $applozic('.km-faqsearch-clear');
 
         function setFaqSearchIconState(hasValue) {
             if (hasValue) {
-                $faqSearchIcon.addClass('n-vis');
                 $faqClearIcon.removeClass('n-vis');
             } else {
-                $faqSearchIcon.removeClass('n-vis');
                 $faqClearIcon.addClass('n-vis');
             }
         }
@@ -663,7 +661,7 @@ KommunicateUI = {
             }, 500)
         );
 
-        $applozic(d).on('click', '.km-faqsearch-icon__clear', function (evt) {
+        $applozic(d).on('click', '.km-faqsearch-clear', function (evt) {
             evt.stopPropagation();
             $applozic('#km-faq-search-input').val('');
             setFaqSearchIconState(false);

@@ -440,8 +440,13 @@
                     <div id="faq-common">
                         <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
                             <div class="km-faqsearch-field">
-                                <div class="km-contact-input-container">
-                                    <span class="km-faqsearch-icon" role="button" tabindex="0">
+                                <div class="km-contact-input-container km-faq-search-shell">
+                                    <span
+                                        class="km-faqsearch-icon"
+                                        role="button"
+                                        tabindex="0"
+                                        aria-label="Search FAQs"
+                                    >
                                         <svg
                                             focusable="false"
                                             aria-hidden="true"
@@ -451,22 +456,6 @@
                                             viewBox="0 0 16 16"
                                         >
                                             <use xlink:href="#icon-13" href="#icon-13"></use>
-                                        </svg>
-                                        <svg
-                                            focusable="false"
-                                            aria-hidden="true"
-                                            class="km-faqsearch-icon__clear n-vis"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path
-                                                d="M4.5 4.5l7 7m0-7l-7 7"
-                                                stroke="currentColor"
-                                                stroke-width="1.6"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            ></path>
                                         </svg>
                                     </span>
                                     <input
@@ -480,6 +469,29 @@
                                         tabindex="0"
                                         autocomplete="off"
                                     />
+                                    <span
+                                        class="km-faqsearch-clear n-vis"
+                                        role="button"
+                                        tabindex="0"
+                                        aria-label="Clear search"
+                                    >
+                                        <svg
+                                            focusable="false"
+                                            aria-hidden="true"
+                                            class="km-faqsearch-icon__clear"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                                d="M4.5 4.5l7 7m0-7l-7 7"
+                                                stroke="currentColor"
+                                                stroke-width="1.6"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            ></path>
+                                        </svg>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -488,7 +500,10 @@
                                 <p>No results found</p>
                                 <div class="km-talk-to-human-div">
                                     <p id="mck-no-faq-found">Looking for something else?</p>
-                                    <button class="talk-to-human-link" id="talk-to-human-link">
+                                    <button
+                                        class="talk-to-human-link km-custom-widget-background-color"
+                                        id="talk-to-human-link"
+                                    >
                                         Talk to an agent
                                     </button>
                                 </div>
