@@ -106,7 +106,8 @@ function KmCustomTheme() {
 
     _this.fillSvgsTheme = function () {
         document.querySelectorAll('path[data-custom-fill]').forEach((path) => {
-            const primaryColor = WIDGET_SETTINGS.primaryColor || DEFAULT_BACKGROUND_COLOR;
+            const primaryColor =
+                (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
             path.setAttribute('fill', primaryColor);
         });
     };

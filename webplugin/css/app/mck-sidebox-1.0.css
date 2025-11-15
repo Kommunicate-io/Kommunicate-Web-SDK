@@ -285,7 +285,7 @@
 }
 
 .mck-sidebox a {
-    color: #5553b7;
+    color: #5f46f8;
 }
 
 .mck-sidebox a {
@@ -2179,7 +2179,7 @@ ul.mck-intent-menu > li:hover {
 
 .mck-msg-right .mck-msg-box:after {
     border-color: transparent;
-    border-left-color: #5553b7;
+    border-left-color: #5f46f8;
     border-width: 11px;
 }
 
@@ -4103,7 +4103,7 @@ ul.mck-intent-menu > li:hover {
 }
 #mck-msg-new {
     /*
-    background-color: #5553b7;
+    background-color: #5F46F8;
     color: white;
     */
     background-color: white !important;
@@ -4185,7 +4185,7 @@ ul.mck-intent-menu > li:hover {
     text-align: left;
     background: #ffffff;
     box-shadow: 0px 2px 8px rgb(0 0 0 / 20%);
-    border-top: 2px solid #5553b7;
+    border-top: 2px solid #5f46f8;
     border-radius: 4px;
     word-break: break-word;
     transition: all ease 0.3s;
@@ -4225,7 +4225,7 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .km-faq-category-card-title {
-    color: #5553b7;
+    color: #5f46f8;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
@@ -4409,10 +4409,10 @@ ul.mck-intent-menu > li:hover {
     margin-left: 35px;
 }
 .km-faqbtn {
-    background-color: #5553b7;
+    background-color: #5f46f8;
 }
 .button:hover #km-faqbtn {
-    background-color: #5553b7;
+    background-color: #5f46f8;
 }
 
 .km-faqback {
@@ -4713,7 +4713,7 @@ div#mck-tab-title.mck-tab-title {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: 0.7px;
-    color: #5553b7;
+    color: #5f46f8;
     padding-left: 10px;
     text-decoration: none;
     margin-left: 8px;
@@ -5247,7 +5247,7 @@ button {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: solid 2.5px #5553b7;
+    border: solid 2.5px #5f46f8;
     background: #aaa;
 }
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
@@ -5397,7 +5397,7 @@ button {
 }
 
 #km-local-file-system-warning .km-learn-more {
-    background-color: #5553b7;
+    background-color: #5f46f8;
     color: #fff;
     outline: 0;
     border: none;
@@ -5485,7 +5485,7 @@ div[name='message']:last-child {
     align-items: center;
     justify-content: center;
     animation: kmScaleAnim 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-    background: #5553b7;
+    background: #5f46f8;
     white-space: pre-line;
 }
 
