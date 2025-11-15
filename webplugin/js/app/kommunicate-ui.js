@@ -848,6 +848,7 @@ KommunicateUI = {
     showConversationList: function () {
         kommunicateCommons.hide('#mck-tab-individual');
         kommunicateCommons.show('#mck-tab-conversation');
+        kommunicateCommons.show('#mck-contacts-content');
         KommunicateUI.resetConversationListTitle();
         KommunicateUI.toggleModernFaqBackButton(false);
         $applozic('#km-faq-back-btn-wrapper').addClass('n-vis');

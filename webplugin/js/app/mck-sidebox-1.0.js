@@ -734,6 +734,7 @@ const firstVisibleMsg = {
                 MCK_EVENT_HISTORY.length = 0;
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
+                kommunicateCommons.show('#mck-contacts-content');
                 if (kommunicateCommons.isModernLayoutEnabled()) {
                     setTimeout(function () {
                         var lastTabId =
@@ -791,6 +792,7 @@ const firstVisibleMsg = {
             kommunicateCommons.hide('#km-whats-new-placeholder');
             kommunicateCommons.hide('#faq-common');
             kommunicateCommons.show('.mck-conversation');
+            kommunicateCommons.show('#mck-contacts-content');
             var tabTitle = document.getElementById('mck-tab-title');
             tabTitle && (tabTitle.textContent = MCK_LABELS['conversations.title']);
             kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
