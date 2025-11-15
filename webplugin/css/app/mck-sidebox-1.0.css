@@ -4641,15 +4641,34 @@ div#mck-tab-title.mck-tab-title {
     width: 45px;
     outline: none;
 }
+#km-faq-back-btn {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    height: 50px;
+    width: 45px;
+    outline: none;
+}
 #mck-conversation-back-btn,
+#km-faq-back-btn,
 .mck-close-sidebox {
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 #mck-conversation-back-btn:hover,
+#km-faq-back-btn:hover,
 .mck-close-sidebox:hover {
     background-color: rgba(0, 0, 0, 0.14);
     border-radius: 6px;
+}
+.km-faq-back-btn-wrapper {
+    width: auto !important;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding-right: 8px !important;
 }
 
 .km-conversation-container-right {
@@ -4689,7 +4708,7 @@ div#mck-tab-title.mck-tab-title {
 .km-talk-to-human-div .talk-to-human-link,
 .km-talk-to-human-div .talk-to-human-link:hover {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
@@ -5769,8 +5788,18 @@ div#mck-waiting-queue {
 
 /* Chat launcher animation for initial load Code Ends */
 
+#km-faq-back-btn-wrapper {
+    display: flex;
+    align-items: center;
+}
 .km-conversation-header-title-container {
     width: 65%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.km-conversation-header-title-container > .mck-row {
+    flex: 1 1 auto;
 }
 #mck-tab-individual {
     display: flex;

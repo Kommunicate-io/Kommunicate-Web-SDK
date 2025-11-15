@@ -105,6 +105,7 @@ class KMLabel {
                 'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
             'search.faq': 'Search in FAQs...',
             'looking.for.something.else': 'Looking for something else?',
+            'faq.back.to.categories': 'Back to categories',
             'no-faq-found': 'We are here to help.',
             'faq-empty-state': 'NO ARTICLES TO SHOW',
             'faq': 'FAQ',
@@ -327,6 +328,10 @@ class KMLabel {
         document
             .getElementById('km-faq-search-input')
             .setAttribute('placeholder', MCK_LABELS['search.faq']);
+        var faqBackButton = document.getElementById('km-faq-back-btn');
+        faqBackButton &&
+            faqBackButton.setAttribute('aria-label', MCK_LABELS['faq.back.to.categories']);
+        faqBackButton && faqBackButton.setAttribute('title', MCK_LABELS['faq.back.to.categories']);
         document.getElementById('mck-no-faq-found').innerHTML =
             MCK_LABELS['looking.for.something.else'];
         document.getElementById('km-internet-disconnect-msg').innerHTML = MCK_LABELS['offline.msg'];
