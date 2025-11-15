@@ -4431,16 +4431,6 @@ ul.mck-intent-menu > li:hover {
     margin: 0 auto;
     padding: 0;
 }
-
-.km-faq-search-shell {
-    position: relative;
-    width: 100%;
-    border-radius: 999px;
-    background: #ffffff;
-    border: none;
-    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
-}
-
 .km-faqtitle {
     flex: 1;
     width: 60px;
