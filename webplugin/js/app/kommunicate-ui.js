@@ -609,6 +609,7 @@ KommunicateUI = {
                         kommunicateCommons.hide('#mck-tab-conversation');
                         kommunicateCommons.hide('#mck-no-conversations');
                         KommunicateUI.toggleModernFaqBackButton(true);
+                        $applozic('#km-faq-back-btn-wrapper').addClass('n-vis');
                         $applozic('#km-faqanswer .km-faqanswer').linkify({
                             target: '_blank',
                         });
