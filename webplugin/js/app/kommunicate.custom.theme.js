@@ -39,9 +39,9 @@ function KmCustomTheme() {
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS =
-                '.km-custom-widget-background-color { background: ' +
-                primaryColor +
-                ' !important;} ' +
+                // '.km-custom-widget-background-color { background: ' +
+                // primaryColor +
+                // ' !important;} ' +
                 '.km-custom-widget-background-color-secondary { background: ' +
                 secondaryColor +
                 ' !important;} ' +

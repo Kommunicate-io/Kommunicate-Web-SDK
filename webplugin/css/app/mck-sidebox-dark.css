@@ -21,19 +21,30 @@
 }
 
 .mck-sidebox.km-theme-dark .km-bottom-tab-wrapper {
-    background: rgba(10, 14, 26, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    background: #0b0f1b;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .mck-sidebox.km-theme-dark .km-bottom-tab-bar {
-    background: #11172c;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
+.mck-sidebox.km-theme-dark .km-bottom-tab {
+    color: rgba(226, 232, 255, 0.8);
+}
+.mck-sidebox.km-theme-dark .km-bottom-tab-icon {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(226, 232, 255, 0.95);
+}
 .mck-sidebox.km-theme-dark .km-bottom-tab.active {
+    color: #f6f8ff;
+}
+.mck-sidebox.km-theme-dark .km-bottom-tab.active .km-bottom-tab-icon {
     background: linear-gradient(120deg, #7356ff, #4dd8ff);
     color: #05070f;
+    box-shadow: 0 10px 22px rgba(83, 119, 255, 0.45);
 }
 
 .mck-sidebox.km-theme-dark .km-whats-new-card,
