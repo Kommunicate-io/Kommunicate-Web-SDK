@@ -166,6 +166,11 @@
     box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
 }
+.km-bottom-tab-icon.km-custom-widget-background-color {
+    color: #ffffff !important;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+}
 
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);

@@ -637,8 +637,10 @@ const firstVisibleMsg = {
             if (!$targetTab.length) {
                 $targetTab = $tabs.filter('[data-tab="conversations"]');
             }
-            $tabs.removeClass('active ' + themeBgClass).attr('aria-selected', 'false');
-            $targetTab.addClass('active ' + themeBgClass).attr('aria-selected', 'true');
+            $tabs.removeClass('active').attr('aria-selected', 'false');
+            $tabs.find('.km-bottom-tab-icon').removeClass(themeBgClass);
+            $targetTab.addClass('active').attr('aria-selected', 'true');
+            $targetTab.find('.km-bottom-tab-icon').addClass(themeBgClass);
             Kommunicate._globals = Kommunicate._globals || {};
             Kommunicate._globals.lastBottomTab = $targetTab.data('tab') || 'conversations';
         }
