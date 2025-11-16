@@ -621,6 +621,12 @@ const firstVisibleMsg = {
         var alUserService = new AlUserService();
         var zendeskChatService = (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
 
+        function getLastBottomTab() {
+            return (
+                (Kommunicate && Kommunicate._globals && Kommunicate._globals.lastBottomTab) || null
+            );
+        }
+
         function setBottomTabState(tabType) {
             var $tabs = $applozic('.km-bottom-tab');
             if (!$tabs.length) {
@@ -633,6 +639,8 @@ const firstVisibleMsg = {
             }
             $tabs.removeClass('active ' + themeBgClass).attr('aria-selected', 'false');
             $targetTab.addClass('active ' + themeBgClass).attr('aria-selected', 'true');
+            Kommunicate._globals = Kommunicate._globals || {};
+            Kommunicate._globals.lastBottomTab = $targetTab.data('tab') || 'conversations';
         }
 
         function showBottomTabs() {
@@ -646,6 +654,16 @@ const firstVisibleMsg = {
         setBottomTabState(
             ($applozic('.km-bottom-tab.active').data('tab') || 'conversations').toString()
         );
+
+        function restoreLastBottomTab() {
+            var lastTab = getLastBottomTab();
+            if (!lastTab || lastTab === 'conversations') {
+                return;
+            }
+            setTimeout(function () {
+                handleBottomTabChange(lastTab);
+            }, 0);
+        }
 
         function renderWhatsNewList(items) {
             var dataSource =
@@ -937,14 +955,23 @@ const firstVisibleMsg = {
         };
 
         _this.mckLaunchSideboxChat = function () {
+            var sideboxEl = document.getElementById('mck-sidebox');
+            var wasSoftHidden = sideboxEl && sideboxEl.classList.contains('km-soft-hidden');
+            sideboxEl && sideboxEl.classList.remove('km-soft-hidden');
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-            KommunicateUI.showChat();
+            if (!wasSoftHidden) {
+                KommunicateUI.showChat();
+            }
+            restoreLastBottomTab();
             kommunicateCommons.hide('#mck-away-msg-box');
             if (appOptions.appSettings.currentActivatedPlan == 'churn') {
                 return _this.churnCustomerWidgetChanges();
+            }
+            if (wasSoftHidden) {
+                return;
             }
             mckMessageService.loadConversationWithAgents(
                 {
@@ -5597,6 +5624,26 @@ const firstVisibleMsg = {
                     }
                 }
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
+            };
+            _this.softHideSidebox = function () {
+                var sidebox = document.getElementById('mck-sidebox');
+                if (!sidebox) {
+                    _this.closeSideBox();
+                    return;
+                }
+                if (sidebox.classList.contains('km-soft-hidden')) {
+                    return;
+                }
+                sidebox.classList.add('km-soft-hidden');
+                kommunicateCommons.setWidgetStateOpen(false);
+                kommunicateCommons.show('#mck-sidebox-launcher');
+                var launcherSvg = document.querySelector(
+                    '#mck-sidebox-launcher #launcher-svg-container'
+                );
+                if (launcherSvg) {
+                    launcherSvg.classList.add('vis');
+                    launcherSvg.classList.remove('n-vis');
+                }
             };
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);

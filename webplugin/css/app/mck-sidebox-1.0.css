@@ -90,6 +90,9 @@
     -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
+.mck-sidebox.km-soft-hidden {
+    display: none !important;
+}
 
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
