@@ -7601,7 +7601,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span><span class="mck-conversation-status-time">${msgCreatedDateExpr}</span></div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
