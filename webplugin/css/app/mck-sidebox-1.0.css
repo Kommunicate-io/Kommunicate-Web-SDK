@@ -298,9 +298,6 @@
 .mck-msg-preview.vis {
     display: block;
 }
-.mck-sidebox .km-bottom-tab.vis {
-    display: inline-flex !important;
-}
 
 .mck-box-body .mck-tab-cell.vis {
     display: table !important;
@@ -4760,7 +4757,6 @@ div#mck-tab-title.mck-tab-title {
     padding-left: 0px;
     border-radius: 4px;
     box-shadow: 0 0 3px 1px rgba(124, 122, 122, 0.24);
-    /*background-color: #ffffff;*/
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -5603,7 +5599,7 @@ div#mck-waiting-queue {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #5553b7;
+    background: #5f46f8;
 }
 
 #mck-submit-comment:disabled {
