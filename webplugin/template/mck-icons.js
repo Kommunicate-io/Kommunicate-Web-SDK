@@ -350,19 +350,19 @@
     <symbol id="icon-49" viewBox="0 0 24 24">
         <path
             d="M12 14.5C13.66 14.5 15 13.16 15 11.5V5.5C15 3.84 13.66 2.5 12 2.5C10.34 2.5 9 3.84 9 5.5V11.5C9 13.16 10.34 14.5 12 14.5Z"
-            fill="#5f46f8"
+            fill="#5553b7"
             data-custom-fill
         />
         <path
             d="M17 11.5C17 14.26 14.76 16.5 12 16.5C9.24 16.5 7 14.26 7 11.5H5C5 15.03 7.61 17.93 11 18.42V21.5H13V18.42C16.39 17.93 19 15.03 19 11.5H17Z"
-            fill="#5f46f8"
+            fill="#5553b7"
             data-custom-fill
         />
     </symbol>
     <symbol id="icon-50" viewBox="0 0 24 24">
         <path
             d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"
-            fill="#5f46f8"
+            fill="#5553b7"
             data-custom-fill
         />
     </symbol>
