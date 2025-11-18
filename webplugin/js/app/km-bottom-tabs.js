@@ -35,28 +35,22 @@
                 return;
             }
             var themeBgClass = 'km-custom-widget-background-color';
-            var targetTab = null;
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].getAttribute('data-tab') === tabType) {
-                    targetTab = tabs[i];
-                    break;
-                }
-            }
-            if (!targetTab) {
-                for (var j = 0; j < tabs.length; j++) {
-                    if (tabs[j].getAttribute('data-tab') === 'conversations') {
-                        targetTab = tabs[j];
-                        break;
-                    }
-                }
-            }
-            targetTab = targetTab || tabs[0];
-            for (var k = 0; k < tabs.length; k++) {
-                tabs[k].classList.remove('active');
-                tabs[k].setAttribute('aria-selected', 'false');
-                var icon = tabs[k].querySelector('.km-bottom-tab-icon');
+            var tabArray = Array.prototype.slice.call(tabs);
+            var targetTab = tabArray.find(function (tab) {
+                return tab.getAttribute('data-tab') === tabType;
+            });
+            targetTab =
+                targetTab ||
+                tabArray.find(function (tab) {
+                    return tab.getAttribute('data-tab') === 'conversations';
+                }) ||
+                tabArray[0];
+            tabArray.forEach(function (tab) {
+                tab.classList.remove('active');
+                tab.setAttribute('aria-selected', 'false');
+                var icon = tab.querySelector('.km-bottom-tab-icon');
                 icon && icon.classList.remove(themeBgClass);
-            }
+            });
             if (targetTab) {
                 targetTab.classList.add('active');
                 targetTab.setAttribute('aria-selected', 'true');
