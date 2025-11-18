@@ -32,7 +32,7 @@
 }
 
 #km-business-hour-box {
-    background-color: #5553b7;
+    background-color: #5f46f8;
     color: #fff;
     padding: 20px;
     font-size: 16px;
@@ -59,7 +59,15 @@
 /* SO, DO NOT MODIFY OR REMOVE BELOW CSS. */
 .ql-container {
     box-sizing: border-box;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: var(
+        --km-font-family,
+        'Inter',
+        'Segoe UI',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Helvetica Neue',
+        sans-serif
+    );
     font-size: 13px;
     height: 100%;
     margin: 0px;

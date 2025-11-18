@@ -1,5 +1,5 @@
 body {
-    font-family: 'Open Sans', 'Inter', sans-serif;
+    font-family: $font-family-primary;
 
     &.accesibility :focus {
         outline: 2px auto $outline-color;

@@ -257,7 +257,7 @@
 
 .mck-box div,
 .mck-box .mck-box-title {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--km-font-family);
 }
 
 .mck-sidebox .mck-box-title {
@@ -510,7 +510,7 @@
     margin-bottom: 0;
     font-size: 14px;
     font-weight: 400;
-    font-family: 'Inter';
+    font-family: var(--km-font-family);
     line-height: 1.42857143;
     text-align: center;
     white-space: nowrap;
@@ -2683,7 +2683,7 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
 }
 .mck-sidebox-launcher * {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--km-font-family);
 }
 
 .mck-sidebox-launcher-with-preview {
@@ -2700,7 +2700,7 @@ ul.mck-intent-menu > li:hover {
     padding-top: 7px;
 }
 .mck-launcher-text {
-    font-family: OpenSans;
+    font-family: var(--km-font-family);
     font-size: 14px;
     letter-spacing: 2.1px;
     text-align: left;
@@ -4171,7 +4171,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-away-msg {
-    font-family: 'Roboto', sans-serif !important;
+    font-family: var(--km-font-family) !important;
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
@@ -4523,7 +4523,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 #km-faq-search-input:placeholder {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--km-font-family);
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -4537,7 +4537,7 @@ ul.mck-intent-menu > li:hover {
 #km-faq-search-input::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */
 
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--km-font-family);
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -4550,7 +4550,7 @@ ul.mck-intent-menu > li:hover {
 
 #km-faq-search-input:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--km-font-family);
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -4563,7 +4563,7 @@ ul.mck-intent-menu > li:hover {
 
 #km-faq-search-input::-ms-input-placeholder {
     /* Microsoft Edge */
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--km-font-family);
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -5031,7 +5031,7 @@ button {
     transform: translateY(-50%);
     max-height: 66px;
     padding-bottom: 2px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--km-font-family);
 }
 .mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
     font-size: 16px;
