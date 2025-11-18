@@ -90,8 +90,38 @@
     -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
+
+.mck-sidebox-launcher:focus {
+    box-shadow: #5553b7 0px 0px 0px 5px;
+}
+
 .mck-sidebox.km-soft-hidden {
     display: none !important;
+}
+
+#mck-text-box[contenteditable='true']::before {
+    content: attr(data-text);
+    color: #949494;
+    opacity: 0.6;
+    /* the properties mentioned below fixes text cursor disappear issue */
+    position: relative;
+    z-index: -1;
+}
+#mck-text-box[contenteditable='true']:not(:empty)::before {
+    content: '';
+    position: relative;
+    z-index: -1;
+}
+
+#mck-text-box[contenteditable='true']:not(:empty)::before {
+    content: '';
+    position: relative;
+    z-index: -1;
+}
+
+.mck-running-on > a:hover {
+    text-decoration: underline;
+    color: #5553b7 !important;
 }
 
 /* Bottom navigation */
@@ -372,7 +402,7 @@
 }
 
 .mck-sidebox a {
-    color: #5f46f8;
+    color: #5553b7;
 }
 
 .mck-sidebox a {
@@ -2266,7 +2296,7 @@ ul.mck-intent-menu > li:hover {
 
 .mck-msg-right .mck-msg-box:after {
     border-color: transparent;
-    border-left-color: #5f46f8;
+    border-left-color: #5553b7;
     border-width: 11px;
 }
 
@@ -4189,10 +4219,6 @@ ul.mck-intent-menu > li:hover {
     /* width:100% !important; */
 }
 #mck-msg-new {
-    /*
-    background-color: #5F46F8;
-    color: white;
-    */
     background-color: white !important;
     color: black;
     border-radius: 26px;
@@ -4272,7 +4298,7 @@ ul.mck-intent-menu > li:hover {
     text-align: left;
     background: #ffffff;
     box-shadow: 0px 2px 8px rgb(0 0 0 / 20%);
-    border-top: 2px solid #5f46f8;
+    border-top: 2px solid #5553b7;
     border-radius: 4px;
     word-break: break-word;
     transition: all ease 0.3s;
@@ -4312,7 +4338,7 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .km-faq-category-card-title {
-    color: #5f46f8;
+    color: #5553b7;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
@@ -6013,3 +6039,14 @@ div#mck-waiting-queue {
     width: 200px;
 }
 /* ----------------------------------------------------------------- */
+.sr-only {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

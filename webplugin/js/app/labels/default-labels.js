@@ -376,11 +376,13 @@ class KMLabel {
             MCK_LABELS['conversation.header.dropdown'].HANDOFF;
         document.getElementById('km-option-faq-text').innerHTML =
             MCK_LABELS['conversation.header.dropdown'].FAQ;
-        document.getElementById('km-bottom-tab-conversations-text').innerText =
-            MCK_LABELS['modern.nav.conversations'];
-        document.getElementById('km-bottom-tab-faq-text').innerText = MCK_LABELS['modern.nav.faqs'];
-        document.getElementById('km-bottom-tab-whatsnew-text').innerText =
-            MCK_LABELS['modern.nav.whatsnew'];
+        const kmConversationsTab = document.getElementById('km-bottom-tab-conversations-text');
+        kmConversationsTab &&
+            (kmConversationsTab.innerText = MCK_LABELS['modern.nav.conversations']);
+        const kmFaqTab = document.getElementById('km-bottom-tab-faq-text');
+        kmFaqTab && (kmFaqTab.innerText = MCK_LABELS['modern.nav.faqs']);
+        const kmWhatsNewTab = document.getElementById('km-bottom-tab-whatsnew-text');
+        kmWhatsNewTab && (kmWhatsNewTab.innerText = MCK_LABELS['modern.nav.whatsnew']);
 
         document.getElementById('mck-voice-speak-btn').innerHTML +=
             MCK_LABELS['voiceInterface'].speak;

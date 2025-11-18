@@ -620,156 +620,27 @@ const firstVisibleMsg = {
         var alUserService = new AlUserService();
         var zendeskChatService = (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
 
-        function getLastBottomTab() {
-            return (
-                (Kommunicate && Kommunicate._globals && Kommunicate._globals.lastBottomTab) || null
-            );
-        }
-
-        function setBottomTabState(tabType) {
-            var $tabs = $applozic('.km-bottom-tab');
-            if (!$tabs.length) {
-                return;
-            }
-            var themeBgClass = 'km-custom-widget-background-color';
-            var $targetTab = $tabs.filter('[data-tab="' + tabType + '"]');
-            if (!$targetTab.length) {
-                $targetTab = $tabs.filter('[data-tab="conversations"]');
-            }
-            $tabs.removeClass('active').attr('aria-selected', 'false');
-            $tabs.find('.km-bottom-tab-icon').removeClass(themeBgClass);
-            $targetTab.addClass('active').attr('aria-selected', 'true');
-            $targetTab.find('.km-bottom-tab-icon').addClass(themeBgClass);
-            Kommunicate._globals = Kommunicate._globals || {};
-            Kommunicate._globals.lastBottomTab = $targetTab.data('tab') || 'conversations';
-        }
-
-        function showBottomTabs() {
-            kommunicateCommons.show('.km-bottom-tab-wrapper');
-        }
-
-        function hideBottomTabs() {
-            kommunicateCommons.hide('.km-bottom-tab-wrapper');
-        }
-
-        setBottomTabState(
-            ($applozic('.km-bottom-tab.active').data('tab') || 'conversations').toString()
-        );
-
-        function restoreLastBottomTab() {
-            var lastTab = getLastBottomTab();
-            if (!lastTab || lastTab === 'conversations') {
-                return;
-            }
-            setTimeout(function () {
-                handleBottomTabChange(lastTab);
-            }, 0);
-        }
-
         var whatsNewManager = new KmWhatsNew({
             kommunicateCommons: kommunicateCommons,
             appOptions: appOptions,
             document: d,
         });
         whatsNewManager.init();
-
-        function handleBottomTabChange(tabType, options) {
-            options = options || {};
-            setBottomTabState(tabType);
-            showBottomTabs();
-
-            var hasActiveConversation =
-                kommunicateCommons.isModernLayoutEnabled() &&
-                !!$applozic('#mck-message-cell .mck-message-inner').data('mck-id');
-            var tabTitleElement = document.getElementById('mck-conversation-title');
-            if (tabTitleElement) {
-                var newTitle =
-                    tabType === 'faqs'
-                        ? MCK_LABELS['faq']
-                        : tabType === 'whats-new'
-                        ? MCK_LABELS['modern.nav.whatsnew']
-                        : MCK_LABELS['conversations.title'];
-                tabTitleElement.textContent = newTitle;
-            }
-            if (tabType === 'conversations') {
-                MCK_EVENT_HISTORY.length = 0;
-                kommunicateCommons.show('#mck-tab-conversation');
-                kommunicateCommons.hide('#mck-tab-individual');
-                kommunicateCommons.show('#mck-contacts-content');
-                if (kommunicateCommons.isModernLayoutEnabled()) {
-                    setTimeout(function () {
-                        var lastTabId =
-                            window.$applozic &&
-                            $applozic('#mck-message-cell .mck-message-inner').data('mck-id');
-                        if (lastTabId) {
-                            kommunicateCommons.show('#mck-tab-individual');
-                            kommunicateCommons.hide('#mck-tab-conversation');
-                        }
-                    }, 0);
-                }
-            }
-
-            if (tabType === 'faqs') {
-                kommunicateCommons.show('#mck-tab-conversation');
-                kommunicateCommons.hide('#mck-tab-individual');
-                kommunicateCommons.hide('#km-whats-new-placeholder');
-                typeof KommunicateUI !== 'undefined' &&
-                    typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
-                    KommunicateUI.toggleModernFaqBackButton(false);
-                if (!options.skipFaqTrigger) {
-                    var $faqButton = $applozic('#km-faq');
-                    if ($faqButton && $faqButton.length) {
-                        $faqButton.trigger('click');
-                        return;
-                    }
-                }
-                kommunicateCommons.hide('.mck-conversation');
-                kommunicateCommons.show('#faq-common');
-                kommunicateCommons.hide('#mck-tab-individual');
-                return;
-            }
-
-            if (tabType === 'whats-new') {
-                whatsNewManager.refresh();
-                kommunicateCommons.show('#mck-tab-conversation');
-                kommunicateCommons.hide('#mck-tab-individual');
-                kommunicateCommons.hide('#faq-common');
-                kommunicateCommons.hide('.mck-conversation');
-                kommunicateCommons.show('#km-whats-new-placeholder');
-                typeof KommunicateUI !== 'undefined' &&
-                    typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
-                    KommunicateUI.toggleModernFaqBackButton(false);
-                var tabTitle = document.getElementById('mck-tab-title');
-                tabTitle && (tabTitle.textContent = MCK_LABELS['modern.nav.whatsnew']);
-                kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
-                kommunicateCommons.hide('#mck-tab-individual .mck-name-status-container');
-                kommunicateCommons.hide('#mck-tab-individual');
-                return;
-            }
-
-            typeof KommunicateUI !== 'undefined' &&
-                typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
-                KommunicateUI.toggleModernFaqBackButton(false);
-            kommunicateCommons.hide('#km-whats-new-placeholder');
-            kommunicateCommons.hide('#faq-common');
-            kommunicateCommons.show('.mck-conversation');
-            kommunicateCommons.show('#mck-contacts-content');
-            var tabTitle = document.getElementById('mck-tab-title');
-            tabTitle && (tabTitle.textContent = MCK_LABELS['conversations.title']);
-            kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
-            kommunicateCommons.hide('#mck-tab-individual .mck-name-status-container');
-            kommunicateCommons.show('#mck-tab-conversation');
-            var keepConversationHeader =
-                tabType === 'conversations' &&
-                kommunicateCommons.isModernLayoutEnabled() &&
-                !hasActiveConversation;
-            if (
-                typeof KommunicateUI !== 'undefined' &&
-                typeof KommunicateUI.showChat === 'function'
-            ) {
-                KommunicateUI.showChat({ keepConversationHeader: keepConversationHeader });
-            }
-        }
+        var topBarManager = new KmTopBar({
+            kommunicateCommons: kommunicateCommons,
+            document: d,
+            labels: MCK_LABELS,
+        });
+        w.KmTopBarManager = topBarManager;
+        w.KM_TOP_BAR = topBarManager;
+        var bottomTabManager = new KmBottomTabs({
+            kommunicateCommons: kommunicateCommons,
+            document: d,
+            whatsNewManager: whatsNewManager,
+            eventHistory: MCK_EVENT_HISTORY,
+        });
+        bottomTabManager.init();
+        w.KmBottomTabsManager = bottomTabManager;
         var kmNavBar = new KmNavBar(mckMessageLayout);
         const answerFeedbackService = new AnswerFeedback(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
@@ -883,7 +754,7 @@ const firstVisibleMsg = {
             if (!wasSoftHidden) {
                 KommunicateUI.showChat();
             }
-            restoreLastBottomTab();
+            bottomTabManager.restoreLastTab();
             kommunicateCommons.hide('#mck-away-msg-box');
             if (appOptions.appSettings.currentActivatedPlan == 'churn') {
                 return _this.churnCustomerWidgetChanges();
@@ -2526,7 +2397,7 @@ const firstVisibleMsg = {
                     }
                 });
 
-                showBottomTabs();
+                bottomTabManager.show();
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
                     for (var i = 0; i < mckContactNameArray.length; i++) {
@@ -4336,16 +4207,16 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '.km-bottom-tab', function (e) {
                     e.preventDefault();
                     var tabType = $applozic(this).data('tab') || 'conversations';
-                    handleBottomTabChange(tabType);
+                    bottomTabManager.handleChange(tabType);
                 });
 
                 $applozic(d).on('click', '#km-faq', function () {
-                    handleBottomTabChange('faqs', { skipFaqTrigger: true });
+                    bottomTabManager.handleChange('faqs', { skipFaqTrigger: true });
                 });
 
                 $applozic(d).on('click', '#km-faq-option', function (e) {
                     e.preventDefault();
-                    handleBottomTabChange('faqs');
+                    bottomTabManager.handleChange('faqs');
                 });
 
                 $mck_group_search.click(function () {
@@ -7870,7 +7741,7 @@ const firstVisibleMsg = {
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
                 kommunicateCommons.hide('#km-faq');
                 if (params.tabId) {
-                    hideBottomTabs();
+                    bottomTabManager.hide();
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
                     $mck_msg_inner.data('mck-conversationid', params.conversationId);
@@ -7966,7 +7837,7 @@ const firstVisibleMsg = {
                         mckMessageService.handleBusinessHours();
                     }
                 } else {
-                    showBottomTabs();
+                    bottomTabManager.show();
                     params.tabId = '';
                     if (IS_OFFLINE_MESSAGE_ENABLED) {
                         mckMessageLayout.hideOfflineMessage();
@@ -7977,12 +7848,18 @@ const firstVisibleMsg = {
                         KommunicateUI.toggleModernFaqBackButton(false);
                     KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
                     kommunicateCommons.show('#mck-tab-conversation');
-                    var conversationTitleElement = document.getElementById(
-                        'mck-conversation-title'
-                    );
-                    if (conversationTitleElement) {
-                        conversationTitleElement.textContent =
-                            MCK_LABELS['conversations.title'] || 'Conversations';
+                    if (typeof document !== 'undefined') {
+                        var conversationTitleElement = document.getElementById(
+                            'mck-conversation-title'
+                        );
+                        if (conversationTitleElement) {
+                            var conversationTitleLabel =
+                                (typeof MCK_LABELS === 'object' &&
+                                    MCK_LABELS &&
+                                    MCK_LABELS['conversations.title']) ||
+                                'Conversations';
+                            conversationTitleElement.textContent = conversationTitleLabel;
+                        }
                     }
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
@@ -10556,7 +10433,9 @@ const firstVisibleMsg = {
                         : 'mck-conversation-open';
                 var isResolvedConversation = statusClass === 'mck-conversation-resolved';
                 var resolvedTagText =
-                    (MCK_LABELS['filter.conversation.list'] &&
+                    (typeof MCK_LABELS === 'object' &&
+                        MCK_LABELS &&
+                        MCK_LABELS['filter.conversation.list'] &&
                         MCK_LABELS['filter.conversation.list'].RESOLVED_TAG) ||
                     'Resolved';
 

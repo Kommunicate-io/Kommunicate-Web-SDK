@@ -56,6 +56,8 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-attachment-service.js'),
     // path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
     path.resolve(__dirname, 'js/app/km-nav-bar.js'),
+    path.resolve(__dirname, 'js/app/km-top-bar.js'),
+    path.resolve(__dirname, 'js/app/km-bottom-tabs.js'),
     path.resolve(__dirname, 'js/app/components/answer-feedback-service.js'),
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),

@@ -34,6 +34,12 @@ app.use(
         maxAge: fileMaxAge,
     })
 );
+app.use(
+    '/example',
+    express.static(path.join(__dirname, '../example'), {
+        maxAge: false,
+    })
+);
 
 //Listen for requests
 var server = app.listen(app.get('port'), function () {

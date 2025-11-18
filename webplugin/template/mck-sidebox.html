@@ -1973,12 +1973,12 @@
                         </div>
                     </div>
                     <div id="mck-map-content" class="mck-loc-content"></div>
-                    <div class="n-vis">
-                        <label class="blk-sm-2 mck-control-label">Lat.:</label>
+                    <div class="n-vis" aria-hidden="true">
+                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lat">Lat.:</label>
                         <div class="blk-sm-3">
                             <input type="text" id="mck-loc-lat" class="mck-form-control" />
                         </div>
-                        <label class="blk-sm-2 mck-control-label">Long.:</label>
+                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lon">Long.:</label>
                         <div class="blk-sm-3">
                             <input type="text" id="mck-loc-lon" class="mck-form-control" />
                         </div>
@@ -2020,6 +2020,8 @@
         class="mck-box mck-gm-search-box fade"
         aria-hidden="true"
         style="visibility: hidden"
+        role="dialog"
+        aria-labelledby="mck-gm-search-title"
     >
         <div class="mck-box-dialog mck-box-sm">
             <div class="mck-box-content">
@@ -2036,7 +2038,7 @@
                         </svg>
                     </div>
                     <div class="blk-lg-7">
-                        <h4 class="mck-box-title">Add Member</h4>
+                        <h4 class="mck-box-title" id="mck-gm-search-title">Add Member</h4>
                     </div>
                     <div class="blk-lg-2">
                         <button
@@ -2095,8 +2097,9 @@
     <div
         id="km-chat-login-modal"
         class="km-sidemodal km-modal"
-        role="main"
+        role="dialog"
         aria-live="polite"
+        aria-labelledby="km-tab-title"
         style="visibility: hidden"
     >
         <div class="km-modal-dialog km-modal-sm">
@@ -2144,6 +2147,7 @@
                     <div class="km-modal-form">
                         <form id="km-form-chat-login" class="km-vertical">
                             <div class="km-form-group km-form-group-container">
+                                <label class="sr-only" for="km-userId">User ID</label>
                                 <input
                                     class="km-form-control km-input-width n-vis"
                                     id="km-userId"
@@ -2160,6 +2164,7 @@
                                     class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
                                     tabindex="0"
                                     role="button"
+                                    aria-label="Start conversation"
                                 ></button>
                             </div>
                         </form>

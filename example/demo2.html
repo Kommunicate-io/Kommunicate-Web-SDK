@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kommunicate WhatsNew Demo</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 2rem;
+                background: #f7f8fb;
+            }
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                color: #333;
+            }
+            p {
+                max-width: 600px;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Kommunicate WhatsNew Demo</h1>
+        <p>
+            This page loads the Kommunicate widget configured with a sample Whats New list. Ensure
+            your development server is running on <code>http://localhost:3030</code>
+            so the script below can load.
+        </p>
+        <script>
+            (function (d, m) {
+                var kommunicateSettings = {
+                    appId: 'kommunicate-support',
+                    popupWidget: true,
+                    automaticChatOpenOnNavigation: true,
+                    whatsNewList: [
+                        {
+                            title: 'October 2025 Product Release Notes',
+                            description: '2FA, bulk delete, search URLs, and more.',
+                            meta: 'October 2025',
+                            link:
+                                'https://www.kommunicate.io/blog/product-release-notes-october-2025/',
+                            linkText: 'Read release notes',
+                        },
+                        {
+                            title: 'Brash Solutions automated 500 daily queries with Kommunicate',
+                            description:
+                                'Learn how they diverted phone calls to AI chatbots and scaled support.',
+                            meta: 'Customer Story',
+                            link: 'https://www.kommunicate.io/blog/brash-solutions/',
+                            linkText: 'Read the case study',
+                        },
+                    ],
+                };
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://localhost:3030/v2/kommunicate.app';
+                var h = document.getElementsByTagName('head')[0];
+                h.appendChild(s);
+                window.kommunicate = m;
+                m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        </script>
+    </body>
+</html>

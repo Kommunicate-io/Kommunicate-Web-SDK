@@ -103,9 +103,18 @@ Kommunicate.getFaqCategories = function (data) {
                       ' ' +
                       (articleCount === 1 ? articleLabel : articlesLabel || articleLabel + 's')
                     : '';
+                var safeCategoryNameAttr = categoryName
+                    ? categoryName
+                          .replace(/&/g, '&amp;')
+                          .replace(/"/g, '&quot;')
+                          .replace(/'/g, '&#39;')
+                          .replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;')
+                          .replace(/ /g, '-')
+                    : '';
                 $applozic('#km-faq-category-list-container').append(
                     '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="' +
-                        categoryName.replace(/ /g, '-') +
+                        safeCategoryNameAttr +
                         '">' +
                         '<div class="km-faq-category-card-content">' +
                         '<div class="km-faq-category-card-title-row">' +
