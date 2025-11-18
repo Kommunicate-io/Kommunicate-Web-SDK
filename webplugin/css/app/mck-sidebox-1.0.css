@@ -130,6 +130,9 @@
     cursor: pointer;
     transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
+.km-bottom-tab.vis {
+    display: inline-flex;
+}
 .km-bottom-tab:hover {
     color: var(--km-font-title-color);
 }
@@ -345,6 +348,9 @@
 .mck-sidebox-launcher.vis,
 .mck-msg-preview.vis {
     display: block;
+}
+.mck-sidebox .km-bottom-tab.vis {
+    display: inline-flex !important;
 }
 
 .mck-box-body .mck-tab-cell.vis {
