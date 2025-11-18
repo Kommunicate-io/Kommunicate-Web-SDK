@@ -137,9 +137,8 @@
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0;
                 }
-                kommunicateCommons.show('#mck-tab-conversation');
+                kommunicateCommons.show('#mck-tab-conversation', '#mck-contacts-content');
                 kommunicateCommons.hide('#mck-tab-individual');
-                kommunicateCommons.show('#mck-contacts-content');
                 if (isModernLayout) {
                     setTimeout(function () {
                         var latestMessageInner =
@@ -169,10 +168,8 @@
                     var faqButton = documentRef && documentRef.getElementById('km-faq');
                     faqButton && faqButton.click();
                 }
-                kommunicateCommons.show('#mck-tab-conversation');
-                kommunicateCommons.hide('.mck-conversation');
-                kommunicateCommons.show('#faq-common');
-                kommunicateCommons.hide('#mck-tab-individual');
+                kommunicateCommons.show('#mck-tab-conversation', '#faq-common');
+                kommunicateCommons.hide('.mck-conversation', '#mck-tab-individual');
                 return;
             }
 
@@ -180,11 +177,8 @@
                 whatsNewManager &&
                     typeof whatsNewManager.refresh === 'function' &&
                     whatsNewManager.refresh();
-                kommunicateCommons.show('#mck-tab-conversation');
-                kommunicateCommons.hide('#mck-tab-individual');
-                kommunicateCommons.hide('#faq-common');
-                kommunicateCommons.hide('.mck-conversation');
-                kommunicateCommons.show('#km-whats-new-placeholder');
+                kommunicateCommons.show('#mck-tab-conversation', '#km-whats-new-placeholder');
+                kommunicateCommons.hide('#mck-tab-individual', '#faq-common', '.mck-conversation');
                 ui &&
                     typeof ui.toggleModernFaqBackButton === 'function' &&
                     ui.toggleModernFaqBackButton(false);
@@ -202,10 +196,8 @@
             ui &&
                 typeof ui.toggleModernFaqBackButton === 'function' &&
                 ui.toggleModernFaqBackButton(false);
-            kommunicateCommons.hide('#km-whats-new-placeholder');
-            kommunicateCommons.hide('#faq-common');
-            kommunicateCommons.show('.mck-conversation');
-            kommunicateCommons.show('#mck-contacts-content');
+            kommunicateCommons.hide('#km-whats-new-placeholder', '#faq-common');
+            kommunicateCommons.show('.mck-conversation', '#mck-contacts-content');
             if (documentRef && typeof documentRef.getElementById === 'function') {
                 var tabTitleElement = documentRef.getElementById('mck-tab-title');
                 tabTitleElement &&
@@ -214,8 +206,10 @@
                         'Conversations'
                     ));
             }
-            kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
-            kommunicateCommons.hide('#mck-tab-individual .mck-name-status-container');
+            kommunicateCommons.hide(
+                '#mck-tab-individual .mck-tab-link.mck-back-btn-container',
+                '#mck-tab-individual .mck-name-status-container'
+            );
             kommunicateCommons.show('#mck-tab-conversation');
             var keepConversationHeader =
                 tabType === 'conversations' && isModernLayout && !hasActiveConversation;
