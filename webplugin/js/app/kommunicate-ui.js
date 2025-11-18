@@ -396,6 +396,12 @@ KommunicateUI = {
                 'padding'
             );
             KommunicateUI.checkSingleThreadedConversationSettings(true);
+            var searchInput = document.getElementById('km-faq-search-input');
+            var hasSearchValue = searchInput && searchInput.value && searchInput.value.trim();
+            if (hasSearchValue) {
+                kommunicateCommons.hide('#km-faq-category-list-container');
+                kommunicateCommons.show('#km-faq-list-container');
+            }
         });
 
         // on click of FAQ category card the FAQ list for that category will open
@@ -418,6 +424,12 @@ KommunicateUI = {
             kommunicateCommons.show('#km-faq-back-btn-wrapper');
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-list');
+            var searchInput = document.getElementById('km-faq-search-input');
+            var hasSearchValue = searchInput && searchInput.value && searchInput.value.trim();
+            if (hasSearchValue) {
+                kommunicateCommons.hide('#km-faq-category-list-container');
+                kommunicateCommons.show('#km-faq-list-container');
+            }
             var categoryName = this.getAttribute('data-category-name');
             document.querySelector('#km-faq-list-container').innerHTML = '';
             Kommunicate.getFaqList(data, categoryName);
@@ -746,12 +758,22 @@ KommunicateUI = {
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['looking.for.something.else'];
         }
-        document.getElementById('km-faq-list-container').innerHTML = '';
-        $applozic.each(response.data, function (i, faq) {
+        var faqList = document.getElementById('km-faq-list-container');
+        if (!faqList) {
+            return;
+        }
+        if (response.data && response.data.length === 0) {
+            faqList.innerHTML = '';
+            kommunicateCommons.hide('#km-faqdiv', '#km-faq-category-list-container');
+            return;
+        }
+        kommunicateCommons.show('#km-faqdiv', '#km-faq-category-list-container');
+        faqList.innerHTML = '';
+        response.data.forEach(function (faq) {
             var id = faq.id || faq.articleId;
             var title = faq.name || faq.title;
             title = title && kommunicateCommons.formatHtmlTag(title);
-            document.getElementById('km-faq-list-container').innerHTML +=
+            faqList.innerHTML +=
                 '<li class="km-faq-list"  data-articleId="' +
                 id +
                 '"><a class="km-faqdisplay"> <div class="km-faqimage">' +
