@@ -16,6 +16,8 @@
     --km-font-title-color: #1c2043;
     --km-font-body-color: #5f6689;
     --km-font-meta-color: #8d94b5;
+    --km-primary-color: #5f46f8;
+    --km-primary-color-rgb: 95, 70, 248;
 }
 
 .mck-box {
@@ -4409,14 +4411,13 @@ ul.mck-intent-menu > li:hover {
     max-height: 100% !important;
 }
 .km-faqsearch {
-    padding: 0 5px;
     font-size: 14px;
     color: #555;
     outline: none;
     border: 0;
     z-index: auto;
     border-radius: 3px;
-    padding: 10px 0px;
+    padding: 10px 0;
     margin: 0;
     width: 100%;
     position: relative;
@@ -5599,7 +5600,7 @@ div#mck-waiting-queue {
     color: #fff;
     font-size: 15px;
     border: none;
-    background: #5f46f8;
+    background: var(--km-primary-color);
 }
 
 #mck-submit-comment:disabled {
