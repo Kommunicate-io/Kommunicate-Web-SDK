@@ -28,7 +28,7 @@ $known-prefixes
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
-    border: 1px solid rgba(4, 68, 77, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.04);
 }
 
 .km-bottom-tab {
@@ -66,6 +66,53 @@ $known-prefixes
     transform: translateY(-1px);
 }
 
+@media (max-width: 600px) {
+    .km-bottom-tab {
+        font-size: 11px;
+        padding: 5px 0;
+        gap: 3px;
+    }
+    .km-bottom-tab-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .km-bottom-tab-icon svg {
+        width: 17px;
+        height: 17px;
+    }
+}
+@media (max-width: 380px) {
+    .km-bottom-tab {
+        font-size: 10px;
+        padding: 4px 0;
+        gap: 2px;
+    }
+    .km-bottom-tab-icon {
+        width: 28px;
+        height: 28px;
+    }
+    .km-bottom-tab-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+@media (max-width: 330px) {
+    .km-bottom-tab {
+        font-size: 9px;
+        padding: 3px 0;
+    }
+    .km-bottom-tab-icon {
+        width: 26px;
+        height: 26px;
+    }
+    .km-bottom-tab-icon svg {
+        width: 15px;
+        height: 15px;
+    }
+    .km-bottom-tab-bar {
+        gap: 4px;
+    }
+}
 .km-bottom-tab-icon {
     width: 34px;
     height: 34px;
@@ -102,11 +149,11 @@ $known-prefixes
 
 .km-whats-new-empty {
     text-align: center;
-    color: #9aa2c3;
+    color: #1c1c1c;
 }
 
 .km-whats-new-list,
-#km-faq-category-list-container {
+.km-faq-category-list-container {
     list-style: none;
     padding: 16px 8px 24px;
     display: flex;
@@ -135,6 +182,7 @@ $known-prefixes
     flex-direction: column;
     gap: 12px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+    margin-bottom: 12px;
 }
 .km-whats-new-card:hover,
 .km-faq-category-card:hover {
@@ -147,7 +195,7 @@ $known-prefixes
 .km-faq-category-card strong {
     margin: 0 0 4px;
     font-size: 16px;
-    color: #1c2043;
+    color: var(--km-font-title-color);
     display: block;
 }
 .km-whats-new-card p,
@@ -155,7 +203,7 @@ $known-prefixes
 .km-faq-category-card p,
 .km-faq-category-card span {
     margin: 0;
-    color: #61678a;
+    color: var(--km-font-body-color);
     display: block;
 }
 
@@ -192,8 +240,8 @@ $known-prefixes
 }
 
 .km-faq-category-card-body {
-    color: #5f6689;
-    font-size: 13px;
+    color: var(--km-font-body-color);
+    font-size: var(--km-font-body-size);
     line-height: 1.5;
     margin: 0;
 }
@@ -205,7 +253,7 @@ $known-prefixes
     font-size: 11px;
     letter-spacing: 0.4px;
     text-transform: uppercase;
-    color: #8d94b5;
+    color: var(--km-font-meta-color);
     justify-content: flex-start;
     width: 100%;
     padding-left: 0;
@@ -214,7 +262,7 @@ $known-prefixes
 
 .km-faq-category-card-count {
     font-weight: 600;
-    color: #4b516d;
+    color: #1c1c1c;
     display: inline-flex;
     align-items: center;
     gap: 6px;

@@ -328,10 +328,13 @@ class KMLabel {
         document
             .getElementById('km-faq-search-input')
             .setAttribute('placeholder', MCK_LABELS['search.faq']);
-        var faqBackButton = document.getElementById('km-faq-back-btn');
-        faqBackButton &&
+        var faqBackButton =
+            document.getElementById('km-faq-back-btn') ||
+            document.getElementById('km-faq-back-btn-legacy');
+        if (faqBackButton) {
             faqBackButton.setAttribute('aria-label', MCK_LABELS['faq.back.to.categories']);
-        faqBackButton && faqBackButton.setAttribute('title', MCK_LABELS['faq.back.to.categories']);
+            faqBackButton.setAttribute('title', MCK_LABELS['faq.back.to.categories']);
+        }
         document.getElementById('mck-no-faq-found').innerHTML =
             MCK_LABELS['looking.for.something.else'];
         document.getElementById('km-internet-disconnect-msg').innerHTML = MCK_LABELS['offline.msg'];

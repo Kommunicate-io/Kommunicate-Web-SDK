@@ -744,9 +744,14 @@ const firstVisibleMsg = {
         };
 
         _this.mckLaunchSideboxChat = function () {
+            if (typeof document === 'undefined') {
+                return;
+            }
             var sideboxEl = document.getElementById('mck-sidebox');
             var wasSoftHidden = sideboxEl && sideboxEl.classList.contains('km-soft-hidden');
-            sideboxEl && sideboxEl.classList.remove('km-soft-hidden');
+            if (sideboxEl && sideboxEl.classList) {
+                sideboxEl.classList.remove('km-soft-hidden');
+            }
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
             KOMMUNICATE_VERSION === 'v2' &&
@@ -5415,6 +5420,9 @@ const firstVisibleMsg = {
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
             };
             _this.softHideSidebox = function () {
+                if (typeof document === 'undefined') {
+                    return;
+                }
                 var sidebox = document.getElementById('mck-sidebox');
                 if (!sidebox) {
                     _this.closeSideBox();
@@ -6788,7 +6796,7 @@ const firstVisibleMsg = {
                 return (
                     document.querySelector('#km-faqdiv').classList.contains('vis') ||
                     document
-                        .querySelector('#km-faq-category-list-container')
+                        .querySelector('.km-faq-category-list-container')
                         .classList.contains('vis') ||
                     document.querySelector('#km-contact-search-input-box').classList.contains('vis')
                 );

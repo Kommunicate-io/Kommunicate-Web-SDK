@@ -112,7 +112,7 @@ Kommunicate.getFaqCategories = function (data) {
                           .replace(/>/g, '&gt;')
                           .replace(/ /g, '-')
                     : '';
-                $applozic('#km-faq-category-list-container').append(
+                $applozic('.km-faq-category-list-container').append(
                     '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="' +
                         safeCategoryNameAttr +
                         '">' +

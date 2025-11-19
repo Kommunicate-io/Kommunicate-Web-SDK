@@ -5,7 +5,19 @@
 var kommunicateCommons = new KommunicateCommons();
 var KM_GLOBAL = kommunicate._globals;
 function getTopBarManager() {
+    if (typeof window === 'undefined') {
+        return null;
+    }
     return window.KmTopBarManager || null;
+}
+function getFaqClearButton() {
+    if (typeof document === 'undefined') {
+        return null;
+    }
+    return (
+        document.querySelector('.km-faqsearch-clear') ||
+        document.querySelector('.km-faqsearch-icon__clear')
+    );
 }
 KommunicateUI = {
     awayMessageInfo: {},
@@ -331,7 +343,7 @@ KommunicateUI = {
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             KommunicateUI.showHeader();
             KommunicateUI.toggleModernFaqBackButton(false);
-            kommunicateCommons.hide('#km-faq-back-btn-wrapper');
+            kommunicateCommons.hide('.km-faq-back-btn-wrapper');
             KommunicateUI.showFaqListHeaderState();
             KommunicateUI.awayMessageScroll = true;
             if (isFaqCategoryPresent) {
@@ -347,14 +359,12 @@ KommunicateUI = {
             // remove n-vis
             kommunicateCommons.modifyClassList(
                 {
-                    id: [
-                        'km-contact-search-input-box',
-                        'faq-common',
-                        'km-faqdiv',
-                        'mck-tab-title',
+                    id: ['km-contact-search-input-box', 'faq-common', 'km-faqdiv', 'mck-tab-title'],
+                    class: [
+                        'mck-conversation-back-btn',
+                        'km-contact-input-container',
                         'km-faq-category-list-container',
                     ],
-                    class: ['mck-conversation-back-btn', 'km-contact-input-container'],
                 },
                 'vis',
                 'n-vis'
@@ -383,9 +393,9 @@ KommunicateUI = {
             );
 
             isFaqCategoryPresent
-                ? $applozic('#km-faq-category-list-container').addClass('n-vis')
+                ? $applozic('.km-faq-category-list-container').addClass('n-vis')
                 : $applozic('#km-faq-list-container').addClass('n-vis') &&
-                  $applozic('#km-faq-category-list-container').removeClass('n-vis');
+                  $applozic('.km-faq-category-list-container').removeClass('n-vis');
 
             $applozic('#mck-tab-title').html(MCK_LABELS['faq']);
             $applozic('#mck-msg-new').attr('disabled', false);
@@ -399,7 +409,7 @@ KommunicateUI = {
             var searchInput = document.getElementById('km-faq-search-input');
             var hasSearchValue = searchInput && searchInput.value && searchInput.value.trim();
             if (hasSearchValue) {
-                kommunicateCommons.hide('#km-faq-category-list-container');
+                kommunicateCommons.hide('.km-faq-category-list-container');
                 kommunicateCommons.show('#km-faq-list-container');
             }
         });
@@ -408,7 +418,7 @@ KommunicateUI = {
         $applozic(d).on('click', '.km-faq-category-card', function () {
             kommunicateCommons.modifyClassList(
                 {
-                    id: ['km-faq-category-list-container'],
+                    class: ['km-faq-category-list-container'],
                 },
                 'n-vis',
                 'vis'
@@ -421,13 +431,13 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.toggleModernFaqBackButton(true);
-            kommunicateCommons.show('#km-faq-back-btn-wrapper');
+            kommunicateCommons.show('.km-faq-back-btn-wrapper');
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-list');
             var searchInput = document.getElementById('km-faq-search-input');
             var hasSearchValue = searchInput && searchInput.value && searchInput.value.trim();
             if (hasSearchValue) {
-                kommunicateCommons.hide('#km-faq-category-list-container');
+                kommunicateCommons.hide('.km-faq-category-list-container');
                 kommunicateCommons.show('#km-faq-list-container');
             }
             var categoryName = this.getAttribute('data-category-name');
@@ -436,7 +446,7 @@ KommunicateUI = {
         });
 
         document.addEventListener('click', function (event) {
-            var backButton = event.target && event.target.closest('#km-faq-back-btn');
+            var backButton = event.target && event.target.closest('.km-faq-back-btn');
             if (!backButton) {
                 return;
             }
@@ -465,12 +475,8 @@ KommunicateUI = {
                     // remove n-vis
                     kommunicateCommons.modifyClassList(
                         {
-                            id: [
-                                'km-faqdiv',
-                                'km-faq-category-list-container',
-                                'km-contact-search-input-box',
-                            ],
-                            class: ['km-contact-input-container'],
+                            id: ['km-faqdiv', 'km-contact-search-input-box'],
+                            class: ['km-contact-input-container', 'km-faq-category-list-container'],
                         },
                         'vis',
                         'n-vis'
@@ -487,7 +493,7 @@ KommunicateUI = {
                     );
 
                     $applozic('#mck-msg-new').attr('disabled', false);
-                    kommunicateCommons.hide('#km-faq-back-btn-wrapper');
+                    kommunicateCommons.hide('.km-faq-back-btn-wrapper');
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     KommunicateUI.toggleModernFaqBackButton(false);
                     return;
@@ -550,13 +556,9 @@ KommunicateUI = {
                 // add n-vis
                 kommunicateCommons.modifyClassList(
                     {
-                        id: [
-                            'faq-common',
-                            'km-faqdiv',
-                            'km-faq-category-list-container',
-                            'km-contact-search-input-box',
-                        ],
+                        id: ['faq-common', 'km-faqdiv', 'km-contact-search-input-box'],
                         class: [
+                            'km-faq-category-list-container',
                             'km-no-results-found-container',
                             'mck-agent-status-text',
                             'mck-agent-image-container',
@@ -573,9 +575,10 @@ KommunicateUI = {
                 faqAnswerContainer && (faqAnswerContainer.innerHTML = '');
                 MCK_EVENT_HISTORY.length = 0;
                 KommunicateUI.handleConversationBanner();
+                var clearBtn = getFaqClearButton();
                 document.querySelector('#km-faq-search-input').value &&
-                    document.querySelector('.km-faqsearch-icon__clear') &&
-                    document.querySelector('.km-faqsearch-icon__clear').click();
+                    clearBtn &&
+                    clearBtn.click();
                 KommunicateUI.showConversationList();
                 return;
             }
@@ -629,7 +632,7 @@ KommunicateUI = {
                         );
                         kommunicateCommons.show('#km-faqdiv', '#km-faqanswer');
                         KommunicateUI.toggleModernFaqBackButton(true);
-                        kommunicateCommons.hide('#km-faq-back-btn-wrapper');
+                        kommunicateCommons.hide('.km-faq-back-btn-wrapper');
                         $applozic('#km-faqanswer .km-faqanswer').linkify({
                             target: '_blank',
                         });
@@ -663,12 +666,12 @@ KommunicateUI = {
                 var searchQuery = e.target.value;
 
                 setFaqSearchIconState(searchQuery.length > 0);
-                if (!document.querySelector('#km-faq-category-list-container.n-vis')) {
+                if (!document.querySelector('.km-faq-category-list-container.n-vis')) {
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                         MCK_EVENT_HISTORY.push('km-faq-list');
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['km-faq-category-list-container'],
+                            class: ['km-faq-category-list-container'],
                         },
                         'n-vis',
                         'vis'
@@ -764,10 +767,10 @@ KommunicateUI = {
         }
         if (response.data && response.data.length === 0) {
             faqList.innerHTML = '';
-            kommunicateCommons.hide('#km-faqdiv', '#km-faq-category-list-container');
+            kommunicateCommons.hide('#km-faqdiv', '.km-faq-category-list-container');
             return;
         }
-        kommunicateCommons.show('#km-faqdiv', '#km-faq-category-list-container');
+        kommunicateCommons.show('#km-faqdiv', '.km-faq-category-list-container');
         faqList.innerHTML = '';
         response.data.forEach(function (faq) {
             var id = faq.id || faq.articleId;
@@ -887,7 +890,7 @@ KommunicateUI = {
         KommunicateUI.setIndividualTitle();
         KommunicateUI.resetConversationListTitle();
         KommunicateUI.toggleModernFaqBackButton(false);
-        kommunicateCommons.hide('#km-faq-back-btn-wrapper');
+        kommunicateCommons.hide('.km-faq-back-btn-wrapper');
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
     },
@@ -967,7 +970,7 @@ KommunicateUI = {
     showFaqCategoryScreen: function () {
         kommunicateCommons.modifyClassList(
             {
-                id: ['km-faq-category-list-container'],
+                class: ['km-faq-category-list-container'],
             },
             'vis',
             'n-vis'
@@ -981,7 +984,7 @@ KommunicateUI = {
         );
         kommunicateCommons.hide('.km-no-results-found-container');
         kommunicateCommons.show('#km-contact-search-input-box');
-        kommunicateCommons.hide('#km-faq-back-btn-wrapper');
+        kommunicateCommons.hide('.km-faq-back-btn-wrapper');
         KommunicateUI.toggleModernFaqBackButton(false);
         if (
             Array.isArray(MCK_EVENT_HISTORY) &&

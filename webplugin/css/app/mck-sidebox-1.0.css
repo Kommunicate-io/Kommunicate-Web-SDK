@@ -4202,7 +4202,7 @@ ul.mck-intent-menu > li:hover {
     margin: 0;
     z-index: 10;
 }
-#km-faq-category-list-container {
+.km-faq-category-list-container {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 48px;
@@ -4234,7 +4234,7 @@ ul.mck-intent-menu > li:hover {
     .km-faq-category-card {
         width: 100%;
     }
-    #km-faq-category-list-container {
+    .km-faq-category-list-container {
         justify-content: flex-start;
     }
 }
@@ -4242,7 +4242,7 @@ ul.mck-intent-menu > li:hover {
     .km-faq-category-card {
         width: 28%;
     }
-    #km-faq-category-list-container {
+    .km-faq-category-list-container {
         justify-content: center;
     }
 }
@@ -4670,7 +4670,7 @@ div#mck-tab-title.mck-tab-title {
     width: 45px;
     outline: none;
 }
-#km-faq-back-btn {
+.km-faq-back-btn {
     -webkit-appearance: none;
     padding: 0;
     cursor: pointer;
@@ -4681,13 +4681,13 @@ div#mck-tab-title.mck-tab-title {
     outline: none;
 }
 #mck-conversation-back-btn,
-#km-faq-back-btn,
+.km-faq-back-btn,
 .mck-close-sidebox {
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 #mck-conversation-back-btn:hover,
-#km-faq-back-btn:hover,
+.km-faq-back-btn:hover,
 .mck-close-sidebox:hover {
     background-color: rgba(0, 0, 0, 0.14);
     border-radius: 6px;
@@ -5813,7 +5813,7 @@ div#mck-waiting-queue {
 
 /* Chat launcher animation for initial load Code Ends */
 
-#km-faq-back-btn-wrapper {
+.km-faq-back-btn-wrapper {
     display: flex;
     align-items: center;
 }
