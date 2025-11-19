@@ -5855,42 +5855,6 @@ div#mck-waiting-queue {
     line-height: 1;
 }
 
-/* Unified typography for conversations, FAQs, and What's New */
-.mck-contact-list .mck-cont-name strong,
-.km-faq-category-card-title,
-.km-whats-new-card h4,
-.km-faq-list--body_que {
-    font-family: var(--km-font-family);
-    font-size: var(--km-font-title-size);
-    font-weight: var(--km-font-title-weight);
-    color: var(--km-font-title-color);
-    line-height: 1.35;
-}
-
-.mck-cont-msg-wrapper,
-.km-faq-category-card-body,
-.km-whats-new-card p,
-.km-faq-list--body_ans,
-.km-no-results-found p,
-.km-talk-to-human-div p,
-.km-faqsearch-input {
-    font-family: var(--km-font-family);
-    font-size: var(--km-font-body-size);
-    color: var(--km-font-body-color);
-    line-height: 1.5;
-}
-
-.mck-contact-list .mck-cont-msg-date,
-.mck-conversation-status-time,
-.km-whats-new-meta,
-.km-faq-category-card-count,
-.km-faqsearch-input::placeholder {
-    font-family: var(--km-font-family);
-    font-size: var(--km-font-meta-size);
-    letter-spacing: 0.4px;
-    color: var(--km-font-meta-color);
-}
-
 /* -----------------Support for hiding list and buttons post call to action------------- */
 /* .mck-msg-left [data-hidepostcta="true"] {
 	display: none;
