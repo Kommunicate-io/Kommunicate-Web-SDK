@@ -8,7 +8,7 @@
 }
 
 @mixin km-card-surface {
-    margin: 0;
+    margin: 8px;
     width: 100%;
     box-sizing: border-box;
     border-radius: 18px;
@@ -184,14 +184,15 @@
 .km-whats-new-list,
 .km-faq-category-list-container {
     list-style: none;
-    padding: 16px 8px 24px;
+    padding: 16px 8px 24px 0;
     display: flex;
     flex-direction: column;
     gap: 12px;
     box-sizing: border-box;
-    width: 100%;
+    width: calc(100% - 16px);
     max-width: 420px;
-    margin: 0 auto;
+    margin-left: 8px;
+    margin-right: 24px;
 }
 
 .km-whats-new-card,
@@ -236,10 +237,6 @@
 
     &.km-custom-widget-border-color {
         border-color: transparent !important;
-    }
-
-    &:hover {
-        transform: translateY(-2px);
     }
 }
 

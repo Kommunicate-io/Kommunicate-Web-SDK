@@ -167,7 +167,7 @@ $known-prefixes
 
 .km-whats-new-card,
 .km-faq-category-card {
-    margin: 0;
+    margin: 8px;
     width: 100%;
     box-sizing: border-box;
     border-radius: 18px;
@@ -227,9 +227,6 @@ $known-prefixes
 }
 .km-faq-category-card.km-custom-widget-border-color {
     border-color: transparent !important;
-}
-.km-faq-category-card:hover {
-    transform: translateY(-2px);
 }
 
 .km-faq-category-card-title {
