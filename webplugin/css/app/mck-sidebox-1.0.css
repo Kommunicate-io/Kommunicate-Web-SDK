@@ -5833,10 +5833,6 @@ div#mck-waiting-queue {
     justify-content: flex-end;
 }
 
-.mck-conversation-resolved {
-    opacity: 1;
-}
-
 .mck-cont-msg-date {
     display: flex;
     align-items: center;

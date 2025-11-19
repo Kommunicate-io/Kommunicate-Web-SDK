@@ -6793,12 +6793,16 @@ const firstVisibleMsg = {
                 typeof callback == 'function' && callback(data);
             };
             _this.isFaqTabOpen = function () {
+                if (typeof document === 'undefined') {
+                    return false;
+                }
+                var faqTab = document.querySelector('#km-faqdiv');
+                var categoryList = document.querySelector('.km-faq-category-list-container');
+                var contactSearch = document.querySelector('#km-contact-search-input-box');
                 return (
-                    document.querySelector('#km-faqdiv').classList.contains('vis') ||
-                    document
-                        .querySelector('.km-faq-category-list-container')
-                        .classList.contains('vis') ||
-                    document.querySelector('#km-contact-search-input-box').classList.contains('vis')
+                    (faqTab && faqTab.classList.contains('vis')) ||
+                    (categoryList && categoryList.classList.contains('vis')) ||
+                    (contactSearch && contactSearch.classList.contains('vis'))
                 );
             };
             _this.isConversationInWaitingQueue = function () {

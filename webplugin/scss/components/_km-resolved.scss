@@ -120,10 +120,6 @@
     }
 }
 
-.mck-conversation-resolved {
-    opacity: 1;
-}
-
 .mck-cont-msg-date {
     display: flex;
     align-items: center;
@@ -141,8 +137,8 @@
     height: 20px;
     border-radius: 50%;
     padding: 0;
-    color: #1f8f51;
-    background: rgba(31, 143, 81, 0.15);
+    color: $resolved-status-color;
+    background: rgba($resolved-status-color, 0.15);
 
     &.n-vis {
         display: none;
