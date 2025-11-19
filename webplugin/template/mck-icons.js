@@ -411,6 +411,26 @@
             d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
         />
     </symbol>
+    <symbol id="icon-59" viewBox="0 0 16 16">
+        <!-- small left chevron used in header back button -->
+        <path d="M9.5 4L5.5 8L9.5 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-60" viewBox="0 0 16 16">
+        <!-- clear / close X icon for search field -->
+        <path d="M4.5 4.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-61" viewBox="0 0 24 24">
+        <!-- FAQ icon (book + question) copied from inline SVG in template -->
+        <path d="M7 5h7a3 3 0 0 1 3 3v11H8a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M10.5 8.5a2 2 0 1 1 2.15 2 1.4 1.4 0 0 0-1.1 1.37V13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="11.6" cy="16.5" r="0.9" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-62" viewBox="0 0 24 24">
+        <!-- What's New icon (star + dots) copied from inline SVG in template -->
+        <path d="M12 4l1.5 4 4 1.5-4 1.5L12 16l-1.5-5-4-1.5 4-1.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="17.5" cy="5.5" r="1" fill="currentColor" />
+        <circle cx="6.5" cy="17" r="1" fill="currentColor" />
+    </symbol>
 </svg>
 `;
         document.body.insertBefore(div, document.body.firstChild);
