@@ -882,7 +882,7 @@ KommunicateUI = {
         kommunicateCommons.hide('#mck-tab-individual');
         kommunicateCommons.show('#mck-tab-conversation');
         kommunicateCommons.show('#mck-contacts-content');
-        if (KM_TOP_BAR) {
+        if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.showConversationHeader();
             KM_TOP_BAR.toggleAvatar(false);
             KM_TOP_BAR.toggleBackButton(false);
@@ -905,7 +905,7 @@ KommunicateUI = {
             return;
         }
         var faqTitle = KommunicateUI.getFaqTitle();
-        if (KM_TOP_BAR) {
+        if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.setConversationTitle(faqTitle);
             KM_TOP_BAR.showConversationHeader();
             KM_TOP_BAR.toggleAvatar(false);
@@ -918,7 +918,7 @@ KommunicateUI = {
     },
     showFaqDetailsHeaderState: function () {
         var faqTitle = KommunicateUI.getFaqTitle();
-        if (KM_TOP_BAR) {
+        if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.setFaqTitle();
             KM_TOP_BAR.showDualHeader();
             KM_TOP_BAR.toggleAvatar(false);
@@ -936,7 +936,7 @@ KommunicateUI = {
     },
     setConversationTitle: function (text) {
         var value = text || KommunicateUI.getLabel('conversations.title', 'Conversations');
-        if (KM_TOP_BAR) {
+        if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.setConversationTitle(value);
             return;
         }
@@ -945,7 +945,7 @@ KommunicateUI = {
     },
     setIndividualTitle: function (text) {
         var value = text || KommunicateUI.getLabel('conversations.title', 'Conversations');
-        if (KM_TOP_BAR) {
+        if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.setIndividualTitle(value);
             return;
         }
