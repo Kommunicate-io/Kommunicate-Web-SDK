@@ -284,7 +284,7 @@ input[type='number']::-webkit-outer-spin-button {
 .mck-text-req-error {
     color: $km-danger-color;
     font-size: $heading-tertiary;
-    font-family: $font-family-secondary;
+    font-family: $font-family-primary;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -315,7 +315,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 .km-tertiary-title {
     color: $text-tertiary-color;
-    font-family: $font-family-secondary;
+    font-family: $font-family-primary;
     font-size: $heading-secondary;
     font-style: normal;
     font-weight: 600;
