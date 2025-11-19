@@ -4,12 +4,6 @@
  */
 var kommunicateCommons = new KommunicateCommons();
 var KM_GLOBAL = kommunicate._globals;
-function getTopBarManager() {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-    return window.KmTopBarManager || null;
-}
 function getFaqClearButton() {
     if (typeof document === 'undefined') {
         return null;
@@ -738,6 +732,15 @@ KommunicateUI = {
         }
     },
     searchFaqUI: function (response) {
+        // If the input is now empty, favor showing categories and hiding results regardless of the response
+        var currentQuery = (document.getElementById('km-faq-search-input')?.value || '').trim();
+        if (!currentQuery) {
+            var listEl = document.getElementById('km-faq-list-container');
+            listEl && (listEl.innerHTML = '');
+            kommunicateCommons.hide('#km-faq-list-container');
+            kommunicateCommons.show('.km-faq-category-list-container');
+            return;
+        }
         if (response.data && response.data.length === 0) {
             kommunicateCommons.modifyClassList(
                 {
@@ -767,10 +770,13 @@ KommunicateUI = {
         }
         if (response.data && response.data.length === 0) {
             faqList.innerHTML = '';
-            kommunicateCommons.hide('#km-faqdiv', '.km-faq-category-list-container');
+            // No results: hide results list and category list, keep empty state visible via above logic
+            kommunicateCommons.hide('#km-faqdiv', '#km-faq-list-container');
             return;
         }
-        kommunicateCommons.show('#km-faqdiv', '.km-faq-category-list-container');
+        // Results found: show results list and hide category list to prevent it from flashing back
+        kommunicateCommons.show('#km-faqdiv', '#km-faq-list-container');
+        kommunicateCommons.hide('.km-faq-category-list-container');
         faqList.innerHTML = '';
         response.data.forEach(function (faq) {
             var id = faq.id || faq.articleId;
@@ -791,6 +797,8 @@ KommunicateUI = {
             appId: data && data.appId,
             query: document.getElementById('km-faq-search-input').value,
         };
+        // Track latest query to avoid updating UI with stale results
+        KommunicateUI._lastFaqQuery = (searchFilter.query || '').trim();
         if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
             searchFilter.categoryName = kommunicate._globals.faqCategory;
         }
@@ -798,6 +806,11 @@ KommunicateUI = {
             KommunicateKB.getArticles({
                 data: searchFilter,
                 success: function (response) {
+                    // Ignore stale callbacks
+                    var current = (
+                        document.getElementById('km-faq-search-input')?.value || ''
+                    ).trim();
+                    if (current !== (KommunicateUI._lastFaqQuery || '')) return;
                     KommunicateUI.searchFaqUI(response);
                 },
                 error: function () {
@@ -808,6 +821,11 @@ KommunicateUI = {
             KommunicateKB.searchFaqs({
                 data: searchFilter,
                 success: function (response) {
+                    // Ignore stale callbacks
+                    var current = (
+                        document.getElementById('km-faq-search-input')?.value || ''
+                    ).trim();
+                    if (current !== (KommunicateUI._lastFaqQuery || '')) return;
                     KommunicateUI.searchFaqUI(response);
                 },
                 error: function (err) {

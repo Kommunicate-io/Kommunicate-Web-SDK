@@ -223,7 +223,7 @@
 
 .km-faq-category-card {
     cursor: pointer;
-    border: none !important;
+    border: none;
     position: relative;
     z-index: 0;
     isolation: isolate;
@@ -241,7 +241,8 @@
     }
 
     &.km-custom-widget-border-color {
-        border-color: transparent !important;
+        // More specific than the base and shared mixin defaults; no need for !important
+        border-color: transparent;
     }
 }
 
@@ -318,5 +319,5 @@
 }
 
 .mck-sidebox .km-bottom-tab.vis {
-    display: inline-flex !important;
+    display: inline-flex;
 }
