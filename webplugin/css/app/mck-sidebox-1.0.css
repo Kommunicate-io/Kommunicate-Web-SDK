@@ -5134,19 +5134,6 @@ button {
     padding: 0 3px;
     width: 15px;
 }
-.mck-contact-list .mck-cont-name {
-    display: flex;
-}
-.mck-contact-list .mck-cont-msg-date {
-    font-size: 13px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.2px;
-    color: #545454;
-}
-
 .mck-read-icon .mck-delivery-report--delivered-read,
 .mck-read-icon .mck-delivery-report--sent {
     fill: #4fc3f7;
