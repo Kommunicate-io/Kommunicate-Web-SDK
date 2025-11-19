@@ -20,7 +20,6 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-bottom: 0px !important;
 }
 .km-faq-list--body_list li {
     margin-bottom: 12px;
@@ -100,7 +99,6 @@
     bottom: 2px;
     left: 12px;
     margin: 0;
-    margin-bottom: 0px !important;
     padding: $msg-box-padding !important;
     text-align: left;
     word-wrap: break-word;
@@ -147,12 +145,11 @@
     outline: none;
     border: none;
     background: transparent;
-    border-radius: 4px;
     letter-spacing: 1px;
     font-size: 15px;
     cursor: pointer;
     padding: 12px 0px;
-    border-radius: 0px;
+    border-radius: 0;
 }
 .km-faq-list--footer_button-container button a {
     color: #5c5aa7;

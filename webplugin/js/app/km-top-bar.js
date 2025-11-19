@@ -19,9 +19,10 @@
             individualTitle: labels['conversations.title'] || 'Conversations',
             faqTitle: labels['faq'] || 'FAQ',
         };
+        var agentSelectors = [selectors.avatar, selectors.statusText, selectors.statusIndicator];
 
         function setText(id, text) {
-            if (typeof doc === 'undefined') {
+            if (!doc) {
                 return;
             }
             var target = doc.getElementById(id);
@@ -29,14 +30,12 @@
         }
 
         function toggleElements(show) {
-            var selectorsArr = Array.prototype.slice.call(arguments, 1);
+            var selectorsArr = Array.prototype.slice.call(arguments, 1).filter(Boolean);
             if (!selectorsArr.length) {
                 return;
             }
-            if (
-                !kommunicateCommons ||
-                typeof kommunicateCommons[show ? 'show' : 'hide'] !== 'function'
-            ) {
+            var method = show ? 'show' : 'hide';
+            if (!kommunicateCommons || typeof kommunicateCommons[method] !== 'function') {
                 selectorsArr.forEach(function (selector) {
                     var nodes = doc.querySelectorAll(selector);
                     nodes.forEach(function (node) {
@@ -45,7 +44,7 @@
                 });
                 return;
             }
-            kommunicateCommons[show ? 'show' : 'hide'].apply(null, selectorsArr);
+            kommunicateCommons[method].apply(kommunicateCommons, selectorsArr);
         }
 
         return {
@@ -77,12 +76,7 @@
                 toggleElements(true, selectors.conversationHeader, selectors.individualHeader);
             },
             toggleAvatar: function (show) {
-                var methodSelectors = [
-                    selectors.avatar,
-                    selectors.statusText,
-                    selectors.statusIndicator,
-                ];
-                toggleElements(show, methodSelectors[0], methodSelectors[1], methodSelectors[2]);
+                toggleElements.apply(null, [show].concat(agentSelectors));
             },
             toggleBackButton: function (show) {
                 var backBtn = doc.querySelector(selectors.backButton);

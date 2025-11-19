@@ -67,8 +67,8 @@
         }
 
         function getConfiguredWhatsNewList() {
-            var potentialSources = [
-                Array.isArray(appOptions.whatsNewList) && appOptions.whatsNewList,
+            var sources = [
+                appOptions && Array.isArray(appOptions.whatsNewList) && appOptions.whatsNewList,
                 w.kommunicate &&
                     w.kommunicate._globals &&
                     Array.isArray(w.kommunicate._globals.whatsNewList) &&
@@ -78,15 +78,14 @@
                     Array.isArray(w.applozic._globals.whatsNewList) &&
                     w.applozic._globals.whatsNewList,
                 Array.isArray(WHATS_NEW_LIST) && WHATS_NEW_LIST,
-            ].filter(Boolean);
-
-            if (!potentialSources.length) {
-                return [];
-            }
-            var resolvedList = potentialSources.find(function (source) {
-                return source.length;
+            ].filter(function (list) {
+                return Array.isArray(list);
             });
-            WHATS_NEW_LIST = resolvedList || potentialSources[0];
+            var resolvedList =
+                sources.find(function (list) {
+                    return list.length;
+                }) || [];
+            WHATS_NEW_LIST = resolvedList;
             return WHATS_NEW_LIST;
         }
 
@@ -105,17 +104,15 @@
             }
         }
 
+        function updateWhatsNewView() {
+            WHATS_NEW_LIST = getConfiguredWhatsNewList();
+            renderWhatsNewList(WHATS_NEW_LIST);
+            toggleTabVisibility();
+        }
+
         return {
-            init: function () {
-                WHATS_NEW_LIST = getConfiguredWhatsNewList();
-                WHATS_NEW_LIST.length && renderWhatsNewList(WHATS_NEW_LIST);
-                toggleTabVisibility();
-            },
-            refresh: function () {
-                WHATS_NEW_LIST = getConfiguredWhatsNewList();
-                WHATS_NEW_LIST.length && renderWhatsNewList(WHATS_NEW_LIST);
-                toggleTabVisibility();
-            },
+            init: updateWhatsNewView,
+            refresh: updateWhatsNewView,
             hasItems: function () {
                 return WHATS_NEW_LIST.length > 0;
             },
