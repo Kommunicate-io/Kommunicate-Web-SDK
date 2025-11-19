@@ -74,12 +74,6 @@
 
     &.active {
         color: var(--km-font-title-color);
-        .km-bottom-tab-icon {
-            background: linear-gradient(135deg, #3f63ff, $primary-color);
-            color: #ffffff;
-            box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
-            transform: translateY(-1px);
-        }
     }
 }
 
@@ -162,6 +156,13 @@
         box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
+}
+
+.km-bottom-tab.active .km-bottom-tab-icon {
+    background: linear-gradient(135deg, #3f63ff, $primary-color);
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
+    transform: translateY(-1px);
 }
 
 .km-whats-new-placeholder,

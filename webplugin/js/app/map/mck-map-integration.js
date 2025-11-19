@@ -77,6 +77,7 @@
                         kmWidgetEvents.eventTracking(eventMapping.onLocationIconClick);
                     }
                     if (hasInitLocationShare) {
+                        $mckLocBox.attr('aria-hidden', 'false');
                         $mckLocBox.mckModal();
                         return;
                     }
@@ -160,6 +161,7 @@
         layout.openMapBox = () => {
             const googleMaps = window.google;
             if (!googleMaps || !googleMaps.maps) {
+                $mckLocBox.attr('aria-hidden', 'false');
                 $mckLocBox.mckModal();
                 return;
             }
@@ -190,6 +192,7 @@
 
             $mckLocBox.off('shown.bs.mck-box', handleLocModalShown);
             $mckLocBox.on('shown.bs.mck-box', handleLocModalShown);
+            $mckLocBox.attr('aria-hidden', 'false');
             $mckLocBox.mckModal();
         };
 
@@ -592,6 +595,7 @@
                 $mckResponseText.html('');
                 kommunicateCommons.hide && kommunicateCommons.hide('#mck-msg-response');
                 mckMessageService?.sendMessage(messagePxy);
+                $mckLocBox.attr('aria-hidden', 'true');
                 $mckLocBox.mckModal('hide');
             });
         };

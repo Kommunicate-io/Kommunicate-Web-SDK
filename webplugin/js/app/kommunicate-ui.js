@@ -846,6 +846,9 @@ KommunicateUI = {
             if (shouldShowConversationListHeader) {
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
+                if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
+                    KM_TOP_BAR.toggleBackButton(false);
+                }
             } else {
                 kommunicateCommons.hide('#mck-tab-conversation');
                 kommunicateCommons.show('#mck-tab-individual');
@@ -891,8 +894,18 @@ KommunicateUI = {
         KommunicateUI.resetConversationListTitle();
         KommunicateUI.toggleModernFaqBackButton(false);
         kommunicateCommons.hide('.km-faq-back-btn-wrapper');
+        kommunicateCommons.hide('#km-faq-back-btn');
+        kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
+        kommunicateCommons.modifyClassList(
+            {
+                class: ['km-faq-back-btn-wrapper'],
+            },
+            'vis',
+            'n-vis'
+        );
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
+        MCK_EVENT_HISTORY.length = 0;
     },
     getLabel: function (key, fallback) {
         return (typeof MCK_LABELS === 'object' && MCK_LABELS && MCK_LABELS[key]) || fallback;

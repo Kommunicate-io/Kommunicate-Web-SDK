@@ -133,6 +133,8 @@
                 }
                 kommunicateCommons.show('#mck-tab-conversation', '#mck-contacts-content');
                 kommunicateCommons.hide('#mck-tab-individual');
+                kommunicateCommons.hide('.km-faq-back-btn-wrapper');
+                kommunicateCommons.hide('#km-faq-back-btn');
                 if (isModernLayout) {
                     setTimeout(function () {
                         var latestMessageInner =
