@@ -41,7 +41,7 @@
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
+    box-shadow: $bottom-tab-bar-shadow;
     border: 1px solid rgba(4, 68, 77, 0.08);
 }
 
@@ -53,7 +53,7 @@
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.15px;
-    color: rgba(28, 32, 67, 0.65);
+    color: $text-strong-muted-color;
     background: transparent;
     display: inline-flex;
     flex-direction: column;

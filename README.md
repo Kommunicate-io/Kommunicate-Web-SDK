@@ -206,7 +206,7 @@ You can copy the below script and replace the required parameters manually. Note
      var kommunicateSettings = {
       "appId": "<APP_ID>",
       "automaticChatOpenOnNavigation": true,
-      "popupWidget": true,
+      "popupWidget": true
       /*
       "onInit": function (){
         // paste your code here
