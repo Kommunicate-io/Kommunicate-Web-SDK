@@ -14,7 +14,7 @@
     border-radius: 18px;
     padding: 16px 18px;
     border: 1px solid $card-border-color;
-    background: #ffffff;
+    background: var(--km-bg, #ffffff);
     box-shadow: $card-shadow-color;
     position: relative;
     overflow: hidden;
@@ -138,7 +138,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: #edf0f5;
+    background: var(--km-tabicon-bg, #edf0f5);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -152,15 +152,19 @@
     }
 
     &.km-custom-widget-background-color {
-        color: #ffffff !important;
+        color: var(--km-accent-contrast, #ffffff) !important;
         box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
 }
 
 .km-bottom-tab.active .km-bottom-tab-icon {
-    background: linear-gradient(135deg, #3f63ff, $primary-color);
-    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        var(--km-accent-start, #3f63ff),
+        var(--km-accent, #{$primary-color})
+    );
+    color: var(--km-accent-contrast, #ffffff);
     box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
 }
@@ -244,7 +248,7 @@
 .km-faq-category-card-title {
     font-size: 15px;
     font-weight: 600;
-    color: #1c2043;
+    color: var(--km-font-title-color, #1c2043);
     margin-bottom: 6px;
 }
 
@@ -290,7 +294,7 @@
 .km-whats-new-meta {
     display: inline-block;
     font-size: 12px;
-    color: #8d94b5;
+    color: var(--km-font-meta-color, #8d94b5);
     font-weight: 600;
     letter-spacing: 0.4px;
     margin-bottom: 10px;
@@ -301,7 +305,7 @@
     display: inline-flex;
     margin-top: 14px;
     font-weight: 600;
-    color: #584bff;
+    color: var(--km-accent, #584bff);
     text-decoration: none;
 
     &:hover {

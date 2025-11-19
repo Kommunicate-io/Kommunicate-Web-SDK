@@ -1,7 +1,7 @@
 Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 
 /**
- * Kommunciate.conversation contains all methods to add functionality into conversations.
+ * Kommunicate.conversation contains all methods to add functionality into conversations.
  * this file has been loaded before mck-sidebox.js. do not add any code dependent to mck sidebox.
  */
 Kommunicate.conversation = {

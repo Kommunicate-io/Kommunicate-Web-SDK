@@ -1,6 +1,6 @@
 Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 /**
- * Kommunciate.conversationHelper is a supporting file to conversation service.
+ * Kommunicate.conversationHelper is a supporting file to conversation service.
  * It is being loaded before conversation service.
  * Do not call conversation service from her to avoid circular dependency.
  *
