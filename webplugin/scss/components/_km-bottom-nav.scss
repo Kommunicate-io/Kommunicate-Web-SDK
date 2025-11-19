@@ -7,6 +7,29 @@
     justify-content: center;
 }
 
+@mixin km-card-surface {
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 18px;
+    padding: 16px 18px;
+    border: 1px solid $card-border-color;
+    background: #ffffff;
+    box-shadow: $card-shadow-color;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $card-hover-shadow-color;
+    }
+}
+
 .km-bottom-tab-bar {
     width: 100%;
     margin: 0 auto;
@@ -117,26 +140,7 @@
 
 .km-whats-new-card,
 .km-faq-category-card {
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 18px;
-    padding: 16px 18px;
-    border: 1px solid rgba(15, 23, 42, 0.04);
-    background: #ffffff;
-    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-    &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 26px 50px rgba(15, 23, 42, 0.18);
-    }
+    @include km-card-surface;
 
     h4,
     strong {

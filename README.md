@@ -207,7 +207,6 @@ You can copy the below script and replace the required parameters manually. Note
       "appId": "<APP_ID>",
       "automaticChatOpenOnNavigation": true,
       "popupWidget": true,
-      "designLayoutName": "default"
       /*
       "onInit": function (){
         // paste your code here
@@ -233,5 +232,3 @@ You can copy the below script and replace the required parameters manually. Note
 ## Technical Documentation:
 
 Please check out the detailed [documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation and customizations.
-
-`designLayoutName` lets you switch between the current `default` experience and new layouts (for example `modern`). If you omit it, the widget keeps the default design.

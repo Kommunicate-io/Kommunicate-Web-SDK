@@ -60,7 +60,7 @@ $known-prefixes
     color: var(--km-font-title-color);
 }
 .km-bottom-tab.active .km-bottom-tab-icon {
-    background: linear-gradient(135deg, #3f63ff, #5553b7);
+    background: linear-gradient(135deg, #3f63ff, #5f46f8);
     color: #ffffff;
     box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
@@ -120,7 +120,7 @@ $known-prefixes
 }
 
 .km-whats-new-card,
-#km-faq-category-list-container .km-faq-category-card {
+.km-faq-category-card {
     margin: 0;
     width: 100%;
     box-sizing: border-box;
@@ -138,14 +138,14 @@ $known-prefixes
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .km-whats-new-card:hover,
-#km-faq-category-list-container .km-faq-category-card:hover {
+.km-faq-category-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 26px 50px rgba(15, 23, 42, 0.18);
 }
 .km-whats-new-card h4,
 .km-whats-new-card strong,
-#km-faq-category-list-container .km-faq-category-card h4,
-#km-faq-category-list-container .km-faq-category-card strong {
+.km-faq-category-card h4,
+.km-faq-category-card strong {
     margin: 0 0 4px;
     font-size: 16px;
     color: #1c2043;
@@ -153,8 +153,8 @@ $known-prefixes
 }
 .km-whats-new-card p,
 .km-whats-new-card span,
-#km-faq-category-list-container .km-faq-category-card p,
-#km-faq-category-list-container .km-faq-category-card span {
+.km-faq-category-card p,
+.km-faq-category-card span {
     margin: 0;
     color: #61678a;
     display: block;
@@ -254,6 +254,10 @@ $known-prefixes
 
 .mck-sidebox .mck-sidebox-content {
     padding-bottom: 30px;
+}
+
+.mck-sidebox .km-bottom-tab.vis {
+    display: inline-flex !important;
 }
 
 /*# sourceMappingURL=km-bottom-nav.css.map */
