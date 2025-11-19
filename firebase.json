@@ -79,6 +79,11 @@
         "type": "404"
       },
       {
+        "source": "/demo2",
+        "destination": "/demo2.html",
+        "type": "200"
+      },
+      {
         "source": "/robots.txt",
         "destination": "/robots.txt",
         "type": "200"

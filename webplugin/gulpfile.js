@@ -246,6 +246,10 @@ const generateBuildFiles = () => {
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
+    // Copy demo2.html example into build so it can be served on Firebase
+    // This allows accessing it via /demo2.html (and via /demo2 with a rewrite)
+    copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
+
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
 
