@@ -249,6 +249,12 @@ const generateBuildFiles = () => {
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
 
+    // copy fonts required by the compiled CSS for local/hosted builds
+    copyDirectoryRecursive(
+        path.join(__dirname, 'css/app/fonts'),
+        path.join(buildDir, 'css/app/fonts')
+    );
+
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(
         [path.join(__dirname, 'template/mck-sidebox.html')],
@@ -359,6 +365,26 @@ const copyFileToBuild = (src, dest) => {
         }
         console.log(`${dest} generated successfully`);
     });
+};
+
+const copyDirectoryRecursive = (sourceDir, destinationDir) => {
+    if (!fs.existsSync(sourceDir)) {
+        console.log(`Source directory ${sourceDir} does not exist`);
+        return;
+    }
+    if (!fs.existsSync(destinationDir)) {
+        fs.mkdirSync(destinationDir, { recursive: true });
+    }
+    fs.readdirSync(sourceDir).forEach((entry) => {
+        const srcPath = path.join(sourceDir, entry);
+        const destPath = path.join(destinationDir, entry);
+        if (fs.lstatSync(srcPath).isDirectory()) {
+            copyDirectoryRecursive(srcPath, destPath);
+        } else {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    });
+    console.log(`${destinationDir} directory generated successfully`);
 };
 
 gulp.task('generateResourceFolder', function (done) {

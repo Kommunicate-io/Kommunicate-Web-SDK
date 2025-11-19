@@ -29,6 +29,12 @@ app.use(
     })
 );
 app.use(
+    '/css',
+    express.static(path.join(__dirname, '../webplugin/css'), {
+        maxAge: fileMaxAge,
+    })
+);
+app.use(
     '/plugin/sidebox',
     express.static(path.join(__dirname, '../webplugin'), {
         maxAge: fileMaxAge,

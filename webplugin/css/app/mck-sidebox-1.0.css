@@ -833,17 +833,6 @@
     outline-offset: -2px;
 }
 
-.mck-sidebox .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-
 .mck-sidebox label {
     display: inline-block;
     max-width: 100%;
