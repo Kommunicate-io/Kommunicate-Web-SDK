@@ -121,14 +121,12 @@ Kommunicate.getFaqCategories = function (data) {
                         '<div class="km-faq-category-card-title km-custom-widget-text-color">' +
                         safeCategoryName +
                         '</div>' +
-                        '</div>' +
                         (articleCountLabel
-                            ? '<div class="km-faq-category-card-count-row">' +
-                              '<span class="km-faq-category-card-count">' +
+                            ? '<span class="km-faq-category-card-count">' +
                               articleCountLabel +
-                              '</span>' +
-                              '</div>'
+                              '</span>'
                             : '') +
+                        '</div>' +
                         '<div class="km-faq-category-card-body">' +
                         safeCategoryDescription +
                         '</div>' +
