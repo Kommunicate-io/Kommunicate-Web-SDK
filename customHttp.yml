@@ -21,5 +21,11 @@ customHeaders:
   - pattern: "**/*min.css"
     headers: *common_headers
 
+  - pattern: "**/*.woff2"
+    headers: *common_headers
+
+  - pattern: "**/*.woff"
+    headers: *common_headers
+
   - pattern: "resources/**/*.html"
     headers: *common_headers
