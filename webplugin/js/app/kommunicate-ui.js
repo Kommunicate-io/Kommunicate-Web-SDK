@@ -983,12 +983,12 @@ KommunicateUI = {
             ? 'mck.empty.welcome.cta.continue'
             : 'mck.empty.welcome.cta';
         var fallback = KommunicateUI.hasConversationHistory
-            ? 'Continue previous conversation'
+            ? 'View conversations'
             : 'Send us a message';
         sendCta.textContent = KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
         continueCta.textContent = KommunicateUI.getLabel(
             'mck.empty.welcome.cta.continue',
-            'Continue previous conversation'
+            'View conversations'
         );
         sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
         continueCta.classList.toggle('n-vis', !KommunicateUI.hasConversationHistory);

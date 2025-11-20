@@ -38,7 +38,7 @@ class KMLabel {
             'mck.empty.welcome.title': 'How can we help you?',
             'mck.empty.welcome.subtitle': 'We’re here to help you get instant answers.',
             'mck.empty.welcome.cta': 'Send us a message',
-            'mck.empty.welcome.cta.continue': 'Continue previous conversation',
+            'mck.empty.welcome.cta.continue': 'View conversations',
             'no.more.conversations': 'No more conversations!',
             'search.placeholder': 'Search...',
             'location.placeholder': 'Enter a location',
