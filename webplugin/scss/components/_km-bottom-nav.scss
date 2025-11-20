@@ -192,7 +192,6 @@
     padding: 16px 8px 24px 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     box-sizing: border-box;
     width: calc(100% - 16px);
     max-width: 420px;
@@ -204,6 +203,11 @@
 .km-faq-category-card {
     @include km-card-surface;
     margin-bottom: 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    align-items: stretch;
 
     h4,
     strong {
@@ -219,18 +223,6 @@
         color: var(--km-font-body-color);
         display: block;
     }
-}
-
-.km-faq-category-card {
-    cursor: pointer;
-    border: none;
-    position: relative;
-    z-index: 0;
-    isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
 
     .km-faq-category-card-content {
         display: flex;
@@ -238,11 +230,6 @@
         gap: 12px;
         flex: 1;
         justify-content: flex-start;
-    }
-
-    &.km-custom-widget-border-color {
-        // More specific than the base and shared mixin defaults; no need for !important
-        border-color: transparent;
     }
 }
 
