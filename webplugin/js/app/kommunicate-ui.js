@@ -764,6 +764,7 @@ KommunicateUI = {
             kommunicateCommons.hide('#km-faq-list-container');
             kommunicateCommons.show('#km-faqdiv');
             kommunicateCommons.show('.km-faq-category-list-container');
+            kommunicateCommons.show('.km-contact-input-container');
             kommunicateCommons.hide('.km-no-results-found-container');
             return;
         }
@@ -1082,7 +1083,7 @@ KommunicateUI = {
         );
         kommunicateCommons.show('#km-faqdiv');
         kommunicateCommons.hide('.km-no-results-found-container');
-        kommunicateCommons.show('#km-contact-search-input-box');
+        kommunicateCommons.show('#km-contact-search-input-box', '.km-contact-input-container');
         kommunicateCommons.hide('.km-faq-back-btn-wrapper');
         kommunicateCommons.hide('#km-faqanswer');
         KommunicateUI.toggleModernFaqBackButton(false);
