@@ -256,17 +256,9 @@
             }
 
             if (tabType === 'faqs') {
-                ui &&
-                    typeof ui.showFaqListHeaderState === 'function' &&
-                    ui.showFaqListHeaderState();
+                var faqButton = documentRef && documentRef.getElementById('km-faq');
+                faqButton && faqButton.click();
                 kommunicateCommons.hide('#km-whats-new-placeholder', '#mck-no-conversations');
-                ui &&
-                    typeof ui.toggleModernFaqBackButton === 'function' &&
-                    ui.toggleModernFaqBackButton(false);
-                if (!options.skipFaqTrigger) {
-                    var faqButton = documentRef && documentRef.getElementById('km-faq');
-                    faqButton && faqButton.click();
-                }
                 kommunicateCommons.show('#mck-tab-conversation', '#faq-common');
                 kommunicateCommons.hide('.mck-conversation', '#mck-tab-individual');
                 return;
