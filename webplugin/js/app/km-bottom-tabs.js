@@ -139,10 +139,7 @@
                     fromEmptyState: true,
                 });
             }
-            kommunicateCommons && typeof kommunicateCommons.hide === 'function'
-                ? kommunicateCommons.hide('#mck-no-conversations')
-                : documentRef &&
-                  (documentRef.getElementById('mck-no-conversations').style.display = 'none');
+            kommunicateCommons.hide('#mck-no-conversations');
         }
 
         function showBottomTabs() {
@@ -150,23 +147,11 @@
                 toggleBottomTabsDisplay(false);
                 return;
             }
-            if (
-                kommunicateCommons &&
-                typeof kommunicateCommons.show === 'function' &&
-                typeof kommunicateCommons.hide === 'function'
-            ) {
-                kommunicateCommons.show('.km-bottom-tab-wrapper');
-                return;
-            }
-            toggleBottomTabsDisplay(true);
+            kommunicateCommons.show('.km-bottom-tab-wrapper');
         }
 
         function hideBottomTabs() {
-            if (kommunicateCommons && typeof kommunicateCommons.hide === 'function') {
-                kommunicateCommons.hide('.km-bottom-tab-wrapper');
-                return;
-            }
-            toggleBottomTabsDisplay(false);
+            kommunicateCommons.hide('.km-bottom-tab-wrapper');
         }
 
         function toggleBottomTabsDisplay(show) {

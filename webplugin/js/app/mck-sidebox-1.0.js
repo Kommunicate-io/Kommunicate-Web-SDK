@@ -757,7 +757,7 @@ const firstVisibleMsg = {
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             if (!wasSoftHidden) {
-                KommunicateUI.showChat();
+                KommunicateUI.showChat({ keepConversationHeader: true });
             }
             bottomTabManager.restoreLastTab();
             kommunicateCommons.hide('#mck-away-msg-box');
