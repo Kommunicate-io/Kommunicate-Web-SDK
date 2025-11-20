@@ -220,7 +220,6 @@ $known-prefixes
 .km-faq-category-card .km-faq-category-card-content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     flex: 1;
     justify-content: flex-start;
 }
