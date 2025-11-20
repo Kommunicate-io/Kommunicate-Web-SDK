@@ -146,6 +146,10 @@
         }
 
         function showBottomTabs() {
+            if (!isModernLayoutEnabled()) {
+                toggleBottomTabsDisplay(false);
+                return;
+            }
             if (
                 kommunicateCommons &&
                 typeof kommunicateCommons.show === 'function' &&
@@ -337,6 +341,9 @@
         return {
             init: function () {
                 setBottomTabState(getActiveTabFromDom());
+                if (!isModernLayoutEnabled()) {
+                    toggleBottomTabsDisplay(false);
+                }
             },
             handleChange: handleBottomTabChange,
             restoreLastTab: restoreLastBottomTab,
