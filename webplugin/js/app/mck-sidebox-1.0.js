@@ -2118,6 +2118,14 @@ const firstVisibleMsg = {
                             'km-anonymous-chat-launcher'
                         );
                         var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                        if (kmAnonymousChatLauncher && kmAnonymousChatLauncher.parentElement) {
+                            kmAnonymousChatLauncher.parentElement !== document.body &&
+                                document.body.appendChild(kmAnonymousChatLauncher);
+                        }
+                        if (kmChatLoginModal && kmChatLoginModal.parentElement) {
+                            kmChatLoginModal.parentElement !== document.body &&
+                                document.body.appendChild(kmChatLoginModal);
+                        }
 
                         if (KOMMUNICATE_VERSION === 'v2') {
                             //intialise onInit in prechatLead Collection
