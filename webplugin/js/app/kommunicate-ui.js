@@ -890,9 +890,13 @@ KommunicateUI = {
                 if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
                     KM_TOP_BAR.toggleBackButton(false);
                 }
+                KommunicateUI.isConversationListView = true;
+                kommunicateCommons.hide('#km-widget-options');
             } else {
                 kommunicateCommons.hide('#mck-tab-conversation');
                 kommunicateCommons.show('#mck-tab-individual');
+                KommunicateUI.isConversationListView = false;
+                kommunicateCommons.show('#km-widget-options');
             }
         }
         if (shouldShowChatHeader) {
@@ -921,11 +925,15 @@ KommunicateUI = {
         kommunicateCommons.hide('#mck-tab-conversation');
         KommunicateUI.resetConversationListTitle();
         $applozic('#mck-msg-new').attr('disabled', false);
+        KommunicateUI.isConversationListView = false;
+        kommunicateCommons.show('#km-widget-options');
     },
     showConversationList: function () {
         kommunicateCommons.hide('#mck-tab-individual');
         kommunicateCommons.show('#mck-tab-conversation');
         kommunicateCommons.show('#mck-contacts-content');
+        kommunicateCommons.hide('#km-widget-options');
+        kommunicateCommons.hide('.km-option-faq');
         if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.showConversationHeader();
             KM_TOP_BAR.toggleAvatar(false);
@@ -947,8 +955,10 @@ KommunicateUI = {
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
         MCK_EVENT_HISTORY.length = 0;
+        KommunicateUI.isConversationListView = true;
     },
     hasConversationHistory: false,
+    isConversationListView: false,
     setHasConversationHistory: function (value) {
         var boolValue = Boolean(value);
         KommunicateUI.hasConversationHistory = boolValue;

@@ -213,6 +213,7 @@
             var hasActiveConversation = isModernLayout && !!activeConversationId;
 
             if (tabType === 'conversations') {
+                ui && typeof ui.showConversationList === 'function' && ui.showConversationList();
                 ui && typeof ui.setConversationTitle === 'function' && ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0;
@@ -298,8 +299,10 @@
                     ui.toggleModernFaqBackButton(false);
                 if (documentRef && typeof documentRef.getElementById === 'function') {
                     var tabTitle = documentRef.getElementById('mck-tab-title');
-                    tabTitle &&
-                        (tabTitle.textContent = getLabel('modern.nav.whatsnew', "What's New"));
+                    var conversationTitle = documentRef.getElementById('mck-conversation-title');
+                    var whatsNewLabel = getLabel('modern.nav.whatsnew', "What's New");
+                    tabTitle && (tabTitle.textContent = whatsNewLabel);
+                    conversationTitle && (conversationTitle.textContent = whatsNewLabel);
                 }
                 kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
                 kommunicateCommons.hide('#mck-tab-individual .mck-name-status-container');
@@ -317,7 +320,11 @@
             );
             kommunicateCommons.hide('#mck-no-conversations');
             kommunicateCommons.show('.mck-conversation', '#mck-contacts-content');
-            kommunicateCommons.show('#km-widget-options');
+            if (!(window.KommunicateUI && window.KommunicateUI.isConversationListView)) {
+                kommunicateCommons.show('#km-widget-options');
+            } else {
+                kommunicateCommons.hide('#km-widget-options');
+            }
             if (documentRef && typeof documentRef.getElementById === 'function') {
                 var tabTitleElement = document.getElementById('mck-tab-title');
                 tabTitleElement &&

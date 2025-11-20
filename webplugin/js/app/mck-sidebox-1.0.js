@@ -7606,12 +7606,21 @@ const firstVisibleMsg = {
             };
 
             _this.loadDropdownOptions = function (convTransferred) {
-                if (document.querySelector('#mck-contact-list')) {
-                    // if contact list is visible then dropdown options should not be loaded.
+                if (
+                    !CURRENT_GROUP_DATA ||
+                    !CURRENT_GROUP_DATA.tabId ||
+                    document.querySelector('#mck-contact-list') ||
+                    (window.KommunicateUI && window.KommunicateUI.isConversationListView)
+                ) {
+                    // if contact list is visible or there is no active conversation, hide options
+                    kommunicateCommons.hide('#km-widget-options');
+                    kommunicateCommons.hide('.km-option-faq');
                     return;
                 }
                 var enableDropdown = false;
                 var primaryCTA = appOptions.primaryCTA;
+                var isModernLayout =
+                    appOptions.designLayoutName === KommunicateConstants.DESIGN_LAYOUTS.MODERN;
                 var isConvRated =
                     appOptions.oneTimeRating &&
                     !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
@@ -7678,12 +7687,15 @@ const firstVisibleMsg = {
                 }
                 // hasArticles initially will be undefined and after the faq load it will be boolean
                 if (
+                    !isModernLayout &&
                     !KommunicateUI.isFAQPrimaryCTA() &&
                     (kommunicate._globals.hasArticles === undefined ||
                         kommunicate._globals.hasArticles === true)
                 ) {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-faq');
+                } else {
+                    kommunicateCommons.hide('.km-option-faq');
                 }
 
                 if (enableDropdown) {
@@ -7886,6 +7898,8 @@ const firstVisibleMsg = {
                     kommunicateCommons.show(
                         '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
                     );
+                    kommunicateCommons.show('#km-widget-options');
+                    KommunicateUI.isConversationListView = false;
                     typeof KommunicateUI !== 'undefined' &&
                         typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
                         KommunicateUI.toggleModernFaqBackButton(true);
