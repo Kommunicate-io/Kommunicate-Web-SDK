@@ -635,7 +635,6 @@ KommunicateUI = {
                         );
                         kommunicateCommons.show('#km-faqdiv', '#km-faqanswer');
                         KommunicateUI.toggleModernFaqBackButton(true);
-                        kommunicateCommons.hide('.km-faq-back-btn-wrapper');
                         $applozic('#km-faqanswer .km-faqanswer').linkify({
                             target: '_blank',
                         });
@@ -979,12 +978,6 @@ KommunicateUI = {
         if (!KommunicateUI.hasConversationHistory && hasContacts) {
             KommunicateUI.hasConversationHistory = true;
         }
-        var labelKey = KommunicateUI.hasConversationHistory
-            ? 'mck.empty.welcome.cta.continue'
-            : 'mck.empty.welcome.cta';
-        var fallback = KommunicateUI.hasConversationHistory
-            ? 'View conversations'
-            : 'Send us a message';
         sendCta.textContent = KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
         continueCta.textContent = KommunicateUI.getLabel(
             'mck.empty.welcome.cta.continue',
@@ -1013,7 +1006,8 @@ KommunicateUI = {
         }
         KommunicateUI.setConversationTitle(faqTitle);
         kommunicateCommons.show('#mck-tab-conversation');
-        kommunicateCommons.hide('#mck-tab-individual');
+        kommunicateCommons.show('#mck-tab-individual');
+        kommunicateCommons.show('.km-faq-back-btn-wrapper');
     },
     showFaqDetailsHeaderState: function () {
         var faqTitle = KommunicateUI.getFaqTitle();
