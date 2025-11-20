@@ -349,6 +349,13 @@ KommunicateUI = {
             // kommunicateCommons.hide('.km-faq-back-btn-wrapper');
             KommunicateUI.showFaqListHeaderState();
             KommunicateUI.awayMessageScroll = true;
+            kommunicateCommons.show(
+                '#km-faqdiv',
+                '#km-contact-search-input-box',
+                '.km-contact-input-container',
+                '.km-faq-category-list-container'
+            );
+            kommunicateCommons.hide('#km-faqanswer', '.km-no-results-found-container');
             if (isFaqCategoryPresent) {
                 MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                     MCK_EVENT_HISTORY.push('km-faq-list');
