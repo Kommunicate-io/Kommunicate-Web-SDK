@@ -762,7 +762,9 @@ KommunicateUI = {
             var listEl = document.getElementById('km-faq-list-container');
             listEl && (listEl.innerHTML = '');
             kommunicateCommons.hide('#km-faq-list-container');
+            kommunicateCommons.show('#km-faqdiv');
             kommunicateCommons.show('.km-faq-category-list-container');
+            kommunicateCommons.hide('.km-no-results-found-container');
             return;
         }
         if (response.data && response.data.length === 0) {
@@ -1078,6 +1080,7 @@ KommunicateUI = {
             'n-vis',
             'vis'
         );
+        kommunicateCommons.show('#km-faqdiv');
         kommunicateCommons.hide('.km-no-results-found-container');
         kommunicateCommons.show('#km-contact-search-input-box');
         kommunicateCommons.hide('.km-faq-back-btn-wrapper');
