@@ -13,7 +13,7 @@ function KmCustomTheme() {
     };
 
     _this.KmCustomImageIcon = function (widgetImageLink) {
-        return '<img src=' + widgetImageLink + ' alt="Live chat"></img>';
+        return '<img src=' + widgetImageLink + ' alt="AI Agent Chat"></img>';
     };
 
     _this.createCustomClasses = function (classSettings) {
