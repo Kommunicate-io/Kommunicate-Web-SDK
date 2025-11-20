@@ -4281,10 +4281,6 @@ ul.mck-intent-menu > li:hover {
     font-size: 15px;
     font-weight: normal;
     font-style: normal;
-    font-stretch: normal;
-    line-height: 1.2;
-    letter-spacing: 0.2px;
-    color: #595757;
 }
 .km-faqdisplay {
     display: flex;
@@ -4365,6 +4361,7 @@ ul.mck-intent-menu > li:hover {
     right: 0;
     bottom: 0;
     left: 0;
+    overflow: auto;
     overflow: auto;
 }
 

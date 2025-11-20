@@ -9,6 +9,8 @@ Kommunicate.postPluginInitialization = function (err, data) {
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var categoryName;
     var primaryCTA = kommunicate?._globals?.primaryCTA;
+    KommunicateUI.initFaq();
+    KommunicateUI.faqAppData = data;
 
     if (primaryCTA && primaryCTA !== 'FAQ') {
         kommunicateCommons.show('.km-kb-container');
@@ -18,7 +20,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
         categoryName = kommunicate._globals.faqCategory;
         Kommunicate.getFaqList(data, categoryName);
     } else {
-        Kommunicate.getFaqCategories(data);
+        KommunicateUI.ensureFaqCategoriesLoaded(data);
     }
 };
 
@@ -57,11 +59,6 @@ Kommunicate.getFaqList = function (data, categoryName) {
                       );
                   })
                 : KommunicateUI.faqEmptyState();
-
-            kommunicate &&
-                kommunicate._globals &&
-                kommunicate._globals.faqCategory &&
-                KommunicateUI.initFaq();
         },
         error: function () {},
     });
@@ -70,6 +67,8 @@ Kommunicate.getFaqCategories = function (data) {
     KommunicateKB.getCategories({
         data: { appId: data.appId, baseUrl: Kommunicate.getBaseUrl() },
         success: function (response) {
+            KommunicateUI.faqCategoryRequestPending = false;
+            KommunicateUI.faqCategoriesReady = true;
             var initializeFAQ = false;
             var articleLabel =
                 (window.MCK_LABELS && MCK_LABELS['modern.faq.category.article']) || 'article';
@@ -140,8 +139,9 @@ Kommunicate.getFaqCategories = function (data) {
                 KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
                 KommunicateUI.setFAQButtonText();
             }
-            initializeFAQ && KommunicateUI.initFaq();
         },
-        error: function () {},
+        error: function () {
+            KommunicateUI.faqCategoryRequestPending = false;
+        },
     });
 };

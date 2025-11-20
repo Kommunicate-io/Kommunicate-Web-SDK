@@ -23,6 +23,10 @@ KommunicateUI = {
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
     isConversationResolvedFromZendesk: false,
+    faqEventsInitialized: false,
+    faqCategoriesReady: false,
+    faqCategoryRequestPending: false,
+    faqAppData: null,
     convRatedTabIds: {
         // using for optimize the feedback get api call
         // [tabId]: 1 => init the feedback api
@@ -325,11 +329,16 @@ KommunicateUI = {
     },
 
     initFaq: function () {
+        if (KommunicateUI.faqEventsInitialized) {
+            return;
+        }
+        KommunicateUI.faqEventsInitialized = true;
         var data = {};
         data.appId = kommunicate._globals.appId;
 
         // On Click of FAQ button the FAQ category List will open.
         $applozic(d).on('click', '#km-faq', function () {
+            KommunicateUI.ensureFaqCategoriesLoaded();
             var isFaqCategoryPresent =
                 kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
@@ -712,6 +721,20 @@ KommunicateUI = {
             $searchInput.trigger(e);
         });
     },
+    ensureFaqCategoriesLoaded: function (data) {
+        var requestData = data || KommunicateUI.faqAppData;
+        if (
+            KommunicateUI.faqCategoriesReady ||
+            KommunicateUI.faqCategoryRequestPending ||
+            !requestData ||
+            !requestData.appId ||
+            (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory)
+        ) {
+            return;
+        }
+        KommunicateUI.faqCategoryRequestPending = true;
+        Kommunicate.getFaqCategories(requestData);
+    },
     faqEmptyState: function () {
         kommunicateCommons.modifyClassList(
             {
@@ -924,6 +947,41 @@ KommunicateUI = {
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
         $applozic('#mck-msg-new').attr('disabled', false);
         MCK_EVENT_HISTORY.length = 0;
+    },
+    hasConversationHistory: false,
+    setHasConversationHistory: function (value) {
+        var boolValue = Boolean(value);
+        KommunicateUI.hasConversationHistory = boolValue;
+        KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
+        if (typeof window !== 'undefined' && window.KmBottomTabsManager) {
+            window.KmBottomTabsManager.toggleConversationTabVisibility(boolValue);
+        }
+    },
+    updateWelcomeCtaLabel: function () {
+        var sendCta = document.getElementById('km-empty-conversation-cta');
+        var continueCta = document.getElementById('km-empty-conversation-continue');
+        if (!sendCta || !continueCta) {
+            setTimeout(KommunicateUI.updateWelcomeCtaLabel, 50);
+            return;
+        }
+        var hasContacts =
+            Array.isArray(window.MCK_CONTACT_ARRAY) && window.MCK_CONTACT_ARRAY.length > 0;
+        if (!KommunicateUI.hasConversationHistory && hasContacts) {
+            KommunicateUI.hasConversationHistory = true;
+        }
+        var labelKey = KommunicateUI.hasConversationHistory
+            ? 'mck.empty.welcome.cta.continue'
+            : 'mck.empty.welcome.cta';
+        var fallback = KommunicateUI.hasConversationHistory
+            ? 'Continue previous conversation'
+            : 'Send us a message';
+        sendCta.textContent = KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
+        continueCta.textContent = KommunicateUI.getLabel(
+            'mck.empty.welcome.cta.continue',
+            'Continue previous conversation'
+        );
+        sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        continueCta.classList.toggle('n-vis', !KommunicateUI.hasConversationHistory);
     },
     getLabel: function (key, fallback) {
         return (typeof MCK_LABELS === 'object' && MCK_LABELS && MCK_LABELS[key]) || fallback;

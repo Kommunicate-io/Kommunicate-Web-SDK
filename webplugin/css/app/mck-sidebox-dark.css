@@ -140,3 +140,21 @@
     background: rgba(126, 115, 255, 0.2);
     color: #cdd5ff;
 }
+
+.mck-sidebox.km-theme-dark .km-empty-conversation-card {
+    background: #10162b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 32px 60px rgba(0, 0, 0, 0.75);
+}
+
+.mck-sidebox.km-theme-dark .km-empty-conversation-card__body {
+    background: transparent;
+}
+
+.mck-sidebox.km-theme-dark .km-empty-conversation-card__info {
+    color: rgba(226, 232, 255, 0.85);
+}
+
+.mck-sidebox.km-theme-dark .km-empty-conversation-card__cta:hover {
+    box-shadow: 0 20px 30px rgba(77, 216, 255, 0.35);
+}

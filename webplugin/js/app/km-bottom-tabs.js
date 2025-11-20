@@ -63,6 +63,88 @@
             }
         }
 
+        function getEmptyTabButton() {
+            if (!documentRef) {
+                return null;
+            }
+            return documentRef.querySelector('.km-bottom-tab[data-tab="no-conversations"]');
+        }
+
+        function getConversationTabButton() {
+            if (!documentRef) {
+                return null;
+            }
+            return documentRef.querySelector('.km-bottom-tab[data-tab="conversations"]');
+        }
+
+        function toggleEmptyTabVisibility(show) {
+            var emptyTab = getEmptyTabButton();
+            var conversationTab = getConversationTabButton();
+            if (!emptyTab) {
+                return;
+            }
+            if (show) {
+                emptyTab.removeAttribute('aria-hidden');
+                if (conversationTab) {
+                    conversationTab.classList.remove('active');
+                    conversationTab.setAttribute('aria-selected', 'false');
+                }
+            } else {
+                emptyTab.classList.remove('active');
+                emptyTab.setAttribute('aria-selected', 'false');
+                if (conversationTab) {
+                    conversationTab.removeAttribute('aria-hidden');
+                }
+            }
+        }
+
+        function getActiveTabFromDom() {
+            if (!documentRef) {
+                return 'conversations';
+            }
+            var activeTab = documentRef.querySelector('.km-bottom-tab.active');
+            var tabType =
+                (activeTab &&
+                    (activeTab.getAttribute('data-tab') ||
+                        (activeTab.dataset && activeTab.dataset.tab))) ||
+                'conversations';
+            return tabType.toString();
+        }
+
+        function showNoConversationsTab() {
+            toggleEmptyTabVisibility(true);
+            handleBottomTabChange('no-conversations', {
+                skipFaqTrigger: true,
+                fromEmptyState: true,
+            });
+        }
+
+        function toggleConversationTabVisibility(show) {
+            var conversationTab = getConversationTabButton();
+            if (!conversationTab) {
+                return;
+            }
+            show
+                ? conversationTab.classList.remove('n-vis')
+                : conversationTab.classList.add('n-vis');
+        }
+
+        function hideNoConversationsTab() {
+            toggleEmptyTabVisibility(false);
+            KommunicateUI.setHasConversationHistory &&
+                KommunicateUI.setHasConversationHistory(true);
+            if (getActiveTabFromDom() === 'no-conversations') {
+                handleBottomTabChange('conversations', {
+                    skipFaqTrigger: true,
+                    fromEmptyState: true,
+                });
+            }
+            kommunicateCommons && typeof kommunicateCommons.hide === 'function'
+                ? kommunicateCommons.hide('#mck-no-conversations')
+                : documentRef &&
+                  (documentRef.getElementById('mck-no-conversations').style.display = 'none');
+        }
+
         function showBottomTabs() {
             if (
                 kommunicateCommons &&
@@ -152,11 +234,42 @@
                 }
             }
 
+            if (tabType === 'no-conversations') {
+                var emptyTitle =
+                    (typeof MCK_LABELS === 'object' &&
+                        MCK_LABELS &&
+                        MCK_LABELS['modern.nav.empty']) ||
+                    'Welcome';
+                ui &&
+                    typeof ui.setConversationTitle === 'function' &&
+                    ui.setConversationTitle(emptyTitle);
+                KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
+                kommunicateCommons.hide(
+                    '#km-whats-new-placeholder',
+                    '#faq-common',
+                    '.mck-conversation',
+                    '#mck-contacts-content',
+                    '#mck-tab-individual',
+                    '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
+                );
+                kommunicateCommons.hide('.km-faq-back-btn-wrapper', '#km-faq-back-btn');
+                kommunicateCommons.hide('#km-widget-options');
+                kommunicateCommons.show('#mck-tab-conversation', '#mck-no-conversations');
+                if (typeof w.KM_TOP_BAR !== 'undefined' && w.KM_TOP_BAR) {
+                    try {
+                        w.KM_TOP_BAR.showConversationHeader();
+                        w.KM_TOP_BAR.toggleAvatar(false);
+                        w.KM_TOP_BAR.toggleBackButton(false);
+                    } catch (e) {}
+                }
+                return;
+            }
+
             if (tabType === 'faqs') {
                 ui &&
                     typeof ui.showFaqListHeaderState === 'function' &&
                     ui.showFaqListHeaderState();
-                kommunicateCommons.hide('#km-whats-new-placeholder');
+                kommunicateCommons.hide('#km-whats-new-placeholder', '#mck-no-conversations');
                 ui &&
                     typeof ui.toggleModernFaqBackButton === 'function' &&
                     ui.toggleModernFaqBackButton(false);
@@ -175,6 +288,7 @@
                     whatsNewManager.refresh();
                 kommunicateCommons.show('#mck-tab-conversation', '#km-whats-new-placeholder');
                 kommunicateCommons.hide('#mck-tab-individual', '#faq-common', '.mck-conversation');
+                kommunicateCommons.hide('#mck-no-conversations');
                 ui &&
                     typeof ui.toggleModernFaqBackButton === 'function' &&
                     ui.toggleModernFaqBackButton(false);
@@ -192,10 +306,16 @@
             ui &&
                 typeof ui.toggleModernFaqBackButton === 'function' &&
                 ui.toggleModernFaqBackButton(false);
-            kommunicateCommons.hide('#km-whats-new-placeholder', '#faq-common');
+            kommunicateCommons.hide(
+                '#km-whats-new-placeholder',
+                '#faq-common',
+                '#mck-no-conversations'
+            );
+            kommunicateCommons.hide('#mck-no-conversations');
             kommunicateCommons.show('.mck-conversation', '#mck-contacts-content');
+            kommunicateCommons.show('#km-widget-options');
             if (documentRef && typeof documentRef.getElementById === 'function') {
-                var tabTitleElement = documentRef.getElementById('mck-tab-title');
+                var tabTitleElement = document.getElementById('mck-tab-title');
                 tabTitleElement &&
                     (tabTitleElement.textContent = getLabel(
                         'conversations.title',
@@ -214,19 +334,6 @@
                 ui.showChat({ keepConversationHeader: keepConversationHeader });
         }
 
-        function getActiveTabFromDom() {
-            if (!documentRef) {
-                return 'conversations';
-            }
-            var activeTab = documentRef.querySelector('.km-bottom-tab.active');
-            var tabType =
-                (activeTab &&
-                    (activeTab.getAttribute('data-tab') ||
-                        (activeTab.dataset && activeTab.dataset.tab))) ||
-                'conversations';
-            return tabType.toString();
-        }
-
         return {
             init: function () {
                 setBottomTabState(getActiveTabFromDom());
@@ -235,6 +342,9 @@
             restoreLastTab: restoreLastBottomTab,
             show: showBottomTabs,
             hide: hideBottomTabs,
+            showEmptyStateTab: showNoConversationsTab,
+            hideEmptyStateTab: hideNoConversationsTab,
+            toggleConversationTabVisibility: toggleConversationTabVisibility,
         };
     }
 

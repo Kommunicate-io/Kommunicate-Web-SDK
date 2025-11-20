@@ -202,3 +202,106 @@
 #mck-loc-address-autocomplete {
     padding: 0 !important;
 }
+
+.km-empty-conversation-container {
+    min-height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 16px 16px 24px;
+    opacity: 1;
+
+    @media (max-width: 360px) {
+        padding: 12px 14px 20px;
+    }
+}
+
+.km-modern-empty-state {
+    width: 100%;
+}
+
+.km-empty-conversation-card {
+    width: 100%;
+    border-radius: 28px;
+    background: #ffffff;
+    border: 1px solid $card-border-color;
+    box-shadow: $card-shadow-color;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    &__hero {
+        padding: 28px 24px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 200px;
+        background: $primary-color;
+        color: #ffffff;
+    }
+
+    &__hero-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 12px;
+        font-size: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__eyebrow {
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    &__title {
+        font-size: 28px;
+        line-height: 1.2;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    &__subtitle {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        opacity: 0.92;
+    }
+
+    &__body {
+        padding: 32px 28px 36px;
+        background: #ffffff;
+    }
+
+    &__info {
+        margin: 0 0 24px;
+        font-size: 15px;
+        line-height: 1.4;
+        color: $text-tertiary-color;
+    }
+
+    &__cta {
+        border: none;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px 32px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $outline-color;
+            outline-offset: 2px;
+        }
+    }
+}

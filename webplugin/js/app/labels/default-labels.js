@@ -15,6 +15,7 @@ class KMLabel {
             'modern.nav.help': 'Help',
             'modern.nav.faqs': 'FAQs',
             'modern.nav.whatsnew': "What's New",
+            'modern.nav.empty': 'Welcome',
             'modern.whatsnew.empty': 'Stay tuned for updates.',
             'modern.whatsnew.staytuned': 'Stay tuned for updates.',
             'modern.whatsnew.readmore': 'Learn more',
@@ -33,6 +34,11 @@ class KMLabel {
             'empty.messages': 'No messages yet!',
             'no.more.messages': 'No more messages!',
             'empty.conversations': 'No conversations yet!',
+            'mck.empty.welcome.eyebrow': 'Hello',
+            'mck.empty.welcome.title': 'How can we help you?',
+            'mck.empty.welcome.subtitle': 'We’re here to help you get instant answers.',
+            'mck.empty.welcome.cta': 'Send us a message',
+            'mck.empty.welcome.cta.continue': 'Continue previous conversation',
             'no.more.conversations': 'No more conversations!',
             'search.placeholder': 'Search...',
             'location.placeholder': 'Enter a location',
@@ -384,6 +390,8 @@ class KMLabel {
         kmFaqTab && (kmFaqTab.innerText = MCK_LABELS['modern.nav.faqs']);
         const kmWhatsNewTab = document.getElementById('km-bottom-tab-whatsnew-text');
         kmWhatsNewTab && (kmWhatsNewTab.innerText = MCK_LABELS['modern.nav.whatsnew']);
+        const kmEmptyTab = document.getElementById('km-bottom-tab-empty-text');
+        kmEmptyTab && (kmEmptyTab.innerText = MCK_LABELS['modern.nav.empty']);
 
         document.getElementById('mck-voice-speak-btn').innerHTML +=
             MCK_LABELS['voiceInterface'].speak;
@@ -393,6 +401,18 @@ class KMLabel {
             MCK_LABELS['voiceInterface'].back;
         document.getElementById('mck-voice-repeat-last-msg').innerHTML +=
             MCK_LABELS['voiceInterface'].repeatLastMsg;
+        const kmEmptyEyebrow = document.getElementById('km-empty-conversation-eyebrow');
+        kmEmptyEyebrow && (kmEmptyEyebrow.innerText = MCK_LABELS['mck.empty.welcome.eyebrow']);
+        const kmEmptyTitle = document.getElementById('km-empty-conversation-title');
+        kmEmptyTitle && (kmEmptyTitle.innerText = MCK_LABELS['mck.empty.welcome.title']);
+        const kmEmptySubtitle = document.getElementById('km-empty-conversation-subtitle');
+        kmEmptySubtitle && (kmEmptySubtitle.innerText = MCK_LABELS['mck.empty.welcome.subtitle']);
+        const kmEmptyCta = document.getElementById('km-empty-conversation-cta');
+        kmEmptyCta && (kmEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
+        const kmEmptyContinue = document.getElementById('km-empty-conversation-continue');
+        kmEmptyContinue &&
+            (kmEmptyContinue.innerText = MCK_LABELS['mck.empty.welcome.cta.continue']);
+        KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
     }
 }
 
