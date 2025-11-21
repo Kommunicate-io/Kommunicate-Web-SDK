@@ -7352,56 +7352,36 @@ const firstVisibleMsg = {
             var $mck_show_more = $applozic('#mck-show-more');
             var $mck_tab_title = $applozic('#mck-tab-title');
             var $mck_tab_status = $applozic('#mck-tab-status');
-            var $mck_msg_cell = $applozic('#mck-message-cell');
-            var $mck_no_messages = $applozic('#mck-no-messages');
             var $mck_product_box = $applozic('#mck-product-box');
             var $mck_product_icon = $applozic('.mck-product-icon');
             var $mck_product_title = $applozic('.mck-product-title');
             var $mck_product_subtitle = $applozic('.mck-product-subtitle');
             var $product_box_caret = $applozic('#mck-product-box .mck-caret');
-            var $mck_msg_form_req = $applozic('.mck-text-req-error');
             var $mck_product_up_key = $applozic('.mck-product-rt-up .mck-product-key');
-            var $mck_contact_search_input_box = $applozic('#mck-contact-search-input-box');
             var $mck_product_up_value = $applozic('.mck-product-rt-up .mck-product-value');
             var $mck_product_down_key = $applozic('.mck-product-rt-down .mck-product-key');
             var $mck_product_down_value = $applozic('.mck-product-rt-down .mck-product-value');
 
-            var $li_mck_leave_group = $applozic('#li-mck-leave-group');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_group_search_tab = $applozic('#mck-group-search-tab');
-            var $mck_no_search_groups = $applozic('#mck-no-search-groups');
             var $mck_group_search_list = $applozic('#mck-group-search-list');
-            var $mck_group_search_tabview = $applozic('#mck-group-search-tabview');
-            var $mck_group_menu_options = $applozic('.mck-group-menu-options');
             var $mck_group_search_input = $applozic('#mck-group-search-input');
-            var $mck_group_search_input_box = $applozic('#mck-group-search-input-box');
 
             var $mck_contact_search_list = $applozic('#mck-contact-search-list');
-            var $mck_contacts_content = $applozic('#mck-contacts-content');
             const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var $mck_contact_search_tab = $applozic('#mck-contact-search-tab');
-            var $mck_contact_search_tabview = $applozic('#mck-contact-search-tabview');
             var $mck_contact_search_input = $applozic('#mck-contact-search-input');
             var $mck_autosuggest_search_input = $applozic('#mck-autosuggest-search-input');
             var $mck_autosuggest_metadata = $applozic('#mck-autosuggest-metadata');
 
-            var $mck_search_list = $applozic('#mck-search-list');
-            var $mck_no_search_contacts = $applozic('#mck-no-search-contacts');
             var $mck_search_tab_link = $applozic('#mck-search-tab-box li a');
-            var $mck_search_tabview_box = $applozic('#mck-search-tabview-box');
             var $mck_sidebox_search = $applozic('#mck-sidebox-search');
 
             var $mck_loading = $applozic('#mck-contact-loading');
             var $mck_typing_label = $applozic('#mck-typing-label');
-            var $mck_price_widget = $applozic('#mck-price-widget');
-            var $mck_msg_response = $applozic('#mck-msg-response');
 
             var $mck_response_text = $applozic('#mck_response_text');
-            var $li_mck_block_user = $applozic('#li-mck-block-user');
 
-            var $mck_search_loading = $applozic('#mck-search-loading');
-
-            var $mck_attachfile_box = $applozic('#mck-attachfile-box');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
             var $mck_conversation_header = $applozic('#mck-conversation-header');
 
@@ -7614,7 +7594,7 @@ const firstVisibleMsg = {
                     !CURRENT_GROUP_DATA ||
                     !CURRENT_GROUP_DATA.tabId ||
                     document.querySelector('#mck-contact-list') ||
-                    (window.KommunicateUI && window.KommunicateUI.isConversationListView)
+                    (KommunicateUI && KommunicateUI.isConversationListView)
                 ) {
                     // if contact list is visible or there is no active conversation, hide options
                     kommunicateCommons.hide('#km-widget-options');
@@ -8411,10 +8391,6 @@ const firstVisibleMsg = {
                     // kommunicateCommons.show('.email-conversation-indicator');
                     if (!msg.message) return; // If there is no message coming in case of source type 7 which is MAIL_INTERCEPTOR
                 }
-
-                // if ($mck_no_messages.hasClass('vis')) {
-                //     kommunicateCommons.hide('#mck-no-messages');
-                // }
 
                 if (
                     msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
