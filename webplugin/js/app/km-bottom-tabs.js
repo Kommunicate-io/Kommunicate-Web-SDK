@@ -248,6 +248,7 @@
                 );
                 kommunicateCommons.hide('.km-faq-back-btn-wrapper', '#km-faq-back-btn');
                 kommunicateCommons.hide('#km-widget-options');
+
                 kommunicateCommons.show('#mck-tab-conversation', '#mck-no-conversations');
                 if (typeof w.KM_TOP_BAR !== 'undefined' && w.KM_TOP_BAR) {
                     try {
