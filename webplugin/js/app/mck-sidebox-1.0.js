@@ -7938,20 +7938,7 @@ const firstVisibleMsg = {
                         typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
                         KommunicateUI.toggleModernFaqBackButton(false);
                     KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
-                    kommunicateCommons.show('#mck-tab-conversation');
-                    if (typeof document !== 'undefined') {
-                        var conversationTitleElement = document.getElementById(
-                            'mck-conversation-title'
-                        );
-                        if (conversationTitleElement) {
-                            var conversationTitleLabel =
-                                (typeof MCK_LABELS === 'object' &&
-                                    MCK_LABELS &&
-                                    MCK_LABELS['conversations.title']) ||
-                                'Conversations';
-                            conversationTitleElement.textContent = conversationTitleLabel;
-                        }
-                    }
+                    bottomTabManager.updateConversationTabIfActive();
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
                     $mck_msg_inner.data('mck-id', '');

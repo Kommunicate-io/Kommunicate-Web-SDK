@@ -111,6 +111,29 @@
             return tabType.toString();
         }
 
+        function isConversationTabActive() {
+            return getActiveTabFromDom() === 'conversations';
+        }
+
+        function updateConversationTabIfActive() {
+            if (!isConversationTabActive()) {
+                return;
+            }
+            kommunicateCommons.show('#mck-tab-conversation');
+            var ui = getKommunicateUI();
+            if (ui && typeof ui.setConversationTitle === 'function') {
+                ui.setConversationTitle();
+                return;
+            }
+            if (documentRef && typeof documentRef.getElementById === 'function') {
+                var conversationTitleElement = documentRef.getElementById('mck-conversation-title');
+                if (conversationTitleElement) {
+                    var conversationTitleLabel = getLabel('conversations.title', 'Conversations');
+                    conversationTitleElement.textContent = conversationTitleLabel;
+                }
+            }
+        }
+
         function showNoConversationsTab() {
             toggleEmptyTabVisibility(true);
             handleBottomTabChange('no-conversations', {
@@ -258,6 +281,7 @@
             if (tabType === 'faqs') {
                 var faqButton = documentRef && documentRef.getElementById('km-faq');
                 faqButton && faqButton.click();
+                console.log('clicked faq button from bottom tab');
                 kommunicateCommons.hide('#km-whats-new-placeholder', '#mck-no-conversations');
                 kommunicateCommons.show('#mck-tab-conversation', '#faq-common');
                 kommunicateCommons.hide('.mck-conversation', '#mck-tab-individual');
@@ -314,6 +338,7 @@
                 '#mck-tab-individual .mck-tab-link.mck-back-btn-container',
                 '#mck-tab-individual .mck-name-status-container'
             );
+            console.log('from handleBottomTabChange: showing mck-tab-conversation');
             kommunicateCommons.show('#mck-tab-conversation');
             var keepConversationHeader =
                 tabType === 'conversations' && isModernLayout && !hasActiveConversation;
@@ -336,6 +361,7 @@
             showEmptyStateTab: showNoConversationsTab,
             hideEmptyStateTab: hideNoConversationsTab,
             toggleConversationTabVisibility: toggleConversationTabVisibility,
+            updateConversationTabIfActive: updateConversationTabIfActive,
         };
     }
 

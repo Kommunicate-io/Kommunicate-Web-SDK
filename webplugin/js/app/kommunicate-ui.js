@@ -896,6 +896,7 @@ KommunicateUI = {
         kommunicateCommons.show('.mck-conversation');
         if (isModernLayout) {
             if (shouldShowConversationListHeader) {
+                console.log('inside showChat - conversation list header');
                 kommunicateCommons.show('#mck-tab-conversation');
                 kommunicateCommons.hide('#mck-tab-individual');
                 if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
@@ -932,6 +933,7 @@ KommunicateUI = {
         }
     },
     showHeader: function () {
+        console.log('inside showHeader');
         kommunicateCommons.show('#mck-tab-individual');
         kommunicateCommons.hide('#mck-tab-conversation');
         KommunicateUI.resetConversationListTitle();
@@ -940,6 +942,7 @@ KommunicateUI = {
         kommunicateCommons.show('#km-widget-options');
     },
     showConversationList: function () {
+        console.log('inside showConversationList');
         kommunicateCommons.hide('#mck-tab-individual');
         kommunicateCommons.show('#mck-tab-conversation');
         kommunicateCommons.show('#mck-contacts-content');
@@ -1017,6 +1020,7 @@ KommunicateUI = {
         }
         KommunicateUI.toggleModernFaqBackButton(false);
         KommunicateUI.setConversationTitle(KommunicateUI.getFaqTitle());
+        console.log('inside showFaqListHeaderState');
         kommunicateCommons.show('#mck-tab-conversation');
         kommunicateCommons.hide('#mck-tab-individual');
         kommunicateCommons.hide('.km-faq-back-btn-wrapper');
@@ -1033,6 +1037,7 @@ KommunicateUI = {
         }
         KommunicateUI.setIndividualTitle(faqTitle);
         kommunicateCommons.hide('#mck-tab-individual');
+        console.log('inside showFaqDetailsHeaderState');
         kommunicateCommons.show('#mck-tab-conversation');
         kommunicateCommons.hide(
             '.mck-agent-image-container',
@@ -1046,6 +1051,7 @@ KommunicateUI = {
             KM_TOP_BAR.setConversationTitle(value);
             return;
         }
+        console.log('setting conversation title:', value);
         var conversationTitle = document.getElementById('mck-conversation-title');
         conversationTitle && (conversationTitle.textContent = value);
     },
