@@ -328,8 +328,6 @@
                     typeof ui.setConversationTitle === 'function' &&
                     ui.setConversationTitle(emptyTitle);
                 KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
-                kommunicateCommons.hide('#km-widget-options');
-
                 if (typeof w.KM_TOP_BAR !== 'undefined' && w.KM_TOP_BAR) {
                     try {
                         w.KM_TOP_BAR.showConversationHeader();
@@ -366,11 +364,6 @@
             ui &&
                 typeof ui.toggleModernFaqBackButton === 'function' &&
                 ui.toggleModernFaqBackButton(false);
-            if (!(window.KommunicateUI && window.KommunicateUI.isConversationListView)) {
-                kommunicateCommons.show('#km-widget-options');
-            } else {
-                kommunicateCommons.hide('#km-widget-options');
-            }
             if (documentRef && typeof documentRef.getElementById === 'function') {
                 var tabTitleElement = document.getElementById('mck-tab-title');
                 tabTitleElement &&

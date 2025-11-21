@@ -778,11 +778,9 @@ KommunicateUI = {
                     KM_TOP_BAR.toggleBackButton(false);
                 }
                 KommunicateUI.isConversationListView = true;
-                kommunicateCommons.hide('#km-widget-options');
                 setActiveSubsectionState('conversation-list');
             } else {
                 KommunicateUI.isConversationListView = false;
-                kommunicateCommons.show('#km-widget-options');
                 setActiveSubsectionState('conversation-individual');
             }
         }
@@ -812,12 +810,10 @@ KommunicateUI = {
         KommunicateUI.resetConversationListTitle();
         $applozic('#mck-msg-new').attr('disabled', false);
         KommunicateUI.isConversationListView = false;
-        kommunicateCommons.show('#km-widget-options');
     },
     showConversationList: function () {
         console.log('inside showConversationList');
         setActiveSubsectionState('conversation-list');
-        kommunicateCommons.hide('#km-widget-options');
         kommunicateCommons.hide('.km-option-faq');
         if (typeof KM_TOP_BAR !== 'undefined' && KM_TOP_BAR) {
             KM_TOP_BAR.showConversationHeader();

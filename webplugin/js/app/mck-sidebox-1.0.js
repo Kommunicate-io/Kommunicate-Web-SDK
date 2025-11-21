@@ -4928,7 +4928,7 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
                     kommunicateCommons.hide($mck_business_hours_box);
-                    kommunicateCommons.hide('#km-widget-options', '.km-header-cta');
+                    kommunicateCommons.hide('.km-header-cta');
                     CURRENT_GROUP_DATA.isWaitingQueue = false;
                     firstVisibleMsg.reset();
                     genAiService.enableTextArea(true);
@@ -7895,13 +7895,7 @@ const firstVisibleMsg = {
                         document.querySelector('#mck-msg-error').classList.add('mck-no-mb');
                         kommunicateCommons.hide('#mck-msg-form');
                     }
-                    kommunicateCommons.hide('#mck-tab-conversation', '#mck-search-tabview-box');
-                    kommunicateCommons.show('#mck-tab-individual');
-                    kommunicateCommons.show('#mck-tab-individual .mck-name-status-container');
-                    kommunicateCommons.show(
-                        '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
-                    );
-                    kommunicateCommons.show('#km-widget-options');
+
                     KommunicateUI.isConversationListView = false;
                     typeof KommunicateUI !== 'undefined' &&
                         typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
