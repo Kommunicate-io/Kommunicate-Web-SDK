@@ -6,6 +6,7 @@ This document captures conventions and project knowledge that help automation to
 
 -   The codebase powers **Kommunicate’s web support widget** (chat, FAQs, “What’s New”). End users are customers of Kommunicate’s clients, so UX needs to feel trustworthy, premium, and mobile-friendly.
 -   The widget supports light/dark modes via the dynamic theme classes injected from `kommunicate.custom.theme.js` (e.g., `.km-custom-widget-background-color`, `.km-custom-widget-text-color`).
+-   Tab/section visibility is driven by the wrapper classes (`active-tab-*`, `active-subsection-*`) defined in `webplugin/scss/components/_km-tab-visibility.scss` (compiled to `webplugin/css/app/mck-tab-visibility.css` and imported by `mck-sidebox-1.0.css`). Prefer updating the SCSS partial instead of touching the generated CSS.
 
 ## Key directories
 
