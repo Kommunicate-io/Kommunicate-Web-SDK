@@ -5,7 +5,7 @@ This document captures conventions and project knowledge that help automation to
 ## Product context
 
 -   The codebase powers **Kommunicate’s web support widget** (chat, FAQs, “What’s New”). End users are customers of Kommunicate’s clients, so UX needs to feel trustworthy, premium, and mobile-friendly.
--   The widget runs in both **light and dark themes**. Color changes must honor the dynamic theme classes injected from `kommunicate.custom.theme.js` (e.g., `.km-custom-widget-background-color`, `.km-custom-widget-text-color`) and the dark override file (`webplugin/css/app/mck-sidebox-dark.css`).
+-   The widget supports light/dark modes via the dynamic theme classes injected from `kommunicate.custom.theme.js` (e.g., `.km-custom-widget-background-color`, `.km-custom-widget-text-color`).
 
 ## Key directories
 
@@ -13,7 +13,6 @@ This document captures conventions and project knowledge that help automation to
 | -------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `webplugin/template/mck-sidebox.html`        | HTML template for the widget UI.                                                        |
 | `webplugin/css/app/mck-sidebox-1.0.css`      | Primary CSS (light theme).                                                              |
-| `webplugin/css/app/mck-sidebox-dark.css`     | Dark-theme overrides; keep in sync with the light theme.                                |
 | `webplugin/scss/**`                          | Source SCSS for widget components (compiled by build).                                  |
 | `webplugin/js/app/kommunicate-ui.js`         | Core UI logic, event handlers, FAQ navigation, etc.                                     |
 | `webplugin/js/app/km-post-initialization.js` | Fetches FAQ categories/articles after init.                                             |
@@ -30,11 +29,8 @@ This document captures conventions and project knowledge that help automation to
 
 ## Theming
 
--   To change colors, prefer applying existing theme classes:
-    -   `.km-custom-widget-background-color`
-    -   `.km-custom-widget-text-color`
-    -   `.km-custom-widget-border-color`
--   If new UI requires theme-specific tweaks, update both `mck-sidebox-1.0.css` and `mck-sidebox-dark.css`. When possible, write base styles in the light file and override selective properties (background, border, text color) in the dark file.
+-   To change colors, prefer applying existing theme classes: - `.km-custom-widget-background-color` - `.km-custom-widget-text-color` - `.km-custom-widget-border-color`
+    -- If new UI requires theme-specific tweaks, use the dynamic theme classes (`.km-custom-widget-background-color`, etc.) so light/dark styling can be driven without separate overrides.
 
 ## JavaScript patterns
 

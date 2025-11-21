@@ -3,8 +3,6 @@
     Author     : devashish
 */
 
-@import url('./mck-sidebox-dark.css');
-
 :root {
     --km-font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
         sans-serif;
@@ -4367,6 +4365,128 @@ ul.mck-intent-menu > li:hover {
 
 .km-visibility-hidden {
     visibility: hidden !important;
+}
+
+/* Tab-specific visibility helpers */
+#mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations .mck-conversation {
+    display: block !important;
+}
+#km-whats-new-placeholder,
+#faq-common,
+#mck-no-conversations {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs #faq-common {
+    display: flex !important;
+}
+#mck-sidebox-content.active-tab-no-conversations #mck-no-conversations {
+    display: block !important;
+}
+
+/* Subsection-specific visibility helpers */
+#km-widget-options,
+#mck-tab-conversation,
+#mck-tab-individual,
+#mck-contacts-content,
+#km-faqdiv,
+.km-faq-category-list-container,
+#km-faq-list-container,
+#km-faqanswer,
+.km-faq-back-btn-wrapper,
+#km-faq-back-btn {
+    display: none !important;
+}
+
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list
+    #mck-tab-conversation {
+    display: flex !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list
+    #mck-contacts-content {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list
+    #km-widget-options {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations #mck-tab-individual {
+    display: flex !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+    #km-widget-options {
+    display: flex !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+    #mck-tab-conversation {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+    #mck-contacts-content {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list
+    #mck-tab-individual {
+    display: none !important;
+}
+
+#mck-sidebox-content.active-tab-faqs #mck-tab-conversation,
+#mck-sidebox-content.active-tab-whats-new #mck-tab-conversation {
+    display: flex !important;
+}
+
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqdiv,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqdiv {
+    display: block !important;
+}
+
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category
+    .km-faq-category-list-container {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-list-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqanswer {
+    display: none !important;
+}
+
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-list-container {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-category-list-container {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqanswer {
+    display: none !important;
+}
+
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqanswer {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqdiv {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-back-btn-wrapper,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-faq-back-btn-wrapper,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faq-back-btn {
+    display: block !important;
+}
+
+#mck-sidebox-content.active-tab-no-conversations #mck-tab-conversation {
+    display: flex !important;
+}
+
+#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status {
+    display: none !important;
 }
 .km-visibility-shown {
     visibility: visible !important;

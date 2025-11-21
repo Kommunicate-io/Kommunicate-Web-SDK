@@ -7904,6 +7904,8 @@ const firstVisibleMsg = {
                     typeof KommunicateUI !== 'undefined' &&
                         typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
                         KommunicateUI.toggleModernFaqBackButton(true);
+                    typeof setActiveSubsectionState === 'function' &&
+                        setActiveSubsectionState('conversation-individual');
 
                     // kommunicateCommons.hide("#km-faq");
                     if (MCK_MODE === 'support') {

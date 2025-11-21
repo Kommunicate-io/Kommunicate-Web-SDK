@@ -19,6 +19,90 @@
             return params.KommunicateUI || w.KommunicateUI;
         }
 
+        var TAB_ACTIVE_CLASS_PREFIX = 'active-tab-';
+        var SUBSECTION_ACTIVE_CLASS_PREFIX = 'active-subsection-';
+
+        function normalizeSubsection(subsection) {
+            if (!subsection) {
+                return 'conversation-list';
+            }
+            var value =
+                typeof subsection.toString === 'function'
+                    ? subsection.toString().trim()
+                    : String(subsection).trim();
+            return value.length ? value : 'conversation-list';
+        }
+
+        function getDefaultSubsectionForTab(tabType) {
+            switch (tabType) {
+                case 'faqs': {
+                    var hasFaqCategory =
+                        w.kommunicate &&
+                        w.kommunicate._globals &&
+                        w.kommunicate._globals.faqCategory;
+                    return hasFaqCategory ? 'faq-list' : 'faq-category';
+                }
+                case 'whats-new':
+                    return 'whats-new';
+                case 'no-conversations':
+                    return 'welcome';
+                case 'conversations':
+                default:
+                    return 'conversation-list';
+            }
+        }
+
+        function normalizeTabType(tabType) {
+            if (!tabType) {
+                return 'conversations';
+            }
+            var value =
+                typeof tabType.toString === 'function'
+                    ? tabType.toString().trim()
+                    : String(tabType).trim();
+            return value.length ? value : 'conversations';
+        }
+
+        function updateActiveTabClass(tabType) {
+            if (!documentRef) {
+                return;
+            }
+            var container = documentRef.getElementById('mck-sidebox-content');
+            if (!container || !container.classList) {
+                return;
+            }
+            var normalizedTabType = normalizeTabType(tabType);
+            Array.prototype.slice
+                .call(container.classList)
+                .filter(function (className) {
+                    return className.indexOf(TAB_ACTIVE_CLASS_PREFIX) === 0;
+                })
+                .forEach(function (activeClass) {
+                    container.classList.remove(activeClass);
+                });
+            container.classList.add(TAB_ACTIVE_CLASS_PREFIX + normalizedTabType);
+        }
+
+        function updateActiveSubsectionClass(subsection) {
+            if (!documentRef) {
+                return;
+            }
+            var container = documentRef.getElementById('mck-sidebox-content');
+            if (!container || !container.classList) {
+                return;
+            }
+            var normalizedSubsection = normalizeSubsection(subsection);
+            Array.prototype.slice
+                .call(container.classList)
+                .filter(function (className) {
+                    return className.indexOf(SUBSECTION_ACTIVE_CLASS_PREFIX) === 0;
+                })
+                .forEach(function (activeClass) {
+                    container.classList.remove(activeClass);
+                });
+            container.classList.add(SUBSECTION_ACTIVE_CLASS_PREFIX + normalizedSubsection);
+        }
+
         function getLastBottomTab() {
             return (
                 (w.Kommunicate && w.Kommunicate._globals && w.Kommunicate._globals.lastBottomTab) ||
@@ -188,8 +272,11 @@
 
         function handleBottomTabChange(tabType, options) {
             options = options || {};
-            setBottomTabState(tabType);
+            var resolvedTabType = normalizeTabType(tabType);
+            setBottomTabState(resolvedTabType);
             showBottomTabs();
+            updateActiveTabClass(resolvedTabType);
+            updateActiveSubsectionClass(getDefaultSubsectionForTab(resolvedTabType));
 
             var isModernLayout = isModernLayoutEnabled();
             var ui = getKommunicateUI();
@@ -201,13 +288,12 @@
                     (messageInner.dataset && messageInner.dataset.mckId));
             var hasActiveConversation = isModernLayout && !!activeConversationId;
 
-            if (tabType === 'conversations') {
+            if (resolvedTabType === 'conversations') {
                 ui && typeof ui.showConversationList === 'function' && ui.showConversationList();
                 ui && typeof ui.setConversationTitle === 'function' && ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0;
                 }
-                kommunicateCommons.show('#mck-tab-conversation', '#mck-contacts-content');
                 kommunicateCommons.hide('#mck-tab-individual');
                 kommunicateCommons.hide('.km-faq-back-btn-wrapper');
                 kommunicateCommons.hide('#km-faq-back-btn');
@@ -228,7 +314,7 @@
                 }
             }
 
-            if (tabType === 'no-conversations') {
+            if (resolvedTabType === 'no-conversations') {
                 var emptyTitle =
                     (typeof MCK_LABELS === 'object' &&
                         MCK_LABELS &&
@@ -239,17 +325,13 @@
                     ui.setConversationTitle(emptyTitle);
                 KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
                 kommunicateCommons.hide(
-                    '#km-whats-new-placeholder',
-                    '#faq-common',
-                    '.mck-conversation',
-                    '#mck-contacts-content',
                     '#mck-tab-individual',
                     '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
                 );
                 kommunicateCommons.hide('.km-faq-back-btn-wrapper', '#km-faq-back-btn');
                 kommunicateCommons.hide('#km-widget-options');
 
-                kommunicateCommons.show('#mck-tab-conversation', '#mck-no-conversations');
+                kommunicateCommons.show('#mck-tab-conversation');
                 if (typeof w.KM_TOP_BAR !== 'undefined' && w.KM_TOP_BAR) {
                     try {
                         w.KM_TOP_BAR.showConversationHeader();
@@ -260,23 +342,20 @@
                 return;
             }
 
-            if (tabType === 'faqs') {
+            if (resolvedTabType === 'faqs') {
                 var faqButton = documentRef && documentRef.getElementById('km-faq');
                 faqButton && faqButton.click();
                 console.log('clicked faq button from bottom tab');
-                kommunicateCommons.hide('#km-whats-new-placeholder', '#mck-no-conversations');
-                kommunicateCommons.show('#mck-tab-conversation', '#faq-common');
-                kommunicateCommons.hide('.mck-conversation', '#mck-tab-individual');
+                kommunicateCommons.hide('#mck-tab-individual');
+                kommunicateCommons.show('#mck-tab-conversation');
                 return;
             }
 
-            if (tabType === 'whats-new') {
+            if (resolvedTabType === 'whats-new') {
                 whatsNewManager &&
                     typeof whatsNewManager.refresh === 'function' &&
                     whatsNewManager.refresh();
-                kommunicateCommons.show('#mck-tab-conversation', '#km-whats-new-placeholder');
-                kommunicateCommons.hide('#mck-tab-individual', '#faq-common', '.mck-conversation');
-                kommunicateCommons.hide('#mck-no-conversations');
+                kommunicateCommons.hide('#mck-tab-individual');
                 ui &&
                     typeof ui.toggleModernFaqBackButton === 'function' &&
                     ui.toggleModernFaqBackButton(false);
@@ -290,19 +369,13 @@
                 kommunicateCommons.hide('#mck-tab-individual .mck-tab-link.mck-back-btn-container');
                 kommunicateCommons.hide('#mck-tab-individual .mck-name-status-container');
                 kommunicateCommons.hide('#mck-tab-individual');
+                kommunicateCommons.show('#mck-tab-conversation');
                 return;
             }
 
             ui &&
                 typeof ui.toggleModernFaqBackButton === 'function' &&
                 ui.toggleModernFaqBackButton(false);
-            kommunicateCommons.hide(
-                '#km-whats-new-placeholder',
-                '#faq-common',
-                '#mck-no-conversations'
-            );
-            kommunicateCommons.hide('#mck-no-conversations');
-            kommunicateCommons.show('.mck-conversation', '#mck-contacts-content');
             if (!(window.KommunicateUI && window.KommunicateUI.isConversationListView)) {
                 kommunicateCommons.show('#km-widget-options');
             } else {
@@ -323,7 +396,7 @@
             console.log('from handleBottomTabChange: showing mck-tab-conversation');
             kommunicateCommons.show('#mck-tab-conversation');
             var keepConversationHeader =
-                tabType === 'conversations' && isModernLayout && !hasActiveConversation;
+                resolvedTabType === 'conversations' && isModernLayout && !hasActiveConversation;
             ui &&
                 typeof ui.showChat === 'function' &&
                 ui.showChat({ keepConversationHeader: keepConversationHeader });
@@ -331,12 +404,16 @@
 
         return {
             init: function () {
-                setBottomTabState(getActiveTabFromDom());
+                var initialTab = normalizeTabType(getActiveTabFromDom());
+                setBottomTabState(initialTab);
+                updateActiveTabClass(initialTab);
+                updateActiveSubsectionClass(getDefaultSubsectionForTab(initialTab));
                 if (!isModernLayoutEnabled()) {
                     toggleBottomTabsDisplay(false);
                 }
             },
             handleChange: handleBottomTabChange,
+            setActiveSubsection: updateActiveSubsectionClass,
             restoreLastTab: restoreLastBottomTab,
             show: showBottomTabs,
             hide: hideBottomTabs,
