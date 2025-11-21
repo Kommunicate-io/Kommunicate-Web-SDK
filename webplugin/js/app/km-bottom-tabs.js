@@ -18,6 +18,9 @@
         function getKommunicateUI() {
             return params.KommunicateUI || w.KommunicateUI;
         }
+        function getTopBarManager() {
+            return params.topBarManager;
+        }
 
         var TAB_ACTIVE_CLASS_PREFIX = 'active-tab-';
         var SUBSECTION_ACTIVE_CLASS_PREFIX = 'active-subsection-';
@@ -328,11 +331,12 @@
                     typeof ui.setConversationTitle === 'function' &&
                     ui.setConversationTitle(emptyTitle);
                 KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
-                if (typeof w.KM_TOP_BAR !== 'undefined' && w.KM_TOP_BAR) {
+                var topBarManager = getTopBarManager();
+                if (topBarManager) {
                     try {
-                        w.KM_TOP_BAR.showConversationHeader();
-                        w.KM_TOP_BAR.toggleAvatar(false);
-                        w.KM_TOP_BAR.toggleBackButton(false);
+                        topBarManager.showConversationHeader();
+                        topBarManager.toggleAvatar(false);
+                        topBarManager.toggleBackButton(false);
                     } catch (e) {}
                 }
                 return;

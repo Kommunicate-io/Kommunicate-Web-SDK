@@ -626,21 +626,21 @@ const firstVisibleMsg = {
             document: d,
         });
         whatsNewManager.init();
-        var topBarManager = new KmTopBar({
+        const topBarManager = new KmTopBar({
             kommunicateCommons: kommunicateCommons,
             document: d,
             labels: MCK_LABELS,
         });
-        w.KmTopBarManager = topBarManager;
-        w.KM_TOP_BAR = topBarManager;
-        var bottomTabManager = new KmBottomTabs({
+        const bottomTabManager = new KmBottomTabs({
             kommunicateCommons: kommunicateCommons,
             document: d,
             whatsNewManager: whatsNewManager,
             eventHistory: MCK_EVENT_HISTORY,
+            topBarManager: topBarManager,
         });
         bottomTabManager.init();
-        w.KmBottomTabsManager = bottomTabManager;
+        KommunicateUI.setTopBarManager(topBarManager);
+        KommunicateUI.setBottomTabsManager(bottomTabManager);
         var kmNavBar = new KmNavBar(mckMessageLayout);
         const answerFeedbackService = new AnswerFeedback(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
@@ -4212,13 +4212,10 @@ const firstVisibleMsg = {
                 });
                 mckMessageLayout.initSearchAutoType();
                 function activateConversationTab() {
-                    var bottomTabManager = w.KmBottomTabsManager;
-                    if (bottomTabManager && typeof bottomTabManager.handleChange === 'function') {
-                        bottomTabManager.handleChange('conversations', {
-                            skipFaqTrigger: true,
-                            fromEmptyState: true,
-                        });
-                    }
+                    bottomTabManager.handleChange('conversations', {
+                        skipFaqTrigger: true,
+                        fromEmptyState: true,
+                    });
                     KommunicateUI.showConversationList && KommunicateUI.showConversationList();
                 }
 
