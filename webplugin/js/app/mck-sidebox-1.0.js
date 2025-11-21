@@ -7571,10 +7571,14 @@ const firstVisibleMsg = {
             };
 
             _this.shouldRestartConversation = function (id) {
+                // Ensure we are toggling the dropdown option only, not the header CTA
+                var dropdownSelector = '.km-option-restart-conversation';
                 var isIterable = true;
-                var restartConversationBtn = document.getElementById(id);
+                var restartConversationBtn = document.querySelector(
+                    '#km-widget-options #km-restart-conversation'
+                );
                 if (restartConversationBtn && restartConversationBtn.classList.contains('n-vis')) {
-                    kommunicateCommons.show('#' + id);
+                    kommunicateCommons.show(dropdownSelector);
                 }
 
                 CURRENT_GROUP_DATA.groupMembers &&
@@ -7594,14 +7598,14 @@ const firstVisibleMsg = {
                     CURRENT_GROUP_DATA.conversationAssignee &&
                     CURRENT_GROUP_DATA.initialBot.userId
                 ) {
-                    kommunicateCommons.show('#' + id);
+                    kommunicateCommons.show(dropdownSelector);
                     restartConversationBtn &&
                         restartConversationBtn.addEventListener(
                             'click',
                             mckMessageService.restartConversation
                         );
                 } else {
-                    kommunicateCommons.hide('#' + id);
+                    kommunicateCommons.hide(dropdownSelector);
                 }
             };
 
@@ -7634,7 +7638,9 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('#km-csat-trigger');
                 }
                 if (appOptions.restartConversationByUser) {
-                    var restartConversationBtn = document.getElementById('km-restart-conversation');
+                    var restartConversationBtn = document.querySelector(
+                        '#km-widget-options #km-restart-conversation'
+                    );
                     var isIterable = true;
                     CURRENT_GROUP_DATA.groupMembers &&
                         CURRENT_GROUP_DATA.groupMembers.map(function (member) {
@@ -7647,27 +7653,30 @@ const firstVisibleMsg = {
                                 CURRENT_GROUP_DATA.initialBot = member;
                             }
                         });
-                    if (
-                        CURRENT_GROUP_DATA &&
-                        CURRENT_GROUP_DATA.initialBot &&
-                        CURRENT_GROUP_DATA.conversationAssignee &&
-                        CURRENT_GROUP_DATA.conversationAssignee ==
-                            CURRENT_GROUP_DATA.initialBot.userId
-                    ) {
-                        kommunicateCommons.show('#km-restart-conversation');
-                        restartConversationBtn &&
-                            restartConversationBtn.addEventListener(
-                                'click',
-                                mckMessageService.restartConversation
-                            );
-                    } else {
-                        kommunicateCommons.hide('#km-restart-conversation');
-                    }
-
                     if (HEADER_CTA.RESTART_CONVERSATION !== primaryCTA) {
+                        if (
+                            CURRENT_GROUP_DATA &&
+                            CURRENT_GROUP_DATA.initialBot &&
+                            CURRENT_GROUP_DATA.conversationAssignee &&
+                            CURRENT_GROUP_DATA.conversationAssignee ==
+                                CURRENT_GROUP_DATA.initialBot.userId
+                        ) {
+                            kommunicateCommons.show('.km-option-restart-conversation');
+                            restartConversationBtn &&
+                                restartConversationBtn.addEventListener(
+                                    'click',
+                                    mckMessageService.restartConversation
+                                );
+                        } else {
+                            kommunicateCommons.hide('.km-option-restart-conversation');
+                        }
+
                         enableDropdown = true;
+                        _this.shouldRestartConversation('km-restart-conversation');
+                    } else {
+                        // Primary CTA is Restart Conversation: ensure dropdown item stays hidden
+                        kommunicateCommons.hide('.km-option-restart-conversation');
                     }
-                    _this.shouldRestartConversation('km-restart-conversation');
                 }
 
                 // For voice output user override

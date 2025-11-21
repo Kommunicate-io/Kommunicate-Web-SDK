@@ -35,9 +35,13 @@ function KmNavBar(mckMsgLayout) {
             if (talkToHumanButton) {
                 talkToHumanButton.disabled = false;
             }
+            // When assigned to human, hide both header and dropdown CTA
             kommunicateCommons.hide('#km-talk-to-human', '.km-option-talk-to-human');
         } else if (HEADER_CTA.TALK_TO_HUMAN === appOptions.primaryCTA) {
-            kommunicateCommons.show('#km-talk-to-human');
+            // If Talk to human is the primary CTA, keep only the header CTA visible
+            // and ensure the dropdown option remains hidden to avoid duplication.
+            kommunicateCommons.hide('.km-option-talk-to-human');
+            kommunicateCommons.show('.km-header-cta');
         }
     };
 }

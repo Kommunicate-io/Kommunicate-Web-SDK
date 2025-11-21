@@ -360,7 +360,7 @@ KommunicateUI = {
         data.appId = kommunicate._globals.appId;
 
         // On Click of FAQ button the FAQ category List will open.
-        $applozic(d).on('click', '#km-faq', function () {
+        $applozic(d).on('click', '#km-faq, #km-faq-option', function () {
             KommunicateUI.ensureFaqCategoriesLoaded();
             var isFaqCategoryPresent =
                 kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
@@ -1618,7 +1618,8 @@ KommunicateUI = {
                         kommunicateCommons.hide(
                             '.km-option-talk-to-human',
                             '#km-talk-to-human',
-                            '#km-restart-conversation'
+                            '#km-restart-conversation',
+                            '.km-option-restart-conversation'
                         );
                         CURRENT_GROUP_DATA.isWaitingQueue = true;
                         headerTabTitle.innerHTML =
