@@ -5649,10 +5649,7 @@ const firstVisibleMsg = {
                 } else {
                     contact = mckMessageLayout.fetchContact(messagePxy.to);
                 }
-                // var $mck_empty_message_text = $applozic('#mck-message-cell .mck-no-data-text');
-                // if ($mck_empty_message_text.length > 0) {
-                //     $mck_empty_message_text.remove();
-                // }
+
                 if (messagePxy.message && FILE_META.length === 0) {
                     var isTopPanelAdded = $mck_tab_message_option.hasClass('n-vis');
                     var tabId = $mck_msg_inner.data('mck-id');
