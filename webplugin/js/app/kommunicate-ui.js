@@ -6,12 +6,7 @@ var kommunicateCommons = new KommunicateCommons();
 var KM_GLOBAL = kommunicate._globals;
 var bottomTabsManagerRef = null;
 var topBarManagerRef = null;
-function ensureTopBarManager() {
-    if (!topBarManagerRef) {
-        throw new Error('TopBarManager is not initialized');
-    }
-    return topBarManagerRef;
-}
+
 function getFaqClearButton() {
     if (typeof document === 'undefined') {
         return null;
@@ -361,7 +356,7 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ category List will open.
         $applozic(d).on('click', '#km-faq, #km-faq-option', function () {
-            KommunicateUI.ensureFaqCategoriesLoaded();
+            KommunicateUI.ensureFaqCategoriesLoaded(data);
             var isFaqCategoryPresent =
                 kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
@@ -627,6 +622,9 @@ KommunicateUI = {
         });
     },
     ensureFaqCategoriesLoaded: function (data) {
+        if (data) {
+            KommunicateUI.faqAppData = data;
+        }
         var requestData = data || KommunicateUI.faqAppData;
         if (
             KommunicateUI.faqCategoriesReady ||
@@ -784,7 +782,6 @@ KommunicateUI = {
 
         if (isModernLayout) {
             if (shouldShowConversationListHeader) {
-                console.log('inside showChat - conversation list header');
                 topBarManagerRef.toggleBackButton(false);
                 KommunicateUI.isConversationListView = true;
                 setActiveSubsectionState('conversation-list');

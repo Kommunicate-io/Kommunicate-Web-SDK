@@ -16,15 +16,23 @@ const existingCss = fs.readFileSync(cssTarget, 'utf8');
 if (normalize(compiledWithNewline) !== normalize(existingCss)) {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'km-tab-vis-'));
     const tmpFile = path.join(tmpDir, 'mck-tab-visibility.css');
-    fs.writeFileSync(tmpFile, compiledWithNewline, 'utf8');
+    try {
+        fs.writeFileSync(tmpFile, compiledWithNewline, 'utf8');
 
-    console.error(
-        'mck-tab-visibility.css is out of sync with mck-tab-visibility.scss. ' +
-            'Rebuild with `npx sass webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/mck-tab-visibility.css --no-source-map --style=expanded`.'
-    );
+        console.error(
+            'mck-tab-visibility.css is out of sync with mck-tab-visibility.scss. ' +
+                'Rebuild with `npx sass webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/mck-tab-visibility.css --no-source-map --style=expanded`.'
+        );
 
-    const diffResult = spawnSync('diff', ['-u', cssTarget, tmpFile], { stdio: 'inherit' });
-    process.exit(diffResult.status === null ? 1 : diffResult.status);
+        const diffResult = spawnSync('diff', ['-u', cssTarget, tmpFile], { stdio: 'inherit' });
+        process.exit(diffResult.status === null ? 1 : diffResult.status);
+    } finally {
+        try {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        } catch (cleanupErr) {
+            console.warn('Failed to remove temp directory', cleanupErr);
+        }
+    }
 }
 
 console.log('mck-tab-visibility.css is in sync with mck-tab-visibility.scss');
