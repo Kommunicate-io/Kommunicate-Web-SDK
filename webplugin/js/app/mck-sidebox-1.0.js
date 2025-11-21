@@ -7933,12 +7933,10 @@ const firstVisibleMsg = {
                     if (IS_OFFLINE_MESSAGE_ENABLED) {
                         mckMessageLayout.hideOfflineMessage();
                     }
-                    kommunicateCommons.hide('#mck-tab-individual');
-                    typeof KommunicateUI !== 'undefined' &&
-                        typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
-                        KommunicateUI.toggleModernFaqBackButton(false);
                     KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
-                    bottomTabManager.updateConversationTabIfActive();
+                    if (bottomTabManager.isConversationTabActive()) {
+                        bottomTabManager.handleChange('conversations');
+                    }
                     kommunicateCommons.show('#mck-search-tabview-box');
                     kommunicateCommons.hide('#mck-product-box');
                     $mck_msg_inner.data('mck-id', '');

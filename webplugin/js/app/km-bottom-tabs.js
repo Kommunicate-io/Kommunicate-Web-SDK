@@ -115,25 +115,6 @@
             return getActiveTabFromDom() === 'conversations';
         }
 
-        function updateConversationTabIfActive() {
-            if (!isConversationTabActive()) {
-                return;
-            }
-            kommunicateCommons.show('#mck-tab-conversation');
-            var ui = getKommunicateUI();
-            if (ui && typeof ui.setConversationTitle === 'function') {
-                ui.setConversationTitle();
-                return;
-            }
-            if (documentRef && typeof documentRef.getElementById === 'function') {
-                var conversationTitleElement = documentRef.getElementById('mck-conversation-title');
-                if (conversationTitleElement) {
-                    var conversationTitleLabel = getLabel('conversations.title', 'Conversations');
-                    conversationTitleElement.textContent = conversationTitleLabel;
-                }
-            }
-        }
-
         function showNoConversationsTab() {
             toggleEmptyTabVisibility(true);
             handleBottomTabChange('no-conversations', {
@@ -361,7 +342,7 @@
             showEmptyStateTab: showNoConversationsTab,
             hideEmptyStateTab: hideNoConversationsTab,
             toggleConversationTabVisibility: toggleConversationTabVisibility,
-            updateConversationTabIfActive: updateConversationTabIfActive,
+            isConversationTabActive: isConversationTabActive,
         };
     }
 
