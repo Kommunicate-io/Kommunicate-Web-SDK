@@ -42,6 +42,7 @@ This document captures conventions and project knowledge that help automation to
 ## Development tips
 
 -   Use `rg` for searches (preferred in this environment).
+-   Keep generated CSS in sync: run `npm run lint:tab-visibility-sync` to verify `webplugin/css/app/mck-tab-visibility.css` matches its SCSS source before committing.
 -   When editing CSS/SCSS, add comments only when they clarify complex intent; style comments are not required for simple property changes.
 -   Honor existing instructions in `README.md` and any build scripts when running tests/builds.
 -   When touching FAQ/What’s New/Conversation UI, validate both desktop (~360–400px width) and mobile (narrow viewport) layouts.

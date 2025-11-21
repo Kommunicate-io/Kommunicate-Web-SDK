@@ -27,6 +27,7 @@
     "serve-build": "serve -C -l 3030 webplugin/build",
     "run-danger-local": "danger local",
     "run-danger-test": "danger ci",
+    "lint:tab-visibility-sync": "node scripts/check-tab-visibility-css.js",
     "setup-git-hooks": "node setup-git-hooks.js",
     "gulp-build": "cd ./webplugin && gulp",
     "build-server": "node ./server/build.js",

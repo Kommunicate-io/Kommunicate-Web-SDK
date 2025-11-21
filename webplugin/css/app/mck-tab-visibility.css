@@ -37,7 +37,6 @@
 #mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status {
     display: none !important;
 }
-
 #mck-sidebox-content.active-tab-conversations .mck-conversation {
     display: block !important;
 }
@@ -72,19 +71,20 @@
     #mck-contacts-content {
     display: none !important;
 }
-
 #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
     display: block !important;
 }
 #mck-sidebox-content.active-tab-whats-new #mck-tab-conversation {
     display: flex !important;
 }
-
 #mck-sidebox-content.active-tab-faqs #faq-common {
     display: flex !important;
 }
 #mck-sidebox-content.active-tab-faqs #mck-tab-conversation {
     display: flex !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
+    /* keep FAQ search visible when category list is active */
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqdiv {
     display: block !important;
@@ -103,7 +103,6 @@
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqanswer {
     display: none !important;
 }
-
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqdiv {
     display: block !important;
 }
@@ -116,9 +115,7 @@
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqanswer {
     display: none !important;
 }
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box {
-    display: none !important;
-}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-contact-input-container {
     display: none !important;
 }
@@ -126,16 +123,13 @@
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn {
     display: block !important;
 }
-
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqanswer {
     display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqdiv {
     display: none !important;
 }
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-contact-search-input-box {
-    display: none !important;
-}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-contact-search-input-box,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-contact-input-container {
     display: none !important;
 }
@@ -143,10 +137,7 @@
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faq-back-btn {
     display: block !important;
 }
-
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-contact-search-input-box {
-    display: block !important;
-}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-contact-search-input-box,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-contact-input-container {
     display: block !important;
 }
@@ -158,7 +149,6 @@
     .km-no-results-found-container {
     display: block !important;
 }
-
 #mck-sidebox-content.active-tab-no-conversations #mck-no-conversations {
     display: block !important;
 }
