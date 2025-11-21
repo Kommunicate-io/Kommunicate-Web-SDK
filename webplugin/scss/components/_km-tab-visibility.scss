@@ -1,0 +1,182 @@
+.km-visibility-hidden {
+    visibility: hidden !important;
+}
+
+.km-visibility-shown {
+    visibility: visible !important;
+}
+
+/* Default hidden elements */
+#km-whats-new-placeholder,
+#faq-common,
+#mck-no-conversations {
+    display: none !important;
+}
+
+#km-widget-options,
+#mck-tab-conversation,
+#mck-tab-individual,
+#mck-contacts-content,
+#km-faqdiv,
+.km-faq-category-list-container,
+#km-faq-list-container,
+#km-faqanswer,
+.km-faq-back-btn-wrapper,
+#km-faq-back-btn {
+    display: none !important;
+}
+
+/* Tab and subsection visibility helpers */
+#mck-sidebox-content {
+    &:not(.active-tab-conversations) {
+        .mck-conversation {
+            display: none !important;
+        }
+
+        .mck-agent-image-container,
+        .mck-agent-status-indicator,
+        #mck-agent-status-text,
+        .mck-typing-box,
+        #mck-tab-status {
+            display: none !important;
+        }
+    }
+
+    &.active-tab-conversations {
+        .mck-conversation {
+            display: block !important;
+        }
+
+        #mck-tab-individual {
+            display: flex !important;
+        }
+
+        &.active-subsection-conversation-list {
+            #mck-tab-conversation {
+                display: flex !important;
+            }
+            #mck-contacts-content {
+                display: block !important;
+            }
+            #km-widget-options {
+                display: none !important;
+            }
+            #mck-tab-individual {
+                display: none !important;
+            }
+        }
+
+        &.active-subsection-conversation-individual {
+            #km-widget-options {
+                display: flex !important;
+            }
+            #mck-tab-conversation {
+                display: none !important;
+            }
+            #mck-contacts-content {
+                display: none !important;
+            }
+        }
+    }
+
+    &.active-tab-whats-new {
+        #km-whats-new-placeholder {
+            display: block !important;
+        }
+        #mck-tab-conversation {
+            display: flex !important;
+        }
+    }
+
+    &.active-tab-faqs {
+        #faq-common {
+            display: flex !important;
+        }
+        #mck-tab-conversation {
+            display: flex !important;
+        }
+
+        &.active-subsection-faq-category {
+            #km-faqdiv {
+                display: block !important;
+            }
+            #km-contact-search-input-box {
+                display: block !important;
+            }
+            /* keep FAQ search visible when category list is active */
+            .km-contact-input-container {
+                display: block !important;
+            }
+            .km-faq-category-list-container {
+                display: block !important;
+            }
+            #km-faq-list-container,
+            #km-faqanswer {
+                display: none !important;
+            }
+        }
+
+        &.active-subsection-faq-list {
+            #km-faqdiv {
+                display: block !important;
+            }
+            #km-faq-list-container {
+                display: block !important;
+            }
+            .km-faq-category-list-container {
+                display: none !important;
+            }
+            #km-faqanswer {
+                display: none !important;
+            }
+            #km-contact-search-input-box,
+            .km-contact-input-container {
+                display: none !important;
+            }
+            .km-faq-back-btn-wrapper,
+            #km-faq-back-btn {
+                display: block !important;
+            }
+        }
+
+        &.active-subsection-faq-article {
+            #km-faqanswer {
+                display: block !important;
+            }
+            #km-faqdiv {
+                display: none !important;
+            }
+            #km-contact-search-input-box,
+            .km-contact-input-container {
+                display: none !important;
+            }
+            .km-faq-back-btn-wrapper,
+            #km-faq-back-btn {
+                display: block !important;
+            }
+        }
+
+        &.active-subsection-faq-no-results {
+            #km-contact-search-input-box,
+            .km-contact-input-container {
+                display: block !important;
+            }
+            #km-faqdiv,
+            #km-faq-list-container {
+                display: none !important;
+            }
+            .km-no-results-found-container {
+                display: block !important;
+            }
+        }
+    }
+
+    &.active-tab-no-conversations {
+        #mck-no-conversations {
+            display: block !important;
+        }
+        #mck-tab-conversation {
+            display: flex !important;
+        }
+    }
+}
