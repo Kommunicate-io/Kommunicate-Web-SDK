@@ -4445,6 +4445,20 @@ ul.mck-intent-menu > li:hover {
     display: block !important;
 }
 
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-contact-search-input-box {
+    display: block !important;
+}
+/* keep FAQ search visible when category list is active */
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-contact-input-container {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-contact-input-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-contact-search-input-box,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-contact-input-container {
+    display: none !important;
+}
+
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category
     .km-faq-category-list-container {
     display: block !important;
@@ -4474,6 +4488,21 @@ ul.mck-intent-menu > li:hover {
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-faq-back-btn-wrapper,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faq-back-btn {
+    display: block !important;
+}
+
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-contact-search-input-box {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-contact-input-container {
+    display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faqdiv,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faq-list-container {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results
+    .km-no-results-found-container {
     display: block !important;
 }
 

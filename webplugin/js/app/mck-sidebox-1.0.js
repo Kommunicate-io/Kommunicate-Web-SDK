@@ -4228,6 +4228,8 @@ const firstVisibleMsg = {
                     _this.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                         KommunicateUI.setHasConversationHistory(true);
+                        typeof setActiveSubsectionState === 'function' &&
+                            setActiveSubsectionState('conversation-individual');
                     });
                     $applozic('#mck-msg-new').attr('disabled', true);
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
