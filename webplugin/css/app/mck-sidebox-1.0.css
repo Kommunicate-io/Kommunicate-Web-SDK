@@ -4362,7 +4362,6 @@ ul.mck-intent-menu > li:hover {
     bottom: 0;
     left: 0;
     overflow: auto;
-    overflow: auto;
 }
 
 .km-faqanswer img {
@@ -4669,6 +4668,13 @@ div#mck-tab-title.mck-tab-title {
 .mck-close-sidebox:hover {
     background-color: rgba(0, 0, 0, 0.14);
     border-radius: 6px;
+}
+.km-faq-back-btn__chevron svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin: 0 auto;
+    fill: #ffffff;
 }
 .km-faq-back-btn-wrapper {
     width: auto !important;
