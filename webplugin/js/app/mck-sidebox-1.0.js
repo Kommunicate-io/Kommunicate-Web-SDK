@@ -2127,6 +2127,7 @@ const firstVisibleMsg = {
                         if (kmChatLoginModal && kmChatLoginModal.parentElement) {
                             kmChatLoginModal.parentElement !== document.body &&
                                 document.body.appendChild(kmChatLoginModal);
+                            kmChatLoginModal.setAttribute('aria-hidden', 'true');
                         }
 
                         if (KOMMUNICATE_VERSION === 'v2') {
@@ -2333,6 +2334,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
+                kmChatLoginModal.style.visibility = 'hidden';
                 kmChatLoginModal.setAttribute('aria-hidden', 'true');
                 kommunicateCommons.show('#km-anonymous-chat-launcher');
             };
@@ -4929,10 +4931,11 @@ const firstVisibleMsg = {
                 };
 
                 $applozic('.km-login-model-close').on('click', function (e) {
-                    //kommunicateCommons.hide("#km-chat-login-modal");
                     kommunicateCommons.hide('#km-chat-login-modal');
                     var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                    kmChatLoginModal && kmChatLoginModal.setAttribute('aria-hidden', 'true');
+                    kmChatLoginModal &&
+                        ((kmChatLoginModal.style.visibility = 'hidden'),
+                        kmChatLoginModal.setAttribute('aria-hidden', 'true'));
                 });
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();

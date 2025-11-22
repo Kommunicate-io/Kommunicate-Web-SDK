@@ -235,8 +235,10 @@
 
         function hideNoConversationsTab() {
             toggleEmptyTabVisibility(false);
-            KommunicateUI.setHasConversationHistory &&
-                KommunicateUI.setHasConversationHistory(true);
+            var kmUi = getKommunicateUI();
+            kmUi &&
+                typeof kmUi.setHasConversationHistory === 'function' &&
+                kmUi.setHasConversationHistory(true);
             if (getActiveTabFromDom() === 'no-conversations') {
                 handleBottomTabChange('conversations', {
                     skipFaqTrigger: true,
