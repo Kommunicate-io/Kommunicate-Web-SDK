@@ -802,7 +802,7 @@ KommunicateUI = {
                     KommunicateUI.searchFaqUI(response);
                 },
                 error: function (err) {
-                    console.log('error while searching faq', err);
+                    console.log('error while searching faq', err || 'Unknown error');
                 },
             });
         } else {
@@ -817,7 +817,7 @@ KommunicateUI = {
                     KommunicateUI.searchFaqUI(response);
                 },
                 error: function (err) {
-                    console.log('error while searching faq', err);
+                    console.log('error while searching faq', err || 'Unknown error');
                 },
             });
         }

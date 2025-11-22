@@ -4637,16 +4637,7 @@ div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
 }
-#mck-conversation-back-btn {
-    -webkit-appearance: none;
-    padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
-    height: 50px;
-    width: 45px;
-    outline: none;
-}
+#mck-conversation-back-btn,
 .km-faq-back-btn {
     -webkit-appearance: none;
     padding: 0;

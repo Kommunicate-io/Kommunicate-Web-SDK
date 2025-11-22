@@ -221,7 +221,6 @@ $known-prefixes
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   margin-bottom: 12px;
   cursor: pointer;
-  position: relative;
   z-index: 0;
   isolation: isolate;
   align-items: stretch;
