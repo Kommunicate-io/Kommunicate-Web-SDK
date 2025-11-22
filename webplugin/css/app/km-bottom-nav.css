@@ -1,3 +1,16 @@
+/* CSS custom properties for theming. These map SCSS color tokens into runtime CSS variables
+     so templates can be themed via JS or by overriding the variables in a site stylesheet. */
+:root {
+    --km-bg: #ffffff;
+    --km-tabicon-bg: #edf0f5;
+    --km-accent-start: #3f63ff; /* used for gradients */
+    --km-accent: #5f46f8;
+    --km-accent-contrast: #ffffff;
+    --km-font-title-color: #1c2043;
+    --km-font-meta-color: #8d94b5;
+    --km-font-body-color: #6e6e6e;
+}
+
 /**
 
 $known-prefixes
@@ -59,12 +72,6 @@ $known-prefixes
 .km-bottom-tab.active {
     color: var(--km-font-title-color);
 }
-.km-bottom-tab.active .km-bottom-tab-icon {
-    background: linear-gradient(135deg, #3f63ff, #5f46f8);
-    color: #ffffff;
-    box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
-    transform: translateY(-1px);
-}
 
 @media (max-width: 600px) {
     .km-bottom-tab {
@@ -117,7 +124,7 @@ $known-prefixes
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: #edf0f5;
+    background: var(--km-tabicon-bg, #edf0f5);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -130,8 +137,15 @@ $known-prefixes
     display: block;
 }
 .km-bottom-tab-icon.km-custom-widget-background-color {
-    color: #ffffff !important;
+    color: var(--km-accent-contrast, #ffffff) !important;
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    transform: translateY(-1px);
+}
+
+.km-bottom-tab.active .km-bottom-tab-icon {
+    background: linear-gradient(135deg, var(--km-accent-start, #3f63ff), var(--km-accent, #5f46f8));
+    color: var(--km-accent-contrast, #ffffff);
+    box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
 }
 
@@ -155,14 +169,14 @@ $known-prefixes
 .km-whats-new-list,
 .km-faq-category-list-container {
     list-style: none;
-    padding: 16px 8px 24px;
+    padding: 16px 8px 24px 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     box-sizing: border-box;
-    width: 100%;
+    width: calc(100% - 16px);
     max-width: 420px;
-    margin: 0 auto;
+    margin-left: 8px;
+    margin-right: 24px;
 }
 
 .km-whats-new-card,
@@ -173,16 +187,20 @@ $known-prefixes
     border-radius: 18px;
     padding: 16px 18px;
     border: 1px solid rgba(15, 23, 42, 0.04);
-    background: #ffffff;
+    background: var(--km-bg, #ffffff);
     box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
     position: relative;
     overflow: hidden;
     backdrop-filter: none;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     margin-bottom: 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    align-items: stretch;
 }
 .km-whats-new-card:hover,
 .km-faq-category-card:hover {
@@ -205,32 +223,20 @@ $known-prefixes
     margin: 0;
     color: var(--km-font-body-color);
     display: block;
+    padding-bottom: 4px;
 }
-.km-faq-category-card {
-    cursor: pointer;
-    border: none;
-    position: relative;
-    z-index: 0;
-    isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-}
+.km-whats-new-card .km-faq-category-card-content,
 .km-faq-category-card .km-faq-category-card-content {
     display: flex;
     flex-direction: column;
     flex: 1;
     justify-content: flex-start;
 }
-.km-faq-category-card.km-custom-widget-border-color {
-    border-color: transparent;
-}
 
 .km-faq-category-card-title {
     font-size: 15px;
     font-weight: 600;
-    color: #1c2043;
+    color: var(--km-font-title-color, #1c2043);
     margin-bottom: 6px;
 }
 
@@ -267,8 +273,7 @@ $known-prefixes
 .km-faq-category-card-title-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
+    justify-content: space-between;
     width: 100%;
     margin-bottom: 4px;
 }
@@ -276,7 +281,7 @@ $known-prefixes
 .km-whats-new-meta {
     display: inline-block;
     font-size: 12px;
-    color: #8d94b5;
+    color: var(--km-font-meta-color, #8d94b5);
     font-weight: 600;
     letter-spacing: 0.4px;
     margin-bottom: 10px;
@@ -287,7 +292,7 @@ $known-prefixes
     display: inline-flex;
     margin-top: 14px;
     font-weight: 600;
-    color: #584bff;
+    color: var(--km-accent, #584bff);
     text-decoration: none;
 }
 .km-whats-new-link:hover {
@@ -301,5 +306,3 @@ $known-prefixes
 .mck-sidebox .km-bottom-tab.vis {
     display: inline-flex;
 }
-
-/*# sourceMappingURL=km-bottom-nav.css.map */

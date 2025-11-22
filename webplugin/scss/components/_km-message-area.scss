@@ -223,8 +223,11 @@
 
 .km-conversations-empty {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 480px;
     padding: 32px 18px 40px;
     text-align: center;
     display: flex;
@@ -260,15 +263,12 @@
     }
 
     &__cta {
-        border: none;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 12px 18px;
-        cursor: pointer;
-        width: 100%;
-        max-width: 240px;
+        @extend %km-primary-cta;
     }
+}
+
+#mck-message-cell .km-conversations-empty:not(.n-vis) + #mck-contacts-content {
+    display: none !important;
 }
 
 .km-empty-conversation-card {
@@ -535,30 +535,30 @@
     }
 
     &__cta {
-        border: none;
-        border-radius: 999px;
-        font-size: 16px;
-        font-weight: 600;
-        padding: 12px 18px;
-        cursor: pointer;
-        width: 82%;
-        max-width: 300px;
-        text-align: center;
-        box-sizing: border-box;
-        box-shadow: 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+        @extend %km-primary-cta;
+    }
+}
 
-        &:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
-        }
+%km-primary-cta {
+    border: none;
+    border-radius: 999px;
+    font-size: 14px !important;
+    font-weight: 600;
+    padding: 12px 18px;
+    cursor: pointer;
+    width: 82%;
+    max-width: 300px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 
-        &:focus-visible {
-            outline: 2px solid $outline-color;
-            outline-offset: 2px;
-        }
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
     }
 
-    @at-root .mck-sidebox .km-empty-conversation-card__cta {
-        font-size: 15px !important;
+    &:focus-visible {
+        outline: 2px solid $outline-color;
+        outline-offset: 2px;
     }
 }

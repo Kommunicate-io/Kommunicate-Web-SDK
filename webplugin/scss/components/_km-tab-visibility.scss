@@ -64,6 +64,11 @@
             #mck-tab-individual {
                 display: none !important;
             }
+
+            /* Hide start-new button when conversations empty state is visible */
+            .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
+                display: none !important;
+            }
         }
 
         &.active-subsection-conversation-individual {
