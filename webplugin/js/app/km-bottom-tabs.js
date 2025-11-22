@@ -295,28 +295,6 @@
                 (messageInner.getAttribute('data-mck-id') ||
                     (messageInner.dataset && messageInner.dataset.mckId));
             var hasActiveConversation = isModernLayout && !!activeConversationId;
-            var shouldAutoStartConversation =
-                resolvedTabType === 'conversations' &&
-                options.userTriggered &&
-                ui &&
-                ui.hasConversationHistory === false &&
-                !ui.hasAutoStartedConversation &&
-                w.Kommunicate &&
-                typeof w.Kommunicate.startConversation === 'function';
-
-            if (shouldAutoStartConversation) {
-                ui.hasAutoStartedConversation = true;
-                w.Kommunicate.startConversation({}, function (err) {
-                    if (err) {
-                        ui.hasAutoStartedConversation = false;
-                        return;
-                    }
-                    ui.setHasConversationHistory &&
-                        typeof ui.setHasConversationHistory === 'function' &&
-                        ui.setHasConversationHistory(true);
-                });
-            }
-
             if (resolvedTabType === 'conversations') {
                 ui && typeof ui.showConversationList === 'function' && ui.showConversationList();
                 ui && typeof ui.setConversationTitle === 'function' && ui.setConversationTitle();
