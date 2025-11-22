@@ -1,3 +1,4 @@
+// Visibility utilities intentionally preserve layout (vs. display: none)
 .km-visibility-hidden {
     visibility: hidden !important;
 }

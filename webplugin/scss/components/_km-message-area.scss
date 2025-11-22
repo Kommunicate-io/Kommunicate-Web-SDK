@@ -367,14 +367,12 @@
         }
 
         &.km-faqsearch-input {
-            padding: 10px 44px 10px 40px !important;
-            border: none !important;
-            box-shadow: none !important;
-            background: transparent !important;
+            padding: 10px 44px 10px 40px;
+            box-shadow: none;
         }
 
         &.km-faqsearch-input:focus {
-            box-shadow: none !important;
+            box-shadow: none;
         }
     }
 

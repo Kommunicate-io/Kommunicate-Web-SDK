@@ -492,10 +492,9 @@
                         <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
                             <div class="km-faqsearch-field">
                                 <div class="km-contact-input-container km-faq-search-shell">
-                                    <span
+                                    <button
+                                        type="button"
                                         class="km-faqsearch-icon"
-                                        role="button"
-                                        tabindex="0"
                                         aria-label="Search FAQs"
                                     >
                                         <svg
@@ -508,7 +507,7 @@
                                         >
                                             <use xlink:href="#icon-13" href="#icon-13"></use>
                                         </svg>
-                                    </span>
+                                    </button>
                                     <input
                                         id="km-faq-search-input"
                                         class="km-faqsearch-input mck-typeahead"
@@ -519,10 +518,9 @@
                                         tabindex="0"
                                         autocomplete="off"
                                     />
-                                    <span
+                                    <button
+                                        type="button"
                                         class="km-faqsearch-clear n-vis"
-                                        role="button"
-                                        tabindex="0"
                                         aria-label="Clear search"
                                     >
                                         <svg
@@ -535,7 +533,7 @@
                                         >
                                             <use xlink:href="#icon-60" href="#icon-60"></use>
                                         </svg>
-                                    </span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -590,7 +588,7 @@
                         role="region"
                         aria-live="polite"
                     >
-                        <div class="km-empty-conversation-card" aria-hidden="false">
+                        <div class="km-empty-conversation-card">
                             <div class="km-empty-conversation-card__hero">
                                 <div
                                     class="km-empty-conversation-card__icon-badge"
@@ -612,9 +610,9 @@
                                     <div
                                         class="km-empty-conversation-card__search-field km-contact-input-container km-faq-search-shell km-custom-widget-border-color"
                                     >
-                                        <span
+                                        <button
+                                            type="button"
                                             class="km-faqsearch-icon"
-                                            role="button"
                                             tabindex="0"
                                             aria-label="Search FAQs"
                                         >
@@ -628,7 +626,7 @@
                                             >
                                                 <use xlink:href="#icon-13" href="#icon-13"></use>
                                             </svg>
-                                        </span>
+                                        </button>
                                         <input
                                             id="km-empty-faq-search"
                                             class="km-empty-conversation-card__search-input km-faqsearch-input mck-typeahead"
@@ -637,10 +635,10 @@
                                             aria-label="Search in FAQs..."
                                             autocomplete="off"
                                         />
-                                        <span
+                                        <button
+                                            type="button"
                                             id="km-empty-faq-search-clear"
                                             class="km-faqsearch-clear n-vis"
-                                            role="button"
                                             tabindex="0"
                                             aria-label="Clear search"
                                         >
@@ -654,7 +652,7 @@
                                             >
                                                 <use xlink:href="#icon-60" href="#icon-60"></use>
                                             </svg>
-                                        </span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1526,7 +1524,6 @@
                         data-tab="no-conversations"
                         role="tab"
                         aria-selected="false"
-                        aria-hidden="false"
                     >
                         <span class="km-bottom-tab-icon" aria-hidden="true">
                             <svg
@@ -2185,6 +2182,7 @@
         role="dialog"
         aria-live="polite"
         aria-labelledby="km-tab-title"
+        aria-hidden="true"
         style="visibility: hidden"
     >
         <div class="km-modal-dialog km-modal-sm">
@@ -2206,7 +2204,6 @@
                             data-dismiss="mckbox"
                             tabindex="0"
                             aria-label="Close"
-                            aria-hidden="false"
                             role="button"
                         >
                             <svg

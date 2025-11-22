@@ -182,6 +182,13 @@
     color: var(--km-font-meta-color);
 }
 
+.km-faqsearch-icon,
+.km-faqsearch-clear {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
 .mck-conversation-status-time {
     display: inline-flex;
     align-items: center;

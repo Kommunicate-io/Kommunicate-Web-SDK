@@ -171,7 +171,7 @@
                 return;
             }
             if (show) {
-                emptyTab.removeAttribute('aria-hidden');
+                emptyTab.setAttribute('aria-hidden', 'false');
                 if (conversationTab) {
                     conversationTab.classList.remove('active');
                     conversationTab.setAttribute('aria-selected', 'false');
@@ -179,8 +179,9 @@
             } else {
                 emptyTab.classList.remove('active');
                 emptyTab.setAttribute('aria-selected', 'false');
+                emptyTab.setAttribute('aria-hidden', 'true');
                 if (conversationTab) {
-                    conversationTab.removeAttribute('aria-hidden');
+                    conversationTab.setAttribute('aria-hidden', 'false');
                 }
             }
         }
@@ -273,12 +274,6 @@
         }
 
         function handleBottomTabChange(tabType, options) {
-            console.debug(
-                'handleBottomTabChange called with tabType:',
-                tabType,
-                'options:',
-                options
-            );
             options = options || {};
             var resolvedTabType = normalizeTabType(tabType);
             setBottomTabState(resolvedTabType);

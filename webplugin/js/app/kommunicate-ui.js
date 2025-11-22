@@ -801,7 +801,7 @@ KommunicateUI = {
                     if (current !== (KommunicateUI._lastFaqQuery || '')) return;
                     KommunicateUI.searchFaqUI(response);
                 },
-                error: function () {
+                error: function (err) {
                     console.log('error while searching faq', err);
                 },
             });

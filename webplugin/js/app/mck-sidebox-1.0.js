@@ -2154,6 +2154,7 @@ const firstVisibleMsg = {
                         _this.setLeadCollectionLabels();
                         kmChatLoginModal.style.visibility = 'visible';
                         kmChatLoginModal.style.display = 'none';
+                        kmChatLoginModal.setAttribute('aria-hidden', 'true');
                         kmAnonymousChatLauncher.classList.remove('n-vis');
                         kmAnonymousChatLauncher.classList.add('vis');
                         document
@@ -2192,6 +2193,7 @@ const firstVisibleMsg = {
                                                 '0 1.5rem 2rem rgba(0,0,0,.3)');
                                     }
                                     kmChatLoginModal.style.display = 'block';
+                                    kmChatLoginModal.setAttribute('aria-hidden', 'false');
                                     !POPUP_WIDGET &&
                                         (kmAnonymousChatLauncher.classList.remove('vis'),
                                         kmAnonymousChatLauncher.classList.add('n-vis'));
@@ -2224,6 +2226,9 @@ const firstVisibleMsg = {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //kommunicateCommons.hide("#km-chat-login-modal");
                             kommunicateCommons.hide('#km-chat-login-modal');
+                            var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                            kmChatLoginModal &&
+                                kmChatLoginModal.setAttribute('aria-hidden', 'true');
                         }
                         await KommunicateUtils.loadCryptoJS(result);
                         ALStorage.clearMckMessageArray();
@@ -2232,6 +2237,7 @@ const firstVisibleMsg = {
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                             kmChatLoginModal.style.visibility = 'visible';
                             kmChatLoginModal.style.display = 'block';
+                            kmChatLoginModal.setAttribute('aria-hidden', 'false');
                             mckInit.addPasswordField({
                                 id: 'km-password',
                                 type: 'password',
@@ -2327,6 +2333,7 @@ const firstVisibleMsg = {
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
                 kmChatLoginModal.style.display = 'none';
+                kmChatLoginModal.setAttribute('aria-hidden', 'true');
                 kommunicateCommons.show('#km-anonymous-chat-launcher');
             };
 
@@ -2555,6 +2562,7 @@ const firstVisibleMsg = {
                 }
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                 kmChatLoginModal.style.visibility = 'hidden';
+                kmChatLoginModal.setAttribute('aria-hidden', 'true');
                 _this.loadDataPostInitialization();
             };
 
@@ -4923,6 +4931,8 @@ const firstVisibleMsg = {
                 $applozic('.km-login-model-close').on('click', function (e) {
                     //kommunicateCommons.hide("#km-chat-login-modal");
                     kommunicateCommons.hide('#km-chat-login-modal');
+                    var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                    kmChatLoginModal && kmChatLoginModal.setAttribute('aria-hidden', 'true');
                 });
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
