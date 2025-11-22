@@ -27,7 +27,12 @@ const targets = [
     },
 ];
 
-const normalize = (value) => (value || '').replace(/\r\n/g, '\n').trimEnd();
+const normalize = (value) =>
+    (value || '')
+        .replace(/\r\n/g, '\n')
+        // Ignore indentation differences
+        .replace(/^[ \t]+/gm, '')
+        .trimEnd();
 
 const compileScss = (entryPath) => {
     try {
