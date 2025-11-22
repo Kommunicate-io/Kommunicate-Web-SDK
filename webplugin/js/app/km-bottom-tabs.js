@@ -24,6 +24,7 @@
 
         var TAB_ACTIVE_CLASS_PREFIX = 'active-tab-';
         var SUBSECTION_ACTIVE_CLASS_PREFIX = 'active-subsection-';
+        var COLLAPSE_TAB_TYPE = 'collapse';
 
         function normalizeSubsection(subsection) {
             if (!subsection) {
@@ -164,6 +165,18 @@
             return documentRef.querySelector('.km-bottom-tab[data-tab="conversations"]');
         }
 
+        function handleCollapseAction() {
+            if (!documentRef || typeof documentRef.getElementById !== 'function') {
+                return false;
+            }
+            var closeButton = documentRef.getElementById('km-chat-widget-close-button');
+            if (closeButton && typeof closeButton.click === 'function') {
+                closeButton.click();
+                return true;
+            }
+            return false;
+        }
+
         function toggleEmptyTabVisibility(show) {
             var emptyTab = getEmptyTabButton();
             var conversationTab = getConversationTabButton();
@@ -276,6 +289,10 @@
         function handleBottomTabChange(tabType, options) {
             options = options || {};
             var resolvedTabType = normalizeTabType(tabType);
+            if (resolvedTabType === COLLAPSE_TAB_TYPE) {
+                handleCollapseAction();
+                return;
+            }
             setBottomTabState(resolvedTabType);
             showBottomTabs();
             updateActiveTabClass(resolvedTabType);

@@ -27,7 +27,7 @@ var kmCustomIframe =
     '   border: none;' +
     '   position: fixed;' +
     '   z-index: 2243000;' +
-    '   bottom: 10px;' +
+    '   bottom: 15px;' +
     '   right: 20px;' +
     '   height: 75px;' +
     '   width: 75px;' +

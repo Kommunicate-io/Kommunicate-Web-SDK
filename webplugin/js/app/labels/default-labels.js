@@ -16,6 +16,7 @@ class KMLabel {
             'modern.nav.faqs': 'FAQs',
             'modern.nav.whatsnew': "What's New",
             'modern.nav.empty': 'Welcome',
+            'modern.nav.collapse': 'Hide',
             'modern.whatsnew.empty': 'Stay tuned for updates.',
             'modern.whatsnew.staytuned': 'Stay tuned for updates.',
             'modern.whatsnew.readmore': 'Learn more',
@@ -393,6 +394,13 @@ class KMLabel {
         kmWhatsNewTab && (kmWhatsNewTab.innerText = MCK_LABELS['modern.nav.whatsnew']);
         const kmEmptyTab = document.getElementById('km-bottom-tab-empty-text');
         kmEmptyTab && (kmEmptyTab.innerText = MCK_LABELS['modern.nav.empty']);
+        const kmCollapseTab = document.getElementById('km-bottom-tab-collapse-text');
+        if (kmCollapseTab) {
+            kmCollapseTab.innerText = MCK_LABELS['modern.nav.collapse'];
+            var collapseButton = kmCollapseTab.closest('.km-bottom-tab');
+            collapseButton &&
+                collapseButton.setAttribute('aria-label', MCK_LABELS['modern.nav.collapse']);
+        }
         const kmConversationsEmptyTitle = document.getElementById('km-conversations-empty-title');
         kmConversationsEmptyTitle &&
             (kmConversationsEmptyTitle.innerText = MCK_LABELS['empty.conversations']);
