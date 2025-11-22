@@ -759,7 +759,9 @@ const firstVisibleMsg = {
             if (!wasSoftHidden) {
                 KommunicateUI.showChat({ keepConversationHeader: true });
             }
-            bottomTabManager.restoreLastTab();
+            if (KommunicateUI.hasConversationHistory) {
+                bottomTabManager.restoreLastTab();
+            }
             kommunicateCommons.hide('#mck-away-msg-box');
             if (appOptions.appSettings.currentActivatedPlan == 'churn') {
                 return _this.churnCustomerWidgetChanges();

@@ -591,30 +591,94 @@
                         aria-live="polite"
                     >
                         <div class="km-empty-conversation-card" aria-hidden="false">
-                            <div
-                                class="km-empty-conversation-card__hero km-custom-widget-background-color"
-                            >
-                                <div class="km-empty-conversation-card__icon" aria-hidden="true">
+                            <div class="km-empty-conversation-card__hero">
+                                <div
+                                    class="km-empty-conversation-card__icon-badge"
+                                    aria-hidden="true"
+                                >
                                     <span class="km-empty-conversation-card__hero-icon">👋</span>
                                 </div>
-                                <p
-                                    class="km-empty-conversation-card__eyebrow"
-                                    id="km-empty-conversation-eyebrow"
-                                ></p>
-                                <h3
-                                    class="km-empty-conversation-card__title"
-                                    id="km-empty-conversation-title"
-                                ></h3>
-                                <p
-                                    class="km-empty-conversation-card__subtitle"
-                                    id="km-empty-conversation-subtitle"
-                                ></p>
+                                <div class="km-empty-conversation-card__titles">
+                                    <p
+                                        class="km-empty-conversation-card__eyebrow"
+                                        id="km-empty-conversation-eyebrow"
+                                    ></p>
+                                    <h3
+                                        class="km-empty-conversation-card__title"
+                                        id="km-empty-conversation-title"
+                                    ></h3>
+                                    <p
+                                        class="km-empty-conversation-card__subtitle"
+                                        id="km-empty-conversation-subtitle"
+                                    ></p>
+                                </div>
+                                <div class="km-empty-conversation-card__search">
+                                    <div
+                                        class="km-empty-conversation-card__search-field km-contact-input-container km-faq-search-shell km-custom-widget-border-color"
+                                    >
+                                        <span
+                                            class="km-faqsearch-icon"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-label="Search FAQs"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                class="km-faqsearch-icon__search"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <use xlink:href="#icon-13" href="#icon-13"></use>
+                                            </svg>
+                                        </span>
+                                        <input
+                                            id="km-empty-faq-search"
+                                            class="km-empty-conversation-card__search-input km-faqsearch-input mck-typeahead"
+                                            type="text"
+                                            placeholder="Search in FAQs..."
+                                            aria-label="Search in FAQs..."
+                                            autocomplete="off"
+                                        />
+                                        <span
+                                            id="km-empty-faq-search-clear"
+                                            class="km-faqsearch-clear n-vis"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-label="Clear search"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                class="km-faqsearch-icon__clear"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <use xlink:href="#icon-60" href="#icon-60"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="km-empty-conversation-card__body">
-                                <p
-                                    class="km-empty-conversation-card__info"
-                                    id="km-empty-conversation-info"
-                                ></p>
+                                <div class="km-empty-conversation-card__section">
+                                    <div class="km-empty-conversation-card__section-heading">
+                                        <p
+                                            class="km-empty-conversation-card__section-title"
+                                            id="km-empty-conversation-section-title"
+                                        ></p>
+                                        <span
+                                            class="km-empty-conversation-card__section-meta"
+                                            id="km-empty-conversation-section-meta"
+                                        ></span>
+                                    </div>
+                                    <p
+                                        class="km-empty-conversation-card__info"
+                                        id="km-empty-conversation-info"
+                                    ></p>
+                                </div>
                                 <div class="km-empty-conversation-card__cta-wrap">
                                     <button
                                         type="button"

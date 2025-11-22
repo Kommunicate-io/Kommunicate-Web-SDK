@@ -564,6 +564,71 @@ KommunicateUI = {
             }
         }
 
+        var welcomeFaqSearchInput = document.getElementById('km-empty-faq-search');
+        var welcomeFaqSearchClear = document.getElementById('km-empty-faq-search-clear');
+        function getPrimaryFaqSearchInput() {
+            return document.getElementById('km-faq-search-input');
+        }
+
+        function openFaqTabIfNeeded() {
+            var faqTabButton = document.querySelector('.km-bottom-tab[data-tab="faqs"]');
+            if (faqTabButton && !faqTabButton.classList.contains('active')) {
+                faqTabButton.click();
+            }
+        }
+
+        function syncFaqSearchValue(value) {
+            var primaryFaqSearch = getPrimaryFaqSearchInput();
+            if (primaryFaqSearch) {
+                primaryFaqSearch.value = value || '';
+            }
+        }
+
+        function toggleWelcomeFaqClear(hasValue) {
+            if (welcomeFaqSearchClear) {
+                welcomeFaqSearchClear.classList.toggle('n-vis', !hasValue);
+            }
+        }
+
+        function triggerFaqSearchFromWelcome() {
+            var query = (welcomeFaqSearchInput && welcomeFaqSearchInput.value) || '';
+            syncFaqSearchValue(query);
+            setFaqSearchIconState(query.length > 0);
+            var primaryFaqSearch = getPrimaryFaqSearchInput();
+            if (!primaryFaqSearch) {
+                return;
+            }
+            var enterEvent = jQuery.Event('keyup');
+            enterEvent.which = 13;
+            $applozic(primaryFaqSearch).trigger(enterEvent);
+        }
+
+        if (welcomeFaqSearchInput) {
+            $applozic(welcomeFaqSearchInput).on(
+                'input',
+                kommunicateCommons.debounce(function (event) {
+                    var value = (event && event.target && event.target.value) || '';
+                    openFaqTabIfNeeded();
+                    toggleWelcomeFaqClear(Boolean(value.trim().length));
+                    syncFaqSearchValue(value);
+                    triggerFaqSearchFromWelcome();
+                }, 250)
+            );
+        }
+
+        welcomeFaqSearchClear &&
+            $applozic(welcomeFaqSearchClear).on('click', function (event) {
+                event.preventDefault();
+                toggleWelcomeFaqClear(false);
+                if (welcomeFaqSearchInput) {
+                    welcomeFaqSearchInput.value = '';
+                    welcomeFaqSearchInput.focus();
+                }
+                syncFaqSearchValue('');
+                setFaqSearchIconState(false);
+                triggerFaqSearchFromWelcome();
+            });
+
         $applozic('#km-faq-search-input').keyup(
             kommunicateCommons.debounce(function (e) {
                 var searchQuery = e.target.value;
