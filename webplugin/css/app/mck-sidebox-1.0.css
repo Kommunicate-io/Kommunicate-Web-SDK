@@ -5508,7 +5508,7 @@ div[name='message']:last-child {
         height: auto !important;
         max-height: none !important;
         max-width: 394px !important;
-        margin: 10px 34px 0 !important;
+        margin: 10px 45px 0 !important;
         box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
     }
     #km-chat-login-modal.km-sidemodal {
@@ -5529,7 +5529,7 @@ div[name='message']:last-child {
 }
 
 .mck-sidebox.km-iframe-sidebox-border-radius {
-    bottom: 8px !important;
+    bottom: 4px !important;
     height: auto !important;
     max-height: none !important;
     right: 35px !important;
