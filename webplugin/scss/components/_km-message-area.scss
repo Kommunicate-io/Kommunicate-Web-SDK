@@ -439,10 +439,15 @@
     }
 
     &__info {
-        margin: 0;
+        margin: 24px 0 4px;
         font-size: 14px;
         line-height: 1.5;
-        color: $text-secondary-color;
+        color: $text-primary-color;
+        text-align: center;
+    }
+
+    @at-root .mck-sidebox .km-empty-conversation-card__info {
+        margin: 24px 0 4px !important;
     }
 
     &__previews {
@@ -524,7 +529,7 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        margin-top: 16px;
+        margin-top: 0;
         margin-bottom: 16px;
         align-items: center;
     }
