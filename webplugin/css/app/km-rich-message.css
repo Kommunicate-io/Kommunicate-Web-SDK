@@ -563,15 +563,6 @@
 /********** Guest Details Form Ends Here ***********/
 
 .mck-away-msg {
-    font-family: var(
-        --km-font-family,
-        'Inter',
-        'Segoe UI',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Helvetica Neue',
-        sans-serif
-    );
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: left;
@@ -681,15 +672,6 @@
     margin-bottom: 0px;
     margin-right: 10px;
     color: #646262;
-    font-family: var(
-        --km-font-family,
-        'Inter',
-        'Segoe UI',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Helvetica Neue',
-        sans-serif
-    );
     font-size: 14px;
     letter-spacing: 0.5px;
 }
