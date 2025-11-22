@@ -831,6 +831,8 @@ KommunicateUI = {
         $applozic('#mck-msg-new').attr('disabled', false);
         MCK_EVENT_HISTORY.length = 0;
         KommunicateUI.isConversationListView = true;
+        KommunicateUI.toggleConversationsEmptyState &&
+            KommunicateUI.toggleConversationsEmptyState(!KommunicateUI.hasConversationHistory);
     },
     hasConversationHistory: false,
     hasAutoStartedConversation: false,
@@ -840,6 +842,19 @@ KommunicateUI = {
         KommunicateUI.hasConversationHistory = boolValue;
         !boolValue && (KommunicateUI.hasAutoStartedConversation = false);
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
+        KommunicateUI.toggleConversationsEmptyState &&
+            KommunicateUI.toggleConversationsEmptyState(!boolValue);
+    },
+    toggleConversationsEmptyState: function (show) {
+        var emptyState = document.getElementById('km-conversations-empty');
+        var contactsContent = document.getElementById('mck-contacts-content');
+        var messageInner = document.querySelector('#mck-message-cell .mck-message-inner');
+        if (!emptyState) {
+            return;
+        }
+        emptyState.classList.toggle('n-vis', !show);
+        contactsContent && contactsContent.classList.toggle('n-vis', show);
+        messageInner && messageInner.classList.toggle('n-vis', show);
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');

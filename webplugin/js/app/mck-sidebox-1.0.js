@@ -4233,6 +4233,7 @@ const firstVisibleMsg = {
                 }
                 $mck_contact_search.click(handleStartNewConversation);
                 $applozic(d).on('click', '#km-empty-conversation-cta', handleStartNewConversation);
+                $applozic(d).on('click', '#km-conversations-empty-cta', handleStartNewConversation);
                 $applozic(d).on(
                     'click',
                     '#km-empty-conversation-continue',

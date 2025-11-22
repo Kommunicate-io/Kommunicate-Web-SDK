@@ -392,6 +392,17 @@ class KMLabel {
         kmWhatsNewTab && (kmWhatsNewTab.innerText = MCK_LABELS['modern.nav.whatsnew']);
         const kmEmptyTab = document.getElementById('km-bottom-tab-empty-text');
         kmEmptyTab && (kmEmptyTab.innerText = MCK_LABELS['modern.nav.empty']);
+        const kmConversationsEmptyTitle = document.getElementById('km-conversations-empty-title');
+        kmConversationsEmptyTitle &&
+            (kmConversationsEmptyTitle.innerText = MCK_LABELS['empty.conversations']);
+        const kmConversationsEmptySubtitle = document.getElementById(
+            'km-conversations-empty-subtitle'
+        );
+        kmConversationsEmptySubtitle &&
+            (kmConversationsEmptySubtitle.innerText = MCK_LABELS['mck.empty.welcome.subtitle']);
+        const kmConversationsEmptyCta = document.getElementById('km-conversations-empty-cta');
+        kmConversationsEmptyCta &&
+            (kmConversationsEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
 
         document.getElementById('mck-voice-speak-btn').innerHTML +=
             MCK_LABELS['voiceInterface'].speak;
