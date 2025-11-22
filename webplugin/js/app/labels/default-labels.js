@@ -37,11 +37,9 @@ class KMLabel {
             'mck.empty.welcome.eyebrow': 'Hello',
             'mck.empty.welcome.title': 'How can we help you?',
             'mck.empty.welcome.subtitle': 'We’re here to help you get instant answers.',
-            'mck.empty.welcome.info': 'Search our FAQs or start a new conversation.',
             'mck.empty.welcome.cta': 'Send us a message',
             'mck.empty.welcome.cta.continue': 'View conversations',
-            'mck.empty.welcome.section.conversations': 'Conversations',
-            'mck.empty.welcome.section.meta': 'We respond quickly',
+            'mck.empty.welcome.section.meta': '',
             'no.more.conversations': 'No more conversations!',
             'search.placeholder': 'Search...',
             'location.placeholder': 'Enter a location',
@@ -421,18 +419,11 @@ class KMLabel {
         kmEmptyTitle && (kmEmptyTitle.innerText = MCK_LABELS['mck.empty.welcome.title']);
         const kmEmptySubtitle = document.getElementById('km-empty-conversation-subtitle');
         kmEmptySubtitle && (kmEmptySubtitle.innerText = MCK_LABELS['mck.empty.welcome.subtitle']);
-        const kmEmptyInfo = document.getElementById('km-empty-conversation-info');
-        kmEmptyInfo && (kmEmptyInfo.innerText = MCK_LABELS['mck.empty.welcome.info']);
         const kmEmptyCta = document.getElementById('km-empty-conversation-cta');
         kmEmptyCta && (kmEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
         const kmEmptyContinue = document.getElementById('km-empty-conversation-continue');
         kmEmptyContinue &&
             (kmEmptyContinue.innerText = MCK_LABELS['mck.empty.welcome.cta.continue']);
-        const kmEmptySectionTitle = document.getElementById('km-empty-conversation-section-title');
-        kmEmptySectionTitle &&
-            (kmEmptySectionTitle.innerText =
-                MCK_LABELS['mck.empty.welcome.section.conversations'] ||
-                MCK_LABELS['conversations.title']);
         const kmEmptySectionMeta = document.getElementById('km-empty-conversation-section-meta');
         kmEmptySectionMeta &&
             (kmEmptySectionMeta.innerText = MCK_LABELS['mck.empty.welcome.section.meta']);
