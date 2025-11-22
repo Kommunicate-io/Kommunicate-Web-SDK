@@ -5,6 +5,7 @@ function KmCustomTheme() {
     var WIDGET_SETTINGS;
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
+    var DEFAULT_ACCENT_RGB = '95, 70, 248';
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -92,6 +93,17 @@ function KmCustomTheme() {
         }
     };
 
+    function setAccentCssVariables(primaryColor) {
+        if (!primaryColor) {
+            return;
+        }
+        var root = document.documentElement;
+        var rgb = getRgbFromHex(primaryColor) || DEFAULT_ACCENT_RGB;
+        root.style.setProperty('--km-accent', primaryColor);
+        root.style.setProperty('--km-accent-rgb', rgb);
+        root.style.setProperty('--km-accent-contrast', '#ffffff');
+    }
+
     _this.changeColorTheme = function () {
         // #0A090C
         var messageBoxTop = document.getElementsByClassName('mck-box-top');
@@ -102,6 +114,7 @@ function KmCustomTheme() {
         for (var i = 0; i < messageBoxTop.length; i++) {
             messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
         }
+        setAccentCssVariables(WIDGET_SETTINGS.primaryColor || DEFAULT_BACKGROUND_COLOR);
     };
 
     _this.fillSvgsTheme = function () {
@@ -111,4 +124,33 @@ function KmCustomTheme() {
             path.setAttribute('fill', primaryColor);
         });
     };
+
+    function getRgbFromHex(hex) {
+        if (!hex || typeof hex !== 'string') {
+            return null;
+        }
+        var clean = hex.trim().replace('#', '');
+        if (clean.length === 3) {
+            clean = clean
+                .split('')
+                .map(function (c) {
+                    return c + c;
+                })
+                .join('');
+        }
+        if (clean.length !== 6) {
+            return null;
+        }
+        var r = parseInt(clean.substring(0, 2), 16);
+        var g = parseInt(clean.substring(2, 4), 16);
+        var b = parseInt(clean.substring(4, 6), 16);
+        if (
+            [r, g, b].some(function (v) {
+                return isNaN(v);
+            })
+        ) {
+            return null;
+        }
+        return [r, g, b].join(', ');
+    }
 }

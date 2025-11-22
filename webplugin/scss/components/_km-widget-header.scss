@@ -3,8 +3,8 @@
     min-height: 60px;
     text-align: left;
     border-bottom: 1px solid #e5e5e5;
-    background-color: $primary-color;
-    color: white;
+    background-color: var(--km-accent, #{$primary-color});
+    color: var(--km-accent-contrast, #ffffff);
 
     .icon {
         margin-right: 12px;
