@@ -833,15 +833,13 @@ KommunicateUI = {
         KommunicateUI.isConversationListView = true;
     },
     hasConversationHistory: false,
+    hasAutoStartedConversation: false,
     isConversationListView: false,
     setHasConversationHistory: function (value) {
         var boolValue = Boolean(value);
         KommunicateUI.hasConversationHistory = boolValue;
+        !boolValue && (KommunicateUI.hasAutoStartedConversation = false);
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
-        var bottomTabsManager = getBottomTabsManager();
-        bottomTabsManager &&
-            typeof bottomTabsManager.toggleConversationTabVisibility === 'function' &&
-            bottomTabsManager.toggleConversationTabVisibility(boolValue);
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');

@@ -4276,7 +4276,7 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '.km-bottom-tab', function (e) {
                     e.preventDefault();
                     var tabType = $applozic(this).data('tab') || 'conversations';
-                    bottomTabManager.handleChange(tabType);
+                    bottomTabManager.handleChange(tabType, { userTriggered: true });
                 });
 
                 $applozic(d).on('click', '#km-faq', function () {

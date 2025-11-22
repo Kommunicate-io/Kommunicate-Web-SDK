@@ -102,15 +102,9 @@ Kommunicate.getFaqCategories = function (data) {
                       ' ' +
                       (articleCount === 1 ? articleLabel : articlesLabel || articleLabel + 's')
                     : '';
-                var safeCategoryNameAttr = categoryName
-                    ? categoryName
-                          .replace(/&/g, '&amp;')
-                          .replace(/"/g, '&quot;')
-                          .replace(/'/g, '&#39;')
-                          .replace(/</g, '&lt;')
-                          .replace(/>/g, '&gt;')
-                          .replace(/ /g, '-')
-                    : '';
+                var safeCategoryNameAttr = kommunicateCommons.encodeCategoryNameForAttribute(
+                    categoryName
+                );
                 $applozic('.km-faq-category-list-container').append(
                     '<div class="km-faq-category-card" data-category-name="' +
                         safeCategoryNameAttr +

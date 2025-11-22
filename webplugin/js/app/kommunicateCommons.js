@@ -300,6 +300,23 @@ function KommunicateCommons() {
     _this.formatHtmlTag = function (html) {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
+
+    _this.encodeCategoryNameForAttribute = function (categoryName) {
+        if (!categoryName) {
+            return '';
+        }
+        var value =
+            typeof categoryName.toString === 'function'
+                ? categoryName.toString()
+                : String(categoryName);
+        return value
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\s+/g, '-');
+    };
     _this.isConversationClosedByBot = function () {
         if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {
             var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
