@@ -7675,12 +7675,16 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('.km-option-talk-to-human');
                 }
                 // hasArticles initially will be undefined and after the faq load it will be boolean
-                if (
-                    !isModernLayout &&
-                    !KommunicateUI.isFAQPrimaryCTA() &&
-                    (kommunicate._globals.hasArticles === undefined ||
-                        kommunicate._globals.hasArticles === true)
-                ) {
+                var faqAvailable =
+                    kommunicate._globals.hasArticles === undefined ||
+                    kommunicate._globals.hasArticles === true;
+
+                KommunicateUI.toggleWelcomeFaqSearch &&
+                    KommunicateUI.toggleWelcomeFaqSearch(
+                        faqAvailable && !KommunicateUI.isFAQPrimaryCTA()
+                    );
+
+                if (!isModernLayout && !KommunicateUI.isFAQPrimaryCTA() && faqAvailable) {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-faq');
                 } else {

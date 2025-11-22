@@ -832,6 +832,16 @@ KommunicateUI = {
             ''
         );
     },
+    toggleWelcomeFaqSearch: function (show) {
+        var searchShell = document.querySelector('.km-empty-conversation-card__search');
+        if (!searchShell) {
+            return;
+        }
+        if (typeof show === 'undefined') {
+            show = true;
+        }
+        searchShell.classList.toggle('n-vis', !show);
+    },
 
     showChat: function (options) {
         var keepConversationHeader = false;
