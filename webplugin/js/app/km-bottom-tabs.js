@@ -224,15 +224,6 @@
             });
         }
 
-        function toggleConversationTabVisibility(show) {
-            var conversationTab = getConversationTabButton();
-            if (!conversationTab) {
-                return;
-            }
-            conversationTab.classList.remove('n-vis');
-            conversationTab.removeAttribute('aria-hidden');
-        }
-
         function hideNoConversationsTab() {
             toggleEmptyTabVisibility(false);
             var kmUi = getKommunicateUI();
@@ -418,7 +409,6 @@
             hide: hideBottomTabs,
             showEmptyStateTab: showNoConversationsTab,
             hideEmptyStateTab: hideNoConversationsTab,
-            toggleConversationTabVisibility: toggleConversationTabVisibility,
             isConversationTabActive: isConversationTabActive,
         };
     }
