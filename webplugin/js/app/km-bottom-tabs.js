@@ -124,15 +124,22 @@
             }
             var themeBgClass = 'km-custom-widget-background-color';
             var tabArray = Array.prototype.slice.call(tabs);
-            var targetTab = tabArray.find(function (tab) {
-                return tab.getAttribute('data-tab') === tabType;
-            });
-            targetTab =
-                targetTab ||
-                tabArray.find(function (tab) {
-                    return tab.getAttribute('data-tab') === 'conversations';
-                }) ||
-                tabArray[0];
+            var targetTab = null;
+            for (var i = 0; i < tabArray.length; i++) {
+                if (tabArray[i].getAttribute('data-tab') === tabType) {
+                    targetTab = tabArray[i];
+                    break;
+                }
+            }
+            if (!targetTab) {
+                for (var j = 0; j < tabArray.length; j++) {
+                    if (tabArray[j].getAttribute('data-tab') === 'conversations') {
+                        targetTab = tabArray[j];
+                        break;
+                    }
+                }
+            }
+            targetTab = targetTab || tabArray[0];
             tabArray.forEach(function (tab) {
                 tab.classList.remove('active');
                 tab.setAttribute('aria-selected', 'false');
@@ -256,9 +263,9 @@
                 return;
             }
             var wrappers = documentRef.querySelectorAll('.km-bottom-tab-wrapper');
-            wrappers.forEach(function (wrapper) {
-                wrapper.style.display = show ? '' : 'none';
-            });
+            for (var i = 0; i < wrappers.length; i++) {
+                wrappers[i].style.display = show ? '' : 'none';
+            }
         }
 
         function restoreLastBottomTab() {
@@ -301,8 +308,8 @@
                     (messageInner.dataset && messageInner.dataset.mckId));
             var hasActiveConversation = isModernLayout && !!activeConversationId;
             if (resolvedTabType === 'conversations') {
-                ui && typeof ui.showConversationList === 'function' && ui.showConversationList();
-                ui && typeof ui.setConversationTitle === 'function' && ui.setConversationTitle();
+                ui.showConversationList();
+                ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0;
                 }
@@ -330,10 +337,8 @@
                         MCK_LABELS &&
                         MCK_LABELS['modern.nav.empty']) ||
                     'Welcome';
-                ui &&
-                    typeof ui.setConversationTitle === 'function' &&
-                    ui.setConversationTitle(emptyTitle);
-                KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
+                ui.setConversationTitle(emptyTitle);
+                ui.updateWelcomeCtaLabel();
                 var topBarManager = getTopBarManager();
                 if (topBarManager) {
                     try {
@@ -355,9 +360,7 @@
                 whatsNewManager &&
                     typeof whatsNewManager.refresh === 'function' &&
                     whatsNewManager.refresh();
-                ui &&
-                    typeof ui.toggleModernFaqBackButton === 'function' &&
-                    ui.toggleModernFaqBackButton(false);
+                ui.toggleModernFaqBackButton(false);
                 if (documentRef && typeof documentRef.getElementById === 'function') {
                     var tabTitle = documentRef.getElementById('mck-tab-title');
                     var conversationTitle = documentRef.getElementById('mck-conversation-title');
@@ -368,11 +371,9 @@
                 return;
             }
 
-            ui &&
-                typeof ui.toggleModernFaqBackButton === 'function' &&
-                ui.toggleModernFaqBackButton(false);
+            ui.toggleModernFaqBackButton(false);
             if (documentRef && typeof documentRef.getElementById === 'function') {
-                var tabTitleElement = document.getElementById('mck-tab-title');
+                var tabTitleElement = documentRef.getElementById('mck-tab-title');
                 tabTitleElement &&
                     (tabTitleElement.textContent = getLabel(
                         'conversations.title',
@@ -382,9 +383,7 @@
 
             var keepConversationHeader =
                 resolvedTabType === 'conversations' && isModernLayout && !hasActiveConversation;
-            ui &&
-                typeof ui.showChat === 'function' &&
-                ui.showChat({ keepConversationHeader: keepConversationHeader });
+            ui.showChat({ keepConversationHeader: keepConversationHeader });
         }
 
         return {
