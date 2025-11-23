@@ -608,12 +608,19 @@ KommunicateUI = {
                 'input',
                 kommunicateCommons.debounce(function (event) {
                     var value = (event && event.target && event.target.value) || '';
-                    openFaqTabIfNeeded();
                     toggleWelcomeFaqClear(Boolean(value.trim().length));
                     syncFaqSearchValue(value);
-                    triggerFaqSearchFromWelcome();
+                    setFaqSearchIconState(value.length > 0);
                 }, 250)
             );
+
+            $applozic(welcomeFaqSearchInput).on('keyup', function (event) {
+                if (!event || event.which !== 13) {
+                    return;
+                }
+                openFaqTabIfNeeded();
+                triggerFaqSearchFromWelcome();
+            });
         }
 
         welcomeFaqSearchClear &&
@@ -634,29 +641,28 @@ KommunicateUI = {
                 var searchQuery = e.target.value;
 
                 setFaqSearchIconState(searchQuery.length > 0);
-                if (!document.querySelector('.km-faq-category-list-container.n-vis')) {
-                    MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
-                        MCK_EVENT_HISTORY.push('km-faq-list');
-                    kommunicateCommons.modifyClassList(
-                        {
-                            class: ['km-faq-category-list-container'],
-                        },
-                        'n-vis',
-                        'vis'
-                    );
-                    kommunicateCommons.modifyClassList(
-                        {
-                            id: ['km-faq-list-container'],
-                        },
-                        'vis',
-                        'n-vis'
-                    );
-                }
-                if (e.which == 32 || e.which == 13) {
+                // Only trigger search on Enter; Space inside queries should not submit
+                if (e.which === 13) {
+                    if (!document.querySelector('.km-faq-category-list-container.n-vis')) {
+                        MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
+                            MCK_EVENT_HISTORY.push('km-faq-list');
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['km-faq-category-list-container'],
+                            },
+                            'n-vis',
+                            'vis'
+                        );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['km-faq-list-container'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                    }
                     KommunicateUI.searchFaqs(data);
-                    return;
                 }
-                KommunicateUI.searchFaqs(data);
             }, 500)
         );
 
