@@ -8,7 +8,9 @@
   "scripts": {
     "postinstall": "husky install",
     "prettify-commit": "lint-staged --allow-empty",
-    "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
+    "watch:scss:style": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
+    "watch:scss:all": "sass --watch webplugin/scss:webplugin/css/app/style webplugin/scss/km-bottom-nav.scss:webplugin/css/app/km-bottom-nav.css webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/mck-tab-visibility.css webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/style/mck-tab-visibility.css --no-source-map --style=expanded",
+    "build-dev:scss-to-css": "npm-run-all -p watch:scss:all",
     "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.{js,css,scss,json}' --ignore-unknown",
     "build:dev": "nodemon ./server/app.js",
     "dev": "export PRODUCT=kommunicate && npm-run-all -p build:dev build-dev:scss-to-css setup-git-hooks",

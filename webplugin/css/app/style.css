@@ -3939,7 +3939,7 @@ div#mck-rated:before {
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-contact-input-container {
-    display: none !important;
+    display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-back-btn-wrapper,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn {
