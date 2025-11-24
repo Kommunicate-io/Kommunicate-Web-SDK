@@ -3,7 +3,7 @@ class KMLabel {
         return {
             'input.message': 'Type your message...',
             'conversations.title': 'Conversations',
-            'modern.nav.conversations': 'Conversations',
+            'modern.nav.conversations': 'Chats',
             'modern.nav.faqs': 'FAQs',
             'modern.nav.whatsnew': "What's New",
             'modern.nav.empty': 'Welcome',

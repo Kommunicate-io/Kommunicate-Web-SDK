@@ -341,11 +341,8 @@
             fill="#D0D5DD"
         />
     </symbol>
-    <symbol id="icon-komm-logo" viewBox="0 0 22 20">
-        <path
-            d="M21.25 18.48V7.31a7.3 7.3 0 0 0-7.3-7.3H7.31a7.3 7.3 0 1 0 0 14.6h7.2c.19 0 .58.04.93.17.34.12.71.42.71.42l4.44 3.66c.14.11.4.34.55.27.15-.07.11-.65.11-.65ZM7.51 8.8c0 .49-.42.88-.95.88-.52 0-.95-.4-.95-.88V5.67c0-.49.43-.88.95-.88.53 0 .95.4.95.88V8.8Zm4.07 1.48c0 .49-.43.88-.95.88s-.95-.39-.95-.88v-6.1c0-.48.43-.88.95-.88s.95.4.95.88v6.1Zm4.06-1.48c0 .49-.42.88-.95.88-.52 0-.94-.4-.94-.88V5.67c0-.49.42-.88.94-.88.53 0 .95.4.95.88V8.8Z"
-            fill="#FFFFFF"
-        />
+    <symbol id="icon-komm-logo"  width="24" height="24" viewBox="0 0 24 24"  fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M177.671 102.494V172.931C177.671 172.931 177.898 176.569 176.899 177.037C175.946 177.483 173.222 175.292 173.222 175.292L143.349 152.21C143.349 152.21 140.83 150.338 138.56 149.573C136.176 148.764 132.249 148.551 132.249 148.551H83.8317C56.6832 148.551 34.6875 127.937 34.6875 102.494C34.6875 77.0514 56.6832 56.4375 83.8317 56.4375H128.527C155.675 56.4375 177.671 77.0514 177.671 102.494ZM78.8415 117.45C82.3599 117.45 85.2201 114.961 85.2201 111.898V92.1133C85.2201 89.0499 82.3599 86.5609 78.8415 86.5609C75.3231 86.5609 72.463 89.0499 72.463 92.1133V111.898C72.463 114.961 75.3231 117.45 78.8415 117.45ZM112.573 121.236C112.573 124.3 109.712 126.789 106.194 126.789C102.676 126.789 99.8156 124.3 99.8156 121.236V82.7528C99.8156 79.6895 102.676 77.2005 106.194 77.2005C109.712 77.2005 112.573 79.6895 112.573 82.7528V121.236ZM133.547 117.45C137.065 117.45 139.925 114.961 139.925 111.898V92.1133C139.925 89.0499 137.065 86.5609 133.547 86.5609C130.028 86.5609 127.168 89.0499 127.168 92.1133V111.898C127.168 114.961 130.028 117.45 133.547 117.45Z" fill="currentColor" transform="scale(0.108108)" />
     </symbol>
     <symbol id="icon-49" viewBox="0 0 24 24">
         <path
@@ -419,11 +416,17 @@
         <!-- clear / close X icon for search field -->
         <path d="M4.5 4.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </symbol>
+    <symbol id="icon-welcome" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="9" cy="10" r="0.9" fill="currentColor" />
+        <circle cx="15" cy="10" r="0.9" fill="currentColor" />
+        <path d="M8.5 13.3c.8 1.1 2 1.7 3.5 1.7s2.7-.6 3.5-1.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
     <symbol id="icon-61" viewBox="0 0 24 24">
-        <!-- FAQ icon (book + question) copied from inline SVG in template -->
-        <path d="M7 5h7a3 3 0 0 1 3 3v11H8a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M10.5 8.5a2 2 0 1 1 2.15 2 1.4 1.4 0 0 0-1.1 1.37V13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-        <circle cx="11.6" cy="16.5" r="0.9" fill="currentColor" />
+        <!-- FAQ icon (question card) -->
+        <rect x="4" y="4" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <path d="M9.9 10.1a2.1 2.1 0 1 1 3.6 1.6c-.52.32-1.34.9-1.34 1.82V14.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="12" cy="17" r="0.9" fill="currentColor" />
     </symbol>
     <symbol id="icon-62" viewBox="0 0 24 24">
         <!-- What's New icon (star + dots) copied from inline SVG in template -->

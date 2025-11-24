@@ -156,8 +156,8 @@ $known-prefixes
   transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .km-bottom-tab-icon svg {
-  width: 19px;
-  height: 19px;
+  width: 22px;
+  height: 22px;
   display: block;
 }
 .km-bottom-tab-icon.km-custom-widget-background-color {
