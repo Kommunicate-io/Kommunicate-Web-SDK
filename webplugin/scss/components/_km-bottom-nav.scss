@@ -183,7 +183,7 @@
     }
 
     &.km-custom-widget-background-color {
-        color: var(--km-accent-contrast, #ffffff) !important;
+        color: var(--km-accent-contrast, #ffffff);
         box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
