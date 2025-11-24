@@ -33,8 +33,8 @@ function KommunicateCommons() {
         );
     };
 
-    // Height adjustment constant for modern layout (e.g., to account for bottom tab bar)
-    var MODERN_LAYOUT_HEIGHT_ADJUSTMENT = 28;
+    var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
+    var BOTTOM_NAV_EXTRA_HEIGHT = 40;
 
     _this.adjustIframeHeightForModernLayout = function (iframeElement) {
         if (!iframeElement || _this.checkIfDeviceIsHandheld() || !_this.isModernLayoutEnabled()) {
@@ -56,7 +56,9 @@ function KommunicateCommons() {
             return;
         }
 
-        var reducedHeight = baseHeight - MODERN_LAYOUT_HEIGHT_ADJUSTMENT;
+        var navHeight = getBottomNavHeight(iframeElement);
+        var adjustedNavHeight = Math.max(navHeight - BOTTOM_NAV_EXTRA_HEIGHT, 0);
+        var reducedHeight = baseHeight - adjustedNavHeight;
         if (reducedHeight > 0) {
             iframeElement.style.height = reducedHeight + 'px';
         }
@@ -104,6 +106,31 @@ function KommunicateCommons() {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         return diffDays;
     };
+
+    function getBottomNavHeight(iframeElement) {
+        var doc = iframeElement && iframeElement.contentDocument;
+        var win = iframeElement && iframeElement.contentWindow;
+        var nav =
+            (doc &&
+                (doc.querySelector('.km-bottom-tab-bar') ||
+                    doc.querySelector('.km-bottom-tab-wrapper'))) ||
+            null;
+        var height = 0;
+        if (nav && win && typeof win.getComputedStyle === 'function') {
+            var navStyle = win.getComputedStyle(nav);
+            var parsed = navStyle && navStyle.height ? parseFloat(navStyle.height) : NaN;
+            if (!isNaN(parsed) && parsed > 0) {
+                height = parsed;
+            }
+        }
+        if (!height && nav && nav.offsetHeight) {
+            height = nav.offsetHeight;
+        }
+        if (!height || height < 0) {
+            height = DEFAULT_BOTTOM_NAV_HEIGHT;
+        }
+        return height;
+    }
 
     _this.showPoweredBy = function (data) {
         var isKommunicateAccountExpired = _this.isKommunicatePlanExpired(data);
