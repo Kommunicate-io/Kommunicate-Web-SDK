@@ -16,8 +16,7 @@ function KommunicateCommons() {
 
     _this.getDesignLayoutName = function () {
         var globals = Kommunicate?._globals;
-        var nestedGlobals = globals?._globals?._globals || globals?._globals || globals;
-        var appSettings = nestedGlobals?.appSettings;
+        var appSettings = globals?.appSettings;
         var layoutFromGlobals =
             globals?.designLayoutName ||
             appSettings?.designLayoutName ||

@@ -43,7 +43,9 @@ function KmCustomTheme() {
             var kmCustomWidgetCustomCSS =
                 '.km-custom-widget-background-color { background: ' +
                 primaryColor +
-                ' !important; color: #ffffff !important;} ' +
+                ' !important; color: ' +
+                getAccessibleTextColor(primaryColor) +
+                ' !important;} ' +
                 '.km-custom-widget-background-color-secondary { background: ' +
                 secondaryColor +
                 ' !important;} ' +
@@ -102,7 +104,8 @@ function KmCustomTheme() {
         var rgb = getRgbFromHex(primaryColor) || DEFAULT_ACCENT_RGB;
         root.style.setProperty('--km-accent', primaryColor);
         root.style.setProperty('--km-accent-rgb', rgb);
-        root.style.setProperty('--km-accent-contrast', '#ffffff');
+        var contrastColor = getAccessibleTextColor(primaryColor);
+        root.style.setProperty('--km-accent-contrast', contrastColor);
     }
 
     _this.changeColorTheme = function () {
@@ -158,5 +161,64 @@ function KmCustomTheme() {
             return null;
         }
         return [r, g, b].join(', ');
+    }
+
+    function getAccessibleTextColor(color) {
+        var rgb = normalizeColorToRgb(color);
+        if (!rgb) {
+            return '#ffffff';
+        }
+        var luminance = calculateLuminance(rgb[0], rgb[1], rgb[2]);
+        return luminance <= 0.179 ? '#ffffff' : '#000000';
+    }
+
+    function normalizeColorToRgb(color) {
+        if (!color || typeof color !== 'string') {
+            return null;
+        }
+        var hex = color.trim();
+        if (hex.startsWith('#')) {
+            var clean = hex.replace('#', '');
+            if (clean.length === 3) {
+                clean = clean
+                    .split('')
+                    .map(function (c) {
+                        return c + c;
+                    })
+                    .join('');
+            }
+            if (clean.length !== 6) {
+                return null;
+            }
+            var r = parseInt(clean.substring(0, 2), 16);
+            var g = parseInt(clean.substring(2, 4), 16);
+            var b = parseInt(clean.substring(4, 6), 16);
+            if (
+                [r, g, b].some(function (v) {
+                    return isNaN(v);
+                })
+            ) {
+                return null;
+            }
+            return [r, g, b];
+        }
+        var rgbMatch = color
+            .replace(/\s+/g, '')
+            .match(/^rgb\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$/i);
+        if (rgbMatch) {
+            return [Number(rgbMatch[1]), Number(rgbMatch[2]), Number(rgbMatch[3])];
+        }
+        return null;
+    }
+
+    function calculateLuminance(r, g, b) {
+        var toLinear = function (c) {
+            c = c / 255;
+            return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        };
+        var lr = toLinear(r);
+        var lg = toLinear(g);
+        var lb = toLinear(b);
+        return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
     }
 }
