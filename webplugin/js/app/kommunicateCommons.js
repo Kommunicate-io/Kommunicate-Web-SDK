@@ -15,19 +15,15 @@ function KommunicateCommons() {
     };
 
     _this.getDesignLayoutName = function () {
+        var globals = Kommunicate?._globals;
+        var nestedGlobals = globals?._globals?._globals || globals?._globals || globals;
+        var appSettings = nestedGlobals?.appSettings;
         var layoutFromGlobals =
-            (Kommunicate &&
-                Kommunicate._globals &&
-                (Kommunicate._globals.designLayoutName ||
-                    (Kommunicate._globals.appSettings &&
-                        (Kommunicate._globals.appSettings.designLayoutName ||
-                            Kommunicate._globals.appSettings.chatWidget?.designLayoutName)))) ||
+            globals?.designLayoutName ||
+            appSettings?.designLayoutName ||
+            appSettings?.chatWidget?.designLayoutName ||
             null;
-        return (
-            layoutFromGlobals ||
-            (KommunicateConstants.DESIGN_LAYOUTS && KommunicateConstants.DESIGN_LAYOUTS.MODERN) ||
-            'modern'
-        );
+        return layoutFromGlobals || KommunicateConstants.DESIGN_LAYOUTS?.MODERN || 'modern';
     };
 
     _this.isModernLayoutEnabled = function () {
