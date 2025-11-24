@@ -488,8 +488,8 @@ function ApplozicSidebox() {
                 options?.appSettings?.designLayoutName ||
                 options?.appSettings?.chatWidget?.designLayoutName ||
                 widgetSettings?.designLayoutName ||
-                KommunicateConstants.DESIGN_LAYOUTS.MODERN ||
-                'modern';
+                KommunicateConstants.DESIGN_LAYOUTS.DEFAULT ||
+                'default';
             options.designLayoutName = resolvedDesignLayoutName;
             options.appSettings.designLayoutName = resolvedDesignLayoutName;
             options.appSettings.chatWidget.designLayoutName = resolvedDesignLayoutName;
