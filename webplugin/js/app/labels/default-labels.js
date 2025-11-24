@@ -8,7 +8,6 @@ class KMLabel {
             'modern.nav.whatsnew': "What's New",
             'modern.nav.empty': 'Welcome',
             'modern.nav.collapse': 'Hide',
-            'modern.whatsnew.empty': 'Stay tuned for updates.',
             'modern.whatsnew.staytuned': 'Stay tuned for updates.',
             'modern.whatsnew.readmore': 'Learn more',
             'start.new': 'Start New Conversation',
@@ -243,6 +242,9 @@ class KMLabel {
         };
     }
     setLabels(MCK_LABELS = {}) {
+        if (typeof document === 'undefined') {
+            return;
+        }
         var getNodes = function (selector) {
             return Array.prototype.slice.call(document.querySelectorAll(selector));
         };
@@ -329,8 +331,8 @@ class KMLabel {
         ].forEach(function (binding) {
             setHtmlAndTitleForSelector(binding.selector, binding.path);
         });
-        if (resolveLabel('filter.conversation.list.RESOLVED_TAG')) {
-            var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');
+        var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');
+        if (resolvedTag) {
             getNodes('.mck-conversation-status-badge.vis').forEach(function (node) {
                 node.setAttribute('title', resolvedTag);
                 node.setAttribute('aria-label', resolvedTag);
@@ -454,24 +456,17 @@ class KMLabel {
             setLabel(id, textBindings[id], 'text');
         });
 
-        const kmCollapseTab = document.getElementById('km-bottom-tab-collapse-text');
+        var kmCollapseTab = document.getElementById('km-bottom-tab-collapse-text');
         if (kmCollapseTab) {
             kmCollapseTab.innerText = MCK_LABELS['modern.nav.collapse'];
-            var collapseButton = kmCollapseTab.closest('.km-bottom-tab');
-            collapseButton &&
+            var collapseButton =
+                (typeof kmCollapseTab.closest === 'function' &&
+                    kmCollapseTab.closest('.km-bottom-tab')) ||
+                null;
+            if (collapseButton) {
                 collapseButton.setAttribute('aria-label', MCK_LABELS['modern.nav.collapse']);
+            }
         }
-        const kmConversationsEmptyTitle = document.getElementById('km-conversations-empty-title');
-        kmConversationsEmptyTitle &&
-            (kmConversationsEmptyTitle.innerText = MCK_LABELS['empty.conversations']);
-        const kmConversationsEmptySubtitle = document.getElementById(
-            'km-conversations-empty-subtitle'
-        );
-        kmConversationsEmptySubtitle &&
-            (kmConversationsEmptySubtitle.innerText = MCK_LABELS['mck.empty.welcome.subtitle']);
-        const kmConversationsEmptyCta = document.getElementById('km-conversations-empty-cta');
-        kmConversationsEmptyCta &&
-            (kmConversationsEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
 
         var appendHtmlBindings = {
             'mck-voice-speak-btn': 'voiceInterface.speak',

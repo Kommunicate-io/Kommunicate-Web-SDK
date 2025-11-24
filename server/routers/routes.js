@@ -17,32 +17,45 @@ home.get('/', function (req, res) {
     });
 });
 
-home.get('/index.html', function (req, res) {
-    const buildIndex = path.join(__dirname, '../../webplugin/build/index.html');
-    const templateIndex = path.join(__dirname, '../../webplugin/template/index.html');
-    const indexPath = fs.existsSync(buildIndex) ? buildIndex : templateIndex;
+const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
+const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
+
+const resolveBranch = () => {
+    if (process.env.BRANCH) return process.env.BRANCH;
+    if (process.env.AWS_BRANCH) return process.env.AWS_BRANCH;
+    try {
+        return execSync('git rev-parse --abbrev-ref HEAD', {
+            cwd: path.join(__dirname, '..', '..'),
+            encoding: 'utf8',
+            timeout: 2000,
+        })
+            .toString()
+            .trim();
+    } catch (e) {
+        return 'unknown-branch';
+    }
+};
+
+const loadIndexTemplate = () => {
+    const indexPath = fs.existsSync(buildIndexPath) ? buildIndexPath : templateIndexPath;
     try {
         const raw = fs.readFileSync(indexPath, 'utf8');
-        const branch =
-            process.env.BRANCH ||
-            process.env.AWS_BRANCH ||
-            (() => {
-                try {
-                    return execSync('git rev-parse --abbrev-ref HEAD', {
-                        cwd: path.join(__dirname, '..', '..'),
-                        encoding: 'utf8',
-                    })
-                        .toString()
-                        .trim();
-                } catch (e) {
-                    return '';
-                }
-            })() ||
-            'unknown-branch';
-        res.type('html').send(raw.replace(/__KM_BRANCH__/g, branch));
-    } catch (err) {
-        res.sendFile(indexPath);
+        const branch = resolveBranch();
+        return raw.replace(/__KM_BRANCH__/g, branch);
+    } catch (e) {
+        return null;
     }
+};
+
+const cachedIndexHtml = loadIndexTemplate();
+
+home.get('/index.html', function (req, res) {
+    if (cachedIndexHtml) {
+        res.type('html').send(cachedIndexHtml);
+        return;
+    }
+    const fallbackPath = fs.existsSync(buildIndexPath) ? buildIndexPath : templateIndexPath;
+    res.sendFile(fallbackPath);
 });
 
 home.get('/kommunicate.app', function (req, res) {
