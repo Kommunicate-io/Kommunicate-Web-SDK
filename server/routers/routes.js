@@ -21,9 +21,8 @@ const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
 const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
 
 const resolveBranch = () => {
-    if (process.env._BRANCH) return process.env._BRANCH;
-    if (process.env.BRANCH) return process.env.BRANCH;
-    if (process.env.AWS_BRANCH) return process.env.AWS_BRANCH;
+    var envBranch = process.env._BRANCH || process.env.BRANCH || process.env.AWS_BRANCH;
+    if (envBranch) return envBranch;
     try {
         return execSync('git rev-parse --abbrev-ref HEAD', {
             cwd: path.join(__dirname, '..', '..'),
@@ -42,7 +41,13 @@ const loadIndexTemplate = () => {
     try {
         const raw = fs.readFileSync(indexPath, 'utf8');
         const branch = resolveBranch();
-        return raw.replace(/__KM_BRANCH__/g, branch);
+        const envValue =
+            process.env._BUILD_ENV ||
+            process.env.NODE_ENV ||
+            process.env.BRANCH_ENV ||
+            process.env.FIREBASE_ENV ||
+            'development';
+        return raw.replace(/__KM_BRANCH__/g, branch).replace(/__KM_ENV__/g, envValue);
     } catch (e) {
         return null;
     }

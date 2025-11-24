@@ -215,9 +215,15 @@ const minifyCss = (path, dir, fileName) => {
 };
 
 const generateBuildFiles = () => {
+    const buildEnvValue = process.env._BUILD_ENV || process.env.NODE_ENV || 'development';
     if (env) {
         // Generate index.html for home route
-        copyIndexWithBranch('template/index.html', `${buildDir}/index.html`, KM_RELEASE_BRANCH);
+        copyIndexWithBranch(
+            'template/index.html',
+            `${buildDir}/index.html`,
+            KM_RELEASE_BRANCH,
+            buildEnvValue
+        );
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
@@ -371,14 +377,19 @@ const copyFileToBuild = (src, dest) => {
     });
 };
 
-const copyIndexWithBranch = (src, dest, branchValue) => {
+const copyIndexWithBranch = (src, dest, branchValue, envValue) => {
     try {
         const templatePath = path.join(__dirname, src);
         const content = fs.readFileSync(templatePath, 'utf8');
         const resolvedBranch = branchValue || 'unknown-branch';
-        const replaced = content.replace(/__KM_BRANCH__/g, resolvedBranch);
+        const resolvedEnv = envValue || 'development';
+        const replaced = content
+            .replace(/__KM_BRANCH__/g, resolvedBranch)
+            .replace(/__KM_ENV__/g, resolvedEnv);
         fs.writeFileSync(dest, replaced);
-        console.log(`${dest} generated successfully with branch ${resolvedBranch}`);
+        console.log(
+            `${dest} generated successfully with branch ${resolvedBranch} and env ${resolvedEnv}`
+        );
     } catch (err) {
         console.log(`error while generating ${dest}`, err);
     }

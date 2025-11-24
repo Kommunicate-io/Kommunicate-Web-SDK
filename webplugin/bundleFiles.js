@@ -176,15 +176,9 @@ exports.getDynamicLoadFiles = function (dir) {
 
 function getCurrentBranch() {
     try {
-        if (process.env._BRANCH) {
-            return process.env._BRANCH;
-        }
-        if (process.env.AWS_BRANCH) {
-            return process.env.AWS_BRANCH;
-        }
-
-        if (process.env.BRANCH) {
-            return process.env.BRANCH;
+        const envBranch = process.env._BRANCH || process.env.BRANCH || process.env.AWS_BRANCH;
+        if (envBranch) {
+            return envBranch;
         }
 
         const branch = require('child_process')
