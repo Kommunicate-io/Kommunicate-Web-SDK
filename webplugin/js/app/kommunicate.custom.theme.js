@@ -101,7 +101,8 @@ function KmCustomTheme() {
             return;
         }
         var root = document.documentElement;
-        var rgb = getRgbFromHex(primaryColor) || DEFAULT_ACCENT_RGB;
+        var rgbArray = normalizeColorToRgb(primaryColor);
+        var rgb = (rgbArray && rgbArray.join(', ')) || DEFAULT_ACCENT_RGB;
         root.style.setProperty('--km-accent', primaryColor);
         root.style.setProperty('--km-accent-rgb', rgb);
         var contrastColor = getAccessibleTextColor(primaryColor);
@@ -127,41 +128,12 @@ function KmCustomTheme() {
     };
 
     _this.fillSvgsTheme = function () {
-        document.querySelectorAll('path[data-custom-fill]').forEach((path) => {
-            const primaryColor =
-                (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
+        var primaryColor =
+            (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
+        document.querySelectorAll('path[data-custom-fill]').forEach(function (path) {
             path.setAttribute('fill', primaryColor);
         });
     };
-
-    function getRgbFromHex(hex) {
-        if (!hex || typeof hex !== 'string') {
-            return null;
-        }
-        var clean = hex.trim().replace('#', '');
-        if (clean.length === 3) {
-            clean = clean
-                .split('')
-                .map(function (c) {
-                    return c + c;
-                })
-                .join('');
-        }
-        if (clean.length !== 6) {
-            return null;
-        }
-        var r = parseInt(clean.substring(0, 2), 16);
-        var g = parseInt(clean.substring(2, 4), 16);
-        var b = parseInt(clean.substring(4, 6), 16);
-        if (
-            [r, g, b].some(function (v) {
-                return isNaN(v);
-            })
-        ) {
-            return null;
-        }
-        return [r, g, b].join(', ');
-    }
 
     function getAccessibleTextColor(color) {
         var rgb = normalizeColorToRgb(color);
