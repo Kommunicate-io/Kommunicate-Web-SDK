@@ -26,6 +26,7 @@ function KmCustomTheme() {
 
     _this.customSideboxWidget = function () {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
+        var secondaryColor = DEFAULT_SECONDARY_BACKGROUND_COLOR;
         if (kommunicateCommons.isObject(WIDGET_SETTINGS)) {
             primaryColor =
                 WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor
@@ -106,15 +107,20 @@ function KmCustomTheme() {
 
     _this.changeColorTheme = function () {
         // #0A090C
+        var primaryColor =
+            (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
+        if (!primaryColor) {
+            return;
+        }
         var messageBoxTop = document.getElementsByClassName('mck-box-top');
         const businessHourBox = document.getElementById('km-business-hour-box');
         if (businessHourBox) {
-            businessHourBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+            businessHourBox.style.backgroundColor = primaryColor;
         }
         for (var i = 0; i < messageBoxTop.length; i++) {
-            messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+            messageBoxTop[i].style.backgroundColor = primaryColor;
         }
-        setAccentCssVariables(WIDGET_SETTINGS.primaryColor || DEFAULT_BACKGROUND_COLOR);
+        setAccentCssVariables(primaryColor);
     };
 
     _this.fillSvgsTheme = function () {
