@@ -174,11 +174,15 @@ function KmCustomTheme() {
             }
             return [r, g, b];
         }
-        var rgbMatch = color
-            .replace(/\s+/g, '')
-            .match(/^rgb\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$/i);
+        var rgbMatch = color.replace(/\s+/g, '').match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
         if (rgbMatch) {
-            return [Number(rgbMatch[1]), Number(rgbMatch[2]), Number(rgbMatch[3])];
+            var r = Number(rgbMatch[1]);
+            var g = Number(rgbMatch[2]);
+            var b = Number(rgbMatch[3]);
+            var inRange = [r, g, b].every(function (v) {
+                return !isNaN(v) && v >= 0 && v <= 255;
+            });
+            return inRange ? [r, g, b] : null;
         }
         return null;
     }

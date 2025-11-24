@@ -293,7 +293,7 @@
 
 .km-faq-category-card-count {
     font-weight: 600;
-    color: $text-primary-color;
+    color: var(--km-font-title-color, #1c1c1c);
     display: inline-flex;
     align-items: center;
     gap: 6px;

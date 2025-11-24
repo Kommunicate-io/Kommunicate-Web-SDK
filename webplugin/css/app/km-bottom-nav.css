@@ -286,7 +286,7 @@ $known-prefixes
 
 .km-faq-category-card-count {
   font-weight: 600;
-  color: #1c1c1c;
+  color: var(--km-font-title-color, #1c1c1c);
   display: inline-flex;
   align-items: center;
   gap: 6px;
