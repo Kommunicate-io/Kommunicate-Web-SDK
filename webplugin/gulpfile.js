@@ -217,7 +217,7 @@ const minifyCss = (path, dir, fileName) => {
 const generateBuildFiles = () => {
     if (env) {
         // Generate index.html for home route
-        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
+        copyIndexWithBranch('template/index.html', `${buildDir}/index.html`, KM_RELEASE_BRANCH);
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
@@ -369,6 +369,19 @@ const copyFileToBuild = (src, dest) => {
         }
         console.log(`${dest} generated successfully`);
     });
+};
+
+const copyIndexWithBranch = (src, dest, branchValue) => {
+    try {
+        const templatePath = path.join(__dirname, src);
+        const content = fs.readFileSync(templatePath, 'utf8');
+        const resolvedBranch = branchValue || 'unknown-branch';
+        const replaced = content.replace(/__KM_BRANCH__/g, resolvedBranch);
+        fs.writeFileSync(dest, replaced);
+        console.log(`${dest} generated successfully with branch ${resolvedBranch}`);
+    } catch (err) {
+        console.log(`error while generating ${dest}`, err);
+    }
 };
 
 const copyDirectoryRecursive = (sourceDir, destinationDir) => {
