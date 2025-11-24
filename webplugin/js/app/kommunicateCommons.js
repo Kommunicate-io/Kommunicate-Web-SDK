@@ -38,6 +38,32 @@ function KommunicateCommons() {
         );
     };
 
+    _this.adjustIframeHeightForModernLayout = function (iframeElement) {
+        if (!iframeElement || _this.checkIfDeviceIsHandheld() || !_this.isModernLayoutEnabled()) {
+            return;
+        }
+
+        iframeElement.style.height = '';
+
+        var heightSourceWindow =
+            (iframeElement.ownerDocument && iframeElement.ownerDocument.defaultView) || window;
+        var computedStyle =
+            heightSourceWindow && typeof heightSourceWindow.getComputedStyle === 'function'
+                ? heightSourceWindow.getComputedStyle(iframeElement)
+                : null;
+        var baseHeight =
+            computedStyle && computedStyle.height ? parseInt(computedStyle.height, 10) : NaN;
+
+        if (isNaN(baseHeight)) {
+            return;
+        }
+
+        var reducedHeight = baseHeight - 28;
+        if (reducedHeight > 0) {
+            iframeElement.style.height = reducedHeight + 'px';
+        }
+    };
+
     _this.isTrialPlan = function (pricingPackage) {
         var isTrialPlan = false;
         if (pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL) {
