@@ -243,85 +243,190 @@ class KMLabel {
         };
     }
     setLabels(MCK_LABELS = {}) {
-        $applozic('#mck-conversation-title')
-            .html(MCK_LABELS['conversations.title'])
-            .attr('title', MCK_LABELS['conversations.title']);
-        $applozic('#mck-msg-new, #mck-sidebox-search .mck-box-title')
-            .html(MCK_LABELS['start.new'])
-            .attr('title', MCK_LABELS['start.new']);
-        if (
-            MCK_LABELS['filter.conversation.list'] &&
-            MCK_LABELS['filter.conversation.list'].RESOLVED_TAG
-        ) {
-            $applozic('.mck-conversation-status-badge.vis')
-                .attr('title', MCK_LABELS['filter.conversation.list'].RESOLVED_TAG)
-                .attr('aria-label', MCK_LABELS['filter.conversation.list'].RESOLVED_TAG);
+        var getNodes = function (selector) {
+            return Array.prototype.slice.call(document.querySelectorAll(selector));
+        };
+        var resolveLabel = function (path) {
+            if (!path) {
+                return null;
+            }
+            var parts = path.split('.');
+            var current = MCK_LABELS;
+            var index = 0;
+            while (current && index < parts.length) {
+                var found = null;
+                for (var len = parts.length - index; len > 0; len--) {
+                    var candidateKey = parts.slice(index, index + len).join('.');
+                    if (
+                        Object.prototype.hasOwnProperty.call(current, candidateKey) &&
+                        current[candidateKey] !== undefined &&
+                        current[candidateKey] !== null
+                    ) {
+                        found = current[candidateKey];
+                        index += len;
+                        current = found;
+                        break;
+                    }
+                }
+                if (found === null) {
+                    return null;
+                }
+            }
+            return current === undefined || current === null ? null : current;
+        };
+        var applyHtmlAndTitle = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            $applozic(selector).html(value).attr('title', value);
+        };
+        var applyHtmlOnly = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            $applozic(selector).html(value);
+        };
+        var applyTitleOnly = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            $applozic(selector).attr('title', value);
+        };
+        var applyPlaceholder = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            $applozic(selector).attr('placeholder', value);
+        };
+        var setLabel = function (id, path, mode) {
+            var node = document.getElementById(id);
+            if (!node) {
+                return;
+            }
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            node[mode === 'text' ? 'innerText' : 'innerHTML'] = value;
+        };
+        var setHtmlAndTitleForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.innerHTML = value;
+                node.setAttribute('title', value);
+            });
+        };
+        var setHtmlOnlyForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.innerHTML = value;
+            });
+        };
+        var setTitleOnlyForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.setAttribute('title', value);
+            });
+        };
+        var setPlaceholderForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.setAttribute('placeholder', value);
+            });
+        };
+
+        [
+            { selector: '#mck-conversation-title', path: 'conversations.title' },
+            { selector: '#mck-msg-new, #mck-sidebox-search .mck-box-title', path: 'start.new' },
+        ].forEach(function (binding) {
+            setHtmlAndTitleForSelector(binding.selector, binding.path);
+        });
+        if (resolveLabel('filter.conversation.list.RESOLVED_TAG')) {
+            var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');
+            getNodes('.mck-conversation-status-badge.vis').forEach(function (node) {
+                node.setAttribute('title', resolvedTag);
+                node.setAttribute('aria-label', resolvedTag);
+            });
         }
-        $applozic('#mck-contact-search-tab strong')
-            .html(MCK_LABELS['search.contacts'])
-            .attr('title', MCK_LABELS['search.contacts']);
-        $applozic('#mck-group-search-tab strong')
-            .html(MCK_LABELS['search.groups'])
-            .attr('title', MCK_LABELS['search.groups']);
-        $applozic(
-            '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search'
-        ).attr('placeholder', MCK_LABELS['search.placeholder']);
-        $applozic('#mck-loc-address').attr('placeholder', MCK_LABELS['location.placeholder']);
-        // $applozic('#mck-no-conversations').html(MCK_LABELS['empty.conversations']);
-        // $applozic('#mck-no-messages').html(MCK_LABELS['empty.messages']);
-        // $applozic('#mck-no-more-conversations').html(MCK_LABELS['no.more.conversations']);
-        // $applozic('#mck-no-more-messages').html(MCK_LABELS['no.more.messages']);
-        $applozic('#mck-no-search-contacts').html(MCK_LABELS['empty.contacts']);
-        $applozic('#mck-no-search-groups').html(MCK_LABELS['empty.groups']);
-        $applozic('#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create')
-            .html(MCK_LABELS['create.group.title'])
-            .attr('title', MCK_LABELS['create.group.title']);
-        $applozic('#mck-gc-overlay-label').html(MCK_LABELS['add.group.icon']);
-        $applozic('#mck-msg-error').html(MCK_LABELS['group.deleted']);
-        $applozic('#mck-gc-title-label').html(MCK_LABELS['group.title']);
-        $applozic('#mck-gc-type-label').html(MCK_LABELS['group.type']);
-        $applozic('#mck-group-info-btn, #mck-group-info-tab .mck-box-title')
-            .html(MCK_LABELS['group.info.title'])
-            .attr('title', MCK_LABELS['group.info.title']);
-        $applozic('#mck-gi-overlay-label').html(MCK_LABELS['change.group.icon']);
-        $applozic('#mck-group-member-title')
-            .html(MCK_LABELS['members.title'])
-            .attr('title', MCK_LABELS['members.title']);
-        $applozic('#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title')
-            .html(MCK_LABELS['add.members.title'])
-            .attr('title', MCK_LABELS['add.members.title']);
-        $applozic('#mck-btn-group-update')
-            .html(MCK_LABELS['group.info.update'])
-            .attr('title', MCK_LABELS['group.info.update']);
-        $applozic('#mck-btn-leave-group, #mck-btn-group-exit')
-            .html(MCK_LABELS['exit.group'])
-            .attr('title', MCK_LABELS['exit.group']);
-        $applozic('#mck-typing-label').html(MCK_LABELS['typing']);
-        $applozic('#mck-btn-clear-messages')
-            .html(MCK_LABELS['clear.messages'])
-            .attr('title', MCK_LABELS['clear.messages']);
-        $applozic('#mck-block-button')
-            .html(MCK_LABELS['block.user'])
-            .attr('title', MCK_LABELS['block.user']);
-        $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label')
-            .html(MCK_LABELS['location.share.title'])
-            .attr('title', MCK_LABELS['location.share.title']);
-        $applozic('#mck-btn-loc').attr('title', MCK_LABELS['location.share.title']);
-        $applozic('#mck-file-up-label').html(MCK_LABELS['file.attachment']);
-        $applozic('#mck-file-up').attr('title', MCK_LABELS['file.attachment']);
-        $applozic('.mck-file-attach-label').attr('title', MCK_LABELS['file.attach.title']);
-        $applozic('#mck-my-loc')
-            .html(MCK_LABELS['my.location'])
-            .attr('title', MCK_LABELS['my.location']);
-        $applozic('#mck-btn-close-loc-box')
-            .html(MCK_LABELS['close'])
-            .attr('title', MCK_LABELS['close']);
-        $applozic('#mck-loc-submit').html(MCK_LABELS['send']).attr('title', MCK_LABELS['send']);
-        $applozic('#mck-msg-sbmt').attr('title', MCK_LABELS['send.message']);
-        $applozic('#mck-btn-smiley').attr('title', MCK_LABELS['smiley']);
-        $applozic('#mck-group-name-save').attr('title', MCK_LABELS['save']);
-        $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
-        $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
+        [
+            { selector: '#mck-contact-search-tab strong', path: 'search.contacts' },
+            { selector: '#mck-group-search-tab strong', path: 'search.groups' },
+            {
+                selector:
+                    '#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create',
+                path: 'create.group.title',
+            },
+            {
+                selector: '#mck-group-info-btn, #mck-group-info-tab .mck-box-title',
+                path: 'group.info.title',
+            },
+            { selector: '#mck-group-member-title', path: 'members.title' },
+            {
+                selector: '#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title',
+                path: 'add.members.title',
+            },
+            { selector: '#mck-btn-group-update', path: 'group.info.update' },
+            { selector: '#mck-btn-leave-group, #mck-btn-group-exit', path: 'exit.group' },
+            { selector: '#mck-btn-clear-messages', path: 'clear.messages' },
+            { selector: '#mck-block-button', path: 'block.user' },
+            {
+                selector: '#mck-loc-box .mck-box-title, #mck-share-loc-label',
+                path: 'location.share.title',
+            },
+            { selector: '#mck-my-loc', path: 'my.location' },
+            { selector: '#mck-btn-close-loc-box', path: 'close' },
+            { selector: '#mck-loc-submit', path: 'send' },
+        ].forEach(function (binding) {
+            setHtmlAndTitleForSelector(binding.selector, binding.path);
+        });
+
+        [
+            { selector: '#mck-gc-overlay-label', path: 'add.group.icon' },
+            { selector: '#mck-msg-error', path: 'group.deleted' },
+            { selector: '#mck-gc-title-label', path: 'group.title' },
+            { selector: '#mck-gc-type-label', path: 'group.type' },
+            { selector: '#mck-typing-label', path: 'typing' },
+            { selector: '#mck-no-search-contacts', path: 'empty.contacts' },
+            { selector: '#mck-no-search-groups', path: 'empty.groups' },
+            { selector: '#mck-file-up-label', path: 'file.attachment' },
+        ].forEach(function (binding) {
+            setHtmlOnlyForSelector(binding.selector, binding.path);
+        });
+
+        [
+            { selector: '#mck-btn-loc', path: 'location.share.title' },
+            { selector: '#mck-file-up', path: 'file.attachment' },
+            { selector: '.mck-file-attach-label', path: 'file.attach.title' },
+            { selector: '#mck-msg-sbmt', path: 'send.message' },
+            { selector: '#mck-btn-smiley', path: 'smiley' },
+            { selector: '#mck-group-name-save', path: 'save' },
+            { selector: '#mck-btn-group-icon-save', path: 'save' },
+            { selector: '#mck-group-name-edit', path: 'edit' },
+        ].forEach(function (binding) {
+            setTitleOnlyForSelector(binding.selector, binding.path);
+        });
+
+        setPlaceholderForSelector(
+            '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search',
+            'search.placeholder'
+        );
+        setPlaceholderForSelector('#mck-loc-address', 'location.placeholder');
         document.getElementById('mck-text-box').dataset.text = MCK_LABELS['input.message'];
         document.getElementById('mck-char-warning-text').innerHTML = MCK_LABELS['char.limit.warn'];
         document
@@ -332,59 +437,51 @@ class KMLabel {
             faqBackButton.setAttribute('aria-label', MCK_LABELS['faq.back.to.categories']);
             faqBackButton.setAttribute('title', MCK_LABELS['faq.back.to.categories']);
         }
-        document.getElementById('mck-no-faq-found').innerHTML =
-            MCK_LABELS['looking.for.something.else'];
-        document.getElementById('km-internet-disconnect-msg').innerHTML = MCK_LABELS['offline.msg'];
-        document.getElementById('km-socket-disconnect-msg').innerHTML =
-            MCK_LABELS['socket-disconnect.msg'];
-        document.getElementById('talk-to-human-link').innerHTML = MCK_LABELS['talk.to.agent'];
-        document.getElementById('mck-collect-email').innerHTML = MCK_LABELS['how.to.reachout'];
-        document.getElementById('mck-email-error-alert').innerHTML =
-            MCK_LABELS['email.error.alert'];
-        document.getElementById('mck-resolved-text').innerHTML =
-            MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
-        document.getElementById('mck-rated-text').innerHTML =
-            MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-        // document.getElementById('mck-rate-conversation').innerHTML =
-        //     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
-        document.getElementById('mck-other-queries').innerHTML =
-            MCK_LABELS['csat.rating'].OTHER_QUERIES;
-        document.getElementById('mck-restart-conversation').innerHTML =
-            MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
-        document
-            .getElementById('mck-feedback-comment')
-            .setAttribute('placeholder', MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER);
-        document.getElementById('mck-submit-comment').innerHTML =
-            MCK_LABELS['csat.rating'].SUBMIT_RATING;
-        document.getElementById('wq-msg-first-Part').innerHTML =
-            MCK_LABELS['waiting.queue.message']['first.Part'];
-        document.getElementById('waiting-queue-number').innerHTML =
-            MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
-        document.getElementById('wq-msg-last-part').innerHTML =
-            MCK_LABELS['waiting.queue.message']['last.part'];
-        document.getElementById('km-csat-trigger-text').innerText =
-            MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
-        document.getElementById('km-restart-conversation-text').innerText =
-            MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
-        document.getElementById('km-voice-note-trigger-text').innerText =
-            MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
-        document.getElementById('km-voice-input-trigger-text').innerText =
-            MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
-        document.getElementById('mck-rate-error').innerHTML =
-            MCK_LABELS['csat.rating'].RATE_ERROR_MSG;
-        document.getElementById('km-option-talk-to-human-text').innerHTML =
-            MCK_LABELS['conversation.header.dropdown'].HANDOFF;
-        document.getElementById('km-option-faq-text').innerHTML =
-            MCK_LABELS['conversation.header.dropdown'].FAQ;
-        const kmConversationsTab = document.getElementById('km-bottom-tab-conversations-text');
-        kmConversationsTab &&
-            (kmConversationsTab.innerText = MCK_LABELS['modern.nav.conversations']);
-        const kmFaqTab = document.getElementById('km-bottom-tab-faq-text');
-        kmFaqTab && (kmFaqTab.innerText = MCK_LABELS['modern.nav.faqs']);
-        const kmWhatsNewTab = document.getElementById('km-bottom-tab-whatsnew-text');
-        kmWhatsNewTab && (kmWhatsNewTab.innerText = MCK_LABELS['modern.nav.whatsnew']);
-        const kmEmptyTab = document.getElementById('km-bottom-tab-empty-text');
-        kmEmptyTab && (kmEmptyTab.innerText = MCK_LABELS['modern.nav.empty']);
+        var htmlBindings = {
+            'mck-no-faq-found': 'looking.for.something.else',
+            'km-internet-disconnect-msg': 'offline.msg',
+            'km-socket-disconnect-msg': 'socket-disconnect.msg',
+            'talk-to-human-link': 'talk.to.agent',
+            'mck-collect-email': 'how.to.reachout',
+            'mck-email-error-alert': 'email.error.alert',
+            'mck-resolved-text': 'csat.rating.CONVERSATION_RESOLVED',
+            'mck-rated-text': 'csat.rating.CONVERSATION_RATED',
+            'mck-other-queries': 'csat.rating.OTHER_QUERIES',
+            'mck-restart-conversation': 'csat.rating.RESTART_CONVERSATION',
+            'mck-submit-comment': 'csat.rating.SUBMIT_RATING',
+            'wq-msg-first-Part': 'waiting.queue.message.first.Part',
+            'waiting-queue-number': 'waiting.queue.message.waiting.queue.number',
+            'wq-msg-last-part': 'waiting.queue.message.last.part',
+            'mck-rate-error': 'csat.rating.RATE_ERROR_MSG',
+            'km-option-talk-to-human-text': 'conversation.header.dropdown.HANDOFF',
+            'km-option-faq-text': 'conversation.header.dropdown.FAQ',
+        };
+        var textBindings = {
+            'km-csat-trigger-text': 'conversation.header.dropdown.CSAT_RATING_TEXT',
+            'km-restart-conversation-text': 'conversation.header.dropdown.RESTART_CONVERSATION',
+            'km-voice-note-trigger-text': 'micOptions.dropup.VOICE_NOTE_TRIGGER',
+            'km-voice-input-trigger-text': 'micOptions.dropup.VOICE_INPUT_TRIGGER',
+            'km-bottom-tab-conversations-text': 'modern.nav.conversations',
+            'km-bottom-tab-faq-text': 'modern.nav.faqs',
+            'km-bottom-tab-whatsnew-text': 'modern.nav.whatsnew',
+            'km-bottom-tab-empty-text': 'modern.nav.empty',
+            'km-conversations-empty-title': 'empty.conversations',
+            'km-conversations-empty-subtitle': 'mck.empty.welcome.subtitle',
+            'km-conversations-empty-cta': 'mck.empty.welcome.cta',
+            'km-empty-conversation-eyebrow': 'mck.empty.welcome.eyebrow',
+            'km-empty-conversation-title': 'mck.empty.welcome.title',
+            'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
+            'km-empty-conversation-cta': 'mck.empty.welcome.cta',
+            'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
+            'km-empty-conversation-section-meta': 'mck.empty.welcome.section.meta',
+        };
+        Object.keys(htmlBindings).forEach(function (id) {
+            setLabel(id, htmlBindings[id], 'html');
+        });
+        Object.keys(textBindings).forEach(function (id) {
+            setLabel(id, textBindings[id], 'text');
+        });
+
         const kmCollapseTab = document.getElementById('km-bottom-tab-collapse-text');
         if (kmCollapseTab) {
             kmCollapseTab.innerText = MCK_LABELS['modern.nav.collapse'];
@@ -404,37 +501,31 @@ class KMLabel {
         kmConversationsEmptyCta &&
             (kmConversationsEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
 
-        document.getElementById('mck-voice-speak-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].speak;
-        document.getElementById('mck-voice-chat-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].chat;
-        document.getElementById('mck-voice-interface-back-btn').innerHTML +=
-            MCK_LABELS['voiceInterface'].back;
-        document.getElementById('mck-voice-repeat-last-msg').innerHTML +=
-            MCK_LABELS['voiceInterface'].repeatLastMsg;
-        const kmEmptyEyebrow = document.getElementById('km-empty-conversation-eyebrow');
-        kmEmptyEyebrow && (kmEmptyEyebrow.innerText = MCK_LABELS['mck.empty.welcome.eyebrow']);
-        const kmEmptyTitle = document.getElementById('km-empty-conversation-title');
-        kmEmptyTitle && (kmEmptyTitle.innerText = MCK_LABELS['mck.empty.welcome.title']);
-        const kmEmptySubtitle = document.getElementById('km-empty-conversation-subtitle');
-        kmEmptySubtitle && (kmEmptySubtitle.innerText = MCK_LABELS['mck.empty.welcome.subtitle']);
-        const kmEmptyCta = document.getElementById('km-empty-conversation-cta');
-        kmEmptyCta && (kmEmptyCta.innerText = MCK_LABELS['mck.empty.welcome.cta']);
-        const kmEmptyContinue = document.getElementById('km-empty-conversation-continue');
-        kmEmptyContinue &&
-            (kmEmptyContinue.innerText = MCK_LABELS['mck.empty.welcome.cta.continue']);
-        const kmEmptySectionMeta = document.getElementById('km-empty-conversation-section-meta');
-        kmEmptySectionMeta &&
-            (kmEmptySectionMeta.innerText = MCK_LABELS['mck.empty.welcome.section.meta']);
-        const kmWelcomeSearch = document.getElementById('km-empty-faq-search');
-        kmWelcomeSearch &&
-            (kmWelcomeSearch.placeholder =
-                MCK_LABELS['search.faq'] || kmWelcomeSearch.placeholder || 'Search in FAQs...');
-        kmWelcomeSearch &&
-            kmWelcomeSearch.setAttribute(
-                'aria-label',
-                MCK_LABELS['search.faq'] || 'Search in FAQs...'
-            );
+        var appendHtmlBindings = {
+            'mck-voice-speak-btn': 'voiceInterface.speak',
+            'mck-voice-chat-btn': 'voiceInterface.chat',
+            'mck-voice-interface-back-btn': 'voiceInterface.back',
+            'mck-voice-repeat-last-msg': 'voiceInterface.repeatLastMsg',
+        };
+        Object.keys(appendHtmlBindings).forEach(function (id) {
+            var node = document.getElementById(id);
+            if (!node) {
+                return;
+            }
+            var value = resolveLabel(appendHtmlBindings[id]);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            node.innerHTML += value;
+        });
+
+        var kmWelcomeSearch = document.getElementById('km-empty-faq-search');
+        if (kmWelcomeSearch) {
+            var searchLabel =
+                MCK_LABELS['search.faq'] || kmWelcomeSearch.placeholder || 'Search in FAQs...';
+            kmWelcomeSearch.placeholder = searchLabel;
+            kmWelcomeSearch.setAttribute('aria-label', searchLabel);
+        }
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
     }
 }
