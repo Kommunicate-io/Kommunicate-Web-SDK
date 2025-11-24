@@ -60,8 +60,11 @@ home.get('/index.html', function (req, res) {
         res.type('html').send(cachedIndexHtml);
         return;
     }
-    const fallbackPath = fs.existsSync(buildIndexPath) ? buildIndexPath : templateIndexPath;
-    res.sendFile(fallbackPath);
+    res.sendFile(buildIndexPath, (err) => {
+        if (err) {
+            res.sendFile(templateIndexPath);
+        }
+    });
 });
 
 home.get('/kommunicate.app', function (req, res) {
