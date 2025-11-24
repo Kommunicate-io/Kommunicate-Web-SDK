@@ -219,6 +219,16 @@
             return tabType.toString();
         }
 
+        function getActiveConversationId() {
+            var messageInner =
+                documentRef && documentRef.querySelector('#mck-message-cell .mck-message-inner');
+            return (
+                messageInner &&
+                (messageInner.getAttribute('data-mck-id') ||
+                    (messageInner.dataset && messageInner.dataset.mckId))
+            );
+        }
+
         function isConversationTabActive() {
             return getActiveTabFromDom() === 'conversations';
         }
@@ -249,7 +259,7 @@
                 toggleBottomTabsDisplay(false);
                 return;
             }
-            kommunicateCommons.show('.km-bottom-tab-wrapper');
+            toggleBottomTabsDisplay(true);
         }
 
         function hideBottomTabs() {
@@ -283,6 +293,12 @@
         function handleBottomTabChange(tabType, options) {
             options = options || {};
             var resolvedTabType = normalizeTabType(tabType);
+            var activeConversationId = getActiveConversationId();
+
+            // If a conversation is already active, avoid forcing the welcome tab and keep the thread view.
+            if (resolvedTabType === 'no-conversations' && activeConversationId) {
+                resolvedTabType = 'conversations';
+            }
             if (resolvedTabType === COLLAPSE_TAB_TYPE) {
                 handleCollapseAction();
                 return;
@@ -294,14 +310,15 @@
 
             var isModernLayout = isModernLayoutEnabled();
             var ui = getKommunicateUI();
-            var messageInner =
-                documentRef && documentRef.querySelector('#mck-message-cell .mck-message-inner');
-            var activeConversationId =
-                messageInner &&
-                (messageInner.getAttribute('data-mck-id') ||
-                    (messageInner.dataset && messageInner.dataset.mckId));
             var hasActiveConversation = isModernLayout && !!activeConversationId;
             if (resolvedTabType === 'conversations') {
+                // Preserve individual view when a conversation is active.
+                if (hasActiveConversation) {
+                    updateActiveSubsectionClass('conversation-individual');
+                } else {
+                    updateActiveSubsectionClass('conversation-list');
+                }
+
                 ui.showConversationList();
                 ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
@@ -320,6 +337,7 @@
                         if (lastTabId) {
                             kommunicateCommons.show('#mck-tab-individual');
                             kommunicateCommons.hide('#mck-tab-conversation');
+                            updateActiveSubsectionClass('conversation-individual');
                         }
                     }, 0);
                 }
@@ -332,6 +350,9 @@
                         MCK_LABELS['modern.nav.empty']) ||
                     'Welcome';
                 ui.setConversationTitle(emptyTitle);
+                if (ui && ui.hasConversationHistory === false && ui.toggleConversationsEmptyState) {
+                    ui.toggleConversationsEmptyState(true);
+                }
                 ui.updateWelcomeCtaLabel();
                 var topBarManager = getTopBarManager();
                 if (topBarManager) {
@@ -383,13 +404,24 @@
                 var ui = getKommunicateUI();
                 var initialTab = normalizeTabType(getActiveTabFromDom());
                 var hasLastTab = !!getLastBottomTab();
-                if (!hasLastTab && ui && ui.hasConversationHistory === false) {
+                var activeConversationId = getActiveConversationId();
+
+                // If a conversation is already active (e.g., auto-open settings), prefer the conversations tab.
+                if (ui && activeConversationId) {
+                    ui.setHasConversationHistory && ui.setHasConversationHistory(true);
+                    initialTab = 'conversations';
+                } else if (ui && ui.hasConversationHistory === false) {
+                    // When there is no conversation history, always start with the welcome tab
+                    // even if a stale lastTab exists from a previous session.
                     initialTab = 'no-conversations';
+                    ui.toggleConversationsEmptyState && ui.toggleConversationsEmptyState(true);
                 }
                 setBottomTabState(initialTab);
                 updateActiveTabClass(initialTab);
                 updateActiveSubsectionClass(getDefaultSubsectionForTab(initialTab));
-                if (!isModernLayoutEnabled()) {
+                if (isModernLayoutEnabled()) {
+                    showBottomTabs();
+                } else {
                     toggleBottomTabsDisplay(false);
                 }
             },

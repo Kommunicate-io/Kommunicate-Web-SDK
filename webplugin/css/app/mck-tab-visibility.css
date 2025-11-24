@@ -70,6 +70,9 @@
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content {
   display: none !important;
 }
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
   display: block !important;
 }

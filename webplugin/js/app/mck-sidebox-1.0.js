@@ -2541,18 +2541,21 @@ const firstVisibleMsg = {
                     KommunicateUI.checkSingleThreadedConversationSettings();
                 }
 
-                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
+                var shouldAutoOpenConversation =
+                    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.isActiveConversationNeedsToBeOpened(
                         activeConversationInfo,
                         data
-                    ) &&
+                    );
+
+                if (shouldAutoOpenConversation) {
                     Kommunicate.openConversation(activeConversationInfo.groupId);
-                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                    !KommunicateUtils.isActiveConversationNeedsToBeOpened(
-                        activeConversationInfo,
-                        data
-                    ) &&
+                    // Ensure tab state aligns with the auto-opened thread.
+                    bottomTabManager.handleChange('conversations', { fromAutoOpen: true });
+                    KommunicateUI.setHasConversationHistory(true);
+                } else if (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE) {
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
+                }
 
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
@@ -7821,7 +7824,12 @@ const firstVisibleMsg = {
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
                 kommunicateCommons.hide('#km-faq');
                 if (params.tabId) {
-                    bottomTabManager.hide();
+                    // In modern layout we still want bottom tabs visible after reload/deep link.
+                    if (!kommunicateCommons.isModernLayoutEnabled()) {
+                        bottomTabManager.hide();
+                    } else {
+                        bottomTabManager.show();
+                    }
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
                     $mck_msg_inner.data('mck-conversationid', params.conversationId);
