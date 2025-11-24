@@ -22,7 +22,12 @@ function KommunicateCommons() {
             appSettings?.designLayoutName ||
             appSettings?.chatWidget?.designLayoutName ||
             null;
-        return layoutFromGlobals || KommunicateConstants.DESIGN_LAYOUTS?.MODERN || 'modern';
+        return (
+            layoutFromGlobals ||
+            KommunicateConstants.DESIGN_LAYOUTS?.DEFAULT ||
+            KommunicateConstants.DESIGN_LAYOUTS?.MODERN ||
+            'default'
+        );
     };
 
     _this.isModernLayoutEnabled = function () {
