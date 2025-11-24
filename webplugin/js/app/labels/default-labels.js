@@ -274,34 +274,6 @@ class KMLabel {
             }
             return current === undefined || current === null ? null : current;
         };
-        var applyHtmlAndTitle = function (selector, path) {
-            var value = resolveLabel(path);
-            if (value === null || typeof value === 'undefined') {
-                return;
-            }
-            $applozic(selector).html(value).attr('title', value);
-        };
-        var applyHtmlOnly = function (selector, path) {
-            var value = resolveLabel(path);
-            if (value === null || typeof value === 'undefined') {
-                return;
-            }
-            $applozic(selector).html(value);
-        };
-        var applyTitleOnly = function (selector, path) {
-            var value = resolveLabel(path);
-            if (value === null || typeof value === 'undefined') {
-                return;
-            }
-            $applozic(selector).attr('title', value);
-        };
-        var applyPlaceholder = function (selector, path) {
-            var value = resolveLabel(path);
-            if (value === null || typeof value === 'undefined') {
-                return;
-            }
-            $applozic(selector).attr('placeholder', value);
-        };
         var setLabel = function (id, path, mode) {
             var node = document.getElementById(id);
             if (!node) {
