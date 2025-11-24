@@ -64,6 +64,7 @@ Kommunicate.getFaqList = function (data, categoryName) {
     });
 };
 Kommunicate.getFaqCategories = function (data) {
+    KommunicateUI.faqCategoryRequestPending = true;
     KommunicateKB.getCategories({
         data: { appId: data.appId, baseUrl: Kommunicate.getBaseUrl() },
         success: function (response) {

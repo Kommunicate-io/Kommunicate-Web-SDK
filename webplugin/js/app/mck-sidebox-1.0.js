@@ -6733,7 +6733,7 @@ const firstVisibleMsg = {
                                     })[0];
                                 }
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
-                                if (data.groupFeeds.length > 0) {
+                                if (data.userDetails.length > 0 && data.groupFeeds.length > 0) {
                                     var name;
                                     var updateConversationHeaderParams = new Object();
                                     if (data.groupFeeds[0].name) {

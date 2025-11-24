@@ -6,6 +6,34 @@
         var documentRef = params.document || document;
         var WHATS_NEW_LIST = [];
 
+        function getSafeLink(item) {
+            var rawLink = '';
+            if (item && typeof item === 'object') {
+                if (typeof item.link === 'string') {
+                    rawLink = item.link;
+                } else if (typeof item.url === 'string') {
+                    rawLink = item.url;
+                }
+            }
+            var trimmedLink = rawLink && rawLink.trim();
+            if (!trimmedLink) {
+                return '';
+            }
+            var lower = trimmedLink.toLowerCase();
+            var isAllowed =
+                lower.startsWith('http:') ||
+                lower.startsWith('https:') ||
+                lower.startsWith('mailto:');
+            if (!isAllowed) {
+                return '';
+            }
+            var escapeAttr =
+                kommunicateCommons &&
+                typeof kommunicateCommons.escapeAttributeValue === 'function' &&
+                kommunicateCommons.escapeAttributeValue;
+            return escapeAttr ? escapeAttr(trimmedLink) : trimmedLink;
+        }
+
         function renderWhatsNewList(items) {
             var dataSource = Array.isArray(items) && items.length ? items : [];
             var placeholder = documentRef.getElementById('km-whats-new-placeholder');
@@ -44,7 +72,7 @@
                         item.description &&
                         kommunicateCommons.formatHtmlTag(item.description.trim());
                     var meta = item.meta && kommunicateCommons.formatHtmlTag(item.meta.trim());
-                    var link = item.link || item.url;
+                    var link = getSafeLink(item);
                     var linkText = item.linkText
                         ? kommunicateCommons.formatHtmlTag(item.linkText)
                         : learnMoreLabel;
