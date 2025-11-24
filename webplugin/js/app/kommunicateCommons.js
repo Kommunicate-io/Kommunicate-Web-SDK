@@ -38,6 +38,9 @@ function KommunicateCommons() {
         );
     };
 
+    // Height adjustment constant for modern layout (e.g., to account for bottom tab bar)
+    var MODERN_LAYOUT_HEIGHT_ADJUSTMENT = 28;
+
     _this.adjustIframeHeightForModernLayout = function (iframeElement) {
         if (!iframeElement || _this.checkIfDeviceIsHandheld() || !_this.isModernLayoutEnabled()) {
             return;
@@ -58,7 +61,7 @@ function KommunicateCommons() {
             return;
         }
 
-        var reducedHeight = baseHeight - 28;
+        var reducedHeight = baseHeight - MODERN_LAYOUT_HEIGHT_ADJUSTMENT;
         if (reducedHeight > 0) {
             iframeElement.style.height = reducedHeight + 'px';
         }
@@ -325,6 +328,19 @@ function KommunicateCommons() {
     };
     _this.formatHtmlTag = function (html) {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+
+    _this.escapeAttributeValue = function (value) {
+        if (value === null || typeof value === 'undefined') {
+            return '';
+        }
+        var stringValue = typeof value.toString === 'function' ? value.toString() : String(value);
+        return stringValue
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
     };
 
     _this.encodeCategoryNameForAttribute = function (categoryName) {

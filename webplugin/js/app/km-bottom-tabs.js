@@ -234,9 +234,7 @@
         function hideNoConversationsTab() {
             toggleEmptyTabVisibility(false);
             var kmUi = getKommunicateUI();
-            kmUi &&
-                typeof kmUi.setHasConversationHistory === 'function' &&
-                kmUi.setHasConversationHistory(true);
+            kmUi && kmUi.setHasConversationHistory(true);
             if (getActiveTabFromDom() === 'no-conversations') {
                 handleBottomTabChange('conversations', {
                     skipFaqTrigger: true,
@@ -279,11 +277,7 @@
         }
 
         function isModernLayoutEnabled() {
-            return (
-                kommunicateCommons &&
-                typeof kommunicateCommons.isModernLayoutEnabled === 'function' &&
-                kommunicateCommons.isModernLayoutEnabled()
-            );
+            return kommunicateCommons && kommunicateCommons.isModernLayoutEnabled();
         }
 
         function handleBottomTabChange(tabType, options) {
@@ -357,9 +351,7 @@
             }
 
             if (resolvedTabType === 'whats-new') {
-                whatsNewManager &&
-                    typeof whatsNewManager.refresh === 'function' &&
-                    whatsNewManager.refresh();
+                whatsNewManager.refresh();
                 ui.toggleModernFaqBackButton(false);
                 if (documentRef && typeof documentRef.getElementById === 'function') {
                     var tabTitle = documentRef.getElementById('mck-tab-title');

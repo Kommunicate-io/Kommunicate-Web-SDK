@@ -4092,20 +4092,7 @@ const firstVisibleMsg = {
                             kommunicateCommons.isModernLayoutEnabled();
 
                         if (isModernLayout) {
-                            try {
-                                if (
-                                    typeof bottomTabManager !== 'undefined' &&
-                                    bottomTabManager &&
-                                    typeof bottomTabManager.showEmptyStateTab === 'function'
-                                ) {
-                                    bottomTabManager.showEmptyStateTab();
-                                } else if (
-                                    typeof kommunicateCommons !== 'undefined' &&
-                                    typeof kommunicateCommons.show === 'function'
-                                ) {
-                                    kommunicateCommons.show('#mck-no-conversations');
-                                }
-                            } catch (e) {}
+                            bottomTabManager.showEmptyStateTab();
                             callback();
                         } else {
                             var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
@@ -4118,27 +4105,11 @@ const firstVisibleMsg = {
                             );
                         }
                     } else if (result.response.length == 1) {
-                        try {
-                            if (
-                                typeof bottomTabManager !== 'undefined' &&
-                                bottomTabManager &&
-                                typeof bottomTabManager.hideEmptyStateTab === 'function'
-                            ) {
-                                bottomTabManager.hideEmptyStateTab();
-                            }
-                        } catch (e) {}
+                        bottomTabManager.hideEmptyStateTab();
                         var groupId = result.response[0].id;
                         $applozic.fn.applozic('loadGroupTab', groupId, callback);
                     } else {
-                        try {
-                            if (
-                                typeof bottomTabManager !== 'undefined' &&
-                                bottomTabManager &&
-                                typeof bottomTabManager.hideEmptyStateTab === 'function'
-                            ) {
-                                bottomTabManager.hideEmptyStateTab();
-                            }
-                        } catch (e) {}
+                        bottomTabManager.hideEmptyStateTab();
                         if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                             ALStorage.clearMckMessageArray();
                         }
@@ -10532,6 +10503,9 @@ const firstVisibleMsg = {
                         MCK_LABELS['filter.conversation.list'] &&
                         MCK_LABELS['filter.conversation.list'].RESOLVED_TAG) ||
                     'Resolved';
+                var resolvedTagTextEscaped = kommunicateCommons.escapeAttributeValue(
+                    resolvedTagText
+                );
 
                 $applozic('#li-' + contHtmlExpr + ' .mck-group-count-text').html(groupUserCount);
                 $applozic('#li-' + contHtmlExpr + ' .mck-group-count-box')
@@ -10582,7 +10556,7 @@ const firstVisibleMsg = {
                         conversationStatusClass: statusClass,
                         isConversationInWaitingQueue: isConversationInWaitingQueue,
                         resolvedTagClass: isResolvedConversation ? 'vis' : 'n-vis',
-                        resolvedTagText: resolvedTagText,
+                        resolvedTagText: resolvedTagTextEscaped,
                         resolvedTagIcon: resolvedBadgeIcon,
                     },
                 ];
