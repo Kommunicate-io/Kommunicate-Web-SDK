@@ -176,6 +176,9 @@ exports.getDynamicLoadFiles = function (dir) {
 
 function getCurrentBranch() {
     try {
+        if (process.env._BRANCH) {
+            return process.env._BRANCH;
+        }
         if (process.env.AWS_BRANCH) {
             return process.env.AWS_BRANCH;
         }
@@ -184,9 +187,6 @@ function getCurrentBranch() {
             return process.env.BRANCH;
         }
 
-        if (process.env.NODE_ENV != 'development') {
-            return version;
-        }
         const branch = require('child_process')
             .execSync('git rev-parse --abbrev-ref HEAD', {
                 cwd: __dirname,

@@ -21,6 +21,7 @@ const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
 const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
 
 const resolveBranch = () => {
+    if (process.env._BRANCH) return process.env._BRANCH;
     if (process.env.BRANCH) return process.env.BRANCH;
     if (process.env.AWS_BRANCH) return process.env.AWS_BRANCH;
     try {
