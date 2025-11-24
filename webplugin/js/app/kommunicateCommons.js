@@ -39,7 +39,7 @@ function KommunicateCommons() {
     };
 
     var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
-    var BOTTOM_NAV_EXTRA_HEIGHT = 40;
+    var cachedBottomNavHeight = null;
 
     _this.adjustIframeHeightForModernLayout = function (iframeElement) {
         if (!iframeElement || _this.checkIfDeviceIsHandheld() || !_this.isModernLayoutEnabled()) {
@@ -62,11 +62,11 @@ function KommunicateCommons() {
         }
 
         var navHeight = getBottomNavHeight(iframeElement);
-        var adjustedNavHeight = Math.max(navHeight - BOTTOM_NAV_EXTRA_HEIGHT, 0);
-        var reducedHeight = baseHeight - adjustedNavHeight;
-        if (reducedHeight > 0) {
-            iframeElement.style.height = reducedHeight + 'px';
+        if (isNaN(navHeight) || navHeight <= 0) {
+            navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
+        var reducedHeight = baseHeight - navHeight;
+        iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
     };
 
     _this.isTrialPlan = function (pricingPackage) {
@@ -113,6 +113,9 @@ function KommunicateCommons() {
     };
 
     function getBottomNavHeight(iframeElement) {
+        if (cachedBottomNavHeight !== null) {
+            return cachedBottomNavHeight;
+        }
         var doc = iframeElement && iframeElement.contentDocument;
         var win = iframeElement && iframeElement.contentWindow;
         var nav =
@@ -124,7 +127,7 @@ function KommunicateCommons() {
         if (nav && win && typeof win.getComputedStyle === 'function') {
             var navStyle = win.getComputedStyle(nav);
             var parsed = navStyle && navStyle.height ? parseFloat(navStyle.height) : NaN;
-            if (!isNaN(parsed) && parsed > 0) {
+            if (!isNaN(parsed) && parsed > 0 && navStyle.display !== 'none') {
                 height = parsed;
             }
         }
@@ -134,7 +137,8 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        return height;
+        cachedBottomNavHeight = height;
+        return cachedBottomNavHeight;
     }
 
     _this.showPoweredBy = function (data) {
