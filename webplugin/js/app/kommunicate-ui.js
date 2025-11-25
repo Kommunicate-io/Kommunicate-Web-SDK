@@ -952,6 +952,35 @@ KommunicateUI = {
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
         KommunicateUI.toggleConversationsEmptyState &&
             KommunicateUI.toggleConversationsEmptyState(!boolValue);
+        if (boolValue) {
+            var bottomTabsManager = getBottomTabsManager();
+            var sideboxContent = document.getElementById('mck-sidebox-content');
+            if (
+                sideboxContent &&
+                sideboxContent.classList.contains('active-tab-no-conversations')
+            ) {
+                sideboxContent.classList.remove('active-tab-no-conversations');
+                sideboxContent.classList.add('active-tab-conversations');
+            }
+            if (
+                bottomTabsManager &&
+                typeof bottomTabsManager.setActiveTab === 'function' &&
+                typeof bottomTabsManager.setActiveSubsection === 'function'
+            ) {
+                bottomTabsManager.setActiveTab('conversations');
+                bottomTabsManager.setActiveSubsection(
+                    KommunicateUI.isConversationListView
+                        ? 'conversation-list'
+                        : 'conversation-individual'
+                );
+            } else {
+                setActiveSubsectionState(
+                    KommunicateUI.isConversationListView
+                        ? 'conversation-list'
+                        : 'conversation-individual'
+                );
+            }
+        }
     },
     toggleConversationsEmptyState: function (show) {
         var emptyState = document.getElementById('km-conversations-empty');

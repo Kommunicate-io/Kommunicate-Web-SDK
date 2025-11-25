@@ -411,11 +411,12 @@
             init: function () {
                 var ui = getKommunicateUI();
                 var initialTab = normalizeTabType(getActiveTabFromDom());
-                var hasLastTab = !!getLastBottomTab();
                 var activeConversationId = getActiveConversationId();
+                var hasContacts =
+                    Array.isArray(w.MCK_CONTACT_ARRAY) && w.MCK_CONTACT_ARRAY.length > 0;
 
                 // If a conversation is already active (e.g., auto-open settings), prefer the conversations tab.
-                if (ui && activeConversationId) {
+                if (ui && (activeConversationId || hasContacts)) {
                     ui.setHasConversationHistory && ui.setHasConversationHistory(true);
                     initialTab = 'conversations';
                 } else if (ui && ui.hasConversationHistory === false) {

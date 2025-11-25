@@ -2553,6 +2553,15 @@ const firstVisibleMsg = {
                     // Ensure tab state aligns with the auto-opened thread.
                     bottomTabManager.handleChange('conversations', { fromAutoOpen: true });
                     KommunicateUI.setHasConversationHistory(true);
+                    var sideboxContent = document.getElementById('mck-sidebox-content');
+                    if (sideboxContent && sideboxContent.classList) {
+                        sideboxContent.classList.remove('active-tab-no-conversations');
+                        sideboxContent.classList.add(
+                            'active-tab-conversations',
+                            'active-subsection-conversation-individual'
+                        );
+                    }
+                    KommunicateUI.isConversationListView = false;
                 } else if (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE) {
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
                 }
