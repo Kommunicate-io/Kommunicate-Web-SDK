@@ -19,6 +19,13 @@
     --km-primary-color-rgb: 95, 70, 248;
 }
 
+.mck-sidebox.fade.in.popup-enabled {
+    height: calc(100% - 100px);
+}
+.layout-modern .mck-sidebox.fade.in.popup-enabled {
+    height: auto;
+}
+
 .mck-box {
     position: fixed;
     right: 0;
@@ -5495,13 +5502,19 @@ div[name='message']:last-child {
 }
 
 @media only screen and (width: 442px) {
-    .mck-sidebox.fade.in.popup-enabled {
-        height: auto !important;
-        max-height: none !important;
-        max-width: 394px !important;
-        margin: 10px 45px 0 !important;
-        box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
-    }
+.mck-sidebox.fade.in.popup-enabled {
+  height: calc(100% - 100px) !important;
+  max-height: none !important;
+  max-width: 394px !important;
+  margin: 10px 45px 0 !important;
+  box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
+}
+.layout-modern .mck-sidebox.fade.in.popup-enabled {
+  height: auto !important;
+}
+.km-modern-layout .mck-sidebox.fade.in.popup-enabled {
+  height: auto !important;
+}
     #km-chat-login-modal.km-sidemodal {
         height: calc(100% - 100px);
         max-width: 394px !important;

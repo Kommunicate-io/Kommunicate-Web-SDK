@@ -2767,14 +2767,7 @@ const firstVisibleMsg = {
 
                             kommunicateCommons.hide('#chat-popup-widget-container');
                             kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
-                            if (
-                                kommunicateCommons.isModernLayoutEnabled &&
-                                kommunicateCommons.isModernLayoutEnabled()
-                            ) {
-                                kommunicateCommons.adjustIframeHeightForModernLayout(
-                                    kommunicateIframe
-                                );
-                            }
+                            kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
                             const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                             mckMessageService.createNewConversation(
                                 conversationDetail,
@@ -2915,12 +2908,7 @@ const firstVisibleMsg = {
                           (popUpcloseButton.style.display = 'flex'))
                         : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
                     POPUP_WIDGET && _this.configurePopupWidget();
-                    if (
-                        kommunicateCommons.isModernLayoutEnabled &&
-                        kommunicateCommons.isModernLayoutEnabled()
-                    ) {
-                        kommunicateCommons.adjustIframeHeightForModernLayout(kommunicateIframe);
-                    }
+                    kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
                 function closeChatBox() {

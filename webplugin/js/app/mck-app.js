@@ -314,6 +314,28 @@ function ApplozicSidebox() {
         });
     }
 
+    function applyLayoutClass(layoutName) {
+        if (typeof document === 'undefined' || !layoutName) {
+            return;
+        }
+        var className = 'layout-' + String(layoutName).toLowerCase();
+        var targets = [document.documentElement, document.body].filter(Boolean);
+        targets.forEach(function (node) {
+            if (!node.classList) {
+                return;
+            }
+            Array.prototype.slice
+                .call(node.classList)
+                .filter(function (cls) {
+                    return cls.indexOf('layout-') === 0;
+                })
+                .forEach(function (cls) {
+                    node.classList.remove(cls);
+                });
+            node.classList.add(className);
+        });
+    }
+
     async function loadFileBasedOnProp(apiData, options) {
         try {
             const promises = [];
@@ -487,7 +509,6 @@ function ApplozicSidebox() {
                 options.designLayoutName ||
                 options?.appSettings?.designLayoutName ||
                 options?.appSettings?.chatWidget?.designLayoutName ||
-                widgetSettings?.designLayoutName ||
                 KommunicateConstants.DESIGN_LAYOUTS.DEFAULT ||
                 'default';
             options.designLayoutName = resolvedDesignLayoutName;
@@ -496,6 +517,7 @@ function ApplozicSidebox() {
             if (widgetSettings) {
                 widgetSettings.designLayoutName = resolvedDesignLayoutName;
             }
+            applyLayoutClass(resolvedDesignLayoutName);
 
             var pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'

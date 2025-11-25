@@ -41,8 +41,13 @@ function KommunicateCommons() {
     var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
     var cachedBottomNavHeight = null;
 
-    _this.adjustIframeHeightForModernLayout = function (iframeElement) {
-        if (!iframeElement || _this.checkIfDeviceIsHandheld() || !_this.isModernLayoutEnabled()) {
+    _this.adjustIframeHeightForLayout = function (iframeElement) {
+        if (
+            !iframeElement ||
+            _this.checkIfDeviceIsHandheld() ||
+            !_this.isModernLayoutEnabled ||
+            !_this.isModernLayoutEnabled()
+        ) {
             return;
         }
 
