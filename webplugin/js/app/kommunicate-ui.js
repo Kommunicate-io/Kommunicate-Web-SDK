@@ -976,9 +976,6 @@ KommunicateUI = {
         return KommunicateUI.getLabel('faq', 'FAQ');
     },
     showFaqListHeaderState: function () {
-        if (!kommunicateCommons.isModernLayoutEnabled()) {
-            return;
-        }
         KommunicateUI.toggleModernFaqBackButton(false);
         KommunicateUI.setConversationTitle(KommunicateUI.getFaqTitle());
     },
