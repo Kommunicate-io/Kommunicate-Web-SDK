@@ -2794,7 +2794,7 @@ div#mck-rated:before {
 }
 
 .mck-box-top {
-  padding: 0 10px;
+  padding: 0 5px;
   min-height: 60px;
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
@@ -3567,7 +3567,7 @@ div#mck-rated:before {
 
 @media (max-width: 600px) {
   .km-bottom-tab {
-    font-size: 11px;
+    font-size: 10px;
     padding: 5px 0;
     gap: 3px;
   }
@@ -3859,6 +3859,9 @@ div#mck-rated:before {
 #mck-sidebox-content.active-tab-conversations #mck-tab-individual {
   display: flex !important;
 }
+#mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list {
   /* Hide start-new button when conversations empty state is visible */
 }
@@ -3890,7 +3893,12 @@ div#mck-rated:before {
   display: none !important;
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
-  display: flex !important;
+  display: inline-flex !important;
+  width: auto !important;
+  padding-right: 0 !important;
+}
+.layout-default #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+  display: none !important;
 }
 #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
   display: block !important;
@@ -3903,6 +3911,9 @@ div#mck-rated:before {
 }
 #mck-sidebox-content.active-tab-faqs #mck-tab-conversation {
   display: flex !important;
+}
+#mck-sidebox-content.active-tab-faqs #mck-sidebox-ft {
+  display: none !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
   /* keep FAQ search visible when category list is active */
@@ -3917,6 +3928,10 @@ div#mck-rated:before {
   display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-category-list-container {
+  display: block !important;
+}
+.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
+.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
   display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-list-container,
