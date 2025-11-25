@@ -207,14 +207,14 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    color: $text-primary-color;
+    color: var(--km-font-title-color, $text-primary-color);
     font-size: 14px;
     line-height: 1.6;
 }
 
 .km-whats-new-empty {
     text-align: center;
-    color: $text-primary-color;
+    color: var(--km-font-title-color, $text-primary-color);
 }
 
 .km-whats-new-list,
@@ -322,7 +322,7 @@
     display: inline-flex;
     margin-top: 14px;
     font-weight: 600;
-    color: var(--km-accent, #584bff);
+    color: var(--km-accent, #{$primary-color});
     text-decoration: none;
 
     &:hover {

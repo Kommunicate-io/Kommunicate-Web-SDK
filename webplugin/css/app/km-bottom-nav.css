@@ -9,6 +9,8 @@
   --km-font-title-color: #1c2043;
   --km-font-meta-color: #8d94b5;
   --km-font-body-color: #6e6e6e;
+  --km-font-body-size: 14px;
+  --km-accent-rgb: 95, 70, 248;
 }
 
 /**
@@ -180,14 +182,14 @@ $known-prefixes
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  color: #1c1c1c;
+  color: var(--km-font-title-color, #1c1c1c);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .km-whats-new-empty {
   text-align: center;
-  color: #1c1c1c;
+  color: var(--km-font-title-color, #1c1c1c);
 }
 
 .km-whats-new-list,
@@ -315,7 +317,7 @@ $known-prefixes
   display: inline-flex;
   margin-top: 14px;
   font-weight: 600;
-  color: var(--km-accent, #584bff);
+  color: var(--km-accent, #5f46f8);
   text-decoration: none;
 }
 .km-whats-new-link:hover {

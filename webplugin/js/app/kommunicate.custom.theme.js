@@ -14,7 +14,7 @@ function KmCustomTheme() {
     };
 
     _this.KmCustomImageIcon = function (widgetImageLink) {
-        return '<img src=' + widgetImageLink + ' alt="AI Agent Chat"></img>';
+        return '<img src=' + widgetImageLink + ' alt="Chat with us"></img>';
     };
 
     _this.createCustomClasses = function (classSettings) {
@@ -176,13 +176,13 @@ function KmCustomTheme() {
         }
         var rgbMatch = color.replace(/\s+/g, '').match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
         if (rgbMatch) {
-            var r = Number(rgbMatch[1]);
-            var g = Number(rgbMatch[2]);
-            var b = Number(rgbMatch[3]);
-            var inRange = [r, g, b].every(function (v) {
+            var r1 = Number(rgbMatch[1]);
+            var g1 = Number(rgbMatch[2]);
+            var b1 = Number(rgbMatch[3]);
+            var inRange = [r1, g1, b1].every(function (v) {
                 return !isNaN(v) && v >= 0 && v <= 255;
             });
-            return inRange ? [r, g, b] : null;
+            return inRange ? [r1, g1, b1] : null;
         }
         return null;
     }

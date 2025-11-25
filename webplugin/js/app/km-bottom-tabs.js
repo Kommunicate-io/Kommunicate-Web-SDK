@@ -4,7 +4,8 @@
         var kommunicateCommons = params.kommunicateCommons || w.kommunicateCommons || {};
         var documentRef = params.document || w.document;
         var whatsNewManager = params.whatsNewManager;
-        var eventHistory = params.eventHistory || w.MCK_EVENT_HISTORY || [];
+        var baseEventHistory = params.eventHistory || w.MCK_EVENT_HISTORY || [];
+        var eventHistory = Array.isArray(baseEventHistory) ? baseEventHistory.slice() : [];
 
         function getLabels() {
             return (typeof w.MCK_LABELS === 'object' && w.MCK_LABELS) || {};
@@ -329,7 +330,7 @@
                 ui.showConversationList();
                 ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
-                    eventHistory.length = 0;
+                    eventHistory.length = 0; // local copy only
                 }
 
                 if (isModernLayout && !isListView) {

@@ -1645,8 +1645,9 @@ KommunicateUI = {
     },
     handleConversationBanner: function () {
         var conversationFilterBanner = document.getElementById('mck-conversation-filter');
-        conversationFilterBanner &&
+        if (conversationFilterBanner && conversationFilterBanner.parentNode) {
             conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
+        }
     },
     handleResolvedConversationsList: function () {
         var resolvedItems = document.getElementsByClassName('mck-conversation-resolved');
