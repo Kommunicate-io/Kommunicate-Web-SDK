@@ -162,27 +162,27 @@ function KmCustomTheme() {
             if (clean.length !== 6) {
                 return null;
             }
-            var r = parseInt(clean.substring(0, 2), 16);
-            var g = parseInt(clean.substring(2, 4), 16);
-            var b = parseInt(clean.substring(4, 6), 16);
+            var rHex = parseInt(clean.substring(0, 2), 16);
+            var gHex = parseInt(clean.substring(2, 4), 16);
+            var bHex = parseInt(clean.substring(4, 6), 16);
             if (
-                [r, g, b].some(function (v) {
+                [rHex, gHex, bHex].some(function (v) {
                     return isNaN(v);
                 })
             ) {
                 return null;
             }
-            return [r, g, b];
+            return [rHex, gHex, bHex];
         }
         var rgbMatch = color.replace(/\s+/g, '').match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
         if (rgbMatch) {
-            var r1 = Number(rgbMatch[1]);
-            var g1 = Number(rgbMatch[2]);
-            var b1 = Number(rgbMatch[3]);
-            var inRange = [r1, g1, b1].every(function (v) {
+            var r = Number(rgbMatch[1]);
+            var g = Number(rgbMatch[2]);
+            var b = Number(rgbMatch[3]);
+            var inRange = [r, g, b].every(function (v) {
                 return !isNaN(v) && v >= 0 && v <= 255;
             });
-            return inRange ? [r1, g1, b1] : null;
+            return inRange ? [r, g, b] : null;
         }
         return null;
     }

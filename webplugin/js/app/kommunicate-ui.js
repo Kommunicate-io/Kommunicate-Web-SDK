@@ -409,11 +409,7 @@ KommunicateUI = {
             Kommunicate.getFaqList(data, categoryName);
         });
 
-        document.addEventListener('click', function (event) {
-            var backButton = event.target && event.target.closest('.km-faq-back-btn');
-            if (!backButton) {
-                return;
-            }
+        $applozic(d).on('click', '.km-faq-back-btn', function (event) {
             var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
             var sideboxContent = document.getElementById('mck-sidebox-content');
             var isInFaqCategory =
