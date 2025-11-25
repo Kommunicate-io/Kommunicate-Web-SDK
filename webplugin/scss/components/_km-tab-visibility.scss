@@ -52,6 +52,10 @@
             display: flex !important;
         }
 
+        .km-faq-back-btn-wrapper {
+            display: none !important;
+        }
+
         &.active-subsection-conversation-list {
             #mck-tab-conversation {
                 display: flex !important;
@@ -86,7 +90,9 @@
                 display: none !important;
             }
             .mck-back-btn-container {
-                display: flex !important;
+                display: inline-flex !important;
+                width: auto !important;
+                padding-right: 0 !important;
             }
         }
 

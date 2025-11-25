@@ -5805,11 +5805,19 @@ div#mck-waiting-queue {
     display: flex;
     align-items: center;
 }
+#mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+    display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+    display: inline-flex !important;
+    width: auto !important;
+    padding-right: 0 !important;
+}
 .km-conversation-header-title-container {
     width: 65%;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 0;
 }
 .km-conversation-header-title-container > .mck-row {
     flex: 1 1 auto;
