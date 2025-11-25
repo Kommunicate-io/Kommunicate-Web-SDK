@@ -919,14 +919,12 @@ KommunicateUI = {
         }
     },
     showHeader: function () {
-        console.log('inside showHeader');
         setActiveSubsectionState('conversation-individual');
         KommunicateUI.resetConversationListTitle();
         $applozic('#mck-msg-new').attr('disabled', false);
         KommunicateUI.isConversationListView = false;
     },
     showConversationList: function () {
-        console.log('inside showConversationList');
         setActiveSubsectionState('conversation-list');
         kommunicateCommons.hide('.km-option-faq');
         topBarManagerRef.showConversationHeader();
