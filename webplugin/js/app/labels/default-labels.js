@@ -479,11 +479,15 @@ class KMLabel {
             if (!node) {
                 return;
             }
+            if (node.dataset && node.dataset.labelSet === '1') {
+                return;
+            }
             var value = resolveLabel(appendHtmlBindings[id]);
             if (value === null || typeof value === 'undefined') {
                 return;
             }
-            node.innerHTML += value;
+            node.insertAdjacentHTML('beforeend', value);
+            node.dataset && (node.dataset.labelSet = '1');
         });
 
         var kmWelcomeSearch = document.getElementById('km-empty-faq-search');
