@@ -79,6 +79,9 @@
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: flex !important;
 }
+.layout-default #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
   display: block !important;
 }

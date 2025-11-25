@@ -89,6 +89,12 @@
                 display: flex !important;
             }
         }
+
+        .layout-default & {
+            .km-faq-back-btn-wrapper {
+                display: none !important;
+            }
+        }
     }
 
     &.active-tab-whats-new {
