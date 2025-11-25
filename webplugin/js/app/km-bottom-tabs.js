@@ -446,6 +446,7 @@
             showEmptyStateTab: showNoConversationsTab,
             hideEmptyStateTab: hideNoConversationsTab,
             isConversationTabActive: isConversationTabActive,
+            setActiveTab: updateActiveTabClass,
         };
     }
 

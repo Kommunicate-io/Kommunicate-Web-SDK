@@ -107,6 +107,9 @@
         #mck-tab-conversation {
             display: flex !important;
         }
+        #mck-sidebox-ft {
+            display: none !important;
+        }
 
         &.active-subsection-faq-category {
             #km-faqdiv {
@@ -121,6 +124,12 @@
             }
             .km-faq-category-list-container {
                 display: block !important;
+            }
+            .layout-default & {
+                .km-faq-back-btn-wrapper,
+                #km-faq-back-btn {
+                    display: block !important;
+                }
             }
             #km-faq-list-container,
             #km-faqanswer {

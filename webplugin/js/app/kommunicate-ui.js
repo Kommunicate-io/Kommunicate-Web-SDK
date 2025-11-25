@@ -414,6 +414,25 @@ KommunicateUI = {
             if (!backButton) {
                 return;
             }
+            var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
+            var sideboxContent = document.getElementById('mck-sidebox-content');
+            var isInFaqCategory =
+                sideboxContent &&
+                sideboxContent.classList.contains('active-tab-faqs') &&
+                sideboxContent.classList.contains('active-subsection-faq-category');
+
+            if (!isModernLayout && isInFaqCategory) {
+                KommunicateUI.isConversationListView = false;
+                var bottomTabsManager = getBottomTabsManager();
+                if (bottomTabsManager && typeof bottomTabsManager.setActiveTab === 'function') {
+                    bottomTabsManager.setActiveTab('conversations');
+                } else if (sideboxContent && sideboxContent.classList) {
+                    sideboxContent.classList.remove('active-tab-faqs');
+                    sideboxContent.classList.add('active-tab-conversations');
+                }
+                setActiveSubsectionState('conversation-individual');
+                return;
+            }
             KommunicateUI.showFaqCategoryScreen();
         });
 

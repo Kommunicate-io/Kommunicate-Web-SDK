@@ -91,6 +91,9 @@
 #mck-sidebox-content.active-tab-faqs #mck-tab-conversation {
   display: flex !important;
 }
+#mck-sidebox-content.active-tab-faqs #mck-sidebox-ft {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
   /* keep FAQ search visible when category list is active */
 }
@@ -104,6 +107,10 @@
   display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-category-list-container {
+  display: block !important;
+}
+.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
+.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
   display: block !important;
 }
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-list-container,
