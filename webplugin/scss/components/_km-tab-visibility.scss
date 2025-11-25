@@ -211,6 +211,10 @@
 }
 
 .layout-default {
+    #mck-msg-new {
+        background: var(--km-accent, #5f46f8) !important;
+        color: var(--km-accent-contrast, #ffffff) !important;
+    }
     #km-whats-new-placeholder,
     .km-whats-new-list,
     .km-whats-new-empty {

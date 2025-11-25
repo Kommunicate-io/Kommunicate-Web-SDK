@@ -175,6 +175,10 @@
   display: block !important;
 }
 
+.layout-default #mck-msg-new {
+  background: var(--km-accent, #5f46f8) !important;
+  color: var(--km-accent-contrast, #ffffff) !important;
+}
 .layout-default #km-whats-new-placeholder,
 .layout-default .km-whats-new-list,
 .layout-default .km-whats-new-empty {
