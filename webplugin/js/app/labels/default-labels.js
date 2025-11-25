@@ -7,7 +7,7 @@ class KMLabel {
             'modern.nav.faqs': 'FAQs',
             'modern.nav.whatsnew': 'News',
             'modern.nav.empty': 'Welcome',
-            'modern.nav.collapse': 'Hide',
+            'modern.nav.collapse': 'Minimize',
             'modern.whatsnew.staytuned': 'Stay tuned for updates.',
             'modern.whatsnew.readmore': 'Learn more',
             'start.new': 'Start New Conversation',
