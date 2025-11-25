@@ -27,6 +27,9 @@
 }
 
 /* Tab and subsection visibility helpers */
+#mck-sidebox-content {
+  /* Ensure default layout does not show the individual header/back/avatar when on the list view */
+}
 #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
   display: none !important;
 }
@@ -72,6 +75,9 @@
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
   display: none !important;
+}
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+  display: flex !important;
 }
 #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
   display: block !important;
@@ -154,4 +160,28 @@
 }
 #mck-sidebox-content.active-tab-no-conversations #mck-tab-conversation {
   display: flex !important;
+}
+.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
+  display: none !important;
+}
+.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
+  display: none !important;
+}
+.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
+  display: flex !important;
+}
+.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
+  display: block !important;
+}
+
+.layout-default #km-whats-new-placeholder,
+.layout-default .km-whats-new-list,
+.layout-default .km-whats-new-empty {
+  display: none !important;
+}
+.layout-default .km-empty-conversation-container,
+.layout-default .km-modern-empty-state,
+.layout-default .km-conversations-empty {
+  display: none !important;
 }

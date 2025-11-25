@@ -217,6 +217,24 @@
     }
 }
 
+.km-empty-conversation-container,
+.km-modern-empty-state,
+.km-conversations-empty {
+    display: none;
+}
+
+.layout-modern {
+    .km-empty-conversation-container {
+        display: flex;
+    }
+    .km-modern-empty-state {
+        display: block;
+    }
+    .km-conversations-empty {
+        display: flex;
+    }
+}
+
 .km-modern-empty-state {
     width: 100%;
 }
@@ -534,6 +552,14 @@
 
     &__cta {
         @extend %km-primary-cta;
+    }
+}
+
+.layout-default {
+    .km-empty-conversation-container,
+    .km-modern-empty-state,
+    .km-conversations-empty {
+        display: none !important;
     }
 }
 

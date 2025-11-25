@@ -85,6 +85,9 @@
             .km-bottom-tab-wrapper {
                 display: none !important;
             }
+            .mck-back-btn-container {
+                display: flex !important;
+            }
         }
     }
 
@@ -187,5 +190,35 @@
         #mck-tab-conversation {
             display: flex !important;
         }
+    }
+
+    /* Ensure default layout does not show the individual header/back/avatar when on the list view */
+    .layout-default &.active-tab-conversations:not(.active-subsection-conversation-individual) {
+        #mck-tab-individual {
+            display: none !important;
+        }
+        .mck-name-status-container,
+        .mck-back-btn-container {
+            display: none !important;
+        }
+        #mck-tab-conversation {
+            display: flex !important;
+        }
+        #mck-contacts-content {
+            display: block !important;
+        }
+    }
+}
+
+.layout-default {
+    #km-whats-new-placeholder,
+    .km-whats-new-list,
+    .km-whats-new-empty {
+        display: none !important;
+    }
+    .km-empty-conversation-container,
+    .km-modern-empty-state,
+    .km-conversations-empty {
+        display: none !important;
     }
 }

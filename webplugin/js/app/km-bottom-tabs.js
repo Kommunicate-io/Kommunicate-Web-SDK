@@ -91,11 +91,11 @@
             if (!documentRef) {
                 return;
             }
+            var normalizedSubsection = normalizeSubsection(subsection);
             var container = documentRef.getElementById('mck-sidebox-content');
             if (!container || !container.classList) {
                 return;
             }
-            var normalizedSubsection = normalizeSubsection(subsection);
             Array.prototype.slice
                 .call(container.classList)
                 .filter(function (className) {
@@ -306,26 +306,33 @@
             setBottomTabState(resolvedTabType);
             showBottomTabs();
             updateActiveTabClass(resolvedTabType);
-            updateActiveSubsectionClass(getDefaultSubsectionForTab(resolvedTabType));
 
-            var isModernLayout = isModernLayoutEnabled();
             var ui = getKommunicateUI();
-            var hasActiveConversation = isModernLayout && !!activeConversationId;
+            var isModernLayout = isModernLayoutEnabled();
+            var isListView =
+                ui && typeof ui.isConversationListView === 'boolean'
+                    ? ui.isConversationListView
+                    : !isModernLayout; // default layout starts in list view
+            var hasActiveConversation = !!activeConversationId;
+
+            var subsectionToApply = getDefaultSubsectionForTab(resolvedTabType);
+            if (resolvedTabType === 'conversations') {
+                subsectionToApply =
+                    hasActiveConversation && !isListView
+                        ? 'conversation-individual'
+                        : 'conversation-list';
+            }
+            updateActiveSubsectionClass(subsectionToApply);
+
             if (resolvedTabType === 'conversations') {
                 // Preserve individual view when a conversation is active.
-                if (hasActiveConversation) {
-                    updateActiveSubsectionClass('conversation-individual');
-                } else {
-                    updateActiveSubsectionClass('conversation-list');
-                }
-
                 ui.showConversationList();
                 ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0;
                 }
 
-                if (isModernLayout) {
+                if (isModernLayout && !isListView) {
                     setTimeout(function () {
                         var latestMessageInner =
                             documentRef &&
@@ -411,10 +418,15 @@
                     ui.setHasConversationHistory && ui.setHasConversationHistory(true);
                     initialTab = 'conversations';
                 } else if (ui && ui.hasConversationHistory === false) {
-                    // When there is no conversation history, always start with the welcome tab
-                    // even if a stale lastTab exists from a previous session.
-                    initialTab = 'no-conversations';
-                    ui.toggleConversationsEmptyState && ui.toggleConversationsEmptyState(true);
+                    if (!isModernLayoutEnabled()) {
+                        // In default layout, keep the list view and skip the welcome tab to avoid flicker.
+                        initialTab = 'conversations';
+                        ui.toggleConversationsEmptyState && ui.toggleConversationsEmptyState(false);
+                    } else {
+                        // Modern layout shows the welcome tab when there's no history.
+                        initialTab = 'no-conversations';
+                        ui.toggleConversationsEmptyState && ui.toggleConversationsEmptyState(true);
+                    }
                 }
                 setBottomTabState(initialTab);
                 updateActiveTabClass(initialTab);

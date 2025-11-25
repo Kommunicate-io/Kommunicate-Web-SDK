@@ -17,6 +17,13 @@
 .layout-modern .mck-sidebox.fade.in.popup-enabled {
     height: auto;
 }
+.layout-default .km-empty-conversation-container,
+.layout-default .km-modern-empty-state,
+.layout-default .km-conversations-empty,
+.layout-default #km-widget-options,
+.layout-default .km-bottom-tab-wrapper {
+    display: none !important;
+}
 
 /**
 
@@ -1033,6 +1040,24 @@ input[type='number']::-webkit-outer-spin-button {
     .km-empty-conversation-container {
         padding: 14px 14px 22px;
     }
+}
+
+.km-empty-conversation-container,
+.km-modern-empty-state,
+.km-conversations-empty {
+    display: none;
+}
+
+.layout-modern .km-empty-conversation-container {
+    display: flex;
+}
+
+.layout-modern .km-modern-empty-state {
+    display: block;
+}
+
+.layout-modern .km-conversations-empty {
+    display: flex;
 }
 
 .km-modern-empty-state {

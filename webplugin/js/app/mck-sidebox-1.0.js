@@ -4096,8 +4096,8 @@ const firstVisibleMsg = {
 
                         if (isModernLayout) {
                             bottomTabManager.showEmptyStateTab();
-                            callback();
                         } else {
+                            console.log('No conversation found, creating a new one.');
                             var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                             mckMessageService.createNewConversation(
                                 conversationDetail,

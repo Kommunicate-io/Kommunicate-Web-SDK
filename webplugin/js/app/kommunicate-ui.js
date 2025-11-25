@@ -870,9 +870,16 @@ KommunicateUI = {
                 KommunicateUI.isConversationListView = false;
                 setActiveSubsectionState('conversation-individual');
             }
-        }
-        if (!isModernLayout && shouldShowChatHeader) {
-            setActiveSubsectionState('conversation-individual');
+        } else {
+            // Default layout: respect the current view flag; default to list if unset.
+            var showListView =
+                typeof KommunicateUI.isConversationListView === 'boolean'
+                    ? KommunicateUI.isConversationListView
+                    : true;
+            KommunicateUI.isConversationListView = showListView;
+            setActiveSubsectionState(
+                showListView ? 'conversation-list' : 'conversation-individual'
+            );
         }
 
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
@@ -888,6 +895,11 @@ KommunicateUI = {
             );
             $applozic('#mck-tab-individual .mck-name-status-container.mck-box-title').removeClass(
                 'padding'
+            );
+        }
+        if (!KommunicateUI.isConversationListView) {
+            $applozic('#mck-tab-individual .mck-tab-link.mck-back-btn-container').removeClass(
+                'n-vis'
             );
         }
     },
