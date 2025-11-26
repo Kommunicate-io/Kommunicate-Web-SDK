@@ -3,6 +3,8 @@ options:
 
 substitutions:
   _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
+  _BUILD_BRANCH: "${BRANCH_NAME}"  # Expose the trigger branch to the build
+  _BRANCH: "${BRANCH_NAME}"  # Backward compatibility for branch detection
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 

@@ -21,12 +21,12 @@ const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
 const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
 
 const resolveBranch = () => {
-    var envBranch =
+    const envBranch =
+        process.env._BUILD_BRANCH ||
         process.env._BRANCH ||
         process.env.BRANCH ||
-        process.env.AWS_BRANCH ||
-        process.env.BRANCH_NAME ||
-        process.env.FIREBASE_CI_BRANCH;
+        process.env.GITHUB_HEAD_REF ||
+        process.env.GITHUB_REF_NAME;
     if (envBranch) return envBranch;
     try {
         return execSync('git rev-parse --abbrev-ref HEAD', {

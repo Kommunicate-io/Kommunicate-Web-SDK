@@ -177,11 +177,11 @@ exports.getDynamicLoadFiles = function (dir) {
 function getCurrentBranch() {
     try {
         const envBranch =
+            process.env._BUILD_BRANCH ||
             process.env._BRANCH ||
             process.env.BRANCH ||
-            process.env.AWS_BRANCH ||
-            process.env.BRANCH_NAME ||
-            process.env.FIREBASE_CI_BRANCH;
+            process.env.GITHUB_HEAD_REF ||
+            process.env.GITHUB_REF_NAME;
         if (envBranch) {
             return envBranch;
         }
