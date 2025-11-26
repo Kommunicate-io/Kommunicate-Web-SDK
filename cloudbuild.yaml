@@ -21,9 +21,12 @@ steps:
         echo Installing source NPM dependencies...
         npm install
 
-  # Step 2: Conditionally run builds based on _BUILD_ENV
+ # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
     entrypoint: 'sh'
+    env:
+      - '_BRANCH=${_BRANCH}'
+      - '_BUILD_ENV=${_BUILD_ENV}'
     args:
       - '-c'
       - |
