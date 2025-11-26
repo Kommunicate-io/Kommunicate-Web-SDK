@@ -204,3 +204,10 @@
 .layout-default .km-conversations-empty {
   display: none !important;
 }
+
+.layout-modern #mck-sidebox-content .mck-running-on {
+  display: none !important;
+}
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on {
+  display: block !important;
+}

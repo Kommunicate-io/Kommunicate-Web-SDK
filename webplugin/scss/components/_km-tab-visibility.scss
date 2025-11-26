@@ -247,3 +247,17 @@
         display: none !important;
     }
 }
+
+.layout-modern {
+    #mck-sidebox-content {
+        .mck-running-on {
+            display: none !important;
+        }
+
+        &.active-tab-conversations.active-subsection-conversation-individual {
+            .mck-running-on {
+                display: block !important;
+            }
+        }
+    }
+}
