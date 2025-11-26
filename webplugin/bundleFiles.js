@@ -2,6 +2,10 @@ const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 const { resolveBranch } = require('../server/utils/branch');
+const config = require('../server/config/config-env');
+const ENV_ID =
+    (config && typeof config.getEnvId === 'function' && config.getEnvId()) || 'development';
+const IS_PROD_BUILD = ENV_ID && ENV_ID.startsWith('prod');
 
 exports.version = version;
 exports.KM_RELEASE_BRANCH = resolveBranch();
@@ -96,7 +100,7 @@ exports.PLUGIN_BUNDLE_FILES = [
     path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
 ];
 
-exports.THIRD_PARTY_FILE_INFO = [
+const THIRD_PARTY_FILE_INFO = [
     {
         source: path.join(__dirname, 'js/app/zendesk-chat-service.js'),
         outputName: `zendesk-chat-service-${version}.min.js`, // code is our and it can be changed that's why added the versioning
@@ -138,20 +142,23 @@ exports.THIRD_PARTY_FILE_INFO = [
         type: 'js',
     },
     {
-        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
-        outputName: `sentry-${version}.min.js`,
-        type: 'js',
-        shouldMinify: true,
-    },
-    {
         source: path.join(__dirname, 'lib/js/marked.min.js'),
         outputName: `marked.min.js`,
         type: 'js',
     },
 ];
+if (!IS_PROD_BUILD) {
+    THIRD_PARTY_FILE_INFO.push({
+        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
+        outputName: `sentry-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    });
+}
+exports.THIRD_PARTY_FILE_INFO = THIRD_PARTY_FILE_INFO;
 
 exports.getDynamicLoadFiles = function (dir) {
-    return JSON.stringify({
+    const payload = {
         zendesk: {
             js: `${dir}/zendesk-chat-service-${version}.min.js`,
         },
@@ -166,11 +173,16 @@ exports.getDynamicLoadFiles = function (dir) {
         crypto: {
             js: `${dir}/crypto.min.js`,
         },
-        sentry: {
-            js: `${dir}/sentry-${version}.min.js`,
-        },
         voiceChat: {
             js: `${dir}/voice-chat-${version}.min.js`,
         },
-    });
+    };
+
+    if (!IS_PROD_BUILD) {
+        payload.sentry = {
+            js: `${dir}/sentry-${version}.min.js`,
+        };
+    }
+
+    return JSON.stringify(payload);
 };

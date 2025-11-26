@@ -15,6 +15,7 @@ exports.getPlugin = async (req, res) => {
         : await generatePluginFile(req, res);
 
     res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('Cache-Control', 'public, max-age=900');
     res.send(data);
     console.log('plugin code sent successfully');
 };

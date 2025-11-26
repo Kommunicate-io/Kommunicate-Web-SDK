@@ -29,7 +29,20 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300"
+          "value": "public, max-age=900"
+        }
+      ]
+    },
+    {
+      "source": "kommunicate-widget-2.0.min.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=900"
         }
       ]
     },
@@ -38,7 +51,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300"
+          "value": "public, max-age=600"
         }
       ]
     },

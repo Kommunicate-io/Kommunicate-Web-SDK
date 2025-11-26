@@ -122,7 +122,9 @@ function removeKommunicateScripts() {
         kmCustomElements.iframe.id,
         kmCustomElements.iframe.styleSheetId,
     ]);
-    var originFile = document.querySelector("script[src*='kommunicate.app']");
+    var originFile = document.querySelector(
+        "script[src*='kommunicate.app'], script[src*='kommunicate-widget-2.0.min.js']"
+    );
     originFile && originFile.parentNode.removeChild(originFile);
 }
 

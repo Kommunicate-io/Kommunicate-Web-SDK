@@ -340,15 +340,27 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
                 if (env && pluginVersions[i] == 'v2') {
-                    if (!fs.existsSync(`${buildDir}/v2`)) {
-                        fs.mkdirSync(`${buildDir}/v2`);
+                    const versionDir = `${buildDir}/v2`;
+                    if (!fs.existsSync(versionDir)) {
+                        fs.mkdirSync(versionDir);
                     }
-                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
+                    fs.writeFile(path.join(versionDir, 'kommunicate.app'), data, function (err) {
                         if (err) {
                             console.log('kommunicate.app generation error');
                         }
                         console.log('kommunicate.app generated');
                     });
+                    // root-level alias for new loader without /v2 prefix
+                    fs.writeFile(
+                        path.join(buildDir, 'kommunicate-widget-2.0.min.js'),
+                        data,
+                        function (err) {
+                            if (err) {
+                                console.log('kommunicate-widget-2.0.min.js generation error');
+                            }
+                            console.log('kommunicate-widget-2.0.min.js generated at root');
+                        }
+                    );
                 }
             }
             console.log('plugin files generated for all versions successfully');

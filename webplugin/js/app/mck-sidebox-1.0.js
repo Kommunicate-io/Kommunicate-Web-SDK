@@ -8968,31 +8968,49 @@ const firstVisibleMsg = {
                 //     autosuggestions.length && mckMessageLayout.populateAutoSuggest({source:autosuggestions});
                 // }
                 if (msg.contentType === 23) {
+                    const buildTemplateButton = function (title) {
+                        return (
+                            "<div class='km-inline-template__button-wrap'>" +
+                            "<button type='button' class='km-inline-template__button'>" +
+                            title +
+                            '</button></div>'
+                        );
+                    };
+
+                    const buildTemplateInputRow = function (title, withIds) {
+                        const inputIdAttr = withIds ? " id='input-for-email'" : '';
+                        const buttonIdAttr = withIds ? " id='send-email-button'" : '';
+                        return (
+                            "<div class='km-inline-template__input-row'>" +
+                            "<input type='text' class='km-inline-template__input'" +
+                            inputIdAttr +
+                            " placeholder='Enter your email...'/>" +
+                            "<button type='button' class='km-inline-template__submit'" +
+                            buttonIdAttr +
+                            '>' +
+                            title +
+                            '</button></div>'
+                        );
+                    };
                     if (msg.metadata.msg_type === 'BUTTON') {
                         var payload = [];
                         if (msg.metadata.payload) {
                             payload = $applozic.parseJSON(msg.metadata.payload);
+                            var elem = '';
                             if (!payload[0].hidden) {
-                                var elem =
-                                    "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" +
-                                    payload[0].title +
-                                    '</button></div>';
+                                elem = buildTemplateButton(payload[0].title);
                             }
                             if (payload.length > 1) {
                                 for (var i = 1; i < payload.length; i++) {
                                     if (!payload[i].hidden) {
-                                        elem +=
-                                            "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" +
-                                            payload[i].title +
-                                            '</button></div>';
+                                        elem += buildTemplateButton(payload[i].title);
                                     }
                                 }
                             }
                             $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem);
                         } else {
                             console.log('msg.contentType === 23 && metadata.msg_type === BUTTON');
-                            var elem =
-                                "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>Button</button></div>";
+                            var elem = buildTemplateButton('Button');
                             $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem);
                         }
                     }
@@ -9002,10 +9020,7 @@ const firstVisibleMsg = {
                         !(msg.metadata.hidden === 'false' ? false : true)
                     ) {
                         console.log('msg.contentType === 23 && metadata.msg_type === INPUT');
-                        var elem =
-                            "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>";
-                        elem +=
-                            "<button id='send-email-button' style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>";
+                        var elem = buildTemplateInputRow('Submit', true);
                         $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem);
                         $applozic('#send-email-button').click(function () {
                             if (document.getElementById('input-for-email').value.length > 1) {
@@ -9025,17 +9040,9 @@ const firstVisibleMsg = {
                             var elem = '';
                             if (!payload[0].hidden) {
                                 if (payload[0].type.toLowerCase() === 'button') {
-                                    elem =
-                                        "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" +
-                                        payload[0].title +
-                                        '</button></div>';
+                                    elem = buildTemplateButton(payload[0].title);
                                 } else if (payload[0].type.toLowerCase() === 'input') {
-                                    elem =
-                                        "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>";
-                                    elem +=
-                                        "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" +
-                                        payload[0].title +
-                                        '</button></div>';
+                                    elem = buildTemplateInputRow(payload[0].title);
                                 }
                             }
 
@@ -9043,17 +9050,9 @@ const firstVisibleMsg = {
                                 for (var i = 1; i < payload.length; i++) {
                                     if (!payload[i].hidden) {
                                         if (payload[i].type.toLowerCase() === 'button') {
-                                            elem +=
-                                                "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" +
-                                                payload[i].title +
-                                                '</button></div>';
+                                            elem += buildTemplateButton(payload[i].title);
                                         } else if (payload[i].type.toLowerCase() === 'input') {
-                                            elem +=
-                                                "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>";
-                                            elem +=
-                                                "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" +
-                                                payload[i].title +
-                                                '</button></div>';
+                                            elem += buildTemplateInputRow(payload[i].title);
                                         }
                                     }
                                 }
