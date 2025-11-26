@@ -1,9 +1,10 @@
 const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
-exports.version = version;
-exports.KM_RELEASE_BRANCH = getCurrentBranch();
+const { resolveBranch } = require('../server/utils/branch');
 
+exports.version = version;
+exports.KM_RELEASE_BRANCH = resolveBranch();
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
     path.resolve(__dirname, 'js/app/storage/cookie-service.js'),
@@ -173,31 +174,3 @@ exports.getDynamicLoadFiles = function (dir) {
         },
     });
 };
-
-function getCurrentBranch() {
-    try {
-        const envBranch =
-            process.env._BUILD_BRANCH ||
-            process.env._BRANCH ||
-            process.env.BRANCH ||
-            process.env.GITHUB_HEAD_REF ||
-            process.env.GITHUB_REF_NAME;
-        if (envBranch) {
-            return envBranch;
-        }
-
-        const branch = require('child_process')
-            .execSync('git rev-parse --abbrev-ref HEAD', {
-                cwd: __dirname,
-                encoding: 'utf8',
-            })
-            .toString()
-            .trim();
-
-        return branch;
-    } catch (error) {
-        console.error('Error getting current branch:', error);
-
-        return version; // Fallback if there's an error
-    }
-}

@@ -2,8 +2,8 @@ const app = require('./../app');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { execSync } = require('child_process');
 const webpluginController = require('../../webplugin/controller');
+const { resolveBranch } = require('../utils/branch');
 //router declaration
 const home = express.Router();
 
@@ -19,27 +19,6 @@ home.get('/', function (req, res) {
 
 const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
 const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
-
-const resolveBranch = () => {
-    const envBranch =
-        process.env._BUILD_BRANCH ||
-        process.env._BRANCH ||
-        process.env.BRANCH ||
-        process.env.GITHUB_HEAD_REF ||
-        process.env.GITHUB_REF_NAME;
-    if (envBranch) return envBranch;
-    try {
-        return execSync('git rev-parse --abbrev-ref HEAD', {
-            cwd: path.join(__dirname, '..', '..'),
-            encoding: 'utf8',
-            timeout: 2000,
-        })
-            .toString()
-            .trim();
-    } catch (e) {
-        return 'unknown-branch';
-    }
-};
 
 const loadIndexTemplate = () => {
     const indexPath = fs.existsSync(buildIndexPath) ? buildIndexPath : templateIndexPath;
