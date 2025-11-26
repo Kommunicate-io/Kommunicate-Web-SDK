@@ -1,0 +1,109 @@
+// Conversation tab visibility states
+%km-hide-conversation-chrome {
+    .mck-conversation {
+        display: none !important;
+    }
+
+    .mck-agent-image-container,
+    .mck-agent-status-indicator,
+    #mck-agent-status-text,
+    .mck-typing-box,
+    #mck-tab-status {
+        display: none !important;
+    }
+}
+
+%km-tab-conversation-base {
+    .mck-conversation {
+        display: block !important;
+    }
+
+    #mck-tab-individual {
+        display: flex !important;
+    }
+
+    .km-faq-back-btn-wrapper {
+        display: none !important;
+    }
+}
+
+%km-conversation-list {
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+    #mck-contacts-content {
+        display: block !important;
+    }
+    #km-widget-options {
+        display: none !important;
+    }
+    #mck-tab-individual {
+        display: none !important;
+    }
+
+    /* Hide start-new button when conversations empty state is visible */
+    .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
+        display: none !important;
+    }
+}
+
+%km-conversation-individual {
+    #km-widget-options {
+        display: flex !important;
+    }
+    #mck-tab-conversation {
+        display: none !important;
+    }
+    #mck-contacts-content {
+        display: none !important;
+    }
+    .km-bottom-tab-wrapper {
+        display: none !important;
+    }
+    .mck-back-btn-container {
+        display: inline-flex !important;
+        width: auto !important;
+        padding-right: 0 !important;
+    }
+}
+
+%km-layout-default-conversation-list {
+    #mck-tab-individual {
+        display: none !important;
+    }
+    .mck-name-status-container,
+    .mck-back-btn-container {
+        display: none !important;
+    }
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+    #mck-contacts-content {
+        display: block !important;
+    }
+}
+
+%km-layout-default-hide-faq-back {
+    .km-faq-back-btn-wrapper {
+        display: none !important;
+    }
+}
+
+@include apply-state($km-non-conversation-selectors, '%km-hide-conversation-chrome');
+@include apply-state($km-tab-conversation-selectors, '%km-tab-conversation-base');
+@include apply-state($km-subsection-conversation-list-selectors, '%km-conversation-list');
+@include apply-state(
+    $km-subsection-conversation-individual-selectors,
+    '%km-conversation-individual'
+);
+
+@include apply-scoped-state(
+    '.layout-default',
+    $km-layout-default-conversation-list-selectors,
+    '%km-layout-default-conversation-list'
+);
+@include apply-scoped-state(
+    '.layout-default',
+    $km-tab-conversation-selectors,
+    '%km-layout-default-hide-faq-back'
+);

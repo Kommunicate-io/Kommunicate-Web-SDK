@@ -3839,168 +3839,190 @@ div#mck-rated:before {
   display: none !important;
 }
 
-/* Tab and subsection visibility helpers */
-#mck-sidebox-content {
-  /* Ensure default layout does not show the individual header/back/avatar when on the list view */
-}
-#mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
+#mck-sidebox-content.is-not-tab-conversations .mck-conversation, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
   display: none !important;
 }
-#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+#mck-sidebox-content.is-not-tab-conversations .mck-agent-image-container, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+#mck-sidebox-content.is-not-tab-conversations .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
+#mck-sidebox-content.is-not-tab-conversations #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
+#mck-sidebox-content.is-not-tab-conversations .mck-typing-box,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
+#mck-sidebox-content.is-not-tab-conversations #mck-tab-status,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations .mck-conversation {
+
+#mck-sidebox-content.is-tab-conversations .mck-conversation, #mck-sidebox-content.active-tab-conversations .mck-conversation {
   display: block !important;
 }
-#mck-sidebox-content.active-tab-conversations #mck-tab-individual {
+#mck-sidebox-content.is-tab-conversations #mck-tab-individual, #mck-sidebox-content.active-tab-conversations #mck-tab-individual {
   display: flex !important;
 }
-#mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+#mck-sidebox-content.is-tab-conversations .km-faq-back-btn-wrapper, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list {
+
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list {
   /* Hide start-new button when conversations empty state is visible */
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-conversation {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-conversation {
   display: flex !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-contacts-content {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-contacts-content {
   display: block !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
+
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual #km-widget-options, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
   display: flex !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+#mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .mck-back-btn-container, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: inline-flex !important;
   width: auto !important;
   padding-right: 0 !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+
+.layout-default #mck-sidebox-content.is-tab-conversations:not(.is-subsection-conversation-individual) #mck-tab-individual, .layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
   display: none !important;
 }
-#mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-whats-new #mck-tab-conversation {
-  display: flex !important;
-}
-#mck-sidebox-content.active-tab-faqs #faq-common {
-  display: flex !important;
-}
-#mck-sidebox-content.active-tab-faqs #mck-tab-conversation {
-  display: flex !important;
-}
-#mck-sidebox-content.active-tab-faqs #mck-sidebox-ft {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
-  /* keep FAQ search visible when category list is active */
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqdiv {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-contact-search-input-box {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-contact-input-container {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-category-list-container {
-  display: block !important;
-}
-.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
-.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-list-container,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqanswer {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqdiv {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-list-container {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-category-list-container {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqanswer {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-contact-input-container {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-back-btn-wrapper,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqanswer {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqdiv {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-contact-search-input-box,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-contact-input-container {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-faq-back-btn-wrapper,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faq-back-btn {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-contact-search-input-box,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-contact-input-container {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faqdiv,
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faq-list-container {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-no-results-found-container {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-no-conversations #mck-no-conversations {
-  display: block !important;
-}
-#mck-sidebox-content.active-tab-no-conversations #mck-tab-conversation {
-  display: flex !important;
-}
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
-  display: none !important;
-}
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-default #mck-sidebox-content.is-tab-conversations:not(.is-subsection-conversation-individual) .mck-name-status-container, .layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-default #mck-sidebox-content.is-tab-conversations:not(.is-subsection-conversation-individual) .mck-back-btn-container,
 .layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
   display: none !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
+.layout-default #mck-sidebox-content.is-tab-conversations:not(.is-subsection-conversation-individual) #mck-tab-conversation, .layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
   display: flex !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
+.layout-default #mck-sidebox-content.is-tab-conversations:not(.is-subsection-conversation-individual) #mck-contacts-content, .layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
   display: block !important;
+}
+
+.layout-default #mck-sidebox-content.is-tab-conversations .km-faq-back-btn-wrapper, .layout-default #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+  display: none !important;
+}
+
+#mck-sidebox-content.is-tab-faqs #faq-common, #mck-sidebox-content.active-tab-faqs #faq-common {
+  display: flex !important;
+}
+#mck-sidebox-content.is-tab-faqs #mck-tab-conversation, #mck-sidebox-content.active-tab-faqs #mck-tab-conversation {
+  display: flex !important;
+}
+#mck-sidebox-content.is-tab-faqs #mck-sidebox-ft, #mck-sidebox-content.active-tab-faqs #mck-sidebox-ft {
+  display: none !important;
+}
+
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
+  /* keep FAQ search visible when category list is active */
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category #km-faqdiv, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqdiv {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category #km-contact-search-input-box, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-contact-search-input-box {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category .km-contact-input-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-contact-input-container {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category .km-faq-category-list-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-category-list-container {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category #km-faq-list-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-list-container,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-category #km-faqanswer,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqanswer {
+  display: none !important;
+}
+
+.layout-default #mck-sidebox-content.is-tab-faqs.is-subsection-faq-category .km-faq-back-btn-wrapper, .layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
+.layout-default #mck-sidebox-content.is-tab-faqs.is-subsection-faq-category #km-faq-back-btn,
+.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
+  display: block !important;
+}
+
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list #km-faqdiv, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqdiv {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list #km-faq-list-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-list-container {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list .km-faq-category-list-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-category-list-container {
+  display: none !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list #km-faqanswer, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faqanswer {
+  display: none !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list #km-contact-search-input-box, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-contact-search-input-box,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list .km-contact-input-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-contact-input-container {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list .km-faq-back-btn-wrapper, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-back-btn-wrapper,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-list #km-faq-back-btn,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn {
+  display: block !important;
+}
+
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article #km-faqanswer, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqanswer {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article #km-faqdiv, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqdiv {
+  display: none !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article #km-contact-search-input-box, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-contact-search-input-box,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article .km-contact-input-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-contact-input-container {
+  display: none !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article .km-faq-back-btn-wrapper, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article .km-faq-back-btn-wrapper,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-article #km-faq-back-btn,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faq-back-btn {
+  display: block !important;
+}
+
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-no-results #km-contact-search-input-box, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-contact-search-input-box,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-no-results .km-contact-input-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-contact-input-container {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-no-results #km-faqdiv, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faqdiv,
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-no-results #km-faq-list-container,
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results #km-faq-list-container {
+  display: none !important;
+}
+#mck-sidebox-content.is-tab-faqs.is-subsection-faq-no-results .km-no-results-found-container, #mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results .km-no-results-found-container {
+  display: block !important;
+}
+
+#mck-sidebox-content.is-tab-whats-new #km-whats-new-placeholder, #mck-sidebox-content.active-tab-whats-new #km-whats-new-placeholder {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-whats-new #mck-tab-conversation, #mck-sidebox-content.active-tab-whats-new #mck-tab-conversation {
+  display: flex !important;
+}
+
+#mck-sidebox-content.is-tab-no-conversations #mck-no-conversations, #mck-sidebox-content.active-tab-no-conversations #mck-no-conversations {
+  display: block !important;
+}
+#mck-sidebox-content.is-tab-no-conversations #mck-tab-conversation, #mck-sidebox-content.active-tab-no-conversations #mck-tab-conversation {
+  display: flex !important;
 }
 
 .layout-default #mck-msg-new {
@@ -4021,6 +4043,6 @@ div#mck-rated:before {
 .layout-modern #mck-sidebox-content .mck-running-on {
   display: none !important;
 }
-.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on {
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on, .layout-modern #mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
   display: block !important;
 }

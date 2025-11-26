@@ -1,0 +1,31 @@
+.layout-default {
+    #mck-msg-new {
+        background: var(--km-accent, #5f46f8) !important;
+        color: var(--km-accent-contrast, #ffffff) !important;
+    }
+    #km-whats-new-placeholder,
+    .km-whats-new-list,
+    .km-whats-new-empty {
+        display: none !important;
+    }
+    .km-empty-conversation-container,
+    .km-modern-empty-state,
+    .km-conversations-empty {
+        display: none !important;
+    }
+}
+
+.layout-modern {
+    #mck-sidebox-content {
+        .mck-running-on {
+            display: none !important;
+        }
+
+        &.active-tab-conversations.active-subsection-conversation-individual,
+        &.is-tab-conversations.is-subsection-conversation-individual {
+            .mck-running-on {
+                display: block !important;
+            }
+        }
+    }
+}
