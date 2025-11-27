@@ -31,7 +31,11 @@ const generatePluginFile = async (req, res) => {
     PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 
     console.log('setting context and static path', MCK_CONTEXTPATH);
-    var data = await util.promisify(fs.readFile)(path.join(__dirname, '/build/plugin.js'), 'utf8');
+    const pluginMinPath = path.join(__dirname, '/build/plugin.min.js');
+    const pluginPath = fs.existsSync(pluginMinPath)
+        ? pluginMinPath
+        : path.join(__dirname, '/build/plugin.js');
+    var data = await util.promisify(fs.readFile)(pluginPath, 'utf8');
     var plugin = data
         .replace(':MCK_CONTEXTPATH', MCK_CONTEXTPATH)
         .replace(':MCK_THIRD_PARTY_INTEGRATION', JSON.stringify(MCK_THIRD_PARTY_INTEGRATION))

@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
+const terserLib = require('terser');
 const cleanCss = require('gulp-clean-css');
 const cssnano = require('gulp-cssnano');
 const sass = require('gulp-sass')(require('sass'));
@@ -58,6 +59,20 @@ const cli = new SentryCli(null, {
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
+
+const minifyPluginContent = (code) => {
+    try {
+        const result = terserLib.minify(code, TERSER_CONFIG);
+        if (result.error) {
+            console.log('plugin minification error', result.error);
+            return code;
+        }
+        return result.code;
+    } catch (err) {
+        console.log('plugin minification error', err);
+        return code;
+    }
+};
 
 const generateResourceFolder = () => {
     if (env) {
@@ -286,6 +301,7 @@ const generateBuildFiles = () => {
             if (err) {
                 console.log('plugin.js generation error');
             }
+            minifyJS(`${buildDir}/plugin.js`, buildDir, `plugin.min.js`, true);
             generateFilesByVersion('build/plugin.js');
         });
     });
@@ -339,21 +355,26 @@ const generateFilesByVersion = (location) => {
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
+                var minifiedData = minifyPluginContent(data);
                 if (env && pluginVersions[i] == 'v2') {
                     const versionDir = `${buildDir}/v2`;
                     if (!fs.existsSync(versionDir)) {
                         fs.mkdirSync(versionDir);
                     }
-                    fs.writeFile(path.join(versionDir, 'kommunicate.app'), data, function (err) {
-                        if (err) {
-                            console.log('kommunicate.app generation error');
+                    fs.writeFile(
+                        path.join(versionDir, 'kommunicate.app'),
+                        minifiedData,
+                        function (err) {
+                            if (err) {
+                                console.log('kommunicate.app generation error');
+                            }
+                            console.log('kommunicate.app generated');
                         }
-                        console.log('kommunicate.app generated');
-                    });
+                    );
                     // root-level alias for new loader without /v2 prefix
                     fs.writeFile(
                         path.join(buildDir, 'kommunicate-widget-2.0.min.js'),
-                        data,
+                        minifiedData,
                         function (err) {
                             if (err) {
                                 console.log('kommunicate-widget-2.0.min.js generation error');
