@@ -14,32 +14,6 @@
         ]
       },
       {
-        "source": "/v2/kommunicate.app",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=900"
-          }
-        ]
-      },
-      {
-        "source": "/kommunicate-widget-3.0.min.js",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=900"
-          }
-        ]
-      },
-      {
         "source": "**/*.js",
         "headers": [
           {
@@ -81,6 +55,32 @@
           {
             "key": "Cache-Control",
             "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "/v2/kommunicate.app",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
+          }
+        ]
+      },
+      {
+        "source": "/kommunicate-widget-3.0.min.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
           }
         ]
       }
