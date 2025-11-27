@@ -31,10 +31,10 @@ const generatePluginFile = async (req, res) => {
     PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 
     console.log('setting context and static path', MCK_CONTEXTPATH);
-    const pluginMinPath = path.join(__dirname, '/build/plugin.min.js');
+    const pluginMinPath = path.join(__dirname, 'build/plugin.min.js');
     const pluginPath = fs.existsSync(pluginMinPath)
         ? pluginMinPath
-        : path.join(__dirname, '/build/plugin.js');
+        : path.join(__dirname, 'build/plugin.js');
     var data = await util.promisify(fs.readFile)(pluginPath, 'utf8');
     var plugin = data
         .replace(':MCK_CONTEXTPATH', MCK_CONTEXTPATH)
@@ -52,6 +52,6 @@ exports.getPluginHTML = async (req, res) => {
         res.send('Error while getting application id...');
         return console.log('Unable to get application id');
     }
-    res.sendFile(path.join(__dirname, '/build/chat.html'));
+    res.sendFile(path.join(__dirname, 'build/chat.html'));
     console.log('plugin HTML sent successfully');
 };

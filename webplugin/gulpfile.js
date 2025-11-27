@@ -356,31 +356,20 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
                 var minifiedData = minifyPluginContent(data);
-                if (pluginVersions[i] == 'v2') {
-                    const versionDir = `${buildDir}/v2`;
-                    if (!fs.existsSync(versionDir)) {
-                        fs.mkdirSync(versionDir);
-                    }
-                    fs.writeFile(
-                        path.join(versionDir, 'kommunicate.app'),
-                        minifiedData,
-                        function (err) {
-                            if (err) {
-                                console.log('kommunicate.app generation error');
-                            }
-                            console.log('kommunicate.app generated');
-                        }
-                    );
+                var versionDir = `${buildDir}/${pluginVersions[i]}`;
+                if (!fs.existsSync(versionDir)) {
+                    fs.mkdirSync(versionDir, { recursive: true });
+                }
+                fs.writeFileSync(path.join(versionDir, 'kommunicate.app'), minifiedData);
+                if (pluginVersions[i] === 'v1') {
+                    // root-level alias for legacy loader without /v1 prefix
+                    fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
+                }
+                if (pluginVersions[i] === 'v2') {
                     // root-level alias for new loader without /v2 prefix
-                    fs.writeFile(
+                    fs.writeFileSync(
                         path.join(buildDir, 'kommunicate-widget-2.0.min.js'),
-                        minifiedData,
-                        function (err) {
-                            if (err) {
-                                console.log('kommunicate-widget-2.0.min.js generation error');
-                            }
-                            console.log('kommunicate-widget-2.0.min.js generated at root');
-                        }
+                        minifiedData
                     );
                 }
             }

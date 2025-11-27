@@ -7596,7 +7596,10 @@ const firstVisibleMsg = {
                 var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
                 if (data.currentCTA) {
-                    kommunicateCommons.hide('#km-faq');
+                    var faqAvailable =
+                        kommunicate._globals.hasArticles === undefined ||
+                        kommunicate._globals.hasArticles === true;
+                    faqAvailable && kommunicateCommons.show('#km-faq');
                     // kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
 
                     switch (true) {
@@ -7744,7 +7747,7 @@ const firstVisibleMsg = {
                         faqAvailable && !KommunicateUI.isFAQPrimaryCTA()
                     );
 
-                if (!isModernLayout && !KommunicateUI.isFAQPrimaryCTA() && faqAvailable) {
+                if (!isModernLayout && faqAvailable) {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-faq');
                 } else {
@@ -7881,7 +7884,14 @@ const firstVisibleMsg = {
                 $mck_msg_inner.data('datetime', '');
                 kommunicateCommons.hide('#mck-char-warning');
                 kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
-                kommunicateCommons.hide('#km-faq');
+                var faqAvailable =
+                    kommunicate._globals.hasArticles === undefined ||
+                    kommunicate._globals.hasArticles === true;
+                if (!kommunicateCommons.isModernLayoutEnabled() && faqAvailable) {
+                    kommunicateCommons.show('#km-faq');
+                } else {
+                    kommunicateCommons.hide('#km-faq');
+                }
                 if (params.tabId) {
                     // In modern layout we still want bottom tabs visible after reload/deep link.
                     if (!kommunicateCommons.isModernLayoutEnabled()) {
@@ -8283,7 +8293,10 @@ const firstVisibleMsg = {
             };
 
             _this.sendUserEmail = function (emailInput, sendButton) {
-                var inputElement = emailInput || d.getElementById('input-for-email');
+                var inputElement =
+                    emailInput ||
+                    d.querySelector("[id^='input-for-email']") ||
+                    d.querySelector('.km-inline-template__input');
                 if (!inputElement) {
                     return;
                 }
@@ -8294,18 +8307,28 @@ const firstVisibleMsg = {
                         data: { email: email },
                         success: function (response) {
                             console.log('email updated successfully !');
-                            var $inputElement = emailInput
-                                ? $applozic(inputElement)
-                                : $applozic('#input-for-email');
-                            $inputElement.after(
-                                "<div style='width: 100px; margin: auto;'><span>Email Sent</span></div>"
-                            );
-                            $inputElement.remove();
-                            if (sendButton) {
-                                $applozic(sendButton).remove();
-                            } else {
-                                $applozic('#send-email-button').remove();
+                            var emailSentText =
+                                (w.MCK_LABELS &&
+                                    (w.MCK_LABELS.EMAIL_SENT ||
+                                        w.MCK_LABELS['email.sent'] ||
+                                        w.MCK_LABELS['email.sent.message'])) ||
+                                'Email Sent';
+                            var confirmation = d.createElement('div');
+                            confirmation.style.width = '100px';
+                            confirmation.style.margin = 'auto';
+                            var confirmationText = d.createElement('span');
+                            confirmationText.textContent = emailSentText;
+                            confirmation.appendChild(confirmationText);
+                            var nextSibling = inputElement.nextSibling;
+                            if (inputElement.parentNode) {
+                                inputElement.parentNode.insertBefore(confirmation, nextSibling);
+                                inputElement.parentNode.removeChild(inputElement);
                             }
+                            var resolvedSendButton =
+                                sendButton ||
+                                d.querySelector("[id^='send-email-button']") ||
+                                d.querySelector('.km-inline-template__submit');
+                            resolvedSendButton && $applozic(resolvedSendButton).remove();
                         },
                         error: function (error) {},
                     });

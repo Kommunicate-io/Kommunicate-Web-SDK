@@ -14,7 +14,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
 
     if (primaryCTA && primaryCTA !== 'FAQ') {
         kommunicateCommons.show('.km-kb-container');
-        kommunicateCommons.hide('#km-faq');
+        kommunicateCommons.show('#km-faq');
     }
     if (kommunicate?._globals?.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;

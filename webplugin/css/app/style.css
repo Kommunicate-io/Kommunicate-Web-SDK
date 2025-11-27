@@ -4087,6 +4087,9 @@ div#mck-rated:before {
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
   display: flex !important;
 }
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation {
   display: none !important;
 }
@@ -4127,6 +4130,9 @@ div#mck-rated:before {
   display: flex !important;
 }
 #mck-sidebox-content.active-tab-faqs #mck-sidebox-ft {
+  display: none !important;
+}
+#mck-sidebox-content.active-tab-faqs #km-faq {
   display: none !important;
 }
 
