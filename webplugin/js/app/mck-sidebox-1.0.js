@@ -824,8 +824,10 @@ const firstVisibleMsg = {
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
                 console.debug('connected..');
-                kommunicateCommons.hide('#km-local-file-system-warning');
-                kommunicateCommons.hide('#km-socket-disconnect-msg');
+                kommunicateCommons.hide(
+                    '#km-local-file-system-warning',
+                    '#km-socket-disconnect-msg'
+                );
                 SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
                     Array.isArray(SUBSCRIBE_TO_EVENTS_BACKUP) &&
@@ -4946,8 +4948,7 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
-                    kommunicateCommons.hide($mck_business_hours_box);
-                    kommunicateCommons.hide('.km-header-cta');
+                    kommunicateCommons.hide($mck_business_hours_box, '.km-header-cta');
                     CURRENT_GROUP_DATA.isWaitingQueue = false;
                     firstVisibleMsg.reset();
                     genAiService.enableTextArea(true);
@@ -5974,8 +5975,8 @@ const firstVisibleMsg = {
                             kommunicateCommons.show(
                                 '.km-attachment-download-icon-' + messagePxy.key
                             );
-                            kommunicateCommons.hide('.km-attachment-cancel-icon-' + messagePxy.key);
                             kommunicateCommons.hide(
+                                '.km-attachment-cancel-icon-' + messagePxy.key,
                                 '.km-attachment-progress-bar-wrapper-' + messagePxy.key
                             );
                             var messageKey = data.messageKey;
@@ -7662,8 +7663,7 @@ const firstVisibleMsg = {
                     (KommunicateUI && KommunicateUI.isConversationListView)
                 ) {
                     // if contact list is visible or there is no active conversation, hide options
-                    kommunicateCommons.hide('#km-widget-options');
-                    kommunicateCommons.hide('.km-option-faq');
+                    kommunicateCommons.hide('#km-widget-options', '.km-option-faq');
                     return;
                 }
                 var enableDropdown = false;
@@ -7861,13 +7861,15 @@ const firstVisibleMsg = {
                 $mck_response_text.html('');
                 kommunicateCommons.hide('#mck-msg-response');
                 $mck_msg_form[0].reset();
-                kommunicateCommons.show('#mck-msg-form');
-                kommunicateCommons.show('#mck-box-form-container');
+                kommunicateCommons.show('#mck-msg-form', '#mck-box-form-container');
                 $mck_msg_inner.html('');
                 $mck_msg_error.removeClass('mck-no-mb');
                 kommunicateCommons.show('#mck-contacts-content');
-                kommunicateCommons.hide('.mck-box-ft .mck-box-form-container', '#mck-sidebox-ft');
-                kommunicateCommons.hide('#mck-voice-web');
+                kommunicateCommons.hide(
+                    '.mck-box-ft .mck-box-form-container',
+                    '#mck-sidebox-ft',
+                    '#mck-voice-web'
+                );
                 // render quick replies
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
                 kommunicateCommons.hide('#mck-sidebox-search', '#mck-group-info-tab');
@@ -7909,13 +7911,11 @@ const firstVisibleMsg = {
                     $mck_tab_option_panel.data('tabId', params.tabId);
                     kommunicateCommons.show('#mck-tab-option-panel');
                     kommunicateCommons.hide('#mck-contacts-content');
-                    kommunicateCommons.show($modal_footer_content);
-                    kommunicateCommons.show('#mck-sidebox-ft');
+                    kommunicateCommons.show($modal_footer_content, '#mck-sidebox-ft');
 
                     appOptions.voiceChat && mckVoice.showMic(appOptions);
                     kommunicateCommons.show('#mck-btn-clear-messages');
-                    kommunicateCommons.hide('.mck-group-menu-options');
-                    kommunicateCommons.hide('#mck-waiting-queue');
+                    kommunicateCommons.hide('.mck-group-menu-options', '#mck-waiting-queue');
                     if (params.isGroup) {
                         $mck_msg_inner.addClass('mck-group-inner');
                         kommunicateCommons.hide('#li-mck-block-user');
@@ -10454,8 +10454,7 @@ const firstVisibleMsg = {
                                     isGroup: false,
                                     isSearch: true,
                                 });
-                                kommunicateCommons.show($modal_footer_content);
-                                kommunicateCommons.show('#mck-sidebox-ft');
+                                kommunicateCommons.show($modal_footer_content, '#mck-sidebox-ft');
                             }
                         }
                         $mck_contact_search_input.val('');
@@ -10775,8 +10774,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide($mck_conversation_list);
                     return;
                 }
-                kommunicateCommons.show($mck_conversation_list);
-                kommunicateCommons.show($product_box_caret);
+                kommunicateCommons.show($mck_conversation_list, $product_box_caret);
                 $mck_product_box.removeClass('mck-product-box-wc');
                 $applozic.each(tabConvArray, function (i, convPxy) {
                     if ($applozic('#mck-conversation-list #li-' + convPxy.id).length === 0) {
@@ -11837,8 +11835,7 @@ const firstVisibleMsg = {
                     $mck_msg_error.html('');
                     kommunicateCommons.hide('#mck-msg-error');
                     document.querySelector('#mck-msg-error').classList.remove('mck-no-mb');
-                    kommunicateCommons.show('#mck-msg-form');
-                    kommunicateCommons.show('#mck-box-form-container');
+                    kommunicateCommons.show('#mck-msg-form', '#mck-box-form-container');
                     $mck_message_inner.data('blocked', false);
                     $mck_block_button
                         .html(MCK_LABELS['block.user'])
@@ -12207,8 +12204,7 @@ const firstVisibleMsg = {
                     .find('.mck-group-change-role-box')[0];
                 var role = $applozic(this).parents('.mck-li-group-member').data('role');
                 $applozic(changeRoleBox).find('select').val(role);
-                kommunicateCommons.show(changeRoleBox);
-                kommunicateCommons.show('#mck-group-update-panel');
+                kommunicateCommons.show(changeRoleBox, '#mck-group-update-panel');
             });
             $mck_btn_group_update.on('click', function () {
                 var users = [];
@@ -13314,8 +13310,10 @@ const firstVisibleMsg = {
                             $mck_msg_sbmt.attr('disabled', false);
                             delete TAB_FILE_DRAFT[uniqueId];
                             $file_name.html(fileExpr);
-                            kommunicateCommons.hide('#mck-filebox-' + randomId + ' .km-progress');
-                            kommunicateCommons.hide('.mck-file-box .km-progress');
+                            kommunicateCommons.hide(
+                                '#mck-filebox-' + randomId + ' .km-progress',
+                                '.mck-file-box .km-progress'
+                            );
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
@@ -13477,8 +13475,10 @@ const firstVisibleMsg = {
                             $mck_msg_sbmt.attr('disabled', false);
                             delete TAB_FILE_DRAFT[uniqueId];
                             $file_name.html(fileExpr);
-                            kommunicateCommons.hide('#mck-filebox-' + randomId + ' .km-progress');
-                            kommunicateCommons.hide('.mck-file-box .km-progress');
+                            kommunicateCommons.hide(
+                                '#mck-filebox-' + randomId + ' .km-progress',
+                                '.mck-file-box .km-progress'
+                            );
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
@@ -13656,8 +13656,10 @@ const firstVisibleMsg = {
             _this.showMaliciousFileError = function (messageKey) {
                 kommunicateCommons.show('.km-attachment-upload-icon-' + messageKey);
                 kommunicateCommons.hide('.km-attachment-cancel-icon-' + messageKey);
-                kommunicateCommons.show('.mck-timestamp-' + messageKey);
-                kommunicateCommons.show('.malicious-error-' + messageKey);
+                kommunicateCommons.show(
+                    '.mck-timestamp-' + messageKey,
+                    '.malicious-error-' + messageKey
+                );
                 kommunicateCommons.hide('.km-attachment-progress-bar-wrapper-' + messageKey);
             };
         }

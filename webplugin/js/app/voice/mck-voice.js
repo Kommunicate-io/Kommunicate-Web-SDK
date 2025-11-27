@@ -273,8 +273,7 @@ class MckVoice {
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             kommunicateCommons.hide('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
 
-            kommunicateCommons.show('#mck-voice-interface');
-            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
+            kommunicateCommons.show('#mck-voice-interface', '.voice-ring-2', '.voice-ring-3');
             kommunicateCommons.modifyClassList(
                 { class: ['voice-ring-1'] },
                 '',

@@ -232,8 +232,7 @@ KommunicateUI = {
     displayProgressMeter: function (key, uploadStatus) {
         var $progressMeter = $applozic('.progress-meter-' + key);
         var $attachment = $applozic('.mck-attachment-' + key);
-        kommunicateCommons.show($progressMeter);
-        kommunicateCommons.show($attachment.next());
+        kommunicateCommons.show($progressMeter, $attachment.next());
         kommunicateCommons.hide($attachment.find('.mck-image-download'));
     },
     deleteProgressMeter: function (key, uploadStatus) {
@@ -319,8 +318,7 @@ KommunicateUI = {
         $applozic('#mck-text-box').attr('data-text', 'Your email ID');
     },
     hideLeadCollectionTemplate: function () {
-        kommunicateCommons.hide('#mck-email-collection-box');
-        kommunicateCommons.hide('#mck-email-error-alert-box');
+        kommunicateCommons.hide('#mck-email-collection-box', '#mck-email-error-alert-box');
         kommunicateCommons.show('#mck-btn-attach-box');
         $applozic('#mck-text-box').attr('data-text', MCK_LABELS['input.message']);
     },
@@ -724,8 +722,7 @@ KommunicateUI = {
             var listEl = document.getElementById('km-faq-list-container');
             listEl && (listEl.innerHTML = '');
             kommunicateCommons.hide('#km-faq-list-container');
-            kommunicateCommons.show('#km-faqdiv');
-            kommunicateCommons.show('.km-faq-category-list-container');
+            kommunicateCommons.show('#km-faqdiv', '.km-faq-category-list-container');
             kommunicateCommons.hide('.km-no-results-found-container');
             setActiveSubsectionState('faq-category');
             return;
@@ -1190,8 +1187,7 @@ KommunicateUI = {
                 'km-mid-conv-csat'
             );
             kommunicateCommons.show('#mck-conversation-status-box');
-            kommunicateCommons.hide('.mck-box-form-container');
-            kommunicateCommons.hide('#km-widget-options');
+            kommunicateCommons.hide('.mck-box-form-container', '#km-widget-options');
             KommunicateUI.updateScroll(messageBody);
         } else {
             kommunicateCommons.show('.mck-csat-text-1');
@@ -1242,8 +1238,7 @@ KommunicateUI = {
         if (KommunicateUI.isConversationResolvedFromZendesk) {
             isCSATenabled && KommunicateUI.triggerCSAT();
             document.getElementById('mck-submit-comment').onclick = function (e) {
-                kommunicateCommons.hide('.mck-ratings-smilies');
-                kommunicateCommons.hide('#csat-1');
+                kommunicateCommons.hide('.mck-ratings-smilies', '#csat-1');
             };
             var isCSATenabled = kommunicate._globals.oneTimeRating
                 ? kommunicate._globals.collectFeedback &&
@@ -1288,8 +1283,7 @@ KommunicateUI = {
                     },
                     'mck-restart-conv-banner'
                 );
-                kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3');
-                kommunicateCommons.hide('#km-widget-options');
+                kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#km-widget-options');
                 /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
@@ -1319,9 +1313,11 @@ KommunicateUI = {
                 '',
                 'km-mid-conv-csat'
             );
-            kommunicateCommons.hide('#mck-conversation-status-box');
-            kommunicateCommons.hide('.mck-box-form-container');
-            kommunicateCommons.hide('.mck-csat-text-1');
+            kommunicateCommons.hide(
+                '#mck-conversation-status-box',
+                '.mck-box-form-container',
+                '.mck-csat-text-1'
+            );
         } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
             KommunicateUI.askCSAT(false);
         } else if (isConversationClosed) {
@@ -1333,8 +1329,7 @@ KommunicateUI = {
                 'km-mid-conv-csat'
             );
             kommunicateCommons.show('#mck-conversation-status-box');
-            kommunicateCommons.hide('.mck-box-form-container');
-            kommunicateCommons.hide('#km-widget-options');
+            kommunicateCommons.hide('.mck-box-form-container', '#km-widget-options');
             KommunicateUI.updateScroll(messageBody);
         } else {
             kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#mck-rated');
