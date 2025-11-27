@@ -326,11 +326,7 @@ class MckVoice {
         document.getElementById('mck-voice-repeat-last-msg').addEventListener('click', function () {
             this.classList.toggle('mck-hidden');
 
-            kommunicateCommons.modifyClassList(
-                { class: ['voice-ring-2', 'voice-ring-3'] },
-                '',
-                'n-vis'
-            );
+            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
             const ring1 = document.querySelector('.voice-ring-1');
             ring1.classList.remove('mck-ring-remove-animation');
 
@@ -727,7 +723,7 @@ class MckVoice {
 
     showMic(appOptions) {
         if (appOptions.voiceChat) {
-            kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
+            kommunicateCommons.show('#mck-voice-web');
         }
     }
 }

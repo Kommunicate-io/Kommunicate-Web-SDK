@@ -7862,6 +7862,7 @@ const firstVisibleMsg = {
                 kommunicateCommons.hide('#mck-msg-response');
                 $mck_msg_form[0].reset();
                 kommunicateCommons.show('#mck-msg-form');
+                kommunicateCommons.show('#mck-box-form-container');
                 $mck_msg_inner.html('');
                 $mck_msg_error.removeClass('mck-no-mb');
                 kommunicateCommons.show('#mck-contacts-content');
@@ -11837,6 +11838,7 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-msg-error');
                     document.querySelector('#mck-msg-error').classList.remove('mck-no-mb');
                     kommunicateCommons.show('#mck-msg-form');
+                    kommunicateCommons.show('#mck-box-form-container');
                     $mck_message_inner.data('blocked', false);
                     $mck_block_button
                         .html(MCK_LABELS['block.user'])

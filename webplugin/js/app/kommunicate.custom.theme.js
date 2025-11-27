@@ -75,8 +75,8 @@ function KmCustomTheme() {
             _this.createCustomClasses(kmChatWidgetBackgroundColor);
         }
         return (
-            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color ' +
-            squareIcon +
+            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color' +
+            (squareIcon ? ' ' + squareIcon : '') +
             ' mck-default-launcher-icon" >' +
             _this.returnCustomWidget() +
             '</div>'

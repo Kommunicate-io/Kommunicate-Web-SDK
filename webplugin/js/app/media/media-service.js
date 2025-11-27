@@ -243,22 +243,8 @@ Kommunicate.mediaService = {
         function startRecording() {
             Kommunicate.typingAreaService.showRecorder();
             // show
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['delete-recording', 'mck-stop-recording', 'audiodiv'],
-                },
-                '',
-                'n-vis'
-            );
-
-            // hide
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['play-btn', 'pause-btn', 'send-btn'],
-                },
-                'n-vis',
-                ''
-            );
+            kommunicateCommons.show('#delete-recording', '#mck-stop-recording', '#audiodiv');
+            kommunicateCommons.hide('#play-btn', '#pause-btn', '#send-btn');
             timeElapsedTimer.removeClass('n-vis');
             timeRemainingTimer.removeClass('n-vis');
 
@@ -301,22 +287,13 @@ Kommunicate.mediaService = {
         }
         function stopRecording(e) {
             // show
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'],
-                },
-                '',
-                'n-vis'
+            kommunicateCommons.show(
+                '#delete-recording',
+                '#play-btn',
+                '#send-btn',
+                '#time-remaining'
             );
-
-            // hide
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['pause-btn', 'mck-stop-recording', 'time-elapsed'],
-                },
-                'n-vis',
-                ''
-            );
+            kommunicateCommons.hide('#pause-btn', '#mck-stop-recording', '#time-elapsed');
             clearInterval(recorderInterval);
             $applozic('#wave-front-progressBar').width('0%');
             timeRemainingTimer.text('00:00');
