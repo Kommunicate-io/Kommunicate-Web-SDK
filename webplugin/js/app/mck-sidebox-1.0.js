@@ -4242,17 +4242,24 @@ const firstVisibleMsg = {
                     KommunicateUI.showConversationList && KommunicateUI.showConversationList();
                 }
 
-                function handleStartNewConversation() {
+                function startNewConversation(onConversationCreated) {
                     activateConversationTab();
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     _this.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
+                        if (typeof onConversationCreated === 'function') {
+                            onConversationCreated(conversationId);
+                        }
                         KommunicateUI.setHasConversationHistory(true);
                         typeof setActiveSubsectionState === 'function' &&
                             setActiveSubsectionState('conversation-individual');
                     });
                     $applozic('#mck-msg-new').attr('disabled', true);
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                }
+                function handleStartNewConversation(event) {
+                    event && typeof event.preventDefault === 'function' && event.preventDefault();
+                    startNewConversation();
                 }
                 $mck_contact_search.click(handleStartNewConversation);
                 $applozic(d).on('click', '#km-empty-conversation-cta', handleStartNewConversation);
@@ -4276,24 +4283,7 @@ const firstVisibleMsg = {
                     }
                 });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
-                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                    KommunicateUI.hideFaq();
-                    KommunicateUI.showChat();
-                    if ($applozic('#km-faq-search-input').val() === '') {
-                        mckMessageService.createNewConversation(
-                            conversationDetail,
-                            function (conversationId) {
-                                // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
-                            }
-                        );
-                    } else {
-                        mckMessageService.createNewConversation(
-                            conversationDetail,
-                            function (conversationId) {
-                                KommunicateUI.sendFaqQueryAsMsg(conversationId);
-                            }
-                        );
-                    }
+                    startNewConversation();
                     kommunicateCommons.hide('#mck-contact-list');
                 });
 
