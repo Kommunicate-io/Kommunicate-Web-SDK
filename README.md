@@ -220,7 +220,7 @@ You can copy the below script and replace the required parameters manually. Note
       var s = document.createElement("script");
        s.type = "text/javascript";
        s.async = true;
-       s.src = "https://widget.kommunicate.io/kommunicate-widget-2.0.min.js";
+       s.src = "https://widget.kommunicate.io/kommunicate-widget-3.0.min.js";
        var h = document.getElementsByTagName("head")[0];
        h.appendChild(s);
        window.kommunicate = m;
@@ -229,7 +229,7 @@ You can copy the below script and replace the required parameters manually. Note
 </script>
 ```
 
-The legacy `kommunicate.app` path continues to work for backward compatibility; new integrations should use `kommunicate-widget-2.0.min.js`.
+The legacy `kommunicate.app` path continues to work for backward compatibility; new integrations should use `kommunicate-widget-3.0.min.js`.
 
 ## Technical Documentation:
 

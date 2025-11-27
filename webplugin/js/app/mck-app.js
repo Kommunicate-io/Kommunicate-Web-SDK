@@ -505,12 +505,22 @@ function ApplozicSidebox() {
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
             options.appSettings = options.appSettings || {};
             options.appSettings.chatWidget = options.appSettings.chatWidget || widgetSettings || {};
-            var resolvedDesignLayoutName =
+            var designLayoutFromSettings =
                 options.designLayoutName ||
                 options?.appSettings?.designLayoutName ||
-                options?.appSettings?.chatWidget?.designLayoutName ||
-                KommunicateConstants.DESIGN_LAYOUTS.DEFAULT ||
-                'default';
+                options?.appSettings?.chatWidget?.designLayoutName;
+            var resolvedDesignLayoutName;
+            if (designLayoutFromSettings) {
+                resolvedDesignLayoutName = designLayoutFromSettings;
+            } else if (
+                (options.KM_VER === 'v2' && options.__KM_PLUGIN_VERSION === 'v3') ||
+                options.KM_VER === 'v3' ||
+                options.__KM_PLUGIN_VERSION === 'v3'
+            ) {
+                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.MODERN;
+            } else {
+                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'default';
+            }
             options.designLayoutName = resolvedDesignLayoutName;
             options.appSettings.designLayoutName = resolvedDesignLayoutName;
             options.appSettings.chatWidget.designLayoutName = resolvedDesignLayoutName;

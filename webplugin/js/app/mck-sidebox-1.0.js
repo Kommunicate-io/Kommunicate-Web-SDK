@@ -9083,7 +9083,12 @@ const firstVisibleMsg = {
                             }
                         } else {
                             console.log('msg.contentType === 23 && metadata.msg_type === BUTTON');
-                            var defaultButton = buildTemplateButton('Button');
+                            var fallbackButtonTitle =
+                                (MCK_LABELS &&
+                                    (MCK_LABELS['template.button.default'] ||
+                                        MCK_LABELS['button.default'])) ||
+                                'Button';
+                            var defaultButton = buildTemplateButton(fallbackButtonTitle);
                             $applozic(templateTargetSelector).after(defaultButton);
                         }
                     }

@@ -22,7 +22,7 @@ const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 
-const pluginVersions = ['v1', 'v2'];
+const pluginVersions = ['v1', 'v2', 'v3'];
 
 Object.assign(PLUGIN_SETTING, {
     kommunicateApiUrl: PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl,

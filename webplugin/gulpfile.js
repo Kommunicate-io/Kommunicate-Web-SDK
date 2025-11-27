@@ -34,7 +34,7 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-const pluginVersions = ['v1', 'v2'];
+const pluginVersions = ['v1', 'v2', 'v3'];
 
 PLUGIN_SETTING.kommunicateApiUrl =
     PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
@@ -365,10 +365,9 @@ const generateFilesByVersion = (location) => {
                     // root-level alias for legacy loader without /v1 prefix
                     fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
                 }
-                if (pluginVersions[i] === 'v2') {
-                    // root-level alias for new loader without /v2 prefix
+                if (pluginVersions[i] === 'v3') {
                     fs.writeFileSync(
-                        path.join(buildDir, 'kommunicate-widget-2.0.min.js'),
+                        path.join(buildDir, 'kommunicate-widget-3.0.min.js'),
                         minifiedData
                     );
                 }

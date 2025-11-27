@@ -14,7 +14,7 @@ customHeaders:
         value: "application/javascript"
       - key: "Cache-Control"
         value: "public, max-age=900"
-  - pattern: "/kommunicate-widget-2.0.min.js"
+  - pattern: "/kommunicate-widget-3.0.min.js"
     headers:
       - key: "Content-Type"
         value: "application/javascript"

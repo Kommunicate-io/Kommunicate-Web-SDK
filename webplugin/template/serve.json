@@ -34,7 +34,7 @@
       ]
     },
     {
-      "source": "kommunicate-widget-2.0.min.js",
+      "source": "kommunicate-widget-3.0.min.js",
       "headers": [
         {
           "key": "Content-Type",

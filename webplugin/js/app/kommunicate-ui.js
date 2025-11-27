@@ -1240,11 +1240,6 @@ KommunicateUI = {
             document.getElementById('mck-submit-comment').onclick = function (e) {
                 kommunicateCommons.hide('.mck-ratings-smilies', '#csat-1');
             };
-            var isCSATenabled = kommunicate._globals.oneTimeRating
-                ? kommunicate._globals.collectFeedback &&
-                  KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
-                      KommunicateConstants.FEEDBACK_API_STATUS.RATED
-                : kommunicate._globals.collectFeedback;
             if (!isCSATenabled) {
                 kommunicateCommons.hide('#mck-conversation-status-box');
             }
@@ -1670,7 +1665,7 @@ KommunicateUI = {
                     kommunicateCommons.hide('.mck-box-form-container');
                     break;
                 } else {
-                    kommunicateCommons.hide('.mck-box-form-container');
+                    kommunicateCommons.show('.mck-box-form-container');
                 }
             }
         }

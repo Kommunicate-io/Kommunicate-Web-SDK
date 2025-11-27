@@ -123,7 +123,7 @@ function removeKommunicateScripts() {
         kmCustomElements.iframe.styleSheetId,
     ]);
     var originFile = document.querySelector(
-        "script[src*='kommunicate.app'], script[src*='kommunicate-widget-2.0.min.js']"
+        "script[src*='kommunicate.app'], script[src*='kommunicate-widget-3.0.min.js']"
     );
     originFile && originFile.parentNode.removeChild(originFile);
 }
@@ -260,7 +260,8 @@ function addKommunicatePluginToIframe() {
     var options = {};
     var options = addableWindow.applozic._globals;
     options.isAnonymousChat = options.isAnonymousChat;
-    options.KM_VER = MCK_PLUGIN_VERSION;
+    options.__KM_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
+    options.KM_VER = MCK_PLUGIN_VERSION === 'v3' ? 'v2' : MCK_PLUGIN_VERSION;
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }
