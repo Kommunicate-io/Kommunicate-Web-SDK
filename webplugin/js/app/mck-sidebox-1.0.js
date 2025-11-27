@@ -7506,7 +7506,9 @@ const firstVisibleMsg = {
                 var input = d.createElement('input');
                 input.type = 'text';
                 input.className = 'km-inline-template__input';
-                input.placeholder = 'Enter your email...';
+                input.placeholder =
+                    (w.MCK_LABELS && w.MCK_LABELS['mck.email.placeholder']) ||
+                    'Enter your email...';
 
                 var button = d.createElement('button');
                 button.type = 'button';
@@ -8300,7 +8302,7 @@ const firstVisibleMsg = {
                 if (!inputElement) {
                     return;
                 }
-                var emailValue = inputElement.value || '';
+                var emailValue = (inputElement.value || '').trim();
                 if (emailValue.length > 1) {
                     var email = emailValue;
                     mckContactService.updateUser({
@@ -8311,7 +8313,8 @@ const firstVisibleMsg = {
                                 (w.MCK_LABELS &&
                                     (w.MCK_LABELS.EMAIL_SENT ||
                                         w.MCK_LABELS['email.sent'] ||
-                                        w.MCK_LABELS['email.sent.message'])) ||
+                                        w.MCK_LABELS['email.sent.message'] ||
+                                        w.MCK_LABELS['mck.email.sent'])) ||
                                 'Email Sent';
                             var confirmation = d.createElement('div');
                             confirmation.style.width = '100px';
@@ -13960,9 +13963,7 @@ const firstVisibleMsg = {
                 if (typeof CUSTOM_CHAT_LAUNCHER !== 'undefined') {
                     var launcherRoot = document.getElementById('mck-sidebox-launcher');
                     var defaultLauncherIcon =
-                        launcherRoot &&
-                        launcherRoot.childNodes[0] &&
-                        launcherRoot.childNodes[0].childNodes[0];
+                        launcherRoot && launcherRoot.querySelector('.mck-default-launcher-icon');
                     defaultLauncherIcon && kommunicateCommons.hide(defaultLauncherIcon);
                 }
                 // $mck_msg_preview.data('mck-id', contact.contactId);

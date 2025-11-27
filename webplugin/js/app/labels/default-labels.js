@@ -33,6 +33,7 @@ class KMLabel {
             'mck.empty.welcome.section.meta': '',
             'no.more.conversations': 'No more conversations!',
             'search.placeholder': 'Search...',
+            'mck.email.placeholder': 'Enter your email...',
             'location.placeholder': 'Enter a location',
             'create.group.title': 'Create Group',
             'members.title': 'Members',

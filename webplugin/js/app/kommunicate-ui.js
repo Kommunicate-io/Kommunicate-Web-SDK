@@ -967,17 +967,14 @@ KommunicateUI = {
         if (boolValue) {
             var bottomTabsManager = getBottomTabsManager();
             var sideboxContent = document.getElementById('mck-sidebox-content');
-            var shouldForceConversationTab =
+            var sideboxHasNoConversationTab =
                 sideboxContent && sideboxContent.classList.contains('active-tab-no-conversations');
             var isConversationTabActive =
                 bottomTabsManager &&
                 typeof bottomTabsManager.isConversationTabActive === 'function' &&
                 bottomTabsManager.isConversationTabActive();
-            shouldForceConversationTab = shouldForceConversationTab || isConversationTabActive;
-            if (
-                sideboxContent &&
-                sideboxContent.classList.contains('active-tab-no-conversations')
-            ) {
+            var shouldForceConversationTab = sideboxHasNoConversationTab || isConversationTabActive;
+            if (sideboxHasNoConversationTab) {
                 sideboxContent.classList.remove('active-tab-no-conversations');
                 sideboxContent.classList.add('active-tab-conversations');
             }
@@ -987,7 +984,9 @@ KommunicateUI = {
                 typeof bottomTabsManager.setActiveSubsection === 'function'
             ) {
                 if (shouldForceConversationTab) {
-                    bottomTabsManager.setActiveTab('conversations');
+                    if (!isConversationTabActive) {
+                        bottomTabsManager.setActiveTab('conversations');
+                    }
                     bottomTabsManager.setActiveSubsection(
                         KommunicateUI.isConversationListView
                             ? 'conversation-list'
@@ -995,13 +994,12 @@ KommunicateUI = {
                     );
                 }
             } else {
-                if (shouldForceConversationTab) {
+                shouldForceConversationTab &&
                     setActiveSubsectionState(
                         KommunicateUI.isConversationListView
                             ? 'conversation-list'
                             : 'conversation-individual'
                     );
-                }
             }
         }
     },
