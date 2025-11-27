@@ -3818,17 +3818,29 @@ const firstVisibleMsg = {
             };
             _this.showSendButton = function () {
                 kommunicateCommons.show('#send-button-wrapper');
-                kommunicateCommons.hide(
-                    '#mck-file-up',
-                    '#mck-btn-loc',
-                    '#mck-btn-smiley-box',
-                    '#mck-img-file-up',
-                    '#mck-vid-file-up'
-                );
-                !IS_MCK_LOCSHARE && kommunicateCommons.hide('#mck-file-up2');
-
-                !IS_CAPTURE_PHOTO && kommunicateCommons.hide('#mck-img-file-up');
-                !IS_CAPTURE_VIDEO && kommunicateCommons.hide('#mck-vid-file-up');
+                if (MCK_ATTACHMENT) {
+                    kommunicateCommons.show('#mck-file-up');
+                } else {
+                    kommunicateCommons.hide('#mck-file-up');
+                }
+                if (IS_MCK_LOCSHARE) {
+                    kommunicateCommons.show('#mck-btn-loc');
+                    kommunicateCommons.hide('#mck-file-up2');
+                } else {
+                    kommunicateCommons.show('#mck-file-up2');
+                    kommunicateCommons.hide('#mck-btn-loc');
+                }
+                if (EMOJI_LIBRARY) {
+                    kommunicateCommons.show('#mck-btn-smiley-box');
+                } else {
+                    kommunicateCommons.hide('#mck-btn-smiley-box');
+                }
+                IS_CAPTURE_PHOTO
+                    ? kommunicateCommons.show('#mck-img-file-up')
+                    : kommunicateCommons.hide('#mck-img-file-up');
+                IS_CAPTURE_VIDEO
+                    ? kommunicateCommons.show('#mck-vid-file-up')
+                    : kommunicateCommons.hide('#mck-vid-file-up');
             };
 
             _this.hideSendButton = function () {
@@ -3851,9 +3863,11 @@ const firstVisibleMsg = {
                 if (text == '' || !text.replace(/\s/g, '').length) {
                     _this.hideSendButton();
                     Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
+                    appOptions.voiceChat && kommunicateCommons.show('#mck-voice-web');
                 } else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
+                    kommunicateCommons.hide('#mck-voice-web');
                 }
             };
 
@@ -10872,6 +10886,12 @@ const firstVisibleMsg = {
                 }
                 document.getElementById('mck-text-box').setAttribute('data-quick-reply', false);
                 kommunicateCommons.hide('#mck-char-warning');
+                if (
+                    typeof mckMessageService !== 'undefined' &&
+                    mckMessageService.toggleMediaOptions
+                ) {
+                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
+                }
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];

@@ -1012,8 +1012,9 @@
                                             >
                                                 <button
                                                     id="mck-btn-loc"
-                                                    class="menu-item mck-btn-loc"
+                                                    class="menu-item mck-btn-loc mck-btn-text-panel"
                                                     title="Share Location"
+                                                    aria-label="Share Location"
                                                 >
                                                     <svg
                                                         focusable="false"
@@ -1032,6 +1033,7 @@
                                                 <button
                                                     id="mck-file-up"
                                                     class="mck-file-upload menu-item"
+                                                    class="mck-file-upload menu-item mck-btn-text-panel"
                                                     title="Upload Attachment"
                                                     aria-disabled="false"
                                                     aria-label="Upload Attachment"
@@ -1086,7 +1088,7 @@
                                                 id="mck-img-file-up"
                                                 type="button"
                                                 class="mck-img-file-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
+                                                title="Upload Image"
                                                 aria-disabled="false"
                                                 aria-label="Upload Image"
                                                 tabindex="0"
@@ -1114,7 +1116,7 @@
                                                 id="mck-vid-file-up"
                                                 type="button"
                                                 class="mck-img-vid-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
+                                                title="Upload Video"
                                                 aria-disabled="false"
                                                 aria-label="Upload Video"
                                                 tabindex="0"
@@ -1136,7 +1138,7 @@
                                         </div>
                                         <div
                                             id="mck-mic-animation-container"
-                                            class="mck-mic-animation-container n-vis"
+                                            class="mck-mic-animation-container n-vis mck-btn-text-panel"
                                             aria-disabled="false"
                                             title="Voice Input"
                                             aria-label="Voice Input"
@@ -1151,6 +1153,7 @@
                                                 data-toggle="mckdropdown"
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
+                                                class="mck-btn-text-panel"
                                             >
                                                 <svg
                                                     focusable="false"
@@ -1215,6 +1218,23 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                        </div>
+                                        <div
+                                            id="mck-voice-web"
+                                            class="mck-voice-web n-vis mck-btn-text-panel"
+                                            title="Voice Mode"
+                                            aria-label="Voice Mode"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                id="mck-mic-btn-voice-web"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <use xlink:href="#icon-45" href="#icon-45"></use>
+                                            </svg>
                                         </div>
                                         <div
                                             id="mck-quick-replies-box"
@@ -1483,21 +1503,6 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div
-                        id="mck-voice-web"
-                        class="mck-voice-web n-vis km-custom-widget-background-color"
-                    >
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            id="mck-mic-btn-voice-web"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                        >
-                            <use xlink:href="#icon-45" href="#icon-45"></use>
-                        </svg>
                     </div>
                 </div>
                 <div class="mck-text-req-error n-vis">

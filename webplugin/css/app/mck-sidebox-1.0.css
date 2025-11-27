@@ -1776,19 +1776,34 @@ mck-sidebox .mck-group-member-list li a:hover {
     margin: auto;
     background-color: #fff;
     text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid var(--km-primary-color, #4b82f7);
+    border-radius: 999px;
+    box-shadow: 0 10px 26px rgba(42, 68, 116, 0.12);
+    min-height: 54px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mck-textbox-container:focus-within {
+    border-color: var(--km-primary-color, #3d7bff);
+    box-shadow: 0 12px 30px rgba(42, 68, 116, 0.16);
 }
 
 .mck-text-box.mck-text {
-    padding: 5px 5px 5px 10px;
-    min-height: 18px;
-    max-height: 78px;
+    padding: 8px 12px;
+    min-height: 22px;
+    max-height: 120px;
     resize: none;
     width: auto;
     outline: none !important;
     margin: 0px;
-    font-size: 16px;
+    font-size: 15px;
     overflow: auto;
-    line-height: 1.2em;
+    line-height: 1.5;
     overflow-x: hidden;
     display: block !important;
     text-align: left;
@@ -1800,10 +1815,25 @@ mck-sidebox .mck-group-member-list li a:hover {
     caret-color: black;
     position: relative;
     z-index: 0;
+    flex: 1 1 auto;
+    color: #2a2f3a;
+    order: 2;
 }
 
 .mck-text-box-panel {
-    width: 25px !important;
+    width: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    min-width: 32px;
+}
+
+#mck-btn-attach-box,
+#mck-mic-animation-container,
+.mck-attach-img-vid-box {
+    order: 1;
 }
 .mck-intent-box {
     width: 30px;
@@ -1880,16 +1910,23 @@ ul.mck-intent-menu > li:hover {
 
 #mck-btn-attach-box.mck-text-box-panel {
     width: auto !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .mck-attach-img-vid-box {
     width: auto !important;
     float: right !important;
-    display: block;
-    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    margin-top: 0;
 }
 
 .mck-text-box-panel .mck-blk-12 {
     height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .mck-blk-2.mck-text-box-panel .mck-btn:hover,
@@ -1908,8 +1945,20 @@ ul.mck-intent-menu > li:hover {
     text-shadow: none;
     box-shadow: none;
     font-size: 20px !important;
-    width: 25px !important;
+    width: 32px !important;
+    height: 32px !important;
     padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #6b7583;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mck-btn-text-panel svg {
+    width: 20px;
+    height: 20px;
 }
 
 .mck-btn-text-panel:active {
@@ -1918,15 +1967,33 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-btn-text-panel img {
-    height: 25px;
-    width: 25px;
-    margin-top: -3px;
+    height: 20px;
+    width: 20px;
+    margin-top: 0;
     vertical-align: middle;
     opacity: 0.7;
 }
 
 .mck-text-box-panel.move-right img {
     opacity: 1;
+}
+
+.mck-btn-text-panel:hover,
+.mck-btn-text-panel:focus {
+    background-color: rgba(53, 112, 255, 0.1) !important;
+    color: #2f3747;
+}
+
+#send-button-wrapper {
+    order: 3;
+    margin-left: 12px;
+}
+
+#send-button-wrapper .mck-btn-text-panel {
+    background: #eef1f5 !important;
+    color: #404854;
+    width: 38px !important;
+    height: 38px !important;
 }
 
 .mck-sidebox .mck-btn-smiley:active,
@@ -3699,12 +3766,6 @@ ul.mck-intent-menu > li:hover {
 	height: 25px;
 } */
 
-.mck-icon-upload {
-    background-position: -10px -438px;
-    width: 25px;
-    height: 30px;
-}
-
 .mck-icon-search {
     background-position: -10px -478px;
     width: 24px;
@@ -4698,22 +4759,6 @@ div#mck-tab-title.mck-tab-title {
 /* #mck-btn-attach {
 	opacity: 0.6;
 } */
-#mck-btn-attach .mck-icon-upload,
-#mck-attachfile-box #mck-file-up2 .mck-icon-upload,
-#mck-file-up .mck-icon-upload {
-    background: transparent;
-    width: 20px;
-    height: 28px;
-    margin-bottom: -2px;
-    margin-right: 2px;
-    display: block;
-}
-#mck-file-up .mck-icon-upload,
-#mck-file-up2 .mck-icon-upload {
-    width: auto !important;
-    height: auto !important;
-    display: inline-block !important;
-}
 .mck-attach-menu-main-container {
     opacity: 1 !important;
 }
