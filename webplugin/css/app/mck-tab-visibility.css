@@ -46,6 +46,9 @@
 #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
   display: none !important;
 }
+#mck-sidebox-content.active-tab-conversations #km-faq {
+  display: block !important;
+}
 
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list {
   /* Hide start-new button when conversations empty state is visible */

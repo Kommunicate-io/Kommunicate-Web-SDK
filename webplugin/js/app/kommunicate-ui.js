@@ -418,7 +418,7 @@ KommunicateUI = {
                 sideboxContent.classList.contains('active-subsection-faq-category');
 
             if (!isModernLayout && isInFaqCategory) {
-                KommunicateUI.isConversationListView = false;
+                var backToListView = KommunicateUI.isConversationListView === true;
                 var bottomTabsManager = getBottomTabsManager();
                 if (bottomTabsManager && typeof bottomTabsManager.setActiveTab === 'function') {
                     bottomTabsManager.setActiveTab('conversations');
@@ -426,7 +426,14 @@ KommunicateUI = {
                     sideboxContent.classList.remove('active-tab-faqs');
                     sideboxContent.classList.add('active-tab-conversations');
                 }
-                setActiveSubsectionState('conversation-individual');
+                setActiveSubsectionState(
+                    backToListView ? 'conversation-list' : 'conversation-individual'
+                );
+                if (backToListView) {
+                    KommunicateUI.showConversationList();
+                } else {
+                    KommunicateUI.showChat();
+                }
                 return;
             }
             KommunicateUI.showFaqCategoryScreen();
@@ -933,7 +940,14 @@ KommunicateUI = {
         KommunicateUI.setIndividualTitle();
         KommunicateUI.resetConversationListTitle();
         KommunicateUI.toggleModernFaqBackButton(false);
-        KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
+        var faqAvailable =
+            kommunicate._globals.hasArticles === undefined ||
+            kommunicate._globals.hasArticles === true;
+        if (!kommunicateCommons.isModernLayoutEnabled() && faqAvailable) {
+            kommunicateCommons.show('#km-faq');
+        } else if (KommunicateUI.isFAQPrimaryCTA()) {
+            kommunicateCommons.show('#km-faq');
+        }
         $applozic('#mck-msg-new').attr('disabled', false);
         MCK_EVENT_HISTORY.length = 0;
         KommunicateUI.isConversationListView = true;
