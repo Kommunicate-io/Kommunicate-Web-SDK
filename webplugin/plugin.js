@@ -157,8 +157,8 @@ function appendIframeAfterBodyLoaded() {
 }
 
 function appendIframe() {
-    createKommunicateIframe();
     createCustomClasses(kmCustomIframe); // Add class to document
+    createKommunicateIframe();
 }
 
 function isV1Script() {

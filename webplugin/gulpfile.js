@@ -356,7 +356,7 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
                 var minifiedData = minifyPluginContent(data);
-                if (env && pluginVersions[i] == 'v2') {
+                if (pluginVersions[i] == 'v2') {
                     const versionDir = `${buildDir}/v2`;
                     if (!fs.existsSync(versionDir)) {
                         fs.mkdirSync(versionDir);
