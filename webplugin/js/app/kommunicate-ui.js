@@ -953,6 +953,13 @@ KommunicateUI = {
         if (boolValue) {
             var bottomTabsManager = getBottomTabsManager();
             var sideboxContent = document.getElementById('mck-sidebox-content');
+            var shouldForceConversationTab =
+                sideboxContent && sideboxContent.classList.contains('active-tab-no-conversations');
+            var isConversationTabActive =
+                bottomTabsManager &&
+                typeof bottomTabsManager.isConversationTabActive === 'function' &&
+                bottomTabsManager.isConversationTabActive();
+            shouldForceConversationTab = shouldForceConversationTab || isConversationTabActive;
             if (
                 sideboxContent &&
                 sideboxContent.classList.contains('active-tab-no-conversations')
@@ -965,18 +972,22 @@ KommunicateUI = {
                 typeof bottomTabsManager.setActiveTab === 'function' &&
                 typeof bottomTabsManager.setActiveSubsection === 'function'
             ) {
-                bottomTabsManager.setActiveTab('conversations');
-                bottomTabsManager.setActiveSubsection(
-                    KommunicateUI.isConversationListView
-                        ? 'conversation-list'
-                        : 'conversation-individual'
-                );
+                if (shouldForceConversationTab) {
+                    bottomTabsManager.setActiveTab('conversations');
+                    bottomTabsManager.setActiveSubsection(
+                        KommunicateUI.isConversationListView
+                            ? 'conversation-list'
+                            : 'conversation-individual'
+                    );
+                }
             } else {
-                setActiveSubsectionState(
-                    KommunicateUI.isConversationListView
-                        ? 'conversation-list'
-                        : 'conversation-individual'
-                );
+                if (shouldForceConversationTab) {
+                    setActiveSubsectionState(
+                        KommunicateUI.isConversationListView
+                            ? 'conversation-list'
+                            : 'conversation-individual'
+                    );
+                }
             }
         }
     },

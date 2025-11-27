@@ -761,7 +761,12 @@ const firstVisibleMsg = {
             if (!wasSoftHidden) {
                 KommunicateUI.showChat({ keepConversationHeader: true });
             }
-            if (KommunicateUI.hasConversationHistory) {
+            var lastBottomTab =
+                Kommunicate &&
+                Kommunicate._globals &&
+                typeof Kommunicate._globals.lastBottomTab === 'string' &&
+                Kommunicate._globals.lastBottomTab;
+            if (lastBottomTab || KommunicateUI.hasConversationHistory) {
                 bottomTabManager.restoreLastTab();
             }
             kommunicateCommons.hide('#mck-away-msg-box');

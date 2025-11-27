@@ -109,10 +109,16 @@
         }
 
         function getLastBottomTab() {
-            return (
+            var lastTab =
                 (w.Kommunicate && w.Kommunicate._globals && w.Kommunicate._globals.lastBottomTab) ||
-                null
-            );
+                null;
+            if (!lastTab && typeof w.kmLocalStorage !== 'undefined') {
+                try {
+                    lastTab =
+                        w.kmLocalStorage.getItemFromLocalStorage('km-last-bottom-tab') || null;
+                } catch (e) {}
+            }
+            return lastTab;
         }
 
         function setBottomTabState(tabType) {
@@ -156,6 +162,14 @@
                 w.Kommunicate._globals = w.Kommunicate._globals || {};
                 w.Kommunicate._globals.lastBottomTab =
                     targetTab.getAttribute('data-tab') || 'conversations';
+                if (typeof w.kmLocalStorage !== 'undefined') {
+                    try {
+                        w.kmLocalStorage.setItemToLocalStorage(
+                            'km-last-bottom-tab',
+                            w.Kommunicate._globals.lastBottomTab
+                        );
+                    } catch (e) {}
+                }
             }
         }
 
@@ -374,6 +388,9 @@
             }
 
             if (resolvedTabType === 'faqs') {
+                if (options.skipFaqTrigger) {
+                    return;
+                }
                 var faqButton = documentRef && documentRef.getElementById('km-faq');
                 faqButton && faqButton.click();
                 return;
