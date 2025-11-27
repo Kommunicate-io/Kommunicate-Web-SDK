@@ -26,6 +26,10 @@
   display: none !important;
 }
 
+#mck-tab-conversation {
+  padding-left: 16px;
+}
+
 #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
   display: none !important;
 }
