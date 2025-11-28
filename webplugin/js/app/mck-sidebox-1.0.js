@@ -2548,12 +2548,28 @@ const firstVisibleMsg = {
                     KommunicateUI.checkSingleThreadedConversationSettings();
                 }
 
+                // Check if modern layout is enabled
+                var isModernLayout =
+                    kommunicateCommons && kommunicateCommons.isModernLayoutEnabled();
+
+                // Check if a non-conversation tab (like whats-new, faqs) was previously active
+                var lastBottomTab =
+                    Kommunicate &&
+                    Kommunicate._globals &&
+                    typeof Kommunicate._globals.lastBottomTab === 'string' &&
+                    Kommunicate._globals.lastBottomTab;
+
+                // For modern layout, disable auto-open conversation on widget open
+                // Users should manually navigate to conversations tab
                 var shouldAutoOpenConversation =
                     MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
+                    !isModernLayout && // Skip auto-open for modern layout
                     KommunicateUtils.isActiveConversationNeedsToBeOpened(
                         activeConversationInfo,
                         data
-                    );
+                    ) &&
+                    // Only auto-open if no other tab is retained or if conversations tab was active
+                    (!lastBottomTab || lastBottomTab === 'conversations');
 
                 if (shouldAutoOpenConversation) {
                     Kommunicate.openConversation(activeConversationInfo.groupId);
@@ -4138,9 +4154,19 @@ const firstVisibleMsg = {
                             );
                         }
                     } else if (result.response.length == 1) {
+                        var isModernLayout =
+                            typeof kommunicateCommons !== 'undefined' &&
+                            typeof kommunicateCommons.isModernLayoutEnabled === 'function' &&
+                            kommunicateCommons.isModernLayoutEnabled();
+
                         bottomTabManager.hideEmptyStateTab();
-                        var groupId = result.response[0].id;
-                        $applozic.fn.applozic('loadGroupTab', groupId, callback);
+
+                        if (isModernLayout) {
+                            $applozic.fn.applozic('loadTab', null, callback);
+                        } else {
+                            var groupId = result.response[0].id;
+                            $applozic.fn.applozic('loadGroupTab', groupId, callback);
+                        }
                     } else {
                         bottomTabManager.hideEmptyStateTab();
                         if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {

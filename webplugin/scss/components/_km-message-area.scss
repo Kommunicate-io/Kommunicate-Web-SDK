@@ -645,12 +645,13 @@
         box-shadow: 0 10px 26px rgba(42, 68, 116, 0.12);
     }
 
+    // Consolidated: width: auto declaration applies to all .mck-text-box-panel and its variants
     .mck-text-box-panel {
+        width: auto !important;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
-        width: auto !important;
         height: 28px;
         min-width: 28px;
     }
@@ -701,19 +702,32 @@
         align-items: center;
         justify-content: center;
         min-width: 42px;
-    }
 
-    #send-button-wrapper .mck-icon-send {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
+        .mck-icon-send {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
 
-        svg {
-            width: 20px;
-            height: 20px;
-            display: block;
+            svg {
+                width: 20px;
+                height: 20px;
+                display: block;
+            }
+        }
+
+        // Higher specificity for send button - overrides base .mck-btn-text-panel
+        .mck-btn-text-panel {
+            background: #eef1f5 !important;
+            color: #404854;
+            width: 40px !important;
+            height: 40px !important;
+            line-height: 1;
+            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 
@@ -724,6 +738,8 @@
         height: 28px;
     }
 
+    // Base button styles - using higher specificity (.mck-textbox-container .mck-btn-text-panel)
+    // reduces need for !important
     .mck-btn-text-panel {
         width: 28px !important;
         height: 28px !important;
@@ -747,17 +763,5 @@
             background-color: rgba(53, 112, 255, 0.1) !important;
             color: #2f3747;
         }
-    }
-
-    #send-button-wrapper .mck-btn-text-panel {
-        background: #eef1f5 !important;
-        color: #404854;
-        width: 40px !important;
-        height: 40px !important;
-        line-height: 1;
-        padding: 0 !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 }

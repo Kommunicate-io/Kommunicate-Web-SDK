@@ -841,14 +841,27 @@ KommunicateUI = {
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
 
+        // Check if conversations tab is active before setting conversation subsections
+        var sideboxContent = document.getElementById('mck-sidebox-content');
+        var isConversationsTabActive =
+            sideboxContent &&
+            sideboxContent.classList &&
+            sideboxContent.classList.contains('active-tab-conversations');
+
         if (isModernLayout) {
             if (shouldShowConversationListHeader) {
                 topBarManagerRef.toggleBackButton(false);
                 KommunicateUI.isConversationListView = true;
-                setActiveSubsectionState('conversation-list');
+                // Only set conversation-list if conversations tab is active
+                if (isConversationsTabActive) {
+                    setActiveSubsectionState('conversation-list');
+                }
             } else {
                 KommunicateUI.isConversationListView = false;
-                setActiveSubsectionState('conversation-individual');
+                // Only set conversation-individual if conversations tab is active
+                if (isConversationsTabActive) {
+                    setActiveSubsectionState('conversation-individual');
+                }
             }
         } else {
             // Default layout: respect the current view flag; default to list if unset.
@@ -857,9 +870,12 @@ KommunicateUI = {
                     ? KommunicateUI.isConversationListView
                     : true;
             KommunicateUI.isConversationListView = showListView;
-            setActiveSubsectionState(
-                showListView ? 'conversation-list' : 'conversation-individual'
-            );
+            // Only set conversation subsection if conversations tab is active
+            if (isConversationsTabActive) {
+                setActiveSubsectionState(
+                    showListView ? 'conversation-list' : 'conversation-individual'
+                );
+            }
         }
 
         KommunicateUI.isFAQPrimaryCTA() && kommunicateCommons.show('#km-faq');
