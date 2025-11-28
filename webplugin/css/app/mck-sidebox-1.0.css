@@ -42,7 +42,6 @@
     text-align: left;
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.5);
     font-family: var(--km-font-family);
-    font-size: 12px;
     line-height: 20px;
     color: #333;
 }
@@ -1688,7 +1687,7 @@ mck-sidebox .mck-group-member-list li a:hover {
 
 .mck-text-box.mck-text {
     padding: 8px 12px;
-    min-height: 22px;
+    min-height: 28px;
     max-height: 120px;
     resize: none;
     width: auto;

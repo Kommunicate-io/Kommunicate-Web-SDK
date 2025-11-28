@@ -1,16 +1,39 @@
 #mck-btn-smiley-box {
-    float: left !important;
-    padding-left: 5px;
-    &:hover {
-        svg path {
-            fill: $text-primary-color;
-        }
-    }
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    float: none !important;
 
-.mck-sidebox .mck-btn-smiley:active {
-    opacity: 1;
-    svg path {
-        fill: $text-primary-color;
+    .mck-btn-smiley {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover,
+        &:active {
+            background-color: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+
+            svg path {
+                fill: $text-primary-color;
+            }
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
