@@ -541,113 +541,6 @@
     background-color: rgb(255, 184, 194);
 }
 
-#mck-char-warning {
-    width: auto;
-    height: 62px;
-    margin-bottom: -70px;
-    padding-top: 15px;
-    border-radius: 4px;
-    opacity: 0;
-    background-color: var(--km-primary-color, #5f46f8);
-}
-.mck-warning-slide-up {
-    animation: animslideup;
-    -webkit-animation: animslideup;
-    -moz-animation: animslideup;
-    -o-animation: animslideup;
-    animation-duration: 0.7s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-.mck-warning-slide-down {
-    animation: animslidedown;
-    -webkit-animation: animslidedown;
-    -moz-animation: animslidedown;
-    -o-animation: animslidedown;
-    animation-duration: 0.7s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-@keyframes animslideup {
-    from {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-    to {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-}
-@keyframes animslidedown {
-    from {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-    to {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-}
-@-webkit-keyframes animslideup {
-    from {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-    to {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-}
-@-webkit-keyframes animslidedown {
-    from {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-    to {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-}
-@-moz-keyframes animslideup {
-    from {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-    to {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-}
-@-moz-keyframes animslidedown {
-    from {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-    to {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-}
-@-o-keyframes animslideup {
-    from {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-    to {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-}
-@-o-keyframes animslidedown {
-    from {
-        opacity: 1;
-        margin-bottom: -15px;
-    }
-    to {
-        opacity: 0;
-        margin-bottom: -70px;
-    }
-}
 
 #mck-char-warning {
     width: auto;
@@ -1780,7 +1673,7 @@ mck-sidebox .mck-group-member-list li a:hover {
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border: 2px solid var(--km-primary-color, #4b82f7);
+    border: 2px solid var(--km-primary-color, #5f46f8);
     border-radius: 999px;
     box-shadow: 0 10px 26px rgba(42, 68, 116, 0.12);
     min-height: 54px;
@@ -1789,7 +1682,7 @@ mck-sidebox .mck-group-member-list li a:hover {
 }
 
 .mck-textbox-container:focus-within {
-    border-color: var(--km-primary-color, #3d7bff);
+    border-color: var(--km-primary-color, #5f46f8);
     box-shadow: 0 12px 30px rgba(42, 68, 116, 0.16);
 }
 

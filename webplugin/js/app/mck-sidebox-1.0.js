@@ -7668,8 +7668,6 @@ const firstVisibleMsg = {
                 }
                 var enableDropdown = false;
                 var primaryCTA = appOptions.primaryCTA;
-                var isModernLayout =
-                    appOptions.designLayoutName === KommunicateConstants.DESIGN_LAYOUTS.MODERN;
                 var isConvRated =
                     appOptions.oneTimeRating &&
                     !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
@@ -7741,6 +7739,8 @@ const firstVisibleMsg = {
                 }
                 // hasArticles initially will be undefined and after the faq load it will be boolean
                 var faqAvailable =
+                    !kommunicate ||
+                    !kommunicate._globals ||
                     kommunicate._globals.hasArticles === undefined ||
                     kommunicate._globals.hasArticles === true;
 
@@ -7749,7 +7749,7 @@ const firstVisibleMsg = {
                         faqAvailable && !KommunicateUI.isFAQPrimaryCTA()
                     );
 
-                if (!isModernLayout && faqAvailable) {
+                if (!kommunicateCommons.isModernLayoutEnabled() && faqAvailable) {
                     enableDropdown = true;
                     kommunicateCommons.show('.km-option-faq');
                 } else {

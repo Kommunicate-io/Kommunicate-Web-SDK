@@ -3344,7 +3344,7 @@ div#mck-rated:before {
   padding-right: 0 !important;
 }
 [dir=rtl] #mck-tab-conversation {
-  padding-left: 16px;
+  padding-right: 16px;
   float: right;
 }
 [dir=rtl] .mck-contact-list .mck-cont-msg-date {

@@ -257,7 +257,6 @@ function addKommunicatePluginToIframe() {
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
 
-    var options = {};
     var options = addableWindow.applozic._globals;
     options.isAnonymousChat = options.isAnonymousChat;
     options.__KM_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
