@@ -4251,3 +4251,6 @@ div#mck-rated:before {
 .layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on, .layout-modern #mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
   display: block !important;
 }
+.layout-modern #km-faq {
+  display: none !important;
+}
