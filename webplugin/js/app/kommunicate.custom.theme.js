@@ -140,8 +140,29 @@ function KmCustomTheme() {
         if (!rgb) {
             return '#ffffff';
         }
+
+        var brightness = calculatePerceivedBrightness(rgb[0], rgb[1], rgb[2]);
+        if (brightness < 150) {
+            return '#ffffff';
+        }
+        if (brightness > 220) {
+            return '#000000';
+        }
+
         var luminance = calculateLuminance(rgb[0], rgb[1], rgb[2]);
-        return luminance <= 0.179 ? '#ffffff' : '#000000';
+        var contrastWhite = calculateContrastRatio(luminance, 1);
+        var contrastBlack = calculateContrastRatio(luminance, 0);
+        return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
+    }
+
+    function calculatePerceivedBrightness(r, g, b) {
+        return (r * 299 + g * 587 + b * 114) / 1000;
+    }
+
+    function calculateContrastRatio(lumA, lumB) {
+        var light = Math.max(lumA, lumB);
+        var dark = Math.min(lumA, lumB);
+        return (light + 0.05) / (dark + 0.05);
     }
 
     function normalizeColorToRgb(color) {
