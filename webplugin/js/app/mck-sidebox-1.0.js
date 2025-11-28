@@ -7600,6 +7600,8 @@ const firstVisibleMsg = {
 
                 if (data.currentCTA) {
                     var faqAvailable =
+                        !kommunicate ||
+                        !kommunicate._globals ||
                         kommunicate._globals.hasArticles === undefined ||
                         kommunicate._globals.hasArticles === true;
                     faqAvailable && kommunicateCommons.show('#km-faq');

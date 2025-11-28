@@ -1171,10 +1171,9 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.04);
+  background: transparent;
+  border: none;
+  border-radius: 0;
   box-shadow: 0 10px 26px rgba(25, 33, 63, 0.08);
 }
 .km-empty-conversation-card__search-input {
@@ -3344,7 +3343,7 @@ div#mck-rated:before {
   padding-right: 0 !important;
 }
 [dir=rtl] #mck-tab-conversation {
-  padding-right: 16px;
+  padding-left: 16px;
   float: right;
 }
 [dir=rtl] .mck-contact-list .mck-cont-msg-date {

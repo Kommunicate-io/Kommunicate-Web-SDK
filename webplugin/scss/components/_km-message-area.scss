@@ -355,10 +355,9 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: #ffffff;
-        border: 1px solid $card-border-color;
+        background: transparent;
+        border: none;
+        border-radius: 0;
         box-shadow: 0 10px 26px rgba(25, 33, 63, 0.08);
     }
 

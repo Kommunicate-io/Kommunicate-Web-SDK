@@ -1734,7 +1734,7 @@ mck-sidebox .mck-group-member-list li a:hover {
     display: inline-table;
     justify-content: center;
     float: left;
-    padding-left: 5px;
+    padding-inline-start: 5px;
 }
 .mck-intent-box.open svg path {
     fill: #1c1c1c;
@@ -1744,7 +1744,7 @@ mck-sidebox .mck-group-member-list li a:hover {
     background: none;
     width: auto;
     border: none;
-    padding-right: 0;
+    padding-inline-end: 0;
     cursor: pointer;
 }
 .stop-selection {
