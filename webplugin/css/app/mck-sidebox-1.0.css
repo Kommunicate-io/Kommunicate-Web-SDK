@@ -4703,7 +4703,6 @@ div#mck-tab-title.mck-tab-title {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    /* margin-bottom: 10px; */
 }
 .km-talk-to-human-div p {
     font-size: 14px;
@@ -4775,7 +4774,6 @@ div#mck-tab-title.mck-tab-title {
     justify-content: center;
     border-radius: 22px;
     text-align: center;
-    gap: 14px;
     padding: 28px 26px 32px;
 }
 .km-no-results-found > p:first-child {

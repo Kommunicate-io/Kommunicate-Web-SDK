@@ -39,6 +39,8 @@ function KommunicateCommons() {
     };
 
     var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
+    var MODERN_NAV_HEIGHT_EXTRA = 22;
+    var NAV_HEIGHT_OFFSET = 16;
     var cachedBottomNavHeight = null;
 
     _this.adjustIframeHeightForLayout = function (iframeElement) {
@@ -142,6 +144,10 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
+        if (_this.isModernLayoutEnabled()) {
+            height -= MODERN_NAV_HEIGHT_EXTRA;
+        }
+        height -= NAV_HEIGHT_OFFSET;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
     }
