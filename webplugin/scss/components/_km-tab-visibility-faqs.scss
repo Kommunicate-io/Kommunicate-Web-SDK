@@ -32,9 +32,6 @@
     #km-faqanswer {
         display: none !important;
     }
-    #mck-tab-conversation {
-        padding-left: 0;
-    }
 }
 
 %km-faq-category-layout-classic-back {
@@ -84,6 +81,9 @@
     .km-faq-back-btn-wrapper,
     #km-faq-back-btn {
         display: block !important;
+    }
+    #mck-tab-conversation {
+        padding-left: 0;
     }
 }
 
