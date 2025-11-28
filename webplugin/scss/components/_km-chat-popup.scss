@@ -342,7 +342,7 @@ $popupClass: '.chat-popup-widget-container';
         &--horizontal {
             padding-right: 70px;
         }
-        &----actionable {
+        &--actionable {
             width: calc(100% - 50px);
         }
     }
@@ -405,8 +405,6 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
-            width: 205px !important;
-            width: 205px !important;
             width: 205px !important;
         }
     }

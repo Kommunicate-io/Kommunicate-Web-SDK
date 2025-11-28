@@ -755,7 +755,7 @@ input[type=number]::-webkit-outer-spin-button {
   .chat-popup-widget-container--horizontal {
     padding-right: 70px;
   }
-  .chat-popup-widget-container----actionable {
+  .chat-popup-widget-container--actionable {
     width: calc(100% - 50px);
   }
 }
@@ -797,8 +797,6 @@ input[type=number]::-webkit-outer-spin-button {
     width: 145px !important;
   }
   .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
-    width: 205px !important;
-    width: 205px !important;
     width: 205px !important;
   }
   .mck-name-status-container #mck-tab-title,
