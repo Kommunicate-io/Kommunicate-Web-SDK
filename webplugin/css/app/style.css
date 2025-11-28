@@ -1428,7 +1428,6 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-icons-wrapper {
   display: flex;
   align-items: center;
-  gap: 2px;
   order: 1;
   height: 32px;
   padding: 0;
@@ -1500,7 +1499,10 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper:hover, .mck-textbox-container .mck-location-sharing-box:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.mck-textbox-container .mck-text-box-panel button, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button, .mck-textbox-container .mck-location-sharing-box button, .mck-textbox-container .mck-text-box-panel label, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper label, .mck-textbox-container .mck-location-sharing-box label {
+.mck-textbox-container .mck-text-box-panel button, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button, .mck-textbox-container .mck-location-sharing-box button,
+.mck-textbox-container .mck-text-box-panel label,
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label,
+.mck-textbox-container .mck-location-sharing-box label {
   width: 100%;
   height: 100%;
   padding: 0;
@@ -1514,7 +1516,10 @@ input[type=number]::-webkit-outer-spin-button {
   min-width: 0 !important;
   min-height: 0 !important;
 }
-.mck-textbox-container .mck-text-box-panel button svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg, .mck-textbox-container .mck-location-sharing-box button svg, .mck-textbox-container .mck-text-box-panel label svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg, .mck-textbox-container .mck-location-sharing-box label svg {
+.mck-textbox-container .mck-text-box-panel button svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg, .mck-textbox-container .mck-location-sharing-box button svg,
+.mck-textbox-container .mck-text-box-panel label svg,
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg,
+.mck-textbox-container .mck-location-sharing-box label svg {
   width: 20px !important;
   height: 20px !important;
   min-width: 20px !important;
@@ -1524,7 +1529,15 @@ input[type=number]::-webkit-outer-spin-button {
   flex-shrink: 0;
   display: block;
 }
-.mck-textbox-container .mck-text-box-panel button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box button svg.mck-icon-upload, .mck-textbox-container .mck-text-box-panel button svg#mck-mic-btn, .mck-textbox-container .mck-location-sharing-box button svg#mck-mic-btn, .mck-textbox-container .mck-text-box-panel button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-text-box-panel label svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box label svg.mck-icon-upload, .mck-textbox-container .mck-text-box-panel label svg#mck-mic-btn, .mck-textbox-container .mck-location-sharing-box label svg#mck-mic-btn, .mck-textbox-container .mck-text-box-panel label svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box label svg[viewBox="0 0 24 24"] {
+.mck-textbox-container .mck-text-box-panel button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box button svg.mck-icon-upload, .mck-textbox-container .mck-text-box-panel button svg#mck-mic-btn, .mck-textbox-container .mck-location-sharing-box button svg#mck-mic-btn, .mck-textbox-container .mck-text-box-panel button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box button svg[viewBox="0 0 24 24"],
+.mck-textbox-container .mck-text-box-panel label svg.mck-icon-upload,
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg.mck-icon-upload,
+.mck-textbox-container .mck-location-sharing-box label svg.mck-icon-upload,
+.mck-textbox-container .mck-text-box-panel label svg#mck-mic-btn,
+.mck-textbox-container .mck-location-sharing-box label svg#mck-mic-btn,
+.mck-textbox-container .mck-text-box-panel label svg[viewBox="0 0 24 24"],
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg[viewBox="0 0 24 24"],
+.mck-textbox-container .mck-location-sharing-box label svg[viewBox="0 0 24 24"] {
   width: 20px !important;
   height: 20px !important;
 }
@@ -1536,7 +1549,8 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
   padding: 0;
 }
-.mck-textbox-container #mck-btn-attach-box button, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
+.mck-textbox-container #mck-btn-attach-box button,
+.mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
 .mck-textbox-container .mck-attach-img-vid-box button,
 .mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel {
   width: 28px !important;
@@ -1549,7 +1563,8 @@ input[type=number]::-webkit-outer-spin-button {
   justify-content: center;
   position: relative;
 }
-.mck-textbox-container #mck-btn-attach-box button svg, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
+.mck-textbox-container #mck-btn-attach-box button svg,
+.mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
 .mck-textbox-container .mck-attach-img-vid-box button svg,
 .mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel svg {
   width: 20px !important;
@@ -1566,7 +1581,8 @@ input[type=number]::-webkit-outer-spin-button {
   min-width: 0 !important;
   line-height: 1;
 }
-.mck-textbox-container #mck-btn-attach-box > *, .mck-textbox-container #mck-btn-attach-box > * *,
+.mck-textbox-container #mck-btn-attach-box > *,
+.mck-textbox-container #mck-btn-attach-box > * *,
 .mck-textbox-container .mck-attach-img-vid-box > *,
 .mck-textbox-container .mck-attach-img-vid-box > * * {
   box-sizing: border-box;
