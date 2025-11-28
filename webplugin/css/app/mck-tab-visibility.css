@@ -94,21 +94,21 @@
   padding-right: 0 !important;
 }
 
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
   display: none !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
   display: none !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
   display: flex !important;
 }
-.layout-default #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
   display: block !important;
 }
 
-.layout-default #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
+.layout-classic #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
   display: none !important;
 }
 
@@ -145,8 +145,8 @@
   display: none !important;
 }
 
-.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
-.layout-default #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
+.layout-classic #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
+.layout-classic #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
   display: block !important;
 }
 
@@ -212,18 +212,18 @@
   display: flex !important;
 }
 
-.layout-default #mck-msg-new {
+.layout-classic #mck-msg-new {
   background: var(--km-accent, #5f46f8) !important;
   color: var(--km-accent-contrast, #ffffff) !important;
 }
-.layout-default #km-whats-new-placeholder,
-.layout-default .km-whats-new-list,
-.layout-default .km-whats-new-empty {
+.layout-classic #km-whats-new-placeholder,
+.layout-classic .km-whats-new-list,
+.layout-classic .km-whats-new-empty {
   display: none !important;
 }
-.layout-default .km-empty-conversation-container,
-.layout-default .km-modern-empty-state,
-.layout-default .km-conversations-empty {
+.layout-classic .km-empty-conversation-container,
+.layout-classic .km-modern-empty-state,
+.layout-classic .km-conversations-empty {
   display: none !important;
 }
 

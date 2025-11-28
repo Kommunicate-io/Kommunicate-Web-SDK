@@ -519,7 +519,7 @@ function ApplozicSidebox() {
             ) {
                 resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.MODERN;
             } else {
-                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'default';
+                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
             }
             options.designLayoutName = resolvedDesignLayoutName;
             options.appSettings.designLayoutName = resolvedDesignLayoutName;

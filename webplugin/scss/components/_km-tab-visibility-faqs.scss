@@ -34,7 +34,7 @@
     }
 }
 
-%km-faq-category-layout-default-back {
+%km-faq-category-layout-classic-back {
     .km-faq-back-btn-wrapper,
     #km-faq-back-btn {
         display: block !important;
@@ -98,9 +98,9 @@
 @include apply-state($km-tab-faqs-selectors, '%km-tab-faqs-base');
 @include apply-state($km-subsection-faq-category-selectors, '%km-faq-category');
 @include apply-scoped-state(
-    '.layout-default',
+    '.layout-classic',
     $km-subsection-faq-category-selectors,
-    '%km-faq-category-layout-default-back'
+    '%km-faq-category-layout-classic-back'
 );
 @include apply-state($km-subsection-faq-list-selectors, '%km-faq-list');
 @include apply-state($km-subsection-faq-article-selectors, '%km-faq-article');

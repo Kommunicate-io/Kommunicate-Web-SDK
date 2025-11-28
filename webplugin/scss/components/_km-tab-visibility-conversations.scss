@@ -74,7 +74,7 @@
     }
 }
 
-%km-layout-default-conversation-list {
+%km-layout-classic-conversation-list {
     #mck-tab-individual {
         display: none !important;
     }
@@ -90,7 +90,7 @@
     }
 }
 
-%km-layout-default-hide-faq-back {
+%km-layout-classic-hide-faq-back {
     .km-faq-back-btn-wrapper {
         display: none !important;
     }
@@ -105,12 +105,12 @@
 );
 
 @include apply-scoped-state(
-    '.layout-default',
-    $km-layout-default-conversation-list-selectors,
-    '%km-layout-default-conversation-list'
+    '.layout-classic',
+    $km-layout-classic-conversation-list-selectors,
+    '%km-layout-classic-conversation-list'
 );
 @include apply-scoped-state(
-    '.layout-default',
+    '.layout-classic',
     $km-tab-conversation-selectors,
-    '%km-layout-default-hide-faq-back'
+    '%km-layout-classic-hide-faq-back'
 );

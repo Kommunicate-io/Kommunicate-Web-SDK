@@ -12,7 +12,7 @@ HEADER_CTA = {
 KommunicateConstants = {
     KM_WIDGET_RELEASE_VERSION: '6.3',
     DESIGN_LAYOUTS: {
-        DEFAULT: 'default',
+        DEFAULT: 'classic',
         MODERN: 'modern',
     },
     EVENT_IDS: {

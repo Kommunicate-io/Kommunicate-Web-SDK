@@ -328,9 +328,9 @@ $known-prefixes
   padding-bottom: 30px;
 }
 
-.layout-default .km-bottom-tab-wrapper,
-.layout-default .km-bottom-tab-bar,
-.layout-default .km-bottom-tab {
+.layout-classic .km-bottom-tab-wrapper,
+.layout-classic .km-bottom-tab-bar,
+.layout-classic .km-bottom-tab {
   display: none !important;
 }
 
