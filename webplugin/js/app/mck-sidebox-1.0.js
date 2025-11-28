@@ -9083,12 +9083,12 @@ const firstVisibleMsg = {
                             }
                         } else {
                             console.log('msg.contentType === 23 && metadata.msg_type === BUTTON');
-                            var fallbackButtonTitle =
+                            const fallbackButtonTitle =
                                 (MCK_LABELS &&
                                     (MCK_LABELS['template.button.default'] ||
                                         MCK_LABELS['button.default'])) ||
                                 'Button';
-                            var defaultButton = buildTemplateButton(fallbackButtonTitle);
+                            const defaultButton = buildTemplateButton(fallbackButtonTitle);
                             $applozic(templateTargetSelector).after(defaultButton);
                         }
                     }
@@ -9098,7 +9098,14 @@ const firstVisibleMsg = {
                         !(msg.metadata.hidden === 'false' ? false : true)
                     ) {
                         console.log('msg.contentType === 23 && metadata.msg_type === INPUT');
-                        var inputRow = buildTemplateInputRow('Submit', { withIds: true });
+                        const submitButtonLabel =
+                            (MCK_LABELS &&
+                                (MCK_LABELS['template.button.submit'] ||
+                                    MCK_LABELS['button.submit'])) ||
+                            'Submit';
+                        const inputRow = buildTemplateInputRow(submitButtonLabel, {
+                            withIds: true,
+                        });
                         $applozic(templateTargetSelector).after(inputRow.container);
                         $applozic(inputRow.button).click(function () {
                             if (inputRow.input.value.length > 1) {
