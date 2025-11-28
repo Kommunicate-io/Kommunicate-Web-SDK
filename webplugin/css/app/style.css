@@ -3371,7 +3371,6 @@ div#mck-rated:before {
   transform: rotate(180deg) !important;
 }
 [dir=rtl] .mck-tab-link {
-  padding-left: 10px !important;
   padding-right: 0 !important;
 }
 [dir=rtl] .mck-agent-image-container {
@@ -4159,6 +4158,9 @@ div#mck-rated:before {
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faqanswer {
   display: none !important;
 }
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #mck-tab-conversation {
+  padding-left: 0;
+}
 
 .layout-classic #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category .km-faq-back-btn-wrapper,
 .layout-classic #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category #km-faq-back-btn {
@@ -4184,6 +4186,9 @@ div#mck-rated:before {
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list .km-faq-back-btn-wrapper,
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #km-faq-back-btn {
   display: block !important;
+}
+#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list #mck-tab-conversation {
+  padding-left: 0;
 }
 
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-article #km-faqanswer {

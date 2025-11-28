@@ -4581,7 +4581,6 @@ div#mck-tab-title.mck-tab-title {
     height: auto;
     display: flex;
     align-items: center;
-    padding-right: 8px !important;
 }
 
 .km-conversation-container-right {
