@@ -3877,7 +3877,11 @@ const firstVisibleMsg = {
                 }
                 IS_CAPTURE_PHOTO && kommunicateCommons.show('#mck-img-file-up');
                 IS_CAPTURE_VIDEO && kommunicateCommons.show('#mck-vid-file-up');
-                EMOJI_LIBRARY && kommunicateCommons.show('#mck-btn-smiley-box');
+                if (EMOJI_LIBRARY) {
+                    kommunicateCommons.show('#mck-btn-smiley-box');
+                } else {
+                    kommunicateCommons.hide('#mck-btn-smiley-box');
+                }
             };
             _this.toggleMediaOptions = function (el) {
                 var text = '';

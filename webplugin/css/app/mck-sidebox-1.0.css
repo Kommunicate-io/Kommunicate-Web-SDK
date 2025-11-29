@@ -1881,13 +1881,6 @@ ul.mck-intent-menu > li:hover {
     margin-left: 12px;
 }
 
-#send-button-wrapper .mck-btn-text-panel {
-    background: #eef1f5 !important;
-    color: #404854;
-    width: 38px !important;
-    height: 38px !important;
-}
-
 .mck-sidebox .mck-btn-smiley:active,
 .mck-sidebox .mck-btn-smiley:focus {
     box-shadow: none;

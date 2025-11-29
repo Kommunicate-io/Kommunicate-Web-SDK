@@ -941,30 +941,66 @@
 
         // Send button container
         #send-button-wrapper {
-            @extend .mck-text-box-panel;
             order: 5;
             margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+
+            // Remove any inherited panel styles
+            &.mck-text-box-panel {
+                width: auto !important;
+                height: auto !important;
+                min-width: auto !important;
+            }
+
+            .mck-blk-12 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: auto !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            // Override legacy mck-sidebox-1.0.css styles
+            // Make send button prominent as it's the primary action
+            .mck-btn-text-panel {
+                width: 36px !important;
+                height: 36px !important;
+                background: var(--km-primary-color, #5f46f8) !important;
+                color: #ffffff !important;
+                border-radius: 50% !important;
+                transition: all 0.2s ease !important;
+
+                &:hover,
+                &:focus {
+                    background: var(--km-primary-color-dark, #4a35c6) !important;
+                    transform: scale(1.05);
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
 
             .mck-icon-send {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 100%;
-                height: 100%;
+                width: 20px;
+                height: 20px;
                 padding: 0;
 
                 svg {
                     width: 20px;
                     height: 20px;
-                    fill: var(--km-text-color, #1c1c1c);
+                    fill: currentColor;
                     display: block;
                 }
-            }
-
-            // Send button styles
-            .mck-btn-text-panel {
-                @extend .mck-btn-text-panel--send;
-                background: transparent !important;
             }
         }
 

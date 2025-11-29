@@ -836,8 +836,8 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 /* Chat Popup Template Code Ends */
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel, .mck-btn-text-panel--send, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel, .mck-btn-text-panel--small, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper, .mck-textbox-container .mck-location-sharing-box {
+.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel, .mck-btn-text-panel--send, .mck-btn-text-panel--small, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
+.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -850,29 +850,29 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 0.2s ease;
   line-height: 1 !important;
 }
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel svg, .mck-btn-text-panel--send svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel svg, .mck-btn-text-panel--small svg, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper svg, .mck-textbox-container .mck-location-sharing-box svg {
+.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel svg, .mck-btn-text-panel--send svg, .mck-btn-text-panel--small svg, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
+.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box svg {
   width: 20px !important;
   height: 20px !important;
   fill: currentColor;
   display: block;
   flex-shrink: 0;
 }
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:hover, .mck-btn-text-panel--send:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:hover, .mck-btn-text-panel--small:hover, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:hover,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:focus, .mck-btn-text-panel--send:focus, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:focus, .mck-btn-text-panel--small:focus, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:focus,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper:focus, .mck-textbox-container .mck-location-sharing-box:focus {
+.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:hover, .mck-btn-text-panel--send:hover, .mck-btn-text-panel--small:hover, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:hover,
+.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:focus, .mck-btn-text-panel--send:focus, .mck-btn-text-panel--small:focus, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:focus,
+.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box:focus {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
 .mck-btn-text-panel--small, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper, .mck-textbox-container .mck-location-sharing-box {
+.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
   border-radius: 4px;
 }
 
-.mck-btn-text-panel--send, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel {
+.mck-btn-text-panel--send {
   width: 36px !important;
   height: 36px !important;
   min-width: 36px !important;
@@ -1516,16 +1516,13 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-icons-wrapper .mck-blk-12,
 .mck-textbox-container .mck-icons-wrapper .mck-blk-2,
 .mck-textbox-container .mck-icons-wrapper .mck-text-box-panel,
-.mck-textbox-container .mck-icons-wrapper .mck-location-sharing-box #send-button-wrapper,
-.mck-textbox-container .mck-location-sharing-box .mck-icons-wrapper #send-button-wrapper,
 .mck-textbox-container .mck-icons-wrapper .mck-location-sharing-box {
   display: contents;
   margin: 0;
   padding: 0;
 }
-.mck-textbox-container .mck-text-box-panel button, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button, .mck-textbox-container .mck-location-sharing-box button,
+.mck-textbox-container .mck-text-box-panel button, .mck-textbox-container .mck-location-sharing-box button,
 .mck-textbox-container .mck-text-box-panel label,
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label,
 .mck-textbox-container .mck-location-sharing-box label {
   width: 100%;
   height: 100%;
@@ -1540,9 +1537,8 @@ input[type=number]::-webkit-outer-spin-button {
   min-width: 0 !important;
   min-height: 0 !important;
 }
-.mck-textbox-container .mck-text-box-panel button svg, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg, .mck-textbox-container .mck-location-sharing-box button svg,
+.mck-textbox-container .mck-text-box-panel button svg, .mck-textbox-container .mck-location-sharing-box button svg,
 .mck-textbox-container .mck-text-box-panel label svg,
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg,
 .mck-textbox-container .mck-location-sharing-box label svg {
   width: 20px !important;
   height: 20px !important;
@@ -1553,14 +1549,12 @@ input[type=number]::-webkit-outer-spin-button {
   flex-shrink: 0;
   display: block;
 }
-.mck-textbox-container .mck-text-box-panel button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box button svg.mck-icon-upload, .mck-textbox-container .mck-text-box-panel button svg#mck-mic-btn, .mck-textbox-container .mck-location-sharing-box button svg#mck-mic-btn, .mck-textbox-container .mck-text-box-panel button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box #send-button-wrapper button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box button svg[viewBox="0 0 24 24"],
+.mck-textbox-container .mck-text-box-panel button svg.mck-icon-upload, .mck-textbox-container .mck-location-sharing-box button svg.mck-icon-upload, .mck-textbox-container .mck-text-box-panel button svg#mck-mic-btn, .mck-textbox-container .mck-location-sharing-box button svg#mck-mic-btn, .mck-textbox-container .mck-text-box-panel button svg[viewBox="0 0 24 24"], .mck-textbox-container .mck-location-sharing-box button svg[viewBox="0 0 24 24"],
 .mck-textbox-container .mck-text-box-panel label svg.mck-icon-upload,
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg.mck-icon-upload,
 .mck-textbox-container .mck-location-sharing-box label svg.mck-icon-upload,
 .mck-textbox-container .mck-text-box-panel label svg#mck-mic-btn,
 .mck-textbox-container .mck-location-sharing-box label svg#mck-mic-btn,
 .mck-textbox-container .mck-text-box-panel label svg[viewBox="0 0 24 24"],
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper label svg[viewBox="0 0 24 24"],
 .mck-textbox-container .mck-location-sharing-box label svg[viewBox="0 0 24 24"] {
   width: 20px !important;
   height: 20px !important;
@@ -1684,25 +1678,56 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper {
   order: 5;
   margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper.mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper.mck-location-sharing-box {
+  width: auto !important;
+  height: auto !important;
+  min-width: auto !important;
+}
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-blk-12 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel {
+  width: 36px !important;
+  height: 36px !important;
+  background: var(--km-primary-color, #5f46f8) !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+}
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:focus {
+  background: var(--km-primary-color-dark, #4a35c6) !important;
+  transform: scale(1.05);
+}
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:active {
+  transform: scale(0.95);
 }
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-icon-send {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
   padding: 0;
 }
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-icon-send svg {
   width: 20px;
   height: 20px;
-  fill: var(--km-text-color, #1c1c1c);
+  fill: currentColor;
   display: block;
 }
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel {
-  background: transparent !important;
-}
-.mck-textbox-container .mck-location-sharing-box .mck-text-box-panel .mck-blk-12, .mck-textbox-container .mck-location-sharing-box .mck-location-sharing-box .mck-blk-12, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-blk-12 {
+.mck-textbox-container .mck-location-sharing-box .mck-text-box-panel .mck-blk-12, .mck-textbox-container .mck-location-sharing-box .mck-location-sharing-box .mck-blk-12 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3628,7 +3653,7 @@ div#mck-rated:before {
   float: inline-start;
   margin-bottom: 4px !important;
 }
-[dir=rtl] .mck-text-box-panel .mck-blk-12, [dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12, .mck-textbox-container [dir=rtl] .mck-location-sharing-box .mck-blk-12, [dir=rtl] .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-blk-12, .mck-textbox-container .mck-location-sharing-box [dir=rtl] #send-button-wrapper .mck-blk-12 {
+[dir=rtl] .mck-text-box-panel .mck-blk-12, [dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12, .mck-textbox-container [dir=rtl] .mck-location-sharing-box .mck-blk-12 {
   height: 30px;
   padding: 0 0 0 10px;
 }
