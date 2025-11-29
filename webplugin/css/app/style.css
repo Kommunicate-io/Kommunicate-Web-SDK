@@ -1413,11 +1413,10 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   gap: 0;
-  padding: 10px 10px;
+  padding: 6px 6px 6px 10px;
   border: 1.5px solid rgba(17, 24, 39, 0.12);
-  border-radius: 30px;
-  box-shadow: 0 8px 18px rgba(42, 68, 116, 0.08);
-  min-height: 54px;
+  border-radius: 20px;
+  background-color: #fff;
   box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1427,12 +1426,17 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .mck-textbox-container .mck-icons-wrapper {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   order: 1;
-  height: 32px;
-  padding: 0;
-  margin: 0;
+  width: 84px;
+  height: auto;
+  min-height: 32px;
+  padding-top: 5px;
+  margin: 0 4px 0 0;
   min-width: 0;
+  row-gap: 4px;
 }
 .mck-textbox-container .mck-icons-wrapper .mck-btn {
   width: 28px;
@@ -1680,6 +1684,8 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 14px;
   line-height: 1.5;
   color: #1c1c1c;
+  display: flex;
+  align-items: center;
 }
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper {
   order: 5;

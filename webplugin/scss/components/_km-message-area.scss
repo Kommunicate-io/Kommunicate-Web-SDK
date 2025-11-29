@@ -632,11 +632,10 @@
     display: flex;
     align-items: center;
     gap: 0;
-    padding: 10px 10px;
+    padding: 6px 6px 6px 10px;
     border: 1.5px solid rgba(17, 24, 39, 0.12);
-    border-radius: 30px;
-    box-shadow: 0 8px 18px rgba(42, 68, 116, 0.08);
-    min-height: 54px;
+    border-radius: 20px;
+    background-color: #fff;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
@@ -648,12 +647,17 @@
     // Icons wrapper - contains all action buttons
     .mck-icons-wrapper {
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
+        align-items: flex-start; // Align to the top of the container
+        align-content: flex-start; // Stack rows from the top
         order: 1;
-        height: 32px;
-        padding: 0;
-        margin: 0;
+        width: 84px; // 28px * 3 icons = 84px
+        height: auto;
+        min-height: 32px;
+        padding-top: 5px; // Match the padding of the text input
+        margin: 0 4px 0 0;
         min-width: 0;
+        row-gap: 4px;
 
         // Base button styles for all icon buttons
         .mck-btn {
@@ -932,6 +936,8 @@
             font-size: $heading-secondary;
             line-height: 1.5;
             color: $text-primary-color;
+            display: flex;
+            align-items: center;
         }
 
         // Send button container
