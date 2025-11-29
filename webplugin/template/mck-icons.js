@@ -431,6 +431,29 @@
         <circle cx="17.5" cy="5.5" r="1" fill="currentColor" />
         <circle cx="6.5" cy="17" r="1" fill="currentColor" />
     </symbol>
+    <symbol id="icon-63" viewBox="0 0 24 24">
+        <path
+            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+            fill="currentColor"
+        />
+    </symbol>
+    <symbol id="icon-64" viewBox="0 0 24 24">
+        <path
+            d="M6 9l6 6 6-6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+        />
+    </symbol>
+    <symbol id="icon-65" viewBox="0 0 20 20">
+        <path
+            d="M7.167 15.416V4.583a.75.75 0 0 1 1.5 0v10.833a.75.75 0 0 1-1.5 0Zm4.166-2.5V7.083a.75.75 0 0 1 1.5 0v5.833a.75.75 0 0 1-1.5 0ZM3 11.25v-2.5a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Zm12.5 0v-2.5a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Z"
+            fill="#5F46F8"
+            class="icon"
+        />
+    </symbol>
 </svg>
 `;
         document.body.insertBefore(div, document.body.firstChild);
