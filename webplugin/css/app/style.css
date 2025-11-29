@@ -836,8 +836,7 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 /* Chat Popup Template Code Ends */
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel, .mck-btn-text-panel--send, .mck-btn-text-panel--small, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
+.mck-btn-text-panel--send, .mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -850,22 +849,18 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 0.2s ease;
   line-height: 1 !important;
 }
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel svg, .mck-btn-text-panel--send svg, .mck-btn-text-panel--small svg, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box svg {
+.mck-btn-text-panel--send svg, .mck-btn-text-panel--small svg, .mck-textbox-container .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box svg {
   width: 20px !important;
   height: 20px !important;
   fill: currentColor;
   display: block;
   flex-shrink: 0;
 }
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:hover, .mck-btn-text-panel--send:hover, .mck-btn-text-panel--small:hover, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:hover,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:focus, .mck-btn-text-panel--send:focus, .mck-btn-text-panel--small:focus, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel:focus,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box:focus {
+.mck-btn-text-panel--send:hover, .mck-btn-text-panel--small:hover, .mck-textbox-container .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-btn-text-panel--send:focus, .mck-btn-text-panel--small:focus, .mck-textbox-container .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box:focus {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.mck-btn-text-panel--small, .mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
+.mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -877,6 +872,15 @@ input[type=number]::-webkit-outer-spin-button {
   height: 36px !important;
   min-width: 36px !important;
   border-radius: 50%;
+  color: #ffffff !important;
+  transition: all 0.2s ease !important;
+}
+.mck-btn-text-panel--send:hover, .mck-btn-text-panel--send:focus {
+  background: var(--km-primary-color-dark, #4a35c6) !important;
+  transform: scale(1.05);
+}
+.mck-btn-text-panel--send:active {
+  transform: scale(0.95);
 }
 
 .mck-group-inner {
@@ -1568,9 +1572,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0;
 }
 .mck-textbox-container #mck-btn-attach-box button,
-.mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel,
-.mck-textbox-container .mck-attach-img-vid-box button,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel {
+.mck-textbox-container .mck-attach-img-vid-box button {
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -1582,9 +1584,7 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
 }
 .mck-textbox-container #mck-btn-attach-box button svg,
-.mck-textbox-container #mck-btn-attach-box .mck-btn-text-panel svg,
-.mck-textbox-container .mck-attach-img-vid-box button svg,
-.mck-textbox-container .mck-attach-img-vid-box .mck-btn-text-panel svg {
+.mck-textbox-container .mck-attach-img-vid-box button svg {
   width: 20px !important;
   height: 20px !important;
   margin: 0 !important;
@@ -1604,6 +1604,20 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-attach-img-vid-box > *,
 .mck-textbox-container .mck-attach-img-vid-box > * * {
   box-sizing: border-box;
+}
+.mck-textbox-container .mck-btn-text-panel {
+  color: #6b7583;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.mck-textbox-container .mck-btn-text-panel svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
+}
+.mck-textbox-container .mck-btn-text-panel:hover, .mck-textbox-container .mck-btn-text-panel:focus {
+  background-color: rgba(53, 112, 255, 0.1) !important;
+  color: #2f3747;
 }
 .mck-textbox-container #mck-mic-animation-container {
   order: 3;
@@ -1698,21 +1712,6 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0 !important;
   background: transparent !important;
 }
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel {
-  width: 36px !important;
-  height: 36px !important;
-  background: var(--km-primary-color, #5f46f8) !important;
-  color: #ffffff !important;
-  border-radius: 50% !important;
-  transition: all 0.2s ease !important;
-}
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:focus {
-  background: var(--km-primary-color-dark, #4a35c6) !important;
-  transform: scale(1.05);
-}
-.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:active {
-  transform: scale(0.95);
-}
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-icon-send {
   display: flex;
   align-items: center;
@@ -1732,17 +1731,6 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: center;
   justify-content: center;
   height: 28px;
-}
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  border-radius: 50%;
-  color: #6b7583;
-}
-.mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:hover, .mck-textbox-container .mck-location-sharing-box .mck-btn-text-panel:focus {
-  background-color: rgba(53, 112, 255, 0.1) !important;
-  color: #2f3747;
 }
 
 .km-typing-wrapper {

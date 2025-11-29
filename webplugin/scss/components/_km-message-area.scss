@@ -39,6 +39,18 @@
 
 .mck-btn-text-panel--send {
     @include mck-btn-panel(36px, 50%);
+    color: #ffffff !important;
+    transition: all 0.2s ease !important;
+
+    &:hover,
+    &:focus {
+        background: var(--km-primary-color-dark, #4a35c6) !important;
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
 }
 .mck-group-inner {
     background: #fafafa;
@@ -812,8 +824,7 @@
         padding: 0;
 
         // Reset all button styles
-        button,
-        .mck-btn-text-panel {
+        button {
             width: 28px !important;
             height: 28px !important;
             min-width: 28px !important;
@@ -847,9 +858,24 @@
                 box-sizing: border-box;
             }
         }
+    }
 
-        .mck-btn-text-panel {
-            @extend .mck-btn-text-panel--small;
+    .mck-btn-text-panel {
+        @extend .mck-btn-text-panel--small;
+        color: #6b7583;
+        transition: background-color 0.2s ease, color 0.2s ease;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: rgba(53, 112, 255, 0.1) !important;
+            color: #2f3747;
         }
     }
 
@@ -966,27 +992,6 @@
                 background: transparent !important;
             }
 
-            // Override legacy mck-sidebox-1.0.css styles
-            // Make send button prominent as it's the primary action
-            .mck-btn-text-panel {
-                width: 36px !important;
-                height: 36px !important;
-                background: var(--km-primary-color, #5f46f8) !important;
-                color: #ffffff !important;
-                border-radius: 50% !important;
-                transition: all 0.2s ease !important;
-
-                &:hover,
-                &:focus {
-                    background: var(--km-primary-color-dark, #4a35c6) !important;
-                    transform: scale(1.05);
-                }
-
-                &:active {
-                    transform: scale(0.95);
-                }
-            }
-
             .mck-icon-send {
                 display: flex;
                 align-items: center;
@@ -1009,19 +1014,6 @@
             align-items: center;
             justify-content: center;
             height: 28px;
-        }
-
-        // Base button styles - using higher specificity (.mck-textbox-container .mck-btn-text-panel)
-        // reduces need for !important
-        .mck-btn-text-panel {
-            @include mck-btn-panel(28px, 50%);
-            color: #6b7583;
-
-            &:hover,
-            &:focus {
-                background-color: rgba(53, 112, 255, 0.1) !important;
-                color: #2f3747;
-            }
         }
     }
 }
