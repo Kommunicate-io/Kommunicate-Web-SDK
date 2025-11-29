@@ -11,7 +11,7 @@
 #km-whats-new-placeholder,
 #faq-common,
 #mck-no-conversations {
-    display: none !important;
+    @extend %km-hidden;
 }
 
 #km-widget-options,
@@ -24,7 +24,7 @@
 #km-faqanswer,
 .km-faq-back-btn-wrapper,
 #km-faq-back-btn {
-    display: none !important;
+    @extend %km-hidden;
 }
 
 #mck-tab-conversation {

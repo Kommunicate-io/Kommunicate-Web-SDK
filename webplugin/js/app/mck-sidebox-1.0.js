@@ -2391,13 +2391,11 @@ const firstVisibleMsg = {
                     data.userEncryptionKey
                 );
                 if (!EMOJI_LIBRARY) {
-                    // EMOJI_LIBRARY = false ->hide emoticon from chat widget
-                    //Below code might be required once emoticons are added
-                    /*document.getElementById('mck-textbox-container').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
-                    document.getElementById('mck-text-box').classList.add('mck-text-box-width-increase');*/
+                    // hide emoticon button when emoji library is disabled
+                    kommunicateCommons.hide('#mck-btn-smiley');
                 } else {
-                    // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
-                    kommunicateCommons.show('#mck-btn-smiley-box');
+                    // EMOJI_LIBRARY = true -> include the emoticons and the emoticon library
+                    kommunicateCommons.show('#mck-btn-smiley');
                     mckMessageLayout.initEmojis();
                 }
 
@@ -3854,9 +3852,9 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-btn-loc');
                 }
                 if (EMOJI_LIBRARY) {
-                    kommunicateCommons.show('#mck-btn-smiley-box');
+                    kommunicateCommons.show('#mck-btn-smiley');
                 } else {
-                    kommunicateCommons.hide('#mck-btn-smiley-box');
+                    kommunicateCommons.hide('#mck-btn-smiley');
                 }
                 IS_CAPTURE_PHOTO
                     ? kommunicateCommons.show('#mck-img-file-up')
@@ -3878,9 +3876,9 @@ const firstVisibleMsg = {
                 IS_CAPTURE_PHOTO && kommunicateCommons.show('#mck-img-file-up');
                 IS_CAPTURE_VIDEO && kommunicateCommons.show('#mck-vid-file-up');
                 if (EMOJI_LIBRARY) {
-                    kommunicateCommons.show('#mck-btn-smiley-box');
+                    kommunicateCommons.show('#mck-btn-smiley');
                 } else {
-                    kommunicateCommons.hide('#mck-btn-smiley-box');
+                    kommunicateCommons.hide('#mck-btn-smiley');
                 }
             };
             _this.toggleMediaOptions = function (el) {

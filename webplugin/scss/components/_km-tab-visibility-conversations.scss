@@ -1,7 +1,7 @@
 // Conversation tab visibility states
 %km-hide-conversation-chrome {
     .mck-conversation {
-        display: none !important;
+        @extend %km-hidden;
     }
 
     .mck-agent-image-container,
@@ -9,7 +9,7 @@
     #mck-agent-status-text,
     .mck-typing-box,
     #mck-tab-status {
-        display: none !important;
+        @extend %km-hidden;
     }
 }
 
@@ -23,7 +23,7 @@
     }
 
     .km-faq-back-btn-wrapper {
-        display: none !important;
+        @extend %km-hidden;
     }
 
     #km-faq {
@@ -39,15 +39,15 @@
         display: block !important;
     }
     #km-widget-options {
-        display: none !important;
+        @extend %km-hidden;
     }
     #mck-tab-individual {
-        display: none !important;
+        @extend %km-hidden;
     }
 
     /* Hide start-new button when conversations empty state is visible */
     .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
-        display: none !important;
+        @extend %km-hidden;
     }
 }
 
@@ -56,16 +56,16 @@
         display: flex !important;
     }
     #km-faq {
-        display: none !important;
+        @extend %km-hidden;
     }
     #mck-tab-conversation {
-        display: none !important;
+        @extend %km-hidden;
     }
     #mck-contacts-content {
-        display: none !important;
+        @extend %km-hidden;
     }
     .km-bottom-tab-wrapper {
-        display: none !important;
+        @extend %km-hidden;
     }
     .mck-back-btn-container {
         display: inline-flex !important;
@@ -76,11 +76,11 @@
 
 %km-layout-classic-conversation-list {
     #mck-tab-individual {
-        display: none !important;
+        @extend %km-hidden;
     }
     .mck-name-status-container,
     .mck-back-btn-container {
-        display: none !important;
+        @extend %km-hidden;
     }
     #mck-tab-conversation {
         display: flex !important;
@@ -92,7 +92,7 @@
 
 %km-layout-classic-hide-faq-back {
     .km-faq-back-btn-wrapper {
-        display: none !important;
+        @extend %km-hidden;
     }
 }
 

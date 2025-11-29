@@ -11,6 +11,19 @@
   --km-font-body-color: #6e6e6e;
   --km-font-body-size: 14px;
   --km-accent-rgb: 95, 70, 248;
+  --km-font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --km-modal-header-bg: #5c5aa7;
+  --km-modal-header-color: #ffffff;
+  --km-modal-body-bg: #ffffff;
+  --km-modal-input-bg: #fafafa;
+  --km-modal-input-border: #dcdcdc;
+  --km-modal-error-bg: #ffdfdf;
+  --km-modal-error-border: #ffcfcf;
+  --km-modal-error-color: #885e5e;
+  --km-modal-success-border: #bfe0ec;
+  --km-modal-success-color: #3c763d;
+  --km-link-color: #11505d;
+  --km-card-shadow: 0px 0px 12px 0px rgba(4, 68, 77, 0.1490196078);
 }
 
 /**
@@ -22,8 +35,28 @@ $known-prefixes
  ms - microsoft browser ex- ie, edge
  o - opera browsers
 **/
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #km-widget-options,
+#mck-tab-conversation,
+#mck-tab-individual,
+#mck-contacts-content,
+#km-faqdiv,
+.km-faq-category-list-container,
+#km-faq-list-container,
+#km-faqanswer,
+.km-faq-back-btn-wrapper,
+#km-faq-back-btn, #km-whats-new-placeholder,
+#faq-common,
+#mck-no-conversations, .km-hide-message, .mck-msg-left [data-hidden=true] {
+  display: none !important;
+}
+
 body {
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
 }
 body.accesibility :focus {
   outline: 2px auto #7761f9;
@@ -34,7 +67,7 @@ body:not(.accesibility):focus {
 
 button {
   font-size: 14px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   font-weight: 500;
   padding: 4px 4px;
   line-height: 19px;
@@ -44,9 +77,9 @@ input,
 select,
 textarea {
   font-size: 14px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
-  border: 2px solid #dcdcdc;
-  background-color: #fafafa;
+  font-family: var(--km-font-family) !important;
+  border: 2px solid var(--km-modal-input-border);
+  background-color: var(--km-modal-input-bg);
 }
 
 .km-sidemodal {
@@ -63,8 +96,8 @@ textarea {
   bottom: 25px;
   border-radius: 6px;
   text-rendering: optimizeLegibility;
-  -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: var(--km-card-shadow);
+  box-shadow: var(--km-card-shadow);
 }
 .km-sidemodal .km-modal-dialog {
   border-radius: 6px;
@@ -75,7 +108,7 @@ textarea {
   border-spacing: 0;
   outline: 0;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--km-modal-body-bg);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -98,7 +131,8 @@ textarea {
   width: 330px;
   height: 63.7px;
   border-radius: 8px;
-  background-color: #5c5aa7;
+  background-color: var(--km-modal-header-bg);
+  color: var(--km-modal-header-color);
 }
 
 .km-modal-body {
@@ -108,7 +142,7 @@ textarea {
   padding: 0 15px;
   height: calc(100% - 61px);
   border-radius: 0px 0px 6px 6px;
-  background-color: #fff;
+  background-color: var(--km-modal-body-bg);
   overflow-y: auto;
   scrollbar-width: thin;
 }
@@ -125,26 +159,26 @@ textarea {
   background: lightgrey;
 }
 .km-modal-body a.hover {
-  color: #11505d;
+  color: var(--km-link-color);
   text-decoration: underline;
 }
 .km-modal-body .km-modal-error {
-  background-color: #ffdfdf;
-  color: #885e5e;
+  background-color: var(--km-modal-error-bg);
+  color: var(--km-modal-error-color);
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ffcfcf;
+  border: 1px solid var(--km-modal-error-border);
   font-size: 12px !important;
   text-align: center;
 }
 
 .km-modal-body .km-modal-success,
 .km-modal-response {
-  background-color: #ffffff;
-  color: #3c763d;
+  background-color: var(--km-modal-body-bg);
+  color: var(--km-modal-success-color);
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #bfe0ec;
+  border: 1px solid var(--km-modal-success-border);
   font-size: 12px !important;
   text-align: center;
 }
@@ -158,7 +192,7 @@ textarea {
 .km-modal select {
   height: 40px;
   border-radius: 3px;
-  border: 2px solid #dcdcdc;
+  border: 2px solid var(--km-modal-input-border);
 }
 .km-modal textarea {
   resize: none;
@@ -319,7 +353,7 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-text-req-error {
   color: #d64242;
   font-size: 12px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   text-align: center;
   margin: 0;
   padding: 0;
@@ -363,7 +397,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .km-tertiary-title {
   color: #6e6e6e;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -376,7 +410,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #ffffff;
   position: absolute;
   min-height: 70px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   width: 100%;
   max-width: 390px;
   cursor: pointer;
@@ -1421,7 +1455,7 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0;
   border-radius: 10px;
   cursor: pointer;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   font-size: 14px;
 }
 
@@ -1440,7 +1474,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #fff;
   border: 1px solid #dcdcdc;
   border-radius: 8px 0 0 8px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   font-size: 14px;
 }
 
@@ -1452,7 +1486,7 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--km-font-family);
   font-size: 14px;
 }
 
@@ -1807,7 +1841,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0 16px 12px;
 }
 .link-preview-wrapper {
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
   width: auto;
   display: flex;
   flex-direction: column;
@@ -1872,7 +1906,7 @@ input[type=number]::-webkit-outer-spin-button {
   color: #1c1c1c;
   width: 264px;
   font-size: 14px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
   border: 1px solid #dcdcdc;
   border-radius: 24px;
   overflow: hidden;
@@ -2290,7 +2324,7 @@ input[type=number]::-webkit-outer-spin-button {
 .km-attachment-wrapper .km-attachment-file-name,
 .km-attachment-wrapper .km-attachment-file-name span {
   font-size: 14px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
 }
 .km-attachment-wrapper .km-attachment-file-name span {
   display: block;
@@ -2363,7 +2397,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .km-carousel-card-title, .km-carousel-card-sub-title, .km-carousel-card-description, .km-carousel-card-title-extension {
   color: #1c1c1c;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
 }
 .km-carousel-card-title {
   font-size: 14px;
@@ -2709,7 +2743,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-faq-list--body_que {
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
 }
 
 .km-faq-list--body_que-ans .km-faq-list--body_que,
@@ -2874,7 +2908,7 @@ input[type=number]::-webkit-outer-spin-button {
 .km-csat-skeleton,
 .km-assignee-module {
   font-size: 14px;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
   position: relative;
   margin-top: 3px;
   padding: 0 6px;
@@ -3261,7 +3295,7 @@ div#mck-rated:before {
   text-align: left;
   list-style: none;
   background-color: #fff;
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   -webkit-box-shadow: 0px 0px 12px 0px rgba(17, 34, 34, 0.24) !important;
@@ -3276,7 +3310,7 @@ div#mck-rated:before {
   min-width: 210px;
 }
 #km-widget-options .mck-dropdown-menu .menu-item {
-  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-family: var(--km-font-family) !important;
   padding: 8px;
   color: #1c1c1c;
   white-space: nowrap;
@@ -3330,7 +3364,7 @@ div#mck-rated:before {
   background-color: #fff;
 }
 
-#mck-btn-smiley-box {
+#mck-btn-smiley {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3338,29 +3372,21 @@ div#mck-rated:before {
   height: 28px;
   padding: 0;
   margin: 0;
-  float: none !important;
-}
-#mck-btn-smiley-box .mck-btn-smiley {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
   border: none;
   background: transparent;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  float: none !important;
 }
-#mck-btn-smiley-box .mck-btn-smiley:hover, #mck-btn-smiley-box .mck-btn-smiley:active {
+#mck-btn-smiley:hover, #mck-btn-smiley:active {
   background-color: rgba(0, 0, 0, 0.05);
   opacity: 1;
 }
-#mck-btn-smiley-box .mck-btn-smiley:hover svg path, #mck-btn-smiley-box .mck-btn-smiley:active svg path {
+#mck-btn-smiley:hover svg path, #mck-btn-smiley:active svg path {
   fill: #1c1c1c;
 }
-#mck-btn-smiley-box .mck-btn-smiley svg {
+#mck-btn-smiley svg {
   width: 20px;
   height: 20px;
 }
@@ -3542,14 +3568,6 @@ div#mck-rated:before {
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */
-.mck-msg-left [data-hidden=true] {
-  display: none !important;
-}
-
-.km-hide-message {
-  display: none !important;
-}
-
 [dir=rtl] .mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq,
 [dir=rtl] .mck-dropup-menu li > a,
 [dir=rtl] div#mck-agent-status-text,
@@ -3567,7 +3585,7 @@ div#mck-rated:before {
   padding-right: 0 !important;
 }
 [dir=rtl] #mck-tab-conversation {
-  padding-right: 16px;
+  padding-left: 16px;
   float: right;
 }
 [dir=rtl] .mck-contact-list .mck-cont-msg-date {
@@ -4247,38 +4265,8 @@ div#mck-rated:before {
 }
 
 /* Default hidden elements */
-#km-whats-new-placeholder,
-#faq-common,
-#mck-no-conversations {
-  display: none !important;
-}
-
-#km-widget-options,
-#mck-tab-conversation,
-#mck-tab-individual,
-#mck-contacts-content,
-#km-faqdiv,
-.km-faq-category-list-container,
-#km-faq-list-container,
-#km-faqanswer,
-.km-faq-back-btn-wrapper,
-#km-faq-back-btn {
-  display: none !important;
-}
-
 #mck-tab-conversation {
   padding-left: 16px;
-}
-
-#mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
-  display: none !important;
-}
-#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
-#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
-#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status {
-  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-conversations .mck-conversation {
@@ -4286,9 +4274,6 @@ div#mck-rated:before {
 }
 #mck-sidebox-content.active-tab-conversations #mck-tab-individual {
   display: flex !important;
-}
-#mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
-  display: none !important;
 }
 #mck-sidebox-content.active-tab-conversations #km-faq {
   display: block !important;
@@ -4303,30 +4288,8 @@ div#mck-rated:before {
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-contacts-content {
   display: block !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
-  display: none !important;
-}
-
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
   display: flex !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
-  display: none !important;
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: inline-flex !important;
@@ -4334,22 +4297,11 @@ div#mck-rated:before {
   padding-right: 0 !important;
 }
 
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
-  display: none !important;
-}
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
-  display: none !important;
-}
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
   display: flex !important;
 }
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
   display: block !important;
-}
-
-.layout-classic #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
-  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-faqs #faq-common {

@@ -1,3 +1,23 @@
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #km-widget-options,
+#mck-tab-conversation,
+#mck-tab-individual,
+#mck-contacts-content,
+#km-faqdiv,
+.km-faq-category-list-container,
+#km-faq-list-container,
+#km-faqanswer,
+.km-faq-back-btn-wrapper,
+#km-faq-back-btn, #km-whats-new-placeholder,
+#faq-common,
+#mck-no-conversations {
+  display: none !important;
+}
+
 .km-visibility-hidden {
   visibility: hidden !important;
 }
@@ -7,38 +27,8 @@
 }
 
 /* Default hidden elements */
-#km-whats-new-placeholder,
-#faq-common,
-#mck-no-conversations {
-  display: none !important;
-}
-
-#km-widget-options,
-#mck-tab-conversation,
-#mck-tab-individual,
-#mck-contacts-content,
-#km-faqdiv,
-.km-faq-category-list-container,
-#km-faq-list-container,
-#km-faqanswer,
-.km-faq-back-btn-wrapper,
-#km-faq-back-btn {
-  display: none !important;
-}
-
 #mck-tab-conversation {
   padding-left: 16px;
-}
-
-#mck-sidebox-content:not(.active-tab-conversations) .mck-conversation {
-  display: none !important;
-}
-#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
-#mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
-#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status {
-  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-conversations .mck-conversation {
@@ -46,9 +36,6 @@
 }
 #mck-sidebox-content.active-tab-conversations #mck-tab-individual {
   display: flex !important;
-}
-#mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
-  display: none !important;
 }
 #mck-sidebox-content.active-tab-conversations #km-faq {
   display: block !important;
@@ -63,30 +50,8 @@
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-contacts-content {
   display: block !important;
 }
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
-  display: none !important;
-}
-
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
   display: flex !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content {
-  display: none !important;
-}
-#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper {
-  display: none !important;
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: inline-flex !important;
@@ -94,22 +59,11 @@
   padding-right: 0 !important;
 }
 
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual {
-  display: none !important;
-}
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container {
-  display: none !important;
-}
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-conversation {
   display: flex !important;
 }
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
   display: block !important;
-}
-
-.layout-classic #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper {
-  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-faqs #faq-common {

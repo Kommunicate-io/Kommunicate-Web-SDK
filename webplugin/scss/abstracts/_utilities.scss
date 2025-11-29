@@ -1,0 +1,24 @@
+// Reusable SCSS utilities for shared behaviors between components.
+%km-hidden {
+    display: none !important;
+}
+
+%km-bg-white {
+    background-color: #fff;
+}
+
+%km-zero-margin {
+    margin: 0;
+}
+
+%km-full-width {
+    width: 100%;
+}
+
+%km-block {
+    display: block;
+}
+
+@mixin km-surface($color: #fff) {
+    background-color: $color;
+}
