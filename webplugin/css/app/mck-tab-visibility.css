@@ -233,6 +233,11 @@
   display: none !important;
 }
 
+.layout-modern #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
+  display: none !important;
+}
 .layout-modern #mck-sidebox-content .mck-running-on {
   display: none !important;
 }

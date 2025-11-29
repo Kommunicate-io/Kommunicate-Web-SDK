@@ -1403,7 +1403,7 @@ input[type=number]::-webkit-outer-spin-button {
   color: #fff;
   background-color: var(--km-primary-color, #000);
   border: 0;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 8px 8px 0;
   cursor: pointer;
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-size: 14px;
@@ -1711,8 +1711,6 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  align-items: center;
-  justify-content: center;
 }
 .mck-textbox-container .mck-location-sharing-box .mck-text-box-panel .mck-blk-12, .mck-textbox-container .mck-location-sharing-box .mck-location-sharing-box .mck-blk-12, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-blk-12 {
   display: flex;
@@ -4482,6 +4480,11 @@ div#mck-rated:before {
   display: none !important;
 }
 
+.layout-modern #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
+  display: none !important;
+}
 .layout-modern #mck-sidebox-content .mck-running-on {
   display: none !important;
 }

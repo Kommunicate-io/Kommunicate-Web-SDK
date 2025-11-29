@@ -622,7 +622,7 @@
     color: #fff;
     background-color: var(--km-primary-color, #000);
     border: 0;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 8px 8px 0;
     cursor: pointer;
     font-family: $font-family-primary;
     font-size: $heading-secondary;
@@ -969,8 +969,6 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                align-items: center;
-                justify-content: center;
             }
         }
 

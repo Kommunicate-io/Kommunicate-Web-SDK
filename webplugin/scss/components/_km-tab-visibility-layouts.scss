@@ -16,6 +16,13 @@
 }
 
 .layout-modern {
+    #km-faq,
+    #mck-sidebox-content.active-tab-conversations #km-faq,
+    #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+        #km-faq {
+        display: none !important;
+    }
+
     #mck-sidebox-content {
         .mck-running-on {
             display: none !important;
