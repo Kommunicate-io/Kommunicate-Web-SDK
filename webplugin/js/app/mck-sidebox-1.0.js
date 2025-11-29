@@ -3869,9 +3869,12 @@ const firstVisibleMsg = {
             _this.hideSendButton = function () {
                 kommunicateCommons.hide('#send-button-wrapper');
                 MCK_ATTACHMENT && kommunicateCommons.show('#mck-file-up');
-                !IS_MCK_LOCSHARE
-                    ? kommunicateCommons.show('#mck-file-up2')
-                    : kommunicateCommons.show('#mck-btn-loc');
+                if (!IS_MCK_LOCSHARE) {
+                    kommunicateCommons.show('#mck-file-up2');
+                    kommunicateCommons.hide('#mck-btn-loc');
+                } else {
+                    kommunicateCommons.show('#mck-btn-loc');
+                }
                 IS_CAPTURE_PHOTO && kommunicateCommons.show('#mck-img-file-up');
                 IS_CAPTURE_VIDEO && kommunicateCommons.show('#mck-vid-file-up');
                 EMOJI_LIBRARY && kommunicateCommons.show('#mck-btn-smiley-box');
@@ -9426,14 +9429,14 @@ const firstVisibleMsg = {
                 }
 
                 if (msg.fileMeta) {
-                    kommunicateCommons.show('.' + replyId + ' .mck-file-text');
+                    kommunicateCommons.show('.' + CSS.escape(replyId) + ' .mck-file-text');
                     if ($textMessage.html() === '') {
                         kommunicateCommons.hide($textMessage);
                     }
                 }
                 if (msg.contentType === 2) {
                     kommunicateCommons.hide($textMessage);
-                    kommunicateCommons.show('.' + replyId + ' .mck-file-text');
+                    kommunicateCommons.show('.' + CSS.escape(replyId) + ' .mck-file-text');
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(
