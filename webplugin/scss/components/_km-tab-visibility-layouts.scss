@@ -17,9 +17,15 @@
 
 .layout-modern {
     #km-faq,
+    .km-kb-container #km-faq,
     #mck-sidebox-content.active-tab-conversations #km-faq,
+    #mck-sidebox-content.active-tab-conversations .km-kb-container #km-faq,
+    #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq,
     #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
-        #km-faq {
+        .km-kb-container
+        #km-faq,
+    #mck-sidebox-content.active-tab-faqs #km-faq,
+    #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
         display: none !important;
     }
 

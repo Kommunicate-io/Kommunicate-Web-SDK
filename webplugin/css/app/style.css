@@ -11,7 +11,7 @@
   --km-font-body-color: #6e6e6e;
   --km-font-body-size: 14px;
   --km-accent-rgb: 95, 70, 248;
-  --km-font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --km-font-family: Inter, Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif;
   --km-modal-header-bg: #5c5aa7;
   --km-modal-header-color: #ffffff;
   --km-modal-body-bg: #ffffff;
@@ -56,7 +56,7 @@ $known-prefixes
 }
 
 body {
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
 body.accesibility :focus {
   outline: 2px auto #7761f9;
@@ -67,7 +67,7 @@ body:not(.accesibility):focus {
 
 button {
   font-size: 14px;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-weight: 500;
   padding: 4px 4px;
   line-height: 19px;
@@ -77,9 +77,9 @@ input,
 select,
 textarea {
   font-size: 14px;
-  font-family: var(--km-font-family) !important;
-  border: 2px solid var(--km-modal-input-border);
-  background-color: var(--km-modal-input-bg);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  border: 2px solid #dcdcdc;
+  background-color: #fafafa;
 }
 
 .km-sidemodal {
@@ -96,6 +96,7 @@ textarea {
   bottom: 25px;
   border-radius: 6px;
   text-rendering: optimizeLegibility;
+  -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: var(--km-card-shadow);
   box-shadow: var(--km-card-shadow);
 }
@@ -353,7 +354,7 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-text-req-error {
   color: #d64242;
   font-size: 12px;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -397,7 +398,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .km-tertiary-title {
   color: #6e6e6e;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -410,7 +411,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #ffffff;
   position: absolute;
   min-height: 70px;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   width: 100%;
   max-width: 390px;
   cursor: pointer;
@@ -1455,7 +1456,7 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0;
   border-radius: 10px;
   cursor: pointer;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 
@@ -1474,7 +1475,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #fff;
   border: 1px solid #dcdcdc;
   border-radius: 8px 0 0 8px;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 
@@ -1486,7 +1487,7 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  font-family: var(--km-font-family);
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 
@@ -1841,7 +1842,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0 16px 12px;
 }
 .link-preview-wrapper {
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   width: auto;
   display: flex;
   flex-direction: column;
@@ -1906,7 +1907,7 @@ input[type=number]::-webkit-outer-spin-button {
   color: #1c1c1c;
   width: 264px;
   font-size: 14px;
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   border: 1px solid #dcdcdc;
   border-radius: 24px;
   overflow: hidden;
@@ -2324,7 +2325,7 @@ input[type=number]::-webkit-outer-spin-button {
 .km-attachment-wrapper .km-attachment-file-name,
 .km-attachment-wrapper .km-attachment-file-name span {
   font-size: 14px;
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
 }
 .km-attachment-wrapper .km-attachment-file-name span {
   display: block;
@@ -2397,7 +2398,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .km-carousel-card-title, .km-carousel-card-sub-title, .km-carousel-card-description, .km-carousel-card-title-extension {
   color: #1c1c1c;
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
 }
 .km-carousel-card-title {
   font-size: 14px;
@@ -2743,7 +2744,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-faq-list--body_que {
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
 }
 
 .km-faq-list--body_que-ans .km-faq-list--body_que,
@@ -2908,7 +2909,7 @@ input[type=number]::-webkit-outer-spin-button {
 .km-csat-skeleton,
 .km-assignee-module {
   font-size: 14px;
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   position: relative;
   margin-top: 3px;
   padding: 0 6px;
@@ -3295,7 +3296,7 @@ div#mck-rated:before {
   text-align: left;
   list-style: none;
   background-color: #fff;
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   -webkit-box-shadow: 0px 0px 12px 0px rgba(17, 34, 34, 0.24) !important;
@@ -3310,7 +3311,7 @@ div#mck-rated:before {
   min-width: 210px;
 }
 #km-widget-options .mck-dropdown-menu .menu-item {
-  font-family: var(--km-font-family) !important;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   padding: 8px;
   color: #1c1c1c;
   white-space: nowrap;
@@ -4426,8 +4427,13 @@ div#mck-rated:before {
 }
 
 .layout-modern #km-faq,
+.layout-modern .km-kb-container #km-faq,
 .layout-modern #mck-sidebox-content.active-tab-conversations #km-faq,
-.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
+.layout-modern #mck-sidebox-content.active-tab-conversations .km-kb-container #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-kb-container #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-faqs #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
   display: none !important;
 }
 .layout-modern #mck-sidebox-content .mck-running-on {

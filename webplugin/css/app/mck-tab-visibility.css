@@ -188,8 +188,13 @@
 }
 
 .layout-modern #km-faq,
+.layout-modern .km-kb-container #km-faq,
 .layout-modern #mck-sidebox-content.active-tab-conversations #km-faq,
-.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq {
+.layout-modern #mck-sidebox-content.active-tab-conversations .km-kb-container #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-kb-container #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-faqs #km-faq,
+.layout-modern #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
   display: none !important;
 }
 .layout-modern #mck-sidebox-content .mck-running-on {
