@@ -11069,14 +11069,34 @@ const firstVisibleMsg = {
 
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
+                    var metadata = message.metadata;
+                    var hasAssignTo =
+                        metadata && Object.prototype.hasOwnProperty.call(metadata, 'KM_ASSIGN_TO');
+                    var hasAssignTeam =
+                        metadata &&
+                        Object.prototype.hasOwnProperty.call(metadata, 'KM_ASSIGN_TEAM');
+                    var isAssignMetadata =
+                        metadata && (metadata.KM_ASSIGN || hasAssignTo || hasAssignTeam);
+
+                    if (isAssignMetadata && !message.message) {
+                        var assigneeName =
+                            metadata.LOCALIZATION_VALUE ||
+                            metadata.KM_ASSIGN ||
+                            (hasAssignTo ? metadata.KM_ASSIGN_TO : '') ||
+                            (hasAssignTeam ? metadata.KM_ASSIGN_TEAM : '');
+                        var handoffLabel =
+                            MCK_LABELS &&
+                            MCK_LABELS['conversation.handoff'] &&
+                            MCK_LABELS['conversation.handoff'].ASSIGN_TO
+                                ? MCK_LABELS['conversation.handoff'].ASSIGN_TO
+                                : 'Conversation transferred to';
+                        return assigneeName ? handoffLabel + ' ' + assigneeName : handoffLabel;
+                    }
+                    if (metadata && metadata.KM_STATUS) {
+                        return;
+                    }
                     if (message.message) {
                         if (message.metadata.hide === 'true') {
-                            return;
-                        }
-                        if (
-                            message.metadata &&
-                            (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)
-                        ) {
                             return;
                         }
                         if (
