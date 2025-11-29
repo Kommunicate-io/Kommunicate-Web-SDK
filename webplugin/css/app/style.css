@@ -4374,7 +4374,7 @@ div#mck-rated:before {
   display: none !important;
 }
 #mck-sidebox-content.active-tab-faqs #km-faq {
-  display: none !important;
+  display: block !important;
 }
 
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
