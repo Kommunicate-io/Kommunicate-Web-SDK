@@ -28,7 +28,7 @@
 
 /* Default hidden elements */
 #mck-tab-conversation {
-  padding-left: 16px;
+  padding-inline-start: 16px;
 }
 
 #mck-sidebox-content.active-tab-conversations .mck-conversation {

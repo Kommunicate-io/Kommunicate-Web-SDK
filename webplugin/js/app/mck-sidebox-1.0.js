@@ -4272,16 +4272,35 @@ const firstVisibleMsg = {
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 mckMessageLayout.initSearchAutoType();
-                function activateConversationTab() {
+                function activateConversationTab(options) {
+                    if (options && typeof options.preventDefault === 'function') {
+                        options = undefined;
+                    }
+                    var skipEmptyStateToggle = Boolean(options && options.skipEmptyStateToggle);
+                    var skipConversationListView = Boolean(
+                        options && options.skipConversationListView
+                    );
                     bottomTabManager.handleChange('conversations', {
                         skipFaqTrigger: true,
                         fromEmptyState: true,
+                        skipEmptyStateToggle: skipEmptyStateToggle,
+                        skipConversationListView: skipConversationListView,
                     });
-                    KommunicateUI.showConversationList && KommunicateUI.showConversationList();
+                    if (!skipConversationListView) {
+                        KommunicateUI.showConversationList &&
+                            KommunicateUI.showConversationList({
+                                skipEmptyStateToggle: skipEmptyStateToggle,
+                            });
+                    }
                 }
 
                 function startNewConversation(onConversationCreated) {
-                    activateConversationTab();
+                    KommunicateUI.toggleConversationsEmptyState &&
+                        KommunicateUI.toggleConversationsEmptyState(false);
+                    activateConversationTab({
+                        skipEmptyStateToggle: true,
+                        skipConversationListView: true,
+                    });
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     _this.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
@@ -4291,6 +4310,7 @@ const firstVisibleMsg = {
                         KommunicateUI.setHasConversationHistory(true);
                         typeof setActiveSubsectionState === 'function' &&
                             setActiveSubsectionState('conversation-individual');
+                        KommunicateUI.showChat && KommunicateUI.showChat();
                     });
                     $applozic('#mck-msg-new').attr('disabled', true);
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
@@ -9156,6 +9176,16 @@ const firstVisibleMsg = {
                             payload = $applozic.parseJSON(msg.metadata.payload);
                             console.log('msg.contentType === 23 && metadata.msg_type === LIST');
                             var listElements = [];
+                            var wireInlineInputSubmit = function (inputRow) {
+                                $applozic(inputRow.button).click(function () {
+                                    if (inputRow.input.value.length > 1) {
+                                        _this.sendUserEmail(inputRow.input, inputRow.button);
+                                        _this.updateMetadata(msg.key, {
+                                            hidden: 'true',
+                                        });
+                                    }
+                                });
+                            };
                             if (payload.length && !payload[0].hidden) {
                                 var firstPayloadType =
                                     typeof payload[0].type === 'string'
@@ -9164,9 +9194,9 @@ const firstVisibleMsg = {
                                 if (firstPayloadType === 'button') {
                                     listElements.push(buildTemplateButton(payload[0].title));
                                 } else if (firstPayloadType === 'input') {
-                                    listElements.push(
-                                        buildTemplateInputRow(payload[0].title).container
-                                    );
+                                    var inputRow = buildTemplateInputRow(payload[0].title);
+                                    wireInlineInputSubmit(inputRow);
+                                    listElements.push(inputRow.container);
                                 }
                             }
 
@@ -9182,9 +9212,9 @@ const firstVisibleMsg = {
                                                 buildTemplateButton(payload[i].title)
                                             );
                                         } else if (payloadType === 'input') {
-                                            listElements.push(
-                                                buildTemplateInputRow(payload[i].title).container
-                                            );
+                                            var inputRow = buildTemplateInputRow(payload[i].title);
+                                            wireInlineInputSubmit(inputRow);
+                                            listElements.push(inputRow.container);
                                         }
                                     }
                                 }

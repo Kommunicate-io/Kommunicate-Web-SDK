@@ -5,20 +5,6 @@
 
 @import url('mck-tab-visibility.css');
 
-:root {
-    --km-font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-        sans-serif;
-    --km-font-title-size: 15px;
-    --km-font-title-weight: 500;
-    --km-font-body-size: 13px;
-    --km-font-meta-size: 12px;
-    --km-font-title-color: #1c2043;
-    --km-font-body-color: #5f6689;
-    --km-font-meta-color: #8d94b5;
-    --km-primary-color: #5f46f8;
-    --km-primary-color-rgb: 95, 70, 248;
-}
-
 .mck-sidebox.fade.in.popup-enabled {
     height: calc(100% - 100px);
 }

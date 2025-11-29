@@ -330,18 +330,28 @@
                     : !isModernLayout; // default layout starts in list view
             var hasActiveConversation = !!activeConversationId;
 
-            var subsectionToApply = getDefaultSubsectionForTab(resolvedTabType);
+            var skipConversationListView = Boolean(options.skipConversationListView);
+            var subsectionToApply = skipConversationListView
+                ? 'conversation-individual'
+                : getDefaultSubsectionForTab(resolvedTabType);
             if (resolvedTabType === 'conversations') {
-                subsectionToApply =
-                    hasActiveConversation && !isListView
-                        ? 'conversation-individual'
-                        : 'conversation-list';
+                subsectionToApply = skipConversationListView
+                    ? 'conversation-individual'
+                    : hasActiveConversation && !isListView
+                    ? 'conversation-individual'
+                    : 'conversation-list';
             }
             updateActiveSubsectionClass(subsectionToApply);
 
             if (resolvedTabType === 'conversations') {
                 // Preserve individual view when a conversation is active.
-                ui.showConversationList();
+                if (!skipConversationListView) {
+                    var showConversationListOptions =
+                        options && options.skipEmptyStateToggle
+                            ? { skipEmptyStateToggle: true }
+                            : undefined;
+                    ui.showConversationList(showConversationListOptions);
+                }
                 ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0; // local copy only
@@ -420,7 +430,10 @@
             }
 
             var keepConversationHeader =
-                resolvedTabType === 'conversations' && isModernLayout && !hasActiveConversation;
+                resolvedTabType === 'conversations' &&
+                isModernLayout &&
+                !hasActiveConversation &&
+                !skipConversationListView;
             ui.showChat({ keepConversationHeader: keepConversationHeader });
         }
 

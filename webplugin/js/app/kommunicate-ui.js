@@ -905,7 +905,8 @@ KommunicateUI = {
         $applozic('#mck-msg-new').attr('disabled', false);
         KommunicateUI.isConversationListView = false;
     },
-    showConversationList: function () {
+    showConversationList: function (options) {
+        options = options || {};
         setActiveSubsectionState('conversation-list');
         kommunicateCommons.hide('.km-option-faq');
         topBarManagerRef.showConversationHeader();
@@ -925,8 +926,10 @@ KommunicateUI = {
         $applozic('#mck-msg-new').attr('disabled', false);
         MCK_EVENT_HISTORY.length = 0;
         KommunicateUI.isConversationListView = true;
-        KommunicateUI.toggleConversationsEmptyState &&
-            KommunicateUI.toggleConversationsEmptyState(!KommunicateUI.hasConversationHistory);
+        if (!options.skipEmptyStateToggle) {
+            KommunicateUI.toggleConversationsEmptyState &&
+                KommunicateUI.toggleConversationsEmptyState(!KommunicateUI.hasConversationHistory);
+        }
     },
     hasConversationHistory: false,
     hasAutoStartedConversation: false,
