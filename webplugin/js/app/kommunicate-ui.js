@@ -1520,16 +1520,26 @@ KommunicateUI = {
         document.querySelector('#km-faq').textContent = MCK_LABELS['faq'];
     },
     checkSingleThreadedConversationSettings: function (hasMultipleConversations) {
-        if (
+        var isWidgetSingleThreaded =
             kommunicateCommons.isObject(kommunicate._globals.widgetSettings) &&
-            kommunicate._globals.widgetSettings.isSingleThreaded
-        ) {
+            kommunicate._globals.widgetSettings.isSingleThreaded;
+
+        if (isWidgetSingleThreaded) {
             var startConversationButton = document.getElementById('mck-contacts-content');
             var backButton = document.querySelector('.mck-back-btn-container');
             startConversationButton.classList.add('force-n-vis');
             hasMultipleConversations
                 ? backButton.classList.remove('force-n-vis')
                 : backButton.classList.add('force-n-vis');
+        }
+
+        var startNewButton = document.getElementById('mck-msg-new');
+        if (startNewButton) {
+            if (isWidgetSingleThreaded) {
+                startNewButton.classList.add('force-n-vis');
+            } else {
+                startNewButton.classList.remove('force-n-vis');
+            }
         }
     },
 
