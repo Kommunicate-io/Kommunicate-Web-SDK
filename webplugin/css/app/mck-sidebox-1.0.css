@@ -1687,7 +1687,7 @@ mck-sidebox .mck-group-member-list li a:hover {
     max-width: 100%; /* keep the flex item within the container */
     word-break: break-all;
     overflow-wrap: anywhere;
-    color: #2a2f3a;
+    color: var(--km-font-body-color, #6e6e6e);
     order: 2;
 }
 

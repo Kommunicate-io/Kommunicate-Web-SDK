@@ -25,6 +25,7 @@
   --km-modal-error-color: #885e5e;
   --km-modal-success-border: #bfe0ec;
   --km-modal-success-color: #3c763d;
+  --km-modal-backdrop-color: rgba(0, 0, 0, 0.6);
   --km-link-color: #11505d;
   --km-card-shadow: 0px 0px 12px 0px rgba(4, 68, 77, 0.1490196078);
 }
@@ -207,7 +208,7 @@ textarea {
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.8px;
-  color: #565658;
+  color: var(--km-font-title-color, #565658);
   padding: 0 15px;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -263,7 +264,7 @@ textarea {
   top: 0;
   right: 0;
   left: 0;
-  background-color: #000;
+  background-color: var(--km-modal-backdrop-color, rgba(0, 0, 0, 0.6));
 }
 
 .km-sidemodal--modal-header {
@@ -271,8 +272,8 @@ textarea {
   min-height: 60px;
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
-  background-color: #716fb3;
-  color: #fff;
+  background-color: var(--km-modal-header-bg, #716fb3);
+  color: var(--km-modal-header-color, #fff);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3712,10 +3713,7 @@ div#mck-rated:before {
   float: inline-start;
   margin-bottom: 4px !important;
 }
-[dir=rtl] .mck-text-box-panel .mck-blk-12, [dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12, .mck-textbox-container [dir=rtl] .mck-location-sharing-box .mck-blk-12 {
-  height: 30px;
-  padding: 0 0 0 10px;
-}
+[dir=rtl] .mck-text-box-panel .mck-blk-12, .mck-textbox-container [dir=rtl] .mck-location-sharing-box .mck-blk-12,
 [dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12 {
   height: 30px;
   padding: 0 0 0 10px;

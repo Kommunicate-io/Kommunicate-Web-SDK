@@ -126,7 +126,7 @@
         font-stretch: normal;
         line-height: normal;
         letter-spacing: 0.8px;
-        color: #565658;
+        color: var(--km-font-title-color, #565658);
         padding: 0 15px;
         margin-bottom: 10px;
         margin-top: 10px;
@@ -193,7 +193,7 @@
     top: 0;
     right: 0;
     left: 0;
-    background-color: #000;
+    background-color: var(--km-modal-backdrop-color, rgba(0, 0, 0, 0.6));
 }
 
 .km-sidemodal--modal-header {
@@ -201,8 +201,8 @@
     min-height: 60px;
     text-align: left;
     border-bottom: 1px solid #e5e5e5;
-    background-color: #716fb3;
-    color: #fff;
+    background-color: var(--km-modal-header-bg, #716fb3);
+    color: var(--km-modal-header-color, #fff);
     @include flexMixin(null, space-between);
     border-radius: 6px 6px 0px 0px;
 }
