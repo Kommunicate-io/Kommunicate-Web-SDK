@@ -1186,8 +1186,8 @@ input[type=number]::-webkit-outer-spin-button {
   pointer-events: none;
 }
 #mck-contact-loading .mck-contact-loading__ring {
-  width: 68px;
-  height: 68px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background-color: #ffffff;
   box-shadow: 0 20px 48px rgba(15, 23, 42, 0.18);
@@ -1199,7 +1199,7 @@ input[type=number]::-webkit-outer-spin-button {
 #mck-contact-loading .mck-contact-loading__ring::before, #mck-contact-loading .mck-contact-loading__ring::after {
   content: "";
   position: absolute;
-  inset: 8px;
+  inset: 6px;
   border-radius: inherit;
 }
 #mck-contact-loading .mck-contact-loading__ring::before {

@@ -334,8 +334,8 @@
     pointer-events: none;
 
     .mck-contact-loading__ring {
-        width: 68px;
-        height: 68px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         background-color: #ffffff;
         box-shadow: 0 20px 48px rgba(15, 23, 42, 0.18);
@@ -348,7 +348,7 @@
         &::after {
             content: '';
             position: absolute;
-            inset: 8px;
+            inset: 6px;
             border-radius: inherit;
         }
 

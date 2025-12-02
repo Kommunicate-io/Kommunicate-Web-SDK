@@ -4294,10 +4294,18 @@ const firstVisibleMsg = {
                     }
                 }
 
+                function showConversationIndividual(options) {
+                    kommunicateCommons.hide('#km-faq');
+                    KommunicateUI.hideFaq && KommunicateUI.hideFaq();
+                    activateConversationTab(options);
+                    typeof setActiveSubsectionState === 'function' &&
+                        setActiveSubsectionState('conversation-individual');
+                }
+
                 function startNewConversation(onConversationCreated) {
                     KommunicateUI.toggleConversationsEmptyState &&
                         KommunicateUI.toggleConversationsEmptyState(false);
-                    activateConversationTab({
+                    showConversationIndividual({
                         skipEmptyStateToggle: true,
                         skipConversationListView: true,
                     });
@@ -4340,9 +4348,12 @@ const firstVisibleMsg = {
                         kommunicateCommons.show('#launcher-svg-container');
                     }
                 });
-                $applozic(d).on('click', '#talk-to-human-link', function () {
-                    startNewConversation();
-                    kommunicateCommons.hide('#mck-contact-list');
+                $applozic(d).on('click', '#talk-to-human-link', function (event) {
+                    handleStartNewConversation(event);
+                    kommunicateCommons.hide('#km-faq');
+                    KommunicateUI.hideFaq && KommunicateUI.hideFaq();
+                    typeof setActiveSubsectionState === 'function' &&
+                        setActiveSubsectionState('conversation-individual');
                 });
 
                 $applozic(d).on('click', '.km-bottom-tab', function (e) {
