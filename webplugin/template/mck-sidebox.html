@@ -562,17 +562,14 @@
                         <ul class="km-whats-new-list"></ul>
                     </div>
 
-                    <div id="mck-contact-loading" class="mck-loading n-vis">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            class="mck-circular-spinner"
-                            viewBox="25 25 50 50"
-                            width="50"
-                            height="50"
-                        >
-                            <use xlink:href="#icon-54" href="#icon-54"></use>
-                        </svg>
+                    <div
+                        id="mck-contact-loading"
+                        class="mck-loading n-vis"
+                        role="status"
+                        aria-live="polite"
+                        aria-label="Loading conversations"
+                    >
+                        <div class="mck-contact-loading__ring" aria-hidden="true"></div>
                     </div>
                     <div
                         id="mck-no-conversations"
