@@ -873,7 +873,7 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 /* Chat Popup Template Code Ends */
-.mck-btn-text-panel--send, .mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
+.mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -886,15 +886,19 @@ input[type=number]::-webkit-outer-spin-button {
   transition: background-color 0.2s ease;
   line-height: 1 !important;
 }
-.mck-btn-text-panel--send svg, .mck-btn-text-panel--small svg, .mck-textbox-container .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box svg {
+.mck-btn-text-panel--small svg, .mck-textbox-container .mck-btn-text-panel svg, .mck-textbox-container .mck-text-box-panel svg, .mck-textbox-container .mck-location-sharing-box svg {
   width: 20px !important;
   height: 20px !important;
   fill: currentColor;
   display: block;
   flex-shrink: 0;
 }
-.mck-btn-text-panel--send:hover, .mck-btn-text-panel--small:hover, .mck-textbox-container .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-btn-text-panel--send:focus, .mck-btn-text-panel--small:focus, .mck-textbox-container .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box:focus {
+.mck-btn-text-panel--small:hover, .mck-textbox-container .mck-btn-text-panel:hover, .mck-textbox-container .mck-text-box-panel:hover, .mck-textbox-container .mck-location-sharing-box:hover, .mck-btn-text-panel--small:focus, .mck-textbox-container .mck-btn-text-panel:focus, .mck-textbox-container .mck-text-box-panel:focus, .mck-textbox-container .mck-location-sharing-box:focus {
   background-color: rgba(0, 0, 0, 0.05);
+}
+.mck-btn-text-panel--small:focus-visible, .mck-textbox-container .mck-btn-text-panel:focus-visible, .mck-textbox-container .mck-text-box-panel:focus-visible, .mck-textbox-container .mck-location-sharing-box:focus-visible {
+  outline: 2px solid rgba(76, 102, 205, 0.6);
+  outline-offset: 2px;
 }
 
 .mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
@@ -902,22 +906,6 @@ input[type=number]::-webkit-outer-spin-button {
   height: 28px !important;
   min-width: 28px !important;
   border-radius: 4px;
-}
-
-.mck-btn-text-panel--send {
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  border-radius: 50%;
-  color: #ffffff !important;
-  transition: all 0.2s ease !important;
-}
-.mck-btn-text-panel--send:hover, .mck-btn-text-panel--send:focus {
-  background: var(--km-primary-color-dark, #4a35c6) !important;
-  transform: scale(1.05);
-}
-.mck-btn-text-panel--send:active {
-  transform: scale(0.95);
 }
 
 .mck-group-inner {
@@ -1598,6 +1586,9 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.mck-textbox-container .mck-icons-wrapper .mck-btn.mck-btn-text-panel:hover, .mck-textbox-container .mck-icons-wrapper .mck-btn.mck-btn-text-panel:focus {
+  background: transparent;
+}
 .mck-textbox-container .mck-icons-wrapper .mck-attach-img-vid-box,
 .mck-textbox-container .mck-icons-wrapper .mck-blk-12,
 .mck-textbox-container .mck-icons-wrapper .mck-blk-2,
@@ -1698,8 +1689,9 @@ input[type=number]::-webkit-outer-spin-button {
   flex-shrink: 0;
 }
 .mck-textbox-container .mck-btn-text-panel:hover, .mck-textbox-container .mck-btn-text-panel:focus {
-  background-color: rgba(53, 112, 255, 0.1) !important;
-  color: #2f3747;
+  background-color: #ffffff !important;
+  color: var(--km-primary-color-dark, #4a35c6) !important;
+  box-shadow: 0 16px 35px rgba(95, 70, 248, 0.25);
 }
 .mck-textbox-container #mck-mic-animation-container {
   order: 3;
@@ -1742,6 +1734,9 @@ input[type=number]::-webkit-outer-spin-button {
 .mck-textbox-container .mck-voice-web svg {
   width: 20px;
   height: 20px;
+}
+.mck-textbox-container .mck-location-sharing-box:hover, .mck-textbox-container .mck-location-sharing-box:focus {
+  background-color: transparent !important;
 }
 .mck-textbox-container .mck-location-sharing-box .mck-btn-loc {
   width: 100%;
@@ -1794,6 +1789,10 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0 !important;
   background: transparent !important;
 }
+.mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:hover, .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-btn-text-panel:focus {
+  background: transparent !important;
+  box-shadow: none !important;
+}
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-icon-send {
   display: flex;
   align-items: center;
@@ -1801,6 +1800,12 @@ input[type=number]::-webkit-outer-spin-button {
   width: 20px;
   height: 20px;
   padding: 0;
+  background: none !important;
+  overflow: visible !important;
+  text-indent: 0 !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
 }
 .mck-textbox-container .mck-location-sharing-box #send-button-wrapper .mck-icon-send svg {
   width: 20px;
@@ -3708,6 +3713,10 @@ div#mck-rated:before {
   margin-bottom: 4px !important;
 }
 [dir=rtl] .mck-text-box-panel .mck-blk-12, [dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12, .mck-textbox-container [dir=rtl] .mck-location-sharing-box .mck-blk-12 {
+  height: 30px;
+  padding: 0 0 0 10px;
+}
+[dir=rtl] .mck-textbox-container .mck-location-sharing-box .mck-blk-12 {
   height: 30px;
   padding: 0 0 0 10px;
 }

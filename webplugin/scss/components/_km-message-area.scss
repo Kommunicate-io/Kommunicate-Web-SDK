@@ -23,6 +23,10 @@
     &:focus {
         background-color: rgba(0, 0, 0, 0.05);
     }
+    &:focus-visible {
+        outline: 2px solid rgba(76, 102, 205, 0.6);
+        outline-offset: 2px;
+    }
 }
 
 @mixin mck-btn-panel($size, $radius) {
@@ -37,21 +41,6 @@
     @include mck-btn-panel(28px, 4px);
 }
 
-.mck-btn-text-panel--send {
-    @include mck-btn-panel(36px, 50%);
-    color: #ffffff !important;
-    transition: all 0.2s ease !important;
-
-    &:hover,
-    &:focus {
-        background: var(--km-primary-color-dark, #4a35c6) !important;
-        transform: scale(1.05);
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
-}
 .mck-group-inner {
     background: #fafafa;
     & .mck-msg-left {
@@ -810,6 +799,12 @@
                 // All buttons inherit base styles
                 // Add specific overrides here if needed
             }
+            &.mck-btn-text-panel {
+                &:hover,
+                &:focus {
+                    background: transparent;
+                }
+            }
         }
 
         // Remove any old styles that might interfere
@@ -925,8 +920,9 @@
 
         &:hover,
         &:focus {
-            background-color: rgba(53, 112, 255, 0.1) !important;
-            color: #2f3747;
+            background-color: #ffffff !important;
+            color: var(--km-primary-color-dark, #4a35c6) !important;
+            box-shadow: 0 16px 35px rgba(95, 70, 248, 0.25);
         }
     }
 
@@ -984,6 +980,11 @@
     // Location button
     .mck-location-sharing-box {
         @extend .mck-text-box-panel;
+
+        &:hover,
+        &:focus {
+            background-color: transparent !important;
+        }
 
         .mck-btn-loc {
             width: 100%;
@@ -1043,6 +1044,14 @@
                 background: transparent !important;
             }
 
+            .mck-btn-text-panel {
+                &:hover,
+                &:focus {
+                    background: transparent !important;
+                    box-shadow: none !important;
+                }
+            }
+
             .mck-icon-send {
                 display: flex;
                 align-items: center;
@@ -1057,6 +1066,13 @@
                     fill: currentColor;
                     display: block;
                 }
+
+                background: none !important;
+                overflow: visible !important;
+                text-indent: 0 !important;
+                position: static !important;
+                width: auto !important;
+                height: auto !important;
             }
         }
 

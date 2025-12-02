@@ -3586,23 +3586,6 @@ ul.mck-intent-menu > li:hover {
     height: 30px;
 }
 
-.mck-icon-send {
-    background-position: -10px -368px;
-    width: 25px;
-    height: 25px;
-}
-.mck-icon-send svg {
-    display: block;
-    width: 20px;
-    height: 25px;
-}
-
-/* .mck-icon-smiley-blue {
-	background-position: -10px -403px;
-	width: 25px;
-	height: 25px;
-} */
-
 .mck-icon-search {
     background-position: -10px -478px;
     width: 24px;
