@@ -1507,14 +1507,13 @@ KommunicateUI = {
     },
     adjustConversationTitleHeadingWidth: function (isPopupWidgetEnabled) {
         var titleClassName = 'mck-title-width-wo-faq-with-close-btn';
-        var mckTabTitle = document.getElementById('mck-tab-title');
-        mckTabTitle.classList.remove(titleClassName);
+        topBarManagerRef.removeIndividualTitleClass(titleClassName);
         if (document.querySelector('.km-kb-container').classList.contains('vis')) {
             titleClassName = isPopupWidgetEnabled
                 ? 'mck-title-width-with-faq'
                 : 'mck-title-width-with-faq-close-btn';
         }
-        mckTabTitle.classList.add(titleClassName);
+        topBarManagerRef.addIndividualTitleClass(titleClassName);
     },
     setFAQButtonText: function () {
         document.querySelector('#km-faq').textContent = MCK_LABELS['faq'];
@@ -1583,8 +1582,10 @@ KommunicateUI = {
                             '.km-option-restart-conversation'
                         );
                         CURRENT_GROUP_DATA.isWaitingQueue = true;
-                        headerTabTitle.innerHTML =
-                            MCK_LABELS['waiting.queue.message']['header.text'];
+                        topBarManagerRef.setIndividualTitle(
+                            MCK_LABELS['waiting.queue.message']['header.text'],
+                            false
+                        );
                         var messageBody = document.querySelector(
                             '.mck-message-inner.mck-group-inner'
                         );
@@ -1594,8 +1595,9 @@ KommunicateUI = {
                     } else {
                         kommunicateCommons.hide('#mck-waiting-queue');
 
-                        headerTabTitle = document.getElementById('mck-tab-title');
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
+                        topBarManagerRef.setIndividualTitle(
+                            topBarManagerRef.getIndividualTitleAttribute()
+                        );
 
                         var selectors = ['.mck-agent-image-container', '.mck-agent-status-text'];
                         KommunicateUI.isFAQPrimaryCTA() && selectors.push('#km-faq');

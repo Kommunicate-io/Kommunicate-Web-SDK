@@ -6922,14 +6922,13 @@ const firstVisibleMsg = {
                 return document.querySelector('#mck-waiting-queue').classList.contains('vis');
             };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (_this.isConversationInWaitingQueue()) {
                     return;
                 }
                 var imageUrl;
                 params.name = params.name && kommunicateCommons.formatHtmlTag(params.name);
                 var profileImage = params.name ? params.name + ' profile image' : 'Profile image';
-                $mck_tab_title.html(params.name);
-                $mck_tab_title.attr('title', params.name);
+                KommunicateUI.setIndividualTitle(params.name);
                 KommunicateUI.adjustConversationTitleHeadingWidth(POPUP_WIDGET);
                 if (params.imageUrl) {
                     imageUrl = params.imageUrl;

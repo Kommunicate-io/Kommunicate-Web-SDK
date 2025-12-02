@@ -386,12 +386,14 @@
                     ui.toggleConversationsEmptyState(true);
                 }
                 ui.updateWelcomeCtaLabel();
+                ui.updateWelcomeCtaLabel();
                 var topBarManager = getTopBarManager();
                 if (topBarManager) {
                     try {
                         topBarManager.showConversationHeader();
                         topBarManager.toggleAvatar(false);
                         topBarManager.toggleBackButton(false);
+                        topBarManager.setConversationTitle(emptyTitle);
                     } catch (e) {}
                 }
                 return;
@@ -409,24 +411,17 @@
             if (resolvedTabType === 'whats-new') {
                 whatsNewManager.refresh();
                 ui.toggleModernFaqBackButton(false);
-                if (documentRef && typeof documentRef.getElementById === 'function') {
-                    var tabTitle = documentRef.getElementById('mck-tab-title');
-                    var conversationTitle = documentRef.getElementById('mck-conversation-title');
-                    var whatsNewLabel = getLabel('modern.nav.whatsnew', "What's New");
-                    tabTitle && (tabTitle.textContent = whatsNewLabel);
-                    conversationTitle && (conversationTitle.textContent = whatsNewLabel);
+                var topBarManager = getTopBarManager();
+                if (topBarManager) {
+                    topBarManager.setWhatsNewTitle();
                 }
                 return;
             }
 
             ui.toggleModernFaqBackButton(false);
-            if (documentRef && typeof documentRef.getElementById === 'function') {
-                var tabTitleElement = documentRef.getElementById('mck-tab-title');
-                tabTitleElement &&
-                    (tabTitleElement.textContent = getLabel(
-                        'conversations.title',
-                        'Conversations'
-                    ));
+            var topBarManager = getTopBarManager();
+            if (topBarManager) {
+                topBarManager.resetTitle();
             }
 
             var keepConversationHeader =
