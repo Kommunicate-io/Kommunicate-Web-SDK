@@ -6255,11 +6255,20 @@ const firstVisibleMsg = {
             };
 
             _this.loadMessageList = function (params, callback) {
+                params = params || {};
                 var individual = false;
                 var isConvReq = false;
                 var reqData = '';
                 var isAgentOffline = false;
                 var append = false;
+                var hasMessageElements = $mck_msg_inner.children("div[name='message']").length > 0;
+                var hasConversationListItems = $applozic('#mck-conversation-list li').length > 0;
+                var isConversationTab = Boolean(params.tabId);
+                var shouldShowContactLoading =
+                    !params.allowReload &&
+                    !params.startTime &&
+                    !hasMessageElements &&
+                    (!hasConversationListItems || isConversationTab);
                 if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
                     CURRENT_GROUP_DATA.tabId = parseInt(params.tabId);
                     reqData = params.isGroup
@@ -6295,10 +6304,10 @@ const firstVisibleMsg = {
                 if (params.latestMessageReceivedTime) {
                     reqData += '&startTime=' + params.latestMessageReceivedTime;
                 }
-                if (!params.allowReload) {
-                    kommunicateCommons.show('#mck-contact-loading');
-                } else {
+                if (params.allowReload) {
                     append = true;
+                } else if (shouldShowContactLoading) {
+                    kommunicateCommons.show('#mck-contact-loading');
                 }
 
                 window.Applozic.ALApiService.ajax({
