@@ -307,6 +307,8 @@
 
         function handleBottomTabChange(tabType, options) {
             options = options || {};
+            typeof kommunicateCommons !== 'undefined' &&
+                kommunicateCommons.hide('#mck-contact-loading');
             var resolvedTabType = normalizeTabType(tabType);
             var activeConversationId = getActiveConversationId();
 
