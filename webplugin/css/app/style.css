@@ -99,6 +99,7 @@ textarea {
   bottom: 25px;
   border-radius: 6px;
   text-rendering: optimizeLegibility;
+  -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: var(--km-card-shadow);
   box-shadow: var(--km-card-shadow);
 }
@@ -4317,7 +4318,7 @@ div#mck-rated:before {
   display: none !important;
 }
 #mck-sidebox-content.active-tab-faqs #km-faq {
-  display: block !important;
+  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-faqs.active-subsection-faq-category {
