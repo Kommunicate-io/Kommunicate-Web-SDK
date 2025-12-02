@@ -375,6 +375,7 @@
                 }
             }
 
+            var topBarManager;
             if (resolvedTabType === 'no-conversations') {
                 var emptyTitle =
                     (typeof MCK_LABELS === 'object' &&
@@ -386,8 +387,7 @@
                     ui.toggleConversationsEmptyState(true);
                 }
                 ui.updateWelcomeCtaLabel();
-                ui.updateWelcomeCtaLabel();
-                var topBarManager = getTopBarManager();
+                topBarManager = getTopBarManager();
                 if (topBarManager) {
                     try {
                         topBarManager.showConversationHeader();
@@ -411,7 +411,7 @@
             if (resolvedTabType === 'whats-new') {
                 whatsNewManager.refresh();
                 ui.toggleModernFaqBackButton(false);
-                var topBarManager = getTopBarManager();
+                topBarManager = getTopBarManager();
                 if (topBarManager) {
                     topBarManager.setWhatsNewTitle();
                 }
@@ -419,7 +419,7 @@
             }
 
             ui.toggleModernFaqBackButton(false);
-            var topBarManager = getTopBarManager();
+            topBarManager = getTopBarManager();
             if (topBarManager) {
                 topBarManager.resetTitle();
             }
