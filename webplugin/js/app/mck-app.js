@@ -426,7 +426,17 @@ function ApplozicSidebox() {
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
             }
-            var widgetSettings = data.chatWidget;
+            var widgetSettingsFromApi = data.chatWidget || {};
+            var localWidgetSettings =
+                options.widgetSettings && typeof options.widgetSettings === 'object'
+                    ? options.widgetSettings
+                    : {};
+            var widgetSettings = $applozic.extend(
+                true,
+                {},
+                widgetSettingsFromApi,
+                localWidgetSettings
+            );
             var disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
