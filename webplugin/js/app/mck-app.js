@@ -314,11 +314,11 @@ function ApplozicSidebox() {
         });
     }
 
-    function applyLayoutClass(layoutName) {
-        if (typeof document === 'undefined' || !layoutName) {
+    function applyLayoutClass(layout) {
+        if (typeof document === 'undefined' || !layout) {
             return;
         }
-        var className = 'layout-' + String(layoutName).toLowerCase();
+        var className = 'layout-' + String(layout).toLowerCase();
         var targets = [document.documentElement, document.body].filter(Boolean);
         targets.forEach(function (node) {
             if (!node.classList) {
@@ -515,29 +515,29 @@ function ApplozicSidebox() {
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
             options.appSettings = options.appSettings || {};
             options.appSettings.chatWidget = options.appSettings.chatWidget || widgetSettings || {};
-            var designLayoutFromSettings =
-                options.designLayoutName ||
-                options?.appSettings?.designLayoutName ||
-                options?.appSettings?.chatWidget?.designLayoutName;
-            var resolvedDesignLayoutName;
-            if (designLayoutFromSettings) {
-                resolvedDesignLayoutName = designLayoutFromSettings;
+            var layoutFromSettings =
+                options.layout ||
+                options?.appSettings?.layout ||
+                options?.appSettings?.chatWidget?.layout;
+            var resolvedLayout;
+            if (layoutFromSettings) {
+                resolvedLayout = layoutFromSettings;
             } else if (
                 (options.KM_VER === 'v2' && options.__KM_PLUGIN_VERSION === 'v3') ||
                 options.KM_VER === 'v3' ||
                 options.__KM_PLUGIN_VERSION === 'v3'
             ) {
-                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.MODERN;
+                resolvedLayout = KommunicateConstants.DESIGN_LAYOUTS.MODERN;
             } else {
-                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
+                resolvedLayout = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
             }
-            options.designLayoutName = resolvedDesignLayoutName;
-            options.appSettings.designLayoutName = resolvedDesignLayoutName;
-            options.appSettings.chatWidget.designLayoutName = resolvedDesignLayoutName;
+            options.layout = resolvedLayout;
+            options.appSettings.layout = resolvedLayout;
+            options.appSettings.chatWidget.layout = resolvedLayout;
             if (widgetSettings) {
-                widgetSettings.designLayoutName = resolvedDesignLayoutName;
+                widgetSettings.layout = resolvedLayout;
             }
-            applyLayoutClass(resolvedDesignLayoutName);
+            applyLayoutClass(resolvedLayout);
 
             var pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'

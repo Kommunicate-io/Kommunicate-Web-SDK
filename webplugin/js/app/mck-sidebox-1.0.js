@@ -78,7 +78,7 @@ const firstVisibleMsg = {
         msgTriggerTimeout: 0,
         labels: kmLabel.getLabels(),
         useBranding: true,
-        designLayoutName: 'classic',
+        layout: 'classic',
         openGroupSettings: {
             deleteChatAccess: 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
             allowInfoAccessGroupMembers: true,
