@@ -11,6 +11,10 @@ HEADER_CTA = {
 
 KommunicateConstants = {
     KM_WIDGET_RELEASE_VERSION: '6.3',
+    DESIGN_LAYOUTS: {
+        DEFAULT: 'classic',
+        MODERN: 'modern',
+    },
     EVENT_IDS: {
         WELCOME_MESSAGE: '3',
         AWAY_MESSAGE: {

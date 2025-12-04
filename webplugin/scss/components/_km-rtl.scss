@@ -20,7 +20,7 @@
         padding-right: 0 !important;
     }
     #mck-tab-conversation {
-        padding-left: 6px;
+        padding-right: 16px;
         float: right;
     }
     .mck-contact-list .mck-cont-msg-date {
@@ -50,7 +50,6 @@
         transform: rotate(180deg) !important;
     }
     .mck-tab-link {
-        padding-left: 10px !important;
         padding-right: 0 !important;
     }
     .mck-agent-image-container {
@@ -95,7 +94,8 @@
         float: inline-start;
         margin-bottom: 4px !important;
     }
-    .mck-text-box-panel .mck-blk-12 {
+    .mck-text-box-panel .mck-blk-12,
+    .mck-textbox-container .mck-location-sharing-box .mck-blk-12 {
         height: 30px;
         padding: 0 0 0 10px;
     }
@@ -191,7 +191,7 @@
     .km-faq-list--body_img {
         padding: 10px 12px 10px 0px;
     }
-    .km-clear-faq-search-icon {
+    .km-faqsearch-icon__clear {
         right: auto;
         left: 25px;
     }

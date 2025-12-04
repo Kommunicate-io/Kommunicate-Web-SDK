@@ -2,3 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run prettify-commit 
+
+# Ensure tab visibility CSS stays in sync with its SCSS source when relevant files change
+if git diff --cached --name-only | grep -Eq 'webplugin/(scss|css)/.*tab-visibility'; then
+  npm run lint:tab-visibility-sync || exit 1
+fi

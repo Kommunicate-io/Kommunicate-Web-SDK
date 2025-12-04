@@ -13,8 +13,8 @@
     bottom: 25px;
     border-radius: 6px;
     text-rendering: optimizeLegibility;
-    -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: var(--km-card-shadow);
+    box-shadow: var(--km-card-shadow);
     & .km-modal-dialog {
         border-radius: 6px;
         overflow: hidden;
@@ -25,7 +25,7 @@
         border-spacing: 0;
         outline: 0;
         border-radius: 6px;
-        background-color: #fff;
+        background-color: var(--km-modal-body-bg);
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -46,7 +46,8 @@
     width: 330px;
     height: 63.7px;
     border-radius: 8px;
-    background-color: #5c5aa7;
+    background-color: var(--km-modal-header-bg);
+    color: var(--km-modal-header-color);
 }
 
 .km-modal-body {
@@ -56,7 +57,7 @@
     padding: 0 15px;
     height: calc(100% - 61px);
     border-radius: 0px 0px 6px 6px;
-    background-color: #fff;
+    background-color: var(--km-modal-body-bg);
     overflow-y: auto;
     scrollbar-width: thin;
 
@@ -76,16 +77,16 @@
     }
 
     & a.hover {
-        color: #11505d;
+        color: var(--km-link-color);
         text-decoration: underline;
     }
 
     & .km-modal-error {
-        background-color: #ffdfdf;
-        color: #885e5e;
+        background-color: var(--km-modal-error-bg);
+        color: var(--km-modal-error-color);
         padding: 10px;
         margin-bottom: 10px;
-        border: 1px solid #ffcfcf;
+        border: 1px solid var(--km-modal-error-border);
         font-size: 12px !important;
         text-align: center;
     }
@@ -93,11 +94,11 @@
 
 .km-modal-body .km-modal-success,
 .km-modal-response {
-    background-color: #ffffff;
-    color: #3c763d;
+    background-color: var(--km-modal-body-bg);
+    color: var(--km-modal-success-color);
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #bfe0ec;
+    border: 1px solid var(--km-modal-success-border);
     font-size: 12px !important;
     text-align: center;
 }
@@ -112,7 +113,7 @@
     select {
         height: 40px;
         border-radius: 3px;
-        border: 2px solid $input-border-color;
+        border: 2px solid var(--km-modal-input-border);
     }
     & textarea {
         resize: none;
@@ -125,7 +126,7 @@
         font-stretch: normal;
         line-height: normal;
         letter-spacing: 0.8px;
-        color: #565658;
+        color: var(--km-font-title-color, #565658);
         padding: 0 15px;
         margin-bottom: 10px;
         margin-top: 10px;
@@ -192,7 +193,7 @@
     top: 0;
     right: 0;
     left: 0;
-    background-color: #000;
+    background-color: var(--km-modal-backdrop-color, rgba(0, 0, 0, 0.6));
 }
 
 .km-sidemodal--modal-header {
@@ -200,8 +201,8 @@
     min-height: 60px;
     text-align: left;
     border-bottom: 1px solid #e5e5e5;
-    background-color: #716fb3;
-    color: #fff;
+    background-color: var(--km-modal-header-bg, #716fb3);
+    color: var(--km-modal-header-color, #fff);
     @include flexMixin(null, space-between);
     border-radius: 6px 6px 0px 0px;
 }
@@ -284,7 +285,7 @@ input[type='number']::-webkit-outer-spin-button {
 .mck-text-req-error {
     color: $km-danger-color;
     font-size: $heading-tertiary;
-    font-family: $font-family-secondary;
+    font-family: $font-family-primary;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -315,7 +316,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 .km-tertiary-title {
     color: $text-tertiary-color;
-    font-family: $font-family-secondary;
+    font-family: $font-family-primary;
     font-size: $heading-secondary;
     font-style: normal;
     font-weight: 600;

@@ -1,5 +1,6 @@
 @import 'abstracts/variables';
 @import 'abstracts/mixin';
+@import 'abstracts/utilities';
 
 @import 'base/base';
 @import 'components/km-login-modal';
@@ -26,3 +27,5 @@
 @import 'components/km-hidePostCta';
 @import 'components/km-rtl';
 @import 'components/km-mck-voice-interface';
+@import 'components/km-bottom-nav';
+@import 'components/km-tab-visibility';

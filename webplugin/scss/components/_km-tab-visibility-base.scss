@@ -1,0 +1,87 @@
+// Visibility utilities intentionally preserve layout (vs. display: none)
+.km-visibility-hidden {
+    visibility: hidden !important;
+}
+
+.km-visibility-shown {
+    visibility: visible !important;
+}
+
+/* Default hidden elements */
+#km-whats-new-placeholder,
+#faq-common,
+#mck-no-conversations {
+    @extend %km-hidden;
+}
+
+#km-widget-options,
+#mck-tab-conversation,
+#mck-tab-individual,
+#mck-contacts-content,
+#km-faqdiv,
+.km-faq-category-list-container,
+#km-faq-list-container,
+#km-faqanswer,
+.km-faq-back-btn-wrapper,
+#km-faq-back-btn {
+    @extend %km-hidden;
+}
+
+#mck-tab-conversation {
+    padding-inline-start: 16px;
+}
+
+// Shared selector groups for tab/subsection states (only active-* classes are used at runtime)
+$km-non-conversation-selectors: ('#mck-sidebox-content:not(.active-tab-conversations)');
+
+$km-tab-conversation-selectors: ('#mck-sidebox-content.active-tab-conversations');
+
+$km-subsection-conversation-list-selectors: (
+    '#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list'
+);
+
+$km-subsection-conversation-individual-selectors: (
+    '#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual'
+);
+
+$km-tab-whats-new-selectors: ('#mck-sidebox-content.active-tab-whats-new');
+
+$km-tab-faqs-selectors: ('#mck-sidebox-content.active-tab-faqs');
+
+$km-subsection-faq-category-selectors: (
+    '#mck-sidebox-content.active-tab-faqs.active-subsection-faq-category'
+);
+
+$km-subsection-faq-list-selectors: (
+    '#mck-sidebox-content.active-tab-faqs.active-subsection-faq-list'
+);
+
+$km-subsection-faq-article-selectors: (
+    '#mck-sidebox-content.active-tab-faqs.active-subsection-faq-article'
+);
+
+$km-subsection-faq-no-results-selectors: (
+    '#mck-sidebox-content.active-tab-faqs.active-subsection-faq-no-results'
+);
+
+$km-tab-no-conversations-selectors: ('#mck-sidebox-content.active-tab-no-conversations');
+
+$km-layout-classic-conversation-list-selectors: (
+    '#mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual)'
+);
+
+@mixin apply-state($selectors, $placeholder) {
+    @each $selector in $selectors {
+        #{$selector} {
+            @extend #{$placeholder};
+        }
+    }
+}
+
+@mixin apply-scoped-state($scope, $selectors, $placeholder) {
+    @each $selector in $selectors {
+        #{$scope} #{$selector} {
+            @extend #{$placeholder};
+        }
+    }
+}

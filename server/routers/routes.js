@@ -1,6 +1,9 @@
 const app = require('./../app');
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const webpluginController = require('../../webplugin/controller');
+const { resolveBranch } = require('../utils/branch');
 //router declaration
 const home = express.Router();
 
@@ -14,10 +17,49 @@ home.get('/', function (req, res) {
     });
 });
 
+const buildIndexPath = path.join(__dirname, '../../webplugin/build/index.html');
+const templateIndexPath = path.join(__dirname, '../../webplugin/template/index.html');
+
+const loadIndexTemplate = () => {
+    const indexPath = fs.existsSync(buildIndexPath) ? buildIndexPath : templateIndexPath;
+    try {
+        const raw = fs.readFileSync(indexPath, 'utf8');
+        const branch = resolveBranch();
+        const envValue =
+            process.env._BUILD_ENV ||
+            process.env.NODE_ENV ||
+            process.env.BRANCH_ENV ||
+            process.env.FIREBASE_ENV ||
+            'development';
+        return raw.replace(/__KM_BRANCH__/g, branch).replace(/__KM_ENV__/g, envValue);
+    } catch (e) {
+        return null;
+    }
+};
+
+const cachedIndexHtml = loadIndexTemplate();
+
+home.get('/index.html', function (req, res) {
+    if (cachedIndexHtml) {
+        res.type('html').send(cachedIndexHtml);
+        return;
+    }
+    res.sendFile(buildIndexPath, (err) => {
+        if (err) {
+            res.sendFile(templateIndexPath);
+        }
+    });
+});
+
 home.get('/kommunicate.app', function (req, res) {
-    // below is the code to handle the "forward".
-    req.url = '/v1/kommunicate.app';
+    // backward-compatible root loader uses v2 via forward
+    req.url = '/v2/kommunicate.app';
     home.handle(req, res);
+});
+home.get('/kommunicate-widget-3.0.min.js', function (req, res) {
+    // new loader alias uses v3 directly
+    req.params.version = 'v3';
+    webpluginController.getPlugin(req, res);
 });
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML);

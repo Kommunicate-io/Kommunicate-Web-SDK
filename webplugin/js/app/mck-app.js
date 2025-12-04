@@ -314,6 +314,28 @@ function ApplozicSidebox() {
         });
     }
 
+    function applyLayoutClass(layoutName) {
+        if (typeof document === 'undefined' || !layoutName) {
+            return;
+        }
+        var className = 'layout-' + String(layoutName).toLowerCase();
+        var targets = [document.documentElement, document.body].filter(Boolean);
+        targets.forEach(function (node) {
+            if (!node.classList) {
+                return;
+            }
+            Array.prototype.slice
+                .call(node.classList)
+                .filter(function (cls) {
+                    return cls.indexOf('layout-') === 0;
+                })
+                .forEach(function (cls) {
+                    node.classList.remove(cls);
+                });
+            node.classList.add(className);
+        });
+    }
+
     async function loadFileBasedOnProp(apiData, options) {
         try {
             const promises = [];
@@ -404,7 +426,17 @@ function ApplozicSidebox() {
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
             }
-            var widgetSettings = data.chatWidget;
+            var widgetSettingsFromApi = data.chatWidget || {};
+            var localWidgetSettings =
+                options.widgetSettings && typeof options.widgetSettings === 'object'
+                    ? options.widgetSettings
+                    : {};
+            var widgetSettings = $applozic.extend(
+                true,
+                {},
+                widgetSettingsFromApi,
+                localWidgetSettings
+            );
             var disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
@@ -481,6 +513,31 @@ function ApplozicSidebox() {
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            options.appSettings = options.appSettings || {};
+            options.appSettings.chatWidget = options.appSettings.chatWidget || widgetSettings || {};
+            var designLayoutFromSettings =
+                options.designLayoutName ||
+                options?.appSettings?.designLayoutName ||
+                options?.appSettings?.chatWidget?.designLayoutName;
+            var resolvedDesignLayoutName;
+            if (designLayoutFromSettings) {
+                resolvedDesignLayoutName = designLayoutFromSettings;
+            } else if (
+                (options.KM_VER === 'v2' && options.__KM_PLUGIN_VERSION === 'v3') ||
+                options.KM_VER === 'v3' ||
+                options.__KM_PLUGIN_VERSION === 'v3'
+            ) {
+                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.MODERN;
+            } else {
+                resolvedDesignLayoutName = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
+            }
+            options.designLayoutName = resolvedDesignLayoutName;
+            options.appSettings.designLayoutName = resolvedDesignLayoutName;
+            options.appSettings.chatWidget.designLayoutName = resolvedDesignLayoutName;
+            if (widgetSettings) {
+                widgetSettings.designLayoutName = resolvedDesignLayoutName;
+            }
+            applyLayoutClass(resolvedDesignLayoutName);
 
             var pseudoNameEnabled =
                 widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'

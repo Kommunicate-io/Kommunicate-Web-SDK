@@ -145,7 +145,7 @@ Step 5: After changing the config variable open the terminal and run this comman
 ## How to point Kommunicate script to your server?
 
 -   Update the source URL in the Kommunicate script.
-    > s.src = "http://localhost:3030/v2/kommunicate.app";
+    > s.src = "http://localhost:3030/kommunicate-widget-3.0.min.js";
 
 ```javascript
 <script type="text/javascript">
@@ -158,7 +158,7 @@ Step 5: After changing the config variable open the terminal and run this comman
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.async = true;
-        s.src = "http://localhost:3030/v2/kommunicate.app";
+        s.src = "http://localhost:3030/kommunicate-widget-3.0.min.js";
         var h = document.getElementsByTagName("head")[0];
         h.appendChild(s);
         window.kommunicate = m;

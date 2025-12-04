@@ -31,7 +31,8 @@ $popupClass: '.chat-popup-widget-container';
 
         &.km-animate {
             opacity: 0;
-            @include prefix(clip-path, circle(35px at 345px 35px), moz webkit);
+            @include prefix(transform, translateY(10px) scale(0.98), webkit moz o);
+            will-change: transform, opacity;
             @include prefix(
                 animation,
                 km-reveal-animation-horizontal 0.3s ease-in-out 0.3s 1 forwards,
@@ -63,7 +64,8 @@ $popupClass: '.chat-popup-widget-container';
         max-width: 300px;
 
         &.km-animate {
-            @include prefix(clip-path, circle(55px at 300px 50px), webkit);
+            @include prefix(transform, translateY(12px) scale(0.98), webkit moz o);
+            will-change: transform, opacity;
             @include prefix(
                 animation,
                 km-reveal-animation-vertical 0.3s ease-in-out 0.3s 1 forwards,
@@ -105,6 +107,7 @@ $popupClass: '.chat-popup-widget-container';
     &--vertical.km-animate .chat-popup-widget-text,
     &--actionable.km-animate .chat-popup-widget-text {
         opacity: 0;
+        will-change: transform, opacity;
         @include prefix(animation, km-slide-in-animation 0.5s ease 0.5s 1 forwards, webkit moz o);
     }
 
@@ -167,38 +170,42 @@ $popupClass: '.chat-popup-widget-container';
 
 @-webkit-keyframes km-reveal-animation-horizontal {
     from {
-        opacity: 1;
+        opacity: 0;
+        @include prefix(transform, translateY(10px) scale(0.98), webkit);
     }
     to {
         opacity: 1;
-        @include prefix(clip-path, circle(345px at 280px 35px), webkit);
+        @include prefix(transform, translateY(0) scale(1), webkit);
     }
 }
 @-moz-keyframes km-reveal-animation-horizontal {
     from {
-        opacity: 1;
+        opacity: 0;
+        @include prefix(transform, translateY(10px) scale(0.98), moz);
     }
     to {
         opacity: 1;
-        clip-path: circle(345px at 315px 35px);
+        @include prefix(transform, translateY(0) scale(1), moz);
     }
 }
 @-o-keyframes km-reveal-animation-horizontal {
     from {
-        opacity: 1;
+        opacity: 0;
+        @include prefix(transform, translateY(10px) scale(0.98), o);
     }
     to {
         opacity: 1;
-        clip-path: circle(345px at 315px 35px);
+        @include prefix(transform, translateY(0) scale(1), o);
     }
 }
 @keyframes km-reveal-animation-horizontal {
     from {
-        opacity: 1;
+        opacity: 0;
+        @include prefix(transform, translateY(10px) scale(0.98), webkit moz o);
     }
     to {
         opacity: 1;
-        @include prefix(clip-path, circle(345px at 280px 35px), webkit);
+        @include prefix(transform, translateY(0) scale(1), webkit moz o);
     }
 }
 @-webkit-keyframes km-scale-animation {
@@ -249,78 +256,82 @@ $popupClass: '.chat-popup-widget-container';
 @-webkit-keyframes km-slide-in-animation {
     from {
         opacity: 0;
-        padding-left: 5px;
+        @include prefix(transform, translateX(8px), webkit);
     }
     to {
         opacity: 1;
-        padding-left: 0;
+        @include prefix(transform, translateX(0), webkit);
     }
 }
 @-moz-keyframes km-slide-in-animation {
     from {
         opacity: 0;
-        padding-left: 5px;
+        @include prefix(transform, translateX(8px), moz);
     }
     to {
         opacity: 1;
-        padding-left: 0;
+        @include prefix(transform, translateX(0), moz);
     }
 }
 @-o-keyframes km-slide-in-animation {
     from {
         opacity: 0;
-        padding-left: 5px;
+        @include prefix(transform, translateX(8px), o);
     }
     to {
         opacity: 1;
-        padding-left: 0;
+        @include prefix(transform, translateX(0), o);
     }
 }
 @keyframes km-slide-in-animation {
     from {
         opacity: 0;
-        padding-left: 5px;
+        @include prefix(transform, translateX(8px), webkit moz o);
     }
     to {
         opacity: 1;
-        padding-left: 0;
+        @include prefix(transform, translateX(0), webkit moz o);
     }
 }
 
 @-webkit-keyframes km-reveal-animation-vertical {
     from {
-        opacity: 0.6;
+        opacity: 0;
+        @include prefix(transform, translateY(12px) scale(0.98), webkit);
     }
     to {
         opacity: 1;
-        @include prefix(clip-path, circle(365px at 335px 50px), webkit);
+        @include prefix(transform, translateY(0) scale(1), webkit);
     }
 }
 @-moz-keyframes km-reveal-animation-vertical {
     from {
-        opacity: 0.6;
+        opacity: 0;
+        @include prefix(transform, translateY(12px) scale(0.98), moz);
     }
     to {
         opacity: 1;
-        clip-path: circle(365px at 335px 50px);
+        @include prefix(transform, translateY(0) scale(1), moz);
     }
 }
 @-o-keyframes km-reveal-animation-vertical {
     from {
-        opacity: 0.6;
+        opacity: 0;
+        @include prefix(transform, translateY(12px) scale(0.98), o);
     }
     to {
         opacity: 1;
-        clip-path: circle(365px at 335px 50px);
+        @include prefix(transform, translateY(0) scale(1), o);
     }
 }
 @keyframes km-reveal-animation-vertical {
     from {
-        opacity: 0.6;
+        opacity: 0;
+        @include prefix(transform, translateY(12px) scale(0.98), webkit moz o);
     }
     to {
         opacity: 1;
-        @include prefix(clip-path, circle(365px at 300px 50px), webkit);
+        @include prefix(transform, translateY(0) scale(1), webkit moz o);
     }
 }
 
@@ -331,7 +342,7 @@ $popupClass: '.chat-popup-widget-container';
         &--horizontal {
             padding-right: 70px;
         }
-        &----actionable {
+        &--actionable {
             width: calc(100% - 50px);
         }
     }
@@ -394,8 +405,6 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
-            width: 205px !important;
-            width: 205px !important;
             width: 205px !important;
         }
     }

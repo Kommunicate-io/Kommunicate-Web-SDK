@@ -1,0 +1,116 @@
+// Conversation tab visibility states
+%km-hide-conversation-chrome {
+    .mck-conversation {
+        @extend %km-hidden;
+    }
+
+    .mck-agent-image-container,
+    .mck-agent-status-indicator,
+    #mck-agent-status-text,
+    .mck-typing-box,
+    #mck-tab-status {
+        @extend %km-hidden;
+    }
+}
+
+%km-tab-conversation-base {
+    .mck-conversation {
+        display: block !important;
+    }
+
+    #mck-tab-individual {
+        display: flex !important;
+    }
+
+    .km-faq-back-btn-wrapper {
+        @extend %km-hidden;
+    }
+
+    #km-faq {
+        display: block !important;
+    }
+}
+
+%km-conversation-list {
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+    #mck-contacts-content {
+        display: block !important;
+    }
+    #km-widget-options {
+        @extend %km-hidden;
+    }
+    #mck-tab-individual {
+        @extend %km-hidden;
+    }
+
+    /* Hide start-new button when conversations empty state is visible */
+    .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
+        @extend %km-hidden;
+    }
+}
+
+%km-conversation-individual {
+    #km-widget-options {
+        display: flex !important;
+    }
+    #km-faq {
+        @extend %km-hidden;
+    }
+    #mck-tab-conversation {
+        @extend %km-hidden;
+    }
+    #mck-contacts-content {
+        @extend %km-hidden;
+    }
+    .km-bottom-tab-wrapper {
+        @extend %km-hidden;
+    }
+    .mck-back-btn-container {
+        display: inline-flex !important;
+        width: auto !important;
+        padding-right: 0 !important;
+    }
+}
+
+%km-layout-classic-conversation-list {
+    #mck-tab-individual {
+        @extend %km-hidden;
+    }
+    .mck-name-status-container,
+    .mck-back-btn-container {
+        @extend %km-hidden;
+    }
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+    #mck-contacts-content {
+        display: block !important;
+    }
+}
+
+%km-layout-classic-hide-faq-back {
+    .km-faq-back-btn-wrapper {
+        @extend %km-hidden;
+    }
+}
+
+@include apply-state($km-non-conversation-selectors, '%km-hide-conversation-chrome');
+@include apply-state($km-tab-conversation-selectors, '%km-tab-conversation-base');
+@include apply-state($km-subsection-conversation-list-selectors, '%km-conversation-list');
+@include apply-state(
+    $km-subsection-conversation-individual-selectors,
+    '%km-conversation-individual'
+);
+
+@include apply-scoped-state(
+    '.layout-classic',
+    $km-layout-classic-conversation-list-selectors,
+    '%km-layout-classic-conversation-list'
+);
+@include apply-scoped-state(
+    '.layout-classic',
+    $km-tab-conversation-selectors,
+    '%km-layout-classic-hide-faq-back'
+);

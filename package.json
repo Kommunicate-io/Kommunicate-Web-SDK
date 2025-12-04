@@ -8,7 +8,14 @@
   "scripts": {
     "postinstall": "husky install",
     "prettify-commit": "lint-staged --allow-empty",
-    "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
+    "watch:scss:style": "sass --watch webplugin/scss/style.scss:webplugin/css/app/style.css --no-source-map --style=expanded",
+    "watch:scss:style-dist": "sass --watch webplugin/scss/style.scss:webplugin/css/app/style/style.css --no-source-map --style=expanded",
+    "watch:scss:km-bottom-nav": "sass --watch webplugin/scss/km-bottom-nav.scss:webplugin/css/app/km-bottom-nav.css --no-source-map --style=expanded",
+    "watch:scss:km-bottom-nav-style": "sass --watch webplugin/scss/km-bottom-nav.scss:webplugin/css/app/style/km-bottom-nav.css --no-source-map --style=expanded",
+    "watch:scss:mck-tab-visibility": "sass --watch webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/mck-tab-visibility.css --no-source-map --style=expanded",
+    "watch:scss:mck-tab-visibility-style": "sass --watch webplugin/scss/mck-tab-visibility.scss:webplugin/css/app/style/mck-tab-visibility.css --no-source-map --style=expanded",
+    "watch:scss:all": "npm-run-all -p watch:scss:style watch:scss:style-dist watch:scss:km-bottom-nav watch:scss:km-bottom-nav-style watch:scss:mck-tab-visibility watch:scss:mck-tab-visibility-style",
+    "build-dev:scss-to-css": "npm-run-all -p watch:scss:all",
     "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.{js,css,scss,json}' --ignore-unknown",
     "build:dev": "nodemon ./server/app.js",
     "dev": "export PRODUCT=kommunicate && npm-run-all -p build:dev build-dev:scss-to-css setup-git-hooks",
@@ -27,6 +34,8 @@
     "serve-build": "serve -C -l 3030 webplugin/build",
     "run-danger-local": "danger local",
     "run-danger-test": "danger ci",
+    "lint:scss-sync": "node scripts/check-scss-sync.js",
+    "lint:tab-visibility-sync": "npm run lint:scss-sync",
     "setup-git-hooks": "node setup-git-hooks.js",
     "gulp-build": "cd ./webplugin && gulp",
     "build-server": "node ./server/build.js",
@@ -100,7 +109,7 @@
     ]
   },
   "lint-staged": {
-    "**/*.{js,scss,css,json,html,md}": [
+    "**/*.{js,scss,json,html,md}": [
       "prettier --write"
     ]
   }

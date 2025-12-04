@@ -9,16 +9,17 @@ Kommunicate.postPluginInitialization = function (err, data) {
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var categoryName;
     var primaryCTA = kommunicate?._globals?.primaryCTA;
+    KommunicateUI.initFaq();
+    KommunicateUI.faqAppData = data;
 
     if (primaryCTA && primaryCTA !== 'FAQ') {
-        kommunicateCommons.show('.km-kb-container');
-        kommunicateCommons.hide('#km-faq');
+        kommunicateCommons.show('.km-kb-container', '#km-faq');
     }
     if (kommunicate?._globals?.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;
         Kommunicate.getFaqList(data, categoryName);
     } else {
-        Kommunicate.getFaqCategories(data);
+        KommunicateUI.ensureFaqCategoriesLoaded(data);
     }
 };
 
@@ -57,20 +58,22 @@ Kommunicate.getFaqList = function (data, categoryName) {
                       );
                   })
                 : KommunicateUI.faqEmptyState();
-
-            kommunicate &&
-                kommunicate._globals &&
-                kommunicate._globals.faqCategory &&
-                KommunicateUI.initFaq();
         },
         error: function () {},
     });
 };
 Kommunicate.getFaqCategories = function (data) {
+    KommunicateUI.faqCategoryRequestPending = true;
     KommunicateKB.getCategories({
         data: { appId: data.appId, baseUrl: Kommunicate.getBaseUrl() },
         success: function (response) {
+            KommunicateUI.faqCategoryRequestPending = false;
+            KommunicateUI.faqCategoriesReady = true;
             var initializeFAQ = false;
+            var articleLabel =
+                (window.MCK_LABELS && MCK_LABELS['modern.faq.category.article']) || 'article';
+            var articlesLabel =
+                (window.MCK_LABELS && MCK_LABELS['modern.faq.category.articles']) || 'articles';
             if (response.data && response.data.length == 1) {
                 // if only 1 category is present then no need to show the category.
                 kommunicate &&
@@ -91,16 +94,37 @@ Kommunicate.getFaqCategories = function (data) {
                 initializeFAQ = true;
                 var categoryName = category.name;
                 var categoryDescription = category.description;
-                $applozic('#km-faq-category-list-container').append(
-                    '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="' +
-                        categoryName.replace(/ /g, '-') +
+                var safeCategoryName = kommunicateCommons.formatHtmlTag(categoryName);
+                var safeCategoryDescription = kommunicateCommons.formatHtmlTag(categoryDescription);
+                var articleCount = Number(category.articleCount) || 0;
+                var articleCountLabel = articleCount
+                    ? articleCount +
+                      ' ' +
+                      (articleCount === 1 ? articleLabel : articlesLabel || articleLabel + 's')
+                    : '';
+                var safeCategoryNameAttr = kommunicateCommons.encodeCategoryNameForAttribute(
+                    categoryName
+                );
+                $applozic('.km-faq-category-list-container').append(
+                    '<div class="km-faq-category-card" data-category-name="' +
+                        safeCategoryNameAttr +
                         '">' +
+                        '<div class="km-faq-category-card-content">' +
+                        '<div class="km-faq-category-card-title-row">' +
                         '<div class="km-faq-category-card-title km-custom-widget-text-color">' +
-                        categoryName +
+                        safeCategoryName +
+                        '</div>' +
+                        (articleCountLabel
+                            ? '<span class="km-faq-category-card-count">' +
+                              articleCountLabel +
+                              '</span>'
+                            : '') +
                         '</div>' +
                         '<div class="km-faq-category-card-body">' +
-                        categoryDescription +
-                        '</div> </div>'
+                        safeCategoryDescription +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
                 );
             });
 
@@ -109,8 +133,9 @@ Kommunicate.getFaqCategories = function (data) {
                 KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
                 KommunicateUI.setFAQButtonText();
             }
-            initializeFAQ && KommunicateUI.initFaq();
         },
-        error: function () {},
+        error: function () {
+            KommunicateUI.faqCategoryRequestPending = false;
+        },
     });
 };

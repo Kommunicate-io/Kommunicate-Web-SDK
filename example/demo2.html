@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kommunicate Modern Widget Demo</title>
+    </head>
+    <body>
+        <h1>Kommunicate Modern Widget Demo</h1>
+        <p>This page loads the Kommunicate widget configured with a sample Modern layout.</p>
+        <script>
+            (function (d, m) {
+                var kommunicateSettings = {
+                    appId: 'kommunicate-support',
+                    popupWidget: true,
+                    designLayoutName: 'modern',
+                    automaticChatOpenOnNavigation: true,
+                    whatsNewList: [
+                        {
+                            title: 'October 2025 Product Release Notes',
+                            description: '2FA, bulk delete, search URLs, and more.',
+                            meta: 'October 2025',
+                            link:
+                                'https://www.kommunicate.io/blog/product-release-notes-october-2025/',
+                            linkText: 'Read release notes',
+                        },
+                        {
+                            title: 'Brash Solutions automated 500 daily queries with Kommunicate',
+                            description:
+                                'Learn how they diverted phone calls to AI chatbots and scaled support.',
+                            meta: 'Customer Story',
+                            link: 'https://www.kommunicate.io/blog/brash-solutions/',
+                            linkText: 'Read the case study',
+                        },
+                    ],
+
+                    //      "preLeadCollection": [{
+                    //         "field": "Name", // Name of the field you want to add
+                    //         "required": true, // Set 'true' to make it a mandatory field
+                    //         "placeholder": "Enter your name" // add whatever text you want to show in the placeholder
+                    //     },
+                    //     {
+                    //         "field": "Email",
+                    //         "type": "email",
+                    //         "required": true,
+                    //         "placeholder": "Enter your email"
+                    //     }
+                    // ]
+                };
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = '/kommunicate-widget-3.0.min.js';
+                var h = document.getElementsByTagName('head')[0];
+                h.appendChild(s);
+                window.kommunicate = m;
+                m._globals = kommunicateSettings;
+            })(document, window.kommunicate || {});
+        </script>
+    </body>
+</html>

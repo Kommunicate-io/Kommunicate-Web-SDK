@@ -27,7 +27,7 @@ var kmCustomIframe =
     '   border: none;' +
     '   position: fixed;' +
     '   z-index: 2243000;' +
-    '   bottom: 10px;' +
+    '   bottom: 15px;' +
     '   right: 20px;' +
     '   height: 75px;' +
     '   width: 75px;' +
@@ -122,7 +122,9 @@ function removeKommunicateScripts() {
         kmCustomElements.iframe.id,
         kmCustomElements.iframe.styleSheetId,
     ]);
-    var originFile = document.querySelector("script[src*='kommunicate.app']");
+    var originFile = document.querySelector(
+        "script[src*='kommunicate.app'], script[src*='kommunicate-widget-3.0.min.js']"
+    );
     originFile && originFile.parentNode.removeChild(originFile);
 }
 
@@ -155,8 +157,8 @@ function appendIframeAfterBodyLoaded() {
 }
 
 function appendIframe() {
-    createKommunicateIframe();
     createCustomClasses(kmCustomIframe); // Add class to document
+    createKommunicateIframe();
 }
 
 function isV1Script() {
@@ -255,10 +257,9 @@ function addKommunicatePluginToIframe() {
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
 
-    var options = {};
     var options = addableWindow.applozic._globals;
-    options.isAnonymousChat = options.isAnonymousChat;
-    options.KM_VER = MCK_PLUGIN_VERSION;
+    options.__KM_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
+    options.KM_VER = MCK_PLUGIN_VERSION === 'v3' ? 'v2' : MCK_PLUGIN_VERSION;
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }

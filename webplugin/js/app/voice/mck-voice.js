@@ -273,8 +273,7 @@ class MckVoice {
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             kommunicateCommons.hide('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
 
-            kommunicateCommons.show('#mck-voice-interface');
-            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
+            kommunicateCommons.show('#mck-voice-interface', '.voice-ring-2', '.voice-ring-3');
             kommunicateCommons.modifyClassList(
                 { class: ['voice-ring-1'] },
                 '',
@@ -326,11 +325,7 @@ class MckVoice {
         document.getElementById('mck-voice-repeat-last-msg').addEventListener('click', function () {
             this.classList.toggle('mck-hidden');
 
-            kommunicateCommons.modifyClassList(
-                { class: ['voice-ring-2', 'voice-ring-3'] },
-                '',
-                'n-vis'
-            );
+            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
             const ring1 = document.querySelector('.voice-ring-1');
             ring1.classList.remove('mck-ring-remove-animation');
 
@@ -727,7 +722,7 @@ class MckVoice {
 
     showMic(appOptions) {
         if (appOptions.voiceChat) {
-            kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
+            kommunicateCommons.show('#mck-voice-web');
         }
     }
 }

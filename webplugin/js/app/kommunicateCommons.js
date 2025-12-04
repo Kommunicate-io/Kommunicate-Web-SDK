@@ -14,6 +14,68 @@ function KommunicateCommons() {
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
     };
 
+    _this.getDesignLayoutName = function () {
+        var globals = Kommunicate?._globals;
+        var appSettings = globals?.appSettings;
+        var layoutFromGlobals =
+            globals?.designLayoutName ||
+            appSettings?.designLayoutName ||
+            appSettings?.chatWidget?.designLayoutName ||
+            null;
+        return (
+            layoutFromGlobals ||
+            KommunicateConstants.DESIGN_LAYOUTS?.DEFAULT ||
+            KommunicateConstants.DESIGN_LAYOUTS?.MODERN ||
+            'default'
+        );
+    };
+
+    _this.isModernLayoutEnabled = function () {
+        return (
+            _this.getDesignLayoutName() ===
+            ((KommunicateConstants.DESIGN_LAYOUTS && KommunicateConstants.DESIGN_LAYOUTS.MODERN) ||
+                'modern')
+        );
+    };
+
+    var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
+    var MODERN_NAV_HEIGHT_EXTRA = 22;
+    var NAV_HEIGHT_OFFSET = 16;
+    var cachedBottomNavHeight = null;
+
+    _this.adjustIframeHeightForLayout = function (iframeElement) {
+        if (
+            !iframeElement ||
+            _this.checkIfDeviceIsHandheld() ||
+            !_this.isModernLayoutEnabled ||
+            !_this.isModernLayoutEnabled()
+        ) {
+            return;
+        }
+
+        iframeElement.style.height = '';
+
+        var heightSourceWindow =
+            (iframeElement.ownerDocument && iframeElement.ownerDocument.defaultView) || window;
+        var computedStyle =
+            heightSourceWindow && typeof heightSourceWindow.getComputedStyle === 'function'
+                ? heightSourceWindow.getComputedStyle(iframeElement)
+                : null;
+        var baseHeight =
+            computedStyle && computedStyle.height ? parseInt(computedStyle.height, 10) : NaN;
+
+        if (isNaN(baseHeight)) {
+            return;
+        }
+
+        var navHeight = getBottomNavHeight(iframeElement);
+        if (isNaN(navHeight) || navHeight <= 0) {
+            navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
+        }
+        var reducedHeight = baseHeight - navHeight;
+        iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
+    };
+
     _this.isTrialPlan = function (pricingPackage) {
         var isTrialPlan = false;
         if (pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL) {
@@ -56,6 +118,39 @@ function KommunicateCommons() {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         return diffDays;
     };
+
+    function getBottomNavHeight(iframeElement) {
+        if (cachedBottomNavHeight !== null) {
+            return cachedBottomNavHeight;
+        }
+        var doc = iframeElement && iframeElement.contentDocument;
+        var win = iframeElement && iframeElement.contentWindow;
+        var nav =
+            (doc &&
+                (doc.querySelector('.km-bottom-tab-bar') ||
+                    doc.querySelector('.km-bottom-tab-wrapper'))) ||
+            null;
+        var height = 0;
+        if (nav && win && typeof win.getComputedStyle === 'function') {
+            var navStyle = win.getComputedStyle(nav);
+            var parsed = navStyle && navStyle.height ? parseFloat(navStyle.height) : NaN;
+            if (!isNaN(parsed) && parsed > 0 && navStyle.display !== 'none') {
+                height = parsed;
+            }
+        }
+        if (!height && nav && nav.offsetHeight) {
+            height = nav.offsetHeight;
+        }
+        if (!height || height < 0) {
+            height = DEFAULT_BOTTOM_NAV_HEIGHT;
+        }
+        if (_this.isModernLayoutEnabled()) {
+            height -= MODERN_NAV_HEIGHT_EXTRA;
+        }
+        height -= NAV_HEIGHT_OFFSET;
+        cachedBottomNavHeight = height;
+        return cachedBottomNavHeight;
+    }
 
     _this.showPoweredBy = function (data) {
         var isKommunicateAccountExpired = _this.isKommunicatePlanExpired(data);
@@ -276,6 +371,25 @@ function KommunicateCommons() {
     _this.formatHtmlTag = function (html) {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
+
+    function escapeForAttributeValue(value) {
+        if (value === null || typeof value === 'undefined') {
+            return '';
+        }
+        var stringValue = typeof value.toString === 'function' ? value.toString() : String(value);
+        return stringValue
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    _this.escapeAttributeValue = escapeForAttributeValue;
+
+    _this.encodeCategoryNameForAttribute = function (categoryName) {
+        return escapeForAttributeValue(categoryName).replace(/\s+/g, '-');
+    };
     _this.isConversationClosedByBot = function () {
         if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {
             var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
@@ -304,7 +418,6 @@ function KommunicateCommons() {
             },
             type: 'GET',
             url: Kommunicate.getBaseUrl() + '/rest/ws/feedback/v2/' + tabId,
-            global: false,
             contentType: 'application/json',
             success: onSuccessCallback,
             error: function (err) {

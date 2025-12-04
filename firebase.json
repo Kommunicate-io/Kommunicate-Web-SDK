@@ -14,19 +14,6 @@
         ]
       },
       {
-        "source": "/v2/kommunicate.app",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/javascript"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=180"
-          }
-        ]
-      },
-      {
         "source": "**/*.js",
         "headers": [
           {
@@ -45,11 +32,55 @@
         ]
       },
       {
+        "source": "**/*.woff2",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "**/*.woff",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
         "source": "resources/**/*.html",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "/v2/kommunicate.app",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
+          }
+        ]
+      },
+      {
+        "source": "/kommunicate-widget-3.0.min.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
           }
         ]
       }
@@ -61,6 +92,11 @@
         "type": "404"
       },
       {
+        "source": "/demo2",
+        "destination": "/demo2.html",
+        "type": "200"
+      },
+      {
         "source": "/robots.txt",
         "destination": "/robots.txt",
         "type": "200"
@@ -68,11 +104,6 @@
       {
         "source": "/chat",
         "destination": "/chat.html",
-        "type": "200"
-      },
-      {
-        "source": "/v2/kommunicate.app",
-        "destination": "/index.html",
         "type": "200"
       }
     ],

@@ -1,0 +1,356 @@
+/* CSS custom properties for theming. These map SCSS color tokens into runtime CSS variables
+     so templates can be themed via JS or by overriding the variables in a site stylesheet. */
+:root {
+  --km-bg: #ffffff;
+  --km-tabicon-bg: #edf0f5;
+  --km-accent-start: #3f63ff; /* used for gradients */
+  --km-accent: #5f46f8;
+  --km-accent-contrast: #ffffff;
+  --km-font-title-size: 15px;
+  --km-font-title-weight: 500;
+  --km-font-title-color: #1c2043;
+  --km-font-meta-size: 12px;
+  --km-font-meta-color: #8d94b5;
+  --km-font-body-color: #6e6e6e;
+  --km-font-body-size: 14px;
+  --km-accent-rgb: 95, 70, 248;
+  --km-font-family: Inter, Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif;
+  --km-modal-header-bg: #5c5aa7;
+  --km-modal-header-color: #ffffff;
+  --km-modal-body-bg: #ffffff;
+  --km-modal-input-bg: #fafafa;
+  --km-modal-input-border: #dcdcdc;
+  --km-modal-error-bg: #ffdfdf;
+  --km-modal-error-border: #ffcfcf;
+  --km-modal-error-color: #885e5e;
+  --km-modal-success-border: #bfe0ec;
+  --km-modal-success-color: #3c763d;
+  --km-modal-backdrop-color: rgba(0, 0, 0, 0.6);
+  --km-link-color: #11505d;
+  --km-card-shadow: 0px 0px 12px 0px rgba(4, 68, 77, 0.1490196078);
+}
+
+/**
+
+$known-prefixes
+
+ webkit - safari, chrome
+ moz - firefox
+ ms - microsoft browser ex- ie, edge
+ o - opera browsers
+**/
+.km-bottom-tab-wrapper {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(4, 68, 77, 0.08);
+  display: flex;
+  justify-content: center;
+}
+
+.km-bottom-tab-bar {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.km-bottom-tab {
+  flex: 1 1 0;
+  border: none;
+  border-radius: 0;
+  padding: 6px 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15px;
+  color: rgba(28, 32, 67, 0.65);
+  background: transparent;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.km-bottom-tab:hover {
+  color: var(--km-font-title-color);
+}
+.km-bottom-tab:focus-visible {
+  outline: 2px solid rgba(76, 102, 205, 0.5);
+  outline-offset: 3px;
+}
+.km-bottom-tab.active {
+  color: var(--km-font-title-color);
+}
+
+.km-bottom-tab--collapse {
+  flex: 0 0 74px;
+  padding: 8px 6px;
+  align-self: stretch;
+  border-left: 1px solid rgba(4, 68, 77, 0.08);
+  color: var(--km-font-title-color);
+}
+.km-bottom-tab--collapse .km-bottom-tab-label {
+  white-space: nowrap;
+}
+.km-bottom-tab--collapse .km-bottom-tab-icon {
+  background: rgba(4, 68, 77, 0.08);
+}
+.km-bottom-tab--collapse:hover .km-bottom-tab-icon, .km-bottom-tab--collapse:focus-visible .km-bottom-tab-icon {
+  background: var(--km-tabicon-bg, #edf0f5);
+}
+
+@media (max-width: 600px) {
+  .km-bottom-tab {
+    font-size: 10px;
+    padding: 5px 0;
+    gap: 3px;
+  }
+  .km-bottom-tab--collapse {
+    flex: 0 0 66px;
+    padding: 6px 4px;
+  }
+  .km-bottom-tab-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .km-bottom-tab-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+@media (max-width: 380px) {
+  .km-bottom-tab {
+    font-size: 10px;
+    padding: 4px 0;
+    gap: 2px;
+  }
+  .km-bottom-tab-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .km-bottom-tab-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+@media (max-width: 330px) {
+  .km-bottom-tab {
+    font-size: 9px;
+    padding: 3px 0;
+  }
+  .km-bottom-tab-icon {
+    width: 26px;
+    height: 26px;
+  }
+  .km-bottom-tab-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+  .km-bottom-tab-bar {
+    gap: 4px;
+  }
+  .km-bottom-tab--collapse {
+    flex: 0 0 60px;
+  }
+}
+.km-bottom-tab-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--km-tabicon-bg, #edf0f5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.km-bottom-tab-icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.km-bottom-tab-icon.km-custom-widget-background-color {
+  color: var(--km-accent-contrast, #ffffff);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.km-bottom-tab.active .km-bottom-tab-icon {
+  background: linear-gradient(135deg, var(--km-accent-start, #3f63ff), var(--km-accent, #5f46f8));
+  color: var(--km-accent-contrast, #ffffff);
+  box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.km-whats-new-placeholder,
+.km-whats-new-placeholder-block {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--km-font-title-color, #1c1c1c);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.km-whats-new-empty {
+  text-align: center;
+  color: var(--km-font-title-color, #1c1c1c);
+}
+
+.km-whats-new-list,
+.km-faq-category-list-container {
+  list-style: none;
+  padding: 16px 8px 24px 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(100% - 16px);
+  max-width: 420px;
+  margin-left: 8px;
+  margin-right: 24px;
+}
+
+.km-whats-new-card,
+.km-faq-category-card {
+  margin: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  background: var(--km-bg, #ffffff);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: none;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  margin-bottom: 12px;
+  cursor: pointer;
+  z-index: 0;
+  isolation: isolate;
+  align-items: stretch;
+}
+.km-whats-new-card:hover,
+.km-faq-category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 50px rgba(15, 23, 42, 0.18);
+}
+.km-whats-new-card h4,
+.km-whats-new-card strong,
+.km-faq-category-card h4,
+.km-faq-category-card strong {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: var(--km-font-title-color);
+  display: block;
+}
+.km-whats-new-card p,
+.km-whats-new-card span,
+.km-faq-category-card p,
+.km-faq-category-card span {
+  margin: 0;
+  color: var(--km-font-body-color);
+  display: block;
+  padding-bottom: 4px;
+}
+.km-whats-new-card .km-faq-category-card-content,
+.km-faq-category-card .km-faq-category-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.km-faq-category-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--km-font-title-color, #1c2043);
+  margin-bottom: 6px;
+}
+
+.km-faq-category-card-body {
+  color: var(--km-font-body-color);
+  font-size: var(--km-font-body-size);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.km-faq-category-card-count-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--km-font-meta-color);
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 0;
+  margin-bottom: 6px;
+}
+
+.km-faq-category-card-count {
+  font-weight: 600;
+  color: var(--km-font-title-color, #1c1c1c);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.km-faq-category-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.km-whats-new-meta {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--km-font-meta-color, #8d94b5);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.km-whats-new-link {
+  display: inline-flex;
+  margin-top: 14px;
+  font-weight: 600;
+  color: var(--km-accent, #5f46f8);
+  text-decoration: none;
+}
+.km-whats-new-link:hover {
+  text-decoration: underline;
+}
+
+.layout-modern .mck-sidebox .mck-sidebox-content {
+  padding-bottom: 30px;
+}
+
+.layout-classic .km-bottom-tab-wrapper,
+.layout-classic .km-bottom-tab-bar,
+.layout-classic .km-bottom-tab {
+  display: none !important;
+}
+
+.mck-sidebox .km-bottom-tab.vis {
+  display: inline-flex;
+}

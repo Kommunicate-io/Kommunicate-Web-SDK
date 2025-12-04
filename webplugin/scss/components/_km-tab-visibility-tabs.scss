@@ -1,0 +1,21 @@
+// Non-conversation tab visibility states
+%km-tab-whats-new {
+    #km-whats-new-placeholder {
+        display: block !important;
+    }
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+}
+
+%km-tab-no-conversations {
+    #mck-no-conversations {
+        display: block !important;
+    }
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+}
+
+@include apply-state($km-tab-whats-new-selectors, '%km-tab-whats-new');
+@include apply-state($km-tab-no-conversations-selectors, '%km-tab-no-conversations');

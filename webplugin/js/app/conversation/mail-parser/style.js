@@ -20,7 +20,7 @@ kmMailProcessor.getEmailRichMsgStyle = function () {
               min-height: 100px;
               margin: 0;
               padding: 10px 14px 12px;
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+              font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
               background: white;
               border: 1px solid #E7EAF2;
               border-radius: 5px; 

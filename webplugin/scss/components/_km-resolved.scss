@@ -1,7 +1,7 @@
 .mck-box-ft {
     text-align: left;
     /* border-top: 1px solid #e5e5e5; */
-    padding: 0px 15px 10px;
+    padding: 0px 15px 0px;
     /* position: absolute;
     bottom: 8px; */
     background-color: #fff;
@@ -9,7 +9,6 @@
     position: relative;
     .mck-box-form {
         padding: 10px 5px 10px 0px;
-        border: thin solid #cecbcb;
         border-radius: 4px;
         background-color: #ffff;
         position: relative;
@@ -118,4 +117,79 @@
             font-size: 14px;
         }
     }
+}
+
+.mck-conversation-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 0;
+    color: $resolved-status-color;
+    background: rgba($resolved-status-color, 0.15);
+
+    &.n-vis {
+        display: none;
+    }
+
+    .mck-conversation-status-icon {
+        width: 18px;
+        height: 18px;
+        display: block;
+    }
+}
+
+/* Unified typography for conversations, FAQs, and What's New */
+.km-typography-title,
+.mck-contact-list .mck-cont-name strong,
+.km-faq-category-card-title,
+.km-whats-new-card h4,
+.km-faq-list--body_que {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-title-size);
+    font-weight: var(--km-font-title-weight);
+    color: var(--km-font-title-color);
+    line-height: 1.35;
+}
+
+.km-typography-body,
+.mck-cont-msg-wrapper,
+.km-faq-category-card-body,
+.km-whats-new-card p,
+.km-faq-list--body_ans,
+.km-no-results-found p,
+.km-talk-to-human-div p,
+.km-faqsearch-input {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-body-size);
+    color: var(--km-font-body-color);
+    line-height: 1.5;
+}
+
+.km-typography-meta,
+.mck-contact-list .mck-cont-msg-date,
+.mck-conversation-status-time,
+.km-whats-new-meta,
+.km-faq-category-card-count,
+.km-faqsearch-input::placeholder {
+    font-family: var(--km-font-family);
+    font-size: var(--km-font-meta-size);
+    letter-spacing: 0.4px;
+    color: var(--km-font-meta-color);
+}
+
+.km-faqsearch-icon,
+.km-faqsearch-clear {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.mck-conversation-status-time {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
 }

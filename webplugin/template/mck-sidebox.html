@@ -6,7 +6,10 @@
     style="visibility: hidden"
 >
     <div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
-        <div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
+        <div
+            id="mck-sidebox-content"
+            class="mck-sidebox-content mck-box-content active-tab-conversations"
+        >
             <div
                 id="mck-conversation-header"
                 class="mck-conversation-header mck-truncate n-vis"
@@ -14,12 +17,37 @@
             <div class="mck-box-top mck-title">
                 <div class="km-header-container">
                     <div class="km-conversation-header-title-container">
+                        <div
+                            id="km-faq-back-btn-wrapper"
+                            class="mck-tab-link mck-back-btn-container km-faq-back-btn-wrapper n-vis"
+                        >
+                            <button
+                                type="button"
+                                id="km-faq-back-btn"
+                                class="km-faq-back-btn"
+                                aria-label="Back to FAQ categories"
+                            >
+                                <span class="km-faq-back-btn__chevron" aria-hidden="true">
+                                    <svg
+                                        focusable="false"
+                                        aria-hidden="true"
+                                        class="mck-msg-list-icon"
+                                        fill="#FFFFFF"
+                                        height="30"
+                                        viewBox="0 0 24 24"
+                                        width="30"
+                                    >
+                                        <use xlink:href="#icon-1" href="#icon-1"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
                         <div id="mck-tab-individual" class="mck-row n-vis">
                             <div class="mck-tab-link mck-back-btn-container">
                                 <button
                                     id="mck-conversation-back-btn"
                                     aria-label="Back"
-                                    role="button"
+                                    type="button"
                                     tabindex="0"
                                     class="mck-conversation-tab-link"
                                 >
@@ -73,7 +101,6 @@
                             </h4>
                         </div>
                     </div>
-
                     <div class="km-faq-and-close-btn-container mck-flexi">
                         <div class="km-kb-container n-vis">
                             <button
@@ -429,11 +456,32 @@
                             aria-atomic="false"
                             role="alert"
                         ></div>
+                        <div
+                            id="km-conversations-empty"
+                            class="km-conversations-empty n-vis"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            <div class="km-conversations-empty__icon" aria-hidden="true">💬</div>
+                            <h3
+                                class="km-conversations-empty__title"
+                                id="km-conversations-empty-title"
+                            ></h3>
+                            <p
+                                class="km-conversations-empty__subtitle"
+                                id="km-conversations-empty-subtitle"
+                            ></p>
+                            <button
+                                type="button"
+                                id="km-conversations-empty-cta"
+                                class="km-conversations-empty__cta km-custom-widget-background-color"
+                            ></button>
+                        </div>
                         <div id="mck-contacts-content" class="mck-contacts-content mck-text-center">
                             <button
                                 type="button"
                                 id="mck-msg-new"
-                                class="mck-contact-search mck-btn km-custom-widget-background-color"
+                                class="mck-contact-search mck-btn"
                                 title="Start New"
                             >
                                 <span>Start New</span>
@@ -441,92 +489,179 @@
                         </div>
                     </div>
                     <div id="faq-common">
+                        <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
+                            <div class="km-faqsearch-field">
+                                <div class="km-contact-input-container km-faq-search-shell">
+                                    <button
+                                        type="button"
+                                        class="km-faqsearch-icon"
+                                        aria-label="Search FAQs"
+                                    >
+                                        <svg
+                                            focusable="false"
+                                            aria-hidden="true"
+                                            class="km-faqsearch-icon__search"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <use xlink:href="#icon-13" href="#icon-13"></use>
+                                        </svg>
+                                    </button>
+                                    <input
+                                        id="km-faq-search-input"
+                                        class="km-faqsearch-input mck-typeahead"
+                                        type="text"
+                                        data-provide="typeahead"
+                                        placeholder="Search in FAQs..."
+                                        aria-label="Search in FAQs..."
+                                        tabindex="0"
+                                        autocomplete="off"
+                                    />
+                                    <button
+                                        type="button"
+                                        class="km-faqsearch-clear n-vis"
+                                        aria-label="Clear search"
+                                    >
+                                        <svg
+                                            focusable="false"
+                                            aria-hidden="true"
+                                            class="km-faqsearch-icon__clear"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <use xlink:href="#icon-60" href="#icon-60"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="km-no-results-found-container n-vis">
                             <div class="km-no-results-found">
-                                <svg
-                                    focusable="false"
-                                    aria-hidden="true"
-                                    viewBox="0 0 24 24"
-                                    width="24"
-                                    height="24"
-                                >
-                                    <use xlink:href="#icon-12" href="#icon-12"></use>
-                                </svg>
-                                <p>NO RESULTS FOUND</p>
+                                <p>No results found</p>
+                                <div class="km-talk-to-human-div">
+                                    <p id="mck-no-faq-found">Looking for something else?</p>
+                                    <button
+                                        class="talk-to-human-link km-custom-widget-background-color"
+                                        id="talk-to-human-link"
+                                    >
+                                        Talk to us
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div id="km-faqdiv">
-                            <div id="km-faq-category-list-container"></div>
+                            <div class="km-faq-category-list-container"></div>
                             <ul id="km-faq-list-container" class="km-faq-list-container"></ul>
                         </div>
                         <div id="km-faqanswer" class="km-faqanswer"></div>
-                        <div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
-                            <div class="km-talk-to-human-div n-vis">
-                                <p id="mck-no-faq-found">Looking for something else?</p>
-                                <button class="talk-to-human-link" id="talk-to-human-link">
-                                    Talk to an agent
-                                </button>
-                            </div>
-                            <div class="km-contact-input-container">
-                                <span class="km-faqsearch-icon">
-                                    <svg
-                                        focusable="false"
-                                        aria-hidden="true"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <use xlink:href="#icon-13" href="#icon-13"></use>
-                                    </svg>
-                                </span>
-                                <input
-                                    id="km-faq-search-input"
-                                    class="km-faqsearch-input"
-                                    type="text"
-                                    data-provide="typeahead"
-                                    placeholder="Search in FAQs..."
-                                    class="mck-typeahead"
-                                    aria-label="Search in FAQs..."
-                                    tabindex="0"
-                                    autocomplete="off"
-                                />
-                                <span class="km-clear-faq-search-icon n-vis">
-                                    <svg
-                                        focusable="false"
-                                        aria-hidden="true"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 14 14"
-                                    >
-                                        <use xlink:href="#icon-14" href="#icon-14"></use>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
+                    </div>
+                    <div id="km-whats-new-placeholder" class="km-whats-new-placeholder n-vis">
+                        <div class="km-whats-new-empty">What's New coming soon.</div>
+                        <ul class="km-whats-new-list"></ul>
                     </div>
 
-                    <div id="mck-contact-loading" class="mck-loading n-vis">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            class="mck-circular-spinner"
-                            viewBox="25 25 50 50"
-                            width="50"
-                            height="50"
-                        >
-                            <circle
-                                class="mck-spinner-path"
-                                cx="50"
-                                cy="50"
-                                r="20"
-                                fill="none"
-                                stroke-width="2"
-                                stroke-miterlimit="10"
-                            />
-                        </svg>
+                    <div
+                        id="mck-contact-loading"
+                        class="mck-loading n-vis"
+                        role="status"
+                        aria-live="polite"
+                        aria-label="Loading conversations"
+                    >
+                        <div class="mck-contact-loading__ring" aria-hidden="true"></div>
                     </div>
-                    <div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
-                        <h3>No conversations yet!</h3>
+                    <div
+                        id="mck-no-conversations"
+                        class="mck-empty-conversation-container mck-no-data-text n-vis"
+                        role="region"
+                        aria-live="polite"
+                    >
+                        <div class="km-empty-conversation-card">
+                            <div class="km-empty-conversation-card__hero">
+                                <div
+                                    class="km-empty-conversation-card__icon-badge"
+                                    aria-hidden="true"
+                                >
+                                    <span class="km-empty-conversation-card__hero-icon">👋</span>
+                                </div>
+                                <div class="km-empty-conversation-card__titles">
+                                    <p
+                                        class="km-empty-conversation-card__eyebrow"
+                                        id="km-empty-conversation-eyebrow"
+                                    ></p>
+                                    <h3
+                                        class="km-empty-conversation-card__title"
+                                        id="km-empty-conversation-title"
+                                    ></h3>
+                                </div>
+                                <div class="km-empty-conversation-card__search">
+                                    <div
+                                        class="km-empty-conversation-card__search-field km-contact-input-container km-faq-search-shell km-custom-widget-border-color"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="km-faqsearch-icon"
+                                            aria-label="Search FAQs"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                class="km-faqsearch-icon__search"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <use xlink:href="#icon-13" href="#icon-13"></use>
+                                            </svg>
+                                        </button>
+                                        <input
+                                            id="km-empty-faq-search"
+                                            class="km-empty-conversation-card__search-input km-faqsearch-input mck-typeahead"
+                                            type="text"
+                                            placeholder="Search in FAQs..."
+                                            aria-label="Search in FAQs..."
+                                            autocomplete="off"
+                                        />
+                                        <button
+                                            type="button"
+                                            id="km-empty-faq-search-clear"
+                                            class="km-faqsearch-clear n-vis"
+                                            aria-label="Clear search"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                class="km-faqsearch-icon__clear"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <use xlink:href="#icon-60" href="#icon-60"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="km-empty-conversation-card__body">
+                                <p
+                                    class="km-empty-conversation-card__info"
+                                    id="km-empty-conversation-subtitle"
+                                ></p>
+                                <div class="km-empty-conversation-card__cta-wrap">
+                                    <button
+                                        type="button"
+                                        id="km-empty-conversation-cta"
+                                        class="km-empty-conversation-card__cta km-custom-widget-background-color"
+                                    ></button>
+                                    <button
+                                        type="button"
+                                        id="km-empty-conversation-continue"
+                                        class="km-empty-conversation-card__cta km-custom-widget-background-color n-vis"
+                                    ></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="mck-no-messages" class="mck-no-data-text mck-text-muted n-vis">
                         <h3>No messages yet!</h3>
@@ -772,6 +907,7 @@
                             rows="4"
                         ></textarea>
                         <button
+                            type="button"
                             class="km-custom-widget-background-color mck-send-feedback"
                             id="mck-submit-comment"
                             aria-disabled="false"
@@ -856,93 +992,14 @@
                                 </div>
                                 <div class="mck-form-group last last-child">
                                     <div id="mck-textbox-container" class="mck-textbox-container">
-                                        <div
-                                            id="mck-btn-attach-box"
-                                            class="mck-blk-2 mck-text-box-panel mck-mid-panel move-right mck-attach-menu-main-container vis"
-                                        >
-                                            <div
-                                                id="mck-location-sharing-box"
-                                                class="mck-location-sharing-box"
-                                            >
-                                                <button
-                                                    id="mck-btn-loc"
-                                                    class="menu-item mck-btn-loc"
-                                                    title="Share Location"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 11 15"
-                                                        class="mck-icon-marker-blue"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-29"
-                                                            href="#icon-29"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    id="mck-file-up"
-                                                    class="mck-file-upload menu-item"
-                                                    title="Upload Attachment"
-                                                    aria-disabled="false"
-                                                    aria-label="Upload Attachment"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 16 18"
-                                                        class="mck-icon-upload"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-30"
-                                                            href="#icon-30"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <div id="mck-attachfile-box" class="mck-blk-12 n-vis">
-                                                <button
-                                                    id="mck-file-up2"
-                                                    type="button"
-                                                    class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                    title="Upload Attachment"
-                                                    aria-disabled="false"
-                                                    aria-label="Upload Attachment"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 16 18"
-                                                        class="mck-icon-upload"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-30"
-                                                            href="#icon-30"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div
-                                            id="mck-attach-img-box"
-                                            class="mck-blk-12 mck-attach-img-vid-box"
-                                        >
+                                        <div class="mck-icons-wrapper">
+                                            <!-- Emoji Picker Button -->
                                             <button
-                                                id="mck-img-file-up"
                                                 type="button"
-                                                class="mck-img-file-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
-                                                aria-disabled="false"
-                                                aria-label="Upload Image"
+                                                id="mck-btn-smiley"
+                                                class="mck-btn mck-btn-smiley"
+                                                title="Emoji Picker"
+                                                aria-label="Emoji picker"
                                                 tabindex="0"
                                             >
                                                 <svg
@@ -951,7 +1008,72 @@
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     aria-hidden="true"
-                                                    focusable="false"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-38"
+                                                        href="#icon-38"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- Location Button -->
+                                            <button
+                                                id="mck-btn-loc"
+                                                type="button"
+                                                class="mck-btn mck-btn-location"
+                                                title="Share Location"
+                                                aria-label="Share Location"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-63"
+                                                        href="#icon-63"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- File Upload Button -->
+                                            <button
+                                                id="mck-file-up"
+                                                type="button"
+                                                class="mck-btn mck-file-upload"
+                                                title="Upload Attachment"
+                                                aria-label="Upload Attachment"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 16 18"
+                                                    aria-hidden="true"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-30"
+                                                        href="#icon-30"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- Image Upload Button -->
+                                            <button
+                                                id="mck-img-file-up"
+                                                type="button"
+                                                class="mck-btn mck-img-upload"
+                                                title="Upload Image"
+                                                aria-label="Upload Image"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
                                                 >
                                                     <use
                                                         xlink:href="#icon-32"
@@ -959,27 +1081,21 @@
                                                     ></use>
                                                 </svg>
                                             </button>
-                                        </div>
-                                        <div
-                                            id="mck-attach-vid-box"
-                                            class="mck-blk-12 mck-attach-img-vid-box"
-                                        >
+
+                                            <!-- Video Upload Button -->
                                             <button
                                                 id="mck-vid-file-up"
                                                 type="button"
-                                                class="mck-img-vid-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
-                                                aria-disabled="false"
+                                                class="mck-btn mck-vid-upload"
+                                                title="Upload Video"
                                                 aria-label="Upload Video"
                                                 tabindex="0"
                                             >
                                                 <svg
+                                                    width="24"
                                                     height="24"
                                                     viewBox="0 0 24 24"
-                                                    width="24"
-                                                    fill="#787474"
                                                     aria-hidden="true"
-                                                    focusable="false"
                                                 >
                                                     <use
                                                         xlink:href="#icon-33"
@@ -990,7 +1106,7 @@
                                         </div>
                                         <div
                                             id="mck-mic-animation-container"
-                                            class="mck-mic-animation-container n-vis"
+                                            class="mck-mic-animation-container n-vis mck-btn-text-panel"
                                             aria-disabled="false"
                                             title="Voice Input"
                                             aria-label="Voice Input"
@@ -1005,6 +1121,7 @@
                                                 data-toggle="mckdropdown"
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
+                                                class="mck-btn-text-panel"
                                             >
                                                 <svg
                                                     focusable="false"
@@ -1071,6 +1188,25 @@
                                             </ul>
                                         </div>
                                         <div
+                                            id="mck-voice-web"
+                                            class="mck-voice-web n-vis mck-btn-text-panel"
+                                            title="Voice Mode"
+                                            aria-label="Voice Mode"
+                                            role="button"
+                                            tabindex="0"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                id="mck-mic-btn-voice-web"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <use xlink:href="#icon-65" href="#icon-65"></use>
+                                            </svg>
+                                        </div>
+                                        <div
                                             id="mck-quick-replies-box"
                                             class="mck-intent-box n-vis"
                                         >
@@ -1101,36 +1237,7 @@
                                                 aria-labelledby="intent-option"
                                             ></ul>
                                         </div>
-                                        <div
-                                            id="mck-btn-smiley-box"
-                                            class="mck-blk-2 mck-text-box-panel move-right n-vis"
-                                        >
-                                            <div class="mck-blk-12">
-                                                <button
-                                                    type="button"
-                                                    id="mck-btn-smiley"
-                                                    class="mck-btn mck-btn-smiley mck-btn-text-panel"
-                                                    title="Emoji Picker"
-                                                    aria-disabled="false"
-                                                    aria-label="Emoji picker"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        aria-hidden="true"
-                                                        focusable="false"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-38"
-                                                            href="#icon-38"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
+
                                         <div
                                             class="mck-blk-2 mck-text-box-panel move-right n-vis"
                                             id="send-button-wrapper"
@@ -1139,7 +1246,7 @@
                                                 <button
                                                     type="submit"
                                                     id="mck-msg-sbmt"
-                                                    class="mck-btn mck-btn-text-panel"
+                                                    class="mck-btn mck-btn-text-panel mck-btn-text-panel--send"
                                                     title="Send Message"
                                                     aria-disabled="false"
                                                     aria-label="Send Message"
@@ -1338,21 +1445,6 @@
                             </form>
                         </div>
                     </div>
-                    <div
-                        id="mck-voice-web"
-                        class="mck-voice-web n-vis km-custom-widget-background-color"
-                    >
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            id="mck-mic-btn-voice-web"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                        >
-                            <use xlink:href="#icon-45" href="#icon-45"></use>
-                        </svg>
-                    </div>
                 </div>
                 <div class="mck-text-req-error n-vis">
                     <svg
@@ -1366,6 +1458,122 @@
                         <use xlink:href="#icon-27" href="#icon-27"></use>
                     </svg>
                     This is a required field
+                </div>
+            </div>
+            <div class="km-bottom-tab-wrapper">
+                <div class="km-bottom-tab-bar" role="tablist" aria-label="Widget navigation">
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="no-conversations"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        <span class="km-bottom-tab-icon" aria-hidden="true">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-welcome" href="#icon-welcome"></use>
+                            </svg>
+                        </span>
+                        <span class="km-bottom-tab-label" id="km-bottom-tab-empty-text"
+                            >Welcome</span
+                        >
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="conversations"
+                        role="tab"
+                        aria-selected="true"
+                    >
+                        <span class="km-bottom-tab-icon" aria-hidden="true">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-komm-logo" href="#icon-komm-logo"></use>
+                            </svg>
+                        </span>
+                        <span class="km-bottom-tab-label" id="km-bottom-tab-conversations-text"
+                            >Conversations</span
+                        >
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="faqs"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        <span class="km-bottom-tab-icon" aria-hidden="true">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-61" href="#icon-61"></use>
+                            </svg>
+                        </span>
+                        <span class="km-bottom-tab-label" id="km-bottom-tab-faq-text">FAQs</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab"
+                        data-tab="whats-new"
+                        role="tab"
+                        aria-selected="false"
+                    >
+                        <span class="km-bottom-tab-icon" aria-hidden="true">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-62" href="#icon-62"></use>
+                            </svg>
+                        </span>
+                        <span class="km-bottom-tab-label" id="km-bottom-tab-whatsnew-text"
+                            >News</span
+                        >
+                    </button>
+                    <button
+                        type="button"
+                        class="km-bottom-tab km-bottom-tab--collapse"
+                        data-tab="collapse"
+                        role="tab"
+                        aria-selected="false"
+                        aria-label="Minimize widget"
+                    >
+                        <span class="km-bottom-tab-icon" aria-hidden="true">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                focusable="false"
+                                aria-hidden="true"
+                            >
+                                <use xlink:href="#icon-64" href="#icon-64"></use>
+                            </svg>
+                        </span>
+                        <span class="km-bottom-tab-label" id="km-bottom-tab-collapse-text"
+                            >Minimize</span
+                        >
+                    </button>
                 </div>
             </div>
             <div
@@ -1778,237 +1986,243 @@
             </div>
         </div>
     </div>
-</div>
-<div
-    id="mck-loc-box"
-    class="mck-box mck-loc-box fade"
-    aria-hidden="false"
-    style="visibility: hidden"
->
-    <div class="mck-box-dialog mck-box-md">
-        <div class="mck-box-content">
-            <div class="mck-box-top mck-row">
-                <div class="blk-lg-10">
-                    <h4 class="mck-box-title">Share Location</h4>
-                </div>
-                <div class="blk-lg-2">
-                    <button
-                        type="button"
-                        class="mck-box-close"
-                        data-dismiss="mckbox"
-                        aria-label="Close"
-                        data-testid="mck-loc-top-close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div class="mck-form-group">
-                    <div class="blk-lg-12">
-                        <input
-                            id="mck-loc-address"
-                            type="text"
-                            class="mck-form-control"
-                            placeholder="Enter a location"
-                            autocomplete="off"
-                        />
+    <div
+        id="mck-loc-box"
+        class="mck-box mck-loc-box fade"
+        aria-hidden="true"
+        style="visibility: hidden"
+    >
+        <div class="mck-box-dialog mck-box-md">
+            <div class="mck-box-content">
+                <div class="mck-box-top mck-row">
+                    <div class="blk-lg-10">
+                        <h4 class="mck-box-title">Share Location</h4>
                     </div>
-                </div>
-                <div id="mck-map-content" class="mck-loc-content"></div>
-                <div class="n-vis">
-                    <label class="blk-sm-2 mck-control-label">Lat.:</label>
-                    <div class="blk-sm-3">
-                        <input type="text" id="mck-loc-lat" class="mck-form-control" />
-                    </div>
-                    <label class="blk-sm-2 mck-control-label">Long.:</label>
-                    <div class="blk-sm-3">
-                        <input type="text" id="mck-loc-lon" class="mck-form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="mck-box-footer">
-                <button id="mck-my-loc" type="button" class="mck-my-loc mck-btn mck-btn-green">
-                    My Location
-                </button>
-                <button
-                    id="mck-loc-submit"
-                    type="button"
-                    class="mck-btn mck-btn-blue mck-loc-submit move-right"
-                    aria-disabled="false"
-                    aria-label="Send Location"
-                    tabindex="0"
-                >
-                    Send
-                </button>
-                <button
-                    id="mck-btn-close-loc-box"
-                    type="button"
-                    class="mck-btn mck-btn-default move-right"
-                    data-dismiss="mckbox"
-                    aria-disabled="false"
-                    aria-label="Close"
-                    tabindex="0"
-                    role="button"
-                    data-testid="mck-loc-bottom-close"
-                >
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div
-    id="mck-gm-search-box"
-    class="mck-box mck-gm-search-box fade"
-    aria-hidden="true"
-    style="visibility: hidden"
->
-    <div class="mck-box-dialog mck-box-sm">
-        <div class="mck-box-content">
-            <div class="mck-box-top mck-row">
-                <div class="blk-lg-3">
-                    <svg
-                        focusable="false"
-                        aria-hidden="true"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                    >
-                        <use xlink:href="#icon-58" href="#icon-58"></use>
-                    </svg>
-                </div>
-                <div class="blk-lg-7">
-                    <h4 class="mck-box-title">Add Member</h4>
-                </div>
-                <div class="blk-lg-2">
-                    <button
-                        type="button"
-                        class="mck-box-close"
-                        data-dismiss="mckbox"
-                        aria-label="Close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div class="mck-form-group">
-                    <div class="mck-input-group blk-lg-12">
-                        <input
-                            id="mck-group-member-search"
-                            type="text"
-                            data-provide="typeahead"
-                            placeholder="Search..."
-                        />
-                        <span class="mck-search-icon">
-                            <a href="#" role="link" class="mck-group-member-search-link">
-                                <span class="mck-icon-search"></span>
-                            </a>
-                        </span>
-                    </div>
-                </div>
-                <div class="mck-tab-cell">
-                    <div class="mck-message-inner">
-                        <ul
-                            id="mck-group-member-search-list"
-                            class="mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"
-                        ></ul>
-                        <div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">
-                            No contacts yet!
-                        </div>
-                    </div>
-                    <div id="mck-gms-loading" class="mck-loading n-vis">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            class="mck-circular-spinner"
-                            viewBox="25 25 50 50"
-                            width="50"
-                            height="50"
+                    <div class="blk-lg-2">
+                        <button
+                            type="button"
+                            class="mck-box-close"
+                            data-dismiss="mckbox"
+                            aria-label="Close"
+                            data-testid="mck-loc-top-close"
                         >
-                            <use xlink:href="#icon-53" href="#icon-53"></use>
-                        </svg>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div
-    id="km-chat-login-modal"
-    class="km-sidemodal km-modal"
-    role="main"
-    aria-live="polite"
-    style="visibility: hidden"
->
-    <div class="km-modal-dialog km-modal-sm">
-        <div class="km-modal-content">
-            <div class="km-sidemodal--modal-header km-custom-widget-background-color">
-                <div
-                    class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate"
-                >
-                    <div
-                        id="km-tab-title"
-                        class="mck-tab-title mck-truncate mck-display-name"
-                    ></div>
-                </div>
-                <div class="blk-lg-2 mck-close-btn">
-                    <button
-                        type="button"
-                        id="km-modal-close"
-                        class="mck-box-close km-close-sidebox move-right"
-                        data-dismiss="mckbox"
-                        tabindex="0"
-                        aria-label="Close"
-                        aria-hidden="false"
-                        role="button"
-                    >
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            fill="#FFFFFF"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            focusable="false"
-                            aria-hidden="true"
-                        >
-                            <use xlink:href="#icon-10" href="#icon-10"></use>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="km-modal-body">
-                <div class="km-section-title">
-                    <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
-                </div>
-                <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
-                <div class="km-modal-form">
-                    <form id="km-form-chat-login" class="km-vertical">
-                        <div class="km-form-group km-form-group-container">
+                <div class="mck-box-body">
+                    <div class="mck-form-group">
+                        <div class="blk-lg-12">
                             <input
-                                class="km-form-control km-input-width n-vis"
-                                id="km-userId"
-                                name="km-userId"
+                                id="mck-loc-address"
+                                type="text"
+                                class="mck-form-control"
+                                placeholder="Enter a location"
+                                autocomplete="off"
                             />
                         </div>
-                        <div
-                            class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"
-                        ></div>
-                        <div class="km-form-group km-text-center">
-                            <button
-                                type="submit"
-                                id="km-submit-chat-login"
-                                class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
-                                tabindex="0"
-                                role="button"
-                            ></button>
+                    </div>
+                    <div id="mck-map-content" class="mck-loc-content"></div>
+                    <div class="n-vis" aria-hidden="true">
+                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lat">Lat.:</label>
+                        <div class="blk-sm-3">
+                            <input type="text" id="mck-loc-lat" class="mck-form-control" />
                         </div>
-                    </form>
+                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lon">Long.:</label>
+                        <div class="blk-sm-3">
+                            <input type="text" id="mck-loc-lon" class="mck-form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mck-box-footer">
+                    <button id="mck-my-loc" type="button" class="mck-my-loc mck-btn mck-btn-green">
+                        My Location
+                    </button>
+                    <button
+                        id="mck-loc-submit"
+                        type="button"
+                        class="mck-btn mck-btn-blue mck-loc-submit move-right"
+                        aria-disabled="false"
+                        aria-label="Send Location"
+                        tabindex="0"
+                    >
+                        Send
+                    </button>
+                    <button
+                        id="mck-btn-close-loc-box"
+                        type="button"
+                        class="mck-btn mck-btn-default move-right"
+                        data-dismiss="mckbox"
+                        aria-disabled="false"
+                        aria-label="Close"
+                        tabindex="0"
+                        role="button"
+                        data-testid="mck-loc-bottom-close"
+                    >
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+    <div
+        id="mck-gm-search-box"
+        class="mck-box mck-gm-search-box fade"
+        aria-hidden="true"
+        style="visibility: hidden"
+        role="dialog"
+        aria-labelledby="mck-gm-search-title"
+    >
+        <div class="mck-box-dialog mck-box-sm">
+            <div class="mck-box-content">
+                <div class="mck-box-top mck-row">
+                    <div class="blk-lg-3">
+                        <svg
+                            focusable="false"
+                            aria-hidden="true"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                        >
+                            <use xlink:href="#icon-58" href="#icon-58"></use>
+                        </svg>
+                    </div>
+                    <div class="blk-lg-7">
+                        <h4 class="mck-box-title" id="mck-gm-search-title">Add Member</h4>
+                    </div>
+                    <div class="blk-lg-2">
+                        <button
+                            type="button"
+                            class="mck-box-close"
+                            data-dismiss="mckbox"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="mck-box-body">
+                    <div class="mck-form-group">
+                        <div class="mck-input-group blk-lg-12">
+                            <input
+                                id="mck-group-member-search"
+                                type="text"
+                                data-provide="typeahead"
+                                placeholder="Search..."
+                            />
+                            <span class="mck-search-icon">
+                                <a href="#" role="link" class="mck-group-member-search-link">
+                                    <span class="mck-icon-search"></span>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mck-tab-cell">
+                        <div class="mck-message-inner">
+                            <ul
+                                id="mck-group-member-search-list"
+                                class="mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"
+                            ></ul>
+                            <div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">
+                                No contacts yet!
+                            </div>
+                        </div>
+                        <div id="mck-gms-loading" class="mck-loading n-vis">
+                            <svg
+                                focusable="false"
+                                aria-hidden="true"
+                                class="mck-circular-spinner"
+                                viewBox="25 25 50 50"
+                                width="50"
+                                height="50"
+                            >
+                                <use xlink:href="#icon-53" href="#icon-53"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="km-chat-login-modal"
+        class="km-sidemodal km-modal"
+        role="dialog"
+        aria-live="polite"
+        aria-labelledby="km-tab-title"
+        aria-hidden="true"
+        style="visibility: hidden"
+    >
+        <div class="km-modal-dialog km-modal-sm">
+            <div class="km-modal-content">
+                <div class="km-sidemodal--modal-header km-custom-widget-background-color">
+                    <div
+                        class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate"
+                    >
+                        <div
+                            id="km-tab-title"
+                            class="mck-tab-title mck-truncate mck-display-name"
+                        ></div>
+                    </div>
+                    <div class="blk-lg-2 mck-close-btn">
+                        <button
+                            type="button"
+                            id="km-modal-close"
+                            class="mck-box-close km-close-sidebox move-right"
+                            data-dismiss="mckbox"
+                            tabindex="0"
+                            aria-label="Close"
+                            role="button"
+                        >
+                            <svg
+                                focusable="false"
+                                aria-hidden="true"
+                                fill="#FFFFFF"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                            >
+                                <use xlink:href="#icon-10" href="#icon-10"></use>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="km-modal-body">
+                    <div class="km-section-title">
+                        <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
+                    </div>
+                    <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
+                    <div class="km-modal-form">
+                        <form id="km-form-chat-login" class="km-vertical">
+                            <div class="km-form-group km-form-group-container">
+                                <label class="sr-only" for="km-userId">User ID</label>
+                                <input
+                                    class="km-form-control km-input-width n-vis"
+                                    id="km-userId"
+                                    name="km-userId"
+                                />
+                            </div>
+                            <div
+                                class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"
+                            ></div>
+                            <div class="km-form-group km-text-center">
+                                <button
+                                    type="submit"
+                                    id="km-submit-chat-login"
+                                    class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-label="Start conversation"
+                                ></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="km-anonymous-chat-launcher"
+        class="km-anonymous-chat-launcher km-hide-logo n-vis"
+    ></div>
 </div>
-<div id="km-anonymous-chat-launcher" class="km-anonymous-chat-launcher km-hide-logo n-vis"></div>

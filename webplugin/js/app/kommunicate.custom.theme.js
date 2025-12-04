@@ -5,6 +5,7 @@ function KmCustomTheme() {
     var WIDGET_SETTINGS;
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
+    var DEFAULT_ACCENT_RGB = '95, 70, 248';
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -13,7 +14,7 @@ function KmCustomTheme() {
     };
 
     _this.KmCustomImageIcon = function (widgetImageLink) {
-        return '<img src=' + widgetImageLink + ' alt="Live chat"></img>';
+        return '<img src=' + widgetImageLink + ' alt="Chat with us"></img>';
     };
 
     _this.createCustomClasses = function (classSettings) {
@@ -25,6 +26,7 @@ function KmCustomTheme() {
 
     _this.customSideboxWidget = function () {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
+        var secondaryColor = DEFAULT_SECONDARY_BACKGROUND_COLOR;
         if (kommunicateCommons.isObject(WIDGET_SETTINGS)) {
             primaryColor =
                 WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor
@@ -41,6 +43,8 @@ function KmCustomTheme() {
             var kmCustomWidgetCustomCSS =
                 '.km-custom-widget-background-color { background: ' +
                 primaryColor +
+                ' !important; color: ' +
+                getAccessibleTextColor(primaryColor) +
                 ' !important;} ' +
                 '.km-custom-widget-background-color-secondary { background: ' +
                 secondaryColor +
@@ -71,9 +75,9 @@ function KmCustomTheme() {
             _this.createCustomClasses(kmChatWidgetBackgroundColor);
         }
         return (
-            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color ' +
-            squareIcon +
-            '" >' +
+            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color' +
+            (squareIcon ? ' ' + squareIcon : '') +
+            ' mck-default-launcher-icon" >' +
             _this.returnCustomWidget() +
             '</div>'
         );
@@ -92,22 +96,126 @@ function KmCustomTheme() {
         }
     };
 
+    function setAccentCssVariables(primaryColor) {
+        if (!primaryColor) {
+            return;
+        }
+        var root = document.documentElement;
+        var rgbArray = normalizeColorToRgb(primaryColor);
+        var rgb = (rgbArray && rgbArray.join(', ')) || DEFAULT_ACCENT_RGB;
+        root.style.setProperty('--km-accent', primaryColor);
+        root.style.setProperty('--km-accent-rgb', rgb);
+        var contrastColor = getAccessibleTextColor(primaryColor);
+        root.style.setProperty('--km-accent-contrast', contrastColor);
+    }
+
     _this.changeColorTheme = function () {
         // #0A090C
+        var primaryColor =
+            (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
+        if (!primaryColor) {
+            return;
+        }
         var messageBoxTop = document.getElementsByClassName('mck-box-top');
         const businessHourBox = document.getElementById('km-business-hour-box');
         if (businessHourBox) {
-            businessHourBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+            businessHourBox.style.backgroundColor = primaryColor;
         }
         for (var i = 0; i < messageBoxTop.length; i++) {
-            messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+            messageBoxTop[i].style.backgroundColor = primaryColor;
         }
+        setAccentCssVariables(primaryColor);
     };
 
     _this.fillSvgsTheme = function () {
-        document.querySelectorAll('path[data-custom-fill]').forEach((path) => {
-            const primaryColor = WIDGET_SETTINGS.primaryColor || DEFAULT_BACKGROUND_COLOR;
+        var primaryColor =
+            (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
+        document.querySelectorAll('path[data-custom-fill]').forEach(function (path) {
             path.setAttribute('fill', primaryColor);
         });
     };
+
+    function getAccessibleTextColor(color) {
+        var rgb = normalizeColorToRgb(color);
+        if (!rgb) {
+            return '#ffffff';
+        }
+
+        var brightness = calculatePerceivedBrightness(rgb[0], rgb[1], rgb[2]);
+        if (brightness < 150) {
+            return '#ffffff';
+        }
+        if (brightness > 220) {
+            return '#000000';
+        }
+
+        var luminance = calculateLuminance(rgb[0], rgb[1], rgb[2]);
+        var contrastWhite = calculateContrastRatio(luminance, 1);
+        var contrastBlack = calculateContrastRatio(luminance, 0);
+        return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
+    }
+
+    function calculatePerceivedBrightness(r, g, b) {
+        return (r * 299 + g * 587 + b * 114) / 1000;
+    }
+
+    function calculateContrastRatio(lumA, lumB) {
+        var light = Math.max(lumA, lumB);
+        var dark = Math.min(lumA, lumB);
+        return (light + 0.05) / (dark + 0.05);
+    }
+
+    function normalizeColorToRgb(color) {
+        if (!color || typeof color !== 'string') {
+            return null;
+        }
+        var hex = color.trim();
+        if (hex.startsWith('#')) {
+            var clean = hex.replace('#', '');
+            if (clean.length === 3) {
+                clean = clean
+                    .split('')
+                    .map(function (c) {
+                        return c + c;
+                    })
+                    .join('');
+            }
+            if (clean.length !== 6) {
+                return null;
+            }
+            var rHex = parseInt(clean.substring(0, 2), 16);
+            var gHex = parseInt(clean.substring(2, 4), 16);
+            var bHex = parseInt(clean.substring(4, 6), 16);
+            if (
+                [rHex, gHex, bHex].some(function (v) {
+                    return isNaN(v);
+                })
+            ) {
+                return null;
+            }
+            return [rHex, gHex, bHex];
+        }
+        var rgbMatch = color.replace(/\s+/g, '').match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
+        if (rgbMatch) {
+            var r = Number(rgbMatch[1]);
+            var g = Number(rgbMatch[2]);
+            var b = Number(rgbMatch[3]);
+            var inRange = [r, g, b].every(function (v) {
+                return !isNaN(v) && v >= 0 && v <= 255;
+            });
+            return inRange ? [r, g, b] : null;
+        }
+        return null;
+    }
+
+    function calculateLuminance(r, g, b) {
+        var toLinear = function (c) {
+            c = c / 255;
+            return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        };
+        var lr = toLinear(r);
+        var lg = toLinear(g);
+        var lb = toLinear(b);
+        return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
+    }
 }

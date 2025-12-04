@@ -59,7 +59,15 @@
 /* SO, DO NOT MODIFY OR REMOVE BELOW CSS. */
 .ql-container {
     box-sizing: border-box;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: var(
+        --km-font-family,
+        'Inter',
+        'Segoe UI',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Helvetica Neue',
+        sans-serif
+    );
     font-size: 13px;
     height: 100%;
     margin: 0px;

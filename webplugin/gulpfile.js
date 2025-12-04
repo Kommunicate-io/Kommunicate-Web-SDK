@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
+const terserLib = require('terser');
 const cleanCss = require('gulp-clean-css');
 const cssnano = require('gulp-cssnano');
 const sass = require('gulp-sass')(require('sass'));
@@ -33,7 +34,7 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-const pluginVersions = ['v1', 'v2'];
+const pluginVersions = ['v1', 'v2', 'v3'];
 
 PLUGIN_SETTING.kommunicateApiUrl =
     PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
@@ -58,6 +59,20 @@ const cli = new SentryCli(null, {
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
+
+const minifyPluginContent = (code) => {
+    try {
+        const result = terserLib.minify(code, TERSER_CONFIG);
+        if (result.error) {
+            console.log('plugin minification error', result.error);
+            return code;
+        }
+        return result.code;
+    } catch (err) {
+        console.log('plugin minification error', err);
+        return code;
+    }
+};
 
 const generateResourceFolder = () => {
     if (env) {
@@ -215,9 +230,15 @@ const minifyCss = (path, dir, fileName) => {
 };
 
 const generateBuildFiles = () => {
+    const buildEnvValue = process.env._BUILD_ENV || process.env.NODE_ENV || 'development';
     if (env) {
         // Generate index.html for home route
-        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
+        copyIndexWithBranch(
+            'template/index.html',
+            `${buildDir}/index.html`,
+            KM_RELEASE_BRANCH,
+            buildEnvValue
+        );
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
@@ -246,8 +267,18 @@ const generateBuildFiles = () => {
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
+    // Copy demo2.html example into build so it can be served on Firebase
+    // This allows accessing it via /demo2.html (and via /demo2 with a rewrite)
+    copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
+
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
+
+    // copy fonts required by the compiled CSS for local/hosted builds
+    copyDirectoryRecursive(
+        path.join(__dirname, 'css/app/fonts'),
+        path.join(buildDir, 'css/app/fonts')
+    );
 
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(
@@ -270,6 +301,7 @@ const generateBuildFiles = () => {
             if (err) {
                 console.log('plugin.js generation error');
             }
+            minifyJS(`${buildDir}/plugin.js`, buildDir, `plugin.min.js`, true);
             generateFilesByVersion('build/plugin.js');
         });
     });
@@ -323,16 +355,21 @@ const generateFilesByVersion = (location) => {
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
-                if (env && pluginVersions[i] == 'v2') {
-                    if (!fs.existsSync(`${buildDir}/v2`)) {
-                        fs.mkdirSync(`${buildDir}/v2`);
-                    }
-                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
-                        if (err) {
-                            console.log('kommunicate.app generation error');
-                        }
-                        console.log('kommunicate.app generated');
-                    });
+                var minifiedData = minifyPluginContent(data);
+                var versionDir = `${buildDir}/${pluginVersions[i]}`;
+                if (!fs.existsSync(versionDir)) {
+                    fs.mkdirSync(versionDir, { recursive: true });
+                }
+                fs.writeFileSync(path.join(versionDir, 'kommunicate.app'), minifiedData);
+                if (pluginVersions[i] === 'v1') {
+                    // root-level alias for legacy loader without /v1 prefix
+                    fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
+                }
+                if (pluginVersions[i] === 'v3') {
+                    fs.writeFileSync(
+                        path.join(buildDir, 'kommunicate-widget-3.0.min.js'),
+                        minifiedData
+                    );
                 }
             }
             console.log('plugin files generated for all versions successfully');
@@ -359,6 +396,44 @@ const copyFileToBuild = (src, dest) => {
         }
         console.log(`${dest} generated successfully`);
     });
+};
+
+const copyIndexWithBranch = (src, dest, branchValue, envValue) => {
+    try {
+        const templatePath = path.join(__dirname, src);
+        const content = fs.readFileSync(templatePath, 'utf8');
+        const resolvedBranch = branchValue || 'unknown-branch';
+        const resolvedEnv = envValue || 'development';
+        const replaced = content
+            .replace(/__KM_BRANCH__/g, resolvedBranch)
+            .replace(/__KM_ENV__/g, resolvedEnv);
+        fs.writeFileSync(dest, replaced);
+        console.log(
+            `${dest} generated successfully with branch ${resolvedBranch} and env ${resolvedEnv}`
+        );
+    } catch (err) {
+        console.log(`error while generating ${dest}`, err);
+    }
+};
+
+const copyDirectoryRecursive = (sourceDir, destinationDir) => {
+    if (!fs.existsSync(sourceDir)) {
+        console.log(`Source directory ${sourceDir} does not exist`);
+        return;
+    }
+    if (!fs.existsSync(destinationDir)) {
+        fs.mkdirSync(destinationDir, { recursive: true });
+    }
+    fs.readdirSync(sourceDir).forEach((entry) => {
+        const srcPath = path.join(sourceDir, entry);
+        const destPath = path.join(destinationDir, entry);
+        if (fs.lstatSync(srcPath).isDirectory()) {
+            copyDirectoryRecursive(srcPath, destPath);
+        } else {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    });
+    console.log(`${destinationDir} directory generated successfully`);
 };
 
 gulp.task('generateResourceFolder', function (done) {

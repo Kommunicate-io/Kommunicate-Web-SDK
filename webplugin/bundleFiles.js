@@ -1,9 +1,14 @@
 const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
-exports.version = version;
-exports.KM_RELEASE_BRANCH = getCurrentBranch();
+const { resolveBranch } = require('../server/utils/branch');
+const config = require('../server/config/config-env');
+const ENV_ID =
+    (config && typeof config.getEnvId === 'function' && config.getEnvId()) || 'development';
+const IS_PROD_BUILD = ENV_ID && ENV_ID.startsWith('prod');
 
+exports.version = version;
+exports.KM_RELEASE_BRANCH = resolveBranch();
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
     path.resolve(__dirname, 'js/app/storage/cookie-service.js'),
@@ -44,6 +49,10 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/applozic.jquery.js'),
     path.resolve(__dirname, 'knowledgebase/common.js'),
     path.resolve(__dirname, 'knowledgebase/kb.js'),
+    path.resolve(__dirname, 'js/app/labels/translation-utils.js'),
+    path.resolve(__dirname, 'js/app/labels/default-labels-en.js'),
+    path.resolve(__dirname, 'js/app/labels/default-labels-es.js'),
+    path.resolve(__dirname, 'js/app/labels/register-languages.js'),
     path.resolve(__dirname, 'js/app/labels/default-labels.js'),
     path.resolve(__dirname, 'js/app/kommunicate-client.js'),
     path.resolve(__dirname, 'js/app/conversation/km-conversation-helper.js'),
@@ -56,11 +65,14 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-attachment-service.js'),
     // path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
     path.resolve(__dirname, 'js/app/km-nav-bar.js'),
+    path.resolve(__dirname, 'js/app/km-top-bar.js'),
+    path.resolve(__dirname, 'js/app/km-bottom-tabs.js'),
     path.resolve(__dirname, 'js/app/components/answer-feedback-service.js'),
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),
     path.resolve(__dirname, 'js/app/conversation/gen-ai-service.js'),
     path.resolve(__dirname, 'js/app/map/mck-map-integration.js'),
+    path.resolve(__dirname, 'js/app/km-whats-new.js'),
     path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
     path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),
     path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
@@ -92,7 +104,7 @@ exports.PLUGIN_BUNDLE_FILES = [
     path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
 ];
 
-exports.THIRD_PARTY_FILE_INFO = [
+const THIRD_PARTY_FILE_INFO = [
     {
         source: path.join(__dirname, 'js/app/zendesk-chat-service.js'),
         outputName: `zendesk-chat-service-${version}.min.js`, // code is our and it can be changed that's why added the versioning
@@ -134,20 +146,23 @@ exports.THIRD_PARTY_FILE_INFO = [
         type: 'js',
     },
     {
-        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
-        outputName: `sentry-${version}.min.js`,
-        type: 'js',
-        shouldMinify: true,
-    },
-    {
         source: path.join(__dirname, 'lib/js/marked.min.js'),
         outputName: `marked.min.js`,
         type: 'js',
     },
 ];
+if (!IS_PROD_BUILD) {
+    THIRD_PARTY_FILE_INFO.push({
+        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
+        outputName: `sentry-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    });
+}
+exports.THIRD_PARTY_FILE_INFO = THIRD_PARTY_FILE_INFO;
 
 exports.getDynamicLoadFiles = function (dir) {
-    return JSON.stringify({
+    const payload = {
         zendesk: {
             js: `${dir}/zendesk-chat-service-${version}.min.js`,
         },
@@ -162,40 +177,16 @@ exports.getDynamicLoadFiles = function (dir) {
         crypto: {
             js: `${dir}/crypto.min.js`,
         },
-        sentry: {
-            js: `${dir}/sentry-${version}.min.js`,
-        },
         voiceChat: {
             js: `${dir}/voice-chat-${version}.min.js`,
         },
-    });
-};
+    };
 
-function getCurrentBranch() {
-    try {
-        if (process.env.AWS_BRANCH) {
-            return process.env.AWS_BRANCH;
-        }
-
-        if (process.env.BRANCH) {
-            return process.env.BRANCH;
-        }
-
-        if (process.env.NODE_ENV != 'development') {
-            return version;
-        }
-        const branch = require('child_process')
-            .execSync('git rev-parse --abbrev-ref HEAD', {
-                cwd: __dirname,
-                encoding: 'utf8',
-            })
-            .toString()
-            .trim();
-
-        return branch;
-    } catch (error) {
-        console.error('Error getting current branch:', error);
-
-        return version; // Fallback if there's an error
+    if (!IS_PROD_BUILD) {
+        payload.sentry = {
+            js: `${dir}/sentry-${version}.min.js`,
+        };
     }
-}
+
+    return JSON.stringify(payload);
+};

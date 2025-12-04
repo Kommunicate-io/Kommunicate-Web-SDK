@@ -12,20 +12,8 @@ class RatingService {
         }
     }
     starCsatHtmlEnable = () => {
-        kommunicateCommons.modifyClassList(
-            {
-                class: ['mck-smilies-inner'],
-            },
-            'n-vis',
-            'vis'
-        );
-        kommunicateCommons.modifyClassList(
-            {
-                class: ['star-rating'],
-            },
-            'vis',
-            'n-vis'
-        );
+        kommunicateCommons.hide('.mck-smilies-inner');
+        kommunicateCommons.show('.star-rating');
         kommunicateCommons.modifyClassList(
             {
                 class: ['mck-ratings-smilies'],

@@ -1,0 +1,113 @@
+// FAQ tab visibility states
+%km-tab-faqs-base {
+    #faq-common {
+        display: flex !important;
+    }
+    #mck-tab-conversation {
+        display: flex !important;
+    }
+    #mck-sidebox-ft {
+        display: none !important;
+    }
+    #km-faq {
+        display: none !important;
+    }
+}
+
+%km-faq-category {
+    #km-faqdiv {
+        display: block !important;
+    }
+    #km-contact-search-input-box {
+        display: block !important;
+    }
+    /* keep FAQ search visible when category list is active */
+    .km-contact-input-container {
+        display: block !important;
+    }
+    .km-faq-category-list-container {
+        display: block !important;
+    }
+    #km-faq-list-container,
+    #km-faqanswer {
+        display: none !important;
+    }
+}
+
+%km-faq-category-layout-classic-back {
+    .km-faq-back-btn-wrapper,
+    #km-faq-back-btn {
+        display: block !important;
+    }
+}
+
+%km-faq-list {
+    #km-faqdiv {
+        display: block !important;
+    }
+    #km-faq-list-container {
+        display: block !important;
+    }
+    .km-faq-category-list-container {
+        display: none !important;
+    }
+    #km-faqanswer {
+        display: none !important;
+    }
+    #km-contact-search-input-box,
+    .km-contact-input-container {
+        display: block !important;
+    }
+    .km-faq-back-btn-wrapper,
+    #km-faq-back-btn {
+        display: block !important;
+    }
+    #mck-tab-conversation {
+        padding-left: 0;
+    }
+}
+
+%km-faq-article {
+    #km-faqanswer {
+        display: block !important;
+    }
+    #km-faqdiv {
+        display: none !important;
+    }
+    #km-contact-search-input-box,
+    .km-contact-input-container {
+        display: none !important;
+    }
+    .km-faq-back-btn-wrapper,
+    #km-faq-back-btn {
+        display: block !important;
+    }
+    #mck-tab-conversation {
+        padding-left: 0;
+    }
+}
+
+%km-faq-no-results {
+    #km-contact-search-input-box,
+    .km-contact-input-container {
+        display: block !important;
+    }
+    #km-faqdiv,
+    #km-faq-list-container {
+        display: none !important;
+    }
+    .km-no-results-found-container {
+        display: block !important;
+    }
+}
+
+@include apply-state($km-tab-faqs-selectors, '%km-tab-faqs-base');
+@include apply-state($km-subsection-faq-category-selectors, '%km-faq-category');
+@include apply-scoped-state(
+    '.layout-classic',
+    $km-subsection-faq-category-selectors,
+    '%km-faq-category-layout-classic-back'
+);
+@include apply-state($km-subsection-faq-list-selectors, '%km-faq-list');
+@include apply-state($km-subsection-faq-article-selectors, '%km-faq-article');
+@include apply-state($km-subsection-faq-no-results-selectors, '%km-faq-no-results');

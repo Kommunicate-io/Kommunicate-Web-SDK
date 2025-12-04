@@ -640,10 +640,12 @@ $applozic.extend(true, Kommunicate, {
               popUpCloseButton && (popUpCloseButton.style.display = 'flex'))
             : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+        kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
     },
     setDefaultIframeConfigForClosedChat: function () {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         if (kommunicateIframe) {
+            //kommunicateIframe.style.height = '';
             kommunicateIframe.classList.add('km-iframe-closed');
             kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
             kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
