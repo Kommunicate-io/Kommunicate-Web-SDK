@@ -21,12 +21,17 @@
         };
         var agentSelectors = [selectors.avatar, selectors.statusText, selectors.statusIndicator];
 
-        function setText(id, text) {
+        function setText(id, text, updateTooltip) {
             if (!doc) {
                 return;
             }
             var target = doc.getElementById(id);
-            target && (target.textContent = text || '');
+            if (target) {
+                target.textContent = text || '';
+                if (updateTooltip !== false) {
+                    target.setAttribute('title', text || '');
+                }
+            }
         }
 
         function toggleElements(show) {
@@ -48,14 +53,23 @@
         }
 
         return {
-            setIndividualTitle: function (text) {
-                setText(selectors.individualTitle, text || defaults.individualTitle);
+            setIndividualTitle: function (text, updateTooltip) {
+                setText(selectors.individualTitle, text || defaults.individualTitle, updateTooltip);
             },
             setConversationTitle: function (text) {
                 setText(selectors.conversationTitle, text || defaults.conversationTitle);
             },
             setFaqTitle: function () {
                 this.setIndividualTitle(defaults.faqTitle);
+            },
+            setWhatsNewTitle: function (text) {
+                var title = text || labels['modern.nav.whatsnew'] || "What's New";
+                this.setIndividualTitle(title);
+                this.setConversationTitle(title);
+            },
+            resetTitle: function () {
+                this.setConversationTitle(defaults.conversationTitle);
+                this.setIndividualTitle(defaults.individualTitle);
             },
             showConversationHeader: function () {
                 toggleElements(true, selectors.conversationHeader);
@@ -90,6 +104,18 @@
                     backBtn.classList.add('n-vis');
                     backBtn.classList.remove('vis-table');
                 }
+            },
+            addIndividualTitleClass: function (className) {
+                var element = doc.getElementById(selectors.individualTitle);
+                element && element.classList.add(className);
+            },
+            removeIndividualTitleClass: function (className) {
+                var element = doc.getElementById(selectors.individualTitle);
+                element && element.classList.remove(className);
+            },
+            getIndividualTitleAttribute: function () {
+                var element = doc.getElementById(selectors.individualTitle);
+                return element && element.getAttribute('title');
             },
         };
     }

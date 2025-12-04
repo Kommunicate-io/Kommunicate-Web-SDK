@@ -52,9 +52,14 @@ home.get('/index.html', function (req, res) {
 });
 
 home.get('/kommunicate.app', function (req, res) {
-    // below is the code to handle the "forward".
-    req.url = '/v1/kommunicate.app';
+    // backward-compatible root loader uses v2 via forward
+    req.url = '/v2/kommunicate.app';
     home.handle(req, res);
+});
+home.get('/kommunicate-widget-3.0.min.js', function (req, res) {
+    // new loader alias uses v3 directly
+    req.params.version = 'v3';
+    webpluginController.getPlugin(req, res);
 });
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML);

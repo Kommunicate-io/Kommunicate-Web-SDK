@@ -1,5 +1,6 @@
 const minify = require('@node-minify/core');
 const noCompress = require('@node-minify/no-compress');
+const terser = require('terser');
 const path = require('path');
 const fs = require('fs');
 
@@ -15,12 +16,13 @@ const {
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
+const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 
-const pluginVersions = ['v1', 'v2'];
+const pluginVersions = ['v1', 'v2', 'v3'];
 
 Object.assign(PLUGIN_SETTING, {
     kommunicateApiUrl: PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl,
@@ -34,6 +36,20 @@ let BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let pathToResource = BUILD_URL;
 let resourceLocation = buildDir;
+
+const minifyPluginContent = (code) => {
+    try {
+        const result = terser.minify(code, TERSER_CONFIG);
+        if (result.error) {
+            console.log('plugin minification error', result.error);
+            return code;
+        }
+        return result.code;
+    } catch (err) {
+        console.log('plugin minification error', err);
+        return code;
+    }
+};
 
 /**
  *
@@ -237,7 +253,7 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
 
-                PLUGIN_FILE_DATA[pluginVersions[i]] = data;
+                PLUGIN_FILE_DATA[pluginVersions[i]] = minifyPluginContent(data);
             }
             console.log('plugin files generated for all versions successfully');
         } catch (error) {

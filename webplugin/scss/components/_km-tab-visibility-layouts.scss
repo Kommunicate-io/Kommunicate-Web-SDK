@@ -1,4 +1,4 @@
-.layout-default {
+.layout-classic {
     #mck-msg-new {
         background: var(--km-accent, #5f46f8) !important;
         color: var(--km-accent-contrast, #ffffff) !important;
@@ -16,6 +16,19 @@
 }
 
 .layout-modern {
+    #km-faq,
+    .km-kb-container #km-faq,
+    #mck-sidebox-content.active-tab-conversations #km-faq,
+    #mck-sidebox-content.active-tab-conversations .km-kb-container #km-faq,
+    #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq,
+    #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+        .km-kb-container
+        #km-faq,
+    #mck-sidebox-content.active-tab-faqs #km-faq,
+    #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
+        display: none !important;
+    }
+
     #mck-sidebox-content {
         .mck-running-on {
             display: none !important;
@@ -27,5 +40,8 @@
                 display: block !important;
             }
         }
+    }
+    #km-faq {
+        display: none !important;
     }
 }

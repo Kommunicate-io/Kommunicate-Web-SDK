@@ -1,3 +1,46 @@
+%mck-btn-panel-shared {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease;
+    line-height: 1 !important;
+
+    svg {
+        width: 20px !important;
+        height: 20px !important;
+        fill: currentColor;
+        display: block;
+        flex-shrink: 0;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    &:focus-visible {
+        outline: 2px solid rgba(76, 102, 205, 0.6);
+        outline-offset: 2px;
+    }
+}
+
+@mixin mck-btn-panel($size, $radius) {
+    @extend %mck-btn-panel-shared;
+    width: $size !important;
+    height: $size !important;
+    min-width: $size !important;
+    border-radius: $radius;
+}
+
+.mck-btn-text-panel--small {
+    @include mck-btn-panel(28px, 4px);
+}
+
 .mck-group-inner {
     background: #fafafa;
     & .mck-msg-left {
@@ -189,16 +232,6 @@
     gap: 8px;
 }
 
-.mck-voice-web {
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    min-width: 53px;
-    justify-content: center;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
 #mck-loc-address-autocomplete {
     padding: 0 !important;
 }
@@ -289,6 +322,57 @@
     display: none !important;
 }
 
+#mck-contact-loading {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    z-index: 10;
+    pointer-events: none;
+
+    .mck-contact-loading__ring {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.18);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: inherit;
+        }
+
+        &::before {
+            border: 4px solid rgba(15, 23, 42, 0.07);
+        }
+
+        &::after {
+            border: 4px solid rgba(95, 70, 248, 0.45);
+            border-top-color: var(--km-accent, #5f46f8);
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            animation: mckContactLoadingSpin 0.9s linear infinite;
+        }
+    }
+}
+
+@keyframes mckContactLoadingSpin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .km-empty-conversation-card {
     width: 100%;
     border-radius: 28px;
@@ -365,10 +449,9 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: #ffffff;
-        border: 1px solid $card-border-color;
+        background: transparent;
+        border: none;
+        border-radius: 0;
         box-shadow: 0 10px 26px rgba(25, 33, 63, 0.08);
     }
 
@@ -555,7 +638,7 @@
     }
 }
 
-.layout-default {
+.layout-classic {
     .km-empty-conversation-container,
     .km-modern-empty-state,
     .km-conversations-empty {
@@ -584,5 +667,418 @@
     &:focus-visible {
         outline: 2px solid $outline-color;
         outline-offset: 2px;
+    }
+}
+
+.km-inline-template__button-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 120px;
+    margin: 10px auto;
+}
+
+.km-inline-template__button {
+    width: 100%;
+    min-height: 27px;
+    padding: 6px 10px;
+    color: #fff;
+    background-color: var(--km-primary-color, #000);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: $font-family-primary;
+    font-size: $heading-secondary;
+}
+
+.km-inline-template__input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 13px 0;
+    width: 100%;
+}
+
+.km-inline-template__input {
+    flex: 1 1 auto;
+    min-height: 35px;
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid $input-border-color;
+    border-radius: 8px 0 0 8px;
+    font-family: $font-family-primary;
+    font-size: $heading-secondary;
+}
+
+.km-inline-template__submit {
+    min-height: 35px;
+    padding: 8px 14px;
+    color: #fff;
+    background-color: var(--km-primary-color, #000);
+    border: 0;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-family: $font-family-primary;
+    font-size: $heading-secondary;
+}
+
+.mck-textbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 6px 6px 6px 6px;
+    border: 1.5px solid rgba(17, 24, 39, 0.12);
+    border-radius: 20px;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-within {
+        border-color: rgba(17, 24, 39, 0.2);
+        box-shadow: 0 10px 26px rgba(42, 68, 116, 0.12);
+    }
+
+    // Icons wrapper - contains all action buttons
+    .mck-icons-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start; // Align to the top of the container
+        align-content: flex-start; // Stack rows from the top
+        order: 1;
+        max-width: 84px; // 28px * 3 icons = 84px (flexible for 1-3 icons)
+        height: auto;
+        min-height: 32px;
+        min-width: 0;
+        row-gap: 4px;
+
+        // Base button styles for all icon buttons
+        .mck-btn {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.2s ease;
+            position: relative;
+
+            svg {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                fill: currentColor;
+            }
+
+            &:hover,
+            &:focus {
+                background: rgba(0, 0, 0, 0.05);
+                outline: none;
+            }
+
+            &:active {
+                background: rgba(0, 0, 0, 0.08);
+            }
+
+            &[disabled] {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            // Specific button variants
+            &-smiley,
+            &-location,
+            &-file-upload,
+            &-img-upload,
+            &-vid-upload {
+                // All buttons inherit base styles
+                // Add specific overrides here if needed
+            }
+            &.mck-btn-text-panel {
+                &:hover,
+                &:focus {
+                    background: transparent;
+                }
+            }
+        }
+
+        // Remove any old styles that might interfere
+        .mck-attach-img-vid-box,
+        .mck-blk-12,
+        .mck-blk-2,
+        .mck-text-box-panel {
+            display: contents; // Flatten the structure
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    // Base button styles for all action buttons
+    .mck-text-box-panel {
+        @extend .mck-btn-text-panel--small;
+
+        // Reset button and label styles
+        button,
+        label {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            min-width: 0 !important;
+            min-height: 0 !important;
+
+            // Icons inside buttons - standardized to 20x20px
+            svg {
+                width: 20px !important;
+                height: 20px !important;
+                min-width: 20px !important;
+                min-height: 20px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                flex-shrink: 0;
+                display: block;
+
+                // Specific icon adjustments
+                &.mck-icon-upload,
+                &#mck-mic-btn,
+                &[viewBox='0 0 24 24'] {
+                    width: 20px !important;
+                    height: 20px !important;
+                }
+            }
+        }
+    }
+
+    // Attachment and media buttons container
+    #mck-btn-attach-box,
+    .mck-attach-img-vid-box {
+        display: flex;
+        align-items: center;
+        gap: 6px; // Match the reduced gap from parent
+        margin: 0;
+        padding: 0;
+
+        // Reset all button styles
+        button {
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            // Fix for any SVG icons
+            svg {
+                width: 20px !important;
+                height: 20px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block;
+                flex-shrink: 0;
+            }
+        }
+
+        // Remove any extra spacing from nested containers
+        & > * {
+            margin: 0 !important;
+            padding: 0 !important;
+            min-width: 0 !important;
+            line-height: 1;
+
+            &,
+            * {
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    .mck-btn-text-panel {
+        @extend .mck-btn-text-panel--small;
+        color: #6b7583;
+        transition: background-color 0.2s ease, color 0.2s ease;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: #ffffff !important;
+            color: var(--km-primary-color-dark, #4a35c6) !important;
+            box-shadow: 0 16px 35px rgba(95, 70, 248, 0.25);
+        }
+    }
+
+    // Voice recording button
+    #mck-mic-animation-container {
+        order: 3;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+
+        #mck-mic-btn-container {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    // Voice mode toggle
+    .mck-voice-web {
+        order: 4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    // Location button
+    .mck-location-sharing-box {
+        @extend .mck-text-box-panel;
+
+        &:hover,
+        &:focus {
+            background-color: transparent !important;
+        }
+
+        .mck-btn-loc {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+
+            svg {
+                width: 14.67px; // Maintains 11:15 aspect ratio at 20px height
+                height: 20px;
+            }
+        }
+
+        .mck-text-box.mck-text {
+            flex: 1 1 auto;
+            order: 2;
+            padding: 4px 4px !important;
+            margin: 0;
+            min-height: 28px;
+            max-height: 120px;
+            font-size: $heading-secondary;
+            line-height: 1.5;
+            color: $text-primary-color;
+            display: flex;
+            align-items: center;
+        }
+
+        // Send button container
+        #send-button-wrapper {
+            order: 5;
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+
+            // Remove any inherited panel styles
+            &.mck-text-box-panel {
+                width: auto !important;
+                height: auto !important;
+                min-width: auto !important;
+            }
+
+            .mck-blk-12 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: auto !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            .mck-btn-text-panel {
+                &:hover,
+                &:focus {
+                    background: transparent !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            .mck-icon-send {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: currentColor;
+                    display: block;
+                }
+
+                background: none !important;
+                overflow: visible !important;
+                text-indent: 0 !important;
+                position: static !important;
+                width: auto !important;
+                height: auto !important;
+            }
+        }
+
+        .mck-text-box-panel .mck-blk-12 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 28px;
+        }
     }
 }

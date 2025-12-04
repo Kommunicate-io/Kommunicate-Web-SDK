@@ -47,7 +47,7 @@
                                 <button
                                     id="mck-conversation-back-btn"
                                     aria-label="Back"
-                                    role="button"
+                                    type="button"
                                     tabindex="0"
                                     class="mck-conversation-tab-link"
                                 >
@@ -562,25 +562,14 @@
                         <ul class="km-whats-new-list"></ul>
                     </div>
 
-                    <div id="mck-contact-loading" class="mck-loading n-vis">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            class="mck-circular-spinner"
-                            viewBox="25 25 50 50"
-                            width="50"
-                            height="50"
-                        >
-                            <circle
-                                class="mck-spinner-path"
-                                cx="50"
-                                cy="50"
-                                r="20"
-                                fill="none"
-                                stroke-width="2"
-                                stroke-miterlimit="10"
-                            />
-                        </svg>
+                    <div
+                        id="mck-contact-loading"
+                        class="mck-loading n-vis"
+                        role="status"
+                        aria-live="polite"
+                        aria-label="Loading conversations"
+                    >
+                        <div class="mck-contact-loading__ring" aria-hidden="true"></div>
                     </div>
                     <div
                         id="mck-no-conversations"
@@ -918,6 +907,7 @@
                             rows="4"
                         ></textarea>
                         <button
+                            type="button"
                             class="km-custom-widget-background-color mck-send-feedback"
                             id="mck-submit-comment"
                             aria-disabled="false"
@@ -1002,93 +992,14 @@
                                 </div>
                                 <div class="mck-form-group last last-child">
                                     <div id="mck-textbox-container" class="mck-textbox-container">
-                                        <div
-                                            id="mck-btn-attach-box"
-                                            class="mck-blk-2 mck-text-box-panel mck-mid-panel move-right mck-attach-menu-main-container vis"
-                                        >
-                                            <div
-                                                id="mck-location-sharing-box"
-                                                class="mck-location-sharing-box"
-                                            >
-                                                <button
-                                                    id="mck-btn-loc"
-                                                    class="menu-item mck-btn-loc"
-                                                    title="Share Location"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 11 15"
-                                                        class="mck-icon-marker-blue"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-29"
-                                                            href="#icon-29"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    id="mck-file-up"
-                                                    class="mck-file-upload menu-item"
-                                                    title="Upload Attachment"
-                                                    aria-disabled="false"
-                                                    aria-label="Upload Attachment"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 16 18"
-                                                        class="mck-icon-upload"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-30"
-                                                            href="#icon-30"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <div id="mck-attachfile-box" class="mck-blk-12 n-vis">
-                                                <button
-                                                    id="mck-file-up2"
-                                                    type="button"
-                                                    class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                    title="Upload Attachment"
-                                                    aria-disabled="false"
-                                                    aria-label="Upload Attachment"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        focusable="false"
-                                                        aria-hidden="true"
-                                                        width="16"
-                                                        height="18"
-                                                        viewBox="0 0 16 18"
-                                                        class="mck-icon-upload"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-30"
-                                                            href="#icon-30"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div
-                                            id="mck-attach-img-box"
-                                            class="mck-blk-12 mck-attach-img-vid-box"
-                                        >
+                                        <div class="mck-icons-wrapper">
+                                            <!-- Emoji Picker Button -->
                                             <button
-                                                id="mck-img-file-up"
                                                 type="button"
-                                                class="mck-img-file-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
-                                                aria-disabled="false"
-                                                aria-label="Upload Image"
+                                                id="mck-btn-smiley"
+                                                class="mck-btn mck-btn-smiley"
+                                                title="Emoji Picker"
+                                                aria-label="Emoji picker"
                                                 tabindex="0"
                                             >
                                                 <svg
@@ -1097,7 +1008,72 @@
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     aria-hidden="true"
-                                                    focusable="false"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-38"
+                                                        href="#icon-38"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- Location Button -->
+                                            <button
+                                                id="mck-btn-loc"
+                                                type="button"
+                                                class="mck-btn mck-btn-location"
+                                                title="Share Location"
+                                                aria-label="Share Location"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-63"
+                                                        href="#icon-63"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- File Upload Button -->
+                                            <button
+                                                id="mck-file-up"
+                                                type="button"
+                                                class="mck-btn mck-file-upload"
+                                                title="Upload Attachment"
+                                                aria-label="Upload Attachment"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 16 18"
+                                                    aria-hidden="true"
+                                                >
+                                                    <use
+                                                        xlink:href="#icon-30"
+                                                        href="#icon-30"
+                                                    ></use>
+                                                </svg>
+                                            </button>
+
+                                            <!-- Image Upload Button -->
+                                            <button
+                                                id="mck-img-file-up"
+                                                type="button"
+                                                class="mck-btn mck-img-upload"
+                                                title="Upload Image"
+                                                aria-label="Upload Image"
+                                                tabindex="0"
+                                            >
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
                                                 >
                                                     <use
                                                         xlink:href="#icon-32"
@@ -1105,27 +1081,21 @@
                                                     ></use>
                                                 </svg>
                                             </button>
-                                        </div>
-                                        <div
-                                            id="mck-attach-vid-box"
-                                            class="mck-blk-12 mck-attach-img-vid-box"
-                                        >
+
+                                            <!-- Video Upload Button -->
                                             <button
                                                 id="mck-vid-file-up"
                                                 type="button"
-                                                class="mck-img-vid-up mck-file-attach-label mck-btn mck-btn-text-panel"
-                                                title="Upload Attachment"
-                                                aria-disabled="false"
+                                                class="mck-btn mck-vid-upload"
+                                                title="Upload Video"
                                                 aria-label="Upload Video"
                                                 tabindex="0"
                                             >
                                                 <svg
+                                                    width="24"
                                                     height="24"
                                                     viewBox="0 0 24 24"
-                                                    width="24"
-                                                    fill="#787474"
                                                     aria-hidden="true"
-                                                    focusable="false"
                                                 >
                                                     <use
                                                         xlink:href="#icon-33"
@@ -1136,7 +1106,7 @@
                                         </div>
                                         <div
                                             id="mck-mic-animation-container"
-                                            class="mck-mic-animation-container n-vis"
+                                            class="mck-mic-animation-container n-vis mck-btn-text-panel"
                                             aria-disabled="false"
                                             title="Voice Input"
                                             aria-label="Voice Input"
@@ -1151,6 +1121,7 @@
                                                 data-toggle="mckdropdown"
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
+                                                class="mck-btn-text-panel"
                                             >
                                                 <svg
                                                     focusable="false"
@@ -1217,6 +1188,25 @@
                                             </ul>
                                         </div>
                                         <div
+                                            id="mck-voice-web"
+                                            class="mck-voice-web n-vis mck-btn-text-panel"
+                                            title="Voice Mode"
+                                            aria-label="Voice Mode"
+                                            role="button"
+                                            tabindex="0"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                id="mck-mic-btn-voice-web"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <use xlink:href="#icon-65" href="#icon-65"></use>
+                                            </svg>
+                                        </div>
+                                        <div
                                             id="mck-quick-replies-box"
                                             class="mck-intent-box n-vis"
                                         >
@@ -1247,36 +1237,7 @@
                                                 aria-labelledby="intent-option"
                                             ></ul>
                                         </div>
-                                        <div
-                                            id="mck-btn-smiley-box"
-                                            class="mck-blk-2 mck-text-box-panel move-right n-vis"
-                                        >
-                                            <div class="mck-blk-12">
-                                                <button
-                                                    type="button"
-                                                    id="mck-btn-smiley"
-                                                    class="mck-btn mck-btn-smiley mck-btn-text-panel"
-                                                    title="Emoji Picker"
-                                                    aria-disabled="false"
-                                                    aria-label="Emoji picker"
-                                                    tabindex="0"
-                                                >
-                                                    <svg
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        aria-hidden="true"
-                                                        focusable="false"
-                                                    >
-                                                        <use
-                                                            xlink:href="#icon-38"
-                                                            href="#icon-38"
-                                                        ></use>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
+
                                         <div
                                             class="mck-blk-2 mck-text-box-panel move-right n-vis"
                                             id="send-button-wrapper"
@@ -1285,7 +1246,7 @@
                                                 <button
                                                     type="submit"
                                                     id="mck-msg-sbmt"
-                                                    class="mck-btn mck-btn-text-panel"
+                                                    class="mck-btn mck-btn-text-panel mck-btn-text-panel--send"
                                                     title="Send Message"
                                                     aria-disabled="false"
                                                     aria-label="Send Message"
@@ -1484,21 +1445,6 @@
                             </form>
                         </div>
                     </div>
-                    <div
-                        id="mck-voice-web"
-                        class="mck-voice-web n-vis km-custom-widget-background-color"
-                    >
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            id="mck-mic-btn-voice-web"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                        >
-                            <use xlink:href="#icon-45" href="#icon-45"></use>
-                        </svg>
-                    </div>
                 </div>
                 <div class="mck-text-req-error n-vis">
                     <svg
@@ -1621,13 +1567,7 @@
                                 focusable="false"
                                 aria-hidden="true"
                             >
-                                <path
-                                    d="M6 9l6 6 6-6"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
+                                <use xlink:href="#icon-64" href="#icon-64"></use>
                             </svg>
                         </span>
                         <span class="km-bottom-tab-label" id="km-bottom-tab-collapse-text"

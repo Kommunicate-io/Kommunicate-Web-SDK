@@ -11,7 +11,7 @@
 #km-whats-new-placeholder,
 #faq-common,
 #mck-no-conversations {
-    display: none !important;
+    @extend %km-hidden;
 }
 
 #km-widget-options,
@@ -24,7 +24,11 @@
 #km-faqanswer,
 .km-faq-back-btn-wrapper,
 #km-faq-back-btn {
-    display: none !important;
+    @extend %km-hidden;
+}
+
+#mck-tab-conversation {
+    padding-inline-start: 16px;
 }
 
 // Shared selector groups for tab/subsection states (only active-* classes are used at runtime)
@@ -62,7 +66,7 @@ $km-subsection-faq-no-results-selectors: (
 
 $km-tab-no-conversations-selectors: ('#mck-sidebox-content.active-tab-no-conversations');
 
-$km-layout-default-conversation-list-selectors: (
+$km-layout-classic-conversation-list-selectors: (
     '#mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual)'
 );
 

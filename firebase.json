@@ -14,19 +14,6 @@
         ]
       },
       {
-        "source": "/v2/kommunicate.app",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/javascript"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=180"
-          }
-        ]
-      },
-      {
         "source": "**/*.js",
         "headers": [
           {
@@ -70,6 +57,32 @@
             "value": "public, max-age=31536000"
           }
         ]
+      },
+      {
+        "source": "/v2/kommunicate.app",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
+          }
+        ]
+      },
+      {
+        "source": "/kommunicate-widget-3.0.min.js",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=900"
+          }
+        ]
       }
     ],
     "rewrites": [
@@ -91,11 +104,6 @@
       {
         "source": "/chat",
         "destination": "/chat.html",
-        "type": "200"
-      },
-      {
-        "source": "/v2/kommunicate.app",
-        "destination": "/index.html",
         "type": "200"
       }
     ],

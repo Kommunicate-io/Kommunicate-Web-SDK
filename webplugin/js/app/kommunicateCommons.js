@@ -39,6 +39,8 @@ function KommunicateCommons() {
     };
 
     var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
+    var MODERN_NAV_HEIGHT_EXTRA = 22;
+    var NAV_HEIGHT_OFFSET = 16;
     var cachedBottomNavHeight = null;
 
     _this.adjustIframeHeightForLayout = function (iframeElement) {
@@ -142,6 +144,10 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
+        if (_this.isModernLayoutEnabled()) {
+            height -= MODERN_NAV_HEIGHT_EXTRA;
+        }
+        height -= NAV_HEIGHT_OFFSET;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
     }
@@ -366,7 +372,7 @@ function KommunicateCommons() {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
 
-    _this.escapeAttributeValue = function (value) {
+    function escapeForAttributeValue(value) {
         if (value === null || typeof value === 'undefined') {
             return '';
         }
@@ -377,23 +383,12 @@ function KommunicateCommons() {
             .replace(/'/g, '&#39;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
-    };
+    }
+
+    _this.escapeAttributeValue = escapeForAttributeValue;
 
     _this.encodeCategoryNameForAttribute = function (categoryName) {
-        if (!categoryName) {
-            return '';
-        }
-        var value =
-            typeof categoryName.toString === 'function'
-                ? categoryName.toString()
-                : String(categoryName);
-        return value
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/\s+/g, '-');
+        return escapeForAttributeValue(categoryName).replace(/\s+/g, '-');
     };
     _this.isConversationClosedByBot = function () {
         if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {

@@ -109,10 +109,16 @@
         }
 
         function getLastBottomTab() {
-            return (
+            var lastTab =
                 (w.Kommunicate && w.Kommunicate._globals && w.Kommunicate._globals.lastBottomTab) ||
-                null
-            );
+                null;
+            if (!lastTab && typeof w.kmLocalStorage !== 'undefined') {
+                try {
+                    lastTab =
+                        w.kmLocalStorage.getItemFromLocalStorage('km-last-bottom-tab') || null;
+                } catch (e) {}
+            }
+            return lastTab;
         }
 
         function setBottomTabState(tabType) {
@@ -156,6 +162,14 @@
                 w.Kommunicate._globals = w.Kommunicate._globals || {};
                 w.Kommunicate._globals.lastBottomTab =
                     targetTab.getAttribute('data-tab') || 'conversations';
+                if (typeof w.kmLocalStorage !== 'undefined') {
+                    try {
+                        w.kmLocalStorage.setItemToLocalStorage(
+                            'km-last-bottom-tab',
+                            w.Kommunicate._globals.lastBottomTab
+                        );
+                    } catch (e) {}
+                }
             }
         }
 
@@ -293,6 +307,8 @@
 
         function handleBottomTabChange(tabType, options) {
             options = options || {};
+            typeof kommunicateCommons !== 'undefined' &&
+                kommunicateCommons.hide('#mck-contact-loading');
             var resolvedTabType = normalizeTabType(tabType);
             var activeConversationId = getActiveConversationId();
 
@@ -316,18 +332,28 @@
                     : !isModernLayout; // default layout starts in list view
             var hasActiveConversation = !!activeConversationId;
 
-            var subsectionToApply = getDefaultSubsectionForTab(resolvedTabType);
+            var skipConversationListView = Boolean(options.skipConversationListView);
+            var subsectionToApply = skipConversationListView
+                ? 'conversation-individual'
+                : getDefaultSubsectionForTab(resolvedTabType);
             if (resolvedTabType === 'conversations') {
-                subsectionToApply =
-                    hasActiveConversation && !isListView
-                        ? 'conversation-individual'
-                        : 'conversation-list';
+                subsectionToApply = skipConversationListView
+                    ? 'conversation-individual'
+                    : hasActiveConversation && !isListView
+                    ? 'conversation-individual'
+                    : 'conversation-list';
             }
             updateActiveSubsectionClass(subsectionToApply);
 
             if (resolvedTabType === 'conversations') {
                 // Preserve individual view when a conversation is active.
-                ui.showConversationList();
+                if (!skipConversationListView) {
+                    var showConversationListOptions =
+                        options && options.skipEmptyStateToggle
+                            ? { skipEmptyStateToggle: true }
+                            : undefined;
+                    ui.showConversationList(showConversationListOptions);
+                }
                 ui.setConversationTitle();
                 if (Array.isArray(eventHistory)) {
                     eventHistory.length = 0; // local copy only
@@ -351,6 +377,7 @@
                 }
             }
 
+            var topBarManager;
             if (resolvedTabType === 'no-conversations') {
                 var emptyTitle =
                     (typeof MCK_LABELS === 'object' &&
@@ -362,18 +389,22 @@
                     ui.toggleConversationsEmptyState(true);
                 }
                 ui.updateWelcomeCtaLabel();
-                var topBarManager = getTopBarManager();
+                topBarManager = getTopBarManager();
                 if (topBarManager) {
                     try {
                         topBarManager.showConversationHeader();
                         topBarManager.toggleAvatar(false);
                         topBarManager.toggleBackButton(false);
+                        topBarManager.setConversationTitle(emptyTitle);
                     } catch (e) {}
                 }
                 return;
             }
 
             if (resolvedTabType === 'faqs') {
+                if (options.skipFaqTrigger) {
+                    return;
+                }
                 var faqButton = documentRef && documentRef.getElementById('km-faq');
                 faqButton && faqButton.click();
                 return;
@@ -382,28 +413,24 @@
             if (resolvedTabType === 'whats-new') {
                 whatsNewManager.refresh();
                 ui.toggleModernFaqBackButton(false);
-                if (documentRef && typeof documentRef.getElementById === 'function') {
-                    var tabTitle = documentRef.getElementById('mck-tab-title');
-                    var conversationTitle = documentRef.getElementById('mck-conversation-title');
-                    var whatsNewLabel = getLabel('modern.nav.whatsnew', "What's New");
-                    tabTitle && (tabTitle.textContent = whatsNewLabel);
-                    conversationTitle && (conversationTitle.textContent = whatsNewLabel);
+                topBarManager = getTopBarManager();
+                if (topBarManager) {
+                    topBarManager.setWhatsNewTitle();
                 }
                 return;
             }
 
             ui.toggleModernFaqBackButton(false);
-            if (documentRef && typeof documentRef.getElementById === 'function') {
-                var tabTitleElement = documentRef.getElementById('mck-tab-title');
-                tabTitleElement &&
-                    (tabTitleElement.textContent = getLabel(
-                        'conversations.title',
-                        'Conversations'
-                    ));
+            topBarManager = getTopBarManager();
+            if (topBarManager) {
+                topBarManager.resetTitle();
             }
 
             var keepConversationHeader =
-                resolvedTabType === 'conversations' && isModernLayout && !hasActiveConversation;
+                resolvedTabType === 'conversations' &&
+                isModernLayout &&
+                !hasActiveConversation &&
+                !skipConversationListView;
             ui.showChat({ keepConversationHeader: keepConversationHeader });
         }
 

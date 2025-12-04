@@ -1,7 +1,7 @@
 /* -----------------Support for hiding list and buttons post call to action------------- */
 .mck-msg-left [data-hidden='true'] {
-    display: none !important;
+    @extend %km-hidden;
 }
 .km-hide-message {
-    display: none !important;
+    @extend %km-hidden;
 }

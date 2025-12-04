@@ -11,9 +11,15 @@ customHeaders:
   - pattern: "/v2/kommunicate.app"
     headers:
       - key: "Content-Type"
-        value: "text/javascript"
+        value: "application/javascript"
       - key: "Cache-Control"
-        value: "public, max-age=180"
+        value: "public, max-age=900"
+  - pattern: "/kommunicate-widget-3.0.min.js"
+    headers:
+      - key: "Content-Type"
+        value: "application/javascript"
+      - key: "Cache-Control"
+        value: "public, max-age=900"
   # 365 days
   - pattern: "**/*.js"
     headers: *common_headers

@@ -162,14 +162,7 @@ class AnswerFeedback {
     handleFeedbackPositioning = (msgKey) => {
         const msgContainer = document.querySelector(`[data-msgKey='${msgKey}']`);
         const feedbackContainerSelector = `[data-msgKey="${msgKey}"] .km-answer-feedback`;
-        kommunicateCommons.modifyClassList(
-            {
-                class: [feedbackContainerSelector],
-            },
-            'vis',
-            'n-vis',
-            true
-        );
+        kommunicateCommons.show(feedbackContainerSelector);
         if (!msgContainer) return;
 
         const msgBox = msgContainer.querySelector('.mck-msg-box');
@@ -197,14 +190,7 @@ class AnswerFeedback {
         const notHelpfulButton = msgContainer.querySelector('.answer-feedback-not-helpful');
 
         // Initially hide the feedback container
-        kommunicateCommons.modifyClassList(
-            {
-                class: [feedbackContainerSelector],
-            },
-            'n-vis',
-            'vis',
-            true
-        );
+        kommunicateCommons.hide(feedbackContainerSelector);
 
         // Handle feedback positioning after the element is rendered and then show the container
         setTimeout(() => {
@@ -216,23 +202,8 @@ class AnswerFeedback {
 
             this.putIconInsideSticker(stickySticker, iconToAdd);
 
-            kommunicateCommons.modifyClassList(
-                {
-                    class: [feedbackContainerSelector],
-                },
-                'n-vis',
-                'vis',
-                true
-            );
-
-            kommunicateCommons.modifyClassList(
-                {
-                    class: [stickyStickerSelector],
-                },
-                'vis',
-                'n-vis',
-                true
-            );
+            kommunicateCommons.hide(feedbackContainerSelector);
+            kommunicateCommons.show(stickyStickerSelector);
 
             feedback ? this.helpFulOnClick(data) : this.notHelpFulOnClick(data);
         };
@@ -241,23 +212,8 @@ class AnswerFeedback {
         notHelpfulButton.addEventListener('click', setFeedback.bind(null, 0));
 
         stickySticker.addEventListener('click', (e) => {
-            kommunicateCommons.modifyClassList(
-                {
-                    class: [feedbackContainerSelector],
-                },
-                'vis',
-                'n-vis',
-                true
-            );
-
-            kommunicateCommons.modifyClassList(
-                {
-                    class: [stickyStickerSelector],
-                },
-                'n-vis',
-                'vis',
-                true
-            );
+            kommunicateCommons.show(feedbackContainerSelector);
+            kommunicateCommons.hide(stickyStickerSelector);
 
             this.handleOnFeedbackClick(KommunicateConstants.ANSWER_FEEDBACK.DISCARD, data);
         });

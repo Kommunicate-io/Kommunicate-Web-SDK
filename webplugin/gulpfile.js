@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
+const terserLib = require('terser');
 const cleanCss = require('gulp-clean-css');
 const cssnano = require('gulp-cssnano');
 const sass = require('gulp-sass')(require('sass'));
@@ -33,7 +34,7 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-const pluginVersions = ['v1', 'v2'];
+const pluginVersions = ['v1', 'v2', 'v3'];
 
 PLUGIN_SETTING.kommunicateApiUrl =
     PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
@@ -58,6 +59,20 @@ const cli = new SentryCli(null, {
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
+
+const minifyPluginContent = (code) => {
+    try {
+        const result = terserLib.minify(code, TERSER_CONFIG);
+        if (result.error) {
+            console.log('plugin minification error', result.error);
+            return code;
+        }
+        return result.code;
+    } catch (err) {
+        console.log('plugin minification error', err);
+        return code;
+    }
+};
 
 const generateResourceFolder = () => {
     if (env) {
@@ -286,6 +301,7 @@ const generateBuildFiles = () => {
             if (err) {
                 console.log('plugin.js generation error');
             }
+            minifyJS(`${buildDir}/plugin.js`, buildDir, `plugin.min.js`, true);
             generateFilesByVersion('build/plugin.js');
         });
     });
@@ -339,16 +355,21 @@ const generateFilesByVersion = (location) => {
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
-                if (env && pluginVersions[i] == 'v2') {
-                    if (!fs.existsSync(`${buildDir}/v2`)) {
-                        fs.mkdirSync(`${buildDir}/v2`);
-                    }
-                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
-                        if (err) {
-                            console.log('kommunicate.app generation error');
-                        }
-                        console.log('kommunicate.app generated');
-                    });
+                var minifiedData = minifyPluginContent(data);
+                var versionDir = `${buildDir}/${pluginVersions[i]}`;
+                if (!fs.existsSync(versionDir)) {
+                    fs.mkdirSync(versionDir, { recursive: true });
+                }
+                fs.writeFileSync(path.join(versionDir, 'kommunicate.app'), minifiedData);
+                if (pluginVersions[i] === 'v1') {
+                    // root-level alias for legacy loader without /v1 prefix
+                    fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
+                }
+                if (pluginVersions[i] === 'v3') {
+                    fs.writeFileSync(
+                        path.join(buildDir, 'kommunicate-widget-3.0.min.js'),
+                        minifiedData
+                    );
                 }
             }
             console.log('plugin files generated for all versions successfully');
