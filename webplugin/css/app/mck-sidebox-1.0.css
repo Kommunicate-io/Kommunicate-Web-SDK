@@ -5604,10 +5604,6 @@ div#mck-waiting-queue {
 
 /* Chat launcher animation for initial load Code Ends */
 
-.km-faq-back-btn-wrapper {
-    display: flex;
-    align-items: center;
-}
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
     display: inline-flex !important;
     width: auto !important;

@@ -27,6 +27,7 @@ function KmCustomTheme() {
     _this.customSideboxWidget = function () {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
         var secondaryColor = DEFAULT_SECONDARY_BACKGROUND_COLOR;
+        var squareIcon = '';
         if (kommunicateCommons.isObject(WIDGET_SETTINGS)) {
             primaryColor =
                 WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor
@@ -36,8 +37,7 @@ function KmCustomTheme() {
                 WIDGET_SETTINGS && WIDGET_SETTINGS.secondaryColor
                     ? WIDGET_SETTINGS.secondaryColor
                     : DEFAULT_SECONDARY_BACKGROUND_COLOR;
-            var squareIcon =
-                kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
+            squareIcon = kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS =
