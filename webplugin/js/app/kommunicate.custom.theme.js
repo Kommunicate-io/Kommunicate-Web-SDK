@@ -6,6 +6,7 @@ function KmCustomTheme() {
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
     var DEFAULT_ACCENT_RGB = '95, 70, 248';
+    var canvasColorParserContext;
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -40,11 +41,12 @@ function KmCustomTheme() {
             squareIcon = kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
+            var contrastColor = getAccessibleTextColor(primaryColor);
             var kmCustomWidgetCustomCSS =
                 '.km-custom-widget-background-color { background: ' +
                 primaryColor +
                 ' !important; color: ' +
-                getAccessibleTextColor(primaryColor) +
+                contrastColor +
                 ' !important;} ' +
                 '.km-custom-widget-background-color-secondary { background: ' +
                 secondaryColor +
@@ -53,7 +55,7 @@ function KmCustomTheme() {
                 primaryColor +
                 ' !important;} ' +
                 '.km-custom-widget-text-color { color: ' +
-                primaryColor +
+                contrastColor +
                 ' !important;} ' +
                 '.km-custom-widget-fill { fill: ' +
                 primaryColor +
@@ -107,6 +109,43 @@ function KmCustomTheme() {
         root.style.setProperty('--km-accent-rgb', rgb);
         var contrastColor = getAccessibleTextColor(primaryColor);
         root.style.setProperty('--km-accent-contrast', contrastColor);
+        var contrastRgbArray = normalizeColorToRgb(contrastColor);
+        var contrastRgb = (contrastRgbArray && contrastRgbArray.join(', ')) || '255, 255, 255';
+        root.style.setProperty('--km-accent-contrast-rgb', contrastRgb);
+        root.style.setProperty('--km-widget-header-background', primaryColor);
+        root.style.setProperty('--km-widget-header-text', contrastColor);
+        applyConversationTitleTextColor(contrastColor);
+    }
+
+    function applyConversationTitleTextColor(color) {
+        if (!color || typeof document === 'undefined') {
+            return;
+        }
+        ['mck-conversation-title', 'mck-tab-title'].forEach(function (id) {
+            var title = document.getElementById(id);
+            if (title) {
+                title.style.color = color;
+            }
+        });
+        var iconSelectors = [
+            '.km-talk-to-human-div .talk-to-human-link',
+            '#talk-to-human-link',
+            '#mck-conversation-back-btn',
+            '.mck-conversation-tab-link',
+            '#km-talk-to-human',
+            '.km-option-talk-to-human',
+            '.mck-box-close',
+            '.mck-close-sidebox',
+            '.mck-minimize-icon',
+            '.mck-close-btn',
+            '.mck-agent-status-text',
+        ];
+        iconSelectors.forEach(function (selector) {
+            var elements = document.querySelectorAll(selector);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.color = color;
+            }
+        });
     }
 
     _this.changeColorTheme = function () {
@@ -169,9 +208,9 @@ function KmCustomTheme() {
         if (!color || typeof color !== 'string') {
             return null;
         }
-        var hex = color.trim();
-        if (hex.startsWith('#')) {
-            var clean = hex.replace('#', '');
+        var trimmedColor = color.trim();
+        if (trimmedColor.startsWith('#')) {
+            var clean = trimmedColor.replace('#', '');
             if (clean.length === 3) {
                 clean = clean
                     .split('')
@@ -195,7 +234,9 @@ function KmCustomTheme() {
             }
             return [rHex, gHex, bHex];
         }
-        var rgbMatch = color.replace(/\s+/g, '').match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
+        var rgbMatch = trimmedColor
+            .replace(/\s+/g, '')
+            .match(/^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i);
         if (rgbMatch) {
             var r = Number(rgbMatch[1]);
             var g = Number(rgbMatch[2]);
@@ -204,6 +245,46 @@ function KmCustomTheme() {
                 return !isNaN(v) && v >= 0 && v <= 255;
             });
             return inRange ? [r, g, b] : null;
+        }
+        return parseCssColorToRgb(trimmedColor);
+    }
+
+    // Canvas parsing translates color names and other CSS values into RGB when needed.
+    function parseCssColorToRgb(color) {
+        if (typeof document === 'undefined' || !document.createElement) {
+            return null;
+        }
+        if (!canvasColorParserContext) {
+            var canvas = document.createElement('canvas');
+            if (!canvas || !canvas.getContext) {
+                return null;
+            }
+            canvasColorParserContext = canvas.getContext('2d');
+        }
+        if (!canvasColorParserContext) {
+            return null;
+        }
+        try {
+            canvasColorParserContext.fillStyle = '#000000';
+            canvasColorParserContext.fillStyle = color;
+            var computedColor = canvasColorParserContext.fillStyle;
+            if (typeof computedColor !== 'string') {
+                return null;
+            }
+            var rgbMatch = computedColor.match(/^rgba?\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})/i);
+            if (rgbMatch) {
+                return [Number(rgbMatch[1]), Number(rgbMatch[2]), Number(rgbMatch[3])];
+            }
+            var hexMatch = computedColor.match(/^#([0-9a-f]{6})$/i);
+            if (hexMatch) {
+                return [
+                    parseInt(hexMatch[1].substring(0, 2), 16),
+                    parseInt(hexMatch[1].substring(2, 4), 16),
+                    parseInt(hexMatch[1].substring(4, 6), 16),
+                ];
+            }
+        } catch (e) {
+            return null;
         }
         return null;
     }

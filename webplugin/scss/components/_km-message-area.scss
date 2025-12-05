@@ -390,7 +390,7 @@
         flex-direction: column;
         gap: 12px;
         background: var(--km-accent, #{$primary-color});
-        color: #ffffff;
+        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
     }
 
     &__icon-badge {
@@ -400,7 +400,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #ffffff;
+        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
         box-shadow: 0 10px 22px rgba($primary-color, 0.25);
     }
 
@@ -422,7 +422,7 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         margin: 0;
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(var(--km-accent-contrast-rgb, 255, 255, 255), 0.85);
         font-weight: 600;
     }
 
@@ -431,7 +431,7 @@
         line-height: 1.3;
         margin: 0;
         font-weight: 600;
-        color: #ffffff;
+        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
     }
 
     &__subtitle {
@@ -529,7 +529,7 @@
         font-size: 14px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: $text-secondary-color;
+        color: var(--km-accent-contrast, #ffffff);
         font-weight: 700;
     }
 

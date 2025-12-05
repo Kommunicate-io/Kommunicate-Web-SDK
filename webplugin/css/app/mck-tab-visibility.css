@@ -37,6 +37,9 @@
 #mck-sidebox-content.active-tab-conversations #mck-tab-individual {
   display: flex !important;
 }
+#mck-sidebox-content.active-tab-conversations #mck-conversation-title {
+  color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
 #mck-sidebox-content.active-tab-conversations #km-faq {
   display: block !important;
 }
@@ -174,7 +177,7 @@
 
 .layout-classic #mck-msg-new {
   background: var(--km-accent, #5f46f8) !important;
-  color: var(--km-accent-contrast, #ffffff) !important;
+  color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff)) !important;
 }
 .layout-classic #km-whats-new-placeholder,
 .layout-classic .km-whats-new-list,

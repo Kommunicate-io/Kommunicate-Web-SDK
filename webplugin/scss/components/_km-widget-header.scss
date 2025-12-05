@@ -3,8 +3,8 @@
     min-height: 60px;
     text-align: left;
     border-bottom: 1px solid #e5e5e5;
-    background-color: var(--km-accent, #{$primary-color});
-    color: var(--km-accent-contrast, #ffffff);
+    background-color: var(--km-widget-header-background, var(--km-accent, #{$primary-color}));
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
 
     .icon {
         margin-right: 12px;
@@ -21,6 +21,61 @@
     .blk-lg-2 {
         width: 20px;
     }
+}
+
+.mck-sidebox .mck-tab-title,
+.mck-sidebox .mck-tab-title-w-status,
+.mck-sidebox .mck-tab-title-w-typing,
+#mck-tab-title {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
+
+.mck-sidebox .mck-box-title {
+    color: var(--km-widget-header-text, #111010);
+}
+
+.mck-sidebox strong.mck-truncate {
+    color: var(--km-widget-header-surface-text, #111010);
+}
+
+.mck-truncate {
+    color: var(--km-font-title-color, #1c2043);
+}
+
+#km-talk-to-human,
+.km-option-talk-to-human,
+.km-option-talk-to-human svg {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
+
+.km-talk-to-human-div .talk-to-human-link,
+.mck-box-close,
+.mck-close-sidebox,
+.mck-minimize-icon,
+.mck-close-btn {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
+
+.km-option-talk-to-human svg {
+    fill: currentColor;
+}
+.mck-conversation-tab-link,
+.km-faq-back-btn,
+.mck-close-sidebox {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
+
+#mck-conversation-back-btn,
+.mck-conversation-tab-link {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+}
+
+.mck-conversation-tab-link svg {
+    fill: currentColor;
+}
+
+.mck-agent-status-text {
+    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
 }
 
 .mck-sidebox-search .mck-box-top,

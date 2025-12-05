@@ -250,8 +250,15 @@
     font-style: normal;
     font-stretch: normal;
     letter-spacing: 0.8px;
-    color: #ffffff;
+    color: var(--km-widget-header-text, #111010);
     font-weight: 400 !important;
+}
+.mck-sidebox strong.mck-truncate {
+    color: var(--km-widget-header-surface-text, #111010);
+}
+
+.mck-truncate {
+    color: var(--km-font-title-color, #1c2043);
 }
 
 .mck-box .move-right {
@@ -983,7 +990,10 @@
     float: right;
     /* font-size: 28px !important; */
     font-weight: 700;
-    color: #000;
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
     /* text-shadow: 0 1px 0 #fff; */
     /* filter: alpha(opacity = 20); */
     /* opacity: .8; */
@@ -2013,7 +2023,7 @@ ul.mck-intent-menu > li:hover {
     line-height: normal;
     letter-spacing: 0.4px;
     text-align: left;
-    color: #111010;
+    color: var(--km-widget-header-surface-text, #111010);
 }
 
 .mck-ol-icon {
@@ -2903,7 +2913,10 @@ ul.mck-intent-menu > li:hover {
     position: relative;
 }
 .mck-tab-title {
-    color: white;
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
 }
 
 .mck-sidebox .mck-tab-status {
@@ -4077,7 +4090,10 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .km-faq-category-card-title {
-    color: var(--km-primary-color, #5f46f8);
+    color: var(
+        --km-widget-header-surface-text,
+        var(--km-font-title-color, #1c2043)
+    );
     font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
@@ -4104,6 +4120,11 @@ ul.mck-intent-menu > li:hover {
 }
 .km-faqanswer-list * {
     word-break: break-word !important;
+}
+.km-faqimage,
+.km-faqimage svg {
+    color: var(--km-font-title-color, #1c2043);
+    fill: currentColor;
 }
 .km-faqimage {
     height: 24px;
@@ -4464,13 +4485,17 @@ textarea::placeholder {
     font-style: normal;
     font-stretch: normal;
     letter-spacing: 0.7px;
-    color: #ffffff;
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
 }
 div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
 }
 #mck-conversation-back-btn,
+.mck-conversation-tab-link,
 .km-faq-back-btn {
     -webkit-appearance: none;
     padding: 0;
@@ -4481,13 +4506,14 @@ div#mck-tab-title.mck-tab-title {
     width: 45px;
     outline: none;
 }
-#mck-conversation-back-btn,
+.mck-conversation-tab-link,
 .km-faq-back-btn,
 .mck-close-sidebox {
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 #mck-conversation-back-btn:hover,
+.mck-conversation-tab-link:hover,
 .km-faq-back-btn:hover,
 .mck-close-sidebox:hover {
     background-color: rgba(0, 0, 0, 0.14);
@@ -4498,7 +4524,7 @@ div#mck-tab-title.mck-tab-title {
     height: 30px;
     display: block;
     margin: 0 auto;
-    fill: #ffffff;
+    fill: currentColor;
 }
 .km-faq-back-btn-wrapper {
     width: auto !important;
@@ -4542,8 +4568,21 @@ div#mck-tab-title.mck-tab-title {
     border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+.km-option-talk-to-human,
+#km-talk-to-human {
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
+}
+.km-option-talk-to-human svg {
+    fill: currentColor;
 }
 .km-talk-to-human-div .talk-to-human-link:not(.km-custom-widget-background-color) {
     background: #ffffff;
@@ -4553,6 +4592,15 @@ div#mck-tab-title.mck-tab-title {
 }
 .km-talk-to-human-div .talk-to-human-link:hover {
     text-decoration: none;
+}
+.mck-box-close,
+.mck-close-sidebox,
+.mck-minimize-icon,
+.mck-close-btn {
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
 }
 .km-contact-input-container {
     position: relative;
@@ -5024,7 +5072,10 @@ button {
     font-stretch: normal;
     letter-spacing: 0.7px;
     line-height: normal;
-    color: #eaeaed;
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
     transition: all 0.3s ease-in-out;
 }
 .mck-agent-image-container {
@@ -5620,6 +5671,12 @@ div#mck-waiting-queue {
 }
 #mck-tab-individual {
     display: flex;
+}
+#mck-conversation-title {
+    color: var(
+        --km-widget-header-text,
+        var(--km-accent-contrast, #ffffff)
+    );
 }
 .km-faq-and-close-btn-container {
     justify-content: flex-end;
