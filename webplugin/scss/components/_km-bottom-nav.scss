@@ -276,6 +276,12 @@
     line-height: 1.5;
     margin: 0;
 }
+.km-faq-category-card-title.km-custom-widget-text-color,
+.km-quick-replies.km-custom-widget-text-color,
+.km-quick-rpy-btn.km-custom-widget-text-color,
+.km-cta-button-many.km-custom-widget-text-color {
+    color: var(--km-widget-header-surface-text, #1c2043) !important;
+}
 
 .km-faq-category-card-count-row {
     display: flex;

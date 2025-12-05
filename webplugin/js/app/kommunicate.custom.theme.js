@@ -66,6 +66,11 @@ function KmCustomTheme() {
                 '.active-feedback svg path{ fill: ' +
                 primaryColor +
                 ' !important;}';
+            kmCustomWidgetCustomCSS +=
+                ' .km-faq-category-card-title.km-custom-widget-text-color, ' +
+                '.km-quick-replies.km-custom-widget-text-color, ' +
+                '.km-quick-rpy-btn.km-custom-widget-text-color, ' +
+                '.km-cta-button-many.km-custom-widget-text-color { color: var(--km-widget-header-surface-text, #1c2043) !important; }';
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);
         } else {
