@@ -64,6 +64,7 @@ $card-img-height: 160px;
     --km-font-body-color: #6e6e6e;
     --km-font-body-size: 14px;
     --km-accent-rgb: 95, 70, 248;
+    --km-accent-contrast-rgb: 255, 255, 255;
     --km-font-family: #{$font-family-primary};
     --km-modal-header-bg: #5c5aa7;
     --km-modal-header-color: #ffffff;
@@ -81,5 +82,4 @@ $card-img-height: 160px;
     --km-widget-header-background: var(--km-accent);
     --km-widget-header-text: var(--km-accent-contrast);
     --km-widget-header-surface-text: var(--km-font-title-color);
-    --km-widget-header-surface-background: #ffffff;
 }

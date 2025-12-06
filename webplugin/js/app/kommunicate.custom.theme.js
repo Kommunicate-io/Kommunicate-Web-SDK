@@ -6,6 +6,41 @@ function KmCustomTheme() {
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
     var DEFAULT_ACCENT_RGB = '95, 70, 248';
+    var DEFAULT_THEME_VARIABLES = {
+        '--km-accent': DEFAULT_BACKGROUND_COLOR,
+        '--km-accent-rgb': DEFAULT_ACCENT_RGB,
+        '--km-accent-contrast': '#ffffff',
+        '--km-accent-contrast-rgb': '255, 255, 255',
+        '--km-widget-header-background': DEFAULT_BACKGROUND_COLOR,
+        '--km-widget-header-text': '#ffffff',
+        '--km-widget-header-surface-text': '#1c2043',
+        '--km-widget-header-surface-background': '#ffffff',
+        '--km-custom-widget-background-color': DEFAULT_BACKGROUND_COLOR,
+        '--km-custom-widget-contrast-color': '#ffffff',
+        '--km-custom-widget-border-color': DEFAULT_BACKGROUND_COLOR,
+        '--km-custom-widget-fill-color': DEFAULT_BACKGROUND_COLOR,
+        '--km-custom-widget-stroke-color': DEFAULT_BACKGROUND_COLOR,
+        '--km-custom-widget-secondary-background-color': DEFAULT_SECONDARY_BACKGROUND_COLOR,
+    };
+    var THEME_VARIABLE_ALIASES = {
+        primaryColor: '--km-accent',
+        primaryColorRgb: '--km-accent-rgb',
+        accentContrastColor: '--km-accent-contrast',
+        accentContrastRgb: '--km-accent-contrast-rgb',
+        chatHeaderBackground: '--km-widget-header-background',
+        chatHeaderText: '--km-widget-header-text',
+        chatHeaderSurfaceText: '--km-widget-header-surface-text',
+        chatHeaderSurfaceBackground: '--km-widget-header-surface-background',
+        chatWidgetBackground: '--km-custom-widget-background-color',
+        chatWidgetText: '--km-custom-widget-contrast-color',
+        chatWidgetBorder: '--km-custom-widget-border-color',
+        chatWidgetFill: '--km-custom-widget-fill-color',
+        chatWidgetStroke: '--km-custom-widget-stroke-color',
+        chatWidgetSecondaryBackground: '--km-custom-widget-secondary-background-color',
+        widgetBackgroundColor: '--km-custom-widget-background-color',
+        widgetBorderColor: '--km-custom-widget-border-color',
+        widgetTextColor: '--km-custom-widget-contrast-color',
+    };
     var canvasColorParserContext;
 
     _this.init = function (optns) {
@@ -43,29 +78,29 @@ function KmCustomTheme() {
             // background : '#fffff' is class style attribute
             var contrastColor = getAccessibleTextColor(primaryColor);
             var kmCustomWidgetCustomCSS =
-                '.km-custom-widget-background-color { background: ' +
+                '.km-custom-widget-background-color { background: var(--km-custom-widget-background-color, ' +
                 primaryColor +
-                ' !important; color: ' +
+                ') !important; color: var(--km-custom-widget-contrast-color, ' +
                 contrastColor +
-                ' !important;} ' +
-                '.km-custom-widget-background-color-secondary { background: ' +
+                ') !important;} ' +
+                '.km-custom-widget-background-color-secondary { background: var(--km-custom-widget-secondary-background-color, ' +
                 secondaryColor +
-                ' !important;} ' +
-                '.km-custom-widget-border-color { border-color: ' +
+                ') !important;} ' +
+                '.km-custom-widget-border-color { border-color: var(--km-custom-widget-border-color, ' +
                 primaryColor +
-                ' !important;} ' +
-                '.km-custom-widget-text-color { color: ' +
+                ') !important;} ' +
+                '.km-custom-widget-text-color { color: var(--km-custom-widget-contrast-color, ' +
                 contrastColor +
-                ' !important;} ' +
-                '.km-custom-widget-fill { fill: ' +
+                ') !important;} ' +
+                '.km-custom-widget-fill { fill: var(--km-custom-widget-fill-color, ' +
                 primaryColor +
-                ' !important;} ' +
-                '.km-custom-widget-stroke { stroke: ' +
+                ') !important;} ' +
+                '.km-custom-widget-stroke { stroke: var(--km-custom-widget-stroke-color, ' +
                 primaryColor +
-                ' !important;}' +
-                '.active-feedback svg path{ fill: ' +
+                ') !important;}' +
+                '.active-feedback svg path{ fill: var(--km-custom-widget-fill-color, ' +
                 primaryColor +
-                ' !important;}';
+                ') !important;}';
             kmCustomWidgetCustomCSS +=
                 ' .km-faq-category-card-title.km-custom-widget-text-color, ' +
                 '.km-quick-replies.km-custom-widget-text-color, ' +
@@ -107,19 +142,68 @@ function KmCustomTheme() {
         if (!primaryColor) {
             return;
         }
-        var root = document.documentElement;
         var rgbArray = normalizeColorToRgb(primaryColor);
         var rgb = (rgbArray && rgbArray.join(', ')) || DEFAULT_ACCENT_RGB;
-        root.style.setProperty('--km-accent', primaryColor);
-        root.style.setProperty('--km-accent-rgb', rgb);
         var contrastColor = getAccessibleTextColor(primaryColor);
-        root.style.setProperty('--km-accent-contrast', contrastColor);
         var contrastRgbArray = normalizeColorToRgb(contrastColor);
         var contrastRgb = (contrastRgbArray && contrastRgbArray.join(', ')) || '255, 255, 255';
-        root.style.setProperty('--km-accent-contrast-rgb', contrastRgb);
-        root.style.setProperty('--km-widget-header-background', primaryColor);
-        root.style.setProperty('--km-widget-header-text', contrastColor);
+        var computedVars = {
+            '--km-accent': primaryColor,
+            '--km-accent-rgb': rgb,
+            '--km-accent-contrast': contrastColor,
+            '--km-accent-contrast-rgb': contrastRgb,
+            '--km-widget-header-background': primaryColor,
+            '--km-widget-header-text': contrastColor,
+            '--km-custom-widget-background-color': primaryColor,
+            '--km-custom-widget-contrast-color': contrastColor,
+            '--km-custom-widget-border-color': primaryColor,
+            '--km-custom-widget-fill-color': primaryColor,
+            '--km-custom-widget-stroke-color': primaryColor,
+        };
+        applyThemeVariables(computedVars);
         applyConversationTitleTextColor(contrastColor);
+    }
+
+    function getCustomThemeVariables() {
+        if (!kommunicateCommons.isObject(WIDGET_SETTINGS)) {
+            return {};
+        }
+        var overrideSources = [
+            WIDGET_SETTINGS.theme,
+            WIDGET_SETTINGS.themeVariables,
+            WIDGET_SETTINGS.customThemeVariables,
+            WIDGET_SETTINGS.themeVars,
+        ];
+        var overrides = {};
+        overrideSources.forEach(function (source) {
+            if (kommunicateCommons.isObject(source)) {
+                Object.keys(source).forEach(function (key) {
+                    var resolvedKey = THEME_VARIABLE_ALIASES[key] || key;
+                    overrides[resolvedKey] = source[key];
+                });
+            }
+        });
+        return overrides;
+    }
+
+    function applyThemeVariables(additionalVars) {
+        var root = document.documentElement;
+        if (!root) {
+            return;
+        }
+        var customVars = getCustomThemeVariables();
+        var mergedVars = Object.assign(
+            {},
+            DEFAULT_THEME_VARIABLES,
+            additionalVars || {},
+            customVars
+        );
+        Object.keys(mergedVars).forEach(function (name) {
+            var value = mergedVars[name];
+            if (value != null) {
+                root.style.setProperty(name, value);
+            }
+        });
     }
 
     function applyConversationTitleTextColor(color) {
