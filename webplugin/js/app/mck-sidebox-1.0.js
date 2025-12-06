@@ -13781,10 +13781,12 @@ const firstVisibleMsg = {
         function MckNotificationService() {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
+            var $mck_msg_inner;
             _this.init = function () {
                 $mck_msg_preview_visual_indicator_text = $applozic(
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
                 );
+                $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {
