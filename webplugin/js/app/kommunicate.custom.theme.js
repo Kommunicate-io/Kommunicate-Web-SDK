@@ -269,17 +269,15 @@ function KmCustomTheme() {
             return '#ffffff';
         }
 
-        var brightness = calculatePerceivedBrightness(rgb[0], rgb[1], rgb[2]);
-        if (brightness < 150) {
-            return '#ffffff';
-        }
-        if (brightness > 220) {
-            return '#000000';
-        }
-
         var luminance = calculateLuminance(rgb[0], rgb[1], rgb[2]);
         var contrastWhite = calculateContrastRatio(luminance, 1);
         var contrastBlack = calculateContrastRatio(luminance, 0);
+        if (contrastWhite >= contrastBlack && contrastWhite >= 4.5) {
+            return '#ffffff';
+        }
+        if (contrastBlack >= 4.5) {
+            return '#000000';
+        }
         return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
     }
 
