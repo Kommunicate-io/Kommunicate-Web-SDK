@@ -515,6 +515,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  padding: 12px 15px;
 }
 .chat-popup-widget-container .chat-popup-widget-text {
   margin: 15px;
@@ -871,10 +872,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 @media only screen and (min-device-width: 420px) {
   .chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
-    padding: 0 65px 0 15px;
+    padding: 12px 65px 12px 15px;
   }
   .chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper.align-left {
-    padding: 0 15px 0 65px;
+    padding: 12px 15px 12px 65px;
   }
 }
 /* Chat Popup Template Code Ends */

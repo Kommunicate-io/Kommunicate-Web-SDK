@@ -115,6 +115,7 @@ $popupClass: '.chat-popup-widget-container';
         word-break: break-word;
         min-height: 70px;
         @include flexMixin(null, flex-start);
+        padding: 12px 15px;
     }
 
     & .chat-popup-widget-text {
@@ -450,11 +451,11 @@ $popupClass: '.chat-popup-widget-container';
 @media only screen and (min-device-width: 420px) {
     .chat-popup-widget-container--horizontal {
         & .chat-popup-widget-text-wrapper {
-            padding: 0 65px 0 15px;
+            padding: 12px 65px 12px 15px;
         }
 
         & .chat-popup-widget-text-wrapper.align-left {
-            padding: 0 15px 0 65px;
+            padding: 12px 15px 12px 65px;
         }
     }
 }
