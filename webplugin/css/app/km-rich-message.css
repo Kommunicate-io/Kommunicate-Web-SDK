@@ -770,7 +770,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 26px;
     box-shadow: 0px 0px 12px 0px rgba(17, 34, 34, 0.24);
 }
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email {

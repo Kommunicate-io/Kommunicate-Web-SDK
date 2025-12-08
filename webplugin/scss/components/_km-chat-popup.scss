@@ -13,15 +13,53 @@ $popupClass: '.chat-popup-widget-container';
     cursor: pointer;
 
     &:hover .chat-popup-widget-close-btn-container {
-        display: block;
+        display: flex;
     }
 
-    .chat-popup-widget-close-btn-container {
-        top: 0%;
+    & .chat-popup-widget-text-wrapper {
+        position: relative;
+        word-break: break-word;
+        min-height: 70px;
+        @include flexMixin(null, flex-start);
+        padding: 8px 0;
+    }
 
-        &.align-left {
-            left: 282px;
-        }
+    & .chat-popup-widget-close-btn-container {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.05);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    & .chat-popup-widget-close-btn-container:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    & .chat-popup-widget-close-btn {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+        box-sizing: border-box;
+    }
+
+    & .chat-popup-widget-text {
+        margin: 0;
+        padding: 20px;
     }
 
     &--horizontal {
@@ -42,17 +80,6 @@ $popupClass: '.chat-popup-widget-container';
 
         &.align-left {
             right: 60px;
-        }
-
-        & .chat-popup-widget-text-wrapper {
-            padding-left: 15px;
-        }
-
-        & .chat-popup-widget-close-btn-container {
-            transform: translateY(10px);
-            &.align-left {
-                left: 370px;
-            }
         }
     }
 
@@ -109,17 +136,6 @@ $popupClass: '.chat-popup-widget-container';
         opacity: 0;
         will-change: transform, opacity;
         @include prefix(animation, km-slide-in-animation 0.5s ease 0.5s 1 forwards, webkit moz o);
-    }
-
-    & .chat-popup-widget-text-wrapper {
-        word-break: break-word;
-        min-height: 70px;
-        @include flexMixin(null, flex-start);
-        padding: 12px 15px;
-    }
-
-    & .chat-popup-widget-text {
-        margin: 15px;
     }
 }
 
@@ -355,8 +371,7 @@ $popupClass: '.chat-popup-widget-container';
             width: 70%;
             &.align-left {
                 .chat-popup-widget-close-btn-container {
-                    left: 95% !important;
-                    display: block;
+                    display: flex;
                 }
             }
         }
@@ -371,7 +386,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
     }
 
@@ -395,7 +410,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
     }
 
@@ -439,11 +454,11 @@ $popupClass: '.chat-popup-widget-container';
     }
     .chat-popup-widget-container--vertical {
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
         &.align-left {
             .chat-popup-widget-close-btn-container {
-                left: 90% !important;
+                display: flex;
             }
         }
     }
@@ -451,11 +466,7 @@ $popupClass: '.chat-popup-widget-container';
 @media only screen and (min-device-width: 420px) {
     .chat-popup-widget-container--horizontal {
         & .chat-popup-widget-text-wrapper {
-            padding: 12px 65px 12px 15px;
-        }
-
-        & .chat-popup-widget-text-wrapper.align-left {
-            padding: 12px 15px 12px 65px;
+            padding-left: 15px;
         }
     }
 }

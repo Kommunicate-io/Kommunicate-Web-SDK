@@ -424,13 +424,50 @@ input[type=number]::-webkit-outer-spin-button {
   cursor: pointer;
 }
 .chat-popup-widget-container:hover .chat-popup-widget-close-btn-container {
-  display: block;
+  display: flex;
+}
+.chat-popup-widget-container .chat-popup-widget-text-wrapper {
+  position: relative;
+  word-break: break-word;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 0;
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn-container {
-  top: 0%;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  box-sizing: border-box;
 }
-.chat-popup-widget-container .chat-popup-widget-close-btn-container.align-left {
-  left: 282px;
+.chat-popup-widget-container .chat-popup-widget-close-btn-container:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+.chat-popup-widget-container .chat-popup-widget-close-btn {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  box-sizing: border-box;
+}
+.chat-popup-widget-container .chat-popup-widget-text {
+  margin: 0;
+  padding: 20px;
 }
 .chat-popup-widget-container--horizontal {
   border-radius: 40px !important;
@@ -451,15 +488,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .chat-popup-widget-container--horizontal.align-left {
   right: 60px;
-}
-.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
-  padding-left: 15px;
-}
-.chat-popup-widget-container--horizontal .chat-popup-widget-close-btn-container {
-  transform: translateY(10px);
-}
-.chat-popup-widget-container--horizontal .chat-popup-widget-close-btn-container.align-left {
-  left: 370px;
 }
 .chat-popup-widget-container--vertical {
   border-radius: 20px;
@@ -508,17 +536,6 @@ input[type=number]::-webkit-outer-spin-button {
   -moz-animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards;
   -o-animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards;
   animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards;
-}
-.chat-popup-widget-container .chat-popup-widget-text-wrapper {
-  word-break: break-word;
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 12px 15px;
-}
-.chat-popup-widget-container .chat-popup-widget-text {
-  margin: 15px;
 }
 
 #chat-popup-actionable-btn-container {
@@ -807,8 +824,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 70%;
   }
   .chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
-    left: 95% !important;
-    display: block;
+    display: flex;
   }
 }
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
@@ -817,7 +833,7 @@ input[type=number]::-webkit-outer-spin-button {
     padding-right: 70px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
-    display: block;
+    display: flex;
   }
   .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
     width: 187px !important;
@@ -833,7 +849,7 @@ input[type=number]::-webkit-outer-spin-button {
     padding-right: 70px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
-    display: block;
+    display: flex;
   }
   .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq,
   .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
@@ -864,18 +880,15 @@ input[type=number]::-webkit-outer-spin-button {
     height: 280px;
   }
   .chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
-    display: block;
+    display: flex;
   }
   .chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
-    left: 90% !important;
+    display: flex;
   }
 }
 @media only screen and (min-device-width: 420px) {
   .chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
-    padding: 12px 65px 12px 15px;
-  }
-  .chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper.align-left {
-    padding: 12px 15px 12px 65px;
+    padding-left: 15px;
   }
 }
 /* Chat Popup Template Code Ends */
