@@ -27,6 +27,7 @@ function KmCustomTheme() {
         '--km-custom-widget-stroke-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-secondary-background-color': DEFAULT_SECONDARY_BACKGROUND_COLOR,
         '--km-accent-border-color': DEFAULT_BORDER_ACCENT,
+        '--km-launcher-icon-fill': '#ffffff',
         '--km-msg-link-color': 'var(--km-link-color, ' + DEFAULT_LINK_COLOR + ')',
         '--km-msg-link-color-hover': 'var(--km-link-color-hover, ' + DEFAULT_LINK_HOVER_COLOR + ')',
         '--km-faq-icon-fill-color': DEFAULT_FAQ_ICON_COLOR,
@@ -168,6 +169,7 @@ function KmCustomTheme() {
             '--km-custom-widget-background-color': primaryColor,
             '--km-custom-widget-contrast-color': contrastColor,
             '--km-custom-widget-border-color': primaryColor,
+            '--km-launcher-icon-fill': contrastColor,
             '--km-custom-widget-fill-color': primaryColor,
             '--km-custom-widget-stroke-color': primaryColor,
         };

@@ -592,6 +592,10 @@ input[type=number]::-webkit-outer-spin-button {
   animation: km-scale-animation 0.5s ease-in-out 1 forwards;
 }
 
+#launcher-svg-container.mck-default-launcher-icon svg path {
+  fill: var(--km-launcher-icon-fill, #ffffff);
+}
+
 @-webkit-keyframes km-reveal-animation-horizontal {
   from {
     opacity: 0;
