@@ -4915,22 +4915,6 @@ button {
     left: -73px;
     padding: 23px;
 }
-.chat-popup-widget-container .chat-popup-widget-close-btn-container {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.05);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    box-sizing: border-box;
-}
 .mck-msg-preview-visual-indicator-container.align-left {
     right: auto;
     left: 70px;
@@ -4953,26 +4937,8 @@ button {
 .mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
     display: block;
 }
-.chat-popup-widget-container:hover .chat-popup-widget-close-btn-container {
-    display: flex;
-}
-.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg,
-.chat-popup-widget-container .chat-popup-widget-close-btn .hat-popup-widget-close-icon-svg svg {
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
     vertical-align: middle;
-}
-.chat-popup-widget-container .chat-popup-widget-close-btn-container:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-.chat-popup-widget-container .chat-popup-widget-close-btn {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    box-sizing: border-box;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-text {
     font-size: 12px;
