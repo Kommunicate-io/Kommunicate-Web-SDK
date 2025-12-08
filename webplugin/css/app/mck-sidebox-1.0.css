@@ -4264,7 +4264,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 #km-faqanswer .km-faqanswer table th {
-    background-color: var(--km-widget-header-surface-background, #f5f5f5);
+    background-color: var(--km-widget-header-background, #f5f5f5);
     color: var(--km-font-title-color, #1c2043);
     font-weight: 600;
 }
