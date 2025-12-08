@@ -8,6 +8,9 @@ function KmCustomTheme() {
     var DEFAULT_ACCENT_RGB = '95, 70, 248';
     var DEFAULT_LINK_COLOR = '#1866d1';
     var DEFAULT_LINK_HOVER_COLOR = '#0d3e9c';
+    var DEFAULT_FAQ_ICON_COLOR = DEFAULT_BACKGROUND_COLOR;
+    var DEFAULT_SURFACE_BACKGROUND_COLOR = '#ffffff';
+    var DEFAULT_BORDER_ACCENT = '#5f46f8';
     var DEFAULT_THEME_VARIABLES = {
         '--km-accent': DEFAULT_BACKGROUND_COLOR,
         '--km-accent-rgb': DEFAULT_ACCENT_RGB,
@@ -23,9 +26,13 @@ function KmCustomTheme() {
         '--km-custom-widget-fill-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-stroke-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-secondary-background-color': DEFAULT_SECONDARY_BACKGROUND_COLOR,
+        '--km-accent-border-color': DEFAULT_BORDER_ACCENT,
         '--km-msg-link-color': 'var(--km-link-color, ' + DEFAULT_LINK_COLOR + ')',
         '--km-msg-link-color-hover': 'var(--km-link-color-hover, ' + DEFAULT_LINK_HOVER_COLOR + ')',
+        '--km-faq-icon-fill-color': DEFAULT_FAQ_ICON_COLOR,
     };
+    // Keep the legacy widgetSettings keys mapped alongside the newer ones so older integrations continue to work.
+    // When multiple aliases resolve to the same CSS variable, the merge order decides which value wins.
     var THEME_VARIABLE_ALIASES = {
         primaryColor: '--km-accent',
         primaryColorRgb: '--km-accent-rgb',
@@ -164,8 +171,12 @@ function KmCustomTheme() {
             '--km-custom-widget-fill-color': primaryColor,
             '--km-custom-widget-stroke-color': primaryColor,
         };
+        var borderColor = getContrastSafeColor(DEFAULT_BORDER_ACCENT, primaryColor, contrastColor);
+        computedVars['--km-accent-border-color'] = borderColor;
         var linkColorVars = getLinkColorCssVars(primaryColor, contrastColor);
         Object.assign(computedVars, linkColorVars);
+        var faqIconVars = getFaqIconCssVars(DEFAULT_SURFACE_BACKGROUND_COLOR, contrastColor);
+        Object.assign(computedVars, faqIconVars);
         applyThemeVariables(computedVars);
         applyConversationTitleTextColor(contrastColor);
     }
@@ -174,6 +185,7 @@ function KmCustomTheme() {
         if (!kommunicateCommons.isObject(WIDGET_SETTINGS)) {
             return {};
         }
+        // Precedence: later sources are allowed to override earlier ones (theme < themeVariables < customThemeVariables < themeVars).
         var overrideSources = [
             WIDGET_SETTINGS.theme,
             WIDGET_SETTINGS.themeVariables,
@@ -298,36 +310,51 @@ function KmCustomTheme() {
     }
 
     function getLinkColorCssVars(backgroundColor, contrastColor) {
-        var defaultLinkColor = DEFAULT_LINK_COLOR;
-        var defaultHoverColor = DEFAULT_LINK_HOVER_COLOR;
-        var backgroundRgb = normalizeColorToRgb(backgroundColor);
-        if (!backgroundRgb) {
-            return {
-                '--km-msg-link-color': defaultLinkColor,
-                '--km-msg-link-color-hover': defaultHoverColor,
-            };
-        }
-        var backgroundLum = calculateLuminance(
-            backgroundRgb[0],
-            backgroundRgb[1],
-            backgroundRgb[2]
-        );
-        var linkRgb = normalizeColorToRgb(defaultLinkColor);
-        if (linkRgb) {
-            var linkLum = calculateLuminance(linkRgb[0], linkRgb[1], linkRgb[2]);
-            if (calculateContrastRatio(backgroundLum, linkLum) >= 4.5) {
-                return {
-                    '--km-msg-link-color': defaultLinkColor,
-                    '--km-msg-link-color-hover': defaultHoverColor,
-                };
-            }
-        }
-        // fallback to the configured contrast color if blue fails.
         var fallbackColor = contrastColor || '#ffffff';
         return {
-            '--km-msg-link-color': fallbackColor,
-            '--km-msg-link-color-hover': fallbackColor,
+            '--km-msg-link-color': getContrastSafeColor(
+                DEFAULT_LINK_COLOR,
+                backgroundColor,
+                fallbackColor
+            ),
+            '--km-msg-link-color-hover': getContrastSafeColor(
+                DEFAULT_LINK_HOVER_COLOR,
+                backgroundColor,
+                fallbackColor
+            ),
         };
+    }
+
+    function getFaqIconCssVars(backgroundColor, contrastColor) {
+        var fallbackColor = contrastColor || '#ffffff';
+        return {
+            '--km-faq-icon-fill-color': getContrastSafeColor(
+                DEFAULT_FAQ_ICON_COLOR,
+                backgroundColor,
+                fallbackColor
+            ),
+        };
+    }
+
+    function getContrastSafeColor(preferredColor, backgroundColor, fallbackColor) {
+        var preferredRgb = normalizeColorToRgb(preferredColor);
+        var backgroundRgb = normalizeColorToRgb(backgroundColor);
+        if (preferredRgb && backgroundRgb) {
+            var preferredLum = calculateLuminance(
+                preferredRgb[0],
+                preferredRgb[1],
+                preferredRgb[2]
+            );
+            var backgroundLum = calculateLuminance(
+                backgroundRgb[0],
+                backgroundRgb[1],
+                backgroundRgb[2]
+            );
+            if (calculateContrastRatio(backgroundLum, preferredLum) >= 4.5) {
+                return preferredColor;
+            }
+        }
+        return fallbackColor;
     }
 
     function normalizeColorToRgb(color) {

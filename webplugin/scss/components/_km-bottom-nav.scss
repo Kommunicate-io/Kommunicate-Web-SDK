@@ -319,6 +319,11 @@
     fill: currentColor;
 }
 
+.km-faqimage circle,
+.km-faqimage .km-custom-widget-fill {
+    fill: var(--km-faq-icon-fill-color, var(--km-accent, #5f46f8)) !important;
+}
+
 .km-faq-category-card-title-row {
     display: flex;
     align-items: center;

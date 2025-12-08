@@ -5,6 +5,7 @@
   --km-tabicon-bg: #edf0f5;
   --km-accent-start: #3f63ff; /* used for gradients */
   --km-accent: #5f46f8;
+  --km-accent-border-color: var(--km-accent, #5f46f8);
   --km-accent-contrast: #ffffff;
   --km-font-title-size: 15px;
   --km-font-title-weight: 500;
@@ -335,6 +336,11 @@ $known-prefixes
 .km-faqimage svg {
   color: #5553b7;
   fill: currentColor;
+}
+
+.km-faqimage circle,
+.km-faqimage .km-custom-widget-fill {
+  fill: var(--km-faq-icon-fill-color, var(--km-accent, #5f46f8)) !important;
 }
 
 .km-faq-category-card-title-row {

@@ -55,6 +55,7 @@ $card-img-height: 160px;
     --km-tabicon-bg: #edf0f5;
     --km-accent-start: #3f63ff; /* used for gradients */
     --km-accent: #{$primary-color};
+    --km-accent-border-color: var(--km-accent, #5f46f8);
     --km-accent-contrast: #ffffff;
     --km-font-title-size: 15px;
     --km-font-title-weight: 500;
