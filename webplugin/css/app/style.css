@@ -5,6 +5,7 @@
   --km-tabicon-bg: #edf0f5;
   --km-accent-start: #3f63ff; /* used for gradients */
   --km-accent: #5f46f8;
+  --km-accent-border-color: var(--km-accent, #5f46f8);
   --km-accent-contrast: #ffffff;
   --km-font-title-size: 15px;
   --km-font-title-weight: 500;
@@ -1473,7 +1474,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-conversations-empty__cta, .km-empty-conversation-card__cta {
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 999px;
   font-size: 14px !important;
   font-weight: 600;
@@ -1483,7 +1484,8 @@ input[type=number]::-webkit-outer-spin-button {
   max-width: 300px;
   text-align: center;
   box-sizing: border-box;
-  box-shadow: 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+  background-clip: padding-box;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 .km-conversations-empty__cta:hover, .km-empty-conversation-card__cta:hover {
   transform: translateY(-1px);
@@ -4369,6 +4371,11 @@ div#mck-rated:before {
 .km-faqimage svg {
   color: #5553b7;
   fill: currentColor;
+}
+
+.km-faqimage circle,
+.km-faqimage .km-custom-widget-fill {
+  fill: var(--km-faq-icon-fill-color, var(--km-accent, #5f46f8)) !important;
 }
 
 .km-faq-category-card-title-row {
