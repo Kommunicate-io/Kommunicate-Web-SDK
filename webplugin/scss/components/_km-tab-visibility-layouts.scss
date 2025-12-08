@@ -1,7 +1,7 @@
 .layout-classic {
     #mck-msg-new {
         background: var(--km-accent, #5f46f8) !important;
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff)) !important;
+        color: var(--km-on-primary, #ffffff) !important;
     }
     #km-whats-new-placeholder,
     .km-whats-new-list,

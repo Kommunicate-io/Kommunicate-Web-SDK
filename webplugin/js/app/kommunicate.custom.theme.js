@@ -17,7 +17,7 @@ function KmCustomTheme() {
         '--km-accent-contrast': '#ffffff',
         '--km-accent-contrast-rgb': '255, 255, 255',
         '--km-widget-header-background': DEFAULT_BACKGROUND_COLOR,
-        '--km-widget-header-text': '#ffffff',
+        '--km-on-primary': '#ffffff',
         '--km-widget-header-surface-text': '#1c2043',
         '--km-widget-header-surface-background': '#ffffff',
         '--km-custom-widget-background-color': DEFAULT_BACKGROUND_COLOR,
@@ -40,7 +40,8 @@ function KmCustomTheme() {
         accentContrastColor: '--km-accent-contrast',
         accentContrastRgb: '--km-accent-contrast-rgb',
         chatHeaderBackground: '--km-widget-header-background',
-        chatHeaderText: '--km-widget-header-text',
+        chatHeaderText: '--km-on-primary',
+        onPrimary: '--km-on-primary',
         chatHeaderSurfaceText: '--km-widget-header-surface-text',
         chatHeaderSurfaceBackground: '--km-widget-header-surface-background',
         chatWidgetBackground: '--km-custom-widget-background-color',
@@ -92,9 +93,9 @@ function KmCustomTheme() {
             var kmCustomWidgetCustomCSS =
                 '.km-custom-widget-background-color { background: var(--km-custom-widget-background-color, ' +
                 primaryColor +
-                ') !important; color: var(--km-custom-widget-contrast-color, ' +
+                ') !important; color: var(--km-on-primary, var(--km-custom-widget-contrast-color, ' +
                 contrastColor +
-                ') !important;} ' +
+                ')) !important;} ' +
                 '.km-custom-widget-background-color-secondary { background: var(--km-custom-widget-secondary-background-color, ' +
                 secondaryColor +
                 ') !important;} ' +
@@ -165,7 +166,7 @@ function KmCustomTheme() {
             '--km-accent-contrast': contrastColor,
             '--km-accent-contrast-rgb': contrastRgb,
             '--km-widget-header-background': primaryColor,
-            '--km-widget-header-text': contrastColor,
+            '--km-on-primary': contrastColor,
             '--km-custom-widget-background-color': primaryColor,
             '--km-custom-widget-contrast-color': contrastColor,
             '--km-custom-widget-border-color': primaryColor,
@@ -180,7 +181,20 @@ function KmCustomTheme() {
         var faqIconVars = getFaqIconCssVars(DEFAULT_SURFACE_BACKGROUND_COLOR, contrastColor);
         Object.assign(computedVars, faqIconVars);
         applyThemeVariables(computedVars);
-        applyConversationTitleTextColor(contrastColor);
+        var root = typeof document !== 'undefined' ? document.documentElement : null;
+        var onPrimaryColor = contrastColor;
+        if (
+            root &&
+            typeof window !== 'undefined' &&
+            window.getComputedStyle &&
+            window.getComputedStyle(root)
+        ) {
+            var cssOnPrimary = window.getComputedStyle(root).getPropertyValue('--km-on-primary');
+            if (cssOnPrimary && cssOnPrimary.trim()) {
+                onPrimaryColor = cssOnPrimary.trim();
+            }
+        }
+        applyConversationTitleTextColor(onPrimaryColor);
     }
 
     function getCustomThemeVariables() {

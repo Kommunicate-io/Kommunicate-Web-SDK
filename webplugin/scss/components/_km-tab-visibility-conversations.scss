@@ -23,7 +23,7 @@
     }
 
     #mck-conversation-title {
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+        color: var(--km-on-primary, #ffffff) !important;
     }
 
     .km-faq-back-btn-wrapper {

@@ -31,8 +31,8 @@
   --km-link-color: #11505d;
   --km-link-color-hover: #0d3e9c;
   --km-card-shadow: 0px 0px 12px 0px rgba(4, 68, 77, 0.1490196078);
+  --km-on-primary: var(--km-accent-contrast);
   --km-widget-header-background: var(--km-accent);
-  --km-widget-header-text: var(--km-accent-contrast);
   --km-widget-header-surface-text: var(--km-font-title-color);
 }
 
@@ -186,14 +186,14 @@ $known-prefixes
   display: block;
 }
 .km-bottom-tab-icon.km-custom-widget-background-color {
-  color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+  color: var(--km-on-primary, #ffffff);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
   transform: translateY(-1px);
 }
 
 .km-bottom-tab.active .km-bottom-tab-icon {
   background: linear-gradient(135deg, var(--km-accent-start, #3f63ff), var(--km-accent, #5f46f8));
-  color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+  color: var(--km-on-primary, #ffffff);
   box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
   transform: translateY(-1px);
 }

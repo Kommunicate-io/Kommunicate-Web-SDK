@@ -315,6 +315,7 @@
 
     &__cta {
         @extend %km-primary-cta;
+        color: var(--km-on-primary, #ffffff);
     }
 }
 
@@ -390,7 +391,7 @@
         flex-direction: column;
         gap: 12px;
         background: var(--km-accent, #{$primary-color});
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+        color: var(--km-on-primary, #ffffff);
     }
 
     &__icon-badge {
@@ -400,7 +401,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+        color: var(--km-on-primary, #ffffff);
         box-shadow: 0 10px 22px rgba($primary-color, 0.25);
     }
 
@@ -422,7 +423,7 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         margin: 0;
-        color: rgba(var(--km-accent-contrast-rgb, 255, 255, 255), 0.85);
+        color: var(--km-on-primary, #ffffff);
         font-weight: 600;
     }
 
@@ -431,7 +432,7 @@
         line-height: 1.3;
         margin: 0;
         font-weight: 600;
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+        color: var(--km-on-primary, #ffffff);
     }
 
     &__subtitle {
@@ -529,7 +530,7 @@
         font-size: 14px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--km-accent-contrast, #ffffff);
+        color: var(--km-on-primary, #ffffff);
         font-weight: 700;
     }
 
@@ -635,6 +636,7 @@
 
     &__cta {
         @extend %km-primary-cta;
+        color: var(--km-on-primary, #ffffff);
     }
 }
 

@@ -183,7 +183,7 @@
     }
 
     &.km-custom-widget-background-color {
-        color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+        color: var(--km-on-primary, #ffffff);
         box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
@@ -195,7 +195,7 @@
         var(--km-accent-start, #3f63ff),
         var(--km-accent, #{$primary-color})
     );
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
     box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
 }

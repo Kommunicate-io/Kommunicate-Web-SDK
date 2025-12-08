@@ -4,7 +4,7 @@
     text-align: left;
     border-bottom: 1px solid #e5e5e5;
     background-color: var(--km-widget-header-background, var(--km-accent, #{$primary-color}));
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 
     .icon {
         margin-right: 12px;
@@ -27,11 +27,11 @@
 .mck-sidebox .mck-tab-title-w-status,
 .mck-sidebox .mck-tab-title-w-typing,
 #mck-tab-title {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 .mck-sidebox .mck-box-title {
-    color: var(--km-widget-header-text, #111010);
+    color: var(--km-on-primary, #111010);
 }
 
 .mck-sidebox strong.mck-truncate {
@@ -45,7 +45,7 @@
 #km-talk-to-human,
 .km-option-talk-to-human,
 .km-option-talk-to-human svg {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 .km-talk-to-human-div .talk-to-human-link,
@@ -53,7 +53,7 @@
 .mck-close-sidebox,
 .mck-minimize-icon,
 .mck-close-btn {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 .km-option-talk-to-human svg {
@@ -62,12 +62,12 @@
 .mck-conversation-tab-link,
 .km-faq-back-btn,
 .mck-close-sidebox {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 #mck-conversation-back-btn,
 .mck-conversation-tab-link {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 .mck-conversation-tab-link svg {
@@ -79,7 +79,7 @@
 }
 
 .mck-agent-status-text {
-    color: var(--km-widget-header-text, var(--km-accent-contrast, #ffffff));
+    color: var(--km-on-primary, #ffffff);
 }
 
 .mck-sidebox-search .mck-box-top,

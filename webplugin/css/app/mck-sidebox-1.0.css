@@ -250,7 +250,7 @@
     font-style: normal;
     font-stretch: normal;
     letter-spacing: 0.8px;
-    color: var(--km-widget-header-text, #111010);
+    color: var(--km-on-primary, #111010);
     font-weight: 400 !important;
 }
 .mck-sidebox strong.mck-truncate {
@@ -990,10 +990,7 @@
     float: right;
     /* font-size: 28px !important; */
     font-weight: 700;
-    color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
-    );
+    color: var(--km-on-primary, #ffffff);
     /* text-shadow: 0 1px 0 #fff; */
     /* filter: alpha(opacity = 20); */
     /* opacity: .8; */
@@ -2914,8 +2911,8 @@ ul.mck-intent-menu > li:hover {
 }
 .mck-tab-title {
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
 }
 
@@ -4535,8 +4532,8 @@ textarea::placeholder {
     font-stretch: normal;
     letter-spacing: 0.7px;
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
 }
 div#mck-tab-title.mck-tab-title {
@@ -4618,16 +4615,16 @@ div#mck-tab-title.mck-tab-title {
     font-size: 14px;
     font-weight: 600;
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 .km-option-talk-to-human,
 #km-talk-to-human {
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
 }
 .km-option-talk-to-human svg {
@@ -4647,8 +4644,8 @@ div#mck-tab-title.mck-tab-title {
 .mck-minimize-icon,
 .mck-close-btn {
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
 }
 .km-contact-input-container {
@@ -5117,8 +5114,8 @@ button {
     letter-spacing: 0.7px;
     line-height: normal;
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
     );
     transition: all 0.3s ease-in-out;
 }
@@ -5718,9 +5715,9 @@ div#mck-waiting-queue {
 }
 #mck-conversation-title {
     color: var(
-        --km-widget-header-text,
-        var(--km-accent-contrast, #ffffff)
-    );
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
+    ) !important;
 }
 .km-faq-and-close-btn-container {
     justify-content: flex-end;
