@@ -186,7 +186,7 @@ $popupClass: '.chat-popup-widget-container';
 }
 
 #launcher-svg-container.mck-default-launcher-icon svg path {
-    fill: var(--km-launcher-icon-fill, #ffffff);
+    fill: var(--km-on-primary);
 }
 
 @-webkit-keyframes km-reveal-animation-horizontal {

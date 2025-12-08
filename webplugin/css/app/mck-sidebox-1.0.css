@@ -2911,7 +2911,7 @@ ul.mck-intent-menu > li:hover {
 }
 .mck-tab-title {
     color: var(
-        --km-on-primary,
+        --km-on-primary-link,
         var(--km-on-primary, #ffffff)
     );
 }
@@ -4623,7 +4623,7 @@ div#mck-tab-title.mck-tab-title {
 .km-option-talk-to-human,
 #km-talk-to-human {
     color: var(
-        --km-on-primary,
+        --km-on-primary-link,
         var(--km-on-primary, #ffffff)
     );
 }
@@ -4644,7 +4644,7 @@ div#mck-tab-title.mck-tab-title {
 .mck-minimize-icon,
 .mck-close-btn {
     color: var(
-        --km-on-primary,
+        --km-on-primary-link,
         var(--km-on-primary, #ffffff)
     );
 }

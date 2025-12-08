@@ -45,7 +45,7 @@
 #km-talk-to-human,
 .km-option-talk-to-human,
 .km-option-talk-to-human svg {
-    color: var(--km-on-primary, #ffffff);
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff));
 }
 
 .km-talk-to-human-div .talk-to-human-link,
@@ -53,7 +53,7 @@
 .mck-close-sidebox,
 .mck-minimize-icon,
 .mck-close-btn {
-    color: var(--km-on-primary, #ffffff);
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff));
 }
 
 .km-option-talk-to-human svg {
@@ -62,12 +62,12 @@
 .mck-conversation-tab-link,
 .km-faq-back-btn,
 .mck-close-sidebox {
-    color: var(--km-on-primary, #ffffff);
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff));
 }
 
 #mck-conversation-back-btn,
 .mck-conversation-tab-link {
-    color: var(--km-on-primary, #ffffff);
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff));
 }
 
 .mck-conversation-tab-link svg {
