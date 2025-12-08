@@ -261,7 +261,6 @@ class KMLabel {
             'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
             'km-empty-conversation-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
-            'km-empty-conversation-section-meta': 'mck.empty.welcome.section.meta',
         };
         Object.keys(htmlBindings).forEach(function (id) {
             setLabel(id, htmlBindings[id], 'html');

@@ -132,6 +132,9 @@
         'group.metadata.GROUP_LEFT_MESSAGE': ':userName se fue',
         'group.metadata.DELETED_GROUP_MESSAGE': ':adminName eliminó el grupo',
         'group.metadata.GROUP_USER_ROLE_UPDATED_MESSAGE': ':userName ahora es :role',
+        'group.metadata.GROUP_META_DATA_UPDATED_MESSAGE': '',
+        'group.metadata.ALERT': '',
+        'group.metadata.HIDE': '',
         'lead.collection.email': 'Correo electrónico',
         'lead.collection.name': 'Nombre',
         'lead.collection.phone': 'Número de contacto',
@@ -181,6 +184,7 @@
         'waiting.queue.message.contact.name': 'En cola...',
         'waiting.queue.message.header.text': 'En cola...',
         'waiting.queue.message.first.Part': 'Actualmente estás',
+        'waiting.queue.message.waiting.queue.number': '5',
         'waiting.queue.message.last.part':
             ' en la cola de espera, nuestros agentes te responderán en breve.',
         'conversation.header.dropdown.CSAT_RATING_TEXT': 'Califica esta conversación',
