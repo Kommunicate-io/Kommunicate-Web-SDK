@@ -4209,6 +4209,9 @@ ul.mck-intent-menu > li:hover {
     margin: 0;
     padding: 16px 20px 110px;
     box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 #km-faqanswer .km-faqanswer {
@@ -4219,9 +4222,6 @@ ul.mck-intent-menu > li:hover {
     line-height: 1.29;
     letter-spacing: 0.1px;
     color: rgba(17, 16, 16, 0.85);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
     padding-bottom: 16px;
 }
 
