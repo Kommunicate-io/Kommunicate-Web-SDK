@@ -6,7 +6,7 @@
     if (!helper) {
         return;
     }
-    var languages = ['fr', 'de', 'pt', 'it', 'ru', 'ja', 'ko', 'zh'];
+    var languages = ['ru', 'ja', 'ko'];
     languages.forEach(function (lang) {
         helper.registerLanguage(lang);
     });
