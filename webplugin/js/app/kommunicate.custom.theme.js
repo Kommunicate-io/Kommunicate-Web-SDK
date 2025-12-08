@@ -6,6 +6,8 @@ function KmCustomTheme() {
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
     var DEFAULT_ACCENT_RGB = '95, 70, 248';
+    var DEFAULT_LINK_COLOR = '#1866d1';
+    var DEFAULT_LINK_HOVER_COLOR = '#0d3e9c';
     var DEFAULT_THEME_VARIABLES = {
         '--km-accent': DEFAULT_BACKGROUND_COLOR,
         '--km-accent-rgb': DEFAULT_ACCENT_RGB,
@@ -21,6 +23,8 @@ function KmCustomTheme() {
         '--km-custom-widget-fill-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-stroke-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-secondary-background-color': DEFAULT_SECONDARY_BACKGROUND_COLOR,
+        '--km-msg-link-color': 'var(--km-link-color, ' + DEFAULT_LINK_COLOR + ')',
+        '--km-msg-link-color-hover': 'var(--km-link-color-hover, ' + DEFAULT_LINK_HOVER_COLOR + ')',
     };
     var THEME_VARIABLE_ALIASES = {
         primaryColor: '--km-accent',
@@ -160,6 +164,8 @@ function KmCustomTheme() {
             '--km-custom-widget-fill-color': primaryColor,
             '--km-custom-widget-stroke-color': primaryColor,
         };
+        var linkColorVars = getLinkColorCssVars(primaryColor, contrastColor);
+        Object.assign(computedVars, linkColorVars);
         applyThemeVariables(computedVars);
         applyConversationTitleTextColor(contrastColor);
     }
@@ -289,6 +295,39 @@ function KmCustomTheme() {
         var light = Math.max(lumA, lumB);
         var dark = Math.min(lumA, lumB);
         return (light + 0.05) / (dark + 0.05);
+    }
+
+    function getLinkColorCssVars(backgroundColor, contrastColor) {
+        var defaultLinkColor = DEFAULT_LINK_COLOR;
+        var defaultHoverColor = DEFAULT_LINK_HOVER_COLOR;
+        var backgroundRgb = normalizeColorToRgb(backgroundColor);
+        if (!backgroundRgb) {
+            return {
+                '--km-msg-link-color': defaultLinkColor,
+                '--km-msg-link-color-hover': defaultHoverColor,
+            };
+        }
+        var backgroundLum = calculateLuminance(
+            backgroundRgb[0],
+            backgroundRgb[1],
+            backgroundRgb[2]
+        );
+        var linkRgb = normalizeColorToRgb(defaultLinkColor);
+        if (linkRgb) {
+            var linkLum = calculateLuminance(linkRgb[0], linkRgb[1], linkRgb[2]);
+            if (calculateContrastRatio(backgroundLum, linkLum) >= 4.5) {
+                return {
+                    '--km-msg-link-color': defaultLinkColor,
+                    '--km-msg-link-color-hover': defaultHoverColor,
+                };
+            }
+        }
+        // fallback to the configured contrast color if blue fails.
+        var fallbackColor = contrastColor || '#ffffff';
+        return {
+            '--km-msg-link-color': fallbackColor,
+            '--km-msg-link-color-hover': fallbackColor,
+        };
     }
 
     function normalizeColorToRgb(color) {
