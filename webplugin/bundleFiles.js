@@ -54,6 +54,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/labels/default-labels-es.js'),
     path.resolve(__dirname, 'js/app/labels/default-labels-fr.js'),
     path.resolve(__dirname, 'js/app/labels/default-labels-hi.js'),
+    path.resolve(__dirname, 'js/app/labels/default-labels-zh.js'),
     path.resolve(__dirname, 'js/app/labels/register-languages.js'),
     path.resolve(__dirname, 'js/app/labels/default-labels.js'),
     path.resolve(__dirname, 'js/app/kommunicate-client.js'),
