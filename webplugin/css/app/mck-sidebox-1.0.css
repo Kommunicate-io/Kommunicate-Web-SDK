@@ -2020,7 +2020,7 @@ ul.mck-intent-menu > li:hover {
     line-height: normal;
     letter-spacing: 0.4px;
     text-align: left;
-    color: var(--km-widget-header-surface-text, #111010);
+    color: var(--km-accent-text, #111010);
 }
 
 .mck-ol-icon {
@@ -4088,7 +4088,7 @@ ul.mck-intent-menu > li:hover {
 }
 .km-faq-category-card-title {
     color: var(
-        --km-widget-header-surface-text,
+        --km-accent-text,
         var(--km-font-title-color, #1c2043)
     );
     font-size: 14px;
@@ -4100,7 +4100,7 @@ ul.mck-intent-menu > li:hover {
 .km-quick-replies.km-custom-widget-text-color,
 .km-quick-rpy-btn.km-custom-widget-text-color,
 .km-cta-button-many.km-custom-widget-text-color {
-    color: var(--km-widget-header-surface-text, #1c2043);
+    color: var(--km-accent-text, #1c2043);
 }
 .km-faq-category-card-body {
     color: #67757e;

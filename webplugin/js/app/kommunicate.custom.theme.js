@@ -17,7 +17,7 @@ function KmCustomTheme() {
         '--km-widget-header-background': DEFAULT_BACKGROUND_COLOR,
         '--km-on-primary': '#ffffff',
         '--km-on-primary-link': '#ffffff',
-        '--km-widget-header-surface-text': '#1c2043',
+        '--km-accent-text': 'var(--km-font-title-color, #1c2043)',
         '--km-custom-widget-background-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-contrast-color': '#ffffff',
         '--km-custom-widget-border-color': DEFAULT_BACKGROUND_COLOR,
@@ -38,7 +38,7 @@ function KmCustomTheme() {
         chatHeaderBackground: '--km-widget-header-background',
         onPrimary: '--km-on-primary',
         onPrimaryLink: '--km-on-primary-link',
-        chatHeaderSurfaceText: '--km-widget-header-surface-text',
+        accentText: '--km-accent-text',
         chatWidgetFill: '--km-custom-widget-fill-color',
         chatWidgetStroke: '--km-custom-widget-stroke-color',
         chatWidgetSecondaryBackground: '--km-custom-widget-secondary-background-color',
@@ -110,7 +110,7 @@ function KmCustomTheme() {
                 ' .km-faq-category-card-title.km-custom-widget-text-color, ' +
                 '.km-quick-replies.km-custom-widget-text-color, ' +
                 '.km-quick-rpy-btn.km-custom-widget-text-color, ' +
-                '.km-cta-button-many.km-custom-widget-text-color { color: var(--km-widget-header-surface-text, #1c2043) !important; }';
+                '.km-cta-button-many.km-custom-widget-text-color { color: var(--km-accent-text, #1c2043) !important; }';
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);
         } else {
@@ -162,6 +162,7 @@ function KmCustomTheme() {
             '--km-launcher-icon-fill': contrastColor,
             '--km-custom-widget-fill-color': primaryColor,
             '--km-custom-widget-stroke-color': primaryColor,
+            '--km-accent-text': contrastColor,
         };
         var borderColor = getContrastSafeColor(DEFAULT_BORDER_ACCENT, primaryColor, contrastColor);
         computedVars['--km-accent-border-color'] = borderColor;

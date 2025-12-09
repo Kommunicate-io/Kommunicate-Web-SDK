@@ -32,7 +32,7 @@
   --km-on-primary: #ffffff;
   --km-on-primary-link: var(--km-on-primary);
   --km-widget-header-background: var(--km-accent);
-  --km-widget-header-surface-text: var(--km-font-title-color);
+  --km-accent-text: var(--km-font-title-color);
 }
 
 /**
@@ -3329,7 +3329,7 @@ div#mck-rated:before {
   font-family: var(--km-font-family);
   font-size: var(--km-font-title-size);
   font-weight: var(--km-font-title-weight);
-  color: var(--km-widget-header-surface-text, #1c2043);
+  color: var(--km-accent-text, #1c2043);
   line-height: 1.35;
 }
 
@@ -4406,7 +4406,7 @@ div#mck-rated:before {
 .km-quick-replies.km-custom-widget-text-color,
 .km-quick-rpy-btn.km-custom-widget-text-color,
 .km-cta-button-many.km-custom-widget-text-color {
-  color: var(--km-widget-header-surface-text, #1c2043) !important;
+  color: var(--km-accent-text, #1c2043) !important;
 }
 
 .km-faq-category-card-count-row {
