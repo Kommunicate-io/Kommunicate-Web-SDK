@@ -918,6 +918,8 @@ input[type=number]::-webkit-outer-spin-button {
   letter-spacing: 0.1px;
   color: rgba(17, 16, 16, 0.85);
   padding-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 #km-faqanswer .km-faqanswer table {
   min-width: 100%;
