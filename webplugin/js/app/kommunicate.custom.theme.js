@@ -94,9 +94,6 @@ function KmCustomTheme() {
                 '.km-custom-widget-border-color { border-color: var(--km-custom-widget-border-color, ' +
                 primaryColor +
                 ') !important;} ' +
-                '.km-custom-widget-text-color:not(.km-faq-category-card-title) { color: var(--km-custom-widget-contrast-color, ' +
-                contrastColor +
-                ') !important;} ' +
                 '.km-custom-widget-fill { fill: var(--km-custom-widget-fill-color, ' +
                 primaryColor +
                 ') !important;} ' +
