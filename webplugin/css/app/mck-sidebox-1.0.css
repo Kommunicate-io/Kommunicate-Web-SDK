@@ -4097,8 +4097,8 @@ ul.mck-intent-menu > li:hover {
 }
 
 .km-faq-category-card-title.km-custom-widget-text-color {
-    /* FAQ card titles respect the accent text override without polluting button accents. */
-    color: var(--km-accent-text, #1c2043);
+    /* FAQ card titles stay on the default title color for better contrast over white cards. */
+    color: var(--km-font-title-color, #1c2043);
 }
 .km-faq-category-card-body {
     color: #67757e;

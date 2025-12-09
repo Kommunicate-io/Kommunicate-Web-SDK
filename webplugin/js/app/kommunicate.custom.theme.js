@@ -94,7 +94,7 @@ function KmCustomTheme() {
                 '.km-custom-widget-border-color { border-color: var(--km-custom-widget-border-color, ' +
                 primaryColor +
                 ') !important;} ' +
-                '.km-custom-widget-text-color { color: var(--km-custom-widget-contrast-color, ' +
+                '.km-custom-widget-text-color:not(.km-faq-category-card-title) { color: var(--km-custom-widget-contrast-color, ' +
                 contrastColor +
                 ') !important;} ' +
                 '.km-custom-widget-fill { fill: var(--km-custom-widget-fill-color, ' +
@@ -106,11 +106,6 @@ function KmCustomTheme() {
                 '.active-feedback svg path{ fill: var(--km-custom-widget-fill-color, ' +
                 primaryColor +
                 ') !important;}';
-            kmCustomWidgetCustomCSS +=
-                ' .km-faq-category-card-title.km-custom-widget-text-color, ' +
-                '.km-quick-replies.km-custom-widget-text-color, ' +
-                '.km-quick-rpy-btn.km-custom-widget-text-color, ' +
-                '.km-cta-button-many.km-custom-widget-text-color { color: var(--km-accent-text, #1c2043) !important; }';
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);
         } else {

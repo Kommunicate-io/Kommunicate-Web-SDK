@@ -276,8 +276,8 @@
     margin: 0;
 }
 .km-faq-category-card-title.km-custom-widget-text-color {
-    /* Only FAQ card titles should shift to the accent-text override; buttons keep their own accent color. */
-    color: var(--km-accent-text, #1c2043);
+    /* FAQ card titles stay on the default title color so they remain legible over white surfaces. */
+    color: var(--km-font-title-color, #1c2043);
 }
 
 .km-faq-category-card-count-row {

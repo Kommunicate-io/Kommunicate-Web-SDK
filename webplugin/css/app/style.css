@@ -463,6 +463,11 @@ input[type=number]::-webkit-outer-spin-button {
   outline: 2px solid rgba(76, 102, 205, 0.6);
   outline-offset: 2px;
 }
+.chat-popup-widget-container .chat-popup-widget-close-btn:focus-visible {
+  outline: 2px solid rgba(76, 102, 205, 0.6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px transparent;
+}
 .chat-popup-widget-container .chat-popup-widget-close-btn {
   width: 100%;
   height: 100%;
@@ -4403,8 +4408,8 @@ div#mck-rated:before {
 }
 
 .km-faq-category-card-title.km-custom-widget-text-color {
-  /* Only FAQ card titles should shift to the accent-text override; buttons keep their own accent color. */
-  color: var(--km-accent-text, #1c2043);
+  /* FAQ card titles stay on the default title color so they remain legible over white surfaces. */
+  color: var(--km-font-title-color, #1c2043);
 }
 
 .km-faq-category-card-count-row {
