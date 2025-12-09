@@ -333,7 +333,7 @@ $known-prefixes
 
 .km-faqimage,
 .km-faqimage svg {
-  color: #5553b7;
+  color: var(--km-font-title-color, #1c2043);
   fill: currentColor;
 }
 

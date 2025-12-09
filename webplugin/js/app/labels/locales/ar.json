@@ -170,7 +170,7 @@
   "waiting.queue.message.contact.name": "في الانتظار...",
   "waiting.queue.message.header.text": "في الانتظار...",
   "waiting.queue.message.first.Part": "أنت حالياً",
-  "waiting.queue.message.waiting.queue.number": "5",
+  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " في قائمة الانتظار، سيتواصل معك فريقنا قريبًا.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "قيّم هذه المحادثة",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "تشغيل النص إلى صوت",

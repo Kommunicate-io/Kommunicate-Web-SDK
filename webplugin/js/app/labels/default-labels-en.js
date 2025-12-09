@@ -206,7 +206,7 @@
             'contact.name': 'In Queue...',
             'header.text': 'In queue...',
             'first.Part': 'You are currently',
-            'waiting.queue.number': '5',
+            'waiting.queue.number': '{{count}}',
             'last.part': ' in the waiting queue, our agents will get back you shortly.',
         },
         'conversation.header.dropdown': {

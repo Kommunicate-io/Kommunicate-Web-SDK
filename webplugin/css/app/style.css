@@ -423,8 +423,12 @@ input[type=number]::-webkit-outer-spin-button {
   width: 100%;
   max-width: 390px;
   cursor: pointer;
+  /* Show close button when any descendant receives focus */
 }
 .chat-popup-widget-container:hover .chat-popup-widget-close-btn-container {
+  display: flex;
+}
+.chat-popup-widget-container:focus-within .chat-popup-widget-close-btn-container {
   display: flex;
 }
 .chat-popup-widget-container .chat-popup-widget-text-wrapper {
@@ -454,6 +458,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn-container:hover {
   background: rgba(0, 0, 0, 0.1);
+}
+.chat-popup-widget-container .chat-popup-widget-close-btn-container:focus-visible {
+  outline: 2px solid rgba(76, 102, 205, 0.6);
+  outline-offset: 2px;
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn {
   width: 100%;
@@ -4434,7 +4442,7 @@ div#mck-rated:before {
 
 .km-faqimage,
 .km-faqimage svg {
-  color: #5553b7;
+  color: var(--km-font-title-color, #1c2043);
   fill: currentColor;
 }
 

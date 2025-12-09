@@ -170,7 +170,7 @@
   "waiting.queue.message.contact.name": "प्रतीक्षा सूची में...",
   "waiting.queue.message.header.text": "प्रतीक्षा सूची में...",
   "waiting.queue.message.first.Part": "आप वर्तमान में",
-  "waiting.queue.message.waiting.queue.number": "5",
+  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " प्रतीक्षा सूची में हैं, हमारे एजेंट जल्द ही आपसे संपर्क करेंगे।",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "इस बातचीत को रेट करें",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "टेक्स्ट से स्पीच चालू करें",

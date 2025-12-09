@@ -16,6 +16,11 @@ $popupClass: '.chat-popup-widget-container';
         display: flex;
     }
 
+    /* Show close button when any descendant receives focus */
+    &:focus-within .chat-popup-widget-close-btn-container {
+        display: flex;
+    }
+
     & .chat-popup-widget-text-wrapper {
         position: relative;
         word-break: break-word;
@@ -43,6 +48,11 @@ $popupClass: '.chat-popup-widget-container';
 
     & .chat-popup-widget-close-btn-container:hover {
         background: rgba(0, 0, 0, 0.1);
+    }
+
+    & .chat-popup-widget-close-btn-container:focus-visible {
+        outline: 2px solid rgba(76, 102, 205, 0.6);
+        outline-offset: 2px;
     }
 
     & .chat-popup-widget-close-btn {
