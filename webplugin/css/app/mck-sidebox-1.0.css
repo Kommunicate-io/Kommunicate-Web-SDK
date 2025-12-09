@@ -2020,7 +2020,7 @@ ul.mck-intent-menu > li:hover {
     line-height: normal;
     letter-spacing: 0.4px;
     text-align: left;
-    color: var(--km-accent-text, #111010);
+    color: var(--km-primary-variant, #111010);
 }
 
 .mck-ol-icon {
@@ -4088,7 +4088,7 @@ ul.mck-intent-menu > li:hover {
 }
 .km-faq-category-card-title {
     color: var(
-        --km-accent-text,
+        --km-primary-variant,
         var(--km-font-title-color, #1c2043)
     );
     font-size: 14px;

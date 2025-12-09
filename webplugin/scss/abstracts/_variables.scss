@@ -82,5 +82,5 @@ $card-img-height: 160px;
     --km-on-primary: #ffffff;
     --km-on-primary-link: var(--km-on-primary);
     --km-widget-header-background: var(--km-accent);
-    --km-accent-text: var(--km-font-title-color);
+    --km-primary-variant: var(--km-font-title-color, #1c2043);
 }

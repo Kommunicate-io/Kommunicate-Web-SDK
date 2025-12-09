@@ -32,7 +32,7 @@
   --km-on-primary: #ffffff;
   --km-on-primary-link: var(--km-on-primary);
   --km-widget-header-background: var(--km-accent);
-  --km-accent-text: var(--km-font-title-color);
+  --km-primary-variant: var(--km-font-title-color, #1c2043);
 }
 
 /**
@@ -3332,7 +3332,7 @@ div#mck-rated:before {
   font-family: var(--km-font-family);
   font-size: var(--km-font-title-size);
   font-weight: var(--km-font-title-weight);
-  color: var(--km-accent-text, #1c2043);
+  color: var(--km-primary-variant, #1c2043);
   line-height: 1.35;
 }
 
@@ -4437,8 +4437,8 @@ div#mck-rated:before {
 .km-quick-rpy-btn,
 .km-cta-button-many,
 .km-cta-multi-button-container button.km-quick-replies {
-  color: var(--km-accent, #5f46f8);
-  border-color: var(--km-accent, #5f46f8);
+  color: var(--km-primary-variant, var(--km-accent, #5f46f8));
+  border-color: var(--km-primary-variant, var(--km-accent, #5f46f8));
 }
 
 .km-faqimage,

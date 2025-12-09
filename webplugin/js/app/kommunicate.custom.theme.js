@@ -14,10 +14,10 @@ function KmCustomTheme() {
     var DEFAULT_THEME_VARIABLES = {
         '--km-accent': DEFAULT_BACKGROUND_COLOR,
         '--km-accent-rgb': DEFAULT_ACCENT_RGB,
+        '--km-primary-variant': 'var(--km-font-title-color, #1c2043)',
         '--km-widget-header-background': DEFAULT_BACKGROUND_COLOR,
         '--km-on-primary': '#ffffff',
         '--km-on-primary-link': '#ffffff',
-        '--km-accent-text': 'var(--km-font-title-color, #1c2043)',
         '--km-custom-widget-background-color': DEFAULT_BACKGROUND_COLOR,
         '--km-custom-widget-contrast-color': '#ffffff',
         '--km-custom-widget-border-color': DEFAULT_BACKGROUND_COLOR,
@@ -38,7 +38,7 @@ function KmCustomTheme() {
         chatHeaderBackground: '--km-widget-header-background',
         onPrimary: '--km-on-primary',
         onPrimaryLink: '--km-on-primary-link',
-        accentText: '--km-accent-text',
+        primaryVariant: '--km-primary-variant',
         chatWidgetFill: '--km-custom-widget-fill-color',
         chatWidgetStroke: '--km-custom-widget-stroke-color',
         chatWidgetSecondaryBackground: '--km-custom-widget-secondary-background-color',
@@ -91,9 +91,9 @@ function KmCustomTheme() {
                 '.km-custom-widget-background-color-secondary { background: var(--km-custom-widget-secondary-background-color, ' +
                 secondaryColor +
                 ') !important;} ' +
-                '.km-custom-widget-border-color { border-color: var(--km-custom-widget-border-color, ' +
+                '.km-custom-widget-border-color { border-color: var(--km-primary-variant, var(--km-custom-widget-border-color, ' +
                 primaryColor +
-                ') !important;} ' +
+                ')) !important;} ' +
                 '.km-custom-widget-fill { fill: var(--km-custom-widget-fill-color, ' +
                 primaryColor +
                 ') !important;} ' +
@@ -154,8 +154,15 @@ function KmCustomTheme() {
             '--km-launcher-icon-fill': contrastColor,
             '--km-custom-widget-fill-color': primaryColor,
             '--km-custom-widget-stroke-color': primaryColor,
-            '--km-accent-text': contrastColor,
         };
+        var accentBackupColor = contrastColor;
+        if (rgbArray && rgbArray.length === 3) {
+            var accentLum = calculateLuminance(rgbArray[0], rgbArray[1], rgbArray[2]);
+            if (calculateContrastRatio(accentLum, 1) >= 4.5) {
+                accentBackupColor = primaryColor;
+            }
+        }
+        computedVars['--km-primary-variant'] = accentBackupColor;
         var borderColor = getContrastSafeColor(DEFAULT_BORDER_ACCENT, primaryColor, contrastColor);
         computedVars['--km-accent-border-color'] = borderColor;
         var linkColorVars = getLinkColorCssVars(primaryColor, contrastColor);
