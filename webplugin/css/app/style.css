@@ -1446,7 +1446,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--km-accent-text, var(--km-font-title-color, #1c2043));
+  color: var(--km-on-primary, #ffffff);
   font-weight: 700;
 }
 .km-empty-conversation-card__section-meta {
