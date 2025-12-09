@@ -297,10 +297,6 @@ function KmCustomTheme() {
         return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
     }
 
-    function calculatePerceivedBrightness(r, g, b) {
-        return (r * 299 + g * 587 + b * 114) / 1000;
-    }
-
     function calculateContrastRatio(lumA, lumB) {
         var light = Math.max(lumA, lumB);
         var dark = Math.min(lumA, lumB);
