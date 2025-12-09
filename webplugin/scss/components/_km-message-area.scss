@@ -182,14 +182,11 @@
 }
 
 .mck-msg-right .mck-msg-box a {
-    color: var(--km-on-primary-link, var(--km-msg-link-color, var(--km-link-color, #1866d1)));
+    color: var(--km-on-primary-link, var(--km-link-color, #1866d1));
     text-decoration: underline;
 }
 .mck-msg-right .mck-msg-box a:hover {
-    color: var(
-        --km-on-primary-link,
-        var(--km-msg-link-color-hover, var(--km-link-color-hover, #0d3e9c))
-    );
+    color: var(--km-on-primary-link, var(--km-link-color-hover, #0d3e9c));
 }
 
 .mck-msg-right .mck-context-menu {
