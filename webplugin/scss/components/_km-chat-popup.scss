@@ -81,6 +81,10 @@ $popupClass: '.chat-popup-widget-container';
         bottom: 5px;
         right: 5px;
 
+        & .chat-popup-widget-text {
+            padding-right: 80px;
+        }
+
         &.km-animate {
             opacity: 0;
             @include prefix(transform, translateY(10px) scale(0.98), webkit moz o);

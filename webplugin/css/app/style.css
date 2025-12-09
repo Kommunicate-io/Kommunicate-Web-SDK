@@ -486,6 +486,9 @@ input[type=number]::-webkit-outer-spin-button {
   bottom: 5px;
   right: 5px;
 }
+.chat-popup-widget-container--horizontal .chat-popup-widget-text {
+  padding-right: 80px;
+}
 .chat-popup-widget-container--horizontal.km-animate {
   opacity: 0;
   -webkit-transform: translateY(10px) scale(0.98);
