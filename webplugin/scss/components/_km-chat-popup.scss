@@ -12,11 +12,8 @@ $popupClass: '.chat-popup-widget-container';
     max-width: 390px;
     cursor: pointer;
 
-    &:hover .chat-popup-widget-close-btn-container {
-        display: flex;
-    }
-
-    /* Show close button when any descendant receives focus */
+    /* Reveal close button on hover and when any child receives focus */
+    &:hover .chat-popup-widget-close-btn-container,
     &:focus-within .chat-popup-widget-close-btn-container {
         display: flex;
     }
@@ -46,13 +43,14 @@ $popupClass: '.chat-popup-widget-container';
         box-sizing: border-box;
     }
 
-    & .chat-popup-widget-close-btn-container:hover {
-        background: rgba(0, 0, 0, 0.1);
-    }
-
+    /* Keyboard focus ring on the close button container */
     & .chat-popup-widget-close-btn-container:focus-visible {
         outline: 2px solid rgba(76, 102, 205, 0.6);
         outline-offset: 2px;
+    }
+
+    & .chat-popup-widget-close-btn-container:hover {
+        background: rgba(0, 0, 0, 0.1);
     }
 
     & .chat-popup-widget-close-btn:focus-visible {
