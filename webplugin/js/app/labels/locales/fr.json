@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "En file...",
   "waiting.queue.message.header.text": "En file...",
   "waiting.queue.message.first.Part": "Vous êtes actuellement",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " dans la file d'attente, nos agents vous répondront sous peu.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "Évaluez cette conversation",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "Activer la synthèse vocale",

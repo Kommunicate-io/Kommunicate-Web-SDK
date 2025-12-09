@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "排队中...",
   "waiting.queue.message.header.text": "排队中...",
   "waiting.queue.message.first.Part": "您当前在",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " 的等待队列中，我们的客服会尽快联系您。",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "评价此会话",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "开启语音播报",

@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "Na fila...",
   "waiting.queue.message.header.text": "Na fila...",
   "waiting.queue.message.first.Part": "Você está atualmente",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " na fila de espera, nossos agentes responderão em breve.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "Avalie esta conversa",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "Ativar texto para fala",

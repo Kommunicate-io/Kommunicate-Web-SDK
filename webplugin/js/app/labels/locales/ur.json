@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "قطار میں...",
   "waiting.queue.message.header.text": "قطار میں...",
   "waiting.queue.message.first.Part": "آپ اس وقت",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " انتظار کی قطار میں ہیں، ہمارے ایجنٹ جلد آپ سے رابطہ کریں گے۔",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "اس گفتگو کی درجہ بندی کریں",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "متن کو تقریر میں تبدیل کریں",

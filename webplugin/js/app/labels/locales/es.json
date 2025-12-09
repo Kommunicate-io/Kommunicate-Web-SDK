@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "En cola...",
   "waiting.queue.message.header.text": "En cola...",
   "waiting.queue.message.first.Part": "Actualmente estás",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " en la cola de espera, nuestros agentes te responderán en breve.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "Califica esta conversación",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "Activar texto a voz",

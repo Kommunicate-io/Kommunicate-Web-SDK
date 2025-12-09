@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "In der Warteschlange...",
   "waiting.queue.message.header.text": "In der Warteschlange...",
   "waiting.queue.message.first.Part": "Sie sind aktuell",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " in der Warteschlange, unsere Agenten melden sich in Kürze.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "Bewerten Sie diese Unterhaltung",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "Sprache aktivieren",

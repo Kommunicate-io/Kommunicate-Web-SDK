@@ -170,7 +170,6 @@
   "waiting.queue.message.contact.name": "I kö...",
   "waiting.queue.message.header.text": "I kö...",
   "waiting.queue.message.first.Part": "Du är för närvarande",
-  "waiting.queue.message.waiting.queue.number": "{{count}}",
   "waiting.queue.message.last.part": " i väntkö, våra agenter återkommer strax.",
   "conversation.header.dropdown.CSAT_RATING_TEXT": "Betygsätt detta samtal",
   "conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON": "Aktivera text-till-tal",
