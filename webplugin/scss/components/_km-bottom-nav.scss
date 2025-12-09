@@ -275,11 +275,9 @@
     line-height: 1.5;
     margin: 0;
 }
-.km-faq-category-card-title.km-custom-widget-text-color,
-.km-quick-replies.km-custom-widget-text-color,
-.km-quick-rpy-btn.km-custom-widget-text-color,
-.km-cta-button-many.km-custom-widget-text-color {
-    color: var(--km-accent-text, #1c2043) !important;
+.km-faq-category-card-title.km-custom-widget-text-color {
+    /* Only FAQ card titles should shift to the accent-text override; buttons keep their own accent color. */
+    color: var(--km-accent-text, #1c2043);
 }
 
 .km-faq-category-card-count-row {

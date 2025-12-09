@@ -1446,7 +1446,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--km-on-primary, #ffffff);
+  color: var(--km-accent-text, var(--km-font-title-color, #1c2043));
   font-weight: 700;
 }
 .km-empty-conversation-card__section-meta {
@@ -4402,11 +4402,9 @@ div#mck-rated:before {
   margin: 0;
 }
 
-.km-faq-category-card-title.km-custom-widget-text-color,
-.km-quick-replies.km-custom-widget-text-color,
-.km-quick-rpy-btn.km-custom-widget-text-color,
-.km-cta-button-many.km-custom-widget-text-color {
-  color: var(--km-accent-text, #1c2043) !important;
+.km-faq-category-card-title.km-custom-widget-text-color {
+  /* Only FAQ card titles should shift to the accent-text override; buttons keep their own accent color. */
+  color: var(--km-accent-text, #1c2043);
 }
 
 .km-faq-category-card-count-row {
