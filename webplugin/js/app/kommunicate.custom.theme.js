@@ -14,8 +14,6 @@ function KmCustomTheme() {
     var DEFAULT_THEME_VARIABLES = {
         '--km-accent': DEFAULT_BACKGROUND_COLOR,
         '--km-accent-rgb': DEFAULT_ACCENT_RGB,
-        '--km-accent-contrast': '#ffffff',
-        '--km-accent-contrast-rgb': '255, 255, 255',
         '--km-widget-header-background': DEFAULT_BACKGROUND_COLOR,
         '--km-on-primary': '#ffffff',
         '--km-on-primary-link': '#ffffff',
@@ -37,17 +35,10 @@ function KmCustomTheme() {
     var THEME_VARIABLE_ALIASES = {
         primaryColor: '--km-accent',
         primaryColorRgb: '--km-accent-rgb',
-        accentContrastColor: '--km-accent-contrast',
-        accentContrastRgb: '--km-accent-contrast-rgb',
         chatHeaderBackground: '--km-widget-header-background',
-        chatHeaderText: '--km-on-primary',
         onPrimary: '--km-on-primary',
         onPrimaryLink: '--km-on-primary-link',
         chatHeaderSurfaceText: '--km-widget-header-surface-text',
-        chatHeaderSurfaceBackground: '--km-widget-header-background',
-        chatWidgetBackground: '--km-custom-widget-background-color',
-        chatWidgetText: '--km-custom-widget-contrast-color',
-        chatWidgetBorder: '--km-custom-widget-border-color',
         chatWidgetFill: '--km-custom-widget-fill-color',
         chatWidgetStroke: '--km-custom-widget-stroke-color',
         chatWidgetSecondaryBackground: '--km-custom-widget-secondary-background-color',
@@ -159,13 +150,9 @@ function KmCustomTheme() {
         var rgbArray = normalizeColorToRgb(primaryColor);
         var rgb = (rgbArray && rgbArray.join(', ')) || DEFAULT_ACCENT_RGB;
         var contrastColor = getAccessibleTextColor(primaryColor);
-        var contrastRgbArray = normalizeColorToRgb(contrastColor);
-        var contrastRgb = (contrastRgbArray && contrastRgbArray.join(', ')) || '255, 255, 255';
         var computedVars = {
             '--km-accent': primaryColor,
             '--km-accent-rgb': rgb,
-            '--km-accent-contrast': contrastColor,
-            '--km-accent-contrast-rgb': contrastRgb,
             '--km-widget-header-background': primaryColor,
             '--km-on-primary': contrastColor,
             '--km-on-primary-link': contrastColor,

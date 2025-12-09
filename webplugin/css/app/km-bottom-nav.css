@@ -6,7 +6,6 @@
   --km-accent-start: #3f63ff; /* used for gradients */
   --km-accent: #5f46f8;
   --km-accent-border-color: var(--km-accent, #5f46f8);
-  --km-accent-contrast: #ffffff;
   --km-font-title-size: 15px;
   --km-font-title-weight: 500;
   --km-font-title-color: #1c2043;
@@ -15,7 +14,6 @@
   --km-font-body-color: #6e6e6e;
   --km-font-body-size: 14px;
   --km-accent-rgb: 95, 70, 248;
-  --km-accent-contrast-rgb: 255, 255, 255;
   --km-font-family: Inter, Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif;
   --km-modal-header-bg: #5c5aa7;
   --km-modal-header-color: #ffffff;
@@ -31,7 +29,7 @@
   --km-link-color: #11505d;
   --km-link-color-hover: #0d3e9c;
   --km-card-shadow: 0px 0px 12px 0px rgba(4, 68, 77, 0.1490196078);
-  --km-on-primary: var(--km-accent-contrast);
+  --km-on-primary: #ffffff;
   --km-on-primary-link: var(--km-on-primary);
   --km-widget-header-background: var(--km-accent);
   --km-widget-header-surface-text: var(--km-font-title-color);
