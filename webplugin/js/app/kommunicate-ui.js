@@ -1414,6 +1414,14 @@ KommunicateUI = {
         showTemplate,
         mckChatPopupNotificationTone
     ) {
+        console.log('[diag] togglePopupChatTemplate called', {
+            popupTemplateKey: popupTemplateKey,
+            showTemplate: showTemplate,
+            widgetOpen:
+                kommunicateCommons && typeof kommunicateCommons.isWidgetOpen === 'function'
+                    ? kommunicateCommons.isWidgetOpen()
+                    : null,
+        });
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'

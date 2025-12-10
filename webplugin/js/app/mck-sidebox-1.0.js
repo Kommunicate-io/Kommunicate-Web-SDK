@@ -3650,12 +3650,27 @@ const firstVisibleMsg = {
             };
 
             _this.clearMsgTriggerAndChatPopuTimeouts = function () {
+                console.log('[diag] clearMsgTriggerAndChatPopuTimeouts called', {
+                    widgetOpen:
+                        kommunicateCommons && typeof kommunicateCommons.isWidgetOpen === 'function'
+                            ? kommunicateCommons.isWidgetOpen()
+                            : null,
+                });
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
                 KommunicateUI.togglePopupChatTemplate();
             };
 
-            $applozic(d).on('click', '.chat-popup-widget-close-btn-container', function () {
+            $applozic(d).on('click', '.chat-popup-widget-close-btn-container', function (e) {
+                console.log('[diag] chat-popup close clicked', {
+                    target: e.target,
+                    widgetOpen:
+                        kommunicateCommons && typeof kommunicateCommons.isWidgetOpen === 'function'
+                            ? kommunicateCommons.isWidgetOpen()
+                            : null,
+                });
+                e.preventDefault();
+                e.stopPropagation();
                 KommunicateUI.togglePopupChatTemplate();
             });
         }

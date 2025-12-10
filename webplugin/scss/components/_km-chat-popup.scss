@@ -41,6 +41,7 @@ $popupClass: '.chat-popup-widget-container';
         cursor: pointer;
         transition: background 0.2s ease;
         box-sizing: border-box;
+        z-index: 1;
     }
 
     /* Keyboard focus ring on the close button container */
