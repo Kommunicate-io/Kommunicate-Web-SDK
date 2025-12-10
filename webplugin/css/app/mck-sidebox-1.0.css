@@ -250,8 +250,15 @@
     font-style: normal;
     font-stretch: normal;
     letter-spacing: 0.8px;
-    color: #ffffff;
+    color: var(--km-on-primary, #111010);
     font-weight: 400 !important;
+}
+.mck-sidebox strong.mck-truncate {
+    color: var(--km-font-title-color, #111010);
+}
+
+.mck-truncate {
+    color: var(--km-font-title-color, #1c2043);
 }
 
 .mck-box .move-right {
@@ -983,7 +990,7 @@
     float: right;
     /* font-size: 28px !important; */
     font-weight: 700;
-    color: #000;
+    color: var(--km-on-primary, #ffffff);
     /* text-shadow: 0 1px 0 #fff; */
     /* filter: alpha(opacity = 20); */
     /* opacity: .8; */
@@ -2013,7 +2020,7 @@ ul.mck-intent-menu > li:hover {
     line-height: normal;
     letter-spacing: 0.4px;
     text-align: left;
-    color: #111010;
+    color: var(--km-primary-variant, #111010);
 }
 
 .mck-ol-icon {
@@ -2903,7 +2910,10 @@ ul.mck-intent-menu > li:hover {
     position: relative;
 }
 .mck-tab-title {
-    color: white;
+    color: var(
+        --km-on-primary-link,
+        var(--km-on-primary, #ffffff)
+    );
 }
 
 .mck-sidebox .mck-tab-status {
@@ -4077,10 +4087,18 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .km-faq-category-card-title {
-    color: var(--km-primary-color, #5f46f8);
+    color: var(
+        --km-primary-variant,
+        var(--km-font-title-color, #1c2043)
+    );
     font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
+}
+
+.km-faq-category-card-title.km-custom-widget-text-color {
+    /* FAQ card titles stay on the default title color for better contrast over white cards. */
+    color: var(--km-font-title-color, #1c2043);
 }
 .km-faq-category-card-body {
     color: #67757e;
@@ -4173,10 +4191,20 @@ ul.mck-intent-menu > li:hover {
     white-space: nowrap;
 }
 
-.km-faqanswer {
+#km-faqanswer {
     position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    margin: 0;
+    padding: 16px 20px 110px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#km-faqanswer .km-faqanswer {
     font-size: 14px;
     font-weight: 300;
     font-style: normal;
@@ -4184,7 +4212,65 @@ ul.mck-intent-menu > li:hover {
     line-height: 1.29;
     letter-spacing: 0.1px;
     color: rgba(17, 16, 16, 0.85);
-    margin-right: 20px;
+    padding-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#km-faqanswer .km-faqanswer img {
+    max-height: 100%;
+    max-width: 90%;
+}
+
+#km-faqanswer .km-faqanswer video {
+    max-height: 100%;
+    max-width: 90%;
+}
+#km-faqanswer .km-faqanswer ol {
+    word-break: break-all;
+}
+#km-faqanswer .km-faqanswer li {
+    word-break: break-all;
+}
+#km-faqanswer .km-faqanswer p {
+    word-break: break-all;
+}
+
+#km-faqanswer .km-faqanswer iframe {
+    width: 90% !important;
+    max-height: 100% !important;
+}
+#km-faqanswer .km-faqanswer table {
+    min-width: 100%;
+    width: max-content;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 12px;
+}
+
+#km-faqanswer .km-faqanswer table th,
+#km-faqanswer .km-faqanswer table td {
+    border: 1px solid rgba(17, 16, 16, 0.15);
+    padding: 8px 12px;
+    word-break: break-word;
+    vertical-align: top;
+    text-align: left;
+    font-size: 13px;
+}
+
+#km-faqanswer .km-faqanswer table th {
+    background-color: var(--km-widget-header-background, #f5f5f5);
+    color: var(--km-font-title-color, #1c2043);
+    font-weight: 600;
+}
+
+#km-faqanswer .km-faqanswer table td {
+    background-color: #ffffff;
+    color: rgba(17, 16, 16, 0.85);
+}
+
+#km-faqanswer .km-faqanswer table tbody tr:nth-child(even) td {
+    background-color: rgba(0, 0, 0, 0.03);
 }
 .km-faq-common {
     position: absolute;
@@ -4195,30 +4281,6 @@ ul.mck-intent-menu > li:hover {
     bottom: 0;
     left: 0;
     overflow: auto;
-}
-
-.km-faqanswer img {
-    max-height: 100%;
-    max-width: 90%;
-}
-
-.km-faqanswer video {
-    max-height: 100%;
-    max-width: 90%;
-}
-.km-faqanswer ol {
-    word-break: break-all;
-}
-.km-faqanswer li {
-    word-break: break-all;
-}
-.km-faqanswer p {
-    word-break: break-all;
-}
-
-.km-faqanswer iframe {
-    width: 90% !important;
-    max-height: 100% !important;
 }
 .km-faqsearch {
     font-size: 14px;
@@ -4464,13 +4526,17 @@ textarea::placeholder {
     font-style: normal;
     font-stretch: normal;
     letter-spacing: 0.7px;
-    color: #ffffff;
+    color: var(
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
+    );
 }
 div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
 }
 #mck-conversation-back-btn,
+.mck-conversation-tab-link,
 .km-faq-back-btn {
     -webkit-appearance: none;
     padding: 0;
@@ -4481,13 +4547,14 @@ div#mck-tab-title.mck-tab-title {
     width: 45px;
     outline: none;
 }
-#mck-conversation-back-btn,
+.mck-conversation-tab-link,
 .km-faq-back-btn,
 .mck-close-sidebox {
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
 }
 #mck-conversation-back-btn:hover,
+.mck-conversation-tab-link:hover,
 .km-faq-back-btn:hover,
 .mck-close-sidebox:hover {
     background-color: rgba(0, 0, 0, 0.14);
@@ -4498,7 +4565,7 @@ div#mck-tab-title.mck-tab-title {
     height: 30px;
     display: block;
     margin: 0 auto;
-    fill: #ffffff;
+    fill: currentColor;
 }
 .km-faq-back-btn-wrapper {
     width: auto !important;
@@ -4542,8 +4609,21 @@ div#mck-tab-title.mck-tab-title {
     border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
+    );
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+.km-option-talk-to-human,
+#km-talk-to-human {
+    color: var(
+        --km-on-primary-link,
+        var(--km-on-primary, #ffffff)
+    );
+}
+.km-option-talk-to-human svg {
+    fill: currentColor;
 }
 .km-talk-to-human-div .talk-to-human-link:not(.km-custom-widget-background-color) {
     background: #ffffff;
@@ -4553,6 +4633,15 @@ div#mck-tab-title.mck-tab-title {
 }
 .km-talk-to-human-div .talk-to-human-link:hover {
     text-decoration: none;
+}
+.mck-box-close,
+.mck-close-sidebox,
+.mck-minimize-icon,
+.mck-close-btn {
+    color: var(
+        --km-on-primary-link,
+        var(--km-on-primary, #ffffff)
+    );
 }
 .km-contact-input-container {
     position: relative;
@@ -4852,14 +4941,10 @@ button {
     left: auto;
     right: -30%;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn-container,
-.chat-popup-widget-container .chat-popup-widget-close-btn-container {
+.mck-msg-preview-visual-indicator-container .mck-close-btn-container {
     position: absolute;
-    /* top: 22%; */
     display: none;
     transition: all 0.3s ease-in-out;
-    /* transform: translateY(-50%); */
-    /* height: 100%; */
     width: 26px;
     left: -73px;
     padding: 23px;
@@ -4886,8 +4971,7 @@ button {
 .mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
     display: block;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg,
-.chat-popup-widget-container .chat-popup-widget-close-btn .hat-popup-widget-close-icon-svg svg {
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
     vertical-align: middle;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-text {
@@ -5024,7 +5108,10 @@ button {
     font-stretch: normal;
     letter-spacing: 0.7px;
     line-height: normal;
-    color: #eaeaed;
+    color: var(
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
+    );
     transition: all 0.3s ease-in-out;
 }
 .mck-agent-image-container {
@@ -5604,10 +5691,6 @@ div#mck-waiting-queue {
 
 /* Chat launcher animation for initial load Code Ends */
 
-.km-faq-back-btn-wrapper {
-    display: flex;
-    align-items: center;
-}
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
     display: inline-flex !important;
     width: auto !important;
@@ -5624,6 +5707,12 @@ div#mck-waiting-queue {
 }
 #mck-tab-individual {
     display: flex;
+}
+#mck-conversation-title {
+    color: var(
+        --km-on-primary,
+        var(--km-on-primary, #ffffff)
+    ) !important;
 }
 .km-faq-and-close-btn-container {
     justify-content: flex-end;

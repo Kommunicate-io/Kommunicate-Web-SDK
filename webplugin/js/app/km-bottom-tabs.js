@@ -68,44 +68,35 @@
             return value.length ? value : 'conversations';
         }
 
-        function updateActiveTabClass(tabType) {
-            if (!documentRef) {
-                return;
+        function getSideboxContentContainer() {
+            if (!documentRef || typeof documentRef.getElementById !== 'function') {
+                return null;
             }
-            var container = documentRef.getElementById('mck-sidebox-content');
+            return documentRef.getElementById('mck-sidebox-content');
+        }
+
+        function updateActiveClass(prefix, normalizedValue) {
+            var container = getSideboxContentContainer();
             if (!container || !container.classList) {
                 return;
             }
-            var normalizedTabType = normalizeTabType(tabType);
             Array.prototype.slice
                 .call(container.classList)
                 .filter(function (className) {
-                    return className.indexOf(TAB_ACTIVE_CLASS_PREFIX) === 0;
+                    return className.indexOf(prefix) === 0;
                 })
                 .forEach(function (activeClass) {
                     container.classList.remove(activeClass);
                 });
-            container.classList.add(TAB_ACTIVE_CLASS_PREFIX + normalizedTabType);
+            container.classList.add(prefix + normalizedValue);
+        }
+
+        function updateActiveTabClass(tabType) {
+            updateActiveClass(TAB_ACTIVE_CLASS_PREFIX, normalizeTabType(tabType));
         }
 
         function updateActiveSubsectionClass(subsection) {
-            if (!documentRef) {
-                return;
-            }
-            var normalizedSubsection = normalizeSubsection(subsection);
-            var container = documentRef.getElementById('mck-sidebox-content');
-            if (!container || !container.classList) {
-                return;
-            }
-            Array.prototype.slice
-                .call(container.classList)
-                .filter(function (className) {
-                    return className.indexOf(SUBSECTION_ACTIVE_CLASS_PREFIX) === 0;
-                })
-                .forEach(function (activeClass) {
-                    container.classList.remove(activeClass);
-                });
-            container.classList.add(SUBSECTION_ACTIVE_CLASS_PREFIX + normalizedSubsection);
+            updateActiveClass(SUBSECTION_ACTIVE_CLASS_PREFIX, normalizeSubsection(subsection));
         }
 
         function getLastBottomTab() {

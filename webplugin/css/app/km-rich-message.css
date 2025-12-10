@@ -12,6 +12,9 @@
     padding: 10px;
     border: solid 1px #e5e5e5;
 }
+.km-rich-text-default-container .km-custom-widget-border-color {
+    border-color: var(--km-primary-variant, var(--km-custom-widget-border-color, #ffffff)) !important;
+}
 .km-room-person-selector-container .km-room-title-text {
     margin-top: 5px;
     margin-bottom: 10px;
@@ -770,7 +773,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 26px;
     box-shadow: 0px 0px 12px 0px rgba(17, 34, 34, 0.24);
 }
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email {

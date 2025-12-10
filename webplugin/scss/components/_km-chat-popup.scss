@@ -12,22 +12,79 @@ $popupClass: '.chat-popup-widget-container';
     max-width: 390px;
     cursor: pointer;
 
-    &:hover .chat-popup-widget-close-btn-container {
-        display: block;
+    /* Reveal close button on hover and when any child receives focus */
+    &:hover .chat-popup-widget-close-btn-container,
+    &:focus-within .chat-popup-widget-close-btn-container {
+        display: flex;
     }
 
-    .chat-popup-widget-close-btn-container {
-        top: 0%;
+    & .chat-popup-widget-text-wrapper {
+        position: relative;
+        word-break: break-word;
+        min-height: 70px;
+        @include flexMixin(null, flex-start);
+        padding: 8px 0;
+    }
 
-        &.align-left {
-            left: 282px;
-        }
+    & .chat-popup-widget-close-btn-container {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.05);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        box-sizing: border-box;
+        z-index: 1;
+    }
+
+    /* Keyboard focus ring on the close button container */
+    & .chat-popup-widget-close-btn-container:focus-visible {
+        outline: 2px solid rgba(76, 102, 205, 0.6);
+        outline-offset: 2px;
+    }
+
+    & .chat-popup-widget-close-btn-container:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    & .chat-popup-widget-close-btn:focus-visible {
+        outline: 2px solid rgba(76, 102, 205, 0.6);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px transparent;
+    }
+
+    & .chat-popup-widget-close-btn {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+        box-sizing: border-box;
+    }
+
+    & .chat-popup-widget-text {
+        margin: 0;
+        padding: 20px;
     }
 
     &--horizontal {
         border-radius: 40px !important;
         bottom: 5px;
         right: 5px;
+
+        & .chat-popup-widget-text {
+            padding-right: 80px;
+        }
 
         &.km-animate {
             opacity: 0;
@@ -42,17 +99,6 @@ $popupClass: '.chat-popup-widget-container';
 
         &.align-left {
             right: 60px;
-        }
-
-        & .chat-popup-widget-text-wrapper {
-            padding-left: 15px;
-        }
-
-        & .chat-popup-widget-close-btn-container {
-            transform: translateY(10px);
-            &.align-left {
-                left: 370px;
-            }
         }
     }
 
@@ -98,9 +144,6 @@ $popupClass: '.chat-popup-widget-container';
                 right: unset;
             }
         }
-        // & .chat-popup-widget-close-btn-container {
-        // top: 22%;
-        // }
     }
 
     &--horizontal.km-animate .chat-popup-widget-text,
@@ -109,16 +152,6 @@ $popupClass: '.chat-popup-widget-container';
         opacity: 0;
         will-change: transform, opacity;
         @include prefix(animation, km-slide-in-animation 0.5s ease 0.5s 1 forwards, webkit moz o);
-    }
-
-    & .chat-popup-widget-text-wrapper {
-        word-break: break-word;
-        min-height: 70px;
-        @include flexMixin(null, flex-start);
-    }
-
-    & .chat-popup-widget-text {
-        margin: 15px;
     }
 }
 
@@ -166,6 +199,10 @@ $popupClass: '.chat-popup-widget-container';
 #launcher-svg-container.km-animate {
     @include prefix(transform, scale(1), webkit moz o ms);
     @include prefix(animation, km-scale-animation 0.5s ease-in-out 1 forwards, webkit moz o ms);
+}
+
+#launcher-svg-container.mck-default-launcher-icon svg path {
+    fill: var(--km-on-primary);
 }
 
 @-webkit-keyframes km-reveal-animation-horizontal {
@@ -354,8 +391,7 @@ $popupClass: '.chat-popup-widget-container';
             width: 70%;
             &.align-left {
                 .chat-popup-widget-close-btn-container {
-                    left: 95% !important;
-                    display: block;
+                    display: flex;
                 }
             }
         }
@@ -370,7 +406,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
     }
 
@@ -394,7 +430,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
     }
 
@@ -438,11 +474,11 @@ $popupClass: '.chat-popup-widget-container';
     }
     .chat-popup-widget-container--vertical {
         .chat-popup-widget-close-btn-container {
-            display: block;
+            display: flex;
         }
         &.align-left {
             .chat-popup-widget-close-btn-container {
-                left: 90% !important;
+                display: flex;
             }
         }
     }
@@ -450,12 +486,66 @@ $popupClass: '.chat-popup-widget-container';
 @media only screen and (min-device-width: 420px) {
     .chat-popup-widget-container--horizontal {
         & .chat-popup-widget-text-wrapper {
-            padding: 0 65px 0 15px;
+            padding-left: 15px;
         }
+    }
+}
+#km-faqanswer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 16px 20px 110px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
-        & .chat-popup-widget-text-wrapper.align-left {
-            padding: 0 15px 0 65px;
-        }
+#km-faqanswer .km-faqanswer {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.29;
+    letter-spacing: 0.1px;
+    color: rgba(17, 16, 16, 0.85);
+    padding-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    table {
+        min-width: 100%;
+        width: max-content;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 12px;
+    }
+
+    table th,
+    table td {
+        border: 1px solid rgba(17, 16, 16, 0.15);
+        padding: 8px 12px;
+        word-break: break-word;
+        vertical-align: top;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    table th {
+        background-color: var(--km-widget-header-background, #f5f5f5);
+        color: var(--km-font-title-color, #1c2043);
+        font-weight: 600;
+    }
+
+    table td {
+        background-color: #ffffff;
+        color: rgba(17, 16, 16, 0.85);
+    }
+
+    table tbody tr:nth-child(even) td {
+        background-color: rgba(0, 0, 0, 0.03);
     }
 }
 /* Chat Popup Template Code Ends */

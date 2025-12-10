@@ -837,7 +837,8 @@ KommunicateUI = {
             keepConversationHeader = options.keepConversationHeader;
         }
         var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
-        var shouldShowConversationListHeader = keepConversationHeader && isModernLayout;
+        var shouldShowConversationListHeader =
+            keepConversationHeader && isModernLayout && KommunicateUI.isConversationListView;
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
 

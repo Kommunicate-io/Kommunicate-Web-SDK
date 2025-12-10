@@ -14,14 +14,11 @@ function KommunicateCommons() {
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
     };
 
-    _this.getDesignLayoutName = function () {
+    _this.getLayout = function () {
         var globals = Kommunicate?._globals;
         var appSettings = globals?.appSettings;
         var layoutFromGlobals =
-            globals?.designLayoutName ||
-            appSettings?.designLayoutName ||
-            appSettings?.chatWidget?.designLayoutName ||
-            null;
+            globals?.layout || appSettings?.layout || appSettings?.chatWidget?.layout || null;
         return (
             layoutFromGlobals ||
             KommunicateConstants.DESIGN_LAYOUTS?.DEFAULT ||
@@ -32,7 +29,7 @@ function KommunicateCommons() {
 
     _this.isModernLayoutEnabled = function () {
         return (
-            _this.getDesignLayoutName() ===
+            _this.getLayout() ===
             ((KommunicateConstants.DESIGN_LAYOUTS && KommunicateConstants.DESIGN_LAYOUTS.MODERN) ||
                 'modern')
         );

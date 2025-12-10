@@ -74,7 +74,8 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
     '   width: 455px;' +
-    '   height: 80px;' +
+    '   min-height: 80px;' +
+    '   height: auto;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     '   width: 380px;' +
@@ -203,6 +204,22 @@ function createKommunicateIframe() {
         );
     }
     var kommunicateIframe = document.createElement('iframe');
+
+    // 🔹 NEW: give the iframe its own HTML document via srcdoc
+    // This document includes a referrer policy so subresources
+    // (like the YouTube iframe) can get a proper Referer.
+    var srcdocHtml =
+        '<!doctype html>' +
+        '<html>' +
+        '<head>' +
+        '<meta charset="utf-8">' +
+        '<meta name="referrer" content="strict-origin-when-cross-origin">' +
+        '</head>' +
+        '<body></body>' +
+        '</html>';
+
+    kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
+
     kommunicateIframe.setAttribute('style', 'overflow:hidden;'); // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('scrolling', 'no'); // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('id', 'kommunicate-widget-iframe');
@@ -316,7 +333,6 @@ function scriptLoader(options) {
             if (!options.ignoreIfError) {
                 console.error('Error while loading file.', options.url);
                 reject('ERROR_TO_LOAD_FILE');
-                // throw new Error('Error while loading file.', url);
             } else {
                 resolve();
             }

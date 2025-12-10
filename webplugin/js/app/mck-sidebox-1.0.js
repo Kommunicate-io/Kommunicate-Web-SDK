@@ -78,7 +78,7 @@ const firstVisibleMsg = {
         msgTriggerTimeout: 0,
         labels: kmLabel.getLabels(),
         useBranding: true,
-        designLayoutName: 'classic',
+        layout: 'classic',
         openGroupSettings: {
             deleteChatAccess: 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
             allowInfoAccessGroupMembers: true,
@@ -3655,7 +3655,9 @@ const firstVisibleMsg = {
                 KommunicateUI.togglePopupChatTemplate();
             };
 
-            $applozic(d).on('click', '.chat-popup-widget-close-btn-container', function () {
+            $applozic(d).on('click', '.chat-popup-widget-close-btn-container', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
                 KommunicateUI.togglePopupChatTemplate();
             });
         }
@@ -13785,10 +13787,12 @@ const firstVisibleMsg = {
         function MckNotificationService() {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
+            var $mck_msg_inner;
             _this.init = function () {
                 $mck_msg_preview_visual_indicator_text = $applozic(
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
                 );
+                $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {

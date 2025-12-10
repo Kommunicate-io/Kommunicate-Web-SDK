@@ -36,7 +36,6 @@
         'mck.empty.welcome.subtitle': 'We’re here to help you get instant answers.',
         'mck.empty.welcome.cta': 'Send us a message',
         'mck.empty.welcome.cta.continue': 'View conversations',
-        'mck.empty.welcome.section.meta': '',
         'no.more.conversations': 'No more conversations!',
         'search.placeholder': 'Search...',
         'mck.email.placeholder': 'Enter your email...',
@@ -207,7 +206,6 @@
             'contact.name': 'In Queue...',
             'header.text': 'In queue...',
             'first.Part': 'You are currently',
-            'waiting.queue.number': '5',
             'last.part': ' in the waiting queue, our agents will get back you shortly.',
         },
         'conversation.header.dropdown': {

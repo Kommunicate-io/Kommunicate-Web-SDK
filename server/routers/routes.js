@@ -46,7 +46,14 @@ home.get('/index.html', function (req, res) {
     }
     res.sendFile(buildIndexPath, (err) => {
         if (err) {
-            res.sendFile(templateIndexPath);
+            res.sendFile(templateIndexPath, (templateErr) => {
+                if (templateErr) {
+                    console.error('Failed to load index template:', templateErr);
+                    if (!res.headersSent) {
+                        res.status(500).send('Unable to load Kommunicate index.');
+                    }
+                }
+            });
         }
     });
 });
