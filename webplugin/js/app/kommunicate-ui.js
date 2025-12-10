@@ -909,6 +909,9 @@ KommunicateUI = {
     showConversationList: function (options) {
         options = options || {};
         setActiveSubsectionState('conversation-list');
+        if (!kommunicateCommons.isModernLayoutEnabled()) {
+            kommunicateCommons.show('#mck-contacts-content');
+        }
         kommunicateCommons.hide('.km-option-faq');
         topBarManagerRef.showConversationHeader();
         topBarManagerRef.toggleAvatar(false);
