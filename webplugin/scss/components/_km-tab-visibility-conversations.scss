@@ -22,6 +22,10 @@
         display: flex !important;
     }
 
+    #mck-conversation-title {
+        color: var(--km-on-primary, #ffffff) !important;
+    }
+
     .km-faq-back-btn-wrapper {
         @extend %km-hidden;
     }

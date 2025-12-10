@@ -183,7 +183,7 @@
     }
 
     &.km-custom-widget-background-color {
-        color: var(--km-accent-contrast, #ffffff);
+        color: var(--km-on-primary, #ffffff);
         box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
         transform: translateY(-1px);
     }
@@ -195,7 +195,7 @@
         var(--km-accent-start, #3f63ff),
         var(--km-accent, #{$primary-color})
     );
-    color: var(--km-accent-contrast, #ffffff);
+    color: var(--km-on-primary, #ffffff);
     box-shadow: 0 10px 20px rgba(63, 99, 255, 0.35);
     transform: translateY(-1px);
 }
@@ -225,7 +225,6 @@
     flex-direction: column;
     box-sizing: border-box;
     width: calc(100% - 16px);
-    max-width: 420px;
     margin-left: 8px;
     margin-right: 24px;
 }
@@ -276,6 +275,10 @@
     line-height: 1.5;
     margin: 0;
 }
+.km-faq-category-card-title.km-custom-widget-text-color {
+    /* FAQ card titles stay on the default title color so they remain legible over white surfaces. */
+    color: var(--km-font-title-color, #1c2043);
+}
 
 .km-faq-category-card-count-row {
     display: flex;
@@ -298,6 +301,25 @@
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+}
+
+.km-quick-replies,
+.km-quick-rpy-btn,
+.km-cta-button-many,
+.km-cta-multi-button-container button.km-quick-replies {
+    color: var(--km-primary-variant, var(--km-accent, #5f46f8));
+    border-color: var(--km-primary-variant, var(--km-accent, #5f46f8));
+}
+
+.km-faqimage,
+.km-faqimage svg {
+    color: var(--km-font-title-color, #1c2043);
+    fill: currentColor;
+}
+
+.km-faqimage circle,
+.km-faqimage .km-custom-widget-fill {
+    fill: var(--km-faq-icon-fill-color, var(--km-accent, #5f46f8)) !important;
 }
 
 .km-faq-category-card-title-row {

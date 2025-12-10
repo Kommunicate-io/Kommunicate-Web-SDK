@@ -228,6 +228,12 @@
     color: #5553b7;
     border: 1px solid #5553b7;
 }
+
+.km-cta-multi-button-container .km-cta-button,
+.km-cta-multi-button-container button.km-quick-replies {
+    color: var(--km-accent, #5f46f8);
+    border-color: var(--km-accent, #5f46f8);
+}
 .km-undecorated-link {
     text-decoration: none;
 }

@@ -238,7 +238,6 @@ class KMLabel {
             'mck-restart-conversation': 'csat.rating.RESTART_CONVERSATION',
             'mck-submit-comment': 'csat.rating.SUBMIT_RATING',
             'wq-msg-first-Part': 'waiting.queue.message.first.Part',
-            'waiting-queue-number': 'waiting.queue.message.waiting.queue.number',
             'wq-msg-last-part': 'waiting.queue.message.last.part',
             'mck-rate-error': 'csat.rating.RATE_ERROR_MSG',
             'km-option-talk-to-human-text': 'conversation.header.dropdown.HANDOFF',
@@ -261,7 +260,6 @@ class KMLabel {
             'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
             'km-empty-conversation-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
-            'km-empty-conversation-section-meta': 'mck.empty.welcome.section.meta',
         };
         Object.keys(htmlBindings).forEach(function (id) {
             setLabel(id, htmlBindings[id], 'html');
