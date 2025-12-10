@@ -4351,11 +4351,10 @@ const firstVisibleMsg = {
                     }
                 });
                 $applozic(d).on('click', '#talk-to-human-link', function (event) {
-                    handleStartNewConversation(event);
+                    event && typeof event.preventDefault === 'function' && event.preventDefault();
                     kommunicateCommons.hide('#km-faq');
                     KommunicateUI.hideFaq && KommunicateUI.hideFaq();
-                    typeof setActiveSubsectionState === 'function' &&
-                        setActiveSubsectionState('conversation-individual');
+                    activateConversationTab();
                 });
 
                 $applozic(d).on('click', '.km-bottom-tab', function (e) {
