@@ -9,8 +9,18 @@
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
 
+        function toggleModernFaqTab(show) {
+            if (!kommunicateCommons.isModernLayoutEnabled()) {
+                return;
+            }
+            show
+                ? kommunicateCommons.show('.km-bottom-tab[data-tab="faqs"]')
+                : kommunicateCommons.hide('.km-bottom-tab[data-tab="faqs"]');
+        }
+
         function hideFAQBtn() {
             kommunicateCommons.hide('.km-option-faq');
+            toggleModernFaqTab(false);
             kommunicate._globals.hasArticles = false;
         }
 
@@ -65,6 +75,7 @@
                         }
 
                         kommunicate._globals.hasArticles = true;
+                        toggleModernFaqTab(true);
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({

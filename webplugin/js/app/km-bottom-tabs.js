@@ -282,9 +282,20 @@
             }
         }
 
+        function isFaqTabAvailable() {
+            return !(
+                w.kommunicate &&
+                w.kommunicate._globals &&
+                w.kommunicate._globals.hasArticles === false
+            );
+        }
+
         function restoreLastBottomTab() {
             var lastTab = getLastBottomTab();
             if (!lastTab || lastTab === 'conversations') {
+                return;
+            }
+            if (lastTab === 'faqs' && !isFaqTabAvailable()) {
                 return;
             }
             setTimeout(function () {
@@ -301,6 +312,9 @@
             typeof kommunicateCommons !== 'undefined' &&
                 kommunicateCommons.hide('#mck-contact-loading');
             var resolvedTabType = normalizeTabType(tabType);
+            if (resolvedTabType === 'faqs' && !isFaqTabAvailable()) {
+                return;
+            }
             var activeConversationId = getActiveConversationId();
 
             // If a conversation is already active, avoid forcing the welcome tab and keep the thread view.
