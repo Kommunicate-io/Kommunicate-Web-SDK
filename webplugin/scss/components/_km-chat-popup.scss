@@ -9,7 +9,7 @@ $popupClass: '.chat-popup-widget-container';
     min-height: 70px;
     font-family: $font-family-primary;
     width: 100%;
-    max-width: 390px;
+    max-width: 320px;
     cursor: pointer;
 
     /* Reveal close button on hover and when any child receives focus */
@@ -23,25 +23,25 @@ $popupClass: '.chat-popup-widget-container';
         word-break: break-word;
         min-height: 70px;
         @include flexMixin(null, flex-start);
-        padding: 8px 0;
     }
 
     & .chat-popup-widget-close-btn-container {
         position: absolute;
-        top: 8px;
-        right: 12px;
-        width: 36px;
-        height: 36px;
+        top: -12px;
+        left: -12px;
+        width: 32px;
+        height: 32px;
         padding: 0;
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         display: none;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: background 0.2s ease;
+        transition: background 0.2s ease, transform 0.2s ease;
         box-sizing: border-box;
-        z-index: 1;
+        z-index: 2;
     }
 
     /* Keyboard focus ring on the close button container */
@@ -72,19 +72,21 @@ $popupClass: '.chat-popup-widget-container';
         box-sizing: border-box;
     }
 
+    & .chat-popup-widget-close-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
     & .chat-popup-widget-text {
         margin: 0;
+        margin-top: 4px;
         padding: 20px;
     }
 
     &--horizontal {
         border-radius: 40px !important;
         bottom: 5px;
-        right: 5px;
-
-        & .chat-popup-widget-text {
-            padding-right: 80px;
-        }
+        right: 70px;
 
         &.km-animate {
             opacity: 0;
@@ -377,7 +379,7 @@ $popupClass: '.chat-popup-widget-container';
         width: calc(100% - 80px);
 
         &--horizontal {
-            padding-right: 70px;
+            padding-left: 28px;
         }
         &--actionable {
             width: calc(100% - 50px);
@@ -402,7 +404,7 @@ $popupClass: '.chat-popup-widget-container';
     #{$popupClass} {
         &--horizontal {
             width: 61% !important;
-            padding-right: 70px;
+            padding-left: 28px;
         }
 
         .chat-popup-widget-close-btn-container {
@@ -426,7 +428,7 @@ $popupClass: '.chat-popup-widget-container';
     #{$popupClass} {
         &--horizontal {
             width: 65% !important;
-            padding-right: 70px;
+            padding-left: 28px;
         }
 
         .chat-popup-widget-close-btn-container {
@@ -456,7 +458,7 @@ $popupClass: '.chat-popup-widget-container';
 @media only screen and (max-device-width: 320px) {
     .chat-popup-widget-container--horizontal {
         width: 61% !important;
-        padding-right: 70px;
+        padding-left: 28px;
 
         &.km-animate .chat-popup-widget-text {
             margin: 7px 7px 7px 15px;
@@ -480,13 +482,6 @@ $popupClass: '.chat-popup-widget-container';
             .chat-popup-widget-close-btn-container {
                 display: flex;
             }
-        }
-    }
-}
-@media only screen and (min-device-width: 420px) {
-    .chat-popup-widget-container--horizontal {
-        & .chat-popup-widget-text-wrapper {
-            padding-left: 15px;
         }
     }
 }
