@@ -3030,7 +3030,7 @@ const firstVisibleMsg = {
                             }
 
                             CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data;
-                            KommunicateUI.showClosedConversationBanner(true);
+                            KommunicateUI.showClosedConversationBanner(false);
                             document.getElementById('mck-feedback-comment').value = '';
                             $applozic('#mck-sidebox-ft').removeClass(
                                 'mck-restart-conv-banner km-mid-conv-csat'
