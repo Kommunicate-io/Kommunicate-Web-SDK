@@ -175,13 +175,13 @@ Kommunicate.popupChatTemplate = {
                 templateCss +
                 ' ' +
                 alignLeft +
-                ' n-vis"><div class="chat-popup-widget-text-wrapper ' +
+                ' n-vis"><div class="chat-popup-widget-text-wrapper">' +
+                '<p class="chat-popup-widget-text ' +
                 launcherClass +
                 '">' +
-                closeButtonMarkup +
-                '<p class="chat-popup-widget-text">' +
                 (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) +
                 '</p>' +
+                closeButtonMarkup +
                 '</div>' +
                 (templateKey == KommunicateConstants.CHAT_POPUP_TEMPLATE.ACTIONABLE
                     ? actionableButtonTemplateMarkup
