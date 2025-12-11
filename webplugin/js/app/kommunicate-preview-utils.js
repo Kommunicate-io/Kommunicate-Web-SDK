@@ -1,0 +1,238 @@
+(function (root) {
+    'use strict';
+
+    var PREVIEW_ALLOWED_SCHEMES = ['https'];
+    var PREVIEW_BLOCKED_HOSTNAMES = ['localhost'];
+    var PREVIEW_BLOCKED_HOSTNAME_SUFFIXES = [];
+
+    var globalContext =
+        root ||
+        (typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : {});
+
+    function resolveGlobals() {
+        return (
+            globalContext.Kommunicate?._globals ||
+            globalContext.kommunicate?._globals ||
+            globalContext.applozic?._globals ||
+            {}
+        );
+    }
+
+    function normalizeHostname(hostname) {
+        if (!hostname || typeof hostname !== 'string') {
+            return '';
+        }
+        return hostname.toLowerCase().replace(/\.$/, '');
+    }
+
+    function parsePreviewUrl(candidate) {
+        if (!candidate) {
+            return null;
+        }
+        if (typeof globalContext.URL === 'function') {
+            try {
+                return new globalContext.URL(candidate);
+            } catch (error) {
+                return null;
+            }
+        }
+        if (typeof globalContext.document === 'undefined') {
+            return null;
+        }
+        var anchor = globalContext.document.createElement('a');
+        anchor.href = candidate;
+        return anchor;
+    }
+
+    function isIpv4Host(hostname) {
+        var segments = String(hostname || '').split('.');
+        if (segments.length !== 4) {
+            return null;
+        }
+        var normalized = [];
+        for (var i = 0; i < 4; i++) {
+            var segment = parseInt(segments[i], 10);
+            if (isNaN(segment) || segment < 0 || segment > 255) {
+                return null;
+            }
+            normalized.push(segment);
+        }
+        return normalized;
+    }
+
+    function isIpv4Blocked(hostname) {
+        var segments = isIpv4Host(hostname);
+        if (!segments) {
+            return false;
+        }
+        var first = segments[0];
+        var second = segments[1];
+        if (first === 10) return true;
+        if (first === 127) return true;
+        if (first === 169 && second === 254) return true;
+        if (first === 172 && second >= 16 && second <= 31) return true;
+        if (first === 192 && second === 168) return true;
+        if (first === 0 && second === 0 && segments[2] === 0 && segments[3] === 0) return true;
+        if (first === 100 && second >= 64 && second <= 127) return true;
+        if (first === 198 && (second === 18 || second === 19)) return true;
+        return false;
+    }
+
+    function stringStartsWith(value, prefix) {
+        if (typeof value !== 'string' || typeof prefix !== 'string') {
+            return false;
+        }
+        return typeof value.startsWith === 'function'
+            ? value.startsWith(prefix)
+            : value.indexOf(prefix) === 0;
+    }
+
+    function isIpv6Blocked(hostname) {
+        if (!hostname || hostname.indexOf(':') === -1) {
+            return false;
+        }
+        var normalized = hostname.toLowerCase();
+        return (
+            normalized === '::1' ||
+            normalized === '0:0:0:0:0:0:0:1' ||
+            stringStartsWith(normalized, 'fe80:') ||
+            stringStartsWith(normalized, 'fc00:') ||
+            stringStartsWith(normalized, 'fd00:')
+        );
+    }
+
+    function isSchemeAllowed(protocol) {
+        if (!protocol) {
+            return false;
+        }
+        var scheme = protocol.replace(':', '').toLowerCase();
+        return PREVIEW_ALLOWED_SCHEMES.indexOf(scheme) !== -1;
+    }
+
+    function stringEndsWith(value, suffix) {
+        if (typeof value !== 'string' || typeof suffix !== 'string') {
+            return false;
+        }
+        if (typeof value.endsWith === 'function') {
+            return value.endsWith(suffix);
+        }
+        if (suffix.length > value.length) {
+            return false;
+        }
+        return value.lastIndexOf(suffix) === value.length - suffix.length;
+    }
+
+    function normalizeEntryHostname(entry) {
+        if (!entry || typeof entry !== 'string') {
+            return '';
+        }
+        var parsed = parsePreviewUrl(entry);
+        if (parsed && parsed.hostname) {
+            return normalizeHostname(parsed.hostname);
+        }
+        return normalizeHostname(entry);
+    }
+
+    function getPreviewWhitelistHosts() {
+        var globals = resolveGlobals();
+        var whitelist = new Set();
+
+        function addEntries(value) {
+            if (!value) {
+                return;
+            }
+            if (Array.isArray(value)) {
+                value.forEach(addEntries);
+                return;
+            }
+            var hostname = normalizeEntryHostname(value);
+            hostname && whitelist.add(hostname);
+        }
+
+        addEntries(globals.previewWhitelist);
+        addEntries(globals.widgetSettings?.previewWhitelist);
+        addEntries(globals.appSettings?.chatWidget?.previewWhitelist);
+        return Array.from(whitelist);
+    }
+
+    function isHostnameWhitelisted(hostname) {
+        var normalizedHostname = normalizeHostname(hostname);
+        if (!normalizedHostname) {
+            return false;
+        }
+        var whitelist = getPreviewWhitelistHosts();
+        if (whitelist.length === 0) {
+            return false;
+        }
+        for (var idx = 0; idx < whitelist.length; idx++) {
+            var allowedHost = whitelist[idx];
+            if (!allowedHost) {
+                continue;
+            }
+            if (normalizedHostname === allowedHost) {
+                return true;
+            }
+            if (allowedHost.length < normalizedHostname.length) {
+                if (stringEndsWith(normalizedHostname, '.' + allowedHost)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function isHostnameBlocked(hostname) {
+        if (isHostnameWhitelisted(hostname)) {
+            return false;
+        }
+        var normalized = normalizeHostname(hostname);
+        if (!normalized) {
+            return true;
+        }
+        if (PREVIEW_BLOCKED_HOSTNAMES.indexOf(normalized) !== -1) {
+            return true;
+        }
+        for (var idx = 0; idx < PREVIEW_BLOCKED_HOSTNAME_SUFFIXES.length; idx++) {
+            if (stringEndsWith(normalized, PREVIEW_BLOCKED_HOSTNAME_SUFFIXES[idx])) {
+                return true;
+            }
+        }
+        return isIpv4Blocked(normalized) || isIpv6Blocked(normalized);
+    }
+
+    function shouldBlockPreview() {
+        var globals = resolveGlobals();
+        var chatWidget = globals.appSettings?.chatWidget;
+        return (
+            globals.blockPreview === true ||
+            globals.widgetSettings?.blockPreview === true ||
+            (chatWidget &&
+                (chatWidget.blockPreview === true || chatWidget.disableLinkPreview === true))
+        );
+    }
+
+    function isUrlBlockedForPreview(url) {
+        var parsedUrl = parsePreviewUrl(url);
+        if (!parsedUrl) {
+            return true;
+        }
+        if (!isSchemeAllowed(parsedUrl.protocol)) {
+            return true;
+        }
+        return isHostnameBlocked(parsedUrl.hostname);
+    }
+
+    var previewUtils = {
+        shouldBlockPreview: shouldBlockPreview,
+        isUrlBlockedForPreview: isUrlBlockedForPreview,
+        getPreviewWhitelistHosts: getPreviewWhitelistHosts,
+        isHostnameBlocked: isHostnameBlocked,
+        parsePreviewUrl: parsePreviewUrl,
+    };
+
+    globalContext.KommunicatePreviewUtils = globalContext.KommunicatePreviewUtils || previewUtils;
+
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = globalContext.KommunicatePreviewUtils;
+    }
+})(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : {});
