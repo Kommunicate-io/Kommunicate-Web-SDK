@@ -22,6 +22,7 @@
             kommunicateCommons.hide('.km-option-faq');
             toggleModernFaqTab(false);
             kommunicate._globals.hasArticles = false;
+            KommunicateUI.toggleWelcomeFaqSearch(false);
         }
 
         //KommunicateKB.init("https://api.kommunicate.io");
