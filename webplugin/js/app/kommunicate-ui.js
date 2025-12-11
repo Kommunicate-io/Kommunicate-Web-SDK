@@ -1192,6 +1192,8 @@ KommunicateUI = {
                 'km-mid-conv-csat'
             );
 
+            kommunicateCommons.hide('#mck-conversation-status-box');
+
             kommunicateCommons.show('#csat-1', '#csat-2', '#mck-feedback-text-wrapper');
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
@@ -1309,6 +1311,7 @@ KommunicateUI = {
                 */
                 if (!feedback) {
                     // no rating given after conversation is resolved
+                    kommunicateCommons.hide('#mck-conversation-status-box');
                     kommunicateCommons.show('#csat-1', '#csat-2');
                     kommunicateCommons.modifyClassList(
                         {

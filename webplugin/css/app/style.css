@@ -3248,6 +3248,7 @@ div#mck-rated:before {
 .mck-csat-text-1 {
   text-align: center;
   font-size: 14px;
+  margin-top: 16px;
 }
 .mck-csat-text-1 > span {
   display: block;
@@ -3388,6 +3389,7 @@ div#mck-rated:before {
 .mck-running-on {
   text-align: center;
   padding: 0 4px 6px;
+  margin-top: 10px;
   vertical-align: middle;
   color: #67757e;
   /* border-top: 1px solid #E5E5E5; */
