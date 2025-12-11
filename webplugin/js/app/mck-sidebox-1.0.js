@@ -6779,6 +6779,13 @@ const firstVisibleMsg = {
                                         mckMessageLayout.addContactsFromMessageList(data, params);
                                     } else {
                                         $mck_msg_inner.data('datetime', '');
+                                        if (
+                                            !individual &&
+                                            !params.startTime &&
+                                            KommunicateUI.setHasConversationHistory
+                                        ) {
+                                            KommunicateUI.setHasConversationHistory(false);
+                                        }
                                     }
                                     if (params.isLaunch) {
                                         mckMessageLayout.updateUnreadCountonChatIcon(
