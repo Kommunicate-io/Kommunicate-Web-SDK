@@ -122,69 +122,7 @@
         return value.lastIndexOf(suffix) === value.length - suffix.length;
     }
 
-    function normalizeEntryHostname(entry) {
-        if (!entry || typeof entry !== 'string') {
-            return '';
-        }
-        var parsed = parsePreviewUrl(entry);
-        if (parsed && parsed.hostname) {
-            return normalizeHostname(parsed.hostname);
-        }
-        return normalizeHostname(entry);
-    }
-
-    function getPreviewWhitelistHosts() {
-        var globals = resolveGlobals();
-        var whitelist = new Set();
-
-        function addEntries(value) {
-            if (!value) {
-                return;
-            }
-            if (Array.isArray(value)) {
-                value.forEach(addEntries);
-                return;
-            }
-            var hostname = normalizeEntryHostname(value);
-            hostname && whitelist.add(hostname);
-        }
-
-        addEntries(globals.previewWhitelist);
-        addEntries(globals.widgetSettings?.previewWhitelist);
-        addEntries(globals.appSettings?.chatWidget?.previewWhitelist);
-        return Array.from(whitelist);
-    }
-
-    function isHostnameWhitelisted(hostname) {
-        var normalizedHostname = normalizeHostname(hostname);
-        if (!normalizedHostname) {
-            return false;
-        }
-        var whitelist = getPreviewWhitelistHosts();
-        if (whitelist.length === 0) {
-            return false;
-        }
-        for (var idx = 0; idx < whitelist.length; idx++) {
-            var allowedHost = whitelist[idx];
-            if (!allowedHost) {
-                continue;
-            }
-            if (normalizedHostname === allowedHost) {
-                return true;
-            }
-            if (allowedHost.length < normalizedHostname.length) {
-                if (stringEndsWith(normalizedHostname, '.' + allowedHost)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     function isHostnameBlocked(hostname) {
-        if (isHostnameWhitelisted(hostname)) {
-            return false;
-        }
         var normalized = normalizeHostname(hostname);
         if (!normalized) {
             return true;
@@ -203,12 +141,10 @@
     function shouldBlockPreview() {
         var globals = resolveGlobals();
         var chatWidget = globals.appSettings?.chatWidget;
-        return (
-            globals.blockPreview === true ||
-            globals.widgetSettings?.blockPreview === true ||
-            (chatWidget &&
-                (chatWidget.blockPreview === true || chatWidget.disableLinkPreview === true))
-        );
+        if (!chatWidget) {
+            return false;
+        }
+        return chatWidget.blockUrlPreview === true || chatWidget.disableLinkPreview === true;
     }
 
     function isUrlBlockedForPreview(url) {
@@ -225,7 +161,6 @@
     var previewUtils = {
         shouldBlockPreview: shouldBlockPreview,
         isUrlBlockedForPreview: isUrlBlockedForPreview,
-        getPreviewWhitelistHosts: getPreviewWhitelistHosts,
         isHostnameBlocked: isHostnameBlocked,
         parsePreviewUrl: parsePreviewUrl,
     };

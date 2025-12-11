@@ -143,7 +143,9 @@ KommunicateUI = {
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
         if (kommunicateCommons.shouldBlockPreview()) {
             if (window.console && window.console.info) {
-                window.console.info('Link preview suppressed because blockPreview is enabled.');
+                window.console.info(
+                    'Link preview suppressed because blockUrlPreview flag is enabled.'
+                );
             }
             return;
         }
