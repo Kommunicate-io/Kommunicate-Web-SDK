@@ -276,25 +276,6 @@ function KommunicateCommons() {
         var extractedUrl = message.match(/(https?:\/\/[^\s]+)/i);
         return extractedUrl && KommunicateUtils.isURL(extractedUrl[0]) ? extractedUrl[0] : false;
     };
-    var previewUtils =
-        (typeof KommunicatePreviewUtils !== 'undefined' && KommunicatePreviewUtils) ||
-        (typeof window !== 'undefined' && window.KommunicatePreviewUtils) ||
-        (typeof global !== 'undefined' && global.KommunicatePreviewUtils) ||
-        null;
-
-    _this.shouldBlockPreview = function () {
-        if (previewUtils && typeof previewUtils.shouldBlockPreview === 'function') {
-            return previewUtils.shouldBlockPreview();
-        }
-        return false;
-    };
-
-    _this.isUrlBlockedForPreview = function (url) {
-        if (previewUtils && typeof previewUtils.isUrlBlockedForPreview === 'function') {
-            return previewUtils.isUrlBlockedForPreview(url);
-        }
-        return true;
-    };
     _this.getTimeOrDate = function (createdAtTime) {
         var labels = MCK_LABELS['time.stamp'];
         var secondsPast = Math.max(0, (Date.now() - new Date(createdAtTime).getTime()) / 1000);

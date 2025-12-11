@@ -141,7 +141,9 @@ KommunicateUI = {
     },
 
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
-        if (kommunicateCommons.shouldBlockPreview()) {
+        var previewUtils = window.KommunicatePreviewUtils;
+
+        if (previewUtils.shouldBlockPreview()) {
             if (window.console && window.console.info) {
                 window.console.info(
                     'Link preview suppressed because blockUrlPreview flag is enabled.'
@@ -149,7 +151,7 @@ KommunicateUI = {
             }
             return;
         }
-        if (kommunicateCommons.isUrlBlockedForPreview(url)) {
+        if (previewUtils.isUrlBlockedForPreview(url)) {
             if (window.console && window.console.warn) {
                 window.console.warn(
                     'Preview skipped because URL is blocked for metadata/external fetch.',
