@@ -369,10 +369,6 @@ $known-prefixes
   text-decoration: underline;
 }
 
-.layout-modern .mck-sidebox .mck-sidebox-content {
-  padding-bottom: 30px;
-}
-
 .layout-classic .km-bottom-tab-wrapper,
 .layout-classic .km-bottom-tab-bar,
 .layout-classic .km-bottom-tab {
