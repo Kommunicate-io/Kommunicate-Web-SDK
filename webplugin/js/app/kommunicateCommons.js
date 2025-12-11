@@ -466,25 +466,15 @@ function KommunicateCommons() {
         return Kommunicate?._globals || kommunicate?._globals || applozic?._globals || {};
     }
 
-    function getPreviewSettingsFlag() {
-        var globals = resolveGlobals();
-        if (globals.blockPreview === true) {
-            return true;
-        }
-        if (globals.widgetSettings && globals.widgetSettings.blockPreview === true) {
-            return true;
-        }
-        var chatWidget = globals.appSettings?.chatWidget;
-        if (chatWidget) {
-            if (chatWidget.blockPreview === true || chatWidget.disableLinkPreview === true) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     _this.shouldBlockPreview = function () {
-        return getPreviewSettingsFlag();
+        var globals = resolveGlobals();
+        var chatWidget = globals.appSettings?.chatWidget;
+        return (
+            globals.blockPreview === true ||
+            globals.widgetSettings?.blockPreview === true ||
+            (chatWidget &&
+                (chatWidget.blockPreview === true || chatWidget.disableLinkPreview === true))
+        );
     };
 
     _this.isUrlBlockedForPreview = function (url) {
