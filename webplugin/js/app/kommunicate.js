@@ -2,6 +2,44 @@
  * all methods exposed to  users.
  */
 
+function activateConversationTabOnStartConversation() {
+    if (typeof document === 'undefined') {
+        return;
+    }
+    var conversationTabOptions = {
+        skipFaqTrigger: true,
+        skipConversationListView: true,
+        skipEmptyStateToggle: true,
+    };
+    var bottomTabsManager =
+        typeof getBottomTabsManager === 'function' ? getBottomTabsManager() : null;
+    if (bottomTabsManager && typeof bottomTabsManager.handleChange === 'function') {
+        bottomTabsManager.handleChange('conversations', conversationTabOptions);
+    } else if (bottomTabsManager && typeof bottomTabsManager.setActiveTab === 'function') {
+        bottomTabsManager.setActiveTab('conversations');
+        bottomTabsManager.setActiveSubsection &&
+            bottomTabsManager.setActiveSubsection('conversation-individual');
+    } else {
+        var sideboxContent = document.getElementById('mck-sidebox-content');
+        if (sideboxContent && sideboxContent.classList) {
+            sideboxContent.classList.remove('active-tab-no-conversations');
+            sideboxContent.classList.add(
+                'active-tab-conversations',
+                'active-subsection-conversation-individual'
+            );
+        }
+        typeof setActiveSubsectionState === 'function' &&
+            setActiveSubsectionState('conversation-individual');
+    }
+    if (typeof KommunicateUI !== 'undefined') {
+        KommunicateUI.toggleConversationsEmptyState &&
+            KommunicateUI.toggleConversationsEmptyState(false);
+        KommunicateUI.hideFaq && KommunicateUI.hideFaq();
+        KommunicateUI.setHasConversationHistory && KommunicateUI.setHasConversationHistory(true);
+        KommunicateUI.showChat && KommunicateUI.showChat({ keepConversationHeader: true });
+    }
+}
+
 // above code will expose below function from iframe window to browser window.
 var KOMMUNICATE_VERSION = window.kommunicate.version;
 KOMMUNICATE_VERSION === 'v2' && (parent.Kommunicate = window.Kommunicate);
@@ -33,6 +71,7 @@ $applozic.extend(true, Kommunicate, {
     },
     startConversation: function (params, callback) {
         kommunicateCommons.setWidgetStateOpen(true);
+        activateConversationTabOnStartConversation();
         params = typeof params == 'object' ? params : {};
         kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
         params = Kommunicate.updateConversationDetail(params);
