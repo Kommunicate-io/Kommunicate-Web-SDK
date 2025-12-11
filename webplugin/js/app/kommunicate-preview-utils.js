@@ -29,6 +29,10 @@
         if (!candidate) {
             return null;
         }
+        var trimmedCandidate = typeof candidate === 'string' ? candidate.trim() : '';
+        if (!trimmedCandidate || trimmedCandidate.startsWith('//')) {
+            return null;
+        }
         if (typeof globalContext.URL === 'function') {
             try {
                 return new globalContext.URL(candidate);
@@ -41,6 +45,15 @@
         }
         var anchor = globalContext.document.createElement('a');
         anchor.href = candidate;
+        var protocol = anchor.protocol || '';
+        var scheme = protocol.replace(':', '').toLowerCase();
+        if (!scheme || PREVIEW_ALLOWED_SCHEMES.indexOf(scheme) === -1) {
+            return null;
+        }
+        var hostOrOrigin = anchor.hostname || anchor.origin;
+        if (!hostOrOrigin) {
+            return null;
+        }
         return anchor;
     }
 
@@ -88,10 +101,20 @@
     }
 
     function isIpv6Blocked(hostname) {
-        if (!hostname || hostname.indexOf(':') === -1) {
+        if (!hostname) {
             return false;
         }
-        var normalized = hostname.toLowerCase();
+        var normalizedHostname = hostname;
+        if (
+            normalizedHostname[0] === '[' &&
+            normalizedHostname[normalizedHostname.length - 1] === ']'
+        ) {
+            normalizedHostname = normalizedHostname.slice(1, -1);
+        }
+        if (normalizedHostname.indexOf(':') === -1) {
+            return false;
+        }
+        var normalized = normalizedHostname.toLowerCase();
         return (
             normalized === '::1' ||
             normalized === '0:0:0:0:0:0:0:1' ||
