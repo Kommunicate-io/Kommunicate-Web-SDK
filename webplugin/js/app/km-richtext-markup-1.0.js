@@ -550,9 +550,11 @@ Kommunicate.markup = {
         return `
         {{#payload}}  
         <div class= "mck-rich-video-container">
-            <a href={{url}} target="_blank">{{url}}</a>
+            <a href="{{url}}" target="_blank">{{url}}</a>
         {{#source}}
-            <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+            {{#shouldShowIframe}}
+                <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+            {{/shouldShowIframe}}
         {{/source}}
         {{^source}}
         <video width="{{width||100%}}" height="{{height||250px}}" controls class= "mck-rich-video">
@@ -1059,10 +1061,24 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
 Kommunicate.markup.getVideoMarkup = function (options) {
     if (options && options.payload) {
         var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var isSafari = KommunicateUtils.isSafariBrowser();
         for (var i = 0; i < payload.length; i++) {
             var video = payload[i];
             video.width = video.width || '100%';
             video.height = video.height || '250px';
+            var firstSourceUrl = '';
+            if (video.source) {
+                if (Array.isArray(video.source) && video.source.length) {
+                    firstSourceUrl = video.source[0].url || video.source[0];
+                } else if (typeof video.source === 'object') {
+                    firstSourceUrl = video.source.url || '';
+                } else if (typeof video.source === 'string') {
+                    firstSourceUrl = video.source;
+                }
+            }
+            var videoUrlForCheck = firstSourceUrl || video.url;
+            var shouldHideIframe = isSafari && KommunicateUtils.isYoutubeUrl(videoUrlForCheck);
+            video.shouldShowIframe = !shouldHideIframe;
         }
         options.payload = payload;
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);

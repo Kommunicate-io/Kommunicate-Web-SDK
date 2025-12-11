@@ -205,7 +205,7 @@ function createKommunicateIframe() {
     }
     var kommunicateIframe = document.createElement('iframe');
 
-    // 🔹 NEW: give the iframe its own HTML document via srcdoc
+    // 🔹 NEW: give the iframe its own HTML document via inline markup
     // This document includes a referrer policy so subresources
     // (like the YouTube iframe) can get a proper Referer.
     var srcdocHtml =
@@ -217,8 +217,12 @@ function createKommunicateIframe() {
         '</head>' +
         '<body></body>' +
         '</html>';
-
-    kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
+    kommunicateIframe.setAttribute('src', 'about:blank');
+    kommunicateIframe.setAttribute(
+        'allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
+    );
+    kommunicateIframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
     kommunicateIframe.setAttribute('style', 'overflow:hidden;'); // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('scrolling', 'no'); // to fix scrollbars appearing before the chat widget loads on slow connections
@@ -232,6 +236,10 @@ function createKommunicateIframe() {
     var iframeDocument =
         kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
+
+    iframeDocument.open();
+    iframeDocument.write(srcdocHtml);
+    iframeDocument.close();
 
     iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto());
 
