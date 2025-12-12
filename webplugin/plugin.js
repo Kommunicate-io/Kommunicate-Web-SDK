@@ -275,17 +275,10 @@ function createKommunicateIframe() {
     };
     kommunicateIframe.addEventListener('load', onIframeLoad);
 
-    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        // Firefox waits for the iframe's onload before we can safely inject jQuery
-        var testClick = window.document.getElementById('kommunicate-widget-iframe');
-        testClick.onload = function () {
-            injectJqueryOnce();
-        };
-    } else {
-        window.setTimeout(function () {
-            injectJqueryOnce();
-        }, 500);
-    }
+    // Fallback: ensure jQuery injection even if the load event is unreliable.
+    window.setTimeout(function () {
+        injectJqueryOnce();
+    }, 500);
 }
 
 function addKommunicatePluginToIframe() {

@@ -1746,6 +1746,7 @@ KommunicateUI = {
         'iframe[src*="youtube.com/embed"], iframe[src*="youtube-nocookie.com/embed"]';
     var ELEMENT_NODE_TYPE = typeof Node !== 'undefined' ? Node.ELEMENT_NODE : 1;
     var originValue = '';
+    var youtubeOriginObserver = null;
 
     try {
         originValue = window.parent && window.parent.location && window.parent.location.origin;
@@ -1882,7 +1883,7 @@ KommunicateUI = {
     }
 
     function observeForNewIframes() {
-        if (!window.MutationObserver || !document) {
+        if (youtubeOriginObserver || !window.MutationObserver || !document) {
             return;
         }
 
@@ -1891,16 +1892,23 @@ KommunicateUI = {
             return;
         }
 
-        var observer = new MutationObserver(function (mutations) {
+        youtubeOriginObserver = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
                 mutation.addedNodes.forEach(inspectNodeForYoutube);
             });
         });
 
-        observer.observe(observerTarget, {
+        youtubeOriginObserver.observe(observerTarget, {
             childList: true,
             subtree: true,
         });
+    }
+
+    function teardownYoutubeOriginFix() {
+        if (youtubeOriginObserver) {
+            youtubeOriginObserver.disconnect();
+            youtubeOriginObserver = null;
+        }
     }
 
     function initYoutubeOriginFix() {
@@ -1915,4 +1923,6 @@ KommunicateUI = {
     } else {
         initYoutubeOriginFix();
     }
+
+    window.addEventListener('beforeunload', teardownYoutubeOriginFix);
 })();
