@@ -231,8 +231,11 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('class', 'kommunicate-custom-iframe');
     kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
     kommunicateIframe.setAttribute('data-url', window.location.href);
-    var userAgent = navigator.userAgent.toLowerCase();
-    var isSafari = userAgent.indexOf('safari') > -1 && userAgent.indexOf('chrome') === -1;
+    var userAgent = navigator.userAgent || '';
+    var isSafari =
+        /Safari/i.test(userAgent) &&
+        !/Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
+        !/Android/i.test(userAgent);
     var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
     if (iframeSupportsSrcdoc) {
         kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
