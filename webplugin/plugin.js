@@ -278,7 +278,7 @@ function createKommunicateIframe() {
     };
     kommunicateIframe.addEventListener('load', onIframeLoad);
 
-    // Fallback: ensure jQuery injection even if the load event is unreliable.
+    // Fallback: ensure jQuery injection even if the load event doesn't fire as expected.
     window.setTimeout(function () {
         injectJqueryOnce();
     }, 500);
