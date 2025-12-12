@@ -249,14 +249,19 @@ function createKommunicateIframe() {
     }
 
     document.body.appendChild(kommunicateIframe);
-    var iframeDocument =
-        kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    if (!iframeSupportsSrcdoc && iframeDocument) {
-        iframeDocument.open();
-        iframeDocument.write(srcdocHtml);
-        iframeDocument.close();
+    if (!iframeSupportsSrcdoc) {
+        var writeSrcdocIntoAboutBlank = function () {
+            var doc = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+            if (!doc) {
+                return;
+            }
+            doc.open();
+            doc.write(srcdocHtml);
+            doc.close();
+        };
+        kommunicateIframe.addEventListener('load', writeSrcdocIntoAboutBlank, { once: true });
     }
 
     var ensureDirection = function () {
@@ -268,41 +273,29 @@ function createKommunicateIframe() {
     ensureDirection();
 
     var jqueryInjected = false;
+    var injectRetries = 0;
     var injectJqueryOnce = function () {
         if (jqueryInjected) {
             return;
         }
-        var maxAttempts = 5;
-        var attemptDelay = 150;
-        var attemptInjection = function (attempt) {
-            if (jqueryInjected) {
-                return;
+        var doc =
+            kommunicateIframe &&
+            (kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document);
+        if (!doc || !doc.body || !doc.head) {
+            if (injectRetries++ < 20) {
+                window.setTimeout(injectJqueryOnce, 50);
             }
-            var iframeDocument =
-                kommunicateIframe &&
-                (kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document);
-            if (iframeDocument && iframeDocument.body) {
-                jqueryInjected = true;
-                injectJquery();
-                return;
-            }
-            if (attempt >= maxAttempts) {
-                console.warn('Kommunicate iframe document not ready for jQuery injection.');
-                return;
-            }
-            window.setTimeout(function () {
-                attemptInjection(attempt + 1);
-            }, attemptDelay);
-        };
-        attemptInjection(0);
+            return;
+        }
+        jqueryInjected = true;
+        injectJquery();
     };
 
     var onIframeLoad = function () {
         ensureDirection();
         injectJqueryOnce();
-        kommunicateIframe.removeEventListener('load', onIframeLoad);
     };
-    kommunicateIframe.addEventListener('load', onIframeLoad);
+    kommunicateIframe.addEventListener('load', onIframeLoad, { once: true });
 
     // Fallback: ensure jQuery injection even if the load event doesn't fire as expected.
     window.setTimeout(function () {
