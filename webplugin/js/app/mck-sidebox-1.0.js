@@ -13794,6 +13794,30 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
             var $mck_msg_inner;
+            function openConversationFromNotification($target) {
+                if (!$target || !$target.length) {
+                    return;
+                }
+                var tabId = $target.data('mck-id');
+                if (!tabId) {
+                    return;
+                }
+                var conversationId = $target.data('mck-conversationid');
+                var isGroup = Boolean($target.data('isgroup'));
+                kommunicateCommons.setWidgetStateOpen(true);
+                if (typeof activateConversationTabOnStartConversation === 'function') {
+                    activateConversationTabOnStartConversation();
+                }
+                KommunicateUI.hideFaq && KommunicateUI.hideFaq();
+                var params = {
+                    tabId: tabId,
+                    isGroup: isGroup,
+                };
+                if (conversationId) {
+                    params.conversationId = conversationId;
+                }
+                mckMessageLayout.loadTab(params);
+            }
             _this.init = function () {
                 $mck_msg_preview_visual_indicator_text = $applozic(
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
@@ -14127,7 +14151,7 @@ const firstVisibleMsg = {
                     function () {
                         kmWidgetEvents.eventTracking(eventMapping.onNotificationClick);
                         _this.hideMessagePreview();
-                        KommunicateUI.hideFaq();
+                        openConversationFromNotification($applozic(this));
                     }
                 );
                 !IS_MCK_TAB_FOCUSED && mckNotificationService.clearFlashPageTitleInterval();
