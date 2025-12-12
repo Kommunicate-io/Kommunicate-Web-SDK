@@ -910,7 +910,13 @@ KommunicateUI = {
         options = options || {};
         setActiveSubsectionState('conversation-list');
         if (!kommunicateCommons.isModernLayoutEnabled()) {
-            kommunicateCommons.show('#mck-contacts-content');
+            var shouldShowContacts =
+                options.skipEmptyStateToggle || KommunicateUI.hasConversationHistory;
+            if (shouldShowContacts) {
+                kommunicateCommons.show('#mck-contacts-content');
+            } else {
+                kommunicateCommons.hide('#mck-contacts-content');
+            }
         }
         kommunicateCommons.hide('.km-option-faq');
         topBarManagerRef.showConversationHeader();
@@ -1856,12 +1862,31 @@ KommunicateUI = {
         youtubeIframes.forEach(addOriginAndPermissions);
     }
 
+    function getMutationObserverTarget() {
+        if (!document) {
+            return null;
+        }
+
+        var selectors = [
+            '#mck-message-cell .mck-message-inner',
+            '.mck-message-inner.mck-group-inner',
+            '#mck-sidebox .mck-message-inner',
+        ];
+        for (var i = 0; i < selectors.length; i++) {
+            var target = document.querySelector(selectors[i]);
+            if (target) {
+                return target;
+            }
+        }
+        return document.body || document.documentElement;
+    }
+
     function observeForNewIframes() {
         if (!window.MutationObserver || !document) {
             return;
         }
 
-        var observerTarget = document.body || document.documentElement;
+        var observerTarget = getMutationObserverTarget();
         if (!observerTarget) {
             return;
         }
