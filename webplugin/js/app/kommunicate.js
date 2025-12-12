@@ -230,21 +230,25 @@ $applozic.extend(true, Kommunicate, {
     },
     openConversationList: function () {
         kommunicateCommons.setWidgetStateOpen(true);
+        activateConversationTabOnStartConversation();
         window.$applozic.fn.applozic('loadTab', '');
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
     openConversation: function (groupId, groupDetail) {
         kommunicateCommons.setWidgetStateOpen(true);
+        activateConversationTabOnStartConversation();
         if (groupId) {
             window.$applozic.fn.applozic('loadGroupTab', groupId);
         } else if (groupDetail && groupDetail.clientGroupId) {
             window.$applozic.fn.applozic('loadGroupTabByClientGroupId', groupDetail);
         }
+        KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
         kommunicateCommons.setWidgetStateOpen(true);
+        activateConversationTabOnStartConversation();
         window.$applozic.fn.applozic('loadTab', userId);
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
