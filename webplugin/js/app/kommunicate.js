@@ -422,6 +422,9 @@ $applozic.extend(true, Kommunicate, {
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
+        if (typeof activateConversationTabOnStartConversation === 'function') {
+            activateConversationTabOnStartConversation();
+        }
         window.$applozic.fn.applozic('mckLaunchSideboxChat');
     },
     triggerEvent: function (event, options) {
