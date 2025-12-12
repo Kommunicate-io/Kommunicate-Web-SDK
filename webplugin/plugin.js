@@ -192,8 +192,13 @@ function languageDirectionChangeAuto() {
         'syr',
         'lrc',
     ];
-    const lang = navigator.language.toLowerCase();
-    return rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+    if (typeof navigator === 'undefined') {
+        return 'ltr';
+    }
+    const locale = (navigator.language || navigator.userLanguage || 'en')
+        .toLowerCase()
+        .split(/[-_]/)[0];
+    return rtlLanguages.includes(locale) ? 'rtl' : 'ltr';
 }
 
 // Create element iframe for kommunicate widget
@@ -267,8 +272,29 @@ function createKommunicateIframe() {
         if (jqueryInjected) {
             return;
         }
-        jqueryInjected = true;
-        injectJquery();
+        var maxAttempts = 5;
+        var attemptDelay = 150;
+        var attemptInjection = function (attempt) {
+            if (jqueryInjected) {
+                return;
+            }
+            var iframeDocument =
+                kommunicateIframe &&
+                (kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document);
+            if (iframeDocument && iframeDocument.body) {
+                jqueryInjected = true;
+                injectJquery();
+                return;
+            }
+            if (attempt >= maxAttempts) {
+                console.warn('Kommunicate iframe document not ready for jQuery injection.');
+                return;
+            }
+            window.setTimeout(function () {
+                attemptInjection(attempt + 1);
+            }, attemptDelay);
+        };
+        attemptInjection(0);
     };
 
     var onIframeLoad = function () {
@@ -388,6 +414,9 @@ function injectJquery() {
             kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
+        if (!addableDocument || !addableDocument.body) {
+            return;
+        }
         addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
 
