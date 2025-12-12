@@ -526,6 +526,14 @@ KommunicateUtils = {
         } catch (error) {
             // fall through
         }
+
+        // Fallback: try extracting the video ID using a regex in case the URL parsing above failed.
+        var fallbackMatch = sanitized.match(
+            /(?:v=|\/embed\/|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})/
+        );
+        if (fallbackMatch && fallbackMatch[1]) {
+            return 'https://www.youtube.com/watch?v=' + fallbackMatch[1];
+        }
         return '';
     },
     isSafariBrowser: function () {
