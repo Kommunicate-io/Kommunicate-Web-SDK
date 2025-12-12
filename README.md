@@ -233,7 +233,7 @@ You can copy the below script and replace the required parameters manually. Note
 
 Pass a `customLabelLocales` map inside `kommunicateSettings` to register new locales from your JSON payload at runtime. Each key is a locale code and its value mirrors the dotted-key JSON used in `webplugin/js/app/labels/locales`. When the widget loads it pushes these payloads through `KMLabelTranslationHelpers`, so your one-line JSON easily becomes a fully localized experience.
 
-```
+```json
 "customLabelLocales": {
   "pa": {
     "conversations.title": "ਗੱਲਬਾਤ",
