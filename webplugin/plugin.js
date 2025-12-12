@@ -217,7 +217,6 @@ function createKommunicateIframe() {
         '</head>' +
         '<body></body>' +
         '</html>';
-    kommunicateIframe.setAttribute('src', 'about:blank');
     kommunicateIframe.setAttribute(
         'allow',
         'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
@@ -232,26 +231,59 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('class', 'kommunicate-custom-iframe');
     kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
     kommunicateIframe.setAttribute('data-url', window.location.href);
+    var userAgent = navigator.userAgent.toLowerCase();
+    var isSafari = userAgent.indexOf('safari') > -1 && userAgent.indexOf('chrome') === -1;
+    var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
+    if (iframeSupportsSrcdoc) {
+        kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
+    } else {
+        kommunicateIframe.setAttribute('src', 'about:blank');
+    }
+
     document.body.appendChild(kommunicateIframe);
     var iframeDocument =
         kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    iframeDocument.open();
-    iframeDocument.write(srcdocHtml);
-    iframeDocument.close();
+    if (!iframeSupportsSrcdoc && iframeDocument) {
+        iframeDocument.open();
+        iframeDocument.write(srcdocHtml);
+        iframeDocument.close();
+    }
 
-    iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto());
+    var ensureDirection = function () {
+        var doc = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+        if (doc && doc.body) {
+            doc.body.setAttribute('dir', languageDirectionChangeAuto());
+        }
+    };
+    ensureDirection();
+
+    var jqueryInjected = false;
+    var injectJqueryOnce = function () {
+        if (jqueryInjected) {
+            return;
+        }
+        jqueryInjected = true;
+        injectJquery();
+    };
+
+    var onIframeLoad = function () {
+        ensureDirection();
+        injectJqueryOnce();
+        kommunicateIframe.removeEventListener('load', onIframeLoad);
+    };
+    kommunicateIframe.addEventListener('load', onIframeLoad);
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        // Do Firefox-related activities
+        // Firefox waits for the iframe's onload before we can safely inject jQuery
         var testClick = window.document.getElementById('kommunicate-widget-iframe');
         testClick.onload = function () {
-            injectJquery();
+            injectJqueryOnce();
         };
     } else {
         window.setTimeout(function () {
-            injectJquery();
+            injectJqueryOnce();
         }, 500);
     }
 }
