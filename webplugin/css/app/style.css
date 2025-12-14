@@ -132,6 +132,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-header {
@@ -141,7 +142,7 @@ textarea {
   height: 63.7px;
   border-radius: 8px;
   background-color: var(--km-modal-header-bg);
-  color: var(--km-modal-header-color);
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-body {
@@ -277,7 +278,7 @@ textarea {
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
   background-color: var(--km-modal-header-bg, #716fb3);
-  color: var(--km-modal-header-color, #fff);
+  color: var(--km-on-primary, #fff);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -324,6 +325,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: inline-block;
   vertical-align: middle;
   font-weight: 400;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-form-group-container {
