@@ -339,6 +339,7 @@ const firstVisibleMsg = {
         var INIT_APP_DATA = {};
         var IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = false;
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
+        var PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
@@ -1972,6 +1973,17 @@ const firstVisibleMsg = {
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
             var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
+            var PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY = 150;
+
+            function autoOpenPreChatLeadCollectionModal(launcher) {
+                if (!launcher || PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED) {
+                    return;
+                }
+                PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = true;
+                setTimeout(function () {
+                    launcher.click();
+                }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
+            }
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -2215,6 +2227,8 @@ const firstVisibleMsg = {
                                 }
                             );
                         }
+                        PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
+                        autoOpenPreChatLeadCollectionModal(kmAnonymousChatLauncher);
 
                         if (
                             $applozic('#km-form-chat-login .km-form-group input').hasClass('n-vis')
