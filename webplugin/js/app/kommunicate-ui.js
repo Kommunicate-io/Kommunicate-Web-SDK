@@ -1004,6 +1004,14 @@ KommunicateUI = {
                 : kommunicateCommons.show(contactsContent));
         messageInner &&
             (show ? kommunicateCommons.hide(messageInner) : kommunicateCommons.show(messageInner));
+        const sideboxEmptyClass = 'km-empty-conversation-active';
+        kommunicateCommons.modifyClassList(
+            {
+                id: ['mck-sidebox'],
+            },
+            show ? sideboxEmptyClass : '',
+            show ? '' : sideboxEmptyClass
+        );
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');

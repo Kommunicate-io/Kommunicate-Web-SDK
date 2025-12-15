@@ -11,6 +11,16 @@
     #mck-tab-status {
         @extend %km-hidden;
     }
+
+    #mck-sidebox-ft {
+        @extend %km-hidden;
+    }
+}
+
+.km-empty-conversation-active {
+    #mck-sidebox-ft {
+        @extend %km-hidden;
+    }
 }
 
 %km-tab-conversation-base {
