@@ -13750,12 +13750,12 @@ const firstVisibleMsg = {
                     $mck_text_box.removeAttr('required');
                     $mck_msg_sbmt.attr('disabled', false);
                     $file_remove.attr('disabled', false);
-                    kommunicateCommons.hide('.mck-file-box.' + randomId + ' .km-progress');
+                    kommunicateCommons.hide('.mck-file-box.' + fileboxId + ' .km-progress');
                     FILE_META.push(file.fileMeta);
                 } else {
                     $mck_msg_sbmt.attr('disabled', true);
                     $file_remove.attr('disabled', true);
-                    kommunicateCommons.show('.mck-file-box.' + randomId + ' .km-progress');
+                    kommunicateCommons.show('.mck-file-box.' + fileboxId + ' .km-progress');
                 }
             };
             _this.handleEncryptedElements = function (encryptedElements) {
