@@ -4054,7 +4054,11 @@ div#mck-rated:before {
   padding: 8px 16px;
   border: none;
   background: #ffffff;
+  color: #1c1c1c;
   gap: 4px;
+}
+#mck-voice-interface .mck-voice-interface-footer-buttons > button svg {
+  fill: currentColor;
 }
 #mck-voice-interface .mck-voice-interface-back-btn {
   display: flex;
