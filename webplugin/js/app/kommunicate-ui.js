@@ -141,6 +141,25 @@ KommunicateUI = {
     },
 
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
+        var previewUtils = window.KommunicatePreviewUtils;
+
+        if (previewUtils.shouldBlockPreview()) {
+            if (window.console && window.console.info) {
+                window.console.info(
+                    'Link preview suppressed because blockUrlPreview flag is enabled.'
+                );
+            }
+            return;
+        }
+        if (previewUtils.isUrlBlockedForPreview(url)) {
+            if (window.console && window.console.warn) {
+                window.console.warn(
+                    'Preview skipped because URL is blocked for metadata/external fetch.',
+                    url
+                );
+            }
+            return;
+        }
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,

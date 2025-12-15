@@ -6865,14 +6865,18 @@ const firstVisibleMsg = {
                         }
                     },
                     error: function (xhr, desc, err) {
-                        if (xhr.status === 401) {
+                        var status = xhr && xhr.status;
+                        if (status === 401) {
                             ALStorage.clearSessionStorageElements();
                             console.log('Please reload page.');
                         }
                         CONTACT_SYNCING = false;
                         kommunicateCommons.hide('#mck-contact-loading');
-                        w.console.log('Unable to load messages. Please reload page.');
-                        typeof callback == 'function' && callback(null, err);
+                        w.console.log(
+                            'Unable to load messages. Please reload page.',
+                            desc || err || status
+                        );
+                        typeof callback == 'function' && callback(null, err || desc || status);
                     },
                 });
             };
