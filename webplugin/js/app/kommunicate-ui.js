@@ -1878,7 +1878,9 @@ KommunicateUI = {
 
         if (node.querySelectorAll) {
             var youtubeIframes = node.querySelectorAll(YOUTUBE_IFRAME_SELECTOR);
-            youtubeIframes.forEach(addOriginAndPermissions);
+            for (var i = 0; i < youtubeIframes.length; i++) {
+                addOriginAndPermissions(youtubeIframes[i]);
+            }
         }
     }
 
@@ -1887,7 +1889,9 @@ KommunicateUI = {
             return;
         }
         var youtubeIframes = document.querySelectorAll(YOUTUBE_IFRAME_SELECTOR);
-        youtubeIframes.forEach(addOriginAndPermissions);
+        for (var i = 0; i < youtubeIframes.length; i++) {
+            addOriginAndPermissions(youtubeIframes[i]);
+        }
     }
 
     function getMutationObserverTarget() {
@@ -1920,9 +1924,13 @@ KommunicateUI = {
         }
 
         youtubeOriginObserver = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
-                mutation.addedNodes.forEach(inspectNodeForYoutube);
-            });
+            for (var i = 0; i < mutations.length; i++) {
+                var mutation = mutations[i];
+                var addedNodes = mutation.addedNodes;
+                for (var j = 0; j < addedNodes.length; j++) {
+                    inspectNodeForYoutube(addedNodes[j]);
+                }
+            }
         });
 
         youtubeOriginObserver.observe(observerTarget, {

@@ -25,17 +25,26 @@
         return hostname.toLowerCase().replace(/\.$/, '');
     }
 
+    function stringStartsWith(value, prefix) {
+        if (typeof value !== 'string' || typeof prefix !== 'string') {
+            return false;
+        }
+        return typeof value.startsWith === 'function'
+            ? value.startsWith(prefix)
+            : value.indexOf(prefix) === 0;
+    }
+
     function parsePreviewUrl(candidate) {
         if (!candidate) {
             return null;
         }
         var trimmedCandidate = typeof candidate === 'string' ? candidate.trim() : '';
-        if (!trimmedCandidate || trimmedCandidate.startsWith('//')) {
+        if (!trimmedCandidate || stringStartsWith(trimmedCandidate, '//')) {
             return null;
         }
         if (typeof globalContext.URL === 'function') {
             try {
-                return new globalContext.URL(candidate);
+                return new globalContext.URL(trimmedCandidate);
             } catch (error) {
                 return null;
             }
@@ -44,7 +53,7 @@
             return null;
         }
         var anchor = globalContext.document.createElement('a');
-        anchor.href = candidate;
+        anchor.href = trimmedCandidate;
         var protocol = anchor.protocol || '';
         var scheme = protocol.replace(':', '').toLowerCase();
         if (!scheme || PREVIEW_ALLOWED_SCHEMES.indexOf(scheme) === -1) {
@@ -89,15 +98,6 @@
         if (first === 100 && second >= 64 && second <= 127) return true;
         if (first === 198 && (second === 18 || second === 19)) return true;
         return false;
-    }
-
-    function stringStartsWith(value, prefix) {
-        if (typeof value !== 'string' || typeof prefix !== 'string') {
-            return false;
-        }
-        return typeof value.startsWith === 'function'
-            ? value.startsWith(prefix)
-            : value.indexOf(prefix) === 0;
     }
 
     function isIpv6Blocked(hostname) {
