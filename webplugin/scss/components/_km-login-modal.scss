@@ -256,6 +256,7 @@ input[type='number']::-webkit-outer-spin-button {
 
 .km-input-width {
     width: 100%;
+    max-width: 320px;
 }
 
 @media (max-width: 600px) {
