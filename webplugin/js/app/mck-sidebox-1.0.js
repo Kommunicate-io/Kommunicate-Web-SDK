@@ -2613,41 +2613,57 @@ const firstVisibleMsg = {
 
                 function ensureConversationForFileDrop() {
                     if (!fileDropConversationPromise) {
-                        var activeConversationId = getActiveConversationId();
-                        if (activeConversationId) {
-                            Kommunicate.openConversation(activeConversationId);
-                        } else {
-                            kommunicateIframe.classList.remove(
-                                'km-iframe-dimension-with-popup',
-                                'chat-popup-widget-horizontal'
-                            );
+                        var expectedConversationId = null;
+                        kommunicateIframe.classList.remove(
+                            'km-iframe-dimension-with-popup',
+                            'chat-popup-widget-horizontal'
+                        );
+                        kommunicateCommons.hide('#chat-popup-widget-container');
+                        kommunicateCommons.setWidgetStateOpen(true);
+                        kommunicateIframe.classList.remove('km-iframe-closed');
+                        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+                        kommunicateCommons.hide('#applozic-badge-count');
+                        kommunicateIframe.style.width = '';
+                        POPUP_WIDGET
+                            ? (kommunicateIframe.classList.add('km-iframe-dimension-with-popup'),
+                              (popUpcloseButton.style.display = 'flex'))
+                            : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
 
-                            kommunicateCommons.hide('#chat-popup-widget-container');
-                            kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
-                            const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                            mckMessageService.createNewConversation(
-                                conversationDetail,
-                                function (groupId) {
-                                    /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
-                                    console.log('Conversation created for dropped file:', groupId);
-                                }
-                            );
-                        }
+                        const conversationDetail = mckGroupLayout.createGroupDefaultSettings();
 
                         fileDropConversationPromise = new Promise(function (resolve, reject) {
                             var isResolved = false;
-                            var pollInterval = setInterval(function () {
+                            var pollInterval = null;
+                            var timeoutHandle = null;
+
+                            function clearFileDropTimers() {
+                                pollInterval && clearInterval(pollInterval);
+                                timeoutHandle && clearTimeout(timeoutHandle);
+                            }
+
+                            function tryResolveWithActiveConversation() {
+                                if (!expectedConversationId) {
+                                    return;
+                                }
                                 var activeConversationId = getActiveConversationId();
-                                if (activeConversationId) {
+                                if (
+                                    activeConversationId &&
+                                    String(activeConversationId) === String(expectedConversationId)
+                                ) {
                                     isResolved = true;
-                                    clearInterval(pollInterval);
-                                    timeoutHandle && clearTimeout(timeoutHandle);
+                                    clearFileDropTimers();
                                     resolve(activeConversationId);
                                 }
-                            }, FILE_DROP_CONVERSATION_POLL_INTERVAL);
-                            var timeoutHandle = setTimeout(function () {
+                            }
+
+                            pollInterval = setInterval(
+                                tryResolveWithActiveConversation,
+                                FILE_DROP_CONVERSATION_POLL_INTERVAL
+                            );
+
+                            timeoutHandle = setTimeout(function () {
                                 if (!isResolved) {
-                                    clearInterval(pollInterval);
+                                    clearFileDropTimers();
                                     reject(
                                         new Error(
                                             'Timed out creating conversation for dropped file.'
@@ -2655,6 +2671,32 @@ const firstVisibleMsg = {
                                     );
                                 }
                             }, FILE_DROP_CONVERSATION_TIMEOUT);
+                            mckMessageService.createNewConversation(
+                                conversationDetail,
+                                function (groupId) {
+                                    // kommunicate.displayKommunicateWidget(true);
+                                    expectedConversationId = normalizeConversationId(groupId);
+                                    if (!expectedConversationId) {
+                                        isResolved = true;
+                                        clearFileDropTimers();
+                                        reject(
+                                            new Error(
+                                                'Unable to determine conversation for dropped file.'
+                                            )
+                                        );
+                                        return;
+                                    }
+                                    try {
+                                        Kommunicate.openConversation(expectedConversationId);
+                                    } catch (error) {
+                                        console.error(
+                                            'Unable to open conversation created for file drop:',
+                                            error
+                                        );
+                                    }
+                                    tryResolveWithActiveConversation();
+                                }
+                            );
                         });
                     }
                     return fileDropConversationPromise;
