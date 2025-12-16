@@ -45,7 +45,7 @@ $known-prefixes
  o - opera browsers
 **/
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
@@ -132,6 +132,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-header {
@@ -141,7 +142,7 @@ textarea {
   height: 63.7px;
   border-radius: 8px;
   background-color: var(--km-modal-header-bg);
-  color: var(--km-modal-header-color);
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-body {
@@ -199,7 +200,6 @@ textarea {
 .km-modal input,
 .km-modal textarea,
 .km-modal select {
-  height: 40px;
   border-radius: 3px;
   border: 2px solid var(--km-modal-input-border);
 }
@@ -278,7 +278,7 @@ textarea {
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
   background-color: var(--km-modal-header-bg, #716fb3);
-  color: var(--km-modal-header-color, #fff);
+  color: var(--km-on-primary, #fff);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -290,7 +290,7 @@ textarea {
   margin-bottom: 10px;
   width: 100%;
   height: 34px;
-  padding: 10px 8px;
+  padding: 6px;
   font-size: 14px;
   line-height: 1.42857143;
   color: #1c1c1c;
@@ -325,6 +325,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: inline-block;
   vertical-align: middle;
   font-weight: 400;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-form-group-container {
@@ -333,6 +334,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .km-input-width {
   width: 100%;
+  max-width: 320px;
 }
 
 @media (max-width: 600px) {
@@ -4053,7 +4055,11 @@ div#mck-rated:before {
   padding: 8px 16px;
   border: none;
   background: #ffffff;
+  color: #1c1c1c;
   gap: 4px;
+}
+#mck-voice-interface .mck-voice-interface-footer-buttons > button svg {
+  fill: currentColor;
 }
 #mck-voice-interface .mck-voice-interface-back-btn {
   display: flex;

@@ -76,6 +76,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-whats-new.js'),
     path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
     path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),
+    path.resolve(__dirname, 'js/app/kommunicate-preview-utils.js'),
     path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
     path.resolve(__dirname, 'js/app/km-rich-text-event-handler.js'),
     path.resolve(__dirname, 'js/app/kommunicate-ui.js'),

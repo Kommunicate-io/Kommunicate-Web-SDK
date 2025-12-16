@@ -30,6 +30,22 @@
 #km-voice-recorder > #recorder-right-btn {
     margin-left: auto;
 }
+#km-voice-recorder #send-btn .mck-icon-send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    text-indent: 0 !important;
+}
+#km-voice-recorder #send-btn .mck-icon-send svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+    display: block;
+}
 #km-voice-recorder > #recorder-body > div.recorder-control {
     float: left;
 }
