@@ -192,8 +192,13 @@ function languageDirectionChangeAuto() {
         'syr',
         'lrc',
     ];
-    const lang = navigator.language.toLowerCase();
-    return rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
+    if (typeof navigator === 'undefined') {
+        return 'ltr';
+    }
+    const locale = (navigator.language || navigator.userLanguage || 'en')
+        .toLowerCase()
+        .split(/[-_]/)[0];
+    return rtlLanguages.includes(locale) ? 'rtl' : 'ltr';
 }
 
 // Create element iframe for kommunicate widget
@@ -205,7 +210,7 @@ function createKommunicateIframe() {
     }
     var kommunicateIframe = document.createElement('iframe');
 
-    // 🔹 NEW: give the iframe its own HTML document via srcdoc
+    // 🔹 NEW: give the iframe its own HTML document via inline markup
     // This document includes a referrer policy so subresources
     // (like the YouTube iframe) can get a proper Referer.
     var srcdocHtml =
@@ -217,8 +222,11 @@ function createKommunicateIframe() {
         '</head>' +
         '<body></body>' +
         '</html>';
-
-    kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
+    kommunicateIframe.setAttribute(
+        'allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
+    );
+    kommunicateIframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
     kommunicateIframe.setAttribute('style', 'overflow:hidden;'); // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('scrolling', 'no'); // to fix scrollbars appearing before the chat widget loads on slow connections
@@ -228,24 +236,71 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('class', 'kommunicate-custom-iframe');
     kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
     kommunicateIframe.setAttribute('data-url', window.location.href);
+    var userAgent = navigator.userAgent || '';
+    var isSafari =
+        /Safari/i.test(userAgent) &&
+        !/Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
+        !/Android/i.test(userAgent);
+    var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
+    if (iframeSupportsSrcdoc) {
+        kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
+    } else {
+        kommunicateIframe.setAttribute('src', 'about:blank');
+    }
+
     document.body.appendChild(kommunicateIframe);
-    var iframeDocument =
-        kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto());
-
-    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        // Do Firefox-related activities
-        var testClick = window.document.getElementById('kommunicate-widget-iframe');
-        testClick.onload = function () {
-            injectJquery();
+    if (!iframeSupportsSrcdoc) {
+        var writeSrcdocIntoAboutBlank = function () {
+            var doc = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+            if (!doc) {
+                return;
+            }
+            doc.open();
+            doc.write(srcdocHtml);
+            doc.close();
         };
-    } else {
-        window.setTimeout(function () {
-            injectJquery();
-        }, 500);
+        kommunicateIframe.addEventListener('load', writeSrcdocIntoAboutBlank, { once: true });
     }
+
+    var ensureDirection = function () {
+        var doc = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+        if (doc && doc.body) {
+            doc.body.setAttribute('dir', languageDirectionChangeAuto());
+        }
+    };
+    ensureDirection();
+
+    var jqueryInjected = false;
+    var injectRetries = 0;
+    var injectJqueryOnce = function () {
+        if (jqueryInjected) {
+            return;
+        }
+        var doc =
+            kommunicateIframe &&
+            (kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document);
+        if (!doc || !doc.body || !doc.head) {
+            if (injectRetries++ < 20) {
+                window.setTimeout(injectJqueryOnce, 50);
+            }
+            return;
+        }
+        jqueryInjected = true;
+        injectJquery();
+    };
+
+    var onIframeLoad = function () {
+        ensureDirection();
+        injectJqueryOnce();
+    };
+    kommunicateIframe.addEventListener('load', onIframeLoad, { once: true });
+
+    // Fallback: ensure jQuery injection even if the load event doesn't fire as expected.
+    window.setTimeout(function () {
+        injectJqueryOnce();
+    }, 500);
 }
 
 function addKommunicatePluginToIframe() {
@@ -352,6 +407,9 @@ function injectJquery() {
             kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
+        if (!addableDocument || !addableDocument.body) {
+            return;
+        }
         addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
 

@@ -45,7 +45,7 @@ $known-prefixes
  o - opera browsers
 **/
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
@@ -132,6 +132,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-header {
@@ -141,7 +142,7 @@ textarea {
   height: 63.7px;
   border-radius: 8px;
   background-color: var(--km-modal-header-bg);
-  color: var(--km-modal-header-color);
+  color: var(--km-on-primary, #fff);
 }
 
 .km-modal-body {
@@ -199,7 +200,6 @@ textarea {
 .km-modal input,
 .km-modal textarea,
 .km-modal select {
-  height: 40px;
   border-radius: 3px;
   border: 2px solid var(--km-modal-input-border);
 }
@@ -278,7 +278,7 @@ textarea {
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
   background-color: var(--km-modal-header-bg, #716fb3);
-  color: var(--km-modal-header-color, #fff);
+  color: var(--km-on-primary, #fff);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -290,7 +290,7 @@ textarea {
   margin-bottom: 10px;
   width: 100%;
   height: 34px;
-  padding: 10px 8px;
+  padding: 6px;
   font-size: 14px;
   line-height: 1.42857143;
   color: #1c1c1c;
@@ -325,6 +325,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: inline-block;
   vertical-align: middle;
   font-weight: 400;
+  color: var(--km-on-primary, #fff);
 }
 
 .km-form-group-container {
@@ -333,6 +334,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .km-input-width {
   width: 100%;
+  max-width: 320px;
 }
 
 @media (max-width: 600px) {
@@ -421,7 +423,7 @@ input[type=number]::-webkit-outer-spin-button {
   min-height: 70px;
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   width: 100%;
-  max-width: 390px;
+  max-width: 320px;
   cursor: pointer;
   /* Reveal close button on hover and when any child receives focus */
   /* Keyboard focus ring on the close button container */
@@ -436,24 +438,25 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 8px 0;
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn-container {
   position: absolute;
-  top: 8px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
+  top: 50%;
+  left: -18px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 2;
+  transform: translateY(-50%);
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn-container:focus-visible {
   outline: 2px solid rgba(76, 102, 205, 0.6);
@@ -478,6 +481,10 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 0;
   box-sizing: border-box;
 }
+.chat-popup-widget-container .chat-popup-widget-close-btn svg {
+  width: 14px;
+  height: 14px;
+}
 .chat-popup-widget-container .chat-popup-widget-text {
   margin: 0;
   padding: 20px;
@@ -485,10 +492,8 @@ input[type=number]::-webkit-outer-spin-button {
 .chat-popup-widget-container--horizontal {
   border-radius: 40px !important;
   bottom: 5px;
-  right: 5px;
-}
-.chat-popup-widget-container--horizontal .chat-popup-widget-text {
-  padding-right: 80px;
+  right: 0;
+  max-width: 360px;
 }
 .chat-popup-widget-container--horizontal.km-animate {
   opacity: 0;
@@ -504,6 +509,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .chat-popup-widget-container--horizontal.align-left {
   right: 60px;
+}
+.chat-popup-widget-container--horizontal .chat-popup-widget-text {
+  padding: 20px 64px 20px 20px;
 }
 .chat-popup-widget-container--vertical {
   border-radius: 20px;
@@ -531,6 +539,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-text-wrapper {
   min-height: 75px;
+}
+.chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
+  top: -10px;
+  left: -12px;
+  transform: none;
 }
 .chat-popup-widget-container--actionable {
   border-radius: 20px;
@@ -833,7 +846,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: calc(100% - 80px);
   }
   .chat-popup-widget-container--horizontal {
-    padding-right: 70px;
+    padding-left: 28px;
   }
   .chat-popup-widget-container--actionable {
     width: calc(100% - 50px);
@@ -850,7 +863,7 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
   .chat-popup-widget-container--horizontal {
     width: 61% !important;
-    padding-right: 70px;
+    padding-left: 28px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
     display: flex;
@@ -866,7 +879,7 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
   .chat-popup-widget-container--horizontal {
     width: 65% !important;
-    padding-right: 70px;
+    padding-left: 28px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
     display: flex;
@@ -886,7 +899,7 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 320px) {
   .chat-popup-widget-container--horizontal {
     width: 61% !important;
-    padding-right: 70px;
+    padding-left: 28px;
   }
   .chat-popup-widget-container--horizontal.km-animate .chat-popup-widget-text {
     margin: 7px 7px 7px 15px;
@@ -904,11 +917,6 @@ input[type=number]::-webkit-outer-spin-button {
   }
   .chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
     display: flex;
-  }
-}
-@media only screen and (min-device-width: 420px) {
-  .chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
-    padding-left: 15px;
   }
 }
 #km-faqanswer {
@@ -1277,7 +1285,6 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 18px;
   z-index: 10;
   pointer-events: none;
 }
@@ -2747,8 +2754,18 @@ input[type=number]::-webkit-outer-spin-button {
 
 .km-cta-multi-button-container .km-cta-button,
 .km-cta-multi-button-container button.km-quick-replies {
-  color: var(--km-accent, #5f46f8);
-  border-color: var(--km-accent, #5f46f8);
+  color: #5553b7;
+  border-color: #5553b7;
+}
+
+.km-cta-multi-button-container .km-cta-button svg path,
+.km-cta-multi-button-container button.km-quick-replies svg path {
+  stroke: #5553b7;
+}
+
+.km-cta-multi-button-container .km-cta-button svg .km-custom-widget-stroke,
+.km-cta-multi-button-container button.km-quick-replies svg .km-custom-widget-stroke {
+  stroke: #5553b7 !important;
 }
 
 .km-undecorated-link {
@@ -3242,6 +3259,7 @@ div#mck-rated:before {
 .mck-csat-text-1 {
   text-align: center;
   font-size: 14px;
+  margin-top: 16px;
 }
 .mck-csat-text-1 > span {
   display: block;
@@ -3382,6 +3400,7 @@ div#mck-rated:before {
 .mck-running-on {
   text-align: center;
   padding: 0 4px 6px;
+  margin-top: 10px;
   vertical-align: middle;
   color: #67757e;
   /* border-top: 1px solid #E5E5E5; */
@@ -4036,7 +4055,11 @@ div#mck-rated:before {
   padding: 8px 16px;
   border: none;
   background: #ffffff;
+  color: #1c1c1c;
   gap: 4px;
+}
+#mck-voice-interface .mck-voice-interface-footer-buttons > button svg {
+  fill: currentColor;
 }
 #mck-voice-interface .mck-voice-interface-back-btn {
   display: flex;
@@ -4483,10 +4506,6 @@ div#mck-rated:before {
 }
 .km-whats-new-link:hover {
   text-decoration: underline;
-}
-
-.layout-modern .mck-sidebox .mck-sidebox-content {
-  padding-bottom: 30px;
 }
 
 .layout-classic .km-bottom-tab-wrapper,

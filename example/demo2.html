@@ -11,13 +11,19 @@
         <script>
             (function (d, m) {
                 var kommunicateSettings = {
+                    // appId: '39187bcfc4dfd93e485509a19be3ed665',
                     appId: 'kommunicate-support',
                     popupWidget: true,
                     layout: 'modern',
                     automaticChatOpenOnNavigation: true,
                     // appSettings: {
                     //     chatWidget: {
-                    //         popup: true
+                    //         blockUrlPreview: true,
+                    //     },
+                    // },
+                    // appSettings: {
+                    //     chatWidget: {
+                    //         popup: false
                     //     },
                     //     chatPopupMessage: [
                     //         {
@@ -27,7 +33,8 @@
                     //     ],
                     // },
                     widgetSettings: {
-                        primaryColor: '#fff000',
+                        popup: false,
+                        // primaryColor: '#fff000',
                         // Provide a `theme` map to override exposed CSS vars.
                         // Alias keys like `chatHeaderText` explain what each color controls.
                         // theme: {
@@ -73,7 +80,8 @@
                 s.type = 'text/javascript';
                 s.async = true;
                 var disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-                s.src = '/kommunicate-widget-3.0.min.js' + (disableCache ? '?_=' + Date.now() : '');
+                var scriptUrl = '/kommunicate-widget-3.0.min.js';
+                s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
                 var h = document.getElementsByTagName('head')[0];
                 h.appendChild(s);
                 window.kommunicate = m;

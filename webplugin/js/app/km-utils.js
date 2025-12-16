@@ -460,6 +460,96 @@ KommunicateUtils = {
             return false;
         }
     },
+    isYoutubeUrl: function (url) {
+        if (!url || typeof url !== 'string') {
+            return false;
+        }
+        var sanitized = url.trim();
+        var origin = '';
+        if (typeof window !== 'undefined' && window.location) {
+            origin = window.location.origin;
+        }
+        try {
+            var parsed = new URL(sanitized, origin || undefined);
+            var hostname = parsed.hostname.toLowerCase();
+            return (
+                hostname === 'www.youtube.com' ||
+                hostname === 'youtube.com' ||
+                hostname === 'm.youtube.com' ||
+                hostname === 'www.youtube-nocookie.com' ||
+                hostname === 'youtube-nocookie.com' ||
+                hostname === 'youtu.be'
+            );
+        } catch (error) {
+            return /(?:^|\/\/)(?:www\.)?(youtube\.com|youtu\.be|youtube-nocookie\.com)/i.test(
+                sanitized
+            );
+        }
+    },
+    getYoutubeWatchUrl: function (url) {
+        if (!url || typeof url !== 'string') {
+            return '';
+        }
+        var sanitized = url.trim();
+        var origin = '';
+        if (typeof window !== 'undefined' && window.location) {
+            origin = window.location.origin;
+        }
+        try {
+            var parsed = new URL(sanitized, origin || undefined);
+            var hostname = parsed.hostname.toLowerCase();
+            var pathname = parsed.pathname || '';
+            var videoId = '';
+
+            if (hostname === 'youtu.be') {
+                videoId = pathname.replace(/^\//, '');
+            } else if (
+                hostname === 'www.youtube.com' ||
+                hostname === 'youtube.com' ||
+                hostname === 'm.youtube.com' ||
+                hostname === 'youtube-nocookie.com' ||
+                hostname === 'www.youtube-nocookie.com'
+            ) {
+                if (parsed.searchParams.has('v')) {
+                    videoId = parsed.searchParams.get('v') || '';
+                } else if (pathname.indexOf('/embed/') === 0 || pathname.indexOf('/v/') === 0) {
+                    var pieces = pathname.split('/');
+                    videoId = pieces.length > 2 ? pieces[2] : '';
+                }
+            }
+
+            videoId = videoId.split('?')[0];
+            videoId = videoId.split('#')[0];
+            if (videoId) {
+                return 'https://www.youtube.com/watch?v=' + videoId;
+            }
+        } catch (error) {
+            // fall through
+        }
+
+        // Fallback: try extracting the video ID using a regex in case the URL parsing above failed.
+        var fallbackMatch = sanitized.match(
+            /(?:v=|\/embed\/|\/v\/|youtu\.be\/)([A-Za-z0-9_-]{11})/
+        );
+        if (fallbackMatch && fallbackMatch[1]) {
+            return 'https://www.youtube.com/watch?v=' + fallbackMatch[1];
+        }
+        return '';
+    },
+    isSafariBrowser: function () {
+        if (typeof navigator === 'undefined') {
+            return false;
+        }
+        var userAgent = navigator.userAgent || '';
+        if (!userAgent) {
+            return false;
+        }
+        var isSafari =
+            /Safari/i.test(userAgent) &&
+            !/(Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser)/i.test(userAgent);
+        var isAndroid = /Android/i.test(userAgent);
+        return isSafari && !isAndroid;
+    },
     getBooleanOption: function (value, defaultValue) {
         return typeof value === 'boolean' ? value : defaultValue;
     },

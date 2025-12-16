@@ -74,14 +74,6 @@ Kommunicate.getFaqCategories = function (data) {
                 (window.MCK_LABELS && MCK_LABELS['modern.faq.category.article']) || 'article';
             var articlesLabel =
                 (window.MCK_LABELS && MCK_LABELS['modern.faq.category.articles']) || 'articles';
-            if (response.data && response.data.length == 1) {
-                // if only 1 category is present then no need to show the category.
-                kommunicate &&
-                    kommunicate._globals &&
-                    (kommunicate._globals.faqCategory = response.data[0].name);
-                Kommunicate.getFaqList(data, response.data[0].name);
-                return;
-            }
             $applozic.each(response.data, function (i, category) {
                 if (
                     !category ||

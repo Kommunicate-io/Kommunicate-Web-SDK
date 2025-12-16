@@ -141,6 +141,25 @@ KommunicateUI = {
     },
 
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
+        var previewUtils = window.KommunicatePreviewUtils;
+
+        if (previewUtils.shouldBlockPreview()) {
+            if (window.console && window.console.info) {
+                window.console.info(
+                    'Link preview suppressed because blockUrlPreview flag is enabled.'
+                );
+            }
+            return;
+        }
+        if (previewUtils.isUrlBlockedForPreview(url)) {
+            if (window.console && window.console.warn) {
+                window.console.warn(
+                    'Preview skipped because URL is blocked for metadata/external fetch.',
+                    url
+                );
+            }
+            return;
+        }
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
@@ -909,6 +928,15 @@ KommunicateUI = {
     showConversationList: function (options) {
         options = options || {};
         setActiveSubsectionState('conversation-list');
+        if (!kommunicateCommons.isModernLayoutEnabled()) {
+            var shouldShowContacts =
+                options.skipEmptyStateToggle || KommunicateUI.hasConversationHistory;
+            if (shouldShowContacts) {
+                kommunicateCommons.show('#mck-contacts-content');
+            } else {
+                kommunicateCommons.hide('#mck-contacts-content');
+            }
+        }
         kommunicateCommons.hide('.km-option-faq');
         topBarManagerRef.showConversationHeader();
         topBarManagerRef.toggleAvatar(false);
@@ -995,6 +1023,14 @@ KommunicateUI = {
                 : kommunicateCommons.show(contactsContent));
         messageInner &&
             (show ? kommunicateCommons.hide(messageInner) : kommunicateCommons.show(messageInner));
+        const sideboxEmptyClass = 'km-empty-conversation-active';
+        kommunicateCommons.modifyClassList(
+            {
+                id: ['mck-sidebox'],
+            },
+            show ? sideboxEmptyClass : '',
+            show ? '' : sideboxEmptyClass
+        );
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');
@@ -1189,6 +1225,8 @@ KommunicateUI = {
                 'km-mid-conv-csat'
             );
 
+            kommunicateCommons.hide('#mck-conversation-status-box');
+
             kommunicateCommons.show('#csat-1', '#csat-2', '#mck-feedback-text-wrapper');
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
@@ -1306,6 +1344,7 @@ KommunicateUI = {
                 */
                 if (!feedback) {
                     // no rating given after conversation is resolved
+                    kommunicateCommons.hide('#mck-conversation-status-box');
                     kommunicateCommons.show('#csat-1', '#csat-2');
                     kommunicateCommons.modifyClassList(
                         {
@@ -1728,3 +1767,197 @@ KommunicateUI = {
         );
     },
 };
+
+(function () {
+    var YOUTUBE_IFRAME_SELECTOR =
+        'iframe[src*="youtube.com/embed"], iframe[src*="youtube-nocookie.com/embed"]';
+    var ELEMENT_NODE_TYPE = typeof Node !== 'undefined' ? Node.ELEMENT_NODE : 1;
+    var originValue = '';
+    var youtubeOriginObserver = null;
+
+    try {
+        originValue = window.parent && window.parent.location && window.parent.location.origin;
+    } catch (error) {
+        // ignore cross-origin access errors
+    }
+
+    if (!originValue && window.location) {
+        originValue = window.location.origin;
+        if (!originValue && window.location.protocol && window.location.host) {
+            originValue = window.location.protocol + '//' + window.location.host;
+        }
+    }
+
+    function addOriginAndPermissions(iframe) {
+        if (!iframe || iframe.dataset.kmYoutubeOriginApplied) {
+            return;
+        }
+
+        var src = iframe.getAttribute('src');
+        if (!src) {
+            return;
+        }
+
+        var parsedUrl;
+        try {
+            parsedUrl = new URL(src, window.location.href);
+        } catch (error) {
+            return;
+        }
+
+        if (originValue && !parsedUrl.searchParams.has('origin')) {
+            parsedUrl.searchParams.set('origin', originValue);
+        }
+
+        var newSrc = parsedUrl.toString();
+        if (newSrc !== src) {
+            iframe.setAttribute('src', newSrc);
+        }
+
+        iframe.dataset.kmYoutubeOriginApplied = '1';
+
+        if (!iframe.hasAttribute('allowfullscreen') && !iframe.hasAttribute('allowFullScreen')) {
+            iframe.setAttribute('allowfullscreen', '');
+        }
+
+        var allowAttr = iframe.getAttribute('allow') || '';
+        if (!/fullscreen/i.test(allowAttr)) {
+            var updatedAllow = allowAttr ? allowAttr + '; fullscreen' : 'fullscreen';
+            iframe.setAttribute('allow', updatedAllow);
+        }
+        applyYoutubeFallback(iframe);
+    }
+
+    function applyYoutubeFallback(iframe) {
+        if (!iframe || iframe.dataset.kmYoutubeFallbackApplied) {
+            return;
+        }
+
+        if (!KommunicateUtils.isSafariBrowser()) {
+            return;
+        }
+
+        var src = iframe.getAttribute('src') || iframe.getAttribute('data-src');
+        if (!src || !KommunicateUtils.isYoutubeUrl(src)) {
+            return;
+        }
+
+        iframe.dataset.kmYoutubeFallbackApplied = '1';
+        iframe.style.display = 'none';
+
+        var watchUrl = KommunicateUtils.getYoutubeWatchUrl(src) || src;
+        var container =
+            iframe.closest && iframe.closest('.mck-rich-video-container')
+                ? iframe.closest('.mck-rich-video-container')
+                : iframe.parentNode;
+
+        if (container) {
+            var anchor = container.querySelector && container.querySelector('a[href]');
+            if (anchor) {
+                anchor.setAttribute('href', watchUrl);
+                anchor.textContent = watchUrl;
+            } else {
+                var link = document.createElement('a');
+                link.href = watchUrl;
+                link.target = '_blank';
+                link.textContent = watchUrl;
+                container.insertBefore(link, container.firstChild);
+            }
+        }
+    }
+
+    function inspectNodeForYoutube(node) {
+        if (!node || node.nodeType !== ELEMENT_NODE_TYPE) {
+            return;
+        }
+
+        if (node.matches && node.matches(YOUTUBE_IFRAME_SELECTOR)) {
+            addOriginAndPermissions(node);
+            return;
+        }
+
+        if (node.querySelectorAll) {
+            var youtubeIframes = node.querySelectorAll(YOUTUBE_IFRAME_SELECTOR);
+            for (var i = 0; i < youtubeIframes.length; i++) {
+                addOriginAndPermissions(youtubeIframes[i]);
+            }
+        }
+    }
+
+    function patchExistingIframes() {
+        if (!document || !document.querySelectorAll) {
+            return;
+        }
+        var youtubeIframes = document.querySelectorAll(YOUTUBE_IFRAME_SELECTOR);
+        for (var i = 0; i < youtubeIframes.length; i++) {
+            addOriginAndPermissions(youtubeIframes[i]);
+        }
+    }
+
+    function getMutationObserverTarget() {
+        if (!document) {
+            return null;
+        }
+
+        var selectors = [
+            '#mck-message-cell .mck-message-inner',
+            '.mck-message-inner.mck-group-inner',
+            '#mck-sidebox .mck-message-inner',
+        ];
+        for (var i = 0; i < selectors.length; i++) {
+            var target = document.querySelector(selectors[i]);
+            if (target) {
+                return target;
+            }
+        }
+        return document.body || document.documentElement;
+    }
+
+    function observeForNewIframes() {
+        if (youtubeOriginObserver || !window.MutationObserver || !document) {
+            return;
+        }
+
+        var observerTarget = getMutationObserverTarget();
+        if (!observerTarget) {
+            return;
+        }
+
+        youtubeOriginObserver = new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+                var mutation = mutations[i];
+                var addedNodes = mutation.addedNodes;
+                for (var j = 0; j < addedNodes.length; j++) {
+                    inspectNodeForYoutube(addedNodes[j]);
+                }
+            }
+        });
+
+        youtubeOriginObserver.observe(observerTarget, {
+            childList: true,
+            subtree: true,
+        });
+    }
+
+    function teardownYoutubeOriginFix() {
+        if (youtubeOriginObserver) {
+            youtubeOriginObserver.disconnect();
+            youtubeOriginObserver = null;
+        }
+    }
+
+    function initYoutubeOriginFix() {
+        patchExistingIframes();
+        observeForNewIframes();
+    }
+
+    if (document && document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', initYoutubeOriginFix, {
+            once: true,
+        });
+    } else {
+        initYoutubeOriginFix();
+    }
+
+    window.addEventListener('beforeunload', teardownYoutubeOriginFix);
+})();
