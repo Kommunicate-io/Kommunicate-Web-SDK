@@ -2686,10 +2686,6 @@ const firstVisibleMsg = {
                                         );
                                         return;
                                     }
-                                    console.log(
-                                        'Conversation created for dropped file:',
-                                        expectedConversationId
-                                    );
                                     try {
                                         Kommunicate.openConversation(expectedConversationId);
                                     } catch (error) {
