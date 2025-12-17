@@ -1,10 +1,20 @@
 class EmailDOMService {
     static createEmailContainer(message, group) {
         const containerId = `km-email-${message.groupId}-${message.key}`;
-        const container = document.getElementById(containerId);
+        let container = document.getElementById(containerId);
 
         if (!container) {
-            throw new Error(`Email container not found: ${containerId}`);
+            const messageElem = document.querySelector(`[data-msgkey="${message.key}"]`);
+            const richTextContainer = messageElem
+                ? messageElem.querySelector('.km-msg-box-rich-text-container')
+                : null;
+            if (!richTextContainer) {
+                throw new Error(`Email container not found: ${containerId}`);
+            }
+            container = document.createElement('mck-email-rich-message');
+            container.id = containerId;
+            container.className = `km-mail-fixed-view ${containerId} mck-eml-container`;
+            richTextContainer.appendChild(container);
         }
 
         const shadowRoot = container.shadowRoot;

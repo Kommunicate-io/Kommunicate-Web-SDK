@@ -14,7 +14,7 @@
                     // appId: '39187bcfc4dfd93e485509a19be3ed665',
                     appId: 'kommunicate-support',
                     popupWidget: true,
-                    layout: 'modern',
+                    layout: 'classic',
                     automaticChatOpenOnNavigation: true,
                     // appSettings: {
                     //     chatWidget: {
@@ -33,7 +33,7 @@
                     //     ],
                     // },
                     widgetSettings: {
-                        popup: false,
+                        // popup: false,
                         // primaryColor: '#fff000',
                         // Provide a `theme` map to override exposed CSS vars.
                         // Alias keys like `chatHeaderText` explain what each color controls.
@@ -63,18 +63,19 @@
                         },
                     ],
 
-                    //      "preLeadCollection": [{
-                    //         "field": "Name", // Name of the field you want to add
-                    //         "required": true, // Set 'true' to make it a mandatory field
-                    //         "placeholder": "Enter your name" // add whatever text you want to show in the placeholder
-                    //     },
-                    //     {
-                    //         "field": "Email",
-                    //         "type": "email",
-                    //         "required": true,
-                    //         "placeholder": "Enter your email"
-                    //     }
-                    // ]
+                    preLeadCollection: [
+                        {
+                            field: 'Name', // Name of the field you want to add
+                            required: true, // Set 'true' to make it a mandatory field
+                            placeholder: 'Enter your name', // add whatever text you want to show in the placeholder
+                        },
+                        {
+                            field: 'Email',
+                            type: 'email',
+                            required: true,
+                            placeholder: 'Enter your email',
+                        },
+                    ],
                 };
                 var s = document.createElement('script');
                 s.type = 'text/javascript';

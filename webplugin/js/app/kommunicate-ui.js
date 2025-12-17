@@ -1421,6 +1421,10 @@ KommunicateUI = {
         chatWidget,
         mckChatPopupNotificationTone
     ) {
+        console.log('displayPopupChatTemplate', {
+            hasContent: Boolean(popupChatContent && popupChatContent.length),
+            chatWidgetPopup: chatWidget && chatWidget.popup,
+        });
         var enableGreetingMessage =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.hasOwnProperty('enableGreetingMessageInMobile')
@@ -1436,6 +1440,10 @@ KommunicateUI = {
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
         if (isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function () {
+                console.log('calling togglePopupChatTemplate', {
+                    templateKey: popupTemplateKey,
+                    delay,
+                });
                 KommunicateUI.togglePopupChatTemplate(
                     popupTemplateKey,
                     true,
@@ -1457,7 +1465,12 @@ KommunicateUI = {
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
+        console.log('togglePopupChatTemplate called', {
+            templateKey: popupTemplateKey,
+            showTemplate,
+            widgetOpen: kommunicateCommons.isWidgetOpen(),
+        });
+        if (showTemplate) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
                 appOptionSession.setSessionData('playPopupNotificationTone', false);

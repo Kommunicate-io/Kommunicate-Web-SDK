@@ -2129,11 +2129,6 @@ const firstVisibleMsg = {
                             mckInit.initialize(options);
                             return false;
                         }
-                        Kommunicate.popupChatTemplate.getPopupChatTemplate(
-                            MCK_POPUP_WIDGET_CONTENT,
-                            WIDGET_SETTINGS,
-                            true
-                        );
                         var kmAnonymousChatLauncher = document.getElementById(
                             'km-anonymous-chat-launcher'
                         );
@@ -2182,6 +2177,11 @@ const firstVisibleMsg = {
                             kmChatLoginModal.setAttribute('aria-hidden', 'true');
                         }
                         kommunicateCommons.show(kmAnonymousChatLauncher);
+                        Kommunicate.popupChatTemplate.getPopupChatTemplate(
+                            MCK_POPUP_WIDGET_CONTENT,
+                            WIDGET_SETTINGS,
+                            true
+                        );
                         document
                             .getElementById('km-modal-close')
                             .addEventListener('click', _this.closeLeadCollectionWindow);
@@ -2241,6 +2241,12 @@ const firstVisibleMsg = {
                             WIDGET_SETTINGS,
                             mckChatPopupNotificationTone
                         );
+                        console.log('prechat displayPopupChatTemplate branch', {
+                            hasContent: Boolean(
+                                MCK_POPUP_WIDGET_CONTENT && MCK_POPUP_WIDGET_CONTENT.length
+                            ),
+                            widgetPopup: WIDGET_SETTINGS && WIDGET_SETTINGS.popup,
+                        });
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -2513,12 +2519,14 @@ const firstVisibleMsg = {
                 ) {
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON &&
                         $applozic.fn.applozic('mckLaunchSideboxChat');
-                    !PRE_CHAT_LEAD_COLLECTION_POPUP_ON &&
-                        KommunicateUI.displayPopupChatTemplate(
-                            MCK_POPUP_WIDGET_CONTENT,
-                            WIDGET_SETTINGS,
-                            mckChatPopupNotificationTone
-                        );
+                    KommunicateUI.displayPopupChatTemplate(
+                        MCK_POPUP_WIDGET_CONTENT,
+                        WIDGET_SETTINGS,
+                        mckChatPopupNotificationTone
+                    );
+                    console.log('pre-lead init branch running before login', {
+                        popupContent: MCK_POPUP_WIDGET_CONTENT && MCK_POPUP_WIDGET_CONTENT.length,
+                    });
                 } else {
                     $applozic.fn.applozic('triggerMsgNotification');
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
