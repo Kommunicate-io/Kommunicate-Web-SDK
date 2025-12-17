@@ -449,7 +449,23 @@ function injectJquery() {
      *
      */
 
+    function shouldLoadSentryScript() {
+        return (
+            THIRD_PARTY_SCRIPTS &&
+            THIRD_PARTY_SCRIPTS.sentry &&
+            THIRD_PARTY_SCRIPTS.sentry.js &&
+            MCK_THIRD_PARTY_INTEGRATION &&
+            MCK_THIRD_PARTY_INTEGRATION.sentry &&
+            MCK_THIRD_PARTY_INTEGRATION.sentry.enabled
+        );
+    }
+
     function loadKommunicateWithSentry() {
+        if (!shouldLoadSentryScript()) {
+            addKommunicatePluginToIframe();
+            return Promise.resolve();
+        }
+
         return scriptLoader({
             _document: addableDocument, // kommunicate iframe document
             url: THIRD_PARTY_SCRIPTS.sentry.js, // kommunicate modified version of sentry
@@ -459,6 +475,7 @@ function injectJquery() {
             .then(addKommunicatePluginToIframe)
             .catch(function (error) {
                 console.error(error);
+                addKommunicatePluginToIframe();
             });
     }
 
