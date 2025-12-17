@@ -2227,8 +2227,7 @@ const firstVisibleMsg = {
                                 }
                             );
                         }
-                        PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
-                        autoOpenPreChatLeadCollectionModal(kmAnonymousChatLauncher);
+                        PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = true;
 
                         if (
                             $applozic('#km-form-chat-login .km-form-group input').hasClass('n-vis')
