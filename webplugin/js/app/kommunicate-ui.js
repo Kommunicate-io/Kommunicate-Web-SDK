@@ -1483,6 +1483,8 @@ KommunicateUI = {
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
 
             kommunicateIframe.classList.add(popupTemplateClass.replace('-container-', ''));
+            kommunicateIframe.style.height = '';
+            kommunicateIframe.style.minHeight = '';
 
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
                 kommunicateCommons.modifyClassList(

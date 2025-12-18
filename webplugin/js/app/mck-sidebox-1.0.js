@@ -765,7 +765,11 @@ const firstVisibleMsg = {
             } else {
                 kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
             }
-            kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+            if (!PRE_CHAT_LEAD_COLLECTION_POPUP_ON) {
+                kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+            } else {
+                kommunicateIframe.style.height = '';
+            }
         }
 
         _this.mckLaunchSideboxChat = function () {
@@ -2221,26 +2225,53 @@ const firstVisibleMsg = {
                             WIDGET_SETTINGS,
                             true
                         );
-                        document
-                            .getElementById('km-modal-close')
-                            .addEventListener('click', _this.closeLeadCollectionWindow);
-                        var popUpCloseButton = document.getElementById('km-popup-close-button');
-                        popUpCloseButton.addEventListener('click', function () {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            _this.closeLeadCollectionWindow();
-                            genAiService.enableTextArea(true);
-                            firstVisibleMsg.reset();
-                            mckMessageService.stopBusinessHoursTimer();
-                            BUSINESS_HOUR_SETTING = null;
-                        });
+                        var adjustIframeForPrelead = function () {
+                            var kommunicateIframe =
+                                parent.document &&
+                                parent.document.getElementById('kommunicate-widget-iframe');
+                            if (!WIDGET_SETTINGS || !WIDGET_SETTINGS.popup) {
+                                return;
+                            }
+                            if (kommunicateIframe) {
+                                kommunicateIframe.style.minHeight = '600px';
+                            }
+                        };
+
+                        var resetIframeAfterPrelead = function () {
+                            var kommunicateIframe =
+                                parent.document &&
+                                parent.document.getElementById('kommunicate-widget-iframe');
+                            if (kommunicateIframe) {
+                                kommunicateIframe.style.minHeight = '';
+                            }
+                        };
+
                         var showPreChatLeadModal = function () {
                             if (kmChatLoginModal) {
                                 kmChatLoginModal.style.visibility = 'visible';
                                 kmChatLoginModal.style.display = 'block';
                                 kmChatLoginModal.setAttribute('aria-hidden', 'false');
                             }
+                            adjustIframeForPrelead();
                         };
+
+                        document
+                            .getElementById('km-modal-close')
+                            .addEventListener('click', function () {
+                                resetIframeAfterPrelead();
+                                _this.closeLeadCollectionWindow();
+                            });
+                        var popUpCloseButton = document.getElementById('km-popup-close-button');
+                        popUpCloseButton.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            resetIframeAfterPrelead();
+                            _this.closeLeadCollectionWindow();
+                            genAiService.enableTextArea(true);
+                            firstVisibleMsg.reset();
+                            mckMessageService.stopBusinessHoursTimer();
+                            BUSINESS_HOUR_SETTING = null;
+                        });
 
                         for (var i = 0; i < kmAnonymousChatLauncherClass.length; i++) {
                             kmAnonymousChatLauncherClass[i].addEventListener(
@@ -4987,6 +5018,24 @@ const firstVisibleMsg = {
 
                 //----------------------------------------------------------------
 
+                function loadChat() {
+                    KommunicateUI.skipPopupChatTemplate = false;
+                    if (window.applozic.PRODUCT_ID === 'kommunicate') {
+                        PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                        console.log(
+                            '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
+                        );
+                        kommunicateCommons.hide('#mck-btn-leave-group');
+                    }
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    kommunicateIframe && (kommunicateIframe.style.minHeight = '');
+                    $applozic.fn.applozic('mckLaunchSideboxChat');
+                    console.log('[PRE-LEAD] loadChat completed, widget re-launched');
+                }
+
                 $applozic('#km-form-chat-login').submit(function (e) {
                     var $submit_chat_login = $applozic('#km-submit-chat-login');
                     var $error_chat_login = $applozic('#km-error-chat-login');
@@ -5069,20 +5118,6 @@ const firstVisibleMsg = {
 
                     return false;
                 });
-
-                var loadChat = function () {
-                    KommunicateUI.skipPopupChatTemplate = false;
-                    if (window.applozic.PRODUCT_ID === 'kommunicate') {
-                        PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                        console.log(
-                            '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
-                        );
-                        kommunicateCommons.hide('#mck-btn-leave-group');
-                    }
-                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                    $applozic.fn.applozic('mckLaunchSideboxChat');
-                    console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-                };
 
                 $applozic('.km-login-model-close').on('click', function (e) {
                     kommunicateCommons.hide('#km-chat-login-modal');
