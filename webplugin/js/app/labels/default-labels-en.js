@@ -242,6 +242,15 @@
             chat: 'Click to Chat',
             back: 'Back',
             repeatLastMsg: 'Hear response again',
+            listening: 'Listening...',
+            processing: 'Processing speech...',
+            processingFailed: 'Unable to transcribe the recording. Please try again.',
+            noSpeechDetected: 'No speech detected. Please try again.',
+            responseLabel: 'Response:',
+            muteAction: 'Mute microphone',
+            unmuteAction: 'Unmute microphone',
+            muted: 'Microphone muted',
+            unmuted: 'Listening...',
         },
     };
     helpers.registerEnglishLabels(englishLabels);

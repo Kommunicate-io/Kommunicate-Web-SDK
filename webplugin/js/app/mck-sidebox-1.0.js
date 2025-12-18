@@ -3063,6 +3063,10 @@ const firstVisibleMsg = {
                         .querySelector('.mck-voice-interface-back-btn')
                         .addEventListener('click', function () {
                             mckVoice.stopRecording(true);
+                            mckVoice.disableAutoListening();
+                            mckVoice.updateVoiceStatus('');
+                            mckVoice.updateLiveTranscript('');
+                            mckVoice.updateResponseText('');
 
                             kommunicateCommons.hide('#mck-voice-interface');
 
