@@ -1,13 +1,29 @@
 class EmailDOMService {
     static createEmailContainer(message, group) {
         const containerId = `km-email-${message.groupId}-${message.key}`;
-        const container = document.getElementById(containerId);
+        let container = document.getElementById(containerId);
 
         if (!container) {
-            throw new Error(`Email container not found: ${containerId}`);
+            const messageElem = document.querySelector(`[data-msgkey="${message.key}"]`);
+            const richTextContainer = messageElem
+                ? messageElem.querySelector('.km-msg-box-rich-text-container')
+                : null;
+            if (!richTextContainer) {
+                throw new Error(`Email container not found: ${containerId}`);
+            }
+            const supportsShadowDom =
+                typeof window !== 'undefined' &&
+                window.customElements &&
+                Element.prototype.attachShadow;
+            container = supportsShadowDom
+                ? document.createElement('mck-email-rich-message')
+                : document.createElement('div');
+            container.id = containerId;
+            container.className = `km-mail-fixed-view ${containerId} mck-eml-container`;
+            richTextContainer.appendChild(container);
         }
 
-        const shadowRoot = container.shadowRoot;
+        const root = container.shadowRoot || container;
         const style = document.createElement('style');
         style.setAttribute('type', 'text/css');
         style.innerHTML = kmMailProcessor.getEmailRichMsgStyle();
@@ -22,7 +38,7 @@ class EmailDOMService {
             }`
         );
 
-        shadowRoot.append(style, mailElement);
+        root.append(style, mailElement);
         return mailElement;
     }
 
@@ -48,9 +64,11 @@ class EmailDOMService {
             const kmEmailRichMsg = document.getElementById(
                 'km-email-' + message.groupId + '-' + message.key
             );
-            const kmEmailMainContainer = kmEmailRichMsg.shadowRoot.querySelector(
-                '.km-email-rich-msg-container'
-            );
+            if (!kmEmailRichMsg) {
+                return;
+            }
+            const kmEmailRoot = kmEmailRichMsg.shadowRoot || kmEmailRichMsg;
+            const kmEmailMainContainer = kmEmailRoot.querySelector('.km-email-rich-msg-container');
 
             kmEmailMainContainer.innerHTML = emlToHtml ? message.emlContent : message.message;
 
