@@ -225,9 +225,27 @@ You can copy the below script and replace the required parameters manually. Note
        h.appendChild(s);
        window.kommunicate = m;
        m._globals = kommunicateSettings;
-    })(document, window.kommunicate || {});
+})(document, window.kommunicate || {});
 </script>
 ```
+
+### Custom language packs
+
+Pass a `customLabelLocales` map inside `kommunicateSettings` to register new locales from your JSON payload at runtime. Each key is a locale code and its value mirrors the dotted-key JSON used in `webplugin/js/app/labels/locales`. When the widget loads it pushes these payloads through `KMLabelTranslationHelpers`, so your one-line JSON easily becomes a fully localized experience.
+
+```json
+"customLabelLocales": {
+  "pa": {
+    "conversations.title": "ਗੱਲਬਾਤ",
+    "faq": "ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ",
+    "start.new": "ਨਵੀਂ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ"
+  }
+}
+```
+
+You can also override shipped locales (e.g., `en`) by providing the same structure under the built-in locale key. The overrides merge on top of the release-language bundle before the widget shows any labels, so you can tweak just the strings you care about without touching the repo.
+
+The widget looks for `customLabelLocales` on the runtime `_globals` object (the same `kommunicateSettings` block you pass to `m._globals`) as well as the compiled `KM_PLUGIN_SETTINGS`, so you only need to add the map to your installation snippet once.
 
 The legacy `kommunicate.app` path continues to work for backward compatibility; new integrations should use `kommunicate-widget-3.0.min.js`.
 
