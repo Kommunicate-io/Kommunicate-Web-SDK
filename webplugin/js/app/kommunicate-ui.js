@@ -31,6 +31,7 @@ KommunicateUI = {
     leadCollectionEnabledOnAwayMessage: false,
     welcomeMessageEnabled: false,
     leadCollectionEnabledOnWelcomeMessage: false,
+    skipPopupChatTemplate: false,
     anonymousUser: false,
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
@@ -1421,6 +1422,9 @@ KommunicateUI = {
         chatWidget,
         mckChatPopupNotificationTone
     ) {
+        if (KommunicateUI.skipPopupChatTemplate) {
+            return;
+        }
         console.log('displayPopupChatTemplate', {
             hasContent: Boolean(popupChatContent && popupChatContent.length),
             chatWidgetPopup: chatWidget && chatWidget.popup,
