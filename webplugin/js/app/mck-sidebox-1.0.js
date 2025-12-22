@@ -3316,7 +3316,7 @@ const firstVisibleMsg = {
                 if (phoneField !== null) {
                     if (enableCountryCode) {
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
-                            customContainer: 'km-intl-container',
+                            customContainer: 'km-intl-container km-form-control km-input-width',
                             separateDialCode: true,
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,

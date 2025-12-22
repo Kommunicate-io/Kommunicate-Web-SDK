@@ -112,7 +112,7 @@
     input,
     textarea,
     select {
-        border-radius: 3px;
+        border-radius: 8px;
         border: 2px solid var(--km-modal-input-border);
     }
     & textarea {
@@ -232,6 +232,18 @@
         outline: none;
         background-color: #ffffff;
     }
+}
+#km-phone {
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+.iti__flag-container {
+    height: 100% !important;
+}
+.iti:focus {
+    outline: 2px auto #7761f9 !important;
 }
 
 input[type='number']::-webkit-inner-spin-button,
