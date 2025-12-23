@@ -316,14 +316,53 @@ textarea {
   border: none;
   box-shadow: none;
   outline: none;
+  padding-left: 75px !important;
 }
 
 .iti__flag-container {
   height: 100% !important;
 }
 
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+  outline: 2px solid #7761f9 !important;
+}
+
+.iti--container {
+  z-index: 999999999 !important;
+  width: fit-content;
+  height: 250px;
+}
+
+.iti--fullscreen-popup.iti--container {
+  padding: 1px !important;
+}
+
+.iti {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #1c1c1c;
+  background-color: #fafafa;
+  background-image: none;
+  border: 2px solid var(--km-modal-input-border);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+}
+.iti::placeholder {
+  color: #8f8f8f;
+}
 .iti:focus {
-  outline: 2px auto #7761f9 !important;
+  outline: none;
+  background-color: #ffffff;
 }
 
 input[type=number]::-webkit-inner-spin-button,

@@ -237,14 +237,60 @@
     border: none;
     box-shadow: none;
     outline: none;
+    padding-left: 75px !important;
 }
 
 .iti__flag-container {
     height: 100% !important;
 }
-.iti:focus {
-    outline: 2px auto #7761f9 !important;
+
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+    outline: 2px solid #7761f9 !important;
 }
+
+// Added code for ui correction
+
+.iti--container {
+    z-index: 999999999 !important;
+    width: fit-content;
+    height: 250px;
+}
+
+.iti--fullscreen-popup.iti--container {
+    padding: 1px !important;
+}
+
+.iti {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    // height: 34px;
+    padding: 6px;
+    font-size: $heading-secondary;
+    line-height: 1.42857143;
+    color: $text-primary-color;
+    background-color: $disable-input-color;
+    background-image: none;
+    border: 2px solid var(--km-modal-input-border);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+
+    &::placeholder {
+        color: $placeholder-color;
+    }
+    &:focus {
+        outline: none;
+        background-color: #ffffff;
+    }
+    width: 100%;
+    max-width: 320px;
+    border-radius: 8px;
+}
+
+//Added code for ui correction end .
 
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {

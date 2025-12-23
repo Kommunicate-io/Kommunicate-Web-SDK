@@ -2028,6 +2028,23 @@ const firstVisibleMsg = {
                     launcher.click();
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
+
+            function loadChat() {
+                KommunicateUI.skipPopupChatTemplate = false;
+                if (window.applozic.PRODUCT_ID === 'kommunicate') {
+                    PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                    console.log(
+                        '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
+                    );
+                    kommunicateCommons.hide('#mck-btn-leave-group');
+                }
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                var kommunicateIframe =
+                    parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+                kommunicateIframe && (kommunicateIframe.style.minHeight = '');
+                $applozic.fn.applozic('mckLaunchSideboxChat');
+                console.log('[PRE-LEAD] loadChat completed, widget re-launched');
+            }
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -3238,9 +3255,11 @@ const firstVisibleMsg = {
                 <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/>
                </svg>`;
 
-                    var label = `${
-                        leadCollection.required ? requiredSVG : ''
-                    }<label class='km-form-label km-tertiary-title' for=${inputId}>${fieldName}</label>`;
+                    // replace requiredName and requiredSVG
+                    var label = `<label class='km-form-label km-tertiary-title' for='${inputId}'>${fieldName}${
+                        leadCollection.required ? ' ' + requiredSVG : ''
+                    }</label>`;
+
                     kmLabelDiv.innerHTML = label;
                     return kmLabelDiv;
                 }),
@@ -5015,24 +5034,6 @@ const firstVisibleMsg = {
                 });
 
                 //----------------------------------------------------------------
-
-                function loadChat() {
-                    KommunicateUI.skipPopupChatTemplate = false;
-                    if (window.applozic.PRODUCT_ID === 'kommunicate') {
-                        PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                        console.log(
-                            '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
-                        );
-                        kommunicateCommons.hide('#mck-btn-leave-group');
-                    }
-                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                    var kommunicateIframe =
-                        parent.document &&
-                        parent.document.getElementById('kommunicate-widget-iframe');
-                    kommunicateIframe && (kommunicateIframe.style.minHeight = '');
-                    $applozic.fn.applozic('mckLaunchSideboxChat');
-                    console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-                }
 
                 $applozic('#km-form-chat-login').submit(function (e) {
                     var $submit_chat_login = $applozic('#km-submit-chat-login');
