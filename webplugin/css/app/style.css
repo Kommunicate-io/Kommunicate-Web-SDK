@@ -89,6 +89,7 @@ textarea {
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   border: 2px solid #dcdcdc;
   background-color: #fafafa;
+  border-radius: 8px;
 }
 
 .km-sidemodal {
