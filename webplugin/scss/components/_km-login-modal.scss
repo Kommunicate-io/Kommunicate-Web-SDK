@@ -271,21 +271,21 @@
     border-radius: 8px;
 }
 
-.iti input[type='tel'] {
-    width: 100%;
-    padding: 6px;
-    font-size: $heading-secondary;
-    line-height: 1.42857143;
-    color: $text-primary-color;
-    background-color: $disable-input-color;
-    border: 2px solid var(--km-modal-input-border);
-    border-radius: 8px;
-}
+// .iti input[type='tel'] {
+//     width: 100%;
+//     padding: 6px;
+//     font-size: $heading-secondary;
+//     line-height: 1.42857143;
+//     color: $text-primary-color;
+//     background-color: $disable-input-color;
+//     border: 2px solid var(--km-modal-input-border);
+//     border-radius: 8px;
+// }
 
-.iti input[type='tel']:focus {
-    outline: none;
-    background-color: #ffffff;
-}
+// .iti input[type='tel']:focus {
+//     outline: none;
+//     background-color: #ffffff;
+// }
 
 .iti__search-input,
 .iti__country {
