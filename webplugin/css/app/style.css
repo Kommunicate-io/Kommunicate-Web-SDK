@@ -89,6 +89,7 @@ textarea {
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   border: 2px solid #dcdcdc;
   background-color: #fafafa;
+  border-radius: 8px;
 }
 
 .km-sidemodal {
@@ -200,7 +201,7 @@ textarea {
 .km-modal input,
 .km-modal textarea,
 .km-modal select {
-  border-radius: 3px;
+  border-radius: 8px;
   border: 2px solid var(--km-modal-input-border);
 }
 .km-modal textarea {
@@ -312,6 +313,48 @@ textarea {
   background-color: #ffffff;
 }
 
+#km-phone {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  padding-left: 80px !important;
+}
+
+.iti__flag-container {
+  height: 100% !important;
+}
+
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+  outline: 2px solid #7761f9 !important;
+}
+
+.iti--allow-dropdown {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #1c1c1c;
+  background-color: #fafafa;
+  background-image: none;
+  border: 2px solid var(--km-modal-input-border);
+  border-radius: 8px;
+}
+.iti--allow-dropdown::placeholder {
+  color: #8f8f8f;
+}
+.iti--allow-dropdown:focus {
+  outline: none;
+  background-color: #ffffff;
+}
+
+.iti__search-input,
+.iti__country {
+  height: 38px !important;
+  max-height: 40px !important;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -333,8 +376,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-input-width {
-  width: 100%;
-  max-width: 320px;
+  width: 96%;
 }
 
 @media (max-width: 600px) {
