@@ -3335,12 +3335,15 @@ const firstVisibleMsg = {
                 if (phoneField !== null) {
                     if (enableCountryCode) {
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
-                            customContainer: 'km-intl-container km-form-control km-input-width',
+                            containerClass: 'km-intl-container km-from-control km-input-width',
                             separateDialCode: true,
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
                             utilsScript:
                                 'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
+                            useFullscreenPopup: false,
+                            dropdownContainer:
+                                phoneField.closest('.km-form-group') || document.body,
                         });
 
                         phoneField.addEventListener('keydown', _this.phoneNumberValidation);
