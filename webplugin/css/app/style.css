@@ -89,7 +89,6 @@ textarea {
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
   border: 2px solid #dcdcdc;
   background-color: #fafafa;
-  border-radius: 8px;
 }
 
 .km-sidemodal {
@@ -2196,6 +2195,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 6px 8px;
   border: 2px solid #dcdcdc;
   width: 91%;
+  border-radius: 8px;
   margin-bottom: 3px;
 }
 .mck-form-text-wrapper input:focus,

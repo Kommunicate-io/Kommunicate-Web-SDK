@@ -280,7 +280,7 @@ const generateBuildFiles = () => {
         path.join(buildDir, 'css/app/fonts')
     );
 
-    // copy required folder to build
+    // copy img folder to build
     copyDirectoryRecursive(path.join(__dirname, 'img'), path.join(buildDir, 'resources/img'));
 
     // Generate mck-sidebox.html file for build folder.

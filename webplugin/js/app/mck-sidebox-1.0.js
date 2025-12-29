@@ -2029,9 +2029,9 @@ const firstVisibleMsg = {
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
 
-            function loadChat() {
+            window.loadChat = function () {
                 KommunicateUI.skipPopupChatTemplate = false;
-                if (window.applozic.PRODUCT_ID === 'kommunicate') {
+                if (window.applozic?.PRODUCT_ID === 'kommunicate') {
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
                     console.log(
                         '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
@@ -2039,12 +2039,15 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-btn-leave-group');
                 }
                 mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                var kommunicateIframe =
+                const kommunicateIframe =
                     parent.document && parent.document.getElementById('kommunicate-widget-iframe');
                 kommunicateIframe && (kommunicateIframe.style.minHeight = '');
-                $applozic.fn.applozic('mckLaunchSideboxChat');
+                if ($applozic?.fn?.applozic) {
+                    $applozic.fn.applozic('mckLaunchSideboxChat');
+                }
                 console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-            }
+            };
+
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -3334,6 +3337,7 @@ const firstVisibleMsg = {
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     if (enableCountryCode) {
+                        phoneField.type = 'tel';
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
                             containerClass: 'km-intl-container  km-input-width',
                             separateDialCode: true,
