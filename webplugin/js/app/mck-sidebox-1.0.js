@@ -2029,25 +2029,6 @@ const firstVisibleMsg = {
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
 
-            window.loadChat = function () {
-                KommunicateUI.skipPopupChatTemplate = false;
-                if (window.applozic?.PRODUCT_ID === 'kommunicate') {
-                    PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                    console.log(
-                        '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
-                    );
-                    kommunicateCommons.hide('#mck-btn-leave-group');
-                }
-                mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                const kommunicateIframe =
-                    parent.document && parent.document.getElementById('kommunicate-widget-iframe');
-                kommunicateIframe && (kommunicateIframe.style.minHeight = '');
-                if ($applozic?.fn?.applozic) {
-                    $applozic.fn.applozic('mckLaunchSideboxChat');
-                }
-                console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-            };
-
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -3864,6 +3845,25 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('.mck-dropup-menu');
                 }
             };
+
+            function loadChat() {
+                KommunicateUI.skipPopupChatTemplate = false;
+                if (window.applozic?.PRODUCT_ID === 'kommunicate') {
+                    PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                    console.log(
+                        '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
+                    );
+                    kommunicateCommons.hide('#mck-btn-leave-group');
+                }
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                const kommunicateIframe =
+                    parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+                kommunicateIframe && (kommunicateIframe.style.minHeight = '');
+                if ($applozic?.fn?.applozic) {
+                    $applozic.fn.applozic('mckLaunchSideboxChat');
+                }
+                console.log('[PRE-LEAD] loadChat completed, widget re-launched');
+            }
             /*  To trigger welcome event of a bot.
                 defaultSettings: if there is any custome event is configured by the user
             */
