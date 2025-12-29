@@ -191,5 +191,12 @@
   "voiceInterface.speak": "بولنے کیلئے کلک کریں",
   "voiceInterface.chat": "چیٹ کرنے کیلئے کلک کریں",
   "voiceInterface.back": "پیچھے",
-  "voiceInterface.repeatLastMsg": "جواب دوبارہ سنیں"
+  "voiceInterface.repeatLastMsg": "جواب دوبارہ سنیں",
+  "form.label.to": "To:",
+  "form.label.userId": "User ID",
+  "form.error.required": "This is a required field",
+  "form.error.invalidValue": "You have entered an invalid Value",
+  "location.coordinates.lat": "Lat.:",
+  "location.coordinates.lon": "Long.:",
+  "whatsnew.empty": "What's New coming soon."
 }

@@ -191,5 +191,12 @@
   "voiceInterface.speak": "Haz clic para hablar",
   "voiceInterface.chat": "Haz clic para chatear",
   "voiceInterface.back": "Atrás",
-  "voiceInterface.repeatLastMsg": "Escuchar la respuesta de nuevo"
+  "voiceInterface.repeatLastMsg": "Escuchar la respuesta de nuevo",
+  "form.label.to": "To:",
+  "form.label.userId": "User ID",
+  "form.error.required": "This is a required field",
+  "form.error.invalidValue": "You have entered an invalid Value",
+  "location.coordinates.lat": "Lat.:",
+  "location.coordinates.lon": "Long.:",
+  "whatsnew.empty": "What's New coming soon."
 }
