@@ -2145,34 +2145,6 @@ const firstVisibleMsg = {
                         KM_PRELEAD_COLLECTION.length !== 0
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
-                        if (
-                            kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                            ) &&
-                            kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                            ) &&
-                            JSON.parse(
-                                kmCookieStorage.getCookie(
-                                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                                )
-                            )
-                        ) {
-                            var userId = kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                            );
-                            var options = {
-                                userId: userId,
-                                applicationId: MCK_APP_ID,
-                                baseUrl: MCK_BASE_URL,
-                                locShare: IS_MCK_LOCSHARE,
-                                googleApiKey: MCK_GOOGLE_API_KEY,
-                                chatNotificationMailSent: true,
-                            };
-                            PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                            mckInit.initialize(options, loadChat);
-                            return false;
-                        }
                         var kmAnonymousChatLauncher = document.getElementById(
                             'km-anonymous-chat-launcher'
                         );
@@ -3774,6 +3746,26 @@ const firstVisibleMsg = {
             });
         }
 
+        //for test only
+        // function loadChat() {
+        //         KommunicateUI.skipPopupChatTemplate = false;
+        //         if (window.applozic?.PRODUCT_ID === 'kommunicate') {
+        //             PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+        //             console.log(
+        //                 '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
+        //             );
+        //             kommunicateCommons.hide('#mck-btn-leave-group');
+        //         }
+        //         mckInit.clearMsgTriggerAndChatPopuTimeouts();
+        //         const kommunicateIframe =
+        //             parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+        //         kommunicateIframe && (kommunicateIframe.style.minHeight = '');
+        //         if ($applozic?.fn?.applozic) {
+        //             $applozic.fn.applozic('mckLaunchSideboxChat');
+        //         }
+        //         console.log('[PRE-LEAD] loadChat completed, widget re-launched');
+        //     }
+
         function MckMessageService() {
             var _this = this;
             var $mck_search = $applozic('#mck-search');
@@ -4388,6 +4380,7 @@ const firstVisibleMsg = {
                     $mck_text_box.data('triggerNextIntent', null);
                 }
             };
+
             _this.init = function () {
                 var mck_text_box = document.getElementById('mck-text-box');
                 mck_text_box.addEventListener('paste', function (e) {
