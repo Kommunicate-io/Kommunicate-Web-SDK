@@ -797,13 +797,12 @@ const firstVisibleMsg = {
             !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-            var shouldSkipSubsectionUpdate = lastBottomTab && lastBottomTab === 'faqs';
             var lastBottomTab =
                 Kommunicate &&
                 Kommunicate._globals &&
                 typeof Kommunicate._globals.lastBottomTab === 'string' &&
                 Kommunicate._globals.lastBottomTab;
-            var shouldSkipSubsectionUpdate = lastBottomTab && lastBottomTab === 'faqs';
+            const shouldSkipSubsectionUpdate = lastBottomTab && lastBottomTab === 'faqs';
             if (!wasSoftHidden) {
                 KommunicateUI.showChat &&
                     KommunicateUI.showChat({
