@@ -3746,26 +3746,6 @@ const firstVisibleMsg = {
             });
         }
 
-        //for test only
-        // function loadChat() {
-        //         KommunicateUI.skipPopupChatTemplate = false;
-        //         if (window.applozic?.PRODUCT_ID === 'kommunicate') {
-        //             PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-        //             console.log(
-        //                 '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
-        //             );
-        //             kommunicateCommons.hide('#mck-btn-leave-group');
-        //         }
-        //         mckInit.clearMsgTriggerAndChatPopuTimeouts();
-        //         const kommunicateIframe =
-        //             parent.document && parent.document.getElementById('kommunicate-widget-iframe');
-        //         kommunicateIframe && (kommunicateIframe.style.minHeight = '');
-        //         if ($applozic?.fn?.applozic) {
-        //             $applozic.fn.applozic('mckLaunchSideboxChat');
-        //         }
-        //         console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-        //     }
-
         function MckMessageService() {
             var _this = this;
             var $mck_search = $applozic('#mck-search');
