@@ -4569,6 +4569,14 @@ div#mck-rated:before {
   display: block !important;
 }
 
+.layout-classic .km-single-threaded .mck-name-status-container.mck-box-title.mck-truncate {
+  margin-left: 16px;
+}
+
+.layout-classic .km-single-threaded #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+  display: none !important;
+}
+
 #mck-sidebox-content.active-tab-faqs #faq-common {
   display: flex !important;
 }

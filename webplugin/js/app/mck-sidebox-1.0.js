@@ -2658,6 +2658,15 @@ const firstVisibleMsg = {
                     KommunicateUI.checkSingleThreadedConversationSettings();
                 }
 
+                var sidebox = document.getElementById('mck-sidebox');
+                if (sidebox && sidebox.classList) {
+                    if (WIDGET_SETTINGS && WIDGET_SETTINGS.isSingleThreaded) {
+                        sidebox.classList.add('km-single-threaded');
+                    } else {
+                        sidebox.classList.remove('km-single-threaded');
+                    }
+                }
+
                 // Check if modern layout is enabled
                 var isModernLayout =
                     kommunicateCommons && kommunicateCommons.isModernLayoutEnabled();
