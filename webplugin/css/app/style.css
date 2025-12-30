@@ -312,10 +312,10 @@ textarea {
   background-color: #ffffff;
 }
 
-#km-phone {
-  border: none;
-  box-shadow: none;
-  outline: none;
+.phone-with-code {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
   padding-left: 80px !important;
 }
 

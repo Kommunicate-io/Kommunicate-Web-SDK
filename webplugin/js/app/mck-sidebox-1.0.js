@@ -3319,6 +3319,7 @@ const firstVisibleMsg = {
                 if (phoneField !== null) {
                     if (enableCountryCode) {
                         phoneField.type = 'tel';
+                        phoneField.classList.add('phone-with-code');
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
                             containerClass: 'km-intl-container  km-input-width',
                             separateDialCode: true,
