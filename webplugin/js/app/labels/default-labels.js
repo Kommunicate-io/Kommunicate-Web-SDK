@@ -138,6 +138,16 @@ class KMLabel {
                 node.setAttribute('placeholder', value);
             });
         };
+        var setPlaceholderAndAriaLabelForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.setAttribute('placeholder', value);
+                node.setAttribute('aria-label', value);
+            });
+        };
 
         [
             { selector: '#mck-conversation-title', path: 'conversations.title' },
@@ -215,6 +225,10 @@ class KMLabel {
             'search.placeholder'
         );
         setPlaceholderForSelector('#mck-loc-address', 'location.placeholder');
+        setPlaceholderAndAriaLabelForSelector(
+            '#mck-feedback-comment',
+            'csat.rating.CONVERSATION_REVIEW_PLACEHOLDER'
+        );
         document.getElementById('mck-text-box').dataset.text = MCK_LABELS['input.message'];
         document.getElementById('mck-char-warning-text').innerHTML = MCK_LABELS['char.limit.warn'];
         document
