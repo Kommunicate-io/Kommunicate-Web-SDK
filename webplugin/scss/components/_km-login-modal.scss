@@ -112,7 +112,7 @@
     input,
     textarea,
     select {
-        border-radius: 3px;
+        border-radius: 8px;
         border: 2px solid var(--km-modal-input-border);
     }
     & textarea {
@@ -234,6 +234,50 @@
     }
 }
 
+.phone-with-code {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding-left: 80px !important;
+}
+
+.iti__flag-container {
+    height: 100% !important;
+}
+
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+    outline: 2px solid #7761f9 !important;
+}
+
+.iti--allow-dropdown {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+
+    padding: 6px;
+    font-size: $heading-secondary;
+    line-height: 1.42857143;
+    color: $text-primary-color;
+    background-color: $disable-input-color;
+    background-image: none;
+    border: 2px solid var(--km-modal-input-border);
+
+    &::placeholder {
+        color: $placeholder-color;
+    }
+    &:focus {
+        outline: none;
+        background-color: #ffffff;
+    }
+    border-radius: 8px;
+}
+
+.iti__search-input,
+.iti__country {
+    height: 38px !important;
+    max-height: 40px !important;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -255,8 +299,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .km-input-width {
-    width: 100%;
-    max-width: 320px;
+    width: 96%;
 }
 
 @media (max-width: 600px) {

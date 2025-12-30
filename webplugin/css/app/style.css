@@ -200,7 +200,7 @@ textarea {
 .km-modal input,
 .km-modal textarea,
 .km-modal select {
-  border-radius: 3px;
+  border-radius: 8px;
   border: 2px solid var(--km-modal-input-border);
 }
 .km-modal textarea {
@@ -312,6 +312,48 @@ textarea {
   background-color: #ffffff;
 }
 
+.phone-with-code {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding-left: 80px !important;
+}
+
+.iti__flag-container {
+  height: 100% !important;
+}
+
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+  outline: 2px solid #7761f9 !important;
+}
+
+.iti--allow-dropdown {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #1c1c1c;
+  background-color: #fafafa;
+  background-image: none;
+  border: 2px solid var(--km-modal-input-border);
+  border-radius: 8px;
+}
+.iti--allow-dropdown::placeholder {
+  color: #8f8f8f;
+}
+.iti--allow-dropdown:focus {
+  outline: none;
+  background-color: #ffffff;
+}
+
+.iti__search-input,
+.iti__country {
+  height: 38px !important;
+  max-height: 40px !important;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -333,8 +375,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-input-width {
-  width: 100%;
-  max-width: 320px;
+  width: 96%;
 }
 
 @media (max-width: 600px) {
@@ -2154,6 +2195,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 6px 8px;
   border: 2px solid #dcdcdc;
   width: 91%;
+  border-radius: 8px;
   margin-bottom: 3px;
 }
 .mck-form-text-wrapper input:focus,

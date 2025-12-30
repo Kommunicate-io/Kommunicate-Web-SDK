@@ -2028,6 +2028,7 @@ const firstVisibleMsg = {
                     launcher.click();
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
+
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -2144,34 +2145,6 @@ const firstVisibleMsg = {
                         KM_PRELEAD_COLLECTION.length !== 0
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
-                        if (
-                            kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                            ) &&
-                            kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                            ) &&
-                            JSON.parse(
-                                kmCookieStorage.getCookie(
-                                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                                )
-                            )
-                        ) {
-                            var userId = kmCookieStorage.getCookie(
-                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                            );
-                            var options = {
-                                userId: userId,
-                                applicationId: MCK_APP_ID,
-                                baseUrl: MCK_BASE_URL,
-                                locShare: IS_MCK_LOCSHARE,
-                                googleApiKey: MCK_GOOGLE_API_KEY,
-                                chatNotificationMailSent: true,
-                            };
-                            PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                            mckInit.initialize(options, loadChat);
-                            return false;
-                        }
                         var kmAnonymousChatLauncher = document.getElementById(
                             'km-anonymous-chat-launcher'
                         );
@@ -3238,9 +3211,11 @@ const firstVisibleMsg = {
                 <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/>
                </svg>`;
 
-                    var label = `${
-                        leadCollection.required ? requiredSVG : ''
-                    }<label class='km-form-label km-tertiary-title' for=${inputId}>${fieldName}</label>`;
+                    // replace requiredName and requiredSVG
+                    var label = `<label class='km-form-label km-tertiary-title' for='${inputId}'>${fieldName}${
+                        leadCollection.required ? ' ' + requiredSVG : ''
+                    }</label>`;
+
                     kmLabelDiv.innerHTML = label;
                     return kmLabelDiv;
                 }),
@@ -3315,13 +3290,18 @@ const firstVisibleMsg = {
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     if (enableCountryCode) {
+                        phoneField.type = 'tel';
+                        phoneField.classList.add('phone-with-code');
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
-                            customContainer: 'km-intl-container',
+                            containerClass: 'km-intl-container  km-input-width',
                             separateDialCode: true,
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
                             utilsScript:
                                 'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
+                            useFullscreenPopup: false,
+                            dropdownContainer:
+                                phoneField.closest('.km-form-group') || document.body,
                         });
 
                         phoneField.addEventListener('keydown', _this.phoneNumberValidation);
@@ -3838,6 +3818,25 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('.mck-dropup-menu');
                 }
             };
+
+            function loadChat() {
+                KommunicateUI.skipPopupChatTemplate = false;
+                if (window.applozic?.PRODUCT_ID === 'kommunicate') {
+                    PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                    console.log(
+                        '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
+                    );
+                    kommunicateCommons.hide('#mck-btn-leave-group');
+                }
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                const kommunicateIframe =
+                    parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+                kommunicateIframe && (kommunicateIframe.style.minHeight = '');
+                if ($applozic?.fn?.applozic) {
+                    $applozic.fn.applozic('mckLaunchSideboxChat');
+                }
+                console.log('[PRE-LEAD] loadChat completed, widget re-launched');
+            }
             /*  To trigger welcome event of a bot.
                 defaultSettings: if there is any custome event is configured by the user
             */
@@ -4361,6 +4360,7 @@ const firstVisibleMsg = {
                     $mck_text_box.data('triggerNextIntent', null);
                 }
             };
+
             _this.init = function () {
                 var mck_text_box = document.getElementById('mck-text-box');
                 mck_text_box.addEventListener('paste', function (e) {
@@ -5015,24 +5015,6 @@ const firstVisibleMsg = {
                 });
 
                 //----------------------------------------------------------------
-
-                function loadChat() {
-                    KommunicateUI.skipPopupChatTemplate = false;
-                    if (window.applozic.PRODUCT_ID === 'kommunicate') {
-                        PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                        console.log(
-                            '[PRE-LEAD] loadChat start, PRE_CHAT_LEAD_COLLECTION_POPUP_ON reset'
-                        );
-                        kommunicateCommons.hide('#mck-btn-leave-group');
-                    }
-                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                    var kommunicateIframe =
-                        parent.document &&
-                        parent.document.getElementById('kommunicate-widget-iframe');
-                    kommunicateIframe && (kommunicateIframe.style.minHeight = '');
-                    $applozic.fn.applozic('mckLaunchSideboxChat');
-                    console.log('[PRE-LEAD] loadChat completed, widget re-launched');
-                }
 
                 $applozic('#km-form-chat-login').submit(function (e) {
                     var $submit_chat_login = $applozic('#km-submit-chat-login');
