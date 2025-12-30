@@ -192,11 +192,11 @@
   "voiceInterface.chat": "انقر للدردشة",
   "voiceInterface.back": "عودة",
   "voiceInterface.repeatLastMsg": "اسمع الرد مرة أخرى",
-  "form.label.to": "To:",
-  "form.label.userId": "User ID",
-  "form.error.required": "This is a required field",
-  "form.error.invalidValue": "You have entered an invalid Value",
-  "location.coordinates.lat": "Lat.:",
-  "location.coordinates.lon": "Long.:",
-  "whatsnew.empty": "What's New coming soon."
+  "form.label.to": "إلى:",
+  "form.label.userId": "معرف المستخدم",
+  "form.error.required": "هذا حقل مطلوب",
+  "form.error.invalidValue": "لقد أدخلت قيمة غير صالحة",
+  "location.coordinates.lat": "خط العرض:",
+  "location.coordinates.lon": "خط الطول:",
+  "whatsnew.empty": "الجديد قريباً."
 }

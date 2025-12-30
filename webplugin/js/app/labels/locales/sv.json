@@ -192,11 +192,11 @@
   "voiceInterface.chat": "Klicka för att chatta",
   "voiceInterface.back": "Tillbaka",
   "voiceInterface.repeatLastMsg": "Lyssna igen på svaret",
-  "form.label.to": "To:",
-  "form.label.userId": "User ID",
-  "form.error.required": "This is a required field",
-  "form.error.invalidValue": "You have entered an invalid Value",
-  "location.coordinates.lat": "Lat.:",
-  "location.coordinates.lon": "Long.:",
-  "whatsnew.empty": "What's New coming soon."
+  "form.label.to": "Till:",
+  "form.label.userId": "Användar-ID",
+  "form.error.required": "Detta fält är obligatoriskt",
+  "form.error.invalidValue": "Du har angett ett ogiltigt värde",
+  "location.coordinates.lat": "Latitud:",
+  "location.coordinates.lon": "Longitud:",
+  "whatsnew.empty": "Nyheter kommer snart."
 }

@@ -192,11 +192,11 @@
   "voiceInterface.chat": "Clique para conversar",
   "voiceInterface.back": "Voltar",
   "voiceInterface.repeatLastMsg": "Ouvir resposta novamente",
-  "form.label.to": "To:",
-  "form.label.userId": "User ID",
-  "form.error.required": "This is a required field",
-  "form.error.invalidValue": "You have entered an invalid Value",
-  "location.coordinates.lat": "Lat.:",
-  "location.coordinates.lon": "Long.:",
-  "whatsnew.empty": "What's New coming soon."
+  "form.label.to": "Para:",
+  "form.label.userId": "ID do usuário",
+  "form.error.required": "Este campo é obrigatório",
+  "form.error.invalidValue": "Você inseriu um valor inválido",
+  "location.coordinates.lat": "Latitude:",
+  "location.coordinates.lon": "Longitude:",
+  "whatsnew.empty": "Novidades em breve."
 }
