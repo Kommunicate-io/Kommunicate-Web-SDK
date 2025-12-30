@@ -96,6 +96,18 @@ const firstVisibleMsg = {
         messageType: 5,
         type: 0,
     };
+    function toggleSingleThreadedClass(shouldApply) {
+        var sidebox = document.getElementById('mck-sidebox');
+        if (!sidebox || !sidebox.classList) {
+            return;
+        }
+        var hasClass = sidebox.classList.contains('km-single-threaded');
+        if (shouldApply && !hasClass) {
+            sidebox.classList.add('km-single-threaded');
+        } else if (!shouldApply && hasClass) {
+            sidebox.classList.remove('km-single-threaded');
+        }
+    }
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         // every time this line will overwrite the kommunicate object properties
@@ -785,14 +797,19 @@ const firstVisibleMsg = {
             !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-            if (!wasSoftHidden) {
-                KommunicateUI.showChat({ keepConversationHeader: true });
-            }
             var lastBottomTab =
                 Kommunicate &&
                 Kommunicate._globals &&
                 typeof Kommunicate._globals.lastBottomTab === 'string' &&
                 Kommunicate._globals.lastBottomTab;
+            const shouldSkipSubsectionUpdate = lastBottomTab && lastBottomTab === 'faqs';
+            if (!wasSoftHidden) {
+                KommunicateUI.showChat &&
+                    KommunicateUI.showChat({
+                        keepConversationHeader: true,
+                        skipSubsectionUpdate: shouldSkipSubsectionUpdate,
+                    });
+            }
             if (lastBottomTab || KommunicateUI.hasConversationHistory) {
                 bottomTabManager.restoreLastTab();
             }
@@ -2622,13 +2639,20 @@ const firstVisibleMsg = {
                             isGroup: false,
                         },
                         function (data) {
-                            KommunicateUI.checkSingleThreadedConversationSettings(
-                                data && data.groupFeeds && data.groupFeeds.length > 1
+                            var hasMultipleConversations =
+                                data && data.groupFeeds && data.groupFeeds.length > 1;
+                            var shouldApplySingleThreadedClass = KommunicateUI.updateSingleThreadedClass(
+                                hasMultipleConversations
                             );
+                            KommunicateUI.checkSingleThreadedConversationSettings(
+                                hasMultipleConversations
+                            );
+                            toggleSingleThreadedClass(shouldApplySingleThreadedClass);
                         }
                     );
                 } else {
                     KommunicateUI.checkSingleThreadedConversationSettings();
+                    toggleSingleThreadedClass(KommunicateUI.updateSingleThreadedClass(false));
                 }
 
                 // Check if modern layout is enabled
@@ -3017,16 +3041,74 @@ const firstVisibleMsg = {
                     openWidgetIframe();
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
-                function closeChatBox() {
+                function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
-                    popUpcloseButton.style.display = 'none';
+                    popUpcloseButton && (popUpcloseButton.style.display = 'none');
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                     kommunicateCommons.show('#applozic-badge-count');
                     kommunicateCommons.hide('#km-widget-options', '.km-header-cta');
                     KommunicateUI.flushFaqsEvents();
                     firstVisibleMsg.reset();
+                    var sideboxContent = document.getElementById('mck-sidebox-content');
+                    if (
+                        sideboxContent &&
+                        sideboxContent.classList &&
+                        sideboxContent.classList.contains('active-tab-conversations') &&
+                        typeof Kommunicate !== 'undefined'
+                    ) {
+                        Kommunicate._globals = Kommunicate._globals || {};
+                        Kommunicate._globals.lastBottomTab = 'conversations';
+                        if (
+                            typeof kmLocalStorage !== 'undefined' &&
+                            kmLocalStorage.setItemToLocalStorage
+                        ) {
+                            try {
+                                kmLocalStorage.setItemToLocalStorage(
+                                    'km-last-bottom-tab',
+                                    'conversations'
+                                );
+                            } catch (err) {
+                                console.error('Unable to persist lastBottomTab', err);
+                            }
+                        }
+                    }
+                }
+
+                function waitForFocusToLeaveSidebox(sidebox, callback, attempt) {
+                    var maxAttempts = 5;
+                    attempt = typeof attempt === 'number' ? attempt : 0;
+                    var activeElement =
+                        typeof document !== 'undefined' ? document.activeElement : null;
+                    var focusInside = sidebox && activeElement && sidebox.contains(activeElement);
+                    if (!focusInside || attempt >= maxAttempts) {
+                        callback();
+                        return;
+                    }
+                    setTimeout(waitForFocusToLeaveSidebox, 10, sidebox, callback, attempt + 1);
+                }
+
+                function closeChatBox() {
+                    var sidebox = document.getElementById('mck-sidebox');
+                    var launcher = document.getElementById('mck-sidebox-launcher');
+                    var activeElement =
+                        typeof document !== 'undefined' ? document.activeElement : null;
+                    var shouldShiftFocus =
+                        launcher &&
+                        typeof launcher.focus === 'function' &&
+                        sidebox &&
+                        activeElement &&
+                        sidebox.contains(activeElement);
+
+                    closeButton && typeof closeButton.blur === 'function' && closeButton.blur();
+
+                    if (shouldShiftFocus) {
+                        launcher.focus();
+                        waitForFocusToLeaveSidebox(sidebox, runCloseChatBoxActions, 0);
+                    } else {
+                        runCloseChatBoxActions();
+                    }
                 }
                 closeButton.addEventListener('click', closeChatBox);
 

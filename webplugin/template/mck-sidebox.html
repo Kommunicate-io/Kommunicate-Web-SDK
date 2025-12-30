@@ -298,6 +298,7 @@
                 </span>
                 <div class="km-learn-more-container">
                     <a
+                        id="km-local-file-system-warning-link"
                         href="https://docs.kommunicate.io/docs/web-troubleshooting"
                         class="km-learn-more"
                         target="_blank"
@@ -539,7 +540,7 @@
                         </div>
                         <div class="km-no-results-found-container n-vis">
                             <div class="km-no-results-found">
-                                <p>No results found</p>
+                                <p id="km-no-results-found">No results found</p>
                                 <div class="km-talk-to-human-div">
                                     <p id="mck-no-faq-found">Looking for something else?</p>
                                     <button
@@ -558,7 +559,9 @@
                         <div id="km-faqanswer" class="km-faqanswer"></div>
                     </div>
                     <div id="km-whats-new-placeholder" class="km-whats-new-placeholder n-vis">
-                        <div class="km-whats-new-empty">What's New coming soon.</div>
+                        <div id="km-whats-new-empty-text" class="km-whats-new-empty">
+                            What's New coming soon.
+                        </div>
                         <ul class="km-whats-new-list"></ul>
                     </div>
 
@@ -894,7 +897,7 @@
                     </div>
                 </div>
                 <div class="mck-csat-wrapper n-vis" id="csat-2">
-                    <h3>Add feedback (optional)</h3>
+                    <h3 id="km-csat-feedback-heading">Add feedback (optional)</h3>
                     <div id="mck-feedback-text-wrapper" class="mck-feedback-text-wrapper">
                         <textarea
                             name="feedback"
@@ -967,6 +970,7 @@
                             <form id="mck-msg-form" class="vertical mck-msg-form">
                                 <div class="mck-form-group n-vis">
                                     <label
+                                        id="km-label-to"
                                         class="sr-only placeholder-text control-label"
                                         for="mck-msg-to"
                                         >To:</label
@@ -1457,7 +1461,7 @@
                     >
                         <use xlink:href="#icon-27" href="#icon-27"></use>
                     </svg>
-                    This is a required field
+                    <span id="km-text-req-error-label">This is a required field</span>
                 </div>
             </div>
             <div class="km-bottom-tab-wrapper">
@@ -2024,11 +2028,21 @@
                     </div>
                     <div id="mck-map-content" class="mck-loc-content"></div>
                     <div class="n-vis" aria-hidden="true">
-                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lat">Lat.:</label>
+                        <label
+                            id="km-loc-lat-label"
+                            class="blk-sm-2 mck-control-label"
+                            for="mck-loc-lat"
+                            >Lat.:</label
+                        >
                         <div class="blk-sm-3">
                             <input type="text" id="mck-loc-lat" class="mck-form-control" />
                         </div>
-                        <label class="blk-sm-2 mck-control-label" for="mck-loc-lon">Long.:</label>
+                        <label
+                            id="km-loc-lon-label"
+                            class="blk-sm-2 mck-control-label"
+                            for="mck-loc-lon"
+                            >Long.:</label
+                        >
                         <div class="blk-sm-3">
                             <input type="text" id="mck-loc-lon" class="mck-form-control" />
                         </div>
@@ -2195,7 +2209,9 @@
                     <div class="km-modal-form">
                         <form id="km-form-chat-login" class="km-vertical">
                             <div class="km-form-group km-form-group-container">
-                                <label class="sr-only" for="km-userId">User ID</label>
+                                <label id="km-label-user-id" class="sr-only" for="km-userId"
+                                    >User ID</label
+                                >
                                 <input
                                     class="km-form-control km-input-width n-vis"
                                     id="km-userId"

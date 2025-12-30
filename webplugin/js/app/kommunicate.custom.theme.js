@@ -47,6 +47,23 @@ function KmCustomTheme() {
         widgetTextColor: '--km-custom-widget-contrast-color',
     };
     var canvasColorParserContext;
+    function getResolvedLayout() {
+        return (
+            (typeof kommunicateCommons.getLayout === 'function' &&
+                kommunicateCommons.getLayout()) ||
+            KommunicateConstants.DESIGN_LAYOUTS.DEFAULT ||
+            'classic'
+        );
+    }
+
+    function isClassicLayout() {
+        var defaultLayout = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
+        return getResolvedLayout() === defaultLayout;
+    }
+
+    function hasThemeValue(value) {
+        return value != null && String(value).trim().length > 0;
+    }
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -221,6 +238,9 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
+        if (isClassicLayout() && !hasThemeValue(mergedVars['--km-on-primary'])) {
+            mergedVars['--km-on-primary'] = '#ffffff';
+        }
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {

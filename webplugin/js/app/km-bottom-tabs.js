@@ -205,9 +205,48 @@
             } else {
                 emptyTab.classList.remove('active');
                 emptyTab.setAttribute('aria-selected', 'false');
-                emptyTab.setAttribute('aria-hidden', 'true');
-                if (conversationTab) {
-                    conversationTab.setAttribute('aria-hidden', 'false');
+                var activeElement =
+                    documentRef && typeof documentRef.activeElement !== 'undefined'
+                        ? documentRef.activeElement
+                        : null;
+                var needsFocusShift =
+                    activeElement &&
+                    emptyTab.contains(activeElement) &&
+                    conversationTab &&
+                    typeof conversationTab.focus === 'function';
+
+                function hideTab() {
+                    emptyTab.setAttribute('aria-hidden', 'true');
+                    if (conversationTab) {
+                        conversationTab.setAttribute('aria-hidden', 'false');
+                    }
+                }
+
+                var focusRetryCount = 0;
+
+                function hideAfterFocusShift() {
+                    var currentActive =
+                        documentRef && typeof documentRef.activeElement !== 'undefined'
+                            ? documentRef.activeElement
+                            : null;
+                    if (currentActive && emptyTab.contains(currentActive)) {
+                        focusRetryCount++;
+                        if (focusRetryCount > 5) {
+                            hideTab();
+                            return;
+                        }
+                        setTimeout(hideAfterFocusShift, 10);
+                        return;
+                    }
+                    hideTab();
+                }
+
+                if (needsFocusShift) {
+                    // move focus before hiding the tab so assistive tech still sees it
+                    conversationTab.focus();
+                    setTimeout(hideAfterFocusShift, 0);
+                } else {
+                    hideTab();
                 }
             }
         }
@@ -416,7 +455,9 @@
             }
 
             if (resolvedTabType === 'whats-new') {
-                whatsNewManager.refresh();
+                if (whatsNewManager && typeof whatsNewManager.refresh === 'function') {
+                    whatsNewManager.refresh();
+                }
                 ui.toggleModernFaqBackButton(false);
                 topBarManager = getTopBarManager();
                 if (topBarManager) {

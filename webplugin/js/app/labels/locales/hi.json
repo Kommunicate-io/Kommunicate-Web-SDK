@@ -191,5 +191,12 @@
   "voiceInterface.speak": "बोलने के लिए क्लिक करें",
   "voiceInterface.chat": "चैट करने के लिए क्लिक करें",
   "voiceInterface.back": "वापस",
-  "voiceInterface.repeatLastMsg": "जवाब को फिर से सुनें"
+  "voiceInterface.repeatLastMsg": "जवाब को फिर से सुनें",
+  "form.label.to": "को:",
+  "form.label.userId": "उपयोगकर्ता आईडी",
+  "form.error.required": "यह एक आवश्यक फ़ील्ड है",
+  "form.error.invalidValue": "आपने अमान्य मान दर्ज किया है",
+  "location.coordinates.lat": "अक्षांश:",
+  "location.coordinates.lon": "देशांतर:",
+  "whatsnew.empty": "जल्द ही नया अपडेट आ रहा है।"
 }

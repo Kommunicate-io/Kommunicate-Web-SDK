@@ -3530,6 +3530,7 @@ div#mck-rated:before {
 }
 
 #km-talk-to-human svg {
+  color: var(--km-on-primary, #ffffff);
   fill: currentColor;
 }
 
@@ -4609,6 +4610,14 @@ div#mck-rated:before {
 }
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-contacts-content {
   display: block !important;
+}
+
+.layout-classic .km-single-threaded .mck-name-status-container.mck-box-title.mck-truncate {
+  margin-left: 16px;
+}
+
+.layout-classic .km-single-threaded #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+  display: none !important;
 }
 
 #mck-sidebox-content.active-tab-faqs #faq-common {
