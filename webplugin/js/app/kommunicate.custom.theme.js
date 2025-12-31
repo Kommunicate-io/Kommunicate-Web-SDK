@@ -223,6 +223,10 @@ function KmCustomTheme() {
                 });
             }
         });
+        if (isClassicLayout() && !hasThemeValue(overrides['--km-on-primary'])) {
+            console.log('overriding --km-on-primary for classic layout');
+            overrides['--km-on-primary'] = '#ffffff';
+        }
         return overrides;
     }
 
@@ -238,9 +242,7 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
-        if (isClassicLayout() && !hasThemeValue(mergedVars['--km-on-primary'])) {
-            mergedVars['--km-on-primary'] = '#ffffff';
-        }
+
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {
@@ -281,7 +283,6 @@ function KmCustomTheme() {
     }
 
     _this.changeColorTheme = function () {
-        // #0A090C
         var primaryColor =
             (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
         if (!primaryColor) {
