@@ -83,6 +83,8 @@
     color: $text-tertiary-color;
     letter-spacing: 0.36px;
     margin-left: 0 !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .mck-form-error-container {

@@ -2248,6 +2248,8 @@ input[type=number]::-webkit-outer-spin-button {
   color: #6e6e6e;
   letter-spacing: 0.36px;
   margin-left: 0 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .mck-form-error-container {
