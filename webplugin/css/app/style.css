@@ -3479,6 +3479,10 @@ div#mck-rated:before {
   width: 20px;
 }
 
+.mck-title {
+  padding: 0 16px;
+}
+
 .mck-sidebox .mck-tab-title,
 .mck-sidebox .mck-tab-title-w-status,
 .mck-sidebox .mck-tab-title-w-typing,
@@ -3548,6 +3552,41 @@ div#mck-rated:before {
 .mck-search-tab-box,
 .mck-search-box-top {
   background-color: rgba(241, 241, 241, 0.6);
+}
+
+.km-faq-and-close-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container .km-kb-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container .km-widget-options-button {
+  margin-right: 0;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.km-faq-and-close-btn-container .mck-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container #km-chat-widget-close-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
 }
 
 .mck-gm-search-box .mck-box-top .blk-lg-3 {
