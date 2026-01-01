@@ -4387,6 +4387,7 @@ ul.mck-intent-menu > li:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 16px;
 }
 .km-header-container {
     display: flex;
@@ -5715,7 +5716,38 @@ div#mck-waiting-queue {
     ) !important;
 }
 .km-faq-and-close-btn-container {
+    display: flex;
+    align-items: center;
     justify-content: flex-end;
+    gap: 6px;
+}
+.km-faq-and-close-btn-container .km-kb-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.km-faq-and-close-btn-container .km-widget-options-button {
+    margin-right: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+.km-faq-and-close-btn-container .mck-close-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.km-faq-and-close-btn-container #km-chat-widget-close-button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
 }
 
 .mck-cont-msg-date {
