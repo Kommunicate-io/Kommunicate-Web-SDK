@@ -3354,6 +3354,7 @@ div#mck-rated:before {
   max-width: 98%;
   width: 100%;
   flex-direction: column;
+  padding-bottom: 10px;
 }
 .mck-feedback-text-wrapper textarea {
   background: white;
