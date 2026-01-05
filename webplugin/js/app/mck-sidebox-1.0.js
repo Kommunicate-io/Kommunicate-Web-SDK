@@ -90,7 +90,6 @@ const firstVisibleMsg = {
         voiceOutput: false,
         capturePhoto: false,
         captureVideo: false,
-        maxAttachmentSize: 25, // default size is 25MB,
         whatsNewList: [],
     };
     var message_default_options = {
