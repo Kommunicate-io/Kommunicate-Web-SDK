@@ -1000,7 +1000,21 @@ const firstVisibleMsg = {
             mckMessageService.init();
             mckFileService.init();
             mckGroupLayout.init();
+            var shouldLazyInit = CREATE_USER_ON_WIDGET_OPEN;
             if (CREATE_USER_ON_WIDGET_OPEN) {
+                var appHeaders =
+                    typeof ALStorage !== 'undefined' &&
+                    typeof ALStorage.getAppHeaders === 'function'
+                        ? ALStorage.getAppHeaders()
+                        : null;
+                var hasExistingSession =
+                    appHeaders &&
+                    appHeaders.userId &&
+                    appHeaders.appId === MCK_APP_ID &&
+                    (!appOptions.userId || appOptions.userId === appHeaders.userId);
+                shouldLazyInit = !hasExistingSession;
+            }
+            if (shouldLazyInit) {
                 mckInit.appendLauncher();
                 if (KOMMUNICATE_VERSION === 'v2') {
                     mckInit.configureIframe();
@@ -7918,12 +7932,17 @@ const firstVisibleMsg = {
 
             _this.setHeaderCTALabel = function (currentCTAKey, currentCTA, nestedKey) {
                 var buttonPrimary = document.querySelector('.km-header-cta');
+                if (!buttonPrimary) {
+                    return;
+                }
 
                 var toolTipText = nestedKey
                     ? MCK_LABELS['header.primary.CTA'][currentCTAKey][nestedKey]
                     : MCK_LABELS['header.primary.CTA'][currentCTAKey];
 
-                buttonPrimary.innerHTML += nestedKey ? currentCTA.icon[nestedKey] : currentCTA.icon;
+                buttonPrimary.innerHTML =
+                    '<span class="tooltip-text n-vis"></span>' +
+                    (nestedKey ? currentCTA.icon[nestedKey] : currentCTA.icon);
 
                 buttonPrimary.setAttribute('title', toolTipText);
                 buttonPrimary.id = currentCTA.id;
