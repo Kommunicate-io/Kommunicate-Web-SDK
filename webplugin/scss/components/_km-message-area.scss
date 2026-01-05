@@ -661,10 +661,12 @@
     background-clip: padding-box;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+    transition: transform 180ms ease, box-shadow 180ms ease;
 
     &:hover {
         transform: translateY(-1px);
-        box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
+            0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
     }
 
     &:focus-visible {

@@ -230,12 +230,14 @@ textarea {
   background-color: #5f46f8;
   margin-top: 45px;
   color: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 .km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited {
   color: #fbfbfb;
   text-decoration: none;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
   outline: none !important;
   border: none;
 }
@@ -244,7 +246,6 @@ textarea {
   outline: none !important;
   border: none;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
 }
 
 #km-form-chat-login {
@@ -1614,10 +1615,11 @@ input[type=number]::-webkit-outer-spin-button {
   box-sizing: border-box;
   background-clip: padding-box;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 .km-conversations-empty__cta:hover, .km-empty-conversation-card__cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 .km-conversations-empty__cta:focus-visible, .km-empty-conversation-card__cta:focus-visible {
   outline: 2px solid #7761f9;
