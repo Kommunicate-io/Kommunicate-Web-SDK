@@ -4331,6 +4331,8 @@ div#mck-rated:before {
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
   border: 1px solid rgba(15, 23, 42, 0.04);
+  --km-minimize-width: 52px;
+  --km-minimize-gap: 10px;
 }
 
 .km-bottom-tab {
@@ -4363,7 +4365,7 @@ div#mck-rated:before {
 }
 
 .km-bottom-tab--collapse {
-  flex: 0 0 74px;
+  flex: 0 0 var(--km-minimize-width);
   padding: 8px 6px;
   align-self: stretch;
   border-left: 1px solid rgba(4, 68, 77, 0.08);
@@ -4386,7 +4388,7 @@ div#mck-rated:before {
     gap: 3px;
   }
   .km-bottom-tab--collapse {
-    flex: 0 0 66px;
+    flex: 0 0 var(--km-minimize-width);
     padding: 6px 4px;
   }
   .km-bottom-tab-icon {
@@ -4430,9 +4432,40 @@ div#mck-rated:before {
     gap: 4px;
   }
   .km-bottom-tab--collapse {
-    flex: 0 0 60px;
+    flex: 0 0 var(--km-minimize-width);
   }
 }
+.km-bottom-tab-bar--has-minimize {
+  justify-content: flex-start;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab:last-of-type {
+  padding-right: 6px;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse {
+  margin-left: auto;
+  border-left: 1px solid rgba(4, 68, 77, 0.08);
+  padding: 6px;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse .km-bottom-tab-icon {
+  width: 30px;
+  height: 30px;
+  background: rgba(4, 68, 77, 0.06);
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse .km-bottom-tab-label {
+  display: inline;
+  font-size: 11px;
+  letter-spacing: 0.1px;
+}
+
 .km-bottom-tab-icon {
   width: 34px;
   height: 34px;
