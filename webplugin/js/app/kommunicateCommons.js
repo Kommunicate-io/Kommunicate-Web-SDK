@@ -229,6 +229,66 @@ function KommunicateCommons() {
         changeVisibility(Array.from(arguments), 'n-vis', 'vis');
     };
 
+    _this.setDialogVisibility = function (dialog, shouldShow, focusFallbacks) {
+        if (!dialog) {
+            return;
+        }
+
+        var doc = dialog.ownerDocument || document;
+        if (shouldShow) {
+            dialog.style.visibility = 'visible';
+            dialog.style.display = 'block';
+            dialog.setAttribute('aria-hidden', 'false');
+            dialog.removeAttribute('inert');
+            if ('inert' in dialog) {
+                dialog.inert = false;
+            }
+            return;
+        }
+
+        var activeElement = doc.activeElement;
+        if (activeElement && dialog.contains(activeElement)) {
+            var focusTargets = Array.isArray(focusFallbacks)
+                ? focusFallbacks
+                : focusFallbacks
+                ? [focusFallbacks]
+                : [];
+            var focusTarget = null;
+
+            for (var i = 0; i < focusTargets.length; i++) {
+                var candidate = focusTargets[i];
+                if (typeof candidate === 'string') {
+                    focusTarget = doc.querySelector(candidate);
+                } else if (candidate && candidate.nodeType === 1) {
+                    focusTarget = candidate;
+                }
+                if (focusTarget) {
+                    break;
+                }
+            }
+
+            if (focusTarget && typeof focusTarget.focus === 'function') {
+                focusTarget.focus();
+            } else if (doc.body && typeof doc.body.focus === 'function') {
+                doc.body.focus();
+            }
+
+            if (doc.activeElement && dialog.contains(doc.activeElement)) {
+                if (doc.activeElement && typeof doc.activeElement.blur === 'function') {
+                    doc.activeElement.blur();
+                }
+            }
+        }
+
+        dialog.setAttribute('aria-hidden', 'true');
+        dialog.setAttribute('inert', '');
+        if ('inert' in dialog) {
+            dialog.inert = true;
+        }
+        dialog.style.visibility = 'hidden';
+        dialog.style.display = 'none';
+    };
+
     _this.setMessagePxyRecipient = function (messagePxy) {
         if (typeof window.$applozic !== 'function') {
             return;
