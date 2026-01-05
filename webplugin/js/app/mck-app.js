@@ -618,6 +618,8 @@ function ApplozicSidebox() {
                 options.staticTopIcon != null
                     ? options.staticTopIcon
                     : widgetSettings && widgetSettings.staticTopIcon;
+            options.createUserOnWidgetOpen =
+                widgetSettings && widgetSettings.createUserOnWidgetOpen;
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
