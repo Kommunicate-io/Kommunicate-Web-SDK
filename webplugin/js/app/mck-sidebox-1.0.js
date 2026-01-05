@@ -62,7 +62,7 @@ const firstVisibleMsg = {
         olStatus: false,
         unreadCountOnchatLauncher: true,
         openConversationOnNewMessage: false, // default value
-        createUserOnWidgetOpen: false,
+        preCreateUser: true,
         //      awsS3Server :false,
         groupUserCount: false,
         desktopNotification: true,
@@ -407,7 +407,7 @@ const firstVisibleMsg = {
         var MCK_ON_PLUGIN_CLOSE = appOptions.onClose;
         var MCK_DISPLAY_TEXT = appOptions.displayText;
         var MCK_ACCESS_TOKEN = appOptions.password || appOptions.accessToken;
-        var CREATE_USER_ON_WIDGET_OPEN = Boolean(appOptions.createUserOnWidgetOpen);
+        var CREATE_USER_ON_WIDGET_OPEN = appOptions.preCreateUser === false;
         var LAZY_INIT_STARTED = false;
         var LAZY_INIT_PENDING_OPEN = false;
         var MCK_CALLBACK = appOptions.readConversation;
