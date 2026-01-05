@@ -146,7 +146,9 @@
     color: white;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    @media (prefers-reduced-motion: no-preference) {
+        transition: transform 200ms ease, box-shadow 200ms ease;
+    }
 
     &.focus,
     &:focus,
@@ -162,6 +164,11 @@
         border: none;
     }
 
+    &:focus-visible {
+        outline: 2px solid $outline-color;
+        outline-offset: 2px;
+    }
+
     &[disabled],
     &[disabled]:focus,
     &[disabled]:hover,
@@ -170,7 +177,17 @@
         pointer-events: none;
         outline: none !important;
         border: none;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &.focus,
+        &:focus,
+        &:hover,
+        &:active,
+        &:visited {
+            transform: none;
+        }
     }
 }
 

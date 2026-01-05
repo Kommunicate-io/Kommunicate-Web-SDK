@@ -3990,6 +3990,13 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
         0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
+#mck-msg-new:focus-visible {
+    outline: 2px solid rgba(76, 102, 205, 0.6);
+    outline-offset: 2px;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
+        0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+}
 #mck-msg-new:focus {
     outline: none;
 }
