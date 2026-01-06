@@ -542,6 +542,9 @@ const firstVisibleMsg = {
             typeof appOptions.automaticChatOpenOnNavigation === 'boolean'
                 ? appOptions.automaticChatOpenOnNavigation
                 : false;
+        if (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && typeof KommunicateUI !== 'undefined') {
+            KommunicateUI.skipPopupChatTemplate = true;
+        }
         var MCK_ATTACHMENT =
             typeof appOptions.attachment === 'boolean' ? appOptions.attachment : true;
         var CURRENT_PAGE_TITLE = parent.document.title;
