@@ -71,6 +71,17 @@ function KommunicateCommons() {
         }
         var reducedHeight = baseHeight - navHeight;
         iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
+
+        if (
+            !iframeElement._kmResizeListenerAttached &&
+            heightSourceWindow &&
+            typeof heightSourceWindow.addEventListener === 'function'
+        ) {
+            iframeElement._kmResizeListenerAttached = true;
+            heightSourceWindow.addEventListener('resize', function () {
+                _this.adjustIframeHeightForLayout(iframeElement);
+            });
+        }
     };
 
     _this.isTrialPlan = function (pricingPackage) {
