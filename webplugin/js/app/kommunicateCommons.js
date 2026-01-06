@@ -5,6 +5,7 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    var iframeResizeListeners = typeof WeakMap === 'function' ? new WeakMap() : null;
     KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
@@ -72,15 +73,43 @@ function KommunicateCommons() {
         var reducedHeight = baseHeight - navHeight;
         iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
 
-        if (
-            !iframeElement._kmResizeListenerAttached &&
-            heightSourceWindow &&
-            typeof heightSourceWindow.addEventListener === 'function'
-        ) {
-            iframeElement._kmResizeListenerAttached = true;
-            heightSourceWindow.addEventListener('resize', function () {
-                _this.adjustIframeHeightForLayout(iframeElement);
-            });
+        if (heightSourceWindow && typeof heightSourceWindow.addEventListener === 'function') {
+            var existingHandler = iframeResizeListeners
+                ? iframeResizeListeners.get(iframeElement)
+                : iframeElement._kmResizeListener;
+            if (!existingHandler) {
+                var resizeHandler = function () {
+                    _this.adjustIframeHeightForLayout(iframeElement);
+                };
+                if (iframeResizeListeners) {
+                    iframeResizeListeners.set(iframeElement, resizeHandler);
+                } else {
+                    iframeElement._kmResizeListener = resizeHandler;
+                }
+                heightSourceWindow.addEventListener('resize', resizeHandler);
+            }
+        }
+    };
+
+    _this.cleanupIframeResizeListener = function (iframeElement) {
+        if (!iframeElement) {
+            return;
+        }
+        var handler = iframeResizeListeners
+            ? iframeResizeListeners.get(iframeElement)
+            : iframeElement._kmResizeListener;
+        if (!handler) {
+            return;
+        }
+        var heightSourceWindow =
+            (iframeElement.ownerDocument && iframeElement.ownerDocument.defaultView) || window;
+        if (heightSourceWindow && typeof heightSourceWindow.removeEventListener === 'function') {
+            heightSourceWindow.removeEventListener('resize', handler);
+        }
+        if (iframeResizeListeners) {
+            iframeResizeListeners.delete(iframeElement);
+        } else {
+            delete iframeElement._kmResizeListener;
         }
     };
 
