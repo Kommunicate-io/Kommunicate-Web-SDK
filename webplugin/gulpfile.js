@@ -30,6 +30,8 @@ const buildDir = path.resolve(__dirname, 'build');
 const releaseDir = path.resolve(__dirname, 'build', String(version));
 const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
+const legacyResourcesDir = path.join(buildDir, 'resources');
+const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 
@@ -86,6 +88,10 @@ const generateResourceFolder = () => {
 
     if (!fs.existsSync(releaseThirdPartyDir)) {
         fs.mkdirSync(releaseThirdPartyDir, { recursive: true });
+    }
+
+    if (!fs.existsSync(legacyThirdPartyDir)) {
+        fs.mkdirSync(legacyThirdPartyDir, { recursive: true });
     }
 };
 
@@ -248,6 +254,8 @@ const generateBuildFiles = () => {
             'lib/js/mck-emojis.min.js',
             `${resourceLocation}/third-party-scripts/mck-emojis.min.js`
         );
+        // legacy path for existing redirects
+        copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
 
         // generate robots.txt for build dir
         copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
@@ -278,6 +286,10 @@ const generateBuildFiles = () => {
     copyDirectoryRecursive(
         path.join(__dirname, 'css/app/fonts'),
         path.join(releaseDir, 'css/app/fonts')
+    );
+    copyDirectoryRecursive(
+        path.join(__dirname, 'css/app/fonts'),
+        path.join(buildDir, 'css/app/fonts')
     );
 
     // copy img folder to build

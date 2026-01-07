@@ -18,6 +18,8 @@ const buildDir = path.resolve(__dirname, 'build');
 const releaseDir = path.resolve(__dirname, 'build', String(version));
 const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
+const legacyResourcesDir = path.join(buildDir, 'resources');
+const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
@@ -106,6 +108,24 @@ const generateFiles = ({ fileName, source, output }) => {
     });
 };
 
+const copyIndexWithBranch = (src, dest, branchValue, envValue) => {
+    try {
+        const templatePath = path.join(__dirname, src);
+        const content = fs.readFileSync(templatePath, 'utf8');
+        const resolvedBranch = branchValue || 'unknown-branch';
+        const resolvedEnv = envValue || 'development';
+        const replaced = content
+            .replace(/__KM_BRANCH__/g, resolvedBranch)
+            .replace(/__KM_ENV__/g, resolvedEnv);
+        fs.writeFileSync(dest, replaced);
+        console.log(
+            `${dest} generated successfully with branch ${resolvedBranch} and env ${resolvedEnv}`
+        );
+    } catch (err) {
+        console.log(`error while generating ${dest}`, err);
+    }
+};
+
 // Add already minified files only in the below compressor code.
 const generateMinFiles = () => {
     const FILES_INFO = {
@@ -152,10 +172,47 @@ const copyFileToBuild = (src, dest, isFullPathExist) => {
         console.log(`${dest} generated successfully`);
     });
 };
+
+const copyDirectoryRecursive = (sourceDir, destinationDir) => {
+    if (!fs.existsSync(sourceDir)) {
+        console.log(`Source directory ${sourceDir} does not exist`);
+        return;
+    }
+    if (!fs.existsSync(destinationDir)) {
+        fs.mkdirSync(destinationDir, { recursive: true });
+    }
+    fs.readdirSync(sourceDir).forEach((entry) => {
+        const srcPath = path.join(sourceDir, entry);
+        const destPath = path.join(destinationDir, entry);
+        if (fs.lstatSync(srcPath).isDirectory()) {
+            copyDirectoryRecursive(srcPath, destPath);
+        } else {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    });
+    console.log(`${destinationDir} directory generated successfully`);
+};
 const generateBuildFiles = () => {
+    const buildEnvValue = process.env._BUILD_ENV || process.env.NODE_ENV || 'development';
+    copyIndexWithBranch(
+        'template/index.html',
+        `${buildDir}/index.html`,
+        KM_RELEASE_BRANCH,
+        buildEnvValue
+    );
+
+    copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
+
+    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+
     // Generate chat.html for /chat route
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
+
+    copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
+
+    // legacy path for emoticon script redirect
+    copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
@@ -201,6 +258,8 @@ const generateBuildFiles = () => {
             if (err) {
                 console.log('plugin.js generation error');
             }
+            const minifiedPlugin = minifyPluginContent(mckApp);
+            fs.writeFileSync(path.join(buildDir, 'plugin.min.js'), minifiedPlugin);
             generateFilesByVersion('build/plugin.js');
         });
     });
@@ -228,6 +287,19 @@ const generateBuildFiles = () => {
             });
         });
     });
+
+    // copy fonts required by the compiled CSS
+    copyDirectoryRecursive(
+        path.join(__dirname, 'css/app/fonts'),
+        path.join(releaseDir, 'css/app/fonts')
+    );
+    copyDirectoryRecursive(
+        path.join(__dirname, 'css/app/fonts'),
+        path.join(buildDir, 'css/app/fonts')
+    );
+
+    // copy img folder for local build
+    copyDirectoryRecursive(path.join(__dirname, 'img'), path.join(releaseResourcesDir, 'img'));
 };
 
 const generateFilesByVersion = (location) => {
@@ -262,7 +334,23 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
 
-                PLUGIN_FILE_DATA[pluginVersions[i]] = minifyPluginContent(data);
+                const minifiedData = minifyPluginContent(data);
+                PLUGIN_FILE_DATA[pluginVersions[i]] = minifiedData;
+
+                const versionDir = path.join(buildDir, pluginVersions[i]);
+                if (!fs.existsSync(versionDir)) {
+                    fs.mkdirSync(versionDir, { recursive: true });
+                }
+                fs.writeFileSync(path.join(versionDir, 'kommunicate.app'), minifiedData);
+                if (pluginVersions[i] === 'v1') {
+                    fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
+                }
+                if (pluginVersions[i] === 'v3') {
+                    fs.writeFileSync(
+                        path.join(buildDir, 'kommunicate-widget-3.0.min.js'),
+                        minifiedData
+                    );
+                }
             }
             console.log('plugin files generated for all versions successfully');
         } catch (error) {
@@ -286,6 +374,9 @@ if (!fs.existsSync(releaseResourcesDir)) {
 }
 if (!fs.existsSync(releaseThirdPartyDir)) {
     fs.mkdirSync(releaseThirdPartyDir, { recursive: true });
+}
+if (!fs.existsSync(legacyThirdPartyDir)) {
+    fs.mkdirSync(legacyThirdPartyDir, { recursive: true });
 }
 generateMinFiles();
 generateBuildFiles();
