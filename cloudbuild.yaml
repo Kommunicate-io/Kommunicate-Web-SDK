@@ -105,6 +105,16 @@ steps:
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
           gsutil -m rsync -r webplugin/build gs://${_CDN_BUCKET}/${_CDN_PREFIX}
+          rsync_status=$?
+          if [ ${rsync_status} -ne 0 ]; then
+            echo "CDN sync failed with status ${rsync_status}"
+            exit ${rsync_status}
+          fi
+
+          if ! gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**" >/dev/null 2>&1; then
+            echo "CDN sync completed but destination appears empty."
+            exit 1
+          fi
         else
           echo "Skipping CDN sync."
         fi
