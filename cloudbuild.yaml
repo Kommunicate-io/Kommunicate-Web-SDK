@@ -6,6 +6,9 @@ substitutions:
   _BRANCH: "${BRANCH_NAME}"  # Branch name from the trigger
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
+  _DEPLOY_CDN: "false"  # Toggle CDN sync
+  _CDN_BUCKET: "your-cdn-bucket"  # e.g. kommunicate-widget-cdn
+  _CDN_PREFIX: "your-cdn-prefix"  # e.g. widget-test.kommunicate.io
 
 steps:
  # Step 1: Install Node.js dependencies
@@ -82,13 +85,49 @@ steps:
           exit 1
         fi
 
-  # Step 5: Deploy to Firebase Hosting
+  # Step 5: Deploy to Firebase Hosting (skipped when CDN deploy is enabled)
   - name: 'gcr.io/$PROJECT_ID/firebase'
+    entrypoint: 'sh'
     args:
-      - 'deploy'
-      - '--only'
-      - 'hosting:${_FIREBASE_SITE_ID}'
-      - '--project'
-      - '${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          echo "Skipping Firebase deploy because _DEPLOY_CDN=true."
+          exit 0
+        fi
+        firebase deploy --only hosting:${_FIREBASE_SITE_ID} --project ${_FIREBASE_PROJECT_ID} --token ${_FIREBASE_TOKEN}
+
+  # Step 6: Sync build output to CDN bucket (optional)
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          gsutil -m rsync -r webplugin/build gs://${_CDN_BUCKET}/${_CDN_PREFIX}
+        else
+          echo "Skipping CDN sync."
+        fi
+
+  # Step 7: Apply CDN cache headers to match Firebase rules (optional)
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.js" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*min.css" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.png" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.webp" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff2" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/resources/**/*.html"
+
+          gsutil -m setmeta -h "Cache-Control:public,max-age=900" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/v2/kommunicate.app" \
+            "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/kommunicate-widget-3.0.min.js"
+        else
+          echo "Skipping CDN cache headers."
+        fi

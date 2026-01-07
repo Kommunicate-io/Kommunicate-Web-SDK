@@ -27,6 +27,9 @@ const {
     KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
+const releaseDir = path.resolve(__dirname, 'build', String(version));
+const releaseResourcesDir = path.join(releaseDir, 'resources');
+const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 
@@ -57,8 +60,10 @@ const cli = new SentryCli(null, {
     },
 });
 
-let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
-let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
+let pathToResource = !env
+    ? `${BUILD_URL}/${version}/resources`
+    : `${MCK_CONTEXT_PATH}/${version}/resources`;
+let resourceLocation = releaseResourcesDir;
 
 const minifyPluginContent = (code) => {
     try {
@@ -75,17 +80,12 @@ const minifyPluginContent = (code) => {
 };
 
 const generateResourceFolder = () => {
-    if (env) {
-        // create resources folder
-        // resources folder will contain the files generated with version
-        if (!fs.existsSync(`${buildDir}/resources`)) {
-            fs.mkdirSync(`${buildDir}/resources`);
-        }
+    if (!fs.existsSync(releaseResourcesDir)) {
+        fs.mkdirSync(releaseResourcesDir, { recursive: true });
+    }
 
-        // add third party scripts here
-        if (!fs.existsSync(`${buildDir}/resources/third-party-scripts`)) {
-            fs.mkdirSync(`${buildDir}/resources/third-party-scripts`);
-        }
+    if (!fs.existsSync(releaseThirdPartyDir)) {
+        fs.mkdirSync(releaseThirdPartyDir, { recursive: true });
     }
 };
 
@@ -277,11 +277,11 @@ const generateBuildFiles = () => {
     // copy fonts required by the compiled CSS for local/hosted builds
     copyDirectoryRecursive(
         path.join(__dirname, 'css/app/fonts'),
-        path.join(buildDir, 'css/app/fonts')
+        path.join(releaseDir, 'css/app/fonts')
     );
 
     // copy img folder to build
-    copyDirectoryRecursive(path.join(__dirname, 'img'), path.join(buildDir, 'resources/img'));
+    copyDirectoryRecursive(path.join(__dirname, 'img'), path.join(releaseResourcesDir, 'img'));
 
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(

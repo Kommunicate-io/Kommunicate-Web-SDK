@@ -15,6 +15,9 @@ const {
     KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
+const releaseDir = path.resolve(__dirname, 'build', String(version));
+const releaseResourcesDir = path.join(releaseDir, 'resources');
+const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
@@ -34,8 +37,8 @@ Object.assign(PLUGIN_SETTING, {
 let PLUGIN_FILE_DATA = new Object();
 let BUILD_URL = MCK_STATIC_PATH + '/build';
 
-let pathToResource = BUILD_URL;
-let resourceLocation = buildDir;
+let pathToResource = `${BUILD_URL}/${version}/resources`;
+let resourceLocation = releaseResourcesDir;
 
 const minifyPluginContent = (code) => {
     try {
@@ -60,22 +63,28 @@ const minifyPluginContent = (code) => {
  * If build folder doesn't exists then it create a build folder.
  *
  */
+const removeDirectoryRecursive = (dirPath) => {
+    if (!fs.existsSync(dirPath)) {
+        return;
+    }
+    fs.readdirSync(dirPath).forEach((entry) => {
+        const entryPath = path.join(dirPath, entry);
+        if (fs.lstatSync(entryPath).isDirectory()) {
+            removeDirectoryRecursive(entryPath);
+            fs.rmdirSync(entryPath);
+        } else {
+            fs.unlinkSync(entryPath);
+        }
+    });
+};
+
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
-    } else {
-        try {
-            var files = fs.readdirSync(dirPath);
-        } catch (e) {
-            return;
-        }
-        files &&
-            files.map((file) => {
-                if (fs.statSync(dirPath + '/' + file).isFile()) {
-                    fs.unlinkSync(dirPath + '/' + file);
-                }
-            });
+        return;
     }
+
+    removeDirectoryRecursive(dirPath);
 };
 
 const generateFiles = ({ fileName, source, output }) => {
@@ -156,11 +165,11 @@ const generateBuildFiles = () => {
             generateFiles({
                 fileName: fileData.outputName,
                 source: fileData.source,
-                output: `${resourceLocation}/${fileData.outputName}`,
+                output: `${releaseThirdPartyDir}/${fileData.outputName}`,
             });
             return;
         }
-        copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`, true);
+        copyFileToBuild(fileData.source, `${releaseThirdPartyDir}/${fileData.outputName}`, true);
     });
 
     // Generate mck-sidebox.html file for build folder.
@@ -227,7 +236,7 @@ const generateFilesByVersion = (location) => {
             console.log('error while generating plugin.js', err);
         }
 
-        const thirdPartyScripts = getDynamicLoadFiles(pathToResource);
+        const thirdPartyScripts = getDynamicLoadFiles(`${pathToResource}/third-party-scripts`);
 
         try {
             var plugin = data
@@ -272,6 +281,12 @@ const deleteFilesUsingPath = (path) => {
 };
 
 removeExistingFile(buildDir);
+if (!fs.existsSync(releaseResourcesDir)) {
+    fs.mkdirSync(releaseResourcesDir, { recursive: true });
+}
+if (!fs.existsSync(releaseThirdPartyDir)) {
+    fs.mkdirSync(releaseThirdPartyDir, { recursive: true });
+}
 generateMinFiles();
 generateBuildFiles();
 
