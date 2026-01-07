@@ -116,29 +116,21 @@ steps:
       - '-c'
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
-          if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.js" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*min.css" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.png" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.webp" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff2" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/resources/**/*.html" >/dev/null 2>&1; then
-            gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.js" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*min.css" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.png" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.webp" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff2" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/*.woff" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**/resources/**/*.html"
-          fi
+          CDN_CACHE_PATTERNS="**/*.js **/*min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
+          for pattern in ${CDN_CACHE_PATTERNS}; do
+            if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${pattern}" >/dev/null 2>&1; then
+              gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" \
+                "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${pattern}"
+            fi
+          done
 
-          if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/v2/kommunicate.app" >/dev/null 2>&1 || \
-             gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/kommunicate-widget-3.0.min.js" >/dev/null 2>&1; then
-            gsutil -m setmeta -h "Cache-Control:public,max-age=900" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/v2/kommunicate.app" \
-              "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/kommunicate-widget-3.0.min.js"
-          fi
+          CDN_SHORT_CACHE_FILES="v2/kommunicate.app kommunicate-widget-3.0.min.js"
+          for file_path in ${CDN_SHORT_CACHE_FILES}; do
+            if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${file_path}" >/dev/null 2>&1; then
+              gsutil -m setmeta -h "Cache-Control:public,max-age=900" \
+                "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${file_path}"
+            fi
+          done
         else
           echo "Skipping CDN cache headers."
         fi
