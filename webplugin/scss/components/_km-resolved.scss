@@ -183,6 +183,36 @@
     color: var(--km-font-meta-color);
 }
 
+.mck-contact-list .mck-cont-msg-date {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    @include gap-supported(6px, 6px, '& > *');
+    white-space: nowrap;
+}
+
+.mck-box .mck-contact-list .mck-row {
+    display: flex;
+    align-items: center;
+}
+
+.mck-box .mck-contact-list .mck-conversation-topic,
+.mck-box .mck-contact-list .mck-cont-name,
+.mck-box .mck-contact-list .mck-cont-msg-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.mck-box .mck-contact-list .mck-cont-msg-date {
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+.mck-contact-list .blk-lg-4 {
+    max-width: none;
+    width: auto;
+}
+
 .km-faqsearch-icon,
 .km-faqsearch-clear {
     border: none;

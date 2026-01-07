@@ -178,6 +178,49 @@
             return documentRef.querySelector('.km-bottom-tab[data-tab="conversations"]');
         }
 
+        function getBottomTabBar() {
+            if (!documentRef || typeof documentRef.querySelector !== 'function') {
+                return null;
+            }
+            return documentRef.querySelector('.km-bottom-tab-bar');
+        }
+
+        function isBottomTabVisible(tab) {
+            if (!tab || !tab.classList) {
+                return false;
+            }
+            if (tab.classList.contains('n-vis')) {
+                return false;
+            }
+            var ariaHidden = tab.getAttribute('aria-hidden');
+            if (ariaHidden === 'true') {
+                return false;
+            }
+            if (tab.style && tab.style.display === 'none') {
+                return false;
+            }
+            return true;
+        }
+
+        function updateBottomTabBarLayout() {
+            var bar = getBottomTabBar();
+            if (!bar || !bar.classList) {
+                return;
+            }
+            var tabs = bar.querySelectorAll('.km-bottom-tab');
+            if (!tabs || !tabs.length) {
+                return;
+            }
+            var visibleTabs = Array.prototype.slice.call(tabs).filter(isBottomTabVisible);
+            var visiblePrimaryTabs = visibleTabs.filter(function (tab) {
+                return !tab.classList.contains('km-bottom-tab--collapse');
+            });
+            var hasMinimize = visibleTabs.some(function (tab) {
+                return tab.classList.contains('km-bottom-tab--collapse');
+            });
+            bar.classList.toggle('km-bottom-tab-bar--has-minimize', hasMinimize);
+        }
+
         function handleCollapseAction() {
             if (!documentRef || typeof documentRef.getElementById !== 'function') {
                 return false;
@@ -202,6 +245,7 @@
                     conversationTab.classList.remove('active');
                     conversationTab.setAttribute('aria-selected', 'false');
                 }
+                updateBottomTabBarLayout();
             } else {
                 emptyTab.classList.remove('active');
                 emptyTab.setAttribute('aria-selected', 'false');
@@ -248,6 +292,7 @@
                 } else {
                     hideTab();
                 }
+                updateBottomTabBarLayout();
             }
         }
 
@@ -511,6 +556,7 @@
                 } else {
                     toggleBottomTabsDisplay(false);
                 }
+                updateBottomTabBarLayout();
             },
             handleChange: handleBottomTabChange,
             setActiveSubsection: updateActiveSubsectionClass,
