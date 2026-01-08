@@ -20,6 +20,7 @@ const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
 const legacyResourcesDir = path.join(buildDir, 'resources');
 const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
+const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
@@ -213,6 +214,7 @@ const generateBuildFiles = () => {
 
     // legacy path for emoticon script redirect
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
+    copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyPluginLibDir}/mck-emojis.min.js`);
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
@@ -377,6 +379,9 @@ if (!fs.existsSync(releaseThirdPartyDir)) {
 }
 if (!fs.existsSync(legacyThirdPartyDir)) {
     fs.mkdirSync(legacyThirdPartyDir, { recursive: true });
+}
+if (!fs.existsSync(legacyPluginLibDir)) {
+    fs.mkdirSync(legacyPluginLibDir, { recursive: true });
 }
 generateMinFiles();
 generateBuildFiles();

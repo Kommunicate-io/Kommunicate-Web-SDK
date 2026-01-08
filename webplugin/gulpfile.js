@@ -32,6 +32,7 @@ const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
 const legacyResourcesDir = path.join(buildDir, 'resources');
 const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
+const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 
@@ -92,6 +93,10 @@ const generateResourceFolder = () => {
 
     if (!fs.existsSync(legacyThirdPartyDir)) {
         fs.mkdirSync(legacyThirdPartyDir, { recursive: true });
+    }
+
+    if (!fs.existsSync(legacyPluginLibDir)) {
+        fs.mkdirSync(legacyPluginLibDir, { recursive: true });
     }
 };
 
@@ -256,6 +261,8 @@ const generateBuildFiles = () => {
         );
         // legacy path for existing redirects
         copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
+        // legacy /plugin/lib/js path for CDN compatibility
+        copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyPluginLibDir}/mck-emojis.min.js`);
 
         // generate robots.txt for build dir
         copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
