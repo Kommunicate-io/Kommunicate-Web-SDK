@@ -112,7 +112,10 @@ steps:
           fi
 
           object_count=$(
-            gsutil -m ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**" 2>/dev/null | wc -l | tr -d ' '
+            gsutil -m ls -r "gs://${_CDN_BUCKET}/${_CDN_PREFIX}" 2>/dev/null \
+              | grep -v ':$' \
+              | wc -l \
+              | tr -d ' '
           )
           if [ "${object_count}" -le 0 ]; then
             echo "CDN sync completed but destination appears empty."
