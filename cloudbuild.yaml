@@ -134,7 +134,7 @@ steps:
             fi
           done
 
-          CDN_SHORT_CACHE_FILES="v2/kommunicate.app kommunicate-widget-3.0.min.js"
+          CDN_SHORT_CACHE_FILES="v1/kommunicate.app v2/kommunicate.app v3/kommunicate.app kommunicate-widget-3.0.min.js"
           for file_path in ${CDN_SHORT_CACHE_FILES}; do
             if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${file_path}" >/dev/null 2>&1; then
               gsutil -m setmeta -h "Cache-Control:public,max-age=900" \
