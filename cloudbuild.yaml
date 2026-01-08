@@ -6,6 +6,9 @@ substitutions:
   _BRANCH: "${BRANCH_NAME}"  # Branch name from the trigger
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
+  _DEPLOY_CDN: "false"  # Toggle CDN sync
+  _CDN_BUCKET: "your-cdn-bucket"  # e.g. kommunicate-widget-cdn
+  _CDN_PREFIX: "your-cdn-prefix"  # e.g. widget-test.kommunicate.io
 
 steps:
  # Step 1: Install Node.js dependencies
@@ -82,13 +85,92 @@ steps:
           exit 1
         fi
 
-  # Step 5: Deploy to Firebase Hosting
+  # Step 5: Deploy to Firebase Hosting (skipped when CDN deploy is enabled)
   - name: 'gcr.io/$PROJECT_ID/firebase'
+    entrypoint: 'sh'
     args:
-      - 'deploy'
-      - '--only'
-      - 'hosting:${_FIREBASE_SITE_ID}'
-      - '--project'
-      - '${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          echo "Skipping Firebase deploy because _DEPLOY_CDN=true."
+          exit 0
+        fi
+        firebase deploy --only hosting:${_FIREBASE_SITE_ID} --project ${_FIREBASE_PROJECT_ID} --token ${_FIREBASE_TOKEN}
+
+  # Step 6: Sync build output to CDN bucket (optional)
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          gsutil -m rsync -r webplugin/build gs://${_CDN_BUCKET}/${_CDN_PREFIX}
+          rsync_status=$?
+          if [ ${rsync_status} -ne 0 ]; then
+            echo "CDN sync failed with status ${rsync_status}"
+            exit ${rsync_status}
+          fi
+
+          object_count=$(
+            gsutil -m ls -r "gs://${_CDN_BUCKET}/${_CDN_PREFIX}" 2>/dev/null \
+              | grep -v ':$' \
+              | wc -l \
+              | tr -d ' '
+          )
+          if [ "${object_count}" -le 0 ]; then
+            echo "CDN sync completed but destination appears empty."
+            exit 1
+          fi
+        else
+          echo "Skipping CDN sync."
+        fi
+
+  # Step 7: Apply CDN cache headers to match Firebase rules (optional)
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ "${_DEPLOY_CDN}" = "true" ]; then
+          export CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
+          gsutil_list_file="$(mktemp)"
+          if ! gsutil ls -r "${CDN_PREFIX_URI}" > "${gsutil_list_file}"; then
+            echo "Failed to list CDN objects for cache headers."
+            rm -f "${gsutil_list_file}"
+            exit 1
+          fi
+          CDN_CACHE_OBJECTS="$(
+            awk -v prefix="${CDN_PREFIX_URI}" '
+              $0 ~ /\/$/ { next }
+              index($0, prefix) != 1 { next }
+              {
+                rel = substr($0, length(prefix) + 1)
+              }
+              rel ~ /\.js$/ ||
+              rel ~ /\.min\.css$/ ||
+              rel ~ /\.png$/ ||
+              rel ~ /\.webp$/ ||
+              rel ~ /\.woff2$/ ||
+              rel ~ /\.woff$/ ||
+              rel ~ /(^|\/)resources\/.*\.html$/ {
+                print $0
+              }
+            ' "${gsutil_list_file}"
+          )"
+          rm -f "${gsutil_list_file}"
+          if [ -n "${CDN_CACHE_OBJECTS}" ]; then
+            printf '%s\n' "${CDN_CACHE_OBJECTS}" | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
+          else
+            echo "No CDN cacheable objects matched."
+          fi
+
+          CDN_SHORT_CACHE_FILES="kommunicate.app v1/kommunicate.app v2/kommunicate.app v3/kommunicate.app kommunicate-widget-3.0.min.js"
+          for file_path in ${CDN_SHORT_CACHE_FILES}; do
+            if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${file_path}" >/dev/null 2>&1; then
+              gsutil -m setmeta -h "Cache-Control:public,max-age=900" \
+                "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${file_path}"
+            fi
+          done
+        else
+          echo "Skipping CDN cache headers."
+        fi
