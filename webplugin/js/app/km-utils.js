@@ -684,4 +684,125 @@ KommunicateUtils = {
     containsRawHTML: function (text) {
         return /<\/?[a-z][\s\S]*>/i.test(text);
     },
+    validateFileExtension: function (file) {
+        if (!file || !file.name) {
+            return {
+                isValid: false,
+                errorMessage: 'Invalid file format. File must have an extension.',
+            };
+        }
+
+        var fileName = file.name;
+        var lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex === -1 || lastDotIndex === fileName.length - 1) {
+            return {
+                isValid: false,
+                errorMessage: 'Invalid file format. File must have an extension.',
+            };
+        }
+
+        var fileExtension = fileName.substring(lastDotIndex).toLowerCase();
+
+        // Blocked extensions: scripts, executables, archives
+        var blockedExtensions = [
+            // Scripts & interpreted languages
+            '.py',
+            '.js',
+            '.sh',
+            '.bat',
+            '.cmd',
+            '.ps1',
+            '.ps',
+            '.rb',
+            '.php',
+            '.phtml',
+            '.phar',
+            '.pl',
+            '.pm',
+            '.lua',
+            '.groovy',
+            '.scala',
+            '.r',
+            '.tcl',
+            '.vbs',
+            '.vbe',
+            '.ws',
+            '.wsf',
+            '.jsp',
+            '.jspx',
+            '.asp',
+            '.aspx',
+            '.cfm',
+            '.hta',
+            // Compiled executables & binaries
+            '.exe',
+            '.dll',
+            '.so',
+            '.dylib',
+            '.out',
+            '.elf',
+            '.macho',
+            '.app',
+            '.run',
+            '.bin',
+            '.com',
+            '.scr',
+            '.cpl',
+            '.sys',
+            '.ocx',
+            // Installers & packages
+            '.msi',
+            '.pkg',
+            '.deb',
+            '.rpm',
+            '.appinstaller',
+            '.jar',
+            '.war',
+            '.ear',
+            '.jmod',
+            '.class',
+            '.apk',
+            '.ipa',
+            // Archives & compression formats
+            '.zip',
+            '.rar',
+            '.7z',
+            '.tar',
+            '.gz',
+            '.bz2',
+            '.xz',
+            '.cab',
+            '.arj',
+            '.lzh',
+            '.zst',
+            // Disk images & virtual machines
+            '.iso',
+            '.img',
+            '.dmg',
+            '.vhd',
+            '.vhdx',
+            '.vmdk',
+            // Windows system / shortcut abuse
+            '.lnk',
+            '.msc',
+            '.inf',
+            '.reg',
+            // Serialization / object injection
+            '.ser',
+            '.dat',
+            '.pickle',
+            '.pkl',
+        ];
+
+        // Check if the file extension is in the blocked list
+        if (blockedExtensions.indexOf(fileExtension) !== -1) {
+            return {
+                isValid: false,
+                errorMessage: "File type '" + fileExtension + "' is not allowed.",
+            };
+        }
+
+        // If not blocked, allow the file
+        return { isValid: true, errorMessage: null };
+    },
 };

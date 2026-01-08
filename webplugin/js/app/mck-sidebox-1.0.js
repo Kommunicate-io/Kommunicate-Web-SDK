@@ -13360,6 +13360,14 @@ const firstVisibleMsg = {
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
+
+                // Validate file extension (blocklist approach)
+                var validationResult = KommunicateUtils.validateFileExtension(file);
+                if (!validationResult.isValid) {
+                    alert(validationResult.errorMessage);
+                    return;
+                }
+
                 if (
                     file &&
                     KommunicateUI.isAttachmentV2(file.type) &&
@@ -13662,6 +13670,13 @@ const firstVisibleMsg = {
                 if (typeof file === 'undefined') {
                     return;
                 }
+
+                // Validate file extension (blocklist approach)
+                var validationResult = KommunicateUtils.validateFileExtension(file);
+                if (!validationResult.isValid) {
+                    uploadErrors.push(validationResult.errorMessage);
+                }
+
                 if ($applozic('.mck-file-box').length > 4) {
                     uploadErrors.push("Can't upload more than 5 files at a time");
                 }
@@ -13721,8 +13736,50 @@ const firstVisibleMsg = {
                     });
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
-                        if (responseJson && responseJson?.errorCode === 'MALICIOUS_CONTENT') {
-                            _this.showMaliciousFileError(messagePxy.key);
+                        var handledError = false;
+
+                        // Handle error responses (check errorResponse array first)
+                        if (
+                            responseJson &&
+                            responseJson.errorResponse &&
+                            responseJson.errorResponse.length > 0
+                        ) {
+                            var errorResponse = responseJson.errorResponse[0];
+                            var errorCode = errorResponse.errorCode;
+                            var errorMsg =
+                                errorResponse.description ||
+                                errorResponse.displayMessage ||
+                                'File upload failed. Please try again.';
+
+                            if (errorCode === 'MALICIOUS_CONTENT') {
+                                _this.showMaliciousFileError(messagePxy.key);
+                                return;
+                            }
+
+                            if (errorCode === 'FILE_TYPE_NOT_ALLOWED') {
+                                alert(errorMsg);
+                                handledError = true;
+                            }
+                        }
+
+                        // Handle HTTP 403 status code (fallback if errorResponse wasn't parsed)
+                        if (!handledError && this.status === 403) {
+                            alert('File upload was blocked. Please check file type restrictions.');
+                            handledError = true;
+                        }
+
+                        // Cleanup UI if error was handled
+                        if (handledError) {
+                            $file_remove.trigger('click');
+                            $mck_file_upload.attr('disabled', false);
+                            $mck_msg_sbmt.attr('disabled', false);
+                            if (messagePxy) {
+                                mckMessageLayout.removedDeletedMessage(
+                                    messagePxy.key,
+                                    messagePxy.groupId,
+                                    true
+                                );
+                            }
                             return;
                         }
                         if (typeof responseJson === 'object') {
@@ -13799,6 +13856,21 @@ const firstVisibleMsg = {
                             // FILE_META
                             // = '';
                             $file_remove.trigger('click');
+                        }
+                    });
+
+                    xhr.addEventListener('error', function (e) {
+                        $file_remove.attr('disabled', false);
+                        $mck_msg_sbmt.attr('disabled', false);
+                        $mck_file_upload.attr('disabled', false);
+                        alert('File upload failed. Please check your connection and try again.');
+                        $file_remove.trigger('click');
+                        if (messagePxy) {
+                            mckMessageLayout.removedDeletedMessage(
+                                messagePxy.key,
+                                messagePxy.groupId,
+                                true
+                            );
                         }
                     });
 
