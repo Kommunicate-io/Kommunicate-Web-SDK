@@ -129,30 +129,32 @@ steps:
       - '-c'
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
-          export CDN_CACHE_PATTERNS="**/*.js **/*.min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
           export CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
+          gsutil_list_file="$(mktemp)"
+          if ! gsutil ls -r "${CDN_PREFIX_URI}" > "${gsutil_list_file}"; then
+            echo "Failed to list CDN objects for cache headers."
+            rm -f "${gsutil_list_file}"
+            exit 1
+          fi
           CDN_CACHE_OBJECTS="$(
-            gsutil ls -r "${CDN_PREFIX_URI}" | python - <<'PY'
-import os
-import sys
-from pathlib import PurePath
-
-patterns = os.environ["CDN_CACHE_PATTERNS"].split()
-prefix = os.environ["CDN_PREFIX_URI"]
-
-for line in sys.stdin:
-    obj = line.strip()
-    if not obj or obj.endswith("/"):
-        continue
-    if not obj.startswith(prefix):
-        continue
-    rel = obj[len(prefix):]
-    for pattern in patterns:
-        if PurePath(rel).match(pattern):
-            print(obj)
-            break
-PY
+            awk -v prefix="${CDN_PREFIX_URI}" '
+              $0 ~ /\/$/ { next }
+              index($0, prefix) != 1 { next }
+              {
+                rel = substr($0, length(prefix) + 1)
+              }
+              rel ~ /\.js$/ ||
+              rel ~ /\.min\.css$/ ||
+              rel ~ /\.png$/ ||
+              rel ~ /\.webp$/ ||
+              rel ~ /\.woff2$/ ||
+              rel ~ /\.woff$/ ||
+              rel ~ /(^|\/)resources\/.*\.html$/ {
+                print $0
+              }
+            ' "${gsutil_list_file}"
           )"
+          rm -f "${gsutil_list_file}"
           if [ -n "${CDN_CACHE_OBJECTS}" ]; then
             printf '%s\n' "${CDN_CACHE_OBJECTS}" | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
           else
