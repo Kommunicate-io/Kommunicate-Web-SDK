@@ -111,7 +111,7 @@ steps:
             exit ${rsync_status}
           fi
 
-          if ! gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**" >/dev/null 2>&1; then
+          if ! gsutil -q ls -r "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/" >/dev/null 2>&1; then
             echo "CDN sync completed but destination appears empty."
             exit 1
           fi
