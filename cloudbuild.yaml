@@ -126,13 +126,35 @@ steps:
       - '-c'
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
-          CDN_CACHE_PATTERNS="**/*.js **/*min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
-          for pattern in ${CDN_CACHE_PATTERNS}; do
-            if gsutil -q ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${pattern}" >/dev/null 2>&1; then
-              gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" \
-                "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/${pattern}"
-            fi
-          done
+          CDN_CACHE_PATTERNS="**/*.js **/*.min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
+          CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
+          CDN_CACHE_OBJECTS="$(
+            gsutil ls -r "${CDN_PREFIX_URI}" | python - <<'PY'
+import fnmatch
+import os
+import sys
+
+patterns = os.environ["CDN_CACHE_PATTERNS"].split()
+prefix = os.environ["CDN_PREFIX_URI"]
+
+for line in sys.stdin:
+    obj = line.strip()
+    if not obj or obj.endswith("/"):
+        continue
+    if not obj.startswith(prefix):
+        continue
+    rel = obj[len(prefix):]
+    for pattern in patterns:
+        if fnmatch.fnmatch(rel, pattern):
+            print(obj)
+            break
+PY
+          )"
+          if [ -n "${CDN_CACHE_OBJECTS}" ]; then
+            printf '%s\n' "${CDN_CACHE_OBJECTS}" | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
+          else
+            echo "No CDN cacheable objects matched."
+          fi
 
           CDN_SHORT_CACHE_FILES="v1/kommunicate.app v2/kommunicate.app v3/kommunicate.app kommunicate-widget-3.0.min.js"
           for file_path in ${CDN_SHORT_CACHE_FILES}; do
