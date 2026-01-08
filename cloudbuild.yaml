@@ -126,8 +126,8 @@ steps:
       - '-c'
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
-          CDN_CACHE_PATTERNS="**/*.js **/*.min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
-          CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
+          export CDN_CACHE_PATTERNS="**/*.js **/*.min.css **/*.png **/*.webp **/*.woff2 **/*.woff **/resources/**/*.html"
+          export CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
           CDN_CACHE_OBJECTS="$(
             gsutil ls -r "${CDN_PREFIX_URI}" | python - <<'PY'
 import fnmatch
