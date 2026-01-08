@@ -90,8 +90,6 @@ $applozic.extend(true, Kommunicate, {
         kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
-            var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
             params.agentId = appOptions.agentId;
         }
         var user = [];
