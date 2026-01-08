@@ -111,7 +111,10 @@ steps:
             exit ${rsync_status}
           fi
 
-          if ! gsutil -q ls -r "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/" >/dev/null 2>&1; then
+          object_count=$(
+            gsutil -m ls "gs://${_CDN_BUCKET}/${_CDN_PREFIX}/**" 2>/dev/null | wc -l | tr -d ' '
+          )
+          if [ "${object_count}" -le 0 ]; then
             echo "CDN sync completed but destination appears empty."
             exit 1
           fi
@@ -130,9 +133,9 @@ steps:
           export CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
           CDN_CACHE_OBJECTS="$(
             gsutil ls -r "${CDN_PREFIX_URI}" | python - <<'PY'
-import fnmatch
 import os
 import sys
+from pathlib import PurePath
 
 patterns = os.environ["CDN_CACHE_PATTERNS"].split()
 prefix = os.environ["CDN_PREFIX_URI"]
@@ -145,7 +148,7 @@ for line in sys.stdin:
         continue
     rel = obj[len(prefix):]
     for pattern in patterns:
-        if fnmatch.fnmatch(rel, pattern):
+        if PurePath(rel).match(pattern):
             print(obj)
             break
 PY
