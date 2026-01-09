@@ -13706,14 +13706,11 @@ const firstVisibleMsg = {
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
                         if (
-                            (responseJson &&
-                                responseJson.errorResponse &&
-                                responseJson.errorResponse.length > 0 &&
-                                responseJson.errorResponse[0].errorCode ===
-                                    'FILE_TYPE_NOT_ALLOWED') ||
-                            (this.status === 403 &&
-                                responseJson &&
-                                responseJson.errorCode === 'FILE_TYPE_NOT_ALLOWED')
+                            this.status === 403 &&
+                            responseJson &&
+                            responseJson.errorResponse &&
+                            responseJson.errorResponse.length > 0 &&
+                            responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
                         ) {
                             var errorMsg =
                                 (responseJson.errorResponse &&
@@ -13876,14 +13873,11 @@ const firstVisibleMsg = {
                             return;
                         }
                         if (
-                            (responseJson &&
-                                responseJson.errorResponse &&
-                                responseJson.errorResponse.length > 0 &&
-                                responseJson.errorResponse[0].errorCode ===
-                                    'FILE_TYPE_NOT_ALLOWED') ||
-                            (this.status === 403 &&
-                                responseJson &&
-                                responseJson.errorCode === 'FILE_TYPE_NOT_ALLOWED')
+                            this.status === 403 &&
+                            responseJson &&
+                            responseJson.errorResponse &&
+                            responseJson.errorResponse.length > 0 &&
+                            responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
                         ) {
                             var errorMsg =
                                 (responseJson.errorResponse &&
