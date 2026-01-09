@@ -13477,6 +13477,54 @@ const firstVisibleMsg = {
                 }
             };
 
+            var handleFileExtensionError = function (
+                xhr,
+                responseJson,
+                messagePxy,
+                $file_remove,
+                $mck_file_upload,
+                $mck_msg_sbmt
+            ) {
+                if (
+                    xhr.status === 403 &&
+                    responseJson &&
+                    responseJson.errorResponse &&
+                    responseJson.errorResponse.length > 0 &&
+                    responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
+                ) {
+                    var errorMsg =
+                        (responseJson.errorResponse &&
+                            responseJson.errorResponse[0] &&
+                            (responseJson.errorResponse[0].description ||
+                                responseJson.errorResponse[0].displayMessage)) ||
+                        (responseJson && responseJson.errorMessage) ||
+                        'File type is not allowed.';
+                    showFileExtensionError(errorMsg);
+                    if (messagePxy) {
+                        _this.showFileExtensionError(messagePxy.key);
+                    }
+                    if ($file_remove) {
+                        $file_remove.attr('disabled', false);
+                        $file_remove.trigger('click');
+                    }
+                    if ($mck_file_upload) {
+                        $mck_file_upload.attr('disabled', false);
+                    }
+                    if ($mck_msg_sbmt) {
+                        $mck_msg_sbmt.attr('disabled', false);
+                    }
+                    if (messagePxy) {
+                        mckMessageLayout.removedDeletedMessage(
+                            messagePxy.key,
+                            messagePxy.groupId,
+                            true
+                        );
+                    }
+                    return true;
+                }
+                return false;
+            };
+
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
@@ -13706,23 +13754,15 @@ const firstVisibleMsg = {
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
                         if (
-                            this.status === 403 &&
-                            responseJson &&
-                            responseJson.errorResponse &&
-                            responseJson.errorResponse.length > 0 &&
-                            responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
+                            handleFileExtensionError(
+                                this,
+                                responseJson,
+                                messagePxy,
+                                $file_remove,
+                                null,
+                                $mck_msg_sbmt
+                            )
                         ) {
-                            var errorMsg =
-                                (responseJson.errorResponse &&
-                                    responseJson.errorResponse[0] &&
-                                    (responseJson.errorResponse[0].description ||
-                                        responseJson.errorResponse[0].displayMessage)) ||
-                                (responseJson && responseJson.errorMessage) ||
-                                'File type is not allowed.';
-                            showFileExtensionError(errorMsg);
-                            $file_remove.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            $file_remove.trigger('click');
                             return;
                         }
                         if (typeof responseJson.fileMeta === 'object') {
@@ -13873,34 +13913,15 @@ const firstVisibleMsg = {
                             return;
                         }
                         if (
-                            this.status === 403 &&
-                            responseJson &&
-                            responseJson.errorResponse &&
-                            responseJson.errorResponse.length > 0 &&
-                            responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
+                            handleFileExtensionError(
+                                this,
+                                responseJson,
+                                messagePxy,
+                                $file_remove,
+                                $mck_file_upload,
+                                $mck_msg_sbmt
+                            )
                         ) {
-                            var errorMsg =
-                                (responseJson.errorResponse &&
-                                    responseJson.errorResponse[0] &&
-                                    (responseJson.errorResponse[0].description ||
-                                        responseJson.errorResponse[0].displayMessage)) ||
-                                (responseJson && responseJson.errorMessage) ||
-                                'File type is not allowed.';
-                            showFileExtensionError(errorMsg);
-                            if (messagePxy) {
-                                _this.showFileExtensionError(messagePxy.key);
-                            }
-                            $file_remove.attr('disabled', false);
-                            $mck_file_upload.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            $file_remove.trigger('click');
-                            if (messagePxy) {
-                                mckMessageLayout.removedDeletedMessage(
-                                    messagePxy.key,
-                                    messagePxy.groupId,
-                                    true
-                                );
-                            }
                             return;
                         }
                         if (typeof responseJson === 'object') {
