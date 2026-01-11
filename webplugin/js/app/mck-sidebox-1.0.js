@@ -13445,6 +13445,7 @@ const firstVisibleMsg = {
             var $mck_group_info_icon = $applozic('#mck-group-info-icon-box .mck-group-icon');
             var $mck_group_create_icon = $applozic('#mck-group-create-icon-box .mck-group-icon');
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
+            var $mck_msg_error = $applozic('#mck-msg-error');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
@@ -13457,6 +13458,73 @@ const firstVisibleMsg = {
                 '<span class="move-right">' +
                 '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' +
                 '</span></div></div>';
+
+            var fileExtensionErrorTimeout = null;
+            var showFileExtensionError = function (errorMessage) {
+                if ($mck_msg_error && $mck_msg_error.length) {
+                    // Clear any existing timeout before setting a new one
+                    if (fileExtensionErrorTimeout !== null) {
+                        clearTimeout(fileExtensionErrorTimeout);
+                        fileExtensionErrorTimeout = null;
+                    }
+                    $mck_msg_error.html(errorMessage);
+                    kommunicateCommons.show('#mck-msg-error');
+                    fileExtensionErrorTimeout = setTimeout(function () {
+                        kommunicateCommons.hide('#mck-msg-error');
+                        $mck_msg_error.html('');
+                        fileExtensionErrorTimeout = null;
+                    }, 5000);
+                }
+            };
+
+            var handleFileExtensionError = function (
+                xhr,
+                responseJson,
+                messagePxy,
+                $file_remove,
+                $mck_file_upload,
+                $mck_msg_sbmt
+            ) {
+                if (
+                    xhr.status === 403 &&
+                    responseJson &&
+                    responseJson.errorResponse &&
+                    responseJson.errorResponse.length > 0 &&
+                    responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
+                ) {
+                    var errorMsg =
+                        (responseJson.errorResponse &&
+                            responseJson.errorResponse[0] &&
+                            (responseJson.errorResponse[0].description ||
+                                responseJson.errorResponse[0].displayMessage)) ||
+                        (responseJson && responseJson.errorMessage) ||
+                        'File type is not allowed.';
+                    showFileExtensionError(errorMsg);
+                    if (messagePxy) {
+                        _this.showFileExtensionError(messagePxy.key);
+                    }
+                    if ($file_remove) {
+                        $file_remove.attr('disabled', false);
+                        $file_remove.trigger('click');
+                    }
+                    if ($mck_file_upload) {
+                        $mck_file_upload.attr('disabled', false);
+                    }
+                    if ($mck_msg_sbmt) {
+                        $mck_msg_sbmt.attr('disabled', false);
+                    }
+                    if (messagePxy) {
+                        mckMessageLayout.removedDeletedMessage(
+                            messagePxy.key,
+                            messagePxy.groupId,
+                            true
+                        );
+                    }
+                    return true;
+                }
+                return false;
+            };
+
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
@@ -13628,7 +13696,14 @@ const firstVisibleMsg = {
                         );
                 }
                 if (uploadErrors.length > 0) {
-                    alert(uploadErrors.toString());
+                    showFileExtensionError(uploadErrors.join(' '));
+                    if (messagePxy) {
+                        mckMessageLayout.removedDeletedMessage(
+                            messagePxy.key,
+                            messagePxy.groupId,
+                            true
+                        );
+                    }
                 } else {
                     var randomId = mckUtils.randomId();
                     var fileboxList = [
@@ -13678,6 +13753,18 @@ const firstVisibleMsg = {
                     });
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
+                        if (
+                            handleFileExtensionError(
+                                this,
+                                responseJson,
+                                messagePxy,
+                                $file_remove,
+                                null,
+                                $mck_msg_sbmt
+                            )
+                        ) {
+                            return;
+                        }
                         if (typeof responseJson.fileMeta === 'object') {
                             var file_meta = responseJson.fileMeta;
                             if (messagePxy) {
@@ -13823,6 +13910,18 @@ const firstVisibleMsg = {
                         var responseJson = $applozic.parseJSON(this.responseText);
                         if (responseJson && responseJson?.errorCode === 'MALICIOUS_CONTENT') {
                             _this.showMaliciousFileError(messagePxy.key);
+                            return;
+                        }
+                        if (
+                            handleFileExtensionError(
+                                this,
+                                responseJson,
+                                messagePxy,
+                                $file_remove,
+                                $mck_file_upload,
+                                $mck_msg_sbmt
+                            )
+                        ) {
                             return;
                         }
                         if (typeof responseJson === 'object') {
@@ -14066,6 +14165,13 @@ const firstVisibleMsg = {
                     '.mck-timestamp-' + messageKey,
                     '.malicious-error-' + messageKey
                 );
+                kommunicateCommons.hide('.km-attachment-progress-bar-wrapper-' + messageKey);
+            };
+
+            _this.showFileExtensionError = function (messageKey) {
+                kommunicateCommons.show('.km-attachment-upload-icon-' + messageKey);
+                kommunicateCommons.hide('.km-attachment-cancel-icon-' + messageKey);
+                kommunicateCommons.show('.mck-timestamp-' + messageKey);
                 kommunicateCommons.hide('.km-attachment-progress-bar-wrapper-' + messageKey);
             };
         }
