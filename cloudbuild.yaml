@@ -160,8 +160,8 @@ steps:
             ' "${gsutil_list_file}"
           )"
           rm -f "${gsutil_list_file}"
-          if [ -n "${CDN_CACHE_OBJECTS}" ]; then
-            printf '%s\n' "${CDN_CACHE_OBJECTS}" | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
+          if [ -n "${_CDN_CACHE_OBJECTS}" ]; then
+            printf '%s\n' "${_CDN_CACHE_OBJECTS}" | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
           else
             echo "No CDN cacheable objects matched."
           fi
@@ -176,5 +176,6 @@ steps:
         else
           echo "Skipping CDN cache headers."
         fi
+
 
 
