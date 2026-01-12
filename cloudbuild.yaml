@@ -8,6 +8,7 @@ substitutions:
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
   _DEPLOY_CDN: "false"  # Toggle CDN sync
   _CDN_BUCKET: "your-cdn-bucket"  # e.g. kommunicate-widget-cdn
+  _CDN_PREFIX_URI: "widget-test"
  
 
 steps:
@@ -175,4 +176,5 @@ steps:
         else
           echo "Skipping CDN cache headers."
         fi
+
 
