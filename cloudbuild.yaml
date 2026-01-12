@@ -8,7 +8,7 @@ substitutions:
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
   _DEPLOY_CDN: "false"  # Toggle CDN sync
   _CDN_BUCKET: "your-cdn-bucket"  # e.g. kommunicate-widget-cdn
-  _CDN_PREFIX: "your-cdn-prefix"  # e.g. widget-test.kommunicate.io
+ 
 
 steps:
  # Step 1: Install Node.js dependencies
@@ -84,6 +84,7 @@ steps:
           echo "Error: firebase.json file does not exist."
           exit 1
         fi
+
 
   # Step 5: Deploy to Firebase Hosting (skipped when CDN deploy is enabled)
   - name: 'gcr.io/$PROJECT_ID/firebase'
