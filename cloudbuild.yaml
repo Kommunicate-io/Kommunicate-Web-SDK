@@ -133,15 +133,15 @@ steps:
       - '-c'
       - |
         if [ "${_DEPLOY_CDN}" = "true" ]; then
-          export CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
+          export _CDN_PREFIX_URI="gs://${_CDN_BUCKET}/${_CDN_PREFIX}/"
           gsutil_list_file="$(mktemp)"
-          if ! gsutil ls -r "${CDN_PREFIX_URI}" > "${gsutil_list_file}"; then
+          if ! gsutil ls -r "${_CDN_PREFIX_URI}" > "${gsutil_list_file}"; then
             echo "Failed to list CDN objects for cache headers."
             rm -f "${gsutil_list_file}"
             exit 1
           fi
           CDN_CACHE_OBJECTS="$(
-            awk -v prefix="${CDN_PREFIX_URI}" '
+            awk -v prefix="${_CDN_PREFIX_URI}" '
               $0 ~ /\/$/ { next }
               index($0, prefix) != 1 { next }
               {
@@ -175,3 +175,4 @@ steps:
         else
           echo "Skipping CDN cache headers."
         fi
+
