@@ -120,7 +120,8 @@ steps:
       fi
 
 # ------------------------------------------------------------
-# Step 7: Apply CDN cache headers
+# ------------------------------------------------------------
+# Step 7: Apply CDN cache headers (PRODUCTION SAFE)
 # ------------------------------------------------------------
 - name: 'gcr.io/cloud-builders/gsutil'
   entrypoint: 'sh'
@@ -128,45 +129,29 @@ steps:
     - '-c'
     - |
       if [ "$_DEPLOY_CDN" = "true" ]; then
-        _CDN_PREFIX_URI="gs://$_CDN_BUCKET/$_CDN_PREFIX/"
+        echo "Applying CDN cache headers"
 
-        gsutil_list_file="$(mktemp)"
-        gsutil ls -r "$_CDN_PREFIX_URI" > "$gsutil_list_file"
+        # 1️⃣ Immutable versioned builds (hash folders)
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          "gs://$_CDN_BUCKET/[0-9]*/**" || true
 
-        _CDN_CACHE_OBJECTS="$(
-          awk -v prefix="$_CDN_PREFIX_URI" '
-            $0 ~ /\/$/ { next }
-            index($0, prefix) != 1 { next }
-            {
-              rel = substr($0, length(prefix) + 1)
-            }
-            rel ~ /\.js$/ ||
-            rel ~ /\.min\.css$/ ||
-            rel ~ /\.png$/ ||
-            rel ~ /\.webp$/ ||
-            rel ~ /\.woff2$/ ||
-            rel ~ /\.woff$/ ||
-            rel ~ /(^|\/)resources\/.*\.html$/ {
-              print $0
-            }
-          ' "$gsutil_list_file"
-        )"
+        # 2️⃣ Shared static assets (safe to cache long-term)
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          "gs://$_CDN_BUCKET/resources/**" \
+          "gs://$_CDN_BUCKET/css/**" \
+          "gs://$_CDN_BUCKET/plugin/**" || true
 
-        rm -f "$gsutil_list_file"
+        # 3️⃣ Stable loaders (MUST stay short cache)
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js" || true
 
-        if [ -n "$_CDN_CACHE_OBJECTS" ]; then
-          printf '%s\n' "$_CDN_CACHE_OBJECTS" \
-            | gsutil -m setmeta -h "Cache-Control:public,max-age=31536000" -I
-        fi
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/v3/kommunicate.app" || true
 
-        _CDN_SHORT_CACHE_FILES="kommunicate.app v1/kommunicate.app v2/kommunicate.app v3/kommunicate.app kommunicate-widget-3.0.min.js"
-        for file_path in $_CDN_SHORT_CACHE_FILES; do
-          if gsutil -q ls "gs://$_CDN_BUCKET/$_CDN_PREFIX/$file_path" >/dev/null 2>&1; then
-            gsutil setmeta -h "Cache-Control:public,max-age=900" \
-              "gs://$_CDN_BUCKET/$_CDN_PREFIX/$file_path"
-          fi
-        done
       else
         echo "Skipping CDN cache headers"
       fi
-
