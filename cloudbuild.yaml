@@ -5,7 +5,6 @@ substitutions:
   _BUILD_ENV: "test"
   _DEPLOY_CDN: "false"
   _CDN_BUCKET: "your-cdn-bucket"
-  _CDN_PREFIX: "your-cdn-prefix"
   _FIREBASE_PROJECT_ID: "your-project-id"
   _FIREBASE_SITE_ID: "your-site-id"
 
@@ -114,8 +113,8 @@ steps:
     - '-c'
     - |
       if [ "$_DEPLOY_CDN" = "true" ]; then
-        echo "Syncing to CDN bucket"
-        gsutil -m rsync -r webplugin/build gs://$_CDN_BUCKET/$_CDN_PREFIX
+        echo "Syncing widget build to CDN bucket root"
+        gsutil -m rsync -r webplugin/build gs://$_CDN_BUCKET
       else
         echo "Skipping CDN sync"
       fi
@@ -170,3 +169,4 @@ steps:
       else
         echo "Skipping CDN cache headers"
       fi
+
