@@ -19,6 +19,15 @@ function getFaqClearButton() {
 function getBottomTabsManager() {
     return bottomTabsManagerRef;
 }
+function isConversationWindowNotActive() {
+    var sideboxContent = document.getElementById('mck-sidebox-content');
+    return (
+        !sideboxContent ||
+        !sideboxContent.classList ||
+        !sideboxContent.classList.contains('active-tab-conversations') ||
+        sideboxContent.classList.contains('active-subsection-conversation-list')
+    );
+}
 function setActiveSubsectionState(subsection) {
     var sideboxContent =
         typeof document !== 'undefined' &&
@@ -112,7 +121,7 @@ KommunicateUI = {
         }
     },
     populateAwayMessage: function (err, message) {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var conversationWindowNotActive = isConversationWindowNotActive();
         var closedConversation = $applozic('#mck-conversation-status-box').hasClass('vis');
         if (
             !err &&
@@ -226,7 +235,7 @@ KommunicateUI = {
         });
     },
     showAwayMessage: function () {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var conversationWindowNotActive = isConversationWindowNotActive();
         if (
             KommunicateUI.awayMessageInfo &&
             KommunicateUI.awayMessageInfo.isEnabled &&
