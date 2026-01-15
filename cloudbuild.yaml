@@ -150,7 +150,13 @@ steps:
         gsutil setmeta \
           -h "Cache-Control:public,max-age=300" \
           "gs://$_CDN_BUCKET/v3/kommunicate.app" || true
+        
+        # 4️ HTML entry file (VERY IMPORTANT)
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/index.html" || true
 
       else
         echo "Skipping CDN cache headers"
       fi
+
