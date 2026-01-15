@@ -9015,7 +9015,7 @@ const firstVisibleMsg = {
                     isVoiceInterfaceActive &&
                     floatWhere != 'mck-msg-right' &&
                     msg.message &&
-                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    !msg.tokenMessage &&
                     appOptions.voiceChat
                 ) {
                     mckVoice.processMessagesAsAudio(msg, displayName);
