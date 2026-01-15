@@ -3,6 +3,7 @@ options:
 
 substitutions:
   _BUILD_ENV: "test"
+  _BRANCH: "branch-value"
   _DEPLOY_CDN: "false"
   _CDN_BUCKET: "your-cdn-bucket"
   _FIREBASE_PROJECT_ID: "your-project-id"
@@ -57,6 +58,22 @@ steps:
       else
         npm run build-test
       fi
+
+# ------------------------------------------------------------
+# Step 2.1: Inject branch & env into index.html
+# ------------------------------------------------------------
+- name: 'alpine'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      echo "Injecting branch and env into index.html"
+      sed -i "s/__KM_BRANCH__/${_BRANCH}/g" webplugin/build/index.html
+      sed -i "s/__KM_ENV__/${_BUILD_ENV}/g" webplugin/build/index.html
+
+      echo "Updated index.html:"
+      grep "Welcome to kommunicate" webplugin/build/index.html
+
 
 # ------------------------------------------------------------
 # Step 3: Update firebase.json dynamically
@@ -159,4 +176,5 @@ steps:
       else
         echo "Skipping CDN cache headers"
       fi
+
 
