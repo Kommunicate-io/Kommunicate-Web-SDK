@@ -30,7 +30,9 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   entrypoint: 'sh'
   env:
-    - '_BUILD_ENV=$_BUILD_ENV'
+    - '_BRANCH=${_BRANCH}'
+    - '_BUILD_ENV=${_BUILD_ENV}'
+
   args:
     - '-c'
     - |
@@ -176,5 +178,6 @@ steps:
       else
         echo "Skipping CDN cache headers"
       fi
+
 
 
