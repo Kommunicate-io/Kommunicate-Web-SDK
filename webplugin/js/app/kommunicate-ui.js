@@ -25,7 +25,7 @@ function isIndividualConversationActive() {
         sideboxContent &&
         sideboxContent.classList &&
         sideboxContent.classList.contains('active-tab-conversations') &&
-        !sideboxContent.classList.contains('active-subsection-conversation-list')
+        sideboxContent.classList.contains('active-subsection-conversation-individual')
     );
 }
 function setActiveSubsectionState(subsection) {
