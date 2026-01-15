@@ -15,12 +15,6 @@ const {
     KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
-const releaseDir = path.resolve(__dirname, 'build', String(version));
-const releaseResourcesDir = path.join(releaseDir, 'resources');
-const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
-const legacyResourcesDir = path.join(buildDir, 'resources');
-const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
-const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
@@ -40,8 +34,8 @@ Object.assign(PLUGIN_SETTING, {
 let PLUGIN_FILE_DATA = new Object();
 let BUILD_URL = MCK_STATIC_PATH + '/build';
 
-let pathToResource = `${BUILD_URL}/${version}/resources`;
-let resourceLocation = releaseResourcesDir;
+let pathToResource = BUILD_URL;
+let resourceLocation = buildDir;
 
 const minifyPluginContent = (code) => {
     try {
@@ -66,28 +60,22 @@ const minifyPluginContent = (code) => {
  * If build folder doesn't exists then it create a build folder.
  *
  */
-const removeDirectoryRecursive = (dirPath) => {
-    if (!fs.existsSync(dirPath)) {
-        return;
-    }
-    fs.readdirSync(dirPath).forEach((entry) => {
-        const entryPath = path.join(dirPath, entry);
-        if (fs.lstatSync(entryPath).isDirectory()) {
-            removeDirectoryRecursive(entryPath);
-            fs.rmdirSync(entryPath);
-        } else {
-            fs.unlinkSync(entryPath);
-        }
-    });
-};
-
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
-        return;
+    } else {
+        try {
+            var files = fs.readdirSync(dirPath);
+        } catch (e) {
+            return;
+        }
+        files &&
+            files.map((file) => {
+                if (fs.statSync(dirPath + '/' + file).isFile()) {
+                    fs.unlinkSync(dirPath + '/' + file);
+                }
+            });
     }
-
-    removeDirectoryRecursive(dirPath);
 };
 
 const generateFiles = ({ fileName, source, output }) => {
@@ -107,24 +95,6 @@ const generateFiles = ({ fileName, source, output }) => {
             },
         });
     });
-};
-
-const copyIndexWithBranch = (src, dest, branchValue, envValue) => {
-    try {
-        const templatePath = path.join(__dirname, src);
-        const content = fs.readFileSync(templatePath, 'utf8');
-        const resolvedBranch = branchValue || 'unknown-branch';
-        const resolvedEnv = envValue || 'development';
-        const replaced = content
-            .replace(/__KM_BRANCH__/g, resolvedBranch)
-            .replace(/__KM_ENV__/g, resolvedEnv);
-        fs.writeFileSync(dest, replaced);
-        console.log(
-            `${dest} generated successfully with branch ${resolvedBranch} and env ${resolvedEnv}`
-        );
-    } catch (err) {
-        console.log(`error while generating ${dest}`, err);
-    }
 };
 
 // Add already minified files only in the below compressor code.
@@ -173,48 +143,10 @@ const copyFileToBuild = (src, dest, isFullPathExist) => {
         console.log(`${dest} generated successfully`);
     });
 };
-
-const copyDirectoryRecursive = (sourceDir, destinationDir) => {
-    if (!fs.existsSync(sourceDir)) {
-        console.log(`Source directory ${sourceDir} does not exist`);
-        return;
-    }
-    if (!fs.existsSync(destinationDir)) {
-        fs.mkdirSync(destinationDir, { recursive: true });
-    }
-    fs.readdirSync(sourceDir).forEach((entry) => {
-        const srcPath = path.join(sourceDir, entry);
-        const destPath = path.join(destinationDir, entry);
-        if (fs.lstatSync(srcPath).isDirectory()) {
-            copyDirectoryRecursive(srcPath, destPath);
-        } else {
-            fs.copyFileSync(srcPath, destPath);
-        }
-    });
-    console.log(`${destinationDir} directory generated successfully`);
-};
 const generateBuildFiles = () => {
-    const buildEnvValue = process.env._BUILD_ENV || process.env.NODE_ENV || 'development';
-    copyIndexWithBranch(
-        'template/index.html',
-        `${buildDir}/index.html`,
-        KM_RELEASE_BRANCH,
-        buildEnvValue
-    );
-
-    copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
-
-    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
-
     // Generate chat.html for /chat route
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
-
-    copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
-
-    // legacy path for emoticon script redirect
-    copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
-    copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyPluginLibDir}/mck-emojis.min.js`);
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
@@ -224,11 +156,11 @@ const generateBuildFiles = () => {
             generateFiles({
                 fileName: fileData.outputName,
                 source: fileData.source,
-                output: `${releaseThirdPartyDir}/${fileData.outputName}`,
+                output: `${resourceLocation}/${fileData.outputName}`,
             });
             return;
         }
-        copyFileToBuild(fileData.source, `${releaseThirdPartyDir}/${fileData.outputName}`, true);
+        copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`, true);
     });
 
     // Generate mck-sidebox.html file for build folder.
@@ -260,8 +192,6 @@ const generateBuildFiles = () => {
             if (err) {
                 console.log('plugin.js generation error');
             }
-            const minifiedPlugin = minifyPluginContent(mckApp);
-            fs.writeFileSync(path.join(buildDir, 'plugin.min.js'), minifiedPlugin);
             generateFilesByVersion('build/plugin.js');
         });
     });
@@ -289,19 +219,6 @@ const generateBuildFiles = () => {
             });
         });
     });
-
-    // copy fonts required by the compiled CSS
-    copyDirectoryRecursive(
-        path.join(__dirname, 'css/app/fonts'),
-        path.join(releaseDir, 'css/app/fonts')
-    );
-    copyDirectoryRecursive(
-        path.join(__dirname, 'css/app/fonts'),
-        path.join(buildDir, 'css/app/fonts')
-    );
-
-    // copy img folder for local build
-    copyDirectoryRecursive(path.join(__dirname, 'img'), path.join(releaseResourcesDir, 'img'));
 };
 
 const generateFilesByVersion = (location) => {
@@ -310,7 +227,7 @@ const generateFilesByVersion = (location) => {
             console.log('error while generating plugin.js', err);
         }
 
-        const thirdPartyScripts = getDynamicLoadFiles(`${pathToResource}/third-party-scripts`);
+        const thirdPartyScripts = getDynamicLoadFiles(pathToResource);
 
         try {
             var plugin = data
@@ -336,23 +253,7 @@ const generateFilesByVersion = (location) => {
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
 
-                const minifiedData = minifyPluginContent(data);
-                PLUGIN_FILE_DATA[pluginVersions[i]] = minifiedData;
-
-                const versionDir = path.join(buildDir, pluginVersions[i]);
-                if (!fs.existsSync(versionDir)) {
-                    fs.mkdirSync(versionDir, { recursive: true });
-                }
-                fs.writeFileSync(path.join(versionDir, 'kommunicate.app'), minifiedData);
-                if (pluginVersions[i] === 'v1') {
-                    fs.writeFileSync(path.join(buildDir, 'kommunicate.app'), minifiedData);
-                }
-                if (pluginVersions[i] === 'v3') {
-                    fs.writeFileSync(
-                        path.join(buildDir, 'kommunicate-widget-3.0.min.js'),
-                        minifiedData
-                    );
-                }
+                PLUGIN_FILE_DATA[pluginVersions[i]] = minifyPluginContent(data);
             }
             console.log('plugin files generated for all versions successfully');
         } catch (error) {
@@ -371,18 +272,6 @@ const deleteFilesUsingPath = (path) => {
 };
 
 removeExistingFile(buildDir);
-if (!fs.existsSync(releaseResourcesDir)) {
-    fs.mkdirSync(releaseResourcesDir, { recursive: true });
-}
-if (!fs.existsSync(releaseThirdPartyDir)) {
-    fs.mkdirSync(releaseThirdPartyDir, { recursive: true });
-}
-if (!fs.existsSync(legacyThirdPartyDir)) {
-    fs.mkdirSync(legacyThirdPartyDir, { recursive: true });
-}
-if (!fs.existsSync(legacyPluginLibDir)) {
-    fs.mkdirSync(legacyPluginLibDir, { recursive: true });
-}
 generateMinFiles();
 generateBuildFiles();
 
