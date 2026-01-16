@@ -36,8 +36,11 @@
 
         &.active-tab-conversations.active-subsection-conversation-individual,
         &.is-tab-conversations.is-subsection-conversation-individual {
-            .mck-running-on {
+            .mck-running-on.vis {
                 display: block !important;
+            }
+            .mck-running-on.n-vis {
+                display: none !important;
             }
         }
     }
