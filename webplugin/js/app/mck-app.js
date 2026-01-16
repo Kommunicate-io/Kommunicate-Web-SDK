@@ -269,7 +269,8 @@ function ApplozicSidebox() {
     function mckInitPluginScript() {
         try {
             var options = applozic._globals;
-            MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(document.domain);
+            //It store cookies domain no need if not using cookies.
+            // MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(document.domain);
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
                 if (data.name === 'emojiLibrary') {
@@ -419,6 +420,7 @@ function ApplozicSidebox() {
     }
 
     async function mckInitSidebox(data, randomUserId) {
+        console.log('this is running ');
         try {
             appOptionSession.setAppInstanceCount();
 
@@ -647,13 +649,13 @@ function ApplozicSidebox() {
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
-                var accessTokenFromCookie = kmCookieStorage.getCookie(
+                var accessTokenFromCookie = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.ACCESS_TOKEN
                 );
-                var userIdFromCookie = kmCookieStorage.getCookie(
+                var userIdFromCookie = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
-                var displayNameFromCookie = kmCookieStorage.getCookie(
+                var displayNameFromCookie = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
                 );
                 var isAnonymousUser = !options.userId;
@@ -785,7 +787,7 @@ function ApplozicSidebox() {
             : parent.window.location.href;
         userId =
             options.userId ||
-            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+            kmLocalStorage.getLocalStorage(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
 
         try {
             const sentryGlobalScope = Sentry.getGlobalScope();
@@ -806,17 +808,16 @@ function ApplozicSidebox() {
         }
     }
     function saveUserCookies(kommunicateSettings) {
-        kmCookieStorage.setCookie({
+        kmLocalStorage.setLocalStorage({
             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
             value: kommunicateSettings.userId,
             expiresInDays: 30,
-            domain: MCK_COOKIE_DOMAIN,
         });
-        kmCookieStorage.setCookie({
+
+        kmLocalStorage.setLocalStorage({
             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
             value: kommunicateSettings.userName || '',
             expiresInDays: 30,
-            domain: MCK_COOKIE_DOMAIN,
         });
         if (
             !(
@@ -825,20 +826,19 @@ function ApplozicSidebox() {
                 kommunicateSettings.askUserDetails
             )
         ) {
-            kmCookieStorage.setCookie({
+            kmLocalStorage.setLocalStorage({
                 name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                 value: false,
                 expiresInDays: 30,
-                domain: MCK_COOKIE_DOMAIN,
             });
         }
         if (kommunicateSettings.accessToken) {
             var encodedToken = window.btoa(kommunicateSettings.accessToken);
-            kmCookieStorage.setCookie({
+
+            kmLocalStorage.setLocalStorage({
                 name: KommunicateConstants.COOKIES.ACCESS_TOKEN,
                 value: encodedToken || '',
                 expiresInDays: 30,
-                domain: MCK_COOKIE_DOMAIN,
             });
         }
     }
@@ -858,7 +858,7 @@ function ApplozicSidebox() {
         }
 
         if (widgetSettings && sessionTimeout != null && timeStampDifference >= sessionTimeout) {
-            kmCookieStorage.deleteUserCookiesOnLogout();
+            kmLocalStorage.deleteUserCookiesOnLogout();
             appOptionSession.deleteSessionData();
             kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();

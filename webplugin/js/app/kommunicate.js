@@ -291,7 +291,8 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+            // kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+            kmLocalStorage.getLocalStorage(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         var agentsNameStr = agentList.join('_');
 
         var botsNameStr = botList.join('_');
@@ -420,7 +421,7 @@ $applozic.extend(true, Kommunicate, {
             window.$applozic.fn.applozic('logout');
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
-        kmCookieStorage.deleteUserCookiesOnLogout();
+        kmLocalStorage.deleteUserCookiesOnLogout();
         appOptionSession.removeAppInstanceCount();
         window.Sentry && window.Sentry.close();
         parent.window && parent.window.removeKommunicateScripts();
@@ -476,11 +477,10 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId,
             callback: function (response) {
-                kmCookieStorage.setCookie({
+                kmLocalStorage.setLocalStorage({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     value: newUserId,
                     expiresInDays: 30,
-                    domain: MCK_COOKIE_DOMAIN,
                 });
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', {
