@@ -424,7 +424,7 @@ KommunicateUtils = {
         }
     },
     isActiveConversationNeedsToBeOpened: function (activeConversationInfo, data) {
-        var userId = localStorage.getLocalStorage(
+        var userId = kmLocalStorage.getLocalStorage(
             KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
         );
         return (
