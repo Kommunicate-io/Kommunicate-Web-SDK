@@ -1368,14 +1368,10 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
+
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                );
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -5066,17 +5062,16 @@ const firstVisibleMsg = {
 
                         userId = userIdForCookie;
 
-                        kmCookieStorage.setCookie({
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                             value: userIdForCookie,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
-                        kmCookieStorage.setCookie({
+
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                             value: true,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
