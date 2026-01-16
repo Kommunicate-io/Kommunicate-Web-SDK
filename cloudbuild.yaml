@@ -2,93 +2,182 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
-  _BRANCH: "${BRANCH_NAME}"  # Branch name from the trigger
-  _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
-  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
+  _BUILD_ENV: "test"
+  _BRANCH: "branch-value"
+  _DEPLOY_CDN: "false"
+  _CDN_BUCKET: "your-cdn-bucket"
+  _FIREBASE_PROJECT_ID: "your-project-id"
+  _FIREBASE_SITE_ID: "your-site-id"
 
 steps:
- # Step 1: Install Node.js dependencies
-  - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo clean
-        npm cache clean --force
-        echo remove
-        rm -rf node_modules package-lock.json
-        echo Installing source NPM dependencies...
-        npm install
+# ------------------------------------------------------------
+# Step 1: Install Node.js dependencies
+# ------------------------------------------------------------
+- name: 'gcr.io/cloud-builders/npm'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      echo "Cleaning npm cache"
+      npm cache clean --force
+      rm -rf node_modules package-lock.json
+      echo "Installing dependencies"
+      npm install
 
- # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'sh'
-    env:
-      - '_BRANCH=${_BRANCH}'
-      - '_BUILD_ENV=${_BUILD_ENV}'
-    args:
-      - '-c'
-      - |
-        echo "Build env:" ${_BUILD_ENV}
-        if [ "${_BUILD_ENV}" = "test" ]; then 
-          npm run build-test;
-        elif [ "${_BUILD_ENV}" = "release" ]; then 
-          npm run build-release;
-        elif [ "${_BUILD_ENV}" = "staging" ]; then 
-          npm run build-staging;
-        elif [ "${_BUILD_ENV}" = "prod" ]; then 
-          npm run build-prod;
-        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then 
-          npm run build-prod-enterprise;
-        elif [ "${_BUILD_ENV}" = "prod-in" ]; then 
-          npm run build-prod-in;
-        elif [ "${_BUILD_ENV}" = "prod_agenticfirst" ]; then 
-          npm run build-prod-agenticfirst;
-        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then 
-          npm run build-prod-eu;
-        elif [ "${_BUILD_ENV}" = "prod_cn" ]; then 
-          npm run build-prod-cn;
-        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
-          npm run build-beta;
-        else 
-          npm run build-test;
-        fi
+# ------------------------------------------------------------
+# Step 2: Build based on environment
+# ------------------------------------------------------------
+- name: 'gcr.io/cloud-builders/npm'
+  entrypoint: 'sh'
+  env:
+    - '_BRANCH=${_BRANCH}'
+    - '_BUILD_ENV=${_BUILD_ENV}'
 
-  # Step 3: Updated firebase.json dynamically
-  - name: 'alpine'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "Updating firebase.json with site ID..."
-        # Update the site ID dynamically
-        sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
+  args:
+    - '-c'
+    - |
+      echo "Build env: $_BUILD_ENV"
+      if [ "$_BUILD_ENV" = "test" ]; then
+        npm run build-test
+      elif [ "$_BUILD_ENV" = "release" ]; then
+        npm run build-release
+      elif [ "$_BUILD_ENV" = "staging" ]; then
+        npm run build-staging
+      elif [ "$_BUILD_ENV" = "prod" ]; then
+        npm run build-prod
+      elif [ "$_BUILD_ENV" = "prod-enterprise" ]; then
+        npm run build-prod-enterprise
+      elif [ "$_BUILD_ENV" = "prod-in" ]; then
+        npm run build-prod-in
+      elif [ "$_BUILD_ENV" = "prod_agenticfirst" ]; then
+        npm run build-prod-agenticfirst
+      elif [ "$_BUILD_ENV" = "prod-eu" ]; then
+        npm run build-prod-eu
+      elif [ "$_BUILD_ENV" = "prod_cn" ]; then
+        npm run build-prod-cn
+      elif [ "$_BUILD_ENV" = "prod_beta" ]; then
+        npm run build-beta
+      else
+        npm run build-test
+      fi
 
-  # Step 4: Validating the build directory contains index.html
-  - name: 'alpine'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "Checking if webplugin/build contains index.html..."
-        if [ ! -f "webplugin/build/index.html" ]; then
-          echo "Error: index.html not found in webplugin/build. Build process might have failed."
-          exit 1
-        fi
-        echo "firebase.json exists, now validating its structure..."
-        if [ ! -f "firebase.json" ]; then
-          echo "Error: firebase.json file does not exist."
-          exit 1
-        fi
+# ------------------------------------------------------------
+# Step 2.1: Inject branch & env into index.html
+# ------------------------------------------------------------
+- name: 'alpine'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      echo "Injecting branch and env into index.html"
+      sed -i "s/__KM_BRANCH__/${_BRANCH}/g" webplugin/build/index.html
+      sed -i "s/__KM_ENV__/${_BUILD_ENV}/g" webplugin/build/index.html
 
-  # Step 5: Deploy to Firebase Hosting
-  - name: 'gcr.io/$PROJECT_ID/firebase'
-    args:
-      - 'deploy'
-      - '--only'
-      - 'hosting:${_FIREBASE_SITE_ID}'
-      - '--project'
-      - '${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
+      echo "Updated index.html:"
+      grep "Welcome to kommunicate" webplugin/build/index.html
+
+
+# ------------------------------------------------------------
+# Step 3: Update firebase.json dynamically
+# ------------------------------------------------------------
+- name: 'alpine'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      echo "Updating firebase.json site ID"
+      sed -i 's/"site": ".*"/"site": "'"$_FIREBASE_SITE_ID"'"/' firebase.json
+
+# ------------------------------------------------------------
+# Step 4: Validate build output
+# ------------------------------------------------------------
+- name: 'alpine'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      if [ ! -f "webplugin/build/index.html" ]; then
+        echo "ERROR: index.html not found in webplugin/build"
+        exit 1
+      fi
+      if [ ! -f "firebase.json" ]; then
+        echo "ERROR: firebase.json not found"
+        exit 1
+      fi
+      echo "Build validation successful"
+
+# ------------------------------------------------------------
+# Step 5: Firebase deploy (skipped when CDN enabled)
+# ------------------------------------------------------------
+- name: 'gcr.io/$PROJECT_ID/firebase'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      if [ "$_DEPLOY_CDN" = "true" ]; then
+        echo "Skipping Firebase deploy (_DEPLOY_CDN=true)"
+        exit 0
+      fi
+      firebase deploy \
+        --only hosting:$_FIREBASE_SITE_ID \
+        --project $_FIREBASE_PROJECT_ID \
+        --token $_FIREBASE_TOKEN
+
+# ------------------------------------------------------------
+# Step 6: Sync build output to CDN bucket
+# ------------------------------------------------------------
+- name: 'gcr.io/cloud-builders/gsutil'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      if [ "$_DEPLOY_CDN" = "true" ]; then
+        echo "Syncing widget build to CDN bucket root"
+        gsutil -m rsync -r webplugin/build gs://$_CDN_BUCKET
+      else
+        echo "Skipping CDN sync"
+      fi
+
+# ------------------------------------------------------------
+# Step 7: Apply CDN cache headers 
+# ------------------------------------------------------------
+- name: 'gcr.io/cloud-builders/gsutil'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      if [ "$_DEPLOY_CDN" = "true" ]; then
+        echo "Applying CDN cache headers"
+
+        # 1️ Immutable versioned builds (hash folders)
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          "gs://$_CDN_BUCKET/[0-9]*/**" || true
+
+        # 2️ Shared static assets (safe to cache long-term)
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          "gs://$_CDN_BUCKET/resources/**" \
+          "gs://$_CDN_BUCKET/css/**" \
+          "gs://$_CDN_BUCKET/plugin/**" || true
+
+        # 3️ Stable loaders (MUST stay short cache)
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js" || true
+
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/v3/kommunicate.app" || true
+        
+        # 4️ HTML entry file (VERY IMPORTANT)
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
+          "gs://$_CDN_BUCKET/index.html" || true
+
+      else
+        echo "Skipping CDN cache headers"
+      fi
+
+
+
