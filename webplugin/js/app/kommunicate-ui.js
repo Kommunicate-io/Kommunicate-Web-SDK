@@ -1505,11 +1505,9 @@ KommunicateUI = {
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        console.log('togglePopupChatTemplate called', {
-            templateKey: popupTemplateKey,
-            showTemplate,
-            widgetOpen: kommunicateCommons.isWidgetOpen(),
-        });
+        if (showTemplate && kommunicateCommons.isWidgetOpen()) {
+            return;
+        }
         if (showTemplate) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
