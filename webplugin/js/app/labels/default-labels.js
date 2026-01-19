@@ -308,8 +308,8 @@ class KMLabel {
         }
 
         var appendHtmlBindings = {
-            'mck-voice-speak-btn': 'voiceInterface.speak',
-            'mck-voice-chat-btn': 'voiceInterface.chat',
+            'mck-voice-speak-btn-label': 'voiceInterface.speak',
+            'mck-voice-chat-btn-label': 'voiceInterface.chat',
             'mck-voice-interface-back-btn': 'voiceInterface.back',
             'mck-voice-repeat-last-msg': 'voiceInterface.repeatLastMsg',
         };

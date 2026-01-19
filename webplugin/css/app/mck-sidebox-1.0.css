@@ -4403,6 +4403,10 @@ ul.mck-intent-menu > li:hover {
     justify-content: space-between;
     padding: 0 16px;
 }
+.mck-title.vis,
+.mck-title.show {
+    display: flex;
+}
 .km-header-container {
     display: flex;
     align-items: center;

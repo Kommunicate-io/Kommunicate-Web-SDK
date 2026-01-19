@@ -1640,38 +1640,45 @@
                 </div>
                 <div class="mck-voice-interface-footer">
                     <div class="last-message-text mck-hidden"></div>
+                    <p class="mck-voice-listening-note" aria-live="polite"></p>
                     <div class="mck-voice-interface-footer-buttons">
                         <button
                             id="mck-voice-speak-btn"
                             class="mck-voice-speak-btn km-custom-widget-text-color"
                             aria-label="Speak"
                         >
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                aria-hidden="true"
-                                focusable="false"
-                            >
-                                <use xlink:href="#icon-49" href="#icon-49"></use>
-                            </svg>
+                            <span class="mck-voice-btn-icon">
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <use xlink:href="#icon-49" href="#icon-49"></use>
+                                </svg>
+                            </span>
+                            <span class="mck-voice-btn-text" id="mck-voice-speak-btn-label"></span>
                         </button>
                         <button
                             id="mck-voice-chat-btn"
                             class="mck-voice-chat-btn km-custom-widget-text-color"
                             aria-label="Chat"
                         >
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                aria-hidden="true"
-                                focusable="false"
-                            >
-                                <use xlink:href="#icon-50" href="#icon-50"></use>
-                            </svg>
+                            <span class="mck-voice-btn-icon">
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <use xlink:href="#icon-50" href="#icon-50"></use>
+                                </svg>
+                            </span>
+                            <span class="mck-voice-btn-text" id="mck-voice-chat-btn-label"></span>
                         </button>
                     </div>
                 </div>

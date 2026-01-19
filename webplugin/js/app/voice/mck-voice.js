@@ -274,6 +274,7 @@ class MckVoice {
             );
         }
         this.updateMuteButton();
+        this.updateChatButtonText();
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             this.enableAutoListening();
             this.setVoiceMuted(false);
@@ -799,6 +800,36 @@ class MckVoice {
         button.setAttribute('aria-label', label);
         button.dataset.muted = this.voiceMuted ? 'true' : 'false';
         button.classList.toggle('mck-voice-mute-active', this.voiceMuted);
+        const textElement = button.querySelector('.mck-voice-btn-text');
+        if (textElement) {
+            textElement.textContent = label;
+        }
+        this.updateListeningNote();
+    }
+
+    updateListeningNote() {
+        const noteElement = document.querySelector('.mck-voice-listening-note');
+        if (!noteElement) {
+            return;
+        }
+        const key = this.voiceMuted ? 'voiceInterface.mutedNote' : 'voiceInterface.listeningNote';
+        const fallback = this.voiceMuted
+            ? 'Microphone paused. Tap the mic to resume voice input.'
+            : 'AI assistant is listening for you—just speak.';
+        noteElement.textContent = this.getVoiceLabel(key, fallback);
+    }
+
+    updateChatButtonText() {
+        const button = document.getElementById('mck-voice-chat-btn');
+        if (!button) {
+            return;
+        }
+        const label = this.getVoiceLabel('voiceInterface.chat', 'Switch to chat');
+        const textElement = button.querySelector('.mck-voice-btn-text');
+        if (textElement) {
+            textElement.textContent = label;
+        }
+        button.setAttribute('aria-label', label);
     }
 
     setVoiceMuted(muted) {
