@@ -103,7 +103,7 @@
                 s.type = 'text/javascript';
                 s.async = true;
                 var disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-                var scriptUrl = 'https://widget.kommunicate.io/kommunicate-widget-3.0.min.js';
+                var scriptUrl = '/kommunicate-widget-3.0.min.js';
                 s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
                 var h = document.getElementsByTagName('head')[0];
                 h.appendChild(s);
