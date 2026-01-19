@@ -97,8 +97,8 @@ Kommunicate.client = {
                 conversationDetail.metadata ? conversationDetail.metadata['KM_CHAT_CONTEXT'] : {}
             );
             conversationDetail.metadata = {
-                ...conversationDetail.metadata,
                 ...kommunicate._globals.defaultConversationMetadata,
+                ...conversationDetail.metadata,
             };
 
             var userLocale = kommunicate._globals.userLocale;
@@ -220,7 +220,6 @@ Kommunicate.client = {
             kommunicate._globals.widgetSettings.captureLocation === true;
 
         if (!shouldCaptureLocation) {
-            console.log('not sending location');
             buildAndSendConversation();
             return;
         }
@@ -228,7 +227,6 @@ Kommunicate.client = {
         Kommunicate.client
             .getGeoIpLocation()
             .then(function (location) {
-                console.log('Sending location');
                 if (
                     location &&
                     Object.keys(location).length &&
