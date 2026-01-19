@@ -1368,9 +1368,11 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-
                 kmLocalStorage.deleteLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                );
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
                 );
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&

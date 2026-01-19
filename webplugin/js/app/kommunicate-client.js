@@ -11,9 +11,24 @@ Kommunicate.client = {
                 resolve({});
                 return;
             }
+            var isResolved = false;
+            var timeoutMs = 3000;
+            var fallbackTimer = setTimeout(function () {
+                if (isResolved) {
+                    return;
+                }
+                isResolved = true;
+                resolve({});
+            }, timeoutMs);
             mckUtils.ajax({
                 url: 'https://ipapi.co/json',
+                timeout: timeoutMs,
                 success: function (data) {
+                    if (isResolved) {
+                        return;
+                    }
+                    isResolved = true;
+                    clearTimeout(fallbackTimer);
                     var location = {};
                     if (data && typeof data === 'object') {
                         data.city && (location.city = data.city);
@@ -23,6 +38,11 @@ Kommunicate.client = {
                     resolve(location);
                 },
                 error: function () {
+                    if (isResolved) {
+                        return;
+                    }
+                    isResolved = true;
+                    clearTimeout(fallbackTimer);
                     resolve({});
                 },
             });
@@ -192,22 +212,36 @@ Kommunicate.client = {
         };
 
         conversationDetail.metadata = conversationDetail.metadata || {};
+
+        var shouldCaptureLocation =
+            kommunicate &&
+            kommunicate._globals &&
+            kommunicate._globals.widgetSettings &&
+            kommunicate._globals.widgetSettings.captureLocation === true;
+
+        if (!shouldCaptureLocation) {
+            console.log('not sending location');
+            buildAndSendConversation();
+            return;
+        }
+
         Kommunicate.client
             .getGeoIpLocation()
             .then(function (location) {
-                if (location && Object.keys(location).length) {
-                    if (
-                        typeof Kommunicate !== 'undefined' &&
-                        typeof Kommunicate.updateUser === 'function'
-                    ) {
-                        var locationParts = [];
-                        location.city && locationParts.push(location.city);
-                        location.region && locationParts.push(location.region);
-                        location.country && locationParts.push(location.country);
-                        Kommunicate.updateUser({
-                            metadata: { location: locationParts.join(', ') },
-                        });
-                    }
+                console.log('Sending location');
+                if (
+                    location &&
+                    Object.keys(location).length &&
+                    typeof Kommunicate !== 'undefined' &&
+                    typeof Kommunicate.updateUser === 'function'
+                ) {
+                    var locationParts = [];
+                    location.city && locationParts.push(location.city);
+                    location.region && locationParts.push(location.region);
+                    location.country && locationParts.push(location.country);
+                    Kommunicate.updateUser({
+                        metadata: { location: locationParts.join(', ') },
+                    });
                 }
                 buildAndSendConversation();
             })

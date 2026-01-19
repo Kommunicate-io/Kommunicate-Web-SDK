@@ -420,7 +420,6 @@ function ApplozicSidebox() {
     }
 
     async function mckInitSidebox(data, randomUserId) {
-        console.log('this is running ');
         try {
             appOptionSession.setAppInstanceCount();
 
@@ -439,6 +438,11 @@ function ApplozicSidebox() {
                 widgetSettingsFromApi,
                 localWidgetSettings
             );
+
+            widgetSettings.captureLocation =
+                typeof widgetSettings.captureLocation === 'boolean'
+                    ? widgetSettings.captureLocation
+                    : false;
             var disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
@@ -459,8 +463,6 @@ function ApplozicSidebox() {
             function isSettingEnable(key) {
                 return options[key] != null ? options[key] : widgetSettings && widgetSettings[key];
             }
-            // replace cookies in old format with cookies in new format
-            KommunicateUtils.replaceOldCookies();
 
             //to check if the customer has been churned then show the churn banner
             if (data.currentActivatedPlan == 'churn') {

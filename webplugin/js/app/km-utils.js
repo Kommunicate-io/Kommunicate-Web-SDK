@@ -390,21 +390,6 @@ KommunicateUtils = {
         var subDomain = hostName.substr(0, hostName.length - domainLength);
         return subDomain;
     },
-
-    replaceOldCookies: function () {
-        Object.values(KommunicateConstants.COOKIES).forEach((cookie) => {
-            let cookieData = kmLocalStorage.getLocalStorage(cookie);
-
-            if (cookieData) {
-                kmLocalStorage.deleteLocalStorage(cookie);
-                kmLocalStorage.setLocalStorage({
-                    name: cookie,
-                    value: cookieData,
-                    expiresInDays: 30,
-                });
-            }
-        });
-    },
     isValidTimeZone: function (tzId) {
         if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
             console.log(
