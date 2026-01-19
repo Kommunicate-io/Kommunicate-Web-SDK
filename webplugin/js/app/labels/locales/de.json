@@ -191,5 +191,12 @@
   "voiceInterface.speak": "Zum Sprechen klicken",
   "voiceInterface.chat": "Zum Chatten klicken",
   "voiceInterface.back": "Zurück",
-  "voiceInterface.repeatLastMsg": "Antwort erneut anhören"
+  "voiceInterface.repeatLastMsg": "Antwort erneut anhören",
+  "form.label.to": "An:",
+  "form.label.userId": "Benutzer-ID",
+  "form.error.required": "Dies ist ein Pflichtfeld",
+  "form.error.invalidValue": "Sie haben einen ungültigen Wert eingegeben",
+  "location.coordinates.lat": "Breite:",
+  "location.coordinates.lon": "Länge:",
+  "whatsnew.empty": "Was ist neu, kommt bald."
 }

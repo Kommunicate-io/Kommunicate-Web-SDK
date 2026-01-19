@@ -16,15 +16,10 @@
                     popupWidget: true,
                     layout: 'modern',
                     automaticChatOpenOnNavigation: true,
-                    voiceMode: true,
                     // appSettings: {
                     //     chatWidget: {
+                    //         popup: false,
                     //         blockUrlPreview: true,
-                    //     },
-                    // },
-                    // appSettings: {
-                    //     chatWidget: {
-                    //         popup: false
                     //     },
                     //     chatPopupMessage: [
                     //         {
@@ -34,6 +29,7 @@
                     //     ],
                     // },
                     widgetSettings: {
+                        preCreateUser: false,
                         // popup: false,
                         // primaryColor: '#fff000',
                         // Provide a `theme` map to override exposed CSS vars.
@@ -63,6 +59,13 @@
                             linkText: 'Read the case study',
                         },
                     ],
+                    // customLabelLocales: {
+                    //     en: {
+                    //         'conversations.title': 'ਗੱਲਬਾਤ',
+                    //         'faq': 'ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ',
+                    //         'start.new': 'ਨਵੀਂ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ',
+                    //     },
+                    // },
 
                     // preLeadCollection: [
                     //     {
@@ -75,6 +78,13 @@
                     //         type: 'email',
                     //         required: true,
                     //         placeholder: 'Enter your email',
+                    //     },
+                    //     {
+                    //         field: 'Phone',
+                    //         type: 'phone',
+                    //         required: true,
+                    //         enableCountryCode: true,
+                    //         placeholder: 'Enter your phone number',
                     //     },
                     // ],
                 };

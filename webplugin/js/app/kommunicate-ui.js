@@ -20,9 +20,33 @@ function getBottomTabsManager() {
     return bottomTabsManagerRef;
 }
 function setActiveSubsectionState(subsection) {
+    var sideboxContent =
+        typeof document !== 'undefined' &&
+        document.getElementById &&
+        document.getElementById('mck-sidebox-content');
+    if (
+        sideboxContent &&
+        sideboxContent.classList &&
+        typeof subsection === 'string' &&
+        subsection.indexOf('conversation-') === 0 &&
+        sideboxContent.classList.contains('active-tab-faqs')
+    ) {
+        sideboxContent.classList.remove(
+            'active-subsection-conversation-individual',
+            'active-subsection-conversation-list'
+        );
+        return;
+    }
     var bottomTabsManager = getBottomTabsManager();
     if (bottomTabsManager && typeof bottomTabsManager.setActiveSubsection === 'function') {
         bottomTabsManager.setActiveSubsection(subsection);
+    }
+    if (
+        typeof subsection === 'string' &&
+        subsection.indexOf('faq-') === 0 &&
+        typeof KommunicateUI !== 'undefined'
+    ) {
+        KommunicateUI.lastFaqSubsection = subsection;
     }
 }
 KommunicateUI = {
@@ -728,6 +752,11 @@ KommunicateUI = {
         document.querySelector('.km-no-results-found p').innerHTML = MCK_LABELS['faq-empty-state'];
     },
     flushFaqsEvents: function () {
+        var sideboxContent = document.getElementById('mck-sidebox-content');
+        if (sideboxContent && sideboxContent.classList.contains('active-tab-faqs')) {
+            MCK_EVENT_HISTORY.length = 0;
+            return;
+        }
         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1];
         var backBtn = $applozic('#mck-conversation-back-btn')[0];
         if (lastEvent && typeof lastEvent == 'string' && lastEvent.includes('faq')) {
@@ -851,10 +880,14 @@ KommunicateUI = {
 
     showChat: function (options) {
         var keepConversationHeader = false;
+        var skipSubsectionUpdate = false;
         if (typeof options === 'boolean') {
             keepConversationHeader = options;
-        } else if (options && typeof options.keepConversationHeader !== 'undefined') {
-            keepConversationHeader = options.keepConversationHeader;
+        } else if (options) {
+            if (typeof options.keepConversationHeader !== 'undefined') {
+                keepConversationHeader = options.keepConversationHeader;
+            }
+            skipSubsectionUpdate = Boolean(options.skipSubsectionUpdate);
         }
         var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
         var shouldShowConversationListHeader =
@@ -868,19 +901,22 @@ KommunicateUI = {
             sideboxContent &&
             sideboxContent.classList &&
             sideboxContent.classList.contains('active-tab-conversations');
+        if (skipSubsectionUpdate && sideboxContent && sideboxContent.classList) {
+            sideboxContent.classList.remove('active-subsection-conversation-individual');
+        }
 
         if (isModernLayout) {
             if (shouldShowConversationListHeader) {
                 topBarManagerRef.toggleBackButton(false);
                 KommunicateUI.isConversationListView = true;
                 // Only set conversation-list if conversations tab is active
-                if (isConversationsTabActive) {
+                if (!skipSubsectionUpdate && isConversationsTabActive) {
                     setActiveSubsectionState('conversation-list');
                 }
             } else {
                 KommunicateUI.isConversationListView = false;
                 // Only set conversation-individual if conversations tab is active
-                if (isConversationsTabActive) {
+                if (!skipSubsectionUpdate && isConversationsTabActive) {
                     setActiveSubsectionState('conversation-individual');
                 }
             }
@@ -892,7 +928,7 @@ KommunicateUI = {
                     : true;
             KommunicateUI.isConversationListView = showListView;
             // Only set conversation subsection if conversations tab is active
-            if (isConversationsTabActive) {
+            if (!skipSubsectionUpdate && isConversationsTabActive) {
                 setActiveSubsectionState(
                     showListView ? 'conversation-list' : 'conversation-individual'
                 );
@@ -1599,6 +1635,12 @@ KommunicateUI = {
                 startNewButton.classList.remove('force-n-vis');
             }
         }
+    },
+    updateSingleThreadedClass: function (hasMultipleConversations) {
+        var isWidgetSingleThreaded =
+            kommunicateCommons.isObject(kommunicate._globals.widgetSettings) &&
+            kommunicate._globals.widgetSettings.isSingleThreaded;
+        return isWidgetSingleThreaded && !hasMultipleConversations;
     },
 
     handleWaitingQueueMessage: function () {

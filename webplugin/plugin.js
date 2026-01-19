@@ -116,6 +116,13 @@ if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
 function removeKommunicateScripts() {
     window.KommunicateGlobal = null;
     window.Kommunicate = null;
+    var kommunicateIframe = document.getElementById(kmCustomElements.iframe.id);
+    if (kommunicateIframe && kommunicateIframe.contentWindow) {
+        var commons = kommunicateIframe.contentWindow.kommunicateCommons;
+        if (commons && typeof commons.cleanupIframeResizeListener === 'function') {
+            commons.cleanupIframeResizeListener(kommunicateIframe);
+        }
+    }
     // delete iframe, kommunicate style sheet, image view modal, origin file
     removeElementFromHtmlById([
         kmCustomElements.imageModal.styleSheetId,

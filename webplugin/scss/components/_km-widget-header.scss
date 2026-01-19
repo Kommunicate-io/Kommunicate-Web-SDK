@@ -23,6 +23,10 @@
     }
 }
 
+.mck-title {
+    padding: 0 10px;
+}
+
 .mck-sidebox .mck-tab-title,
 .mck-sidebox .mck-tab-title-w-status,
 .mck-sidebox .mck-tab-title-w-typing,
@@ -75,6 +79,7 @@
 }
 
 #km-talk-to-human svg {
+    color: var(--km-on-primary, #ffffff);
     fill: currentColor;
 }
 
@@ -90,6 +95,45 @@
 .mck-search-tab-box,
 .mck-search-box-top {
     background-color: rgba(241, 241, 241, 0.6);
+}
+
+.km-faq-and-close-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+
+    .km-kb-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .km-widget-options-button {
+        margin-right: 0;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+    }
+
+    .mck-close-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    #km-chat-widget-close-button {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+    }
 }
 
 .mck-gm-search-box .mck-box-top .blk-lg-3 {
