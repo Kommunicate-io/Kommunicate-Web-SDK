@@ -185,7 +185,12 @@ KommunicateUI = {
             }
             return;
         }
-        var sanitizedUrl = url ? url.trim().replace(/,+$/, '') : '';
+        var sanitizedUrl =
+            typeof url === 'string'
+                ? url.trim().replace(/,+$/, '')
+                : url
+                ? String(url).trim().replace(/,+$/, '')
+                : '';
         if (!sanitizedUrl) {
             return;
         }
