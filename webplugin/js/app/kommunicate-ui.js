@@ -19,6 +19,15 @@ function getFaqClearButton() {
 function getBottomTabsManager() {
     return bottomTabsManagerRef;
 }
+function isIndividualConversationActive() {
+    var sideboxContent = document.getElementById('mck-sidebox-content');
+    return (
+        sideboxContent &&
+        sideboxContent.classList &&
+        sideboxContent.classList.contains('active-tab-conversations') &&
+        sideboxContent.classList.contains('active-subsection-conversation-individual')
+    );
+}
 function setActiveSubsectionState(subsection) {
     var sideboxContent =
         typeof document !== 'undefined' &&
@@ -112,13 +121,13 @@ KommunicateUI = {
         }
     },
     populateAwayMessage: function (err, message) {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         var closedConversation = $applozic('#mck-conversation-status-box').hasClass('vis');
         if (
             !err &&
             message.code == 'SUCCESS' &&
             message.data.messageList.length > 0 &&
-            !conversationWindowNotActive &&
+            isIndividualConversation &&
             !closedConversation
         ) {
             awayMessage = message.data.messageList[0].message;
@@ -238,11 +247,11 @@ KommunicateUI = {
         });
     },
     showAwayMessage: function () {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         if (
             KommunicateUI.awayMessageInfo &&
             KommunicateUI.awayMessageInfo.isEnabled &&
-            !conversationWindowNotActive
+            isIndividualConversation
         ) {
             kommunicateCommons.hide('#mck-email-collection-box');
             kommunicateCommons.show('#mck-away-msg-box');
