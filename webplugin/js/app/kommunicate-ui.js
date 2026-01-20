@@ -185,11 +185,23 @@ KommunicateUI = {
             }
             return;
         }
+        var sanitizedUrl =
+            typeof url === 'string'
+                ? url.trim().replace(/,+$/, '')
+                : url
+                ? String(url).trim().replace(/,+$/, '')
+                : '';
+        if (!sanitizedUrl) {
+            return;
+        }
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
-            url: kommunicate.getBaseUrl() + '/rest/ws/extractlink?linkToExtract=' + url,
+            url:
+                kommunicate.getBaseUrl() +
+                '/rest/ws/extractlink?linkToExtract=' +
+                encodeURIComponent(sanitizedUrl),
             type: 'GET',
             global: false,
             success: function (result) {
