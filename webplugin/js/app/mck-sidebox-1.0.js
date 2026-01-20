@@ -679,18 +679,17 @@ const firstVisibleMsg = {
             }
             popupChatTemplateScheduled = true;
             var previousSkipFlag =
-                KommunicateUI && typeof KommunicateUI.skipPopupChatTemplate !== 'undefined'
+                typeof KommunicateUI.skipPopupChatTemplate !== 'undefined'
                     ? KommunicateUI.skipPopupChatTemplate
                     : false;
-            if (KommunicateUI) {
-                KommunicateUI.skipPopupChatTemplate = false;
-            }
-            KommunicateUI.displayPopupChatTemplate(
-                MCK_POPUP_WIDGET_CONTENT,
-                WIDGET_SETTINGS,
-                mckChatPopupNotificationTone
-            );
-            if (KommunicateUI) {
+            KommunicateUI.skipPopupChatTemplate = false;
+            try {
+                KommunicateUI.displayPopupChatTemplate(
+                    MCK_POPUP_WIDGET_CONTENT,
+                    WIDGET_SETTINGS,
+                    mckChatPopupNotificationTone
+                );
+            } finally {
                 KommunicateUI.skipPopupChatTemplate = previousSkipFlag;
             }
         }
