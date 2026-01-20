@@ -21,39 +21,42 @@ steps:
         echo Installing source NPM dependencies...
         npm install
 
- # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'sh'
-    env:
-      - '_BRANCH=${_BRANCH}'
-      - '_BUILD_ENV=${_BUILD_ENV}'
-    args:
-      - '-c'
-      - |
-        echo "Build env:" ${_BUILD_ENV}
-        if [ "${_BUILD_ENV}" = "test" ]; then 
-          npm run build-test;
-        elif [ "${_BUILD_ENV}" = "release" ]; then 
-          npm run build-release;
-        elif [ "${_BUILD_ENV}" = "staging" ]; then 
-          npm run build-staging;
-        elif [ "${_BUILD_ENV}" = "prod" ]; then 
-          npm run build-prod;
-        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then 
-          npm run build-prod-enterprise;
-        elif [ "${_BUILD_ENV}" = "prod-in" ]; then 
-          npm run build-prod-in;
-        elif [ "${_BUILD_ENV}" = "prod_agenticfirst" ]; then 
-          npm run build-prod-agenticfirst;
-        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then 
-          npm run build-prod-eu;
-        elif [ "${_BUILD_ENV}" = "prod_cn" ]; then 
-          npm run build-prod-cn;
-        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
-          npm run build-beta;
-        else 
-          npm run build-test;
-        fi
+# ------------------------------------------------------------
+# Step 2: Build based on environment
+# ------------------------------------------------------------
+- name: 'gcr.io/cloud-builders/npm'
+  entrypoint: 'sh'
+  env:
+    - '_BRANCH=${_BRANCH}'
+    - '_BUILD_ENV=${_BUILD_ENV}'
+
+  args:
+    - '-c'
+    - |
+      echo "Build env: $_BUILD_ENV"
+      if [ "$_BUILD_ENV" = "test" ]; then
+        npm run build-test
+      elif [ "$_BUILD_ENV" = "release" ]; then
+        npm run build-release
+      elif [ "$_BUILD_ENV" = "staging" ]; then
+        npm run build-staging
+      elif [ "$_BUILD_ENV" = "prod" ]; then
+        npm run build-prod
+      elif [ "$_BUILD_ENV" = "prod-enterprise" ]; then
+        npm run build-prod-enterprise
+      elif [ "$_BUILD_ENV" = "prod-in" ]; then
+        npm run build-prod-in
+      elif [ "$_BUILD_ENV" = "prod_agenticfirst" ]; then
+        npm run build-prod-agenticfirst
+      elif [ "$_BUILD_ENV" = "prod-eu" ]; then
+        npm run build-prod-eu
+      elif [ "$_BUILD_ENV" = "prod_cn" ]; then
+        npm run build-prod-cn
+      elif [ "$_BUILD_ENV" = "prod_beta" ]; then
+        npm run build-beta
+      else
+        npm run build-test
+      fi
 
   # Step 3: Updated firebase.json dynamically
   - name: 'alpine'
@@ -81,14 +84,3 @@ steps:
           echo "Error: firebase.json file does not exist."
           exit 1
         fi
-
-  # Step 5: Deploy to Firebase Hosting
-  - name: 'gcr.io/$PROJECT_ID/firebase'
-    args:
-      - 'deploy'
-      - '--only'
-      - 'hosting:${_FIREBASE_SITE_ID}'
-      - '--project'
-      - '${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
