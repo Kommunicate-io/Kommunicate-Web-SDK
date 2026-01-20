@@ -71,13 +71,25 @@ $applozic.extend(true, Kommunicate, {
     },
     startConversation: function (params, callback) {
         kommunicateCommons.setWidgetStateOpen(true);
+        var appOptions =
+            appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
+        var widgetIframe =
+            parent && parent.document
+                ? parent.document.getElementById('kommunicate-widget-iframe')
+                : null;
+        if (widgetIframe && typeof Kommunicate.setDefaultIframeConfigForOpenChat === 'function') {
+            Kommunicate.setDefaultIframeConfigForOpenChat(!!appOptions.popupWidget);
+            setTimeout(function () {
+                kommunicateCommons &&
+                    kommunicateCommons.adjustIframeHeightForLayout &&
+                    kommunicateCommons.adjustIframeHeightForLayout(widgetIframe);
+            }, 0);
+        }
         activateConversationTabOnStartConversation();
         params = typeof params == 'object' ? params : {};
         kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
-            var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
             params.agentId = appOptions.agentId;
         }
         var user = [];

@@ -2843,6 +2843,9 @@ const firstVisibleMsg = {
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
                 var showPoweredBy = kommunicateCommons.showPoweredBy(data);
+                var sideboxContent = document.getElementById('mck-sidebox-content');
+                sideboxContent &&
+                    sideboxContent.classList.toggle('km-poweredby-enabled', !!showPoweredBy);
                 if (showPoweredBy) {
                     var kommunicateIframe = parent.document.getElementById(
                         'kommunicate-widget-iframe'
