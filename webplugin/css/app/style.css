@@ -2267,6 +2267,10 @@ input[type=number]::-webkit-outer-spin-button {
   word-break: break-word;
 }
 
+#mck-text-box {
+  word-break: normal;
+}
+
 .mck-form-error-container {
   display: flex;
 }
