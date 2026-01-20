@@ -32,6 +32,7 @@ class MckVoice {
         this.autoListeningEnabled = false;
         this.autoListenTimeout = null;
         this.voiceMuted = false;
+        this.inlineStatusContainer = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -278,15 +279,11 @@ class MckVoice {
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             this.enableAutoListening();
             this.setVoiceMuted(false);
-            kommunicateCommons.hide('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
-
-            kommunicateCommons.show('#mck-voice-interface', '.voice-ring-2', '.voice-ring-3');
             kommunicateCommons.modifyClassList(
                 { class: ['voice-ring-1'] },
                 '',
                 'mck-ring-remove-animation'
             );
-
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-voice-repeat-last-msg'],
@@ -301,17 +298,15 @@ class MckVoice {
             this.disableAutoListening();
             this.stopRecording(true);
 
-            kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body', '.mck-box-top');
-
             kommunicateCommons.modifyClassList(
                 { class: ['mck-voice-repeat-last-msg'] },
                 'mck-hidden'
             );
 
-            kommunicateCommons.hide('#mck-voice-interface');
             this.updateVoiceStatus('');
             this.updateLiveTranscript('');
             this.updateResponseText('');
+            this.hideInlineStatus();
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
@@ -422,6 +417,7 @@ class MckVoice {
                         message: userMsg,
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
+                    this.scheduleAutoListen();
                 }
             } catch (error) {
                 console.error(error);
@@ -652,7 +648,7 @@ class MckVoice {
     }
     getStatusElement() {
         if (!this.statusElement) {
-            this.statusElement = document.getElementById('mck-voice-status-text');
+            this.statusElement = document.getElementById('km-voice-inline-text');
         }
         return this.statusElement;
     }
@@ -671,6 +667,27 @@ class MckVoice {
         return this.responseElement;
     }
 
+    getInlineStatusContainer() {
+        if (!this.inlineStatusContainer) {
+            this.inlineStatusContainer = document.getElementById('km-voice-listening-status');
+        }
+        return this.inlineStatusContainer;
+    }
+
+    showInlineStatus() {
+        const container = this.getInlineStatusContainer();
+        if (container) {
+            container.classList.remove('n-vis');
+        }
+    }
+
+    hideInlineStatus() {
+        const container = this.getInlineStatusContainer();
+        if (container) {
+            container.classList.add('n-vis');
+        }
+    }
+
     updateVoiceStatus(text, listening = false) {
         const element = this.getStatusElement();
         if (!element) {
@@ -680,10 +697,12 @@ class MckVoice {
             element.textContent = '';
             element.classList.add('n-vis');
             element.removeAttribute('data-listening');
+            this.hideInlineStatus();
             return;
         }
         element.textContent = text;
         element.classList.remove('n-vis');
+        this.showInlineStatus();
         element.setAttribute('data-listening', listening ? 'true' : 'false');
     }
 
@@ -745,8 +764,12 @@ class MckVoice {
     }
 
     isVoiceInterfaceVisible() {
-        const interfaceEl = document.getElementById('mck-voice-interface');
-        return interfaceEl && !interfaceEl.classList.contains('n-vis');
+        const container = this.getInlineStatusContainer();
+        return this.autoListeningEnabled || (container && !container.classList.contains('n-vis'));
+    }
+
+    isVoiceModeActive() {
+        return this.autoListeningEnabled || this.isRecording;
     }
 
     clearAutoListenTimeout() {
@@ -780,7 +803,17 @@ class MckVoice {
         }
         this.autoListenTimeout = setTimeout(() => {
             this.autoListenTimeout = null;
-            if (this.autoListeningEnabled && !this.isRecording && this.isVoiceInterfaceVisible()) {
+            if (
+                this.autoListeningEnabled &&
+                !this.voiceMuted &&
+                !this.isRecording &&
+                this.isVoiceInterfaceVisible()
+            ) {
+                const listeningLabel = this.getVoiceLabel(
+                    'voiceInterface.listening',
+                    'Listening...'
+                );
+                this.updateVoiceStatus(listeningLabel, true);
                 this.requestAudioRecording();
             }
         }, delay);
