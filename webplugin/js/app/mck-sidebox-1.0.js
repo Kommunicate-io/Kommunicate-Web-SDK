@@ -668,6 +668,32 @@ const firstVisibleMsg = {
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
+        var popupChatTemplateScheduled = false;
+        function showPopupChatTemplateOnce() {
+            if (
+                popupChatTemplateScheduled ||
+                !KommunicateUI ||
+                typeof KommunicateUI.displayPopupChatTemplate !== 'function'
+            ) {
+                return;
+            }
+            popupChatTemplateScheduled = true;
+            var previousSkipFlag =
+                KommunicateUI && typeof KommunicateUI.skipPopupChatTemplate !== 'undefined'
+                    ? KommunicateUI.skipPopupChatTemplate
+                    : false;
+            if (KommunicateUI) {
+                KommunicateUI.skipPopupChatTemplate = false;
+            }
+            KommunicateUI.displayPopupChatTemplate(
+                MCK_POPUP_WIDGET_CONTENT,
+                WIDGET_SETTINGS,
+                mckChatPopupNotificationTone
+            );
+            if (KommunicateUI) {
+                KommunicateUI.skipPopupChatTemplate = previousSkipFlag;
+            }
+        }
         var notificationToneOption = {};
         var ringToneService;
         var lastFetchTime;
@@ -1024,6 +1050,7 @@ const firstVisibleMsg = {
                     typeof Kommunicate.setDefaultIframeConfigForClosedChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
+                showPopupChatTemplateOnce();
             } else {
                 mckInit.initializeApp(appOptions, false);
                 mckNotificationService.init();
@@ -2390,11 +2417,7 @@ const firstVisibleMsg = {
                                 '#km-form-chat-login .km-form-group .km-form-control.n-vis'
                             ).prop('required', null);
                         }
-                        KommunicateUI.displayPopupChatTemplate(
-                            MCK_POPUP_WIDGET_CONTENT,
-                            WIDGET_SETTINGS,
-                            mckChatPopupNotificationTone
-                        );
+                        showPopupChatTemplateOnce();
                         console.log('prechat displayPopupChatTemplate branch', {
                             hasContent: Boolean(
                                 MCK_POPUP_WIDGET_CONTENT && MCK_POPUP_WIDGET_CONTENT.length
@@ -2686,22 +2709,15 @@ const firstVisibleMsg = {
                 ) {
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON &&
                         $applozic.fn.applozic('mckLaunchSideboxChat');
-                    KommunicateUI.displayPopupChatTemplate(
-                        MCK_POPUP_WIDGET_CONTENT,
-                        WIDGET_SETTINGS,
-                        mckChatPopupNotificationTone
-                    );
+                    showPopupChatTemplateOnce();
                     console.log('pre-lead init branch running before login', {
                         popupContent: MCK_POPUP_WIDGET_CONTENT && MCK_POPUP_WIDGET_CONTENT.length,
                     });
                 } else {
                     $applozic.fn.applozic('triggerMsgNotification');
-                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                        KommunicateUI.displayPopupChatTemplate(
-                            MCK_POPUP_WIDGET_CONTENT,
-                            WIDGET_SETTINGS,
-                            mckChatPopupNotificationTone
-                        );
+                    if (!MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT) {
+                        showPopupChatTemplateOnce();
+                    }
                     if ($mck_sidebox.css('display') === 'block') {
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
