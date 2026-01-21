@@ -1544,17 +1544,13 @@ KommunicateUI = {
             );
             var el = document.querySelector('.chat-popup-widget-text-wrapper');
             if (el && window.parent && window.parent !== window) {
-                var rect = el.getBoundingClientRect();
                 if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) {
                     var textEl = el.querySelector('.chat-popup-widget-text');
                     var width = el.getBoundingClientRect().width;
 
                     if (textEl) {
-                        var rect = textEl.getBoundingClientRect();
-                        var style = window.getComputedStyle(textEl);
-                        var paddingLeft = parseFloat(style.paddingLeft) || 0;
-                        var paddingRight = parseFloat(style.paddingRight) || 0;
-                        width = rect.width + paddingLeft + paddingRight;
+                        var textRect = textEl.getBoundingClientRect();
+                        width = textRect.width;
                     }
 
                     var closeBtnAllowance = 70;
@@ -1563,8 +1559,9 @@ KommunicateUI = {
                         '*'
                     );
                 } else if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.VERTICAL) {
+                    var wrapperRect = el.getBoundingClientRect();
                     window.parent.postMessage(
-                        { type: 'km_popup_resize', height: Math.ceil(rect.height + 25) },
+                        { type: 'km_popup_resize', height: Math.ceil(wrapperRect.height + 35) },
                         '*'
                     );
                 }
