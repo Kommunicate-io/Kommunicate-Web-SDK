@@ -568,12 +568,15 @@ input[type=number]::-webkit-outer-spin-button {
 .chat-popup-widget-container--horizontal .chat-popup-widget-text {
   padding: 20px 60px 20px 20px;
 }
+.chat-popup-widget-container--horizontal .chat-popup-widget-close-btn {
+  background: transparent;
+}
 .chat-popup-widget-container--vertical {
   border-radius: 20px;
   bottom: 8px;
   right: 75px;
   min-height: 75px;
-  width: calc(100% - 80px);
+  width: calc(100% - 90px);
 }
 .chat-popup-widget-container--vertical.km-animate {
   -webkit-transform: translateY(12px) scale(0.98);
@@ -596,11 +599,22 @@ input[type=number]::-webkit-outer-spin-button {
   min-height: 75px;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
-  top: 5px;
-  left: 5px;
+  top: -5px;
+  left: -5px;
+  right: auto;
   transform: none;
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.chat-popup-widget-container--vertical .chat-popup-widget-close-btn {
+  background: transparent;
+}
+.chat-popup-widget-container--vertical .chat-popup-widget-close-btn svg {
+  width: 12px;
+  height: 12px;
 }
 .chat-popup-widget-container--actionable {
   border-radius: 20px;
