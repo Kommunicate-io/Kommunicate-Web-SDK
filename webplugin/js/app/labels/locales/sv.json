@@ -191,5 +191,12 @@
   "voiceInterface.speak": "Klicka för att tala",
   "voiceInterface.chat": "Klicka för att chatta",
   "voiceInterface.back": "Tillbaka",
-  "voiceInterface.repeatLastMsg": "Lyssna igen på svaret"
+  "voiceInterface.repeatLastMsg": "Lyssna igen på svaret",
+  "form.label.to": "Till:",
+  "form.label.userId": "Användar-ID",
+  "form.error.required": "Detta fält är obligatoriskt",
+  "form.error.invalidValue": "Du har angett ett ogiltigt värde",
+  "location.coordinates.lat": "Latitud:",
+  "location.coordinates.lon": "Longitud:",
+  "whatsnew.empty": "Nyheter kommer snart."
 }

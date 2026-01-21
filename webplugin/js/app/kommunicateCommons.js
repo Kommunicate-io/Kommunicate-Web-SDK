@@ -5,6 +5,7 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    var iframeResizeListeners = typeof WeakMap === 'function' ? new WeakMap() : null;
     KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
@@ -71,6 +72,45 @@ function KommunicateCommons() {
         }
         var reducedHeight = baseHeight - navHeight;
         iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
+
+        if (heightSourceWindow && typeof heightSourceWindow.addEventListener === 'function') {
+            var existingHandler = iframeResizeListeners
+                ? iframeResizeListeners.get(iframeElement)
+                : iframeElement._kmResizeListener;
+            if (!existingHandler) {
+                var resizeHandler = function () {
+                    _this.adjustIframeHeightForLayout(iframeElement);
+                };
+                if (iframeResizeListeners) {
+                    iframeResizeListeners.set(iframeElement, resizeHandler);
+                } else {
+                    iframeElement._kmResizeListener = resizeHandler;
+                }
+                heightSourceWindow.addEventListener('resize', resizeHandler);
+            }
+        }
+    };
+
+    _this.cleanupIframeResizeListener = function (iframeElement) {
+        if (!iframeElement) {
+            return;
+        }
+        var handler = iframeResizeListeners
+            ? iframeResizeListeners.get(iframeElement)
+            : iframeElement._kmResizeListener;
+        if (!handler) {
+            return;
+        }
+        var heightSourceWindow =
+            (iframeElement.ownerDocument && iframeElement.ownerDocument.defaultView) || window;
+        if (heightSourceWindow && typeof heightSourceWindow.removeEventListener === 'function') {
+            heightSourceWindow.removeEventListener('resize', handler);
+        }
+        if (iframeResizeListeners) {
+            iframeResizeListeners.delete(iframeElement);
+        } else {
+            delete iframeElement._kmResizeListener;
+        }
     };
 
     _this.isTrialPlan = function (pricingPackage) {
@@ -227,6 +267,66 @@ function KommunicateCommons() {
 
     _this.hide = function () {
         changeVisibility(Array.from(arguments), 'n-vis', 'vis');
+    };
+
+    _this.setDialogVisibility = function (dialog, shouldShow, focusFallbacks) {
+        if (!dialog) {
+            return;
+        }
+
+        var doc = dialog.ownerDocument || document;
+        if (shouldShow) {
+            dialog.style.visibility = 'visible';
+            dialog.style.display = 'block';
+            dialog.setAttribute('aria-hidden', 'false');
+            dialog.removeAttribute('inert');
+            if ('inert' in dialog) {
+                dialog.inert = false;
+            }
+            return;
+        }
+
+        var activeElement = doc.activeElement;
+        if (activeElement && dialog.contains(activeElement)) {
+            var focusTargets = Array.isArray(focusFallbacks)
+                ? focusFallbacks
+                : focusFallbacks
+                ? [focusFallbacks]
+                : [];
+            var focusTarget = null;
+
+            for (var i = 0; i < focusTargets.length; i++) {
+                var candidate = focusTargets[i];
+                if (typeof candidate === 'string') {
+                    focusTarget = doc.querySelector(candidate);
+                } else if (candidate && candidate.nodeType === 1) {
+                    focusTarget = candidate;
+                }
+                if (focusTarget) {
+                    break;
+                }
+            }
+
+            if (focusTarget && typeof focusTarget.focus === 'function') {
+                focusTarget.focus();
+            } else if (doc.body && typeof doc.body.focus === 'function') {
+                doc.body.focus();
+            }
+
+            if (doc.activeElement && dialog.contains(doc.activeElement)) {
+                if (doc.activeElement && typeof doc.activeElement.blur === 'function') {
+                    doc.activeElement.blur();
+                }
+            }
+        }
+
+        dialog.setAttribute('aria-hidden', 'true');
+        dialog.setAttribute('inert', '');
+        if ('inert' in dialog) {
+            dialog.inert = true;
+        }
+        dialog.style.visibility = 'hidden';
+        dialog.style.display = 'none';
     };
 
     _this.setMessagePxyRecipient = function (messagePxy) {

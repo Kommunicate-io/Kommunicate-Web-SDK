@@ -178,6 +178,49 @@
             return documentRef.querySelector('.km-bottom-tab[data-tab="conversations"]');
         }
 
+        function getBottomTabBar() {
+            if (!documentRef || typeof documentRef.querySelector !== 'function') {
+                return null;
+            }
+            return documentRef.querySelector('.km-bottom-tab-bar');
+        }
+
+        function isBottomTabVisible(tab) {
+            if (!tab || !tab.classList) {
+                return false;
+            }
+            if (tab.classList.contains('n-vis')) {
+                return false;
+            }
+            var ariaHidden = tab.getAttribute('aria-hidden');
+            if (ariaHidden === 'true') {
+                return false;
+            }
+            if (tab.style && tab.style.display === 'none') {
+                return false;
+            }
+            return true;
+        }
+
+        function updateBottomTabBarLayout() {
+            var bar = getBottomTabBar();
+            if (!bar || !bar.classList) {
+                return;
+            }
+            var tabs = bar.querySelectorAll('.km-bottom-tab');
+            if (!tabs || !tabs.length) {
+                return;
+            }
+            var visibleTabs = Array.prototype.slice.call(tabs).filter(isBottomTabVisible);
+            var visiblePrimaryTabs = visibleTabs.filter(function (tab) {
+                return !tab.classList.contains('km-bottom-tab--collapse');
+            });
+            var hasMinimize = visibleTabs.some(function (tab) {
+                return tab.classList.contains('km-bottom-tab--collapse');
+            });
+            bar.classList.toggle('km-bottom-tab-bar--has-minimize', hasMinimize);
+        }
+
         function handleCollapseAction() {
             if (!documentRef || typeof documentRef.getElementById !== 'function') {
                 return false;
@@ -202,13 +245,54 @@
                     conversationTab.classList.remove('active');
                     conversationTab.setAttribute('aria-selected', 'false');
                 }
+                updateBottomTabBarLayout();
             } else {
                 emptyTab.classList.remove('active');
                 emptyTab.setAttribute('aria-selected', 'false');
-                emptyTab.setAttribute('aria-hidden', 'true');
-                if (conversationTab) {
-                    conversationTab.setAttribute('aria-hidden', 'false');
+                var activeElement =
+                    documentRef && typeof documentRef.activeElement !== 'undefined'
+                        ? documentRef.activeElement
+                        : null;
+                var needsFocusShift =
+                    activeElement &&
+                    emptyTab.contains(activeElement) &&
+                    conversationTab &&
+                    typeof conversationTab.focus === 'function';
+
+                function hideTab() {
+                    emptyTab.setAttribute('aria-hidden', 'true');
+                    if (conversationTab) {
+                        conversationTab.setAttribute('aria-hidden', 'false');
+                    }
                 }
+
+                var focusRetryCount = 0;
+
+                function hideAfterFocusShift() {
+                    var currentActive =
+                        documentRef && typeof documentRef.activeElement !== 'undefined'
+                            ? documentRef.activeElement
+                            : null;
+                    if (currentActive && emptyTab.contains(currentActive)) {
+                        focusRetryCount++;
+                        if (focusRetryCount > 5) {
+                            hideTab();
+                            return;
+                        }
+                        setTimeout(hideAfterFocusShift, 10);
+                        return;
+                    }
+                    hideTab();
+                }
+
+                if (needsFocusShift) {
+                    // move focus before hiding the tab so assistive tech still sees it
+                    conversationTab.focus();
+                    setTimeout(hideAfterFocusShift, 0);
+                } else {
+                    hideTab();
+                }
+                updateBottomTabBarLayout();
             }
         }
 
@@ -416,7 +500,9 @@
             }
 
             if (resolvedTabType === 'whats-new') {
-                whatsNewManager.refresh();
+                if (whatsNewManager && typeof whatsNewManager.refresh === 'function') {
+                    whatsNewManager.refresh();
+                }
                 ui.toggleModernFaqBackButton(false);
                 topBarManager = getTopBarManager();
                 if (topBarManager) {
@@ -470,6 +556,7 @@
                 } else {
                     toggleBottomTabsDisplay(false);
                 }
+                updateBottomTabBarLayout();
             },
             handleChange: handleBottomTabChange,
             setActiveSubsection: updateActiveSubsectionClass,

@@ -25,8 +25,54 @@
 
     function applyOverrides(labels, overrides) {
         Object.keys(overrides || {}).forEach(function (path) {
+            labels[path] = overrides[path];
             assignNested(labels, path, overrides[path]);
         });
+    }
+
+    function buildLocale(base, overrides) {
+        if (!base) {
+            return null;
+        }
+        var cloned = deepClone(base);
+        if (overrides) {
+            applyOverrides(cloned, overrides);
+        }
+        return cloned;
+    }
+
+    function applyLocale(locale, overrides) {
+        var source = KM_LABELS_LANGUAGES[locale] || KM_LABELS_LANGUAGES.en;
+        var labels = buildLocale(source, overrides);
+        if (labels) {
+            KM_LABELS_LANGUAGES[locale] = labels;
+            return true;
+        }
+        return false;
+    }
+
+    function processPendingOverrides() {
+        Object.keys(pendingLocaleOverrides).forEach(function (locale) {
+            var overrides = pendingLocaleOverrides[locale];
+            if (applyLocale(locale, overrides)) {
+                delete pendingLocaleOverrides[locale];
+            }
+        });
+    }
+
+    var pendingLocaleOverrides = {};
+    function registerLocaleInternal(locale, overrides) {
+        if (!locale) {
+            return;
+        }
+        if (overrides === null || overrides === undefined) {
+            overrides = {};
+        }
+        if (applyLocale(locale, overrides)) {
+            delete pendingLocaleOverrides[locale];
+            return;
+        }
+        pendingLocaleOverrides[locale] = overrides;
     }
 
     var helpers = {
@@ -35,21 +81,15 @@
                 return;
             }
             KM_LABELS_LANGUAGES.en = deepClone(labels);
+            processPendingOverrides();
         },
         registerLanguage: function (locale, overrides) {
             if (!locale || locale === 'en') {
                 return;
             }
-            var base = KM_LABELS_LANGUAGES.en;
-            if (!base) {
-                return;
-            }
-            var labels = deepClone(base);
-            if (overrides) {
-                applyOverrides(labels, overrides);
-            }
-            KM_LABELS_LANGUAGES[locale] = labels;
+            registerLocaleInternal(locale, overrides);
         },
+        registerLocale: registerLocaleInternal,
     };
     globalScope.KMLabelTranslationHelpers = helpers;
 })(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : this);

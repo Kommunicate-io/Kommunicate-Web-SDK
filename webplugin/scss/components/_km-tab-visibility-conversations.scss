@@ -58,6 +58,9 @@
     #mck-tab-individual {
         @extend %km-hidden;
     }
+    #mck-sidebox-ft {
+        @extend %km-hidden;
+    }
 
     /* Hide start-new button when conversations empty state is visible */
     .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {
@@ -128,3 +131,14 @@
     $km-tab-conversation-selectors,
     '%km-layout-classic-hide-faq-back'
 );
+
+.layout-classic .km-single-threaded .mck-name-status-container.mck-box-title.mck-truncate {
+    margin-left: 16px;
+}
+
+.layout-classic
+    .km-single-threaded
+    #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual
+    .mck-back-btn-container {
+    display: none !important;
+}

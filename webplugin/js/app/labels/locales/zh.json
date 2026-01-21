@@ -191,5 +191,12 @@
   "voiceInterface.speak": "点击说话",
   "voiceInterface.chat": "点击聊天",
   "voiceInterface.back": "返回",
-  "voiceInterface.repeatLastMsg": "再次播放回复"
+  "voiceInterface.repeatLastMsg": "再次播放回复",
+  "form.label.to": "至:",
+  "form.label.userId": "用户 ID",
+  "form.error.required": "这是必填项",
+  "form.error.invalidValue": "您输入了无效值",
+  "location.coordinates.lat": "纬度:",
+  "location.coordinates.lon": "经度:",
+  "whatsnew.empty": "新功能即将推出。"
 }
