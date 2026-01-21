@@ -1,7 +1,7 @@
 class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
-    _SILENCE_DURATION = 3000; // 3 seconds of silence
+    _SILENCE_DURATION = 1800; // 1.8 seconds of silence
     _NOISE_THRESHOLD = 130; //  silence threshold of audio
 
     // animation scale for speaking
@@ -17,6 +17,7 @@ class MckVoice {
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
         this.messagesQueue = [];
+        this.textboxVoiceActiveClass = 'km-voice-active';
 
         // to check if audio is empty before sending to server
         this.hasSoundDetected = false;
@@ -322,6 +323,20 @@ class MckVoice {
 
             self.repeatLastMsgAudio(self.agentOrBotLastMsgAudio);
         });
+
+        const inlineActionBtn = document.getElementById('km-voice-inline-action-btn');
+        if (inlineActionBtn) {
+            inlineActionBtn.addEventListener('click', () => {
+                this.stopVoiceMode();
+                if (
+                    typeof KommunicateUI === 'object' &&
+                    KommunicateUI &&
+                    typeof KommunicateUI.activateTypingField === 'function'
+                ) {
+                    KommunicateUI.activateTypingField();
+                }
+            });
+        }
     }
 
     requestAudioRecording() {
@@ -353,6 +368,7 @@ class MckVoice {
 
     startRecording(stream) {
         this.addListeningAnimation();
+        this.setTextboxVoiceActive(true);
         this.stream = stream;
         this.audioChunks = [];
         this.isRecording = true;
@@ -674,6 +690,14 @@ class MckVoice {
         return this.inlineStatusContainer;
     }
 
+    setTextboxVoiceActive(isActive) {
+        const container = document.getElementById('mck-textbox-container');
+        if (!container) {
+            return;
+        }
+        container.classList.toggle(this.textboxVoiceActiveClass, Boolean(isActive));
+    }
+
     showInlineStatus() {
         const container = this.getInlineStatusContainer();
         if (container) {
@@ -863,6 +887,15 @@ class MckVoice {
             textElement.textContent = label;
         }
         button.setAttribute('aria-label', label);
+
+        const inlineActionText = document.getElementById('km-voice-inline-action-text');
+        if (inlineActionText) {
+            inlineActionText.textContent = label;
+        }
+        const inlineActionBtn = document.getElementById('km-voice-inline-action-btn');
+        if (inlineActionBtn) {
+            inlineActionBtn.setAttribute('aria-label', label);
+        }
     }
 
     setVoiceMuted(muted) {
@@ -932,7 +965,7 @@ class MckVoice {
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
                     if (silenceDuration >= this._SILENCE_DURATION) {
-                        console.debug('User silent for 3 seconds, stopping recording');
+                        console.debug('User silent for a few moments, stopping recording');
                         this.stopRecording();
                         this.addThinkingAnimation();
                     }
@@ -977,6 +1010,19 @@ class MckVoice {
         }
 
         this.audioElement = null;
+    }
+
+    stopVoiceMode() {
+        this.disableAutoListening();
+        this.stopRecording(true);
+        this.updateVoiceStatus('');
+        this.updateLiveTranscript('');
+        this.updateResponseText('');
+        this.hideInlineStatus();
+        this.voiceMuted = false;
+        this.updateMuteButton();
+        this.updateChatButtonText();
+        this.setTextboxVoiceActive(false);
     }
 
     showMic(appOptions) {
