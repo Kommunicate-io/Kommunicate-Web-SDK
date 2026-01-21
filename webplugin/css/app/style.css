@@ -4227,10 +4227,6 @@ div#mck-rated:before {
   outline-offset: 2px;
 }
 
-.mck-textbox-container.km-voice-active {
-  padding-left: 10px;
-}
-
 .mck-textbox-container.km-voice-active #mck-text-box {
   color: rgba(0, 0, 0, 0.2);
   caret-color: transparent;
