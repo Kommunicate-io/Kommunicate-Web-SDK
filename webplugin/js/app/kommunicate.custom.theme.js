@@ -47,6 +47,23 @@ function KmCustomTheme() {
         widgetTextColor: '--km-custom-widget-contrast-color',
     };
     var canvasColorParserContext;
+    function getResolvedLayout() {
+        return (
+            (typeof kommunicateCommons.getLayout === 'function' &&
+                kommunicateCommons.getLayout()) ||
+            KommunicateConstants.DESIGN_LAYOUTS.DEFAULT ||
+            'classic'
+        );
+    }
+
+    function isClassicLayout() {
+        var defaultLayout = KommunicateConstants.DESIGN_LAYOUTS.DEFAULT || 'classic';
+        return getResolvedLayout() === defaultLayout;
+    }
+
+    function hasThemeValue(value) {
+        return value != null && String(value).trim().length > 0;
+    }
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -206,6 +223,10 @@ function KmCustomTheme() {
                 });
             }
         });
+        if (isClassicLayout() && !hasThemeValue(overrides['--km-on-primary'])) {
+            console.log('overriding --km-on-primary for classic layout');
+            overrides['--km-on-primary'] = '#ffffff';
+        }
         return overrides;
     }
 
@@ -221,6 +242,7 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
+
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {
@@ -261,7 +283,6 @@ function KmCustomTheme() {
     }
 
     _this.changeColorTheme = function () {
-        // #0A090C
         var primaryColor =
             (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) || DEFAULT_BACKGROUND_COLOR;
         if (!primaryColor) {

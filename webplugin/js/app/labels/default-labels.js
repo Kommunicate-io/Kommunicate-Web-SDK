@@ -138,6 +138,16 @@ class KMLabel {
                 node.setAttribute('placeholder', value);
             });
         };
+        var setPlaceholderAndAriaLabelForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.setAttribute('placeholder', value);
+                node.setAttribute('aria-label', value);
+            });
+        };
 
         [
             { selector: '#mck-conversation-title', path: 'conversations.title' },
@@ -215,6 +225,10 @@ class KMLabel {
             'search.placeholder'
         );
         setPlaceholderForSelector('#mck-loc-address', 'location.placeholder');
+        setPlaceholderAndAriaLabelForSelector(
+            '#mck-feedback-comment',
+            'csat.rating.CONVERSATION_REVIEW_PLACEHOLDER'
+        );
         document.getElementById('mck-text-box').dataset.text = MCK_LABELS['input.message'];
         document.getElementById('mck-char-warning-text').innerHTML = MCK_LABELS['char.limit.warn'];
         document
@@ -260,6 +274,19 @@ class KMLabel {
             'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
             'km-empty-conversation-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
+            'km-local-file-system-warning-description': 'local.file.warning.description',
+            'km-local-file-system-warning-link': 'local.file.warning.learnMore',
+            'mck-offline-message-box': 'offline.message.default',
+            'km-text-req-error-label': 'form.error.required',
+            'mck-form-field-error-alert': 'form.error.invalidValue',
+            'km-no-results-found': 'faq.search.noResults',
+            'km-whats-new-empty-text': 'whatsnew.empty',
+            'km-csat-feedback-heading': 'csat.rating.FEEDBACK_HEADING',
+            'mck-group-title': 'group.title',
+            'km-label-to': 'form.label.to',
+            'km-label-user-id': 'form.label.userId',
+            'km-loc-lat-label': 'location.coordinates.lat',
+            'km-loc-lon-label': 'location.coordinates.lon',
         };
         Object.keys(htmlBindings).forEach(function (id) {
             setLabel(id, htmlBindings[id], 'html');

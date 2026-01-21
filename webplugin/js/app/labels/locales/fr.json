@@ -191,5 +191,12 @@
   "voiceInterface.speak": "Cliquez pour parler",
   "voiceInterface.chat": "Cliquez pour discuter",
   "voiceInterface.back": "Retour",
-  "voiceInterface.repeatLastMsg": "Réécouter la réponse"
+  "voiceInterface.repeatLastMsg": "Réécouter la réponse",
+  "form.label.to": "À:",
+  "form.label.userId": "ID utilisateur",
+  "form.error.required": "Ce champ est obligatoire",
+  "form.error.invalidValue": "Vous avez saisi une valeur non valide",
+  "location.coordinates.lat": "Latitude:",
+  "location.coordinates.lon": "Longitude:",
+  "whatsnew.empty": "Les nouveautés arrivent bientôt."
 }

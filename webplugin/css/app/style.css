@@ -45,7 +45,7 @@ $known-prefixes
  o - opera browsers
 **/
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-sidebox-ft, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
@@ -200,7 +200,7 @@ textarea {
 .km-modal input,
 .km-modal textarea,
 .km-modal select {
-  border-radius: 3px;
+  border-radius: 8px;
   border: 2px solid var(--km-modal-input-border);
 }
 .km-modal textarea {
@@ -226,25 +226,39 @@ textarea {
 .km-start-conversation {
   width: 100%;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 999px;
   background-color: #5f46f8;
   margin-top: 45px;
   color: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .km-start-conversation {
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
 }
 .km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited {
   color: #fbfbfb;
   text-decoration: none;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
   outline: none !important;
   border: none;
+}
+.km-start-conversation:focus-visible {
+  outline: 2px solid #7761f9;
+  outline-offset: 2px;
 }
 .km-start-conversation[disabled], .km-start-conversation[disabled]:focus, .km-start-conversation[disabled]:hover, .km-start-conversation[disabled]:active, .km-start-conversation[disabled]:visited {
   pointer-events: none;
   outline: none !important;
   border: none;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+}
+@media (prefers-reduced-motion: reduce) {
+  .km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited {
+    transform: none;
+  }
 }
 
 #km-form-chat-login {
@@ -312,6 +326,48 @@ textarea {
   background-color: #ffffff;
 }
 
+.phone-with-code {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding-left: 80px !important;
+}
+
+.iti__flag-container {
+  height: 100% !important;
+}
+
+.iti:has(#km-phone:focus:not(:placeholder-shown)) {
+  outline: 2px solid #7761f9 !important;
+}
+
+.iti--allow-dropdown {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #1c1c1c;
+  background-color: #fafafa;
+  background-image: none;
+  border: 2px solid var(--km-modal-input-border);
+  border-radius: 8px;
+}
+.iti--allow-dropdown::placeholder {
+  color: #8f8f8f;
+}
+.iti--allow-dropdown:focus {
+  outline: none;
+  background-color: #ffffff;
+}
+
+.iti__search-input,
+.iti__country {
+  height: 38px !important;
+  max-height: 40px !important;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -333,8 +389,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-input-width {
-  width: 100%;
-  max-width: 320px;
+  width: 96%;
 }
 
 @media (max-width: 600px) {
@@ -1573,10 +1628,11 @@ input[type=number]::-webkit-outer-spin-button {
   box-sizing: border-box;
   background-clip: padding-box;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+  transition: transform 200ms ease, box-shadow 200ms ease;
 }
 .km-conversations-empty__cta:hover, .km-empty-conversation-card__cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(95, 70, 248, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 .km-conversations-empty__cta:focus-visible, .km-empty-conversation-card__cta:focus-visible {
   outline: 2px solid #7761f9;
@@ -2154,6 +2210,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 6px 8px;
   border: 2px solid #dcdcdc;
   width: 91%;
+  border-radius: 8px;
   margin-bottom: 3px;
 }
 .mck-form-text-wrapper input:focus,
@@ -2206,6 +2263,12 @@ input[type=number]::-webkit-outer-spin-button {
   color: #6e6e6e;
   letter-spacing: 0.36px;
   margin-left: 0 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#mck-text-box {
+  word-break: normal;
 }
 
 .mck-form-error-container {
@@ -3310,6 +3373,7 @@ div#mck-rated:before {
   max-width: 98%;
   width: 100%;
   flex-direction: column;
+  padding-bottom: 10px;
 }
 .mck-feedback-text-wrapper textarea {
   background: white;
@@ -3384,6 +3448,45 @@ div#mck-rated:before {
   color: var(--km-font-meta-color);
 }
 
+.mck-contact-list .mck-cont-msg-date {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+@supports (gap: 6px) {
+  .mck-contact-list .mck-cont-msg-date {
+    gap: 6px;
+  }
+}
+@supports not (gap: 6px) {
+  .mck-contact-list .mck-cont-msg-date > * {
+    margin: 6px;
+  }
+}
+
+.mck-box .mck-contact-list .mck-row {
+  display: flex;
+  align-items: center;
+}
+
+.mck-box .mck-contact-list .mck-conversation-topic,
+.mck-box .mck-contact-list .mck-cont-name,
+.mck-box .mck-contact-list .mck-cont-msg-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mck-box .mck-contact-list .mck-cont-msg-date {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.mck-contact-list .blk-lg-4 {
+  max-width: none;
+  width: auto;
+}
+
 .km-faqsearch-icon,
 .km-faqsearch-clear {
   border: none;
@@ -3433,6 +3536,10 @@ div#mck-rated:before {
 }
 .mck-box-top .blk-lg-2 {
   width: 20px;
+}
+
+.mck-title {
+  padding: 0 10px;
 }
 
 .mck-sidebox .mck-tab-title,
@@ -3488,6 +3595,7 @@ div#mck-rated:before {
 }
 
 #km-talk-to-human svg {
+  color: var(--km-on-primary, #ffffff);
   fill: currentColor;
 }
 
@@ -3503,6 +3611,41 @@ div#mck-rated:before {
 .mck-search-tab-box,
 .mck-search-box-top {
   background-color: rgba(241, 241, 241, 0.6);
+}
+
+.km-faq-and-close-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container .km-kb-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container .km-widget-options-button {
+  margin-right: 0;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.km-faq-and-close-btn-container .mck-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.km-faq-and-close-btn-container #km-chat-widget-close-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
 }
 
 .mck-gm-search-box .mck-box-top .blk-lg-3 {
@@ -3826,8 +3969,10 @@ div#mck-rated:before {
   padding-right: 16px;
   float: right;
 }
-[dir=rtl] .mck-contact-list .mck-cont-msg-date {
+[dir=rtl] .mck-box .mck-contact-list .mck-cont-msg-date {
   padding-right: 1rem;
+  margin-right: auto;
+  margin-left: 0;
 }
 [dir=rtl] .mck-box .mck-contact-list .mck-row,
 [dir=rtl] .mck-msg-preview .mck-row {
@@ -4205,6 +4350,8 @@ div#mck-rated:before {
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 10px 30px rgba(4, 68, 77, 0.1);
   border: 1px solid rgba(15, 23, 42, 0.04);
+  --km-minimize-width: 52px;
+  --km-minimize-gap: 10px;
 }
 
 .km-bottom-tab {
@@ -4237,7 +4384,7 @@ div#mck-rated:before {
 }
 
 .km-bottom-tab--collapse {
-  flex: 0 0 74px;
+  flex: 0 0 var(--km-minimize-width);
   padding: 8px 6px;
   align-self: stretch;
   border-left: 1px solid rgba(4, 68, 77, 0.08);
@@ -4260,7 +4407,7 @@ div#mck-rated:before {
     gap: 3px;
   }
   .km-bottom-tab--collapse {
-    flex: 0 0 66px;
+    flex: 0 0 var(--km-minimize-width);
     padding: 6px 4px;
   }
   .km-bottom-tab-icon {
@@ -4304,9 +4451,40 @@ div#mck-rated:before {
     gap: 4px;
   }
   .km-bottom-tab--collapse {
-    flex: 0 0 60px;
+    flex: 0 0 var(--km-minimize-width);
   }
 }
+.km-bottom-tab-bar--has-minimize {
+  justify-content: flex-start;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab:last-of-type {
+  padding-right: 6px;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse {
+  margin-left: auto;
+  border-left: 1px solid rgba(4, 68, 77, 0.08);
+  padding: 6px;
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse .km-bottom-tab-icon {
+  width: 30px;
+  height: 30px;
+  background: rgba(4, 68, 77, 0.06);
+}
+
+.km-bottom-tab-bar--has-minimize .km-bottom-tab--collapse .km-bottom-tab-label {
+  display: inline;
+  font-size: 11px;
+  letter-spacing: 0.1px;
+}
+
 .km-bottom-tab-icon {
   width: 34px;
   height: 34px;
@@ -4569,6 +4747,14 @@ div#mck-rated:before {
   display: block !important;
 }
 
+.layout-classic .km-single-threaded .mck-name-status-container.mck-box-title.mck-truncate {
+  margin-left: 16px;
+}
+
+.layout-classic .km-single-threaded #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
+  display: none !important;
+}
+
 #mck-sidebox-content.active-tab-faqs #faq-common {
   display: flex !important;
 }
@@ -4700,11 +4886,12 @@ div#mck-rated:before {
 .layout-modern #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
   display: none !important;
 }
-.layout-modern #mck-sidebox-content .mck-running-on {
-  display: none !important;
-}
-.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on, .layout-modern #mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
+.layout-modern #mck-sidebox-content.km-poweredby-enabled.active-tab-conversations.active-subsection-conversation-individual .mck-running-on,
+.layout-modern #mck-sidebox-content.km-poweredby-enabled.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
   display: block !important;
+}
+.layout-modern #mck-sidebox-content.km-poweredby-enabled:not(.active-tab-conversations.active-subsection-conversation-individual):not(.is-tab-conversations.is-subsection-conversation-individual) .mck-running-on {
+  display: none !important;
 }
 .layout-modern #km-faq {
   display: none !important;

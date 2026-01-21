@@ -16,14 +16,21 @@
                     popupWidget: true,
                     layout: 'modern',
                     automaticChatOpenOnNavigation: true,
+                    onInit: function () {
+                        console.log('Kommunicate widget initialized');
+                        // var defaultSettings = {
+                        //     "defaultAgentIds": ["okies-kijaq"],
+                        //     "defaultBotIds": ["okies-kijaq"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+                        //     "defaultAssignee": "okies-kijaq", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+                        //     "skipRouting": true,
+                        // };
+                        // Kommunicate.updateSettings(defaultSettings);
+                        // window.Kommunicate.startConversation();
+                    },
                     // appSettings: {
                     //     chatWidget: {
+                    //         popup: false,
                     //         blockUrlPreview: true,
-                    //     },
-                    // },
-                    // appSettings: {
-                    //     chatWidget: {
-                    //         popup: false
                     //     },
                     //     chatPopupMessage: [
                     //         {
@@ -33,6 +40,7 @@
                     //     ],
                     // },
                     widgetSettings: {
+                        preCreateUser: false,
                         // popup: false,
                         // primaryColor: '#fff000',
                         // Provide a `theme` map to override exposed CSS vars.
@@ -62,20 +70,34 @@
                             linkText: 'Read the case study',
                         },
                     ],
+                    // customLabelLocales: {
+                    //     en: {
+                    //         'conversations.title': 'ਗੱਲਬਾਤ',
+                    //         'faq': 'ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ',
+                    //         'start.new': 'ਨਵੀਂ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ',
+                    //     },
+                    // },
 
-                    preLeadCollection: [
-                        {
-                            field: 'Name', // Name of the field you want to add
-                            required: true, // Set 'true' to make it a mandatory field
-                            placeholder: 'Enter your name', // add whatever text you want to show in the placeholder
-                        },
-                        {
-                            field: 'Email',
-                            type: 'email',
-                            required: true,
-                            placeholder: 'Enter your email',
-                        },
-                    ],
+                    // preLeadCollection: [
+                    //     {
+                    //         field: 'Name', // Name of the field you want to add
+                    //         required: true, // Set 'true' to make it a mandatory field
+                    //         placeholder: 'Enter your name', // add whatever text you want to show in the placeholder
+                    //     },
+                    //     {
+                    //         field: 'Email',
+                    //         type: 'email',
+                    //         required: true,
+                    //         placeholder: 'Enter your email',
+                    //     },
+                    //     {
+                    //         field: 'Phone',
+                    //         type: 'phone',
+                    //         required: true,
+                    //         enableCountryCode: true,
+                    //         placeholder: 'Enter your phone number',
+                    //     },
+                    // ],
                 };
                 var s = document.createElement('script');
                 s.type = 'text/javascript';
@@ -89,5 +111,14 @@
                 m._globals = kommunicateSettings;
             })(document, window.kommunicate || {});
         </script>
+        <!-- 
+        <iframe
+            style="border: none;"
+            height="600px"
+            width="400px"
+            src="https://widget-test.kommunicate.io/chat?appId=kommunicate-support"
+            allow="microphone; geolocation;"
+        >
+        </iframe> -->
     </body>
 </html>
