@@ -1547,18 +1547,16 @@ KommunicateUI = {
                 var rect = el.getBoundingClientRect();
                 if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) {
                     var textEl = el.querySelector('.chat-popup-widget-text');
-                    var textLength = textEl ? textEl.textContent.trim().length : 0;
-                    console.log('popup text length', textLength);
-                    var width;
-                    if (textLength <= 9) {
-                        width = 140;
-                    } else if (textLength <= 18) {
-                        width = 230;
-                    } else if (textLength <= 27) {
-                        width = 300;
-                    } else {
-                        width = 360;
+                    var width = el.getBoundingClientRect().width;
+
+                    if (textEl) {
+                        var rect = textEl.getBoundingClientRect();
+                        var style = window.getComputedStyle(textEl);
+                        var paddingLeft = parseFloat(style.paddingLeft) || 0;
+                        var paddingRight = parseFloat(style.paddingRight) || 0;
+                        width = rect.width + paddingLeft + paddingRight;
                     }
+
                     var closeBtnAllowance = 70;
                     window.parent.postMessage(
                         { type: 'km_popup_resize', width: Math.ceil(width + closeBtnAllowance) },
