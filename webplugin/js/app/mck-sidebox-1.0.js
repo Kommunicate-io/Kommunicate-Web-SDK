@@ -679,18 +679,17 @@ const firstVisibleMsg = {
             }
             popupChatTemplateScheduled = true;
             var previousSkipFlag =
-                KommunicateUI && typeof KommunicateUI.skipPopupChatTemplate !== 'undefined'
+                typeof KommunicateUI.skipPopupChatTemplate !== 'undefined'
                     ? KommunicateUI.skipPopupChatTemplate
                     : false;
-            if (KommunicateUI) {
-                KommunicateUI.skipPopupChatTemplate = false;
-            }
-            KommunicateUI.displayPopupChatTemplate(
-                MCK_POPUP_WIDGET_CONTENT,
-                WIDGET_SETTINGS,
-                mckChatPopupNotificationTone
-            );
-            if (KommunicateUI) {
+            KommunicateUI.skipPopupChatTemplate = false;
+            try {
+                KommunicateUI.displayPopupChatTemplate(
+                    MCK_POPUP_WIDGET_CONTENT,
+                    WIDGET_SETTINGS,
+                    mckChatPopupNotificationTone
+                );
+            } finally {
                 KommunicateUI.skipPopupChatTemplate = previousSkipFlag;
             }
         }
@@ -2843,6 +2842,9 @@ const firstVisibleMsg = {
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
                 var showPoweredBy = kommunicateCommons.showPoweredBy(data);
+                var sideboxContent = document.getElementById('mck-sidebox-content');
+                sideboxContent &&
+                    sideboxContent.classList.toggle('km-poweredby-enabled', !!showPoweredBy);
                 if (showPoweredBy) {
                     var kommunicateIframe = parent.document.getElementById(
                         'kommunicate-widget-iframe'

@@ -45,7 +45,7 @@ $known-prefixes
  o - opera browsers
 **/
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-name-status-container,
-.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
+.layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-sidebox-ft, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
@@ -2265,6 +2265,10 @@ input[type=number]::-webkit-outer-spin-button {
   margin-left: 0 !important;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+#mck-text-box {
+  word-break: normal;
 }
 
 .mck-form-error-container {
@@ -4816,11 +4820,12 @@ div#mck-rated:before {
 .layout-modern #mck-sidebox-content.active-tab-faqs .km-kb-container #km-faq {
   display: none !important;
 }
-.layout-modern #mck-sidebox-content .mck-running-on {
-  display: none !important;
-}
-.layout-modern #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-running-on, .layout-modern #mck-sidebox-content.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
+.layout-modern #mck-sidebox-content.km-poweredby-enabled.active-tab-conversations.active-subsection-conversation-individual .mck-running-on,
+.layout-modern #mck-sidebox-content.km-poweredby-enabled.is-tab-conversations.is-subsection-conversation-individual .mck-running-on {
   display: block !important;
+}
+.layout-modern #mck-sidebox-content.km-poweredby-enabled:not(.active-tab-conversations.active-subsection-conversation-individual):not(.is-tab-conversations.is-subsection-conversation-individual) .mck-running-on {
+  display: none !important;
 }
 .layout-modern #km-faq {
   display: none !important;

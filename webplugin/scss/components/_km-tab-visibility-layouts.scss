@@ -29,16 +29,16 @@
         display: none !important;
     }
 
-    #mck-sidebox-content {
+    #mck-sidebox-content.km-poweredby-enabled.active-tab-conversations.active-subsection-conversation-individual,
+    #mck-sidebox-content.km-poweredby-enabled.is-tab-conversations.is-subsection-conversation-individual {
+        .mck-running-on {
+            display: block !important;
+        }
+    }
+
+    #mck-sidebox-content.km-poweredby-enabled:not(.active-tab-conversations.active-subsection-conversation-individual):not(.is-tab-conversations.is-subsection-conversation-individual) {
         .mck-running-on {
             display: none !important;
-        }
-
-        &.active-tab-conversations.active-subsection-conversation-individual,
-        &.is-tab-conversations.is-subsection-conversation-individual {
-            .mck-running-on {
-                display: block !important;
-            }
         }
     }
     #km-faq {
