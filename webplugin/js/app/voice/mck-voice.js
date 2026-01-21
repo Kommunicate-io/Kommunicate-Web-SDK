@@ -1,8 +1,8 @@
 class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
-    _SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
-    _SILENCE_DURATION = 1800; // 1.8 seconds of silence
-    _NOISE_THRESHOLD = 130; //  silence threshold of audio
+    _RMS_THRESHOLD = 0.035;
+    _ZERO_CROSSING_THRESHOLD = 0.08;
+    _SILENCE_DURATION = 1600; // 1.6 seconds of silence
 
     // animation scale for speaking
     _MIN_SPEAK_ANIMATION_SCALE = 0.7;
@@ -34,6 +34,8 @@ class MckVoice {
         this.autoListenTimeout = null;
         this.voiceMuted = false;
         this.inlineStatusContainer = null;
+        this.speechDetected = false;
+        this.isInSilence = false;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -377,6 +379,8 @@ class MckVoice {
         this.silenceStart = null;
         this.agentOrBotLastMsgAudio = null;
         this.agentOrBotLastMsg = '';
+        this.speechDetected = false;
+        this.isInSilence = false;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -433,7 +437,6 @@ class MckVoice {
                         message: userMsg,
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
-                    this.scheduleAutoListen();
                 }
             } catch (error) {
                 console.error(error);
@@ -459,6 +462,7 @@ class MckVoice {
                     this.silenceTimer = null;
                 }
                 this.updateVoiceStatus('');
+                this.scheduleAutoListen();
             }
         };
 
@@ -935,32 +939,44 @@ class MckVoice {
         scriptProcessor.connect(audioContext.destination);
 
         const silenceDetection = () => {
-            const array = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(array);
-            let values = 0;
+            const timeData = new Float32Array(analyser.fftSize);
+            analyser.getFloatTimeDomainData(timeData);
 
-            const length = array.length;
-            for (let i = 0; i < length; i++) {
-                values += array[i];
+            let sumSquares = 0;
+            let zeroCrossings = 0;
+            let prevSign = timeData.length > 0 ? timeData[0] >= 0 : true;
+            for (let i = 0; i < timeData.length; i++) {
+                const sample = timeData[i];
+                sumSquares += sample * sample;
+                if (i > 0) {
+                    const sign = sample >= 0;
+                    if (sign !== prevSign) {
+                        zeroCrossings++;
+                        prevSign = sign;
+                    }
+                }
             }
 
-            const average = values / length;
-            const volume = average / 255; // Convert to a value between 0 and 1
+            const rms = Math.sqrt(sumSquares / Math.max(timeData.length, 1));
+            const zeroCrossRate = zeroCrossings / Math.max(timeData.length - 1, 1);
+
             this.totalSamples++;
 
-            // Check if the current volume is below the silence threshold
+            const isSpeech =
+                rms > this._RMS_THRESHOLD || zeroCrossRate > this._ZERO_CROSSING_THRESHOLD;
 
-            if (volume > this._SILENCE_THRESHOLD) {
+            if (isSpeech) {
                 this.hasSoundDetected = true;
                 this.soundSamples++;
                 this.silenceStart = null;
+                this.speechDetected = true;
+                this.isInSilence = false;
+            } else if (!this.speechDetected) {
+                return;
             } else {
-                if (!this.hasSoundDetected) {
-                    // Ignore silence before we ever heard speech so we don't stop too early.
-                    return;
-                }
                 if (this.silenceStart === null) {
                     this.silenceStart = Date.now();
+                    this.isInSilence = true;
                     console.debug('Silence detected, starting timer');
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
@@ -1023,6 +1039,10 @@ class MckVoice {
         this.updateMuteButton();
         this.updateChatButtonText();
         this.setTextboxVoiceActive(false);
+        this.setVoiceButtonState('idle');
+        this.hideVoiceStopButton();
+        this.speechDetected = false;
+        this.isInSilence = false;
     }
 
     showMic(appOptions) {
