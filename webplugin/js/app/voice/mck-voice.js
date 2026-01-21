@@ -1,8 +1,9 @@
 class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
-    _RMS_THRESHOLD = 0.035;
-    _ZERO_CROSSING_THRESHOLD = 0.08;
+    _RMS_THRESHOLD = 0.03;
+    _ZERO_CROSSING_THRESHOLD = 0.06;
     _SILENCE_DURATION = 1600; // 1.6 seconds of silence
+    _MIN_SPEECH_DURATION = 400; // require at least 400ms of speech before silencing
 
     // animation scale for speaking
     _MIN_SPEAK_ANIMATION_SCALE = 0.7;
@@ -36,6 +37,7 @@ class MckVoice {
         this.inlineStatusContainer = null;
         this.speechDetected = false;
         this.isInSilence = false;
+        this.firstSpeechTimestamp = 0;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -381,6 +383,7 @@ class MckVoice {
         this.agentOrBotLastMsg = '';
         this.speechDetected = false;
         this.isInSilence = false;
+        this.firstSpeechTimestamp = 0;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -437,6 +440,8 @@ class MckVoice {
                         message: userMsg,
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
+                    this.updateVoiceStatus('');
+                    this.hideInlineStatus();
                 }
             } catch (error) {
                 console.error(error);
@@ -971,10 +976,19 @@ class MckVoice {
                 this.silenceStart = null;
                 this.speechDetected = true;
                 this.isInSilence = false;
+                if (!this.firstSpeechTimestamp) {
+                    this.firstSpeechTimestamp = Date.now();
+                }
             } else if (!this.speechDetected) {
                 return;
             } else {
                 if (this.silenceStart === null) {
+                    if (
+                        this.firstSpeechTimestamp &&
+                        Date.now() - this.firstSpeechTimestamp < this._MIN_SPEECH_DURATION
+                    ) {
+                        return;
+                    }
                     this.silenceStart = Date.now();
                     this.isInSilence = true;
                     console.debug('Silence detected, starting timer');
@@ -1043,6 +1057,7 @@ class MckVoice {
         this.hideVoiceStopButton();
         this.speechDetected = false;
         this.isInSilence = false;
+        this.firstSpeechTimestamp = 0;
     }
 
     showMic(appOptions) {
