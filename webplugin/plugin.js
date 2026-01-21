@@ -73,13 +73,13 @@ var kmCustomIframe =
     'width:100vw;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
-    '   width: 455px;' +
+    '   width: 460px;' +
     '   min-height: 80px;' +
-    '   height: auto;' +
+    '   height: 90px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
-    '   width: 380px;' +
-    '   height: 250px;' +
+    '   width: 421px;' +
+    '   height: 150px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
     '   width: 370px;' +
@@ -108,6 +108,33 @@ var kmCustomIframe =
     '.kommunicate-hide-custom-iframe { ' +
     '   display: none!important' +
     '} \n';
+
+if (!window.__kmPopupResizeListener) {
+    window.__kmPopupResizeListener = true;
+    window.addEventListener('message', function (event) {
+        var data = event && event.data ? event.data : null;
+        if (!data || data.type !== 'km_popup_resize') {
+            return;
+        }
+        var kommunicateIframe = document.getElementById(kmCustomElements.iframe.id);
+        if (!kommunicateIframe) {
+            return;
+        }
+        var isMobileViewport =
+            typeof window !== 'undefined' &&
+            window.matchMedia &&
+            window.matchMedia('(max-width: 600px)').matches;
+        if (typeof data.width === 'number') {
+            if (isMobileViewport) {
+                return;
+            }
+            kommunicateIframe.style.width = data.width + 'px';
+        }
+        if (typeof data.height === 'number') {
+            kommunicateIframe.style.height = data.height + 'px';
+        }
+    });
+}
 
 if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
     isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
