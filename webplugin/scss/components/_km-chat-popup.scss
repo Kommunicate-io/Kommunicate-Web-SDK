@@ -106,6 +106,9 @@ $popupClass: '.chat-popup-widget-container';
         & .chat-popup-widget-text {
             padding: 20px 60px 20px 20px;
         }
+        & .chat-popup-widget-text-wrapper {
+            position: relative;
+        }
         & .chat-popup-widget-close-btn {
             background: transparent;
         }

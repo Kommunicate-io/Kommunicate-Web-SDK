@@ -568,6 +568,9 @@ input[type=number]::-webkit-outer-spin-button {
 .chat-popup-widget-container--horizontal .chat-popup-widget-text {
   padding: 20px 60px 20px 20px;
 }
+.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
+  position: relative;
+}
 .chat-popup-widget-container--horizontal .chat-popup-widget-close-btn {
   background: transparent;
 }

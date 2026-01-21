@@ -117,9 +117,12 @@ if (!window.__kmPopupResizeListener) {
             return;
         }
         var kommunicateIframe = document.getElementById(kmCustomElements.iframe.id);
-        if (!kommunicateIframe) {
+        if (!kommunicateIframe || event.source !== kommunicateIframe.contentWindow) {
             return;
         }
+        var clamp = function (value, min, max) {
+            return Math.min(max, Math.max(min, value));
+        };
         var isMobileViewport =
             typeof window !== 'undefined' &&
             window.matchMedia &&
@@ -128,10 +131,10 @@ if (!window.__kmPopupResizeListener) {
             if (isMobileViewport) {
                 return;
             }
-            kommunicateIframe.style.width = data.width + 'px';
+            kommunicateIframe.style.width = clamp(data.width, 220, 460) + 'px';
         }
         if (typeof data.height === 'number') {
-            kommunicateIframe.style.height = data.height + 'px';
+            kommunicateIframe.style.height = clamp(data.height, 80, 700) + 'px';
         }
     });
 }
