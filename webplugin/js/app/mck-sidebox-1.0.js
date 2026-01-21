@@ -2119,15 +2119,14 @@ const firstVisibleMsg = {
                 AUTH_CODE = '';
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
+                var isUserIdForLeadCollection = kmLocalStorage.getLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                );
+                var isUserIdForLeadCollectionFlag =
+                    isUserIdForLeadCollection === true || isUserIdForLeadCollection === 'true';
                 if (
-                    kmLocalStorage.getLocalStorage(
-                        KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                    ) &&
-                    !JSON.parse(
-                        kmLocalStorage.getLocalStorage(
-                            KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                        )
-                    ) &&
+                    isUserIdForLeadCollection &&
+                    !isUserIdForLeadCollectionFlag &&
                     KM_ASK_USER_DETAILS &&
                     KM_ASK_USER_DETAILS.length !== 0
                 ) {
@@ -2146,14 +2145,7 @@ const firstVisibleMsg = {
                             kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                             ) &&
-                            kmLocalStorage.getLocalStorage(
-                                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                            ) &&
-                            JSON.parse(
-                                kmLocalStorage.getLocalStorage(
-                                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                                )
-                            )
+                            isUserIdForLeadCollectionFlag
                         ) {
                             var userId = kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
