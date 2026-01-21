@@ -2120,11 +2120,11 @@ const firstVisibleMsg = {
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
                 if (
-                    kmCookieStorage.getCookie(
+                    kmLocalStorage.getLocalStorage(
                         KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
                     ) &&
                     !JSON.parse(
-                        kmCookieStorage.getCookie(
+                        kmLocalStorage.getLocalStorage(
                             KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
                         )
                     ) &&
@@ -2143,19 +2143,19 @@ const firstVisibleMsg = {
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
                         if (
-                            kmCookieStorage.getCookie(
+                            kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                             ) &&
-                            kmCookieStorage.getCookie(
+                            kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
                             ) &&
                             JSON.parse(
-                                kmCookieStorage.getCookie(
+                                kmLocalStorage.getLocalStorage(
                                     KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
                                 )
                             )
                         ) {
-                            var userId = kmCookieStorage.getCookie(
+                            var userId = kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                             );
                             var options = {
@@ -2374,7 +2374,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             // if password invalid then clear cookies
-                            kmCookieStorage.deleteUserCookiesOnLogout();
+                            kmLocalStorage.deleteUserCookiesOnLogout();
 
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
@@ -8006,7 +8006,7 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
-                var userId = kmCookieStorage.getCookie(
+                var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
                 (kmLocalStorage.getItemFromLocalStorage('mckActiveConversationInfo', {

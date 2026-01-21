@@ -11,7 +11,6 @@ exports.version = version;
 exports.KM_RELEASE_BRANCH = resolveBranch();
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
-    path.resolve(__dirname, 'js/app/storage/cookie-service.js'),
     path.resolve(__dirname, 'js/app/storage/session-service.js'),
     path.resolve(__dirname, 'js/app/storage/local-service.js'),
 ];

@@ -291,7 +291,6 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            // kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
             kmLocalStorage.getLocalStorage(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         var agentsNameStr = agentList.join('_');
 
