@@ -1458,14 +1458,12 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                );
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                );
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -2213,15 +2211,14 @@ const firstVisibleMsg = {
                 AUTH_CODE = '';
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
+                var isUserIdForLeadCollection = kmLocalStorage.getLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                );
+                var isUserIdForLeadCollectionFlag =
+                    isUserIdForLeadCollection === true || isUserIdForLeadCollection === 'true';
                 if (
-                    kmCookieStorage.getCookie(
-                        KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                    ) &&
-                    !JSON.parse(
-                        kmCookieStorage.getCookie(
-                            KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                        )
-                    ) &&
+                    isUserIdForLeadCollection &&
+                    !isUserIdForLeadCollectionFlag &&
                     KM_ASK_USER_DETAILS &&
                     KM_ASK_USER_DETAILS.length !== 0
                 ) {
@@ -2236,6 +2233,27 @@ const firstVisibleMsg = {
                         KM_PRELEAD_COLLECTION.length !== 0
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
+                        if (
+                            kmLocalStorage.getLocalStorage(
+                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                            ) &&
+                            isUserIdForLeadCollectionFlag
+                        ) {
+                            var userId = kmLocalStorage.getLocalStorage(
+                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                            );
+                            var options = {
+                                userId: userId,
+                                applicationId: MCK_APP_ID,
+                                baseUrl: MCK_BASE_URL,
+                                locShare: IS_MCK_LOCSHARE,
+                                googleApiKey: MCK_GOOGLE_API_KEY,
+                                chatNotificationMailSent: true,
+                            };
+                            PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                            mckInit.initialize(options, loadChat);
+                            return false;
+                        }
                         var kmAnonymousChatLauncher = document.getElementById(
                             'km-anonymous-chat-launcher'
                         );
@@ -2472,7 +2490,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             // if password invalid then clear cookies
-                            kmCookieStorage.deleteUserCookiesOnLogout();
+                            kmLocalStorage.deleteUserCookiesOnLogout();
 
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
@@ -5241,17 +5259,16 @@ const firstVisibleMsg = {
 
                         userId = userIdForCookie;
 
-                        kmCookieStorage.setCookie({
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                             value: userIdForCookie,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
-                        kmCookieStorage.setCookie({
+
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                             value: true,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
@@ -8191,7 +8208,7 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
-                var userId = kmCookieStorage.getCookie(
+                var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
                 (kmLocalStorage.getItemFromLocalStorage('mckActiveConversationInfo', {
