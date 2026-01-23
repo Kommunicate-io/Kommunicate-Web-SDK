@@ -9,7 +9,7 @@ $popupClass: '.chat-popup-widget-container';
     min-height: 70px;
     font-family: $font-family-primary;
     width: 100%;
-    max-width: 320px;
+    max-width: 440px;
     cursor: pointer;
 
     /* Reveal close button on hover and when any child receives focus */
@@ -19,7 +19,7 @@ $popupClass: '.chat-popup-widget-container';
     }
 
     & .chat-popup-widget-text-wrapper {
-        position: relative;
+        position: static;
         word-break: break-word;
         min-height: 70px;
         @include flexMixin(null, flex-start);
@@ -85,9 +85,9 @@ $popupClass: '.chat-popup-widget-container';
 
     &--horizontal {
         border-radius: 40px !important;
+        width: calc(100% - 40px) !important ;
         bottom: 5px;
-        right: 0;
-        max-width: 360px;
+        right: 0px;
 
         &.km-animate {
             opacity: 0;
@@ -104,16 +104,22 @@ $popupClass: '.chat-popup-widget-container';
             right: 60px;
         }
         & .chat-popup-widget-text {
-            padding: 20px 64px 20px 20px;
+            padding: 20px 60px 20px 20px;
+        }
+        & .chat-popup-widget-text-wrapper {
+            position: relative;
+        }
+        & .chat-popup-widget-close-btn {
+            background: transparent;
         }
     }
 
     &--vertical {
         border-radius: $popup-border-radius;
-        bottom: 80px;
-        right: 10px;
+        bottom: 8px;
+        right: 75px;
         min-height: 75px;
-        max-width: 300px;
+        width: calc(100% - 90px);
 
         &.km-animate {
             @include prefix(transform, translateY(12px) scale(0.98), webkit moz o);
@@ -126,7 +132,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         &.align-left {
-            left: 10px;
+            left: 20px;
 
             & #chat-popup-actionable-btn-container {
                 right: unset;
@@ -137,9 +143,22 @@ $popupClass: '.chat-popup-widget-container';
             min-height: 75px;
         }
         & .chat-popup-widget-close-btn-container {
-            top: -10px;
-            left: -12px;
+            top: -5px;
+            left: -5px;
+            right: auto;
             transform: none;
+            width: 18px;
+            height: 18px;
+            border: none;
+            box-shadow: none;
+            background: transparent;
+        }
+        & .chat-popup-widget-close-btn {
+            background: transparent;
+        }
+        & .chat-popup-widget-close-btn svg {
+            width: 12px;
+            height: 12px;
         }
     }
 
@@ -388,7 +407,7 @@ $popupClass: '.chat-popup-widget-container';
         width: calc(100% - 80px);
 
         &--horizontal {
-            padding-left: 28px;
+            padding-left: 10px;
         }
         &--actionable {
             width: calc(100% - 50px);
@@ -413,7 +432,7 @@ $popupClass: '.chat-popup-widget-container';
     #{$popupClass} {
         &--horizontal {
             width: 61% !important;
-            padding-left: 28px;
+            padding-left: 10px;
         }
 
         .chat-popup-widget-close-btn-container {
@@ -437,7 +456,7 @@ $popupClass: '.chat-popup-widget-container';
     #{$popupClass} {
         &--horizontal {
             width: 65% !important;
-            padding-left: 28px;
+            padding-left: 10px;
         }
 
         .chat-popup-widget-close-btn-container {
@@ -467,10 +486,10 @@ $popupClass: '.chat-popup-widget-container';
 @media only screen and (max-device-width: 320px) {
     .chat-popup-widget-container--horizontal {
         width: 61% !important;
-        padding-left: 28px;
+        padding-left: 10px;
 
         &.km-animate .chat-popup-widget-text {
-            margin: 7px 7px 7px 15px;
+            margin: 7px 7px 7px 7px;
         }
     }
 
