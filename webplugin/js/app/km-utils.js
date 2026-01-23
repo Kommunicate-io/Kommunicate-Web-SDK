@@ -380,48 +380,15 @@ KommunicateUtils = {
         settings = settings ? settings : null;
         return key && settings ? settings[key] : settings ? settings : '';
     },
-    findCookieDomain: function (domain) {
-        //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
-        var i = 0;
-        var parts = domain.split('.');
-        var value = 'km_' + new Date().getTime();
-        //check value is added in cookie else continue the iteration
-        while (i < parts.length - 1 && document.cookie.indexOf(value + '=' + value) == -1) {
-            //join the parts of domain
-            domain = parts.slice(-1 - ++i).join('.');
-            //set value in cookie
-            document.cookie = value + '=' + value + ';domain=' + domain + ';';
-        }
-        //delete value from cookie
-        document.cookie = value + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=' + domain + ';';
-        return domain;
-    },
+
     getSubDomain: function () {
+        if (!MCK_COOKIE_DOMAIN) {
+            return '';
+        } //remove if using cookies
         var hostName = parent.window.location.hostname;
         var domainLength = MCK_COOKIE_DOMAIN.length;
         var subDomain = hostName.substr(0, hostName.length - domainLength);
         return subDomain;
-    },
-    replaceOldCookies: function () {
-        Object.values(KommunicateConstants.COOKIES).forEach((cookie) => {
-            let cookieData = kmCookieStorage.getCookie(cookie, false, true);
-
-            if (cookieData) {
-                kmCookieStorage.deleteCookie(
-                    {
-                        name: cookie,
-                        domain: MCK_COOKIE_DOMAIN,
-                    },
-                    true
-                );
-                kmCookieStorage.setCookie({
-                    name: cookie,
-                    value: cookieData,
-                    expiresInDays: 30,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
-            }
-        });
     },
     isValidTimeZone: function (tzId) {
         if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
@@ -442,7 +409,7 @@ KommunicateUtils = {
         }
     },
     isActiveConversationNeedsToBeOpened: function (activeConversationInfo, data) {
-        var userId = kmCookieStorage.getCookie(
+        var userId = kmLocalStorage.getLocalStorage(
             KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
         );
         return (
