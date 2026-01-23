@@ -58,6 +58,9 @@
     #mck-tab-individual {
         @extend %km-hidden;
     }
+    #mck-sidebox-ft {
+        @extend %km-hidden;
+    }
 
     /* Hide start-new button when conversations empty state is visible */
     .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content {

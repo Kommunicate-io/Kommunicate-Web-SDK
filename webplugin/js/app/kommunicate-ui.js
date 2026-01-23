@@ -19,6 +19,15 @@ function getFaqClearButton() {
 function getBottomTabsManager() {
     return bottomTabsManagerRef;
 }
+function isIndividualConversationActive() {
+    var sideboxContent = document.getElementById('mck-sidebox-content');
+    return (
+        sideboxContent &&
+        sideboxContent.classList &&
+        sideboxContent.classList.contains('active-tab-conversations') &&
+        sideboxContent.classList.contains('active-subsection-conversation-individual')
+    );
+}
 function setActiveSubsectionState(subsection) {
     var sideboxContent =
         typeof document !== 'undefined' &&
@@ -112,13 +121,13 @@ KommunicateUI = {
         }
     },
     populateAwayMessage: function (err, message) {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         var closedConversation = $applozic('#mck-conversation-status-box').hasClass('vis');
         if (
             !err &&
             message.code == 'SUCCESS' &&
             message.data.messageList.length > 0 &&
-            !conversationWindowNotActive &&
+            isIndividualConversation &&
             !closedConversation
         ) {
             awayMessage = message.data.messageList[0].message;
@@ -185,11 +194,23 @@ KommunicateUI = {
             }
             return;
         }
+        var sanitizedUrl =
+            typeof url === 'string'
+                ? url.trim().replace(/,+$/, '')
+                : url
+                ? String(url).trim().replace(/,+$/, '')
+                : '';
+        if (!sanitizedUrl) {
+            return;
+        }
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
-            url: kommunicate.getBaseUrl() + '/rest/ws/extractlink?linkToExtract=' + url,
+            url:
+                kommunicate.getBaseUrl() +
+                '/rest/ws/extractlink?linkToExtract=' +
+                encodeURIComponent(sanitizedUrl),
             type: 'GET',
             global: false,
             success: function (result) {
@@ -226,11 +247,11 @@ KommunicateUI = {
         });
     },
     showAwayMessage: function () {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         if (
             KommunicateUI.awayMessageInfo &&
             KommunicateUI.awayMessageInfo.isEnabled &&
-            !conversationWindowNotActive
+            isIndividualConversation
         ) {
             kommunicateCommons.hide('#mck-email-collection-box');
             kommunicateCommons.show('#mck-away-msg-box');
@@ -1505,11 +1526,9 @@ KommunicateUI = {
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        console.log('togglePopupChatTemplate called', {
-            templateKey: popupTemplateKey,
-            showTemplate,
-            widgetOpen: kommunicateCommons.isWidgetOpen(),
-        });
+        if (showTemplate && kommunicateCommons.isWidgetOpen()) {
+            return;
+        }
         if (showTemplate) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();

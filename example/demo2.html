@@ -16,6 +16,17 @@
                     popupWidget: true,
                     layout: 'modern',
                     automaticChatOpenOnNavigation: true,
+                    onInit: function () {
+                        console.log('Kommunicate widget initialized');
+                        // var defaultSettings = {
+                        //     "defaultAgentIds": ["okies-kijaq"],
+                        //     "defaultBotIds": ["okies-kijaq"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+                        //     "defaultAssignee": "okies-kijaq", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+                        //     "skipRouting": true,
+                        // };
+                        // Kommunicate.updateSettings(defaultSettings);
+                        // window.Kommunicate.startConversation();
+                    },
                     // appSettings: {
                     //     chatWidget: {
                     //         popup: false,
@@ -100,5 +111,14 @@
                 m._globals = kommunicateSettings;
             })(document, window.kommunicate || {});
         </script>
+        <!-- 
+        <iframe
+            style="border: none;"
+            height="600px"
+            width="400px"
+            src="https://widget-test.kommunicate.io/chat?appId=kommunicate-support"
+            allow="microphone; geolocation;"
+        >
+        </iframe> -->
     </body>
 </html>

@@ -87,6 +87,10 @@
     word-break: break-word;
 }
 
+#mck-text-box {
+    word-break: normal;
+}
+
 .mck-form-error-container {
     display: flex;
     @include gap-supported(2px, 0 2px 0 0, '& svg');
