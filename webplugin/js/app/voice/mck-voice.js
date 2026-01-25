@@ -2,8 +2,8 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.03;
     _ZERO_CROSSING_THRESHOLD = 0.06;
-    _SILENCE_DURATION = 1600; // 1.6 seconds of silence
-    _MIN_SPEECH_DURATION = 400; // require at least 400ms of speech before silencing
+    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping
+    _MIN_SPEECH_DURATION = 200; // require at least 200ms of speech before silencing
 
     // animation scale for speaking
     _MIN_SPEAK_ANIMATION_SCALE = 0.7;
@@ -906,7 +906,7 @@ class MckVoice {
         this.clearResponseTimeout();
     }
 
-    scheduleAutoListen(delay = 900) {
+    scheduleAutoListen(delay = 300) {
         if (this.autoListenTimeout) {
             clearTimeout(this.autoListenTimeout);
         }
