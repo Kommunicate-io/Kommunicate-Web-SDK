@@ -4158,11 +4158,19 @@ div#mck-rated:before {
    VOICE INTERFACE COMPONENT
    ======================================== */
 #mck-voice-interface {
-  display: none !important;
+  display: none;
   visibility: hidden;
   height: 0;
   overflow: hidden;
   pointer-events: none;
+}
+
+#mck-voice-interface:not(.n-vis) {
+  display: block;
+  visibility: visible;
+  height: auto;
+  overflow: visible;
+  pointer-events: auto;
 }
 
 .mck-textbox-container {

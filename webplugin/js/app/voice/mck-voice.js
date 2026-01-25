@@ -30,6 +30,7 @@ class MckVoice {
         this.transcriptElement = null;
         this.responseElement = null;
         this.responseContainer = null;
+        this.responseTimeout = null;
         this.transcriptTimeout = null;
         this.autoListeningEnabled = false;
         this.autoListenTimeout = null;
@@ -312,6 +313,7 @@ class MckVoice {
             this.updateLiveTranscript('');
             this.updateResponseText('');
             this.hideInlineStatus();
+            this.setTextboxVoiceActive(false);
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
@@ -832,6 +834,8 @@ class MckVoice {
     }
 
     updateResponseText(text, { autoHide = 0 } = {}) {
+        this.clearResponseTimeout();
+
         const element = this.getResponseElement();
         const container = this.getResponseContainer();
         if (!element || !container) {
@@ -845,7 +849,8 @@ class MckVoice {
         element.textContent = text;
         container.classList.remove('mck-hidden');
         if (autoHide > 0) {
-            setTimeout(() => {
+            this.responseTimeout = setTimeout(() => {
+                this.responseTimeout = null;
                 this.updateResponseText('', {});
             }, autoHide);
         }
@@ -881,14 +886,23 @@ class MckVoice {
         }
     }
 
+    clearResponseTimeout() {
+        if (this.responseTimeout) {
+            clearTimeout(this.responseTimeout);
+            this.responseTimeout = null;
+        }
+    }
+
     enableAutoListening() {
         this.autoListeningEnabled = true;
         this.clearAutoListenTimeout();
+        this.clearResponseTimeout();
     }
 
     disableAutoListening() {
         this.autoListeningEnabled = false;
         this.clearAutoListenTimeout();
+        this.clearResponseTimeout();
     }
 
     scheduleAutoListen(delay = 900) {
@@ -978,6 +992,7 @@ class MckVoice {
 
     setVoiceMuted(muted) {
         this.voiceMuted = muted;
+        this.clearResponseTimeout();
         this.updateMuteButton();
         const statusKey = muted ? 'voiceInterface.muted' : 'voiceInterface.unmuted';
         const statusText = this.getVoiceLabel(statusKey, muted ? 'Microphone muted' : 'Listening');
@@ -1115,6 +1130,7 @@ class MckVoice {
 
     stopVoiceMode() {
         this.disableAutoListening();
+        this.clearResponseTimeout();
         this.stopRecording(true);
         this.clearVoiceStatus();
         this.updateLiveTranscript('');
