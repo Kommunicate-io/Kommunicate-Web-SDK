@@ -317,6 +317,12 @@ $voice-listening-end: #00f2fe;
     display: none !important;
 }
 
+.mck-textbox-container.km-voice-active {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
 @keyframes voice-mic-pulse {
     0%,
     100% {

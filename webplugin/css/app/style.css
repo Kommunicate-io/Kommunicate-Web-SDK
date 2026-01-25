@@ -4239,7 +4239,7 @@ div#mck-rated:before {
   height: 32px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.95);
-  color: #6C5CE7;
+  color: #6c5ce7;
   font-weight: 600;
   font-size: 0;
   /* Hide text fallback */
@@ -4262,7 +4262,7 @@ div#mck-rated:before {
   content: "✕";
   font-size: 16px;
   font-weight: 600;
-  color: #6C5CE7;
+  color: #6c5ce7;
   transition: all 0.3s ease;
   position: absolute;
   top: 50%;
@@ -4275,7 +4275,7 @@ div#mck-rated:before {
   position: absolute;
   bottom: calc(100% + 10px);
   right: -4px;
-  background: linear-gradient(135deg, #6C5CE7, #5B4FD8);
+  background: linear-gradient(135deg, #6c5ce7, #5b4fd8);
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
@@ -4303,7 +4303,7 @@ div#mck-rated:before {
   border-color: rgba(108, 92, 231, 0.4);
 }
 #km-voice-inline-action-btn:hover::before {
-  color: #5B4FD8;
+  color: #5b4fd8;
   transform: translate(-50%, -50%) rotate(90deg);
 }
 #km-voice-inline-action-btn:active {
@@ -4330,7 +4330,7 @@ div#mck-rated:before {
   height: 48px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #6C5CE7 0%, #5B4FD8 100%);
+  background: linear-gradient(135deg, #6c5ce7 0%, #5b4fd8 100%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4432,6 +4432,12 @@ div#mck-rated:before {
 
 .mck-textbox-container.km-voice-active #mck-voice-web {
   display: none !important;
+}
+
+.mck-textbox-container.km-voice-active {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 @keyframes voice-mic-pulse {
