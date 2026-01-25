@@ -308,7 +308,7 @@ class MckVoice {
                 'mck-hidden'
             );
 
-            this.updateVoiceStatus('');
+            this.clearVoiceStatus();
             this.updateLiveTranscript('');
             this.updateResponseText('');
             this.hideInlineStatus();
@@ -339,6 +339,12 @@ class MckVoice {
                 ) {
                     KommunicateUI.activateTypingField();
                 }
+            });
+        }
+        const inlineMicBtn = document.getElementById('km-voice-inline-mic-btn');
+        if (inlineMicBtn) {
+            inlineMicBtn.addEventListener('click', () => {
+                this.toggleMute();
             });
         }
     }
@@ -420,7 +426,7 @@ class MckVoice {
                     this.totalSamples = 0;
 
                     this.updateVoiceStatus(
-                        this.getVoiceLabel('voiceInterface.processing', 'Processing speech...')
+                        this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
                     const data = await kmVoice.speechToText(audioBlob);
                     const rawText = data.text || '';
@@ -440,13 +446,13 @@ class MckVoice {
                         message: userMsg,
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
-                    this.updateVoiceStatus('');
+                    this.clearVoiceStatus();
                     this.hideInlineStatus();
                 }
             } catch (error) {
                 console.error(error);
                 this.removeAllAnimation();
-                this.updateVoiceStatus('');
+                this.clearVoiceStatus();
                 this.updateLiveTranscript(
                     this.getVoiceLabel(
                         'voiceInterface.processingFailed',
@@ -466,7 +472,7 @@ class MckVoice {
                     clearInterval(this.silenceTimer);
                     this.silenceTimer = null;
                 }
-                this.updateVoiceStatus('');
+                this.clearVoiceStatus();
                 this.scheduleAutoListen();
             }
         };
@@ -699,6 +705,33 @@ class MckVoice {
         return this.inlineStatusContainer;
     }
 
+    setVoiceButtonState(state) {
+        const btn = document.getElementById('mck-voice-web');
+        if (!btn) {
+            return;
+        }
+        btn.dataset.voiceState = state;
+        const label = btn.querySelector('.mck-voice-state-label');
+        const stateTextMap = {
+            idle: this.getVoiceLabel('voiceInterface.speak', 'Voice'),
+            listening: this.getVoiceLabel('voiceInterface.listening', 'Listening...'),
+            processing: this.getVoiceLabel('voiceInterface.processing', 'Processing'),
+        };
+        if (label) {
+            label.textContent = stateTextMap[state] || label.textContent;
+        }
+    }
+
+    showVoiceStopButton() {
+        const stopBtn = document.getElementById('mck-voice-stop-btn');
+        stopBtn && kommunicateCommons.show(stopBtn);
+    }
+
+    hideVoiceStopButton() {
+        const stopBtn = document.getElementById('mck-voice-stop-btn');
+        stopBtn && kommunicateCommons.hide(stopBtn);
+    }
+
     setTextboxVoiceActive(isActive) {
         const container = document.getElementById('mck-textbox-container');
         if (!container) {
@@ -714,11 +747,38 @@ class MckVoice {
         }
     }
 
+    showInlineMicButton() {
+        const micBtn = document.getElementById('km-voice-inline-mic-btn');
+        micBtn && micBtn.classList.remove('n-vis');
+    }
+
+    hideInlineMicButton() {
+        const micBtn = document.getElementById('km-voice-inline-mic-btn');
+        micBtn && micBtn.classList.add('n-vis');
+    }
+
     hideInlineStatus() {
         const container = this.getInlineStatusContainer();
         if (container) {
             container.classList.add('n-vis');
+            kommunicateCommons.hide(container);
+            this.hideInlineMicButton();
         }
+    }
+
+    clearVoiceStatus() {
+        if (this.voiceMuted) {
+            return;
+        }
+        const element = this.getStatusElement();
+        if (!element) {
+            return;
+        }
+        element.textContent = '';
+        element.classList.add('n-vis');
+        element.removeAttribute('data-listening');
+        this.hideInlineStatus();
+        this.hideInlineMicButton();
     }
 
     updateVoiceStatus(text, listening = false) {
@@ -726,16 +786,25 @@ class MckVoice {
         if (!element) {
             return;
         }
+        const micBtn = document.getElementById('km-voice-inline-mic-btn');
+        if (micBtn) {
+            micBtn.setAttribute(
+                'aria-label',
+                text || this.getVoiceLabel('voiceInterface.listening', 'Listening')
+            );
+            micBtn.dataset.listening = listening ? 'true' : 'false';
+        }
         if (!text) {
             element.textContent = '';
             element.classList.add('n-vis');
             element.removeAttribute('data-listening');
             this.hideInlineStatus();
+            this.hideInlineMicButton();
             return;
         }
-        element.textContent = text;
         element.classList.remove('n-vis');
         this.showInlineStatus();
+        this.showInlineMicButton();
         element.setAttribute('data-listening', listening ? 'true' : 'false');
     }
 
@@ -911,10 +980,12 @@ class MckVoice {
         this.voiceMuted = muted;
         this.updateMuteButton();
         const statusKey = muted ? 'voiceInterface.muted' : 'voiceInterface.unmuted';
-        const statusText = this.getVoiceLabel(
-            statusKey,
-            muted ? 'Microphone muted' : 'Listening...'
-        );
+        const statusText = this.getVoiceLabel(statusKey, muted ? 'Microphone muted' : 'Listening');
+        const micBtn = document.getElementById('km-voice-inline-mic-btn');
+        if (micBtn) {
+            micBtn.dataset.muted = muted ? 'true' : 'false';
+            micBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+        }
         this.updateVoiceStatus(statusText, !muted);
     }
 
@@ -1045,19 +1116,30 @@ class MckVoice {
     stopVoiceMode() {
         this.disableAutoListening();
         this.stopRecording(true);
-        this.updateVoiceStatus('');
+        this.clearVoiceStatus();
         this.updateLiveTranscript('');
         this.updateResponseText('');
         this.hideInlineStatus();
+        this.hideInlineMicButton();
         this.voiceMuted = false;
         this.updateMuteButton();
         this.updateChatButtonText();
         this.setTextboxVoiceActive(false);
         this.setVoiceButtonState('idle');
         this.hideVoiceStopButton();
+        kommunicateCommons.show('#mck-voice-web');
+        const inlineStatus = document.getElementById('km-voice-listening-status');
+        inlineStatus && kommunicateCommons.hide(inlineStatus);
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        if (
+            typeof KommunicateUI === 'object' &&
+            KommunicateUI &&
+            typeof KommunicateUI.activateTypingField === 'function'
+        ) {
+            KommunicateUI.activateTypingField();
+        }
     }
 
     showMic(appOptions) {

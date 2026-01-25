@@ -258,7 +258,7 @@
             listening: 'Listening...',
             listeningNote: 'AI assistant is listening for you—just speak.',
             mutedNote: 'Microphone paused. Tap the mic to resume voice input.',
-            processing: 'Processing speech...',
+            processing: 'Processing',
             processingFailed: 'Unable to transcribe the recording. Please try again.',
             noSpeechDetected: 'No speech detected. Please try again.',
             responseLabel: 'Response:',

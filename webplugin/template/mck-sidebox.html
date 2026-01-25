@@ -1329,16 +1329,32 @@
                                             class="km-voice-inline-status n-vis"
                                             aria-live="polite"
                                         >
-                                            <span class="km-voice-inline-dot"></span>
-                                            <span id="km-voice-inline-text"></span>
-                                            <button
-                                                type="button"
-                                                id="km-voice-inline-action-btn"
-                                                class="km-voice-inline-action"
-                                                aria-live="polite"
-                                            >
-                                                <span id="km-voice-inline-action-text"></span>
-                                            </button>
+                                            <div class="km-voice-inline-left">
+                                                <span id="km-voice-inline-text"></span>
+                                            </div>
+                                            <div class="km-voice-inline-controls">
+                                                <button
+                                                    type="button"
+                                                    id="km-voice-inline-mic-btn"
+                                                    class="km-voice-inline-mic n-vis"
+                                                    aria-label="Listening"
+                                                    aria-pressed="false"
+                                                >
+                                                    <span class="km-voice-inline-mic-icon"></span>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    id="km-voice-inline-action-btn"
+                                                    class="km-voice-inline-action"
+                                                    aria-live="polite"
+                                                    data-tooltip="Switch to chat"
+                                                    aria-label="Switch to chat"
+                                                >
+                                                    <span id="km-voice-inline-action-text"
+                                                        >Switch to chat</span
+                                                    >
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div id="km-voice-recorder" class="n-vis">
