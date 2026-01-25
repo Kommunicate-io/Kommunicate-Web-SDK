@@ -28,6 +28,19 @@ $voice-listening-end: #00f2fe;
     position: relative;
 }
 
+@mixin voice-visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ========================================
    IN-CHAT VOICE STATUS BAR
    ======================================== */
@@ -78,18 +91,9 @@ $voice-listening-end: #00f2fe;
     }
 }
 
-#km-voice-inline-text {
-    display: none;
-    /* Hide status text */
-}
-
-#km-voice-listening-status:not(.n-vis) #km-voice-inline-text {
-    display: none;
-}
-
+#km-voice-inline-text,
 .km-voice-inline-left {
-    display: none;
-    /* Hide left container */
+    @include voice-visually-hidden;
 }
 
 /* ========================================

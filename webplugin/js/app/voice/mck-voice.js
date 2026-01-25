@@ -804,6 +804,7 @@ class MckVoice {
             this.hideInlineMicButton();
             return;
         }
+        element.textContent = text;
         element.classList.remove('n-vis');
         this.showInlineStatus();
         this.showInlineMicButton();
