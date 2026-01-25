@@ -4,6 +4,8 @@ class MckVoice {
     _ZERO_CROSSING_THRESHOLD = 0.06;
     _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping
     _MIN_SPEECH_DURATION = 200; // require at least 200ms of speech before silencing
+    // Threshold for frequency-domain visualizer (0..255 scale)
+    _NOISE_THRESHOLD = 8;
 
     // animation scale for speaking
     _MIN_SPEAK_ANIMATION_SCALE = 0.7;
@@ -914,7 +916,8 @@ class MckVoice {
             !this.autoListeningEnabled ||
             this.voiceMuted ||
             this.isRecording ||
-            !this.isVoiceInterfaceVisible()
+            !this.isVoiceInterfaceVisible() ||
+            this.audioElement !== null
         ) {
             return;
         }
@@ -924,7 +927,8 @@ class MckVoice {
                 this.autoListeningEnabled &&
                 !this.voiceMuted &&
                 !this.isRecording &&
-                this.isVoiceInterfaceVisible()
+                this.isVoiceInterfaceVisible() &&
+                this.audioElement === null
             ) {
                 const listeningLabel = this.getVoiceLabel(
                     'voiceInterface.listening',
