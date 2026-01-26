@@ -43,6 +43,7 @@ class MckVoice {
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
         this.maxRecordingTimer = null;
+        this.deferredRecordingHandler = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -79,6 +80,7 @@ class MckVoice {
     }
 
     async playAudioWithMediaSource(response) {
+        this.clearDeferredRecordingHandler(this.audioElement);
         const audio = new Audio();
         this.audioElement = audio;
 
@@ -385,6 +387,43 @@ class MckVoice {
             });
     }
 
+    requestAudioRecordingWhenReady() {
+        if (this.audioElement && !this.audioElement.paused && !this.audioElement.ended) {
+            this.deferRecordingUntilPlaybackEnds();
+            return;
+        }
+        this.requestAudioRecording();
+    }
+
+    deferRecordingUntilPlaybackEnds() {
+        const audioElement = this.audioElement;
+        if (!audioElement) {
+            this.requestAudioRecording();
+            return;
+        }
+
+        this.clearDeferredRecordingHandler(audioElement);
+
+        const handler = () => {
+            this.clearDeferredRecordingHandler(audioElement);
+            if (!this.voiceMuted && !this.isRecording) {
+                this.requestAudioRecording();
+            }
+        };
+
+        this.deferredRecordingHandler = handler;
+        audioElement.addEventListener('ended', handler);
+        audioElement.addEventListener('pause', handler);
+    }
+
+    clearDeferredRecordingHandler(audioElement = this.audioElement) {
+        if (this.deferredRecordingHandler && audioElement) {
+            audioElement.removeEventListener('ended', this.deferredRecordingHandler);
+            audioElement.removeEventListener('pause', this.deferredRecordingHandler);
+        }
+        this.deferredRecordingHandler = null;
+    }
+
     startRecording(stream) {
         this.addListeningAnimation();
         this.setTextboxVoiceActive(true);
@@ -481,7 +520,6 @@ class MckVoice {
                     ),
                     { autoHide: 6000 }
                 );
-                confirm('Failed to process the audio please try again after some time');
             } finally {
                 // Clean up the stream tracks
                 this.stream.getTracks().forEach((track) => track.stop());
@@ -793,7 +831,6 @@ class MckVoice {
     hideInlineStatus() {
         const container = this.getInlineStatusContainer();
         if (container) {
-            container.classList.add('n-vis');
             kommunicateCommons.hide(container);
             this.hideInlineMicButton();
         }
@@ -1025,6 +1062,9 @@ class MckVoice {
     }
 
     setVoiceMuted(muted) {
+        if (muted) {
+            this.clearDeferredRecordingHandler();
+        }
         this.voiceMuted = muted;
         this.clearResponseTimeout();
         this.updateMuteButton();
@@ -1042,7 +1082,7 @@ class MckVoice {
         if (this.voiceMuted) {
             this.setVoiceMuted(false);
             this.enableAutoListening();
-            this.requestAudioRecording();
+            this.requestAudioRecordingWhenReady();
         } else {
             this.setVoiceMuted(true);
             this.disableAutoListening();
@@ -1163,6 +1203,8 @@ class MckVoice {
             this.audioElement.pause();
             this.audioElement.currentTime = 0;
         }
+
+        this.clearDeferredRecordingHandler(this.audioElement);
 
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
