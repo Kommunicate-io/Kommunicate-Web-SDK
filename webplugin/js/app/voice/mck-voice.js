@@ -44,6 +44,7 @@ class MckVoice {
         this.firstSpeechTimestamp = 0;
         this.maxRecordingTimer = null;
         this.deferredRecordingHandler = null;
+        this.silenceDetectionContext = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -54,6 +55,11 @@ class MckVoice {
             }
         } catch (err) {
             console.error(err);
+            this.messagesQueue.shift();
+            if (this.messagesQueue.length > 0) {
+                const nextMsg = this.messagesQueue[0];
+                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            }
         }
     }
 
@@ -232,6 +238,15 @@ class MckVoice {
 
     async repeatLastMsgAudio(blobUrl) {
         try {
+            if (this.visualizerCleanup) {
+                this.visualizerCleanup();
+                this.visualizerCleanup = null;
+            }
+            if (this.audioElement) {
+                this.audioElement.pause();
+                this.audioElement.currentTime = 0;
+                this.audioElement = null;
+            }
             this.addSpeakingAnimation();
             let audioBlobUrl = blobUrl;
 
@@ -1095,6 +1110,7 @@ class MckVoice {
         const analyser = audioContext.createAnalyser();
         const microphone = audioContext.createMediaStreamSource(stream);
         const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+        this.silenceDetectionContext = audioContext;
 
         analyser.smoothingTimeConstant = 0.8;
         analyser.fftSize = 1024;
@@ -1176,6 +1192,10 @@ class MckVoice {
                 microphone.disconnect();
                 analyser.disconnect();
                 scriptProcessor.disconnect();
+                if (this.silenceDetectionContext) {
+                    this.silenceDetectionContext.close().catch(() => {});
+                    this.silenceDetectionContext = null;
+                }
             }
         };
     }
