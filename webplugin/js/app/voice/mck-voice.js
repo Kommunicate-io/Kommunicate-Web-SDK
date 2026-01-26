@@ -159,6 +159,9 @@ class MckVoice {
                 const finalBlob = new Blob(fullChunks, { type: 'audio/mpeg' });
                 const blobUrl = URL.createObjectURL(finalBlob);
 
+                if (this.agentOrBotLastMsgAudio) {
+                    URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+                }
                 this.agentOrBotLastMsgAudio = blobUrl;
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
@@ -446,6 +449,17 @@ class MckVoice {
                     const transcriptText = userMsg ? `${prefix}: ${userMsg}` : noSpeechLabel;
                     this.updateLiveTranscript(transcriptText, { autoHide: 9000 });
 
+                    if (!CURRENT_GROUP_DATA || !CURRENT_GROUP_DATA.tabId) {
+                        console.error('No active conversation to send voice message');
+                        this.updateLiveTranscript(
+                            this.getVoiceLabel(
+                                'voiceInterface.noActiveConversation',
+                                'Please open a conversation first.'
+                            ),
+                            { autoHide: 5000 }
+                        );
+                        return;
+                    }
                     kommunicate.sendMessage({
                         contentType: 10,
                         source: 1,
