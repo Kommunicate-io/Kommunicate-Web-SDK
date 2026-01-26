@@ -11,6 +11,7 @@ class MckVoice {
     // animation scale for speaking
     _MIN_SPEAK_ANIMATION_SCALE = 0.7;
     _MAX_SPEAK_ANIMATION_SCALE = 1.0;
+    _RING_RECEDE_DURATION = 800;
 
     constructor() {
         this.mediaRecorder = null;
@@ -188,14 +189,14 @@ class MckVoice {
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
 
-                console.log('Playback ended, starting recede animation');
+                console.debug('Playback ended, starting recede animation');
 
                 // Wait for animation to complete before removing all classes
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                     this.removeAllAnimation();
                     this.scheduleAutoListen();
-                }, 800); // Match this to animation duration in CSS
+                }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             });
 
@@ -258,7 +259,7 @@ class MckVoice {
             await audio.play().catch(console.error);
 
             audio.onplay = () => {
-                console.log('Playback started');
+                console.debug('Playback started');
             };
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
@@ -281,13 +282,13 @@ class MckVoice {
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
 
-                console.log('Playback ended, starting recede animation');
+                console.debug('Playback ended, starting recede animation');
 
                 // Remove ring-recede class after animation completes
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                     this.scheduleAutoListen();
-                }, 1500); // Match this to animation duration in CSS
+                }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             };
         } catch (error) {
