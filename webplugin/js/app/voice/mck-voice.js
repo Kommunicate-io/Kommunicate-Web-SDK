@@ -4,6 +4,7 @@ class MckVoice {
     _ZERO_CROSSING_THRESHOLD = 0.06;
     _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping
     _MIN_SPEECH_DURATION = 200; // require at least 200ms of speech before silencing
+    _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -41,6 +42,7 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        this.maxRecordingTimer = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -394,6 +396,7 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        this.maxRecordingTimer = null;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -476,6 +479,10 @@ class MckVoice {
                     clearInterval(this.silenceTimer);
                     this.silenceTimer = null;
                 }
+                if (this.maxRecordingTimer) {
+                    clearTimeout(this.maxRecordingTimer);
+                    this.maxRecordingTimer = null;
+                }
                 this.clearVoiceStatus();
                 this.scheduleAutoListen();
             }
@@ -484,6 +491,14 @@ class MckVoice {
         // Start recording
         this.mediaRecorder.start(); // Collect data every second
         console.debug('Recording started');
+
+        this.maxRecordingTimer = setTimeout(() => {
+            if (this.isRecording) {
+                console.debug('Max recording duration reached, stopping');
+                this.stopRecording();
+                this.addThinkingAnimation();
+            }
+        }, this._MAX_RECORDING_DURATION);
 
         // Set up audio analysis for silence detection
         this.setupSilenceDetection(stream);
@@ -1116,6 +1131,11 @@ class MckVoice {
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
             console.log('Recording stopped');
+
+            if (this.maxRecordingTimer) {
+                clearTimeout(this.maxRecordingTimer);
+                this.maxRecordingTimer = null;
+            }
 
             // hide the ring animation
             // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis', '');
