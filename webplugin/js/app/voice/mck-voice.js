@@ -1130,6 +1130,11 @@ class MckVoice {
             this.audioElement.currentTime = 0;
         }
 
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+
         this.audioElement = null;
     }
 
