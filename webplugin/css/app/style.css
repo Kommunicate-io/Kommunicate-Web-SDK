@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* CSS custom properties for theming. These map SCSS color tokens into runtime CSS variables
      so templates can be themed via JS or by overriding the variables in a site stylesheet. */
 :root {
@@ -3558,7 +3559,13 @@ div#mck-rated:before {
 }
 
 .mck-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 10px;
+}
+.mck-title.vis, .mck-title.show {
+  display: flex;
 }
 
 .mck-sidebox .mck-tab-title,
@@ -4166,187 +4173,334 @@ div#mck-rated:before {
   text-align: center;
 }
 
+/* ========================================
+   VOICE INTERFACE COMPONENT
+   ======================================== */
 #mck-voice-interface {
-  height: 100%;
-  display: flex;
-  flex-flow: column wrap;
+  display: none;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
-#mck-voice-interface .mck-voice-image-container {
+
+#mck-voice-interface:not(.n-vis) {
+  display: block;
+  visibility: visible;
+  height: auto;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.mck-textbox-container {
   position: relative;
-  width: 120px;
-  height: 120px;
-  display: flex;
 }
-#mck-voice-interface .mck-voice-interface-header {
-  align-self: flex-start;
-  padding: 14px;
-}
-#mck-voice-interface .mck-voice-interface-body {
-  align-self: center;
-  margin-top: auto;
-}
-#mck-voice-interface .mck-voice-interface-body #mck-voice-repeat-last-msg {
+
+/* ========================================
+   IN-CHAT VOICE STATUS BAR
+   ======================================== */
+#km-voice-listening-status {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  /* Covers attachment icon */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  gap: 16px;
+  /* Space between Mic and Close */
+  height: calc(100% - 4px);
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 999;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 255, 0.98));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 0 12px;
+  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#km-voice-listening-status::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(91, 79, 216, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+#km-voice-listening-status[data-listening=true]::before {
+  opacity: 1;
+  animation: voice-border-pulse 2s ease-in-out infinite;
+}
+
+#km-voice-inline-text,
+.km-voice-inline-left {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================
+   ACTION BUTTON (Switch to Chat)
+   ======================================== */
+#km-voice-inline-action-btn {
+  order: 2;
+  /* Move to right */
+  border: 1.5px solid rgba(108, 92, 231, 0.2);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #6c5ce7;
+  font-weight: 600;
+  font-size: 0;
+  /* Hide text fallback */
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  gap: 8px;
-  margin-top: 14px;
+  pointer-events: auto;
+  position: relative;
+  overflow: visible;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* X icon using pseudo-element */
+  /* Tooltip on hover */
+  /* Arrow for tooltip */
 }
-#mck-voice-interface .mck-voice-interface-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: auto;
-  margin-bottom: 20px;
-}
-#mck-voice-interface .mck-voice-interface-footer .last-message-text {
-  color: #ffffff;
-  padding-left: 14px;
-  text-align: center;
-}
-#mck-voice-interface .mck-voice-interface-footer-buttons {
-  display: flex;
-  gap: 14px;
-  margin: auto;
-}
-#mck-voice-interface .mck-voice-interface-footer-buttons > button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  padding: 8px 16px;
-  border: none;
-  background: #ffffff;
-  color: #1c1c1c;
-  gap: 4px;
-}
-#mck-voice-interface .mck-voice-interface-footer-buttons > button svg {
-  fill: currentColor;
-}
-#mck-voice-interface .mck-voice-interface-back-btn {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-  background: transparent;
-  color: #ffffff;
-  padding: 4px 16px 4px 0px;
-}
-#mck-voice-interface .voice-ring {
+#km-voice-inline-action-btn::before {
+  content: "✕";
+  font-size: 16px;
+  font-weight: 600;
+  color: #6c5ce7;
+  transition: all 0.3s ease;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
-#mck-voice-interface .thinking-voice-ring {
-  border: 2px solid transparent;
-  width: 90%;
-  height: 90%;
-}
-#mck-voice-interface .thinking-voice-ring-1 {
-  border-top-color: rgb(255, 255, 255);
-  opacity: 0.9;
-  animation: thinking-rotate 2s linear infinite;
-}
-#mck-voice-interface .thinking-voice-ring-2 {
-  border-right-color: rgb(255, 255, 255);
-  opacity: 0.6;
-  animation: thinking-rotate 2s linear infinite reverse 0.1s;
-}
-#mck-voice-interface .thinking-voice-ring-3 {
-  border-bottom-color: rgb(255, 255, 255);
-  opacity: 0.3;
-  animation: thinking-rotate 2s linear infinite 0.2s;
-}
-@keyframes thinking-rotate {
-  0% {
-    transform: translate(-50%, -50%) rotate(0);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-#mck-voice-interface .speaking-voice-ring {
-  background-color: #ffffff;
-  opacity: 0.2;
-  transition: transform ease-in-out;
-  width: 105%;
-  height: 105%;
-}
-#mck-voice-interface .ring-recede {
-  animation: ring-recede-animation 0.8s forwards ease-out;
-}
-@keyframes ring-recede-animation {
-  0% {
-    transform: translate(-50%, -50%) scale(0.7);
-    opacity: 0.3;
-    z-index: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0;
-    z-index: -1;
-  }
-}
-@keyframes speak-pulse-collapse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(0.7);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.2;
-  }
-}
-#mck-voice-interface .listening-ring {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, transparent 69%, #ffffff 70%, #a97aff 100%, transparent 72%);
+#km-voice-inline-action-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: -4px;
+  background: linear-gradient(135deg, #6c5ce7, #5b4fd8);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
   opacity: 0;
-  animation: inward-ripple 3s infinite ease-out;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  z-index: 100;
 }
-#mck-voice-interface .listening-ring-2 {
-  animation-delay: 1s;
+#km-voice-inline-action-btn:hover::after {
+  opacity: 1;
+  transform: translateY(0);
 }
-#mck-voice-interface .listening-ring-3 {
-  animation-delay: 2s;
+#km-voice-inline-action-btn span {
+  display: none;
 }
-@keyframes inward-ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(1.3);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-  }
+#km-voice-inline-action-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.25);
+  background: white;
+  border-color: rgba(108, 92, 231, 0.4);
 }
-#mck-voice-interface .mck-voice-image {
+#km-voice-inline-action-btn:hover::before {
+  color: #5b4fd8;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+#km-voice-inline-action-btn:active {
+  transform: translateY(0) scale(0.95);
+  transition: all 0.1s ease;
+}
+#km-voice-inline-action-btn:focus-visible {
+  outline: 2px solid rgba(108, 92, 231, 0.5);
+  outline-offset: 3px;
+}
+
+.km-voice-inline-controls {
+  display: contents;
+  /* Let children participate in parent flex */
+}
+
+/* ========================================
+   MICROPHONE BUTTON - PREMIUM DESIGN
+   ======================================== */
+#km-voice-inline-mic-btn {
+  order: 1;
+  /* Move to left */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #6c5ce7 0%, #5b4fd8 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(108, 92, 231, 0.35), 0 4px 12px rgba(91, 79, 216, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: visible;
+  /* Inner glow ring */
+  /* Outer pulsing ring for listening state */
+  /* Listening state - vibrant blue gradient */
+  /* Muted state - dimmed appearance */
+  /* Hover effect */
+}
+#km-voice-inline-mic-btn::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+#km-voice-inline-mic-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(108, 92, 231, 0.4);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+}
+#km-voice-inline-mic-btn[data-listening=true] {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  box-shadow: 0 12px 32px rgba(79, 172, 254, 0.45), 0 6px 16px rgba(0, 242, 254, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  animation: voice-mic-pulse 2s ease-in-out infinite;
+}
+#km-voice-inline-mic-btn[data-listening=true]::after {
+  opacity: 1;
+  border-color: rgba(79, 172, 254, 0.6);
+  animation: voice-ring-expand 2s ease-in-out infinite;
+}
+#km-voice-inline-mic-btn[data-listening=true]::before {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+#km-voice-inline-mic-btn[data-muted=true] {
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.4), rgba(91, 79, 216, 0.4));
+  box-shadow: 0 6px 16px rgba(108, 92, 231, 0.2);
+  opacity: 1;
+}
+#km-voice-inline-mic-btn[data-muted=true]::before {
+  opacity: 0.3;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+#km-voice-inline-mic-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 16px 36px rgba(108, 92, 231, 0.4), 0 8px 18px rgba(91, 79, 216, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+#km-voice-inline-mic-btn:hover::before {
+  opacity: 1;
+  inset: 3px;
+}
+#km-voice-inline-mic-btn:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: all 0.1s ease;
+}
+#km-voice-inline-mic-btn:focus-visible {
+  outline: 3px solid rgba(108, 92, 231, 0.5);
+  outline-offset: 4px;
+}
+
+.km-voice-inline-mic-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='white' stroke-width='2' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2.5a3.5 3.5 0 0 1 3.5 3.5v3a3.5 3.5 0 0 1-7 0v-3A3.5 3.5 0 0 1 10 2.5Z'/><path d='M6.5 11.5a4.5 4.5 0 0 0 9 0'/><path d='M10 15.5v3'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   position: relative;
   z-index: 1;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: block;
-  margin: auto;
-}
-#mck-voice-interface .voice-ring.mck-ring-remove-animation {
-  animation: none;
-  transform: translate(-50%, -50%) scale(1);
 }
 
-.mck-hidden {
-  visibility: hidden;
+.mck-textbox-container.km-voice-active #mck-text-box {
+  color: rgba(0, 0, 0, 0.15);
+  caret-color: transparent;
+  user-select: none;
 }
 
+.mck-textbox-container.km-voice-active #mck-text-box[contenteditable=true]::before {
+  opacity: 0;
+}
+
+.mck-textbox-container.km-voice-active #mck-text-box::after {
+  content: "";
+}
+
+.mck-textbox-container.km-voice-active #mck-voice-web {
+  display: none !important;
+}
+
+.mck-textbox-container.km-voice-active {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+@keyframes voice-mic-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+@keyframes voice-ring-expand {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+@keyframes voice-border-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 .km-bottom-tab-wrapper {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);

@@ -3243,18 +3243,21 @@ const firstVisibleMsg = {
 
                 if (appOptions.voiceChat) {
                     mckVoice.addEventListeners();
-                    document
-                        .querySelector('.mck-voice-interface-back-btn')
-                        .addEventListener('click', function () {
+                    var voiceInterfaceBackBtn = document.querySelector(
+                        '.mck-voice-interface-back-btn'
+                    );
+                    if (voiceInterfaceBackBtn) {
+                        voiceInterfaceBackBtn.addEventListener('click', function () {
                             mckVoice.stopRecording(true);
+                            mckVoice.disableAutoListening();
+                            mckVoice.updateVoiceStatus('');
+                            mckVoice.updateLiveTranscript('');
+                            mckVoice.updateResponseText('');
 
-                            kommunicateCommons.hide('#mck-voice-interface');
-
-                            kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body');
-
-                            kommunicateCommons.show('.mck-box-top');
-                            window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
+                            var voiceInterfaceEl = document.getElementById('mck-voice-interface');
+                            voiceInterfaceEl && kommunicateCommons.hide('#mck-voice-interface');
                         });
+                    }
                 }
                 popUpcloseButton.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -7780,7 +7783,6 @@ const firstVisibleMsg = {
             var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form-container');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            const voiceInterface = document.querySelector('#mck-voice-interface');
             var inlineTemplateIdCounter = 0;
 
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
@@ -9042,9 +9044,10 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                const isVoiceInterfaceActive = !(
-                    voiceInterface && voiceInterface.classList.contains('n-vis')
-                );
+                const isVoiceInterfaceActive =
+                    mckVoice && typeof mckVoice.isVoiceModeActive === 'function'
+                        ? mckVoice.isVoiceModeActive()
+                        : false;
 
                 if (
                     isVoiceInterfaceActive &&

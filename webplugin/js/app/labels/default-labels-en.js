@@ -251,10 +251,21 @@
             notHelpful: 'Not Helpful',
         },
         'voiceInterface': {
-            speak: 'Click to Speak',
-            chat: 'Click to Chat',
+            speak: 'Mute microphone',
+            chat: 'Switch to chat',
             back: 'Back',
             repeatLastMsg: 'Hear response again',
+            listening: 'Listening...',
+            listeningNote: 'AI assistant is listening for you—just speak.',
+            mutedNote: 'Microphone paused. Tap the mic to resume voice input.',
+            processing: 'Processing',
+            processingFailed: 'Unable to transcribe the recording. Please try again.',
+            noSpeechDetected: 'No speech detected. Please try again.',
+            responseLabel: 'Response:',
+            muteAction: 'Mute microphone',
+            unmuteAction: 'Unmute microphone',
+            muted: 'Microphone muted',
+            unmuted: 'Listening...',
         },
     };
     helpers.registerEnglishLabels(englishLabels);
