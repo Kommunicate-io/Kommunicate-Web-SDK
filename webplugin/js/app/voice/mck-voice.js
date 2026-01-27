@@ -422,7 +422,12 @@ class MckVoice {
 
         const handler = () => {
             this.clearDeferredRecordingHandler(audioElement);
-            if (!this.voiceMuted && !this.isRecording) {
+            if (
+                this.autoListeningEnabled &&
+                this.isVoiceInterfaceVisible() &&
+                !this.voiceMuted &&
+                !this.isRecording
+            ) {
                 this.requestAudioRecording();
             }
         };
@@ -451,6 +456,9 @@ class MckVoice {
         this.silenceStart = null;
         this.agentOrBotLastMsgAudio = null;
         this.agentOrBotLastMsg = '';
+        this.hasSoundDetected = false;
+        this.soundSamples = 0;
+        this.totalSamples = 0;
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
@@ -503,6 +511,10 @@ class MckVoice {
                     );
                     const transcriptText = userMsg ? `${prefix}: ${userMsg}` : noSpeechLabel;
                     this.updateLiveTranscript(transcriptText, { autoHide: 9000 });
+
+                    if (!userMsg) {
+                        return;
+                    }
 
                     if (!CURRENT_GROUP_DATA || !CURRENT_GROUP_DATA.tabId) {
                         console.error('No active conversation to send voice message');
@@ -643,9 +655,10 @@ class MckVoice {
     }
 
     createAudioVisualizer(audioElement) {
+        let audioContext = null;
         try {
             // Create audio context and analyzer
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const analyzer = audioContext.createAnalyser();
             analyzer.fftSize = 512; // Increased for better frequency resolution
 
@@ -658,6 +671,7 @@ class MckVoice {
             const ring = document.querySelector('.speaking-voice-ring-1');
             if (!ring) {
                 console.error('Speaking ring element not found');
+                audioContext.close().catch(() => {});
                 return () => {};
             }
 
@@ -761,6 +775,9 @@ class MckVoice {
             };
         } catch (error) {
             console.error('Error creating audio visualizer:', error);
+            if (audioContext) {
+                audioContext.close().catch(() => {});
+            }
             return () => {};
         }
     }
@@ -1237,6 +1254,7 @@ class MckVoice {
 
     stopVoiceMode() {
         this.disableAutoListening();
+        this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
         this.stopRecording(true);
         this.clearVoiceStatus();

@@ -4182,7 +4182,10 @@ div#mck-rated:before {
    ======================================== */
 #km-voice-listening-status {
   position: absolute;
-  inset: 2px;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
   /* Covers attachment icon */
   display: flex;
   align-items: center;
@@ -4204,7 +4207,10 @@ div#mck-rated:before {
 #km-voice-listening-status::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
   border-radius: 24px;
   padding: 1px;
   background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(91, 79, 216, 0.2));
