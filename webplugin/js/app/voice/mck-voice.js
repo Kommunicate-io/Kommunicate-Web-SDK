@@ -2,9 +2,10 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 250; // 0.25 seconds of silence before stopping
+    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
+    _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -46,6 +47,8 @@ class MckVoice {
         this.maxRecordingTimer = null;
         this.deferredRecordingHandler = null;
         this.silenceDetectionContext = null;
+        this.silenceTimeout = null;
+        this.silenceNoiseStart = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -150,6 +153,7 @@ class MckVoice {
             );
 
             audio.addEventListener('ended', () => {
+                URL.revokeObjectURL(mediaSourceUrl);
                 this.messagesQueue.shift();
 
                 if (this.messagesQueue.length > 0) {
@@ -197,8 +201,6 @@ class MckVoice {
                     this.removeAllAnimation();
                     this.scheduleAutoListen();
                     this.clearVoiceStatus();
-                    this.hideInlineStatus();
-                    this.hideInlineMicButton();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             });
@@ -229,9 +231,18 @@ class MckVoice {
                 }
             }
 
-            processStream();
+            processStream().catch((err) => {
+                console.error('Stream processing error:', err);
+                URL.revokeObjectURL(mediaSourceUrl);
+                if (mediaSource.readyState === 'open') {
+                    try {
+                        mediaSource.endOfStream('network');
+                    } catch (e) {}
+                }
+            });
         } catch (err) {
             console.error(err);
+            URL.revokeObjectURL(mediaSourceUrl);
             if (mediaSource.readyState === 'open') {
                 try {
                     mediaSource.endOfStream();
@@ -292,8 +303,6 @@ class MckVoice {
                     ring1.classList.remove('ring-recede');
                     this.scheduleAutoListen();
                     this.clearVoiceStatus();
-                    this.hideInlineStatus();
-                    this.hideInlineMicButton();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             };
@@ -469,6 +478,8 @@ class MckVoice {
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
         this.maxRecordingTimer = null;
+        this.silenceNoiseStart = null;
+        this.silenceTimeout = null;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -563,6 +574,7 @@ class MckVoice {
                     clearInterval(this.silenceTimer);
                     this.silenceTimer = null;
                 }
+                this.clearSilenceTimeout();
                 if (this.maxRecordingTimer) {
                     clearTimeout(this.maxRecordingTimer);
                     this.maxRecordingTimer = null;
@@ -883,8 +895,6 @@ class MckVoice {
         element.textContent = '';
         element.classList.add('n-vis');
         element.removeAttribute('data-listening');
-        this.hideInlineStatus();
-        this.hideInlineMicButton();
     }
 
     updateVoiceStatus(text, listening = false) {
@@ -996,6 +1006,43 @@ class MckVoice {
             clearTimeout(this.responseTimeout);
             this.responseTimeout = null;
         }
+    }
+
+    clearSilenceTimeout() {
+        if (this.silenceTimeout) {
+            clearTimeout(this.silenceTimeout);
+            this.silenceTimeout = null;
+        }
+        this.silenceNoiseStart = null;
+    }
+
+    startSilenceTimeout() {
+        this.clearSilenceTimeout();
+        if (!this.silenceStart) {
+            return;
+        }
+        const elapsed = Date.now() - this.silenceStart;
+        const delay = Math.max(this._SILENCE_DURATION - elapsed, 0);
+        if (delay === 0) {
+            this.handleSilenceTimeout();
+            return;
+        }
+        this.silenceTimeout = setTimeout(() => this.handleSilenceTimeout(), delay);
+    }
+
+    handleSilenceTimeout() {
+        this.silenceTimeout = null;
+        if (!this.isRecording || !this.isInSilence) {
+            return;
+        }
+        const silenceDuration = this.silenceStart ? Date.now() - this.silenceStart : 0;
+        if (silenceDuration < this._SILENCE_DURATION) {
+            this.startSilenceTimeout();
+            return;
+        }
+        console.debug('User silent for a few moments, stopping recording');
+        this.stopRecording();
+        this.addThinkingAnimation();
     }
 
     enableAutoListening() {
@@ -1168,9 +1215,20 @@ class MckVoice {
             if (isSpeech) {
                 this.hasSoundDetected = true;
                 this.soundSamples++;
-                this.silenceStart = null;
                 this.speechDetected = true;
+                if (this.isInSilence) {
+                    if (!this.silenceNoiseStart) {
+                        this.silenceNoiseStart = Date.now();
+                    }
+                    const noiseDuration = Date.now() - this.silenceNoiseStart;
+                    if (noiseDuration < this._SILENCE_NOISE_TOLERANCE) {
+                        return;
+                    }
+                }
+                this.silenceStart = null;
+                this.silenceNoiseStart = null;
                 this.isInSilence = false;
+                this.clearSilenceTimeout();
                 if (!this.firstSpeechTimestamp) {
                     this.firstSpeechTimestamp = Date.now();
                 }
@@ -1186,11 +1244,13 @@ class MckVoice {
                     }
                     this.silenceStart = Date.now();
                     this.isInSilence = true;
+                    this.silenceNoiseStart = null;
                     console.debug('Silence detected, starting timer');
+                    this.startSilenceTimeout();
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
                     if (silenceDuration >= this._SILENCE_DURATION) {
-                        console.debug('User silent for a few moments, stopping recording');
+                        this.clearSilenceTimeout();
                         this.stopRecording();
                         this.addThinkingAnimation();
                     }
@@ -1204,6 +1264,7 @@ class MckVoice {
         // Clean up when recording stops
         scriptProcessor.onaudioprocess = () => {
             if (!this.isRecording) {
+                this.clearSilenceTimeout();
                 if (this.silenceTimer) {
                     clearInterval(this.silenceTimer);
                     this.silenceTimer = null;
@@ -1220,6 +1281,7 @@ class MckVoice {
     }
 
     stopRecording(forceStop = false) {
+        this.clearSilenceTimeout();
         if (this.mediaRecorder && this.isRecording) {
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
