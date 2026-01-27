@@ -1,9 +1,9 @@
 class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
-    _RMS_THRESHOLD = 0.02;
-    _ZERO_CROSSING_THRESHOLD = 0.035;
-    _SILENCE_DURATION = 400; // 0.4 seconds of silence before stopping
-    _MIN_SPEECH_DURATION = 150; // require at least 150ms of speech before silencing
+    _RMS_THRESHOLD = 0.018;
+    _ZERO_CROSSING_THRESHOLD = 0.03;
+    _SILENCE_DURATION = 250; // 0.25 seconds of silence before stopping
+    _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
