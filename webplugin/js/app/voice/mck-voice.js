@@ -196,6 +196,9 @@ class MckVoice {
                     ring1.classList.remove('ring-recede');
                     this.removeAllAnimation();
                     this.scheduleAutoListen();
+                    this.clearVoiceStatus();
+                    this.hideInlineStatus();
+                    this.hideInlineMicButton();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             });
@@ -288,6 +291,9 @@ class MckVoice {
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                     this.scheduleAutoListen();
+                    this.clearVoiceStatus();
+                    this.hideInlineStatus();
+                    this.hideInlineMicButton();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
                 this.audioElement = null;
             };
@@ -534,8 +540,6 @@ class MckVoice {
                         message: userMsg,
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
-                    this.clearVoiceStatus();
-                    this.hideInlineStatus();
                 }
             } catch (error) {
                 console.error(error);
@@ -563,7 +567,6 @@ class MckVoice {
                     clearTimeout(this.maxRecordingTimer);
                     this.maxRecordingTimer = null;
                 }
-                this.clearVoiceStatus();
                 this.scheduleAutoListen();
             }
         };
