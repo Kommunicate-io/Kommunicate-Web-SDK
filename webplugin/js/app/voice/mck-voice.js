@@ -322,7 +322,7 @@ class MckVoice {
                 'mck-hidden'
             );
             // Call the audio recording function
-            this.requestAudioRecording();
+            this.requestAudioRecordingWhenReady();
         });
 
         document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
@@ -1008,9 +1008,7 @@ class MckVoice {
     }
 
     scheduleAutoListen(delay = 300) {
-        if (this.autoListenTimeout) {
-            clearTimeout(this.autoListenTimeout);
-        }
+        this.clearAutoListenTimeout();
         if (
             !this.autoListeningEnabled ||
             this.voiceMuted ||
