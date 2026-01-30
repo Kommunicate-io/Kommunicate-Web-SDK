@@ -198,5 +198,17 @@
   "form.error.invalidValue": "Sie haben einen ungültigen Wert eingegeben",
   "location.coordinates.lat": "Breite:",
   "location.coordinates.lon": "Länge:",
-  "whatsnew.empty": "Was ist neu, kommt bald."
+  "whatsnew.empty": "Was ist neu, kommt bald.",
+  "file.error.invalid": "Ungültige Datei.",
+  "file.error.tooLarge": "Die Dateigröße überschreitet die maximal zulässige Größe.",
+  "file.error.mimeMismatch": "Der Dateityp stimmt nicht mit dem Dateiinhalt überein.",
+  "file.error.typeNotAllowed": "Der Dateityp ist nicht erlaubt.",
+  "file.error.malicious": "Bösartiger Dateiinhalte erkannt.",
+  "file.error.unauthorized": "Benutzersitzung ist erforderlich.",
+  "file.error.emptyFile": "Keine Datei bereitgestellt.",
+  "file.error.read": "Datei konnte nicht gelesen werden.",
+  "file.error.notFound": "Datei für den angegebenen Schlüssel nicht gefunden.",
+  "file.error.validationFailed": "Dateiüberprüfung fehlgeschlagen.",
+  "file.error.uploadFailed": "Dateiupload fehlgeschlagen.",
+  "file.error.default": "Dateiupload fehlgeschlagen."
 }
