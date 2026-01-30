@@ -15,6 +15,20 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+var FILE_ERROR_LABEL_KEYS = {
+    INVALID_FILE: 'file.error.invalid',
+    FILE_TOO_LARGE: 'file.error.tooLarge',
+    MIME_TYPE_MISMATCH: 'file.error.mimeMismatch',
+    FILE_TYPE_NOT_ALLOWED: 'file.error.typeNotAllowed',
+    MALICIOUS_CONTENT: 'file.error.malicious',
+    UNAUTHORIZED: 'file.error.unauthorized',
+    EMPTY_FILE: 'file.error.emptyFile',
+    FILE_READ_ERROR: 'file.error.read',
+    FILE_NOT_FOUND: 'file.error.notFound',
+    FILE_VALIDATION_FAILED: 'file.error.validationFailed',
+    UPLOAD_FAILED: 'file.error.uploadFailed',
+};
+var FILE_ERROR_DEFAULT_FALLBACK = 'File upload failed.';
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
@@ -13540,6 +13554,14 @@ const firstVisibleMsg = {
                 };
             };
 
+            var getLocalizedFileErrorMessage = function (errorCode) {
+                var labelKey = FILE_ERROR_LABEL_KEYS[errorCode];
+                if (!labelKey) {
+                    return null;
+                }
+                return kommunicateCommons.getLocalizedLabel(labelKey);
+            };
+
             var handleFileExtensionError = function (
                 xhr,
                 responseJson,
@@ -13552,7 +13574,12 @@ const firstVisibleMsg = {
                 if (!errorInfo) {
                     return false;
                 }
-                var errorMsg = errorInfo.message || 'File upload failed.';
+                var localizedMessage = getLocalizedFileErrorMessage(errorInfo.code);
+                var defaultMessage = kommunicateCommons.getLocalizedLabel(
+                    'file.error.default',
+                    FILE_ERROR_DEFAULT_FALLBACK
+                );
+                var errorMsg = localizedMessage || defaultMessage;
                 showFileExtensionError(errorMsg);
                 if (messagePxy && messagePxy.key) {
                     if (errorInfo.code === 'MALICIOUS_CONTENT') {
