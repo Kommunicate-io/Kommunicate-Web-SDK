@@ -13512,6 +13512,34 @@ const firstVisibleMsg = {
                 }
             };
 
+            var getUploadErrorInfo = function (responseJson) {
+                if (!responseJson || typeof responseJson !== 'object') {
+                    return null;
+                }
+                var errorEntry = null;
+                if (responseJson.errorResponse && responseJson.errorResponse.length) {
+                    errorEntry = responseJson.errorResponse[0];
+                } else if (responseJson.errorCode || responseJson.errorMessage) {
+                    errorEntry = responseJson;
+                }
+                if (!errorEntry) {
+                    return null;
+                }
+                var errorCode = errorEntry.errorCode || errorEntry.code;
+                var errorMessage =
+                    errorEntry.description ||
+                    errorEntry.displayMessage ||
+                    errorEntry.message ||
+                    responseJson.errorMessage;
+                if (!errorCode && !errorMessage) {
+                    return null;
+                }
+                return {
+                    code: errorCode,
+                    message: errorMessage,
+                };
+            };
+
             var handleFileExtensionError = function (
                 xhr,
                 responseJson,
@@ -13520,44 +13548,37 @@ const firstVisibleMsg = {
                 $mck_file_upload,
                 $mck_msg_sbmt
             ) {
-                if (
-                    xhr.status === 403 &&
-                    responseJson &&
-                    responseJson.errorResponse &&
-                    responseJson.errorResponse.length > 0 &&
-                    responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
-                ) {
-                    var errorMsg =
-                        (responseJson.errorResponse &&
-                            responseJson.errorResponse[0] &&
-                            (responseJson.errorResponse[0].description ||
-                                responseJson.errorResponse[0].displayMessage)) ||
-                        (responseJson && responseJson.errorMessage) ||
-                        'File type is not allowed.';
-                    showFileExtensionError(errorMsg);
-                    if (messagePxy) {
+                var errorInfo = getUploadErrorInfo(responseJson);
+                if (!errorInfo) {
+                    return false;
+                }
+                var errorMsg = errorInfo.message || 'File upload failed.';
+                showFileExtensionError(errorMsg);
+                if (messagePxy && messagePxy.key) {
+                    if (errorInfo.code === 'MALICIOUS_CONTENT') {
+                        _this.showMaliciousFileError(messagePxy.key);
+                    } else {
                         _this.showFileExtensionError(messagePxy.key);
                     }
-                    if ($file_remove) {
-                        $file_remove.attr('disabled', false);
-                        $file_remove.trigger('click');
-                    }
-                    if ($mck_file_upload) {
-                        $mck_file_upload.attr('disabled', false);
-                    }
-                    if ($mck_msg_sbmt) {
-                        $mck_msg_sbmt.attr('disabled', false);
-                    }
-                    if (messagePxy) {
-                        mckMessageLayout.removedDeletedMessage(
-                            messagePxy.key,
-                            messagePxy.groupId,
-                            true
-                        );
-                    }
-                    return true;
                 }
-                return false;
+                if ($file_remove) {
+                    $file_remove.attr('disabled', false);
+                    $file_remove.trigger('click');
+                }
+                if ($mck_file_upload) {
+                    $mck_file_upload.attr('disabled', false);
+                }
+                if ($mck_msg_sbmt) {
+                    $mck_msg_sbmt.attr('disabled', false);
+                }
+                if (messagePxy) {
+                    mckMessageLayout.removedDeletedMessage(
+                        messagePxy.key,
+                        messagePxy.groupId,
+                        true
+                    );
+                }
+                return true;
             };
 
             _this.uploadFileFunction = function (event, fileToUpload) {
@@ -13943,10 +13964,6 @@ const firstVisibleMsg = {
                     });
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
-                        if (responseJson && responseJson?.errorCode === 'MALICIOUS_CONTENT') {
-                            _this.showMaliciousFileError(messagePxy.key);
-                            return;
-                        }
                         if (
                             handleFileExtensionError(
                                 this,
