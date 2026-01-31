@@ -62,7 +62,7 @@ const firstVisibleMsg = {
         olStatus: false,
         unreadCountOnchatLauncher: true,
         openConversationOnNewMessage: false, // default value
-        preCreateUser: true,
+        preCreateUser: false,
         //      awsS3Server :false,
         groupUserCount: false,
         desktopNotification: true,
