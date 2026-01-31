@@ -395,6 +395,11 @@ function ApplozicSidebox() {
             if (options.labels && options.labels['lead.collection']?.heading) {
                 options['headingFromWidget'] = true;
             }
+            var userIdFromKommunicateSettings = options.userId;
+            var hasUserIdFromKommunicateSettings =
+                userIdFromKommunicateSettings != null &&
+                (typeof userIdFromKommunicateSettings !== 'string' ||
+                    userIdFromKommunicateSettings.trim().length > 0);
             var widgetSettingsFromApi = data.chatWidget || {};
             var localWidgetSettings =
                 options.widgetSettings && typeof options.widgetSettings === 'object'
@@ -591,11 +596,8 @@ function ApplozicSidebox() {
                     ? options.staticTopIcon
                     : widgetSettings && widgetSettings.staticTopIcon;
             options.preCreateUser =
-                options.preCreateUser != null
-                    ? options.preCreateUser
-                    : widgetSettings && widgetSettings.preCreateUser != null
-                    ? widgetSettings.preCreateUser
-                    : false;
+                hasUserIdFromKommunicateSettings ||
+                (widgetSettings && widgetSettings.preCreateUser);
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
