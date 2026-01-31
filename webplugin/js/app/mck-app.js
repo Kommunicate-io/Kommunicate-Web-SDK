@@ -577,6 +577,14 @@ function ApplozicSidebox() {
             options.anonymousUserIdForPreChatLead = isSettingEnable(
                 'anonymousUserIdForPreChatLead'
             );
+            options.preCreateUser =
+                options.preCreateUser != null
+                    ? options.preCreateUser
+                    : data.preCreateUser != null
+                    ? data.preCreateUser
+                    : widgetSettings && widgetSettings.preCreateUser != null
+                    ? widgetSettings.preCreateUser
+                    : false;
 
             options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
             options.voiceChatApiKey = options.voiceChatApiKey || data.voiceChatApiKey;
