@@ -2,10 +2,11 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping
+    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping (ideal for customer support flows)
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
+    _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -49,6 +50,7 @@ class MckVoice {
         this.silenceDetectionContext = null;
         this.silenceTimeout = null;
         this.silenceNoiseStart = null;
+        this.lastRecordingEnd = 0;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -478,6 +480,7 @@ class MckVoice {
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
         this.maxRecordingTimer = null;
+        this.lastRecordingEnd = 0;
         this.silenceNoiseStart = null;
         this.silenceTimeout = null;
 
@@ -568,6 +571,7 @@ class MckVoice {
                 this.stream.getTracks().forEach((track) => track.stop());
                 this.stream = null;
                 this.isRecording = false;
+                this.lastRecordingEnd = Date.now();
 
                 // Clear any silence detection timers
                 if (this.silenceTimer) {
@@ -1059,6 +1063,12 @@ class MckVoice {
 
     scheduleAutoListen(delay = 300) {
         this.clearAutoListenTimeout();
+        if (this.lastRecordingEnd) {
+            const cooldownElapsed = Date.now() - this.lastRecordingEnd;
+            if (cooldownElapsed < this._AUTO_LISTEN_COOLDOWN) {
+                return;
+            }
+        }
         if (
             !this.autoListeningEnabled ||
             this.voiceMuted ||
