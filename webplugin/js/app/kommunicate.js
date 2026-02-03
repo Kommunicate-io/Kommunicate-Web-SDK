@@ -735,7 +735,7 @@ $applozic.extend(true, Kommunicate, {
      * @param {Boolean} display
      */
     displayKommunicateWidget: function (display) {
-        var kommunicateIframe = document.getElementById('kommunicate-widget-iframe');
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
 
         if (display) {
             kommunicateIframe &&
