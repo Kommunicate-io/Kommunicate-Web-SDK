@@ -20,18 +20,18 @@
     list-style: none;
     margin: 0;
     padding: 0;
-}
-.km-faq-list--body_list li {
-    margin-bottom: 12px;
+    margin-bottom: 0px !important ;
 }
 
 .km-faq-list--body_list li > a {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
     border: 1px solid rgba(114, 134, 211, 0.2);
-    border-radius: 20px;
-    padding: 16px 18px;
+    margin-bottom: 0px;
+    padding: 8px;
     color: #1c2043;
     background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
     box-shadow: 0 10px 24px rgba(71, 92, 168, 0.12);
@@ -75,7 +75,7 @@
 }
 
 .km-faq-list--body_img {
-    padding: 10px 0px 10px 12px;
+    padding: 0;
     /*width: 70px;*/
     height: 50px;
     border-radius: 4px;
@@ -98,7 +98,7 @@
     font-size: 18px;
     bottom: 2px;
     left: 12px;
-    margin: 0;
+    margin: 0px !important;
     padding: $msg-box-padding !important;
     text-align: left;
     word-wrap: break-word;
