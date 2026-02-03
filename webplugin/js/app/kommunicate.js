@@ -736,12 +736,17 @@ $applozic.extend(true, Kommunicate, {
      */
     displayKommunicateWidget: function (display) {
         var kommunicateIframe = document.getElementById('kommunicate-widget-iframe');
+
         if (display) {
             kommunicateIframe &&
                 kommunicateIframe.classList.remove('kommunicate-hide-custom-iframe');
             var launcherButton = document.querySelector('#mck-sidebox-launcher .applozic-launcher');
             launcherButton && launcherButton.click();
         } else {
+            var closeButton = document.getElementById('km-chat-widget-close-button');
+            if (closeButton) {
+                closeButton.click();
+            }
             kommunicateIframe && kommunicateIframe.classList.add('kommunicate-hide-custom-iframe');
         }
     },
