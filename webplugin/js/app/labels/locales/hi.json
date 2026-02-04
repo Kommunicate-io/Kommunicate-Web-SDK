@@ -198,5 +198,17 @@
   "form.error.invalidValue": "आपने अमान्य मान दर्ज किया है",
   "location.coordinates.lat": "अक्षांश:",
   "location.coordinates.lon": "देशांतर:",
-  "whatsnew.empty": "जल्द ही नया अपडेट आ रहा है।"
+  "whatsnew.empty": "जल्द ही नया अपडेट आ रहा है।",
+  "file.error.invalid": "अमान्य फ़ाइल।",
+  "file.error.tooLarge": "फ़ाइल का आकार अधिकतम सीमा से बड़ा है।",
+  "file.error.mimeMismatch": "फ़ाइल प्रकार सामग्री से मेल नहीं खाता।",
+  "file.error.typeNotAllowed": "यह फ़ाइल प्रकार अनुमत नहीं है।",
+  "file.error.malicious": "फ़ाइल में हानिकारक सामग्री मिली।",
+  "file.error.unauthorized": "उपयोगकर्ता सत्र आवश्यक है।",
+  "file.error.emptyFile": "कोई फ़ाइल प्रदान नहीं की गई।",
+  "file.error.read": "फ़ाइल पढ़ने में विफल।",
+  "file.error.notFound": "दिए गए कुंजी के लिए फ़ाइल नहीं मिली।",
+  "file.error.validationFailed": "फ़ाइल सत्यापन विफल रहा।",
+  "file.error.uploadFailed": "फ़ाइल अपलोड विफल रहा।",
+  "file.error.default": "फ़ाइल अपलोड विफल रहा।"
 }

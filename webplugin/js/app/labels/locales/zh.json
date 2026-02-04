@@ -198,5 +198,17 @@
   "form.error.invalidValue": "您输入了无效值",
   "location.coordinates.lat": "纬度:",
   "location.coordinates.lon": "经度:",
-  "whatsnew.empty": "新功能即将推出。"
+  "whatsnew.empty": "新功能即将推出。",
+  "file.error.invalid": "文件无效。",
+  "file.error.tooLarge": "文件大小超过允许的最大限制。",
+  "file.error.mimeMismatch": "文件类型与内容不匹配。",
+  "file.error.typeNotAllowed": "不允许的文件类型。",
+  "file.error.malicious": "检测到恶意文件内容。",
+  "file.error.unauthorized": "需要用户会话。",
+  "file.error.emptyFile": "未提供文件。",
+  "file.error.read": "无法读取文件。",
+  "file.error.notFound": "未找到该键对应的文件。",
+  "file.error.validationFailed": "文件验证失败。",
+  "file.error.uploadFailed": "文件上传失败。",
+  "file.error.default": "文件上传失败。"
 }

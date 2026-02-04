@@ -36,6 +36,16 @@ function KommunicateCommons() {
         );
     };
 
+    _this.getLocalizedLabel = function (labelKey, fallback) {
+        if (!labelKey) {
+            return fallback || null;
+        }
+        if (typeof MCK_LABELS === 'undefined' || !MCK_LABELS) {
+            return fallback || null;
+        }
+        return MCK_LABELS[labelKey] || fallback || null;
+    };
+
     var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
     var MODERN_NAV_HEIGHT_EXTRA = 22;
     var NAV_HEIGHT_OFFSET = 16;

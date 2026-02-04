@@ -198,5 +198,17 @@
   "form.error.invalidValue": "لقد أدخلت قيمة غير صالحة",
   "location.coordinates.lat": "خط العرض:",
   "location.coordinates.lon": "خط الطول:",
-  "whatsnew.empty": "الجديد قريباً."
+  "whatsnew.empty": "الجديد قريباً.",
+  "file.error.invalid": "ملف غير صالح.",
+  "file.error.tooLarge": "حجم الملف يتجاوز الحد الأقصى المسموح به.",
+  "file.error.mimeMismatch": "نوع الملف لا يطابق محتوى الملف.",
+  "file.error.typeNotAllowed": "نوع الملف غير مسموح به.",
+  "file.error.malicious": "تم اكتشاف محتوى ملف ضار.",
+  "file.error.unauthorized": "يلزم وجود جلسة مستخدم.",
+  "file.error.emptyFile": "لم يتم توفير ملف.",
+  "file.error.read": "تعذر قراءة الملف.",
+  "file.error.notFound": "لم يتم العثور على الملف للمفتاح المحدد.",
+  "file.error.validationFailed": "فشل التحقق من صحة الملف.",
+  "file.error.uploadFailed": "فشل رفع الملف.",
+  "file.error.default": "فشل رفع الملف."
 }
