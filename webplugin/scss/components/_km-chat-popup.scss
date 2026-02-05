@@ -101,7 +101,16 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         &.align-left {
-            right: 60px;
+            right: 26px;
+
+            .chat-popup-widget-text {
+                padding: 20px 20px 20px 60px;
+            }
+
+            .chat-popup-widget-close-btn-container {
+                left: auto;
+                right: -8px;
+            }
         }
         & .chat-popup-widget-text {
             padding: 20px 60px 20px 20px;
@@ -132,10 +141,16 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         &.align-left {
-            left: 20px;
+            left: 78px;
 
             & #chat-popup-actionable-btn-container {
                 right: unset;
+            }
+
+            .chat-popup-widget-close-btn-container {
+                top: -4px;
+                right: -4px;
+                left: auto;
             }
         }
 

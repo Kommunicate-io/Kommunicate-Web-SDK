@@ -563,7 +563,14 @@ input[type=number]::-webkit-outer-spin-button {
   animation: km-reveal-animation-horizontal 0.3s ease-in-out 0.3s 1 forwards;
 }
 .chat-popup-widget-container--horizontal.align-left {
-  right: 60px;
+  right: 26px;
+}
+.chat-popup-widget-container--horizontal.align-left .chat-popup-widget-text {
+  padding: 20px 20px 20px 60px;
+}
+.chat-popup-widget-container--horizontal.align-left .chat-popup-widget-close-btn-container {
+  left: auto;
+  right: -8px;
 }
 .chat-popup-widget-container--horizontal .chat-popup-widget-text {
   padding: 20px 60px 20px 20px;
@@ -593,10 +600,15 @@ input[type=number]::-webkit-outer-spin-button {
   animation: km-reveal-animation-vertical 0.3s ease-in-out 0.3s 1 forwards;
 }
 .chat-popup-widget-container--vertical.align-left {
-  left: 20px;
+  left: 78px;
 }
 .chat-popup-widget-container--vertical.align-left #chat-popup-actionable-btn-container {
   right: unset;
+}
+.chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
+  top: -4px;
+  right: -4px;
+  left: auto;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-text-wrapper {
   min-height: 75px;

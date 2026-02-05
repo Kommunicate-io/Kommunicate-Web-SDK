@@ -73,7 +73,7 @@ var kmCustomIframe =
     'width:100vw;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
-    '   width: 460px;' +
+    '   width: 400px;' +
     '   min-height: 80px;' +
     '   height: 90px;' +
     '} \n' +
