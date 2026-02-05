@@ -109,15 +109,270 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
+var FIT_RETRY_DELAY = 250;
+var pendingFitContainerId = '';
+var fitRetryTimer = null;
+var fitContainerActive = false;
+var currentContainerId = '';
+var currentContainerRect = null;
+var LAUNCHER_MARGIN = 20;
+
+function getContainerDimensions(element) {
+    if (!element) {
+        return { width: 0, height: 0 };
+    }
+    var rect = element.getBoundingClientRect();
+    var width = rect && rect.width ? rect.width : element.offsetWidth;
+    var height = rect && rect.height ? rect.height : element.offsetHeight;
+    var computedStyle =
+        typeof window !== 'undefined' && window.getComputedStyle
+            ? window.getComputedStyle(element)
+            : null;
+    if ((!width || width <= 0) && computedStyle) {
+        var parsedWidth = parseFloat(computedStyle.width);
+        width = !isNaN(parsedWidth) ? parsedWidth : width;
+    }
+    if ((!height || height <= 0) && computedStyle) {
+        var parsedHeight = parseFloat(computedStyle.height);
+        height = !isNaN(parsedHeight) ? parsedHeight : height;
+    }
+    return {
+        width: width || 0,
+        height: height || 0,
+    };
+}
+
+function applyFitToContainer(containerId) {
+    if (!containerId) {
+        return false;
+    }
+    var target = document.getElementById(containerId);
+    if (!target) {
+        return false;
+    }
+    var size = getContainerDimensions(target);
+    if (!size.width && !size.height) {
+        return false;
+    }
+    var kommunicateIframe = document.getElementById(kmCustomElements.iframe.id);
+    if (!kommunicateIframe) {
+        return false;
+    }
+    if (size.width) {
+        kommunicateIframe.style.width = Math.round(size.width) + 'px';
+    }
+    if (size.height) {
+        kommunicateIframe.style.height = Math.round(size.height) + 'px';
+    }
+    positionIframeOverContainer(target, kommunicateIframe);
+    fitContainerActive = true;
+    currentContainerId = containerId;
+    currentContainerRect = target.getBoundingClientRect();
+    repositionLauncherForContainer(currentContainerRect);
+    return true;
+}
+
+function parseOffsetValue(value) {
+    if (!value) {
+        return null;
+    }
+    var trimmed = value.trim();
+    if (!trimmed || trimmed === 'auto' || trimmed === 'initial' || trimmed === 'inherit') {
+        return null;
+    }
+    var parsed = parseFloat(trimmed);
+    return isNaN(parsed) ? null : parsed;
+}
+
+function getElementAlignmentOffsets(element) {
+    if (!element || typeof window === 'undefined' || !window.getComputedStyle) {
+        return {
+            top: null,
+            bottom: null,
+            left: null,
+            right: null,
+        };
+    }
+    var computedStyle = window.getComputedStyle(element);
+    return {
+        top: parseOffsetValue(computedStyle.top),
+        bottom: parseOffsetValue(computedStyle.bottom),
+        left: parseOffsetValue(computedStyle.left),
+        right: parseOffsetValue(computedStyle.right),
+    };
+}
+
+function positionIframeOverContainer(target, iframe) {
+    if (!target || !iframe) {
+        return;
+    }
+    var rect = target.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+    var iframeHeight =
+        iframe.getBoundingClientRect().height || iframe.offsetHeight || iframe.clientHeight || 0;
+    var iframeWidth =
+        iframe.getBoundingClientRect().width || iframe.offsetWidth || iframe.clientWidth || 0;
+    var offsets = getElementAlignmentOffsets(iframe);
+
+    var topPosition;
+    if (offsets.bottom != null) {
+        var verticalSpace = rect.height - iframeHeight - offsets.bottom;
+        if (verticalSpace < 0) {
+            verticalSpace = 0;
+        }
+        topPosition = rect.top + verticalSpace;
+    } else if (offsets.top != null) {
+        topPosition = rect.top + offsets.top;
+    } else {
+        topPosition = rect.top;
+    }
+
+    var leftPosition;
+    if (offsets.left != null) {
+        leftPosition = rect.left + offsets.left;
+    } else if (offsets.right != null) {
+        var horizontalSpace = rect.width - iframeWidth - offsets.right;
+        if (horizontalSpace < 0) {
+            horizontalSpace = 0;
+        }
+        leftPosition = rect.left + horizontalSpace;
+    } else {
+        leftPosition = rect.left;
+    }
+
+    var minTop = rect.top;
+    var maxTop = rect.top + rect.height - iframeHeight;
+    if (maxTop < minTop) {
+        maxTop = minTop;
+    }
+    var minLeft = rect.left;
+    var maxLeft = rect.left + rect.width - iframeWidth;
+    if (maxLeft < minLeft) {
+        maxLeft = minLeft;
+    }
+
+    topPosition = Math.min(Math.max(topPosition, minTop), maxTop);
+    leftPosition = Math.min(Math.max(leftPosition, minLeft), maxLeft);
+
+    iframe.style.position = 'absolute';
+    iframe.style.top = scrollTop + topPosition + 'px';
+    iframe.style.left = scrollLeft + leftPosition + 'px';
+    iframe.style.bottom = 'auto';
+    iframe.style.right = 'auto';
+}
+
+function repositionLauncherForContainer(rect) {
+    if (!rect) {
+        return;
+    }
+    var launcher = document.getElementById('mck-sidebox-launcher');
+    if (!launcher) {
+        return;
+    }
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+    var launcherWidth = launcher.offsetWidth;
+    var launcherHeight = launcher.offsetHeight;
+    if (!launcherWidth || !launcherHeight) {
+        return;
+    }
+    var launcherOffsets = getElementAlignmentOffsets(launcher);
+
+    var launcherTop;
+    if (launcherOffsets.bottom != null) {
+        launcherTop = rect.top + rect.height - launcherHeight - launcherOffsets.bottom;
+    } else if (launcherOffsets.top != null) {
+        launcherTop = rect.top + launcherOffsets.top;
+    } else {
+        launcherTop = rect.top + rect.height - launcherHeight - LAUNCHER_MARGIN;
+    }
+    var maxTop = rect.top + rect.height - launcherHeight;
+    var minTop = rect.top;
+    if (maxTop < minTop) {
+        maxTop = minTop;
+    }
+    launcherTop = Math.min(Math.max(launcherTop, minTop), maxTop);
+
+    var launcherLeft;
+    if (launcherOffsets.left != null) {
+        launcherLeft = rect.left + launcherOffsets.left;
+    } else if (launcherOffsets.right != null) {
+        launcherLeft = rect.left + rect.width - launcherWidth - launcherOffsets.right;
+    } else {
+        launcherLeft = rect.left + rect.width - launcherWidth - LAUNCHER_MARGIN;
+    }
+    var maxLeft = rect.left + rect.width - launcherWidth;
+    var minLeft = rect.left;
+    if (maxLeft < minLeft) {
+        maxLeft = minLeft;
+    }
+    launcherLeft = Math.min(Math.max(launcherLeft, minLeft), maxLeft);
+
+    launcher.style.position = 'absolute';
+    launcher.style.right = 'auto';
+    launcher.style.bottom = 'auto';
+    launcher.style.top = scrollTop + launcherTop + 'px';
+    launcher.style.left = scrollLeft + launcherLeft + 'px';
+}
+
+function refreshFitPosition() {
+    if (!fitContainerActive || !currentContainerId) {
+        return;
+    }
+    var target = document.getElementById(currentContainerId);
+    if (!target) {
+        return;
+    }
+    var iframe = document.getElementById(kmCustomElements.iframe.id);
+    if (!iframe) {
+        return;
+    }
+    positionIframeOverContainer(target, iframe);
+    var rect = target.getBoundingClientRect();
+    currentContainerRect = rect;
+    repositionLauncherForContainer(rect);
+}
+
+function scheduleFitForContainer(containerId) {
+    if (!containerId) {
+        return;
+    }
+    pendingFitContainerId = containerId;
+    if (fitRetryTimer) {
+        return;
+    }
+    var tryFit = function () {
+        fitRetryTimer = null;
+        if (!pendingFitContainerId) {
+            return;
+        }
+        if (applyFitToContainer(pendingFitContainerId)) {
+            pendingFitContainerId = '';
+            return;
+        }
+        fitRetryTimer = window.setTimeout(tryFit, FIT_RETRY_DELAY);
+    };
+    fitRetryTimer = window.setTimeout(tryFit, 0);
+}
+
 if (!window.__kmPopupResizeListener) {
     window.__kmPopupResizeListener = true;
     window.addEventListener('message', function (event) {
         var data = event && event.data ? event.data : null;
-        if (!data || data.type !== 'km_popup_resize') {
+        if (!data || !data.type) {
             return;
         }
         var kommunicateIframe = document.getElementById(kmCustomElements.iframe.id);
         if (!kommunicateIframe || event.source !== kommunicateIframe.contentWindow) {
+            return;
+        }
+        if (data.type === 'km_fit_container') {
+            var containerId = typeof data.containerId === 'string' ? data.containerId.trim() : '';
+            scheduleFitForContainer(containerId);
+            return;
+        }
+        if (data.type !== 'km_popup_resize') {
             return;
         }
         var clamp = function (value, min, max) {
@@ -135,9 +390,12 @@ if (!window.__kmPopupResizeListener) {
         }
         if (typeof data.height === 'number') {
             kommunicateIframe.style.height = clamp(data.height, 80, 700) + 'px';
+            refreshFitPosition();
         }
     });
 }
+window.addEventListener('scroll', refreshFitPosition);
+window.addEventListener('resize', refreshFitPosition);
 
 if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
     isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();

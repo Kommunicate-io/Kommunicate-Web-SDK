@@ -44,6 +44,37 @@ function activateConversationTabOnStartConversation() {
 var KOMMUNICATE_VERSION = window.kommunicate.version;
 KOMMUNICATE_VERSION === 'v2' && (parent.Kommunicate = window.Kommunicate);
 
+(function registerKommunicateFit() {
+    if (typeof Kommunicate.fit === 'function') {
+        return;
+    }
+
+    function dispatchContainerFit(containerId) {
+        var id =
+            typeof containerId === 'string'
+                ? containerId.trim()
+                : containerId && containerId.id
+                ? containerId.id
+                : '';
+        if (!id) {
+            return;
+        }
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage(
+                {
+                    type: 'km_fit_container',
+                    containerId: id,
+                },
+                '*'
+            );
+        }
+    }
+
+    Kommunicate.fit = function (containerId) {
+        dispatchContainerFit(containerId);
+    };
+})();
+
 $applozic.extend(true, Kommunicate, {
     getBaseUrl: function () {
         return KM_PLUGIN_SETTINGS.kommunicateApiUrl;
