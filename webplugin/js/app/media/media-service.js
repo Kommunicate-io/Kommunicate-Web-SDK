@@ -117,6 +117,21 @@ Kommunicate.mediaService = {
             // If the message isn't part of the UI, it's not included in voice output either
             if (!appOptions || !Kommunicate.visibleMessage(message)) return;
 
+            // When generative response is enabled, speak only tokenized messages.
+            // When disabled, speak only normal messages.
+            var isTokenizedResponseEnabled =
+                typeof CURRENT_GROUP_DATA !== 'undefined' &&
+                CURRENT_GROUP_DATA &&
+                CURRENT_GROUP_DATA.TOKENIZE_RESPONSE;
+
+            if (isTokenizedResponseEnabled) {
+                if (!message || !message.tokenMessage) {
+                    return;
+                }
+            } else if (message && message.tokenMessage) {
+                return;
+            }
+
             // if voiceOutput is enabled
             if (appOptions.voiceOutput) {
                 var textToSpeak = '';

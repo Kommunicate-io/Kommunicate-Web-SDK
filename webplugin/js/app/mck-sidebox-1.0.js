@@ -3134,10 +3134,16 @@ const firstVisibleMsg = {
                     openWidgetIframe();
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
+                function stopVoiceOutput() {
+                    if (appOptions.voiceOutput && 'speechSynthesis' in window) {
+                        window.speechSynthesis.cancel();
+                    }
+                }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
+                    stopVoiceOutput();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                     kommunicateCommons.show('#applozic-badge-count');
@@ -4505,6 +4511,11 @@ const firstVisibleMsg = {
                 );
                 $mck_msg_new.trigger('click');
             });
+            function stopVoiceOutput() {
+                if (appOptions.voiceOutput && 'speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            }
             $applozic('.mck-minimize-icon').click(function () {
                 $applozic('.mck-box-md,.mck-box-ft').animate({
                     height: 'toggle',
@@ -4515,6 +4526,7 @@ const firstVisibleMsg = {
                 } else {
                     $mck_sidebox_content.css('height', '0%');
                     $mck_sidebox_content.addClass('minimized');
+                    stopVoiceOutput();
                 }
             });
 
@@ -4590,6 +4602,7 @@ const firstVisibleMsg = {
                         skipEmptyStateToggle: true,
                         skipConversationListView: true,
                     });
+                    stopVoiceOutput();
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     _this.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
