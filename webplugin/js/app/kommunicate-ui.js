@@ -503,6 +503,7 @@ KommunicateUI = {
         $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
+            Kommunicate.mediaService.stopVoiceOutput();
             KommunicateUI.awayMessageScroll = true;
             KommunicateUI.hideAwayMessage();
             KommunicateUI.hideLeadCollectionTemplate();

@@ -1086,9 +1086,15 @@ const firstVisibleMsg = {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
                 }
+                window.addEventListener('beforeunload', function () {
+                    Kommunicate.mediaService.stopVoiceOutput();
+                });
+                window.addEventListener('pagehide', function () {
+                    Kommunicate.mediaService.stopVoiceOutput();
+                });
                 function hackForIosDevices() {
                     /** 
-                        it is only for IOS devices so using newer syntax
+                    it is only for IOS devices so using newer syntax
                         IOS devices would not let the speech API run programmatically unless we have triggered manually one time under the user's interaction.
                      */
 
