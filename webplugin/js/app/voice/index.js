@@ -2,21 +2,61 @@ class Voice {
     _VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
     _VOICE_PLATFORM_API_KEY = kommunicate._globals.voiceChatApiKey;
 
-    textToSpeechStream(text = '') {
-        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
+    get voiceChatConfig() {
+        return (
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChatSettings) ||
+            {}
+        );
+    }
 
+    get voiceId() {
+        return this.voiceChatConfig.voiceId || 'pMsXgVXv3BLzUgSXRplE';
+    }
+
+    get voiceSettingsPayload() {
+        const settings = {};
+        const config = this.voiceChatConfig;
+        if (config.stability !== undefined) {
+            settings.stability = config.stability;
+        }
+        if (config.similarityBoost !== undefined) {
+            settings.similarity_boost = config.similarityBoost;
+        }
+        if (config.style !== undefined) {
+            settings.style = config.style;
+        }
+        if (config.useSpeakerBoost !== undefined) {
+            settings.use_speaker_boost = config.useSpeakerBoost;
+        }
+        return Object.keys(settings).length ? settings : null;
+    }
+
+    textToSpeechStream(text = '') {
+        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/${this.voiceId}/stream`;
         const headers = {
             'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
+        const payload = { text };
+        const config = this.voiceChatConfig;
+        if (config.speed !== undefined) {
+            payload.speed = config.speed;
+        }
+        if (config.model) {
+            payload.model = config.model;
+        }
+        const voiceSettings = this.voiceSettingsPayload;
+        if (voiceSettings) {
+            payload.voice_settings = voiceSettings;
+        }
 
         return fetch(apiUrl, {
             method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                text: text,
-            }),
+            headers,
+            body: JSON.stringify(payload),
         })
             .then((response) => {
                 if (!response.ok) {
