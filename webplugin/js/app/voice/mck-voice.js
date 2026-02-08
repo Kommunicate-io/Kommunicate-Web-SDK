@@ -5,6 +5,7 @@ class MckVoice {
     _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping (ideal for customer support flows)
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
+    _VOICE_MODE_SESSION_TIMEOUT = 120000; // close voice mode if it runs this long without switching to chat
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     // Threshold for frequency-domain visualizer (0..255 scale)
@@ -51,6 +52,8 @@ class MckVoice {
         this.silenceTimeout = null;
         this.silenceNoiseStart = null;
         this.lastRecordingEnd = 0;
+        this.stoppedDueToSilence = false;
+        this.voiceModeTimeoutId = null;
         this.voiceOutputTemporarilyDisabled = false;
         this.previousVoiceOutputState = null;
     }
@@ -535,6 +538,7 @@ class MckVoice {
         this.lastRecordingEnd = 0;
         this.silenceNoiseStart = null;
         this.silenceTimeout = null;
+        this.stoppedDueToSilence = false;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -635,7 +639,9 @@ class MckVoice {
                     clearTimeout(this.maxRecordingTimer);
                     this.maxRecordingTimer = null;
                 }
-                this.scheduleAutoListen();
+                const shouldForceAutoListen = this.stoppedDueToSilence;
+                this.stoppedDueToSilence = false;
+                this.scheduleAutoListen(undefined, shouldForceAutoListen);
             }
         };
 
@@ -1105,17 +1111,19 @@ class MckVoice {
         this.autoListeningEnabled = true;
         this.clearAutoListenTimeout();
         this.clearResponseTimeout();
+        this.startVoiceModeTimeout();
     }
 
     disableAutoListening() {
         this.autoListeningEnabled = false;
         this.clearAutoListenTimeout();
         this.clearResponseTimeout();
+        this.clearVoiceModeTimeout();
     }
 
-    scheduleAutoListen(delay = 300) {
+    scheduleAutoListen(delay = 300, force = false) {
         this.clearAutoListenTimeout();
-        if (this.lastRecordingEnd) {
+        if (!force && this.lastRecordingEnd) {
             const cooldownElapsed = Date.now() - this.lastRecordingEnd;
             if (cooldownElapsed < this._AUTO_LISTEN_COOLDOWN) {
                 return;
@@ -1232,6 +1240,36 @@ class MckVoice {
             this.stopRecording(true);
         }
     }
+    startVoiceModeTimeout() {
+        this.clearVoiceModeTimeout();
+        if (!this.isVoiceInterfaceVisible()) {
+            return;
+        }
+        this.voiceModeTimeoutId = setTimeout(
+            () => this.handleVoiceModeTimeout(),
+            this._VOICE_MODE_SESSION_TIMEOUT
+        );
+    }
+
+    clearVoiceModeTimeout() {
+        if (this.voiceModeTimeoutId) {
+            clearTimeout(this.voiceModeTimeoutId);
+            this.voiceModeTimeoutId = null;
+        }
+    }
+
+    handleVoiceModeTimeout() {
+        this.voiceModeTimeoutId = null;
+        if (!this.isVoiceInterfaceVisible()) {
+            return;
+        }
+        const message = `${this.getVoiceLabel(
+            'voiceInterface.chat',
+            'Switch to chat'
+        )} • Voice session timed out.`;
+        this.updateLiveTranscript(message, { autoHide: 5000 });
+        this.stopVoiceMode();
+    }
     setupSilenceDetection(stream) {
         // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1313,6 +1351,7 @@ class MckVoice {
                     const silenceDuration = Date.now() - this.silenceStart;
                     if (silenceDuration >= this._SILENCE_DURATION) {
                         this.clearSilenceTimeout();
+                        this.stoppedDueToSilence = true;
                         this.stopRecording();
                         this.addThinkingAnimation();
                     }
