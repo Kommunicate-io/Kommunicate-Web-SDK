@@ -652,8 +652,8 @@ class MckVoice {
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
                 console.debug('Max recording duration reached, stopping');
-                this.stopRecording();
                 this.addThinkingAnimation();
+                this.exitVoiceModeWithMessage(null, 'Recording limit reached. Switching to chat.');
             }
         }, this._MAX_RECORDING_DURATION);
 
@@ -1010,6 +1010,14 @@ class MckVoice {
         }
     }
 
+    exitVoiceModeWithMessage(labelKey, fallback) {
+        this.stopVoiceMode();
+        const message = labelKey ? this.getVoiceLabel(labelKey, fallback) : fallback;
+        if (message) {
+            this.updateLiveTranscript(message, { autoHide: 5000 });
+        }
+    }
+
     updateResponseText(text, { autoHide = 0 } = {}) {
         this.clearResponseTimeout();
 
@@ -1103,8 +1111,11 @@ class MckVoice {
             return;
         }
         console.debug('User silent for a few moments, stopping recording');
-        this.stopRecording();
         this.addThinkingAnimation();
+        this.exitVoiceModeWithMessage(
+            'voiceInterface.silenceTimeout',
+            'No speech detected. Switching to chat.'
+        );
     }
 
     enableAutoListening() {
@@ -1352,8 +1363,11 @@ class MckVoice {
                     if (silenceDuration >= this._SILENCE_DURATION) {
                         this.clearSilenceTimeout();
                         this.stoppedDueToSilence = true;
-                        this.stopRecording();
                         this.addThinkingAnimation();
+                        this.exitVoiceModeWithMessage(
+                            null,
+                            'No speech detected. Switching to chat.'
+                        );
                     }
                 }
             }
