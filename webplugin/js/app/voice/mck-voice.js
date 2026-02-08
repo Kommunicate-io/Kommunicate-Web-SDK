@@ -51,6 +51,8 @@ class MckVoice {
         this.silenceTimeout = null;
         this.silenceNoiseStart = null;
         this.lastRecordingEnd = 0;
+        this.voiceOutputTemporarilyDisabled = false;
+        this.previousVoiceOutputState = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -325,6 +327,7 @@ class MckVoice {
         this.updateMuteButton();
         this.updateChatButtonText();
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
+            this.disableNativeVoiceOutputForVoiceMode();
             this.enableAutoListening();
             this.setVoiceMuted(false);
             kommunicateCommons.modifyClassList(
@@ -390,6 +393,55 @@ class MckVoice {
             inlineMicBtn.addEventListener('click', () => {
                 this.toggleMute();
             });
+        }
+    }
+
+    getUserOverride() {
+        return typeof userOverride !== 'undefined' ? userOverride : null;
+    }
+
+    disableNativeVoiceOutputForVoiceMode() {
+        const override = this.getUserOverride();
+        if (!override || this.voiceOutputTemporarilyDisabled || !override.voiceOutput) {
+            return;
+        }
+        this.previousVoiceOutputState = override.voiceOutput;
+        override.voiceOutput = false;
+        this.voiceOutputTemporarilyDisabled = true;
+        if (typeof speechSynthesis !== 'undefined') {
+            speechSynthesis.cancel();
+        }
+        this.updateVoiceOutputUI(false);
+    }
+
+    restoreNativeVoiceOutputAfterVoiceMode() {
+        if (!this.voiceOutputTemporarilyDisabled) {
+            return;
+        }
+        const override = this.getUserOverride();
+        this.voiceOutputTemporarilyDisabled = false;
+        if (!override) {
+            this.previousVoiceOutputState = null;
+            return;
+        }
+        const desiredState =
+            this.previousVoiceOutputState !== null ? this.previousVoiceOutputState : false;
+        this.previousVoiceOutputState = null;
+        override.voiceOutput = desiredState;
+        this.updateVoiceOutputUI(desiredState);
+    }
+
+    updateVoiceOutputUI(state) {
+        const override = this.getUserOverride();
+        if (!override) {
+            return;
+        }
+        if (typeof mckInit !== 'undefined' && typeof mckInit.toggleTTSCTA === 'function') {
+            mckInit.toggleTTSCTA(override);
+            return;
+        }
+        if (typeof KommunicateUI !== 'undefined' && KommunicateUI.toggleVoiceOutputOverride) {
+            KommunicateUI.toggleVoiceOutputOverride(state);
         }
     }
 
@@ -1341,6 +1393,7 @@ class MckVoice {
         this.setTextboxVoiceActive(false);
         this.setVoiceButtonState('idle');
         this.hideVoiceStopButton();
+        this.restoreNativeVoiceOutputAfterVoiceMode();
         kommunicateCommons.show('#mck-voice-web');
         const inlineStatus = document.getElementById('km-voice-listening-status');
         inlineStatus && kommunicateCommons.hide(inlineStatus);
