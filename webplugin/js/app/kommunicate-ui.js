@@ -504,6 +504,13 @@ KommunicateUI = {
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             Kommunicate.mediaService.stopVoiceOutput();
+            if (
+                typeof mckVoice !== 'undefined' &&
+                mckVoice &&
+                typeof mckVoice.stopVoiceMode === 'function'
+            ) {
+                mckVoice.stopVoiceMode();
+            }
             KommunicateUI.awayMessageScroll = true;
             KommunicateUI.hideAwayMessage();
             KommunicateUI.hideLeadCollectionTemplate();

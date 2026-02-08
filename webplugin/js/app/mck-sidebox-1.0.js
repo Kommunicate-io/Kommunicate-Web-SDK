@@ -1086,12 +1086,6 @@ const firstVisibleMsg = {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
                 }
-                window.addEventListener('beforeunload', function () {
-                    Kommunicate.mediaService.stopVoiceOutput();
-                });
-                window.addEventListener('pagehide', function () {
-                    Kommunicate.mediaService.stopVoiceOutput();
-                });
                 function hackForIosDevices() {
                     /** 
                     it is only for IOS devices so using newer syntax
@@ -1108,6 +1102,23 @@ const firstVisibleMsg = {
                 }
                 isIosDevice && hackForIosDevices();
             }
+            function stopVoicePlaybackOnUnload() {
+                if (
+                    Kommunicate.mediaService &&
+                    typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                ) {
+                    Kommunicate.mediaService.stopVoiceOutput();
+                }
+                if (
+                    typeof mckVoice !== 'undefined' &&
+                    mckVoice &&
+                    typeof mckVoice.stopVoiceMode === 'function'
+                ) {
+                    mckVoice.stopVoiceMode();
+                }
+            }
+            window.addEventListener('beforeunload', stopVoicePlaybackOnUnload);
+            window.addEventListener('pagehide', stopVoicePlaybackOnUnload);
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
