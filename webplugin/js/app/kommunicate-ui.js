@@ -1342,6 +1342,7 @@ KommunicateUI = {
                 });
             }
         }
+
         var ratingTitleElement = document.querySelector('.mck-csat-title');
         var messageText = MCK_LABELS['closed.conversation.message'];
         var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
