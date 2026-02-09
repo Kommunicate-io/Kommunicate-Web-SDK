@@ -149,7 +149,7 @@ steps:
       if [ "$_DEPLOY_CDN" = "true" ]; then
         echo "Applying CDN cache headers (default=300, explicit long)"
 
-        # Default cache = 300s for EVERYTHING (
+        # Default cache = 300s for EVERYTHING 
         gsutil -m setmeta -r \
           -h "Cache-Control:public,max-age=300" \
           gs://$_CDN_BUCKET/ || true
@@ -169,7 +169,7 @@ steps:
         # Long cache for fonts 
         gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
-          gs://$_CDN_BUCKET/css/app/fonts/** || true
+          gs://$_CDN_BUCKET/*/css/app/fonts/** || true
 
         #  
         gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/index.html
@@ -181,3 +181,4 @@ steps:
       else
         echo "Skipping CDN cache headers"
       fi
+
