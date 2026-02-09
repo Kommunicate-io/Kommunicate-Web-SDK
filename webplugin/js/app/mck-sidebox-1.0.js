@@ -3245,17 +3245,17 @@ const firstVisibleMsg = {
                     var voiceInterfaceBackBtn = document.querySelector(
                         '.mck-voice-interface-back-btn'
                     );
-                    if (voiceInterfaceBackBtn) {
+                    if (
+                        voiceInterfaceBackBtn &&
+                        !voiceInterfaceBackBtn.dataset.voiceBackListenerAttached
+                    ) {
                         voiceInterfaceBackBtn.addEventListener('click', function () {
-                            mckVoice.stopRecording(true);
-                            mckVoice.disableAutoListening();
-                            mckVoice.updateVoiceStatus('');
-                            mckVoice.updateLiveTranscript('');
-                            mckVoice.updateResponseText('');
+                            mckVoice.stopVoiceMode();
 
                             var voiceInterfaceEl = document.getElementById('mck-voice-interface');
                             voiceInterfaceEl && kommunicateCommons.hide('#mck-voice-interface');
                         });
+                        voiceInterfaceBackBtn.dataset.voiceBackListenerAttached = 'true';
                     }
                 }
                 popUpcloseButton.addEventListener('click', function (e) {

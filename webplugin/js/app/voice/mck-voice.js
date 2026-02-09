@@ -260,6 +260,13 @@ class MckVoice {
                         mediaSource.endOfStream('network');
                     } catch (e) {}
                 }
+                if (this.messagesQueue.length > 0) {
+                    this.messagesQueue.shift();
+                    if (this.messagesQueue.length > 0) {
+                        const nextMsg = this.messagesQueue[0];
+                        this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                    }
+                }
             });
         } catch (err) {
             console.error(err);
@@ -363,19 +370,11 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
-            this.disableAutoListening();
-            this.stopRecording(true);
-
             kommunicateCommons.modifyClassList(
                 { class: ['mck-voice-repeat-last-msg'] },
                 'mck-hidden'
             );
-
-            this.clearVoiceStatus();
-            this.updateLiveTranscript('');
-            this.updateResponseText('');
-            this.hideInlineStatus();
-            this.setTextboxVoiceActive(false);
+            this.stopVoiceMode();
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
@@ -592,7 +591,17 @@ class MckVoice {
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
                     const data = await kmVoice.speechToText(audioBlob);
-                    const rawText = data.text || '';
+                    if (!data) {
+                        this.updateLiveTranscript(
+                            this.getVoiceLabel(
+                                'voiceInterface.transcriptionFailed',
+                                'Transcription failed. Please try again.'
+                            ),
+                            { autoHide: 5000 }
+                        );
+                        return;
+                    }
+                    const rawText = data.text ?? '';
                     const userMsg = rawText.trim();
                     const prefix = this.getVoiceLabel('you', 'You');
                     const noSpeechLabel = this.getVoiceLabel(
@@ -665,7 +674,9 @@ class MckVoice {
             if (this.isRecording) {
                 console.debug('Max recording duration reached, stopping');
                 this.addThinkingAnimation();
-                this.exitVoiceModeWithMessage(null, 'Recording limit reached. Switching to chat.');
+                this.exitVoiceModeWithMessage('voiceInterface.maxRecording', {
+                    fallback: 'Recording limit reached. Switching to chat.',
+                });
             }
         }, this._MAX_RECORDING_DURATION);
 
@@ -1022,11 +1033,37 @@ class MckVoice {
         }
     }
 
-    exitVoiceModeWithMessage(labelKey, fallback) {
+    exitVoiceModeWithMessage(labelKeyOrMessage, fallbackOrOptions) {
         this.stopVoiceMode();
-        const message = labelKey ? this.getVoiceLabel(labelKey, fallback) : fallback;
+
+        let fallback;
+        let autoHide = 5000;
+
+        if (typeof fallbackOrOptions === 'string') {
+            fallback = fallbackOrOptions;
+        } else if (fallbackOrOptions && typeof fallbackOrOptions === 'object') {
+            fallback = fallbackOrOptions.fallback;
+            if (typeof fallbackOrOptions.autoHide === 'number') {
+                autoHide = fallbackOrOptions.autoHide;
+            }
+        }
+
+        const isLikelyLabelKey =
+            typeof labelKeyOrMessage === 'string' &&
+            /^[\\w$.]+$/.test(labelKeyOrMessage) &&
+            !labelKeyOrMessage.includes(' ');
+
+        let message;
+        if (labelKeyOrMessage) {
+            message = isLikelyLabelKey
+                ? this.getVoiceLabel(labelKeyOrMessage, fallback)
+                : labelKeyOrMessage;
+        } else if (fallback) {
+            message = fallback;
+        }
+
         if (message) {
-            this.updateLiveTranscript(message, { autoHide: 5000 });
+            this.updateLiveTranscript(message, { autoHide });
         }
     }
 
@@ -1124,10 +1161,15 @@ class MckVoice {
         }
         console.debug('User silent for a few moments, stopping recording');
         this.addThinkingAnimation();
-        this.updateLiveTranscript('No speech detected. Listening for more...', {
-            autoHide: 2000,
-        });
+        this.updateLiveTranscript(
+            this.getVoiceLabel(
+                'voiceInterface.silenceTimeout',
+                'No speech detected. Listening for more...'
+            ),
+            { autoHide: 2000 }
+        );
         this.stopRecording();
+        return;
     }
 
     enableAutoListening() {
@@ -1290,8 +1332,7 @@ class MckVoice {
             'voiceInterface.chat',
             'Switch to chat'
         )} • Voice session timed out.`;
-        this.updateLiveTranscript(message, { autoHide: 5000 });
-        this.stopVoiceMode();
+        this.exitVoiceModeWithMessage(message, { autoHide: 5000 });
     }
     setupSilenceDetection(stream) {
         // Create audio context
@@ -1448,12 +1489,12 @@ class MckVoice {
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
         this.stopRecording(true);
+        this.voiceMuted = false;
         this.clearVoiceStatus();
         this.updateLiveTranscript('');
         this.updateResponseText('');
         this.hideInlineStatus();
         this.hideInlineMicButton();
-        this.voiceMuted = false;
         this.updateMuteButton();
         this.updateChatButtonText();
         this.setTextboxVoiceActive(false);
