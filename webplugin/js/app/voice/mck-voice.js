@@ -55,7 +55,15 @@ class MckVoice {
         this.voiceModeTimeoutId = null;
         this.voiceOutputTemporarilyDisabled = false;
         this.previousVoiceOutputState = null;
+        this.nativeRecognition = null;
+        this.nativeRecognitionActive = false;
+        this.nativeRecognitionShouldRestart = false;
+        this.nativeRecognitionFailed = false;
+        this.activeRecognitionMode = 'native';
+        this.nativeSpeechUtterance = null;
+        this.adaptiveVadState = null;
         this.voiceInputSettings = this.getVoiceInputSettings();
+        this.activeRecognitionMode = this.determineRecognitionMode();
     }
 
     getVoiceInputSettings() {
@@ -64,11 +72,32 @@ class MckVoice {
                 kommunicate._globals &&
                 kommunicate._globals.voiceInputSettings) ||
             {};
+        const vadConfig = config.vadConfig || {};
+        const requestedMode = (
+            config.recognitionMode ||
+            config.voiceRecognitionMode ||
+            'elevenlabs'
+        )
+            .toString()
+            .toLowerCase();
+        const language =
+            config.voiceLanguage ||
+            config.language ||
+            (typeof navigator !== 'undefined' && navigator.language) ||
+            'en-US';
         return {
-            rmsThreshold: config.rmsThreshold ?? this._RMS_THRESHOLD,
-            zeroCrossThreshold: config.zeroCrossThreshold ?? this._ZERO_CROSSING_THRESHOLD,
+            recognitionMode: requestedMode,
+            voiceLanguage: language,
             silenceDuration: config.silenceDuration ?? this._SILENCE_DURATION,
             minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
+            vad: {
+                startFactor: vadConfig.startFactor ?? 2.6,
+                endFactor: vadConfig.endFactor ?? 1.2,
+                startFrames: vadConfig.startFrames ?? 3,
+                endFrames: vadConfig.endFrames ?? 40,
+                noiseAlpha: vadConfig.noiseAlpha ?? 0.95,
+                historyMs: vadConfig.historyMs ?? 2000,
+            },
         };
     }
 
@@ -96,14 +125,19 @@ class MckVoice {
             );
 
             this.agentOrBotName = displayName;
-            this.agentOrBotLastMsg = messageWithoutSource;
             const responseText = displayName
                 ? `${displayName}: ${messageWithoutSource}`
                 : messageWithoutSource;
             this.updateResponseText(responseText, { autoHide: 0 });
+            this.agentOrBotLastMsg = messageWithoutSource;
+            this.agentOrBotLastMsgAudio = null;
+
+            if (this.shouldUseNativeSpeechSynthesis()) {
+                this.playNativeSpeech(messageWithoutSource);
+                return;
+            }
 
             const response = await kmVoice.textToSpeechStream(messageWithoutSource);
-
             this.playAudioWithMediaSource(response);
         } catch (err) {
             console.error(err);
@@ -175,11 +209,9 @@ class MckVoice {
 
             audio.addEventListener('ended', () => {
                 URL.revokeObjectURL(mediaSourceUrl);
-                this.messagesQueue.shift();
+                const nextMsg = this.shiftToNextQueuedMessage();
 
-                if (this.messagesQueue.length > 0) {
-                    const nextMsg = this.messagesQueue[0];
-
+                if (nextMsg) {
                     // Clean up visualizer before starting next message
                     if (this.visualizerCleanup) {
                         this.visualizerCleanup();
@@ -260,13 +292,8 @@ class MckVoice {
                         mediaSource.endOfStream('network');
                     } catch (e) {}
                 }
-                if (this.messagesQueue.length > 0) {
-                    this.messagesQueue.shift();
-                    if (this.messagesQueue.length > 0) {
-                        const nextMsg = this.messagesQueue[0];
-                        this.processNextMessage(nextMsg.msg, nextMsg.displayName);
-                    }
-                }
+                const nextMsg = this.shiftToNextQueuedMessage();
+                nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
             });
         } catch (err) {
             console.error(err);
@@ -277,6 +304,56 @@ class MckVoice {
                 } catch (e) {}
             }
         }
+    }
+
+    shiftToNextQueuedMessage() {
+        if (this.messagesQueue.length === 0) {
+            return null;
+        }
+        this.messagesQueue.shift();
+        return this.messagesQueue.length > 0 ? this.messagesQueue[0] : null;
+    }
+
+    shouldUseNativeSpeechSynthesis() {
+        return this.activeRecognitionMode === 'native' && this.isNativeSpeechSynthesisAvailable();
+    }
+
+    isNativeSpeechSynthesisAvailable() {
+        return typeof speechSynthesis !== 'undefined';
+    }
+
+    playNativeSpeech(text) {
+        if (!text || !this.isNativeSpeechSynthesisAvailable()) {
+            this.scheduleAutoListen();
+            return;
+        }
+        this.cancelNativeSpeech();
+        this.addSpeakingAnimation();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = this.voiceInputSettings.voiceLanguage || 'en-US';
+        utterance.onend = () => this.onNativeSpeechEnded();
+        utterance.onerror = () => this.onNativeSpeechEnded();
+        this.nativeSpeechUtterance = utterance;
+        speechSynthesis.speak(utterance);
+    }
+
+    cancelNativeSpeech() {
+        if (this.nativeSpeechUtterance && this.isNativeSpeechSynthesisAvailable()) {
+            speechSynthesis.cancel();
+        }
+        this.nativeSpeechUtterance = null;
+    }
+
+    onNativeSpeechEnded() {
+        this.nativeSpeechUtterance = null;
+        this.removeAllAnimation();
+        this.clearVoiceStatus();
+        const nextMsg = this.shiftToNextQueuedMessage();
+        if (nextMsg) {
+            this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            return;
+        }
+        this.scheduleAutoListen();
     }
 
     async repeatLastMsgAudio(blobUrl) {
@@ -467,6 +544,12 @@ class MckVoice {
             return;
         }
 
+        this.refreshRecognitionMode();
+        if (this.activeRecognitionMode === 'native') {
+            this.startNativeRecognition();
+            return;
+        }
+
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
@@ -603,36 +686,9 @@ class MckVoice {
                     }
                     const rawText = data.text ?? '';
                     const userMsg = rawText.trim();
-                    const prefix = this.getVoiceLabel('you', 'You');
-                    const noSpeechLabel = this.getVoiceLabel(
-                        'voiceInterface.noSpeechDetected',
-                        'No speech detected. Please try again.'
-                    );
-                    const transcriptText = userMsg ? `${prefix}: ${userMsg}` : noSpeechLabel;
-                    this.updateLiveTranscript(transcriptText, { autoHide: 9000 });
-
-                    if (!userMsg) {
+                    if (!this.handleVoiceQuery(userMsg)) {
                         return;
                     }
-
-                    if (!CURRENT_GROUP_DATA || !CURRENT_GROUP_DATA.tabId) {
-                        console.error('No active conversation to send voice message');
-                        this.updateLiveTranscript(
-                            this.getVoiceLabel(
-                                'voiceInterface.noActiveConversation',
-                                'Please open a conversation first.'
-                            ),
-                            { autoHide: 5000 }
-                        );
-                        return;
-                    }
-                    kommunicate.sendMessage({
-                        contentType: 10,
-                        source: 1,
-                        type: 5,
-                        message: userMsg,
-                        groupId: CURRENT_GROUP_DATA.tabId,
-                    });
                 }
             } catch (error) {
                 console.error(error);
@@ -1067,6 +1123,38 @@ class MckVoice {
         }
     }
 
+    handleVoiceQuery(userMsg) {
+        const trimmedMessage = userMsg ? userMsg.trim() : '';
+        const prefix = this.getVoiceLabel('you', 'You');
+        const noSpeechLabel = this.getVoiceLabel(
+            'voiceInterface.noSpeechDetected',
+            'No speech detected. Please try again.'
+        );
+        const transcriptText = trimmedMessage ? `${prefix}: ${trimmedMessage}` : noSpeechLabel;
+        this.updateLiveTranscript(transcriptText, { autoHide: 9000 });
+        if (!trimmedMessage) {
+            return false;
+        }
+        if (!CURRENT_GROUP_DATA || !CURRENT_GROUP_DATA.tabId) {
+            this.updateLiveTranscript(
+                this.getVoiceLabel(
+                    'voiceInterface.noActiveConversation',
+                    'Please open a conversation first.'
+                ),
+                { autoHide: 5000 }
+            );
+            return false;
+        }
+        kommunicate.sendMessage({
+            contentType: 10,
+            source: 1,
+            type: 5,
+            message: trimmedMessage,
+            groupId: CURRENT_GROUP_DATA.tabId,
+        });
+        return true;
+    }
+
     updateResponseText(text, { autoHide = 0 } = {}) {
         this.clearResponseTimeout();
 
@@ -1349,86 +1437,22 @@ class MckVoice {
         analyser.connect(scriptProcessor);
         scriptProcessor.connect(audioContext.destination);
 
+        this.initializeAdaptiveVad(audioContext.sampleRate, analyser.fftSize);
+        const detectionInterval = Math.max(
+            Math.round(this.adaptiveVadState?.frameDurationMs || 23),
+            20
+        );
+
         const silenceDetection = () => {
+            if (!this.isRecording || !this.adaptiveVadState) {
+                return;
+            }
             const timeData = new Float32Array(analyser.fftSize);
             analyser.getFloatTimeDomainData(timeData);
-
-            let sumSquares = 0;
-            let zeroCrossings = 0;
-            let prevSign = timeData.length > 0 ? timeData[0] >= 0 : true;
-            for (let i = 0; i < timeData.length; i++) {
-                const sample = timeData[i];
-                sumSquares += sample * sample;
-                if (i > 0) {
-                    const sign = sample >= 0;
-                    if (sign !== prevSign) {
-                        zeroCrossings++;
-                        prevSign = sign;
-                    }
-                }
-            }
-
-            const rms = Math.sqrt(sumSquares / Math.max(timeData.length, 1));
-            const zeroCrossRate = zeroCrossings / Math.max(timeData.length - 1, 1);
-            const { rmsThreshold, zeroCrossThreshold, minSpeechDuration } = this.voiceInputSettings;
-
-            this.totalSamples++;
-
-            const isSpeech = rms > rmsThreshold || zeroCrossRate > zeroCrossThreshold;
-
-            if (isSpeech) {
-                this.hasSoundDetected = true;
-                this.soundSamples++;
-                this.speechDetected = true;
-                if (this.isInSilence) {
-                    if (!this.silenceNoiseStart) {
-                        this.silenceNoiseStart = Date.now();
-                    }
-                    const noiseDuration = Date.now() - this.silenceNoiseStart;
-                    if (noiseDuration < this._SILENCE_NOISE_TOLERANCE) {
-                        return;
-                    }
-                }
-                this.silenceStart = null;
-                this.silenceNoiseStart = null;
-                this.isInSilence = false;
-                this.clearSilenceTimeout();
-                if (!this.firstSpeechTimestamp) {
-                    this.firstSpeechTimestamp = Date.now();
-                }
-            } else if (!this.speechDetected) {
-                return;
-            } else {
-                if (this.silenceStart === null) {
-                    if (
-                        this.firstSpeechTimestamp &&
-                        Date.now() - this.firstSpeechTimestamp < minSpeechDuration
-                    ) {
-                        return;
-                    }
-                    this.silenceStart = Date.now();
-                    this.isInSilence = true;
-                    this.silenceNoiseStart = null;
-                    console.debug('Silence detected, starting timer');
-                    this.startSilenceTimeout();
-                } else {
-                    const silenceDuration = Date.now() - this.silenceStart;
-                    const silenceSettings = this.voiceInputSettings;
-                    if (silenceDuration >= silenceSettings.silenceDuration) {
-                        this.clearSilenceTimeout();
-                        this.addThinkingAnimation();
-                        this.updateLiveTranscript('No speech detected. Listening for more...', {
-                            autoHide: 2000,
-                        });
-                        this.silenceStart = Date.now();
-                        this.startSilenceTimeout();
-                    }
-                }
-            }
+            this.handleAdaptiveVadFrame(timeData);
         };
 
-        // Check for silence every 300ms
-        this.silenceTimer = setInterval(silenceDetection, 300);
+        this.silenceTimer = setInterval(silenceDetection, detectionInterval);
 
         // Clean up when recording stops
         scriptProcessor.onaudioprocess = () => {
@@ -1445,12 +1469,300 @@ class MckVoice {
                     this.silenceDetectionContext.close().catch(() => {});
                     this.silenceDetectionContext = null;
                 }
+                this.adaptiveVadState = null;
             }
         };
     }
 
+    initializeAdaptiveVad(sampleRate, fftSize) {
+        const vadSettings = this.voiceInputSettings?.vad || {};
+        const frameDurationMs = (fftSize / sampleRate) * 1000;
+        const historyMs = vadSettings.historyMs ?? 2000;
+        const maxHistoryFrames = Math.max(1, Math.round(historyMs / Math.max(frameDurationMs, 1)));
+        this.adaptiveVadState = {
+            frameDurationMs,
+            maxHistoryFrames,
+            history: [],
+            startFactor: vadSettings.startFactor ?? 2.6,
+            endFactor: vadSettings.endFactor ?? 1.2,
+            startFrames: vadSettings.startFrames ?? 3,
+            endFrames: vadSettings.endFrames ?? 40,
+            noiseAlpha: vadSettings.noiseAlpha ?? 0.95,
+            noiseFloor: 0.002,
+            noiseZcr: 0.02,
+            speechActive: false,
+            startCounter: 0,
+            endCounter: 0,
+        };
+    }
+
+    handleAdaptiveVadFrame(timeData) {
+        const state = this.adaptiveVadState;
+        if (!state || !timeData || timeData.length === 0) {
+            return;
+        }
+
+        const rms = this.calculateRms(timeData);
+        const zcr = this.calculateZeroCrossingRate(timeData);
+        const now = Date.now();
+
+        state.history.push({ timestamp: now, rms, zcr, speech: state.speechActive });
+        if (state.history.length > state.maxHistoryFrames) {
+            state.history.shift();
+        }
+
+        const noiseFloor = Math.max(state.noiseFloor, 1e-5);
+        const startThreshold = noiseFloor * state.startFactor;
+        const endThreshold = noiseFloor * Math.max(state.endFactor, 0.5);
+        const startCandidate = rms > startThreshold;
+        const endCandidate = rms < endThreshold;
+
+        const isSpeechFrame = state.speechActive || startCandidate;
+        this.totalSamples++;
+        if (isSpeechFrame) {
+            this.hasSoundDetected = true;
+            this.soundSamples++;
+        }
+
+        if (!state.speechActive) {
+            if (startCandidate) {
+                state.startCounter++;
+            } else {
+                state.startCounter = 0;
+                this.updateVadNoiseEstimate(rms, zcr, state);
+            }
+            if (state.startCounter >= state.startFrames) {
+                state.speechActive = true;
+                state.startCounter = 0;
+                this.onVadSpeechStart();
+            }
+        } else {
+            if (endCandidate) {
+                state.endCounter++;
+            } else {
+                state.endCounter = 0;
+            }
+            if (state.endCounter >= state.endFrames) {
+                state.speechActive = false;
+                state.endCounter = 0;
+                this.updateVadNoiseEstimate(rms, zcr, state);
+                this.onVadSpeechEnd();
+            }
+        }
+    }
+
+    calculateRms(timeData) {
+        let sumSquares = 0;
+        for (let i = 0; i < timeData.length; i++) {
+            const sample = timeData[i];
+            sumSquares += sample * sample;
+        }
+        return Math.sqrt(sumSquares / Math.max(timeData.length, 1));
+    }
+
+    calculateZeroCrossingRate(timeData) {
+        if (!timeData || timeData.length <= 1) {
+            return 0;
+        }
+        let zeroCrossings = 0;
+        let prevSign = timeData[0] >= 0;
+        for (let i = 1; i < timeData.length; i++) {
+            const sign = timeData[i] >= 0;
+            if (sign !== prevSign) {
+                zeroCrossings++;
+                prevSign = sign;
+            }
+        }
+        return zeroCrossings / (timeData.length - 1);
+    }
+
+    updateVadNoiseEstimate(rms, zcr, state) {
+        const alpha = state.noiseAlpha;
+        state.noiseFloor = Math.max(state.noiseFloor * alpha + rms * (1 - alpha), 5e-5);
+        state.noiseZcr = Math.max(state.noiseZcr * alpha + zcr * (1 - alpha), 0.001);
+    }
+
+    onVadSpeechStart() {
+        this.speechDetected = true;
+        this.isInSilence = false;
+        this.clearSilenceTimeout();
+        this.silenceStart = null;
+        if (!this.firstSpeechTimestamp) {
+            this.firstSpeechTimestamp = Date.now();
+        }
+    }
+
+    onVadSpeechEnd() {
+        if (!this.isRecording) {
+            return;
+        }
+        this.speechDetected = false;
+        this.isInSilence = true;
+        this.silenceStart = Date.now();
+        this.startSilenceTimeout();
+    }
+
+    refreshRecognitionMode() {
+        this.activeRecognitionMode = this.determineRecognitionMode();
+        return this.activeRecognitionMode;
+    }
+
+    determineRecognitionMode() {
+        const requested = (this.voiceInputSettings?.recognitionMode || 'native')
+            .toString()
+            .toLowerCase();
+        if (
+            requested === 'native' &&
+            !this.nativeRecognitionFailed &&
+            this.isNativeSpeechRecognitionAvailable()
+        ) {
+            return 'native';
+        }
+        return 'elevenlabs';
+    }
+
+    isNativeSpeechRecognitionAvailable() {
+        if (typeof window === 'undefined') {
+            return false;
+        }
+        return Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
+    }
+
+    initializeNativeRecognition() {
+        if (!this.isNativeSpeechRecognitionAvailable()) {
+            return null;
+        }
+        if (this.nativeRecognition) {
+            return this.nativeRecognition;
+        }
+        const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!Recognition) {
+            return null;
+        }
+        const recognition = new Recognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = this.voiceInputSettings.voiceLanguage || 'en-US';
+        recognition.maxAlternatives = 1;
+        recognition.onresult = (event) => this.handleNativeRecognitionResult(event);
+        recognition.onerror = (event) => this.handleNativeRecognitionError(event);
+        recognition.onend = () => {
+            this.nativeRecognitionActive = false;
+            this.isRecording = false;
+            if (this.nativeRecognitionShouldRestart && this.activeRecognitionMode === 'native') {
+                try {
+                    recognition.start();
+                    this.nativeRecognitionActive = true;
+                    this.isRecording = true;
+                } catch (err) {
+                    console.error('SpeechRecognition restart failed:', err);
+                }
+            }
+        };
+        this.nativeRecognition = recognition;
+        return recognition;
+    }
+
+    startNativeRecognition() {
+        this.refreshRecognitionMode();
+        if (this.activeRecognitionMode !== 'native') {
+            return;
+        }
+        const recognition = this.initializeNativeRecognition();
+        if (!recognition) {
+            this.activeRecognitionMode = 'elevenlabs';
+            this.nativeRecognitionFailed = true;
+            this.requestAudioRecording();
+            return;
+        }
+        if (this.nativeRecognitionActive) {
+            return;
+        }
+        this.nativeRecognitionShouldRestart = true;
+        this.isRecording = true;
+        try {
+            recognition.start();
+            this.nativeRecognitionActive = true;
+            this.addListeningAnimation();
+            const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
+            this.updateVoiceStatus(listeningLabel, true);
+            this.updateLiveTranscript('');
+        } catch (error) {
+            console.error('SpeechRecognition start failed:', error);
+            this.nativeRecognitionShouldRestart = false;
+            this.nativeRecognitionFailed = true;
+            this.nativeRecognitionActive = false;
+            this.isRecording = false;
+            this.refreshRecognitionMode();
+            this.activeRecognitionMode = 'elevenlabs';
+            this.requestAudioRecording();
+        }
+    }
+
+    stopNativeRecognition() {
+        this.nativeRecognitionShouldRestart = false;
+        if (this.nativeRecognition && this.nativeRecognitionActive) {
+            try {
+                this.nativeRecognition.stop();
+            } catch (err) {
+                console.error('SpeechRecognition stop failed:', err);
+            }
+        }
+        this.nativeRecognitionActive = false;
+        this.isRecording = false;
+    }
+
+    handleNativeRecognitionResult(event) {
+        if (!event || !event.results) {
+            return;
+        }
+        let interimTranscript = '';
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i];
+            const transcript = result[0]?.transcript || '';
+            if (result.isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+        const cleanInterim = interimTranscript.trim();
+        if (cleanInterim) {
+            this.updateLiveTranscript(cleanInterim);
+        }
+        const cleanFinal = finalTranscript.trim();
+        if (cleanFinal) {
+            this.handleVoiceQuery(cleanFinal);
+        }
+    }
+
+    handleNativeRecognitionError(event) {
+        if (!event) {
+            return;
+        }
+        console.error('SpeechRecognition error:', event.error);
+        this.nativeRecognitionFailed = true;
+        this.refreshRecognitionMode();
+        this.stopNativeRecognition();
+        if (this.activeRecognitionMode === 'elevenlabs' && this.isVoiceModeActive()) {
+            this.requestAudioRecording();
+        }
+    }
+
     stopRecording(forceStop = false) {
         this.clearSilenceTimeout();
+        if (this.activeRecognitionMode === 'native') {
+            this.nativeRecognitionShouldRestart = false;
+            this.stopNativeRecognition();
+            this.cancelNativeSpeech();
+            if (this.maxRecordingTimer) {
+                clearTimeout(this.maxRecordingTimer);
+                this.maxRecordingTimer = null;
+            }
+            forceStop && this.stopAudio();
+            return;
+        }
         if (this.mediaRecorder && this.isRecording) {
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
@@ -1488,7 +1800,11 @@ class MckVoice {
         this.disableAutoListening();
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
+        this.nativeRecognitionShouldRestart = false;
         this.stopRecording(true);
+        this.cancelNativeSpeech();
+        this.nativeRecognitionFailed = false;
+        this.refreshRecognitionMode();
         this.voiceMuted = false;
         this.clearVoiceStatus();
         this.updateLiveTranscript('');
