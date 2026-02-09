@@ -1579,8 +1579,16 @@ KommunicateUI = {
                     );
                 } else if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.VERTICAL) {
                     var wrapperRect = el.getBoundingClientRect();
+                    var textEl = el.querySelector('.chat-popup-widget-text');
+                    var width = textEl ? textEl.scrollWidth : el.scrollWidth;
+
+                    console.log('wrapperRect', width);
                     window.parent.postMessage(
-                        { type: 'km_popup_resize', height: Math.ceil(wrapperRect.height + 35) },
+                        {
+                            type: 'km_popup_resize',
+                            height: Math.ceil(wrapperRect.height + 35),
+                            width: Math.ceil(Math.min(421, width + 120)),
+                        },
                         '*'
                     );
                 }
