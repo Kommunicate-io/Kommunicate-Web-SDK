@@ -261,7 +261,6 @@
             processing: 'Processing',
             processingFailed: 'Unable to transcribe the recording. Please try again.',
             noSpeechDetected: 'No speech detected. Please try again.',
-            silenceTimeout: 'No speech detected. Switching to chat.',
             responseLabel: 'Response:',
             muteAction: 'Mute microphone',
             unmuteAction: 'Unmute microphone',

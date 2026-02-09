@@ -1,9 +1,9 @@
 class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
-    _RMS_THRESHOLD = 0.032;
-    _ZERO_CROSSING_THRESHOLD = 0.055;
-    _SILENCE_DURATION = 1200; // 1.2 seconds of silence before stopping
-    _MIN_SPEECH_DURATION = 200; // require at least 200ms of speech before silencing
+    _RMS_THRESHOLD = 0.018;
+    _ZERO_CROSSING_THRESHOLD = 0.03;
+    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping (ideal for customer support flows)
+    _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 120000; // close voice mode if it runs this long without switching to chat
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
@@ -52,10 +52,24 @@ class MckVoice {
         this.silenceTimeout = null;
         this.silenceNoiseStart = null;
         this.lastRecordingEnd = 0;
-        this.stoppedDueToSilence = false;
         this.voiceModeTimeoutId = null;
         this.voiceOutputTemporarilyDisabled = false;
         this.previousVoiceOutputState = null;
+        this.voiceInputSettings = this.getVoiceInputSettings();
+    }
+
+    getVoiceInputSettings() {
+        const config =
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceInputSettings) ||
+            {};
+        return {
+            rmsThreshold: config.rmsThreshold ?? this._RMS_THRESHOLD,
+            zeroCrossThreshold: config.zeroCrossThreshold ?? this._ZERO_CROSSING_THRESHOLD,
+            silenceDuration: config.silenceDuration ?? this._SILENCE_DURATION,
+            minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
+        };
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -465,6 +479,7 @@ class MckVoice {
         navigator.mediaDevices
             .getUserMedia({ audio: true })
             .then((stream) => {
+                this.voiceInputSettings = this.getVoiceInputSettings();
                 this.startRecording(stream);
             })
             .catch((error) => {
@@ -538,7 +553,6 @@ class MckVoice {
         this.lastRecordingEnd = 0;
         this.silenceNoiseStart = null;
         this.silenceTimeout = null;
-        this.stoppedDueToSilence = false;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -639,9 +653,7 @@ class MckVoice {
                     clearTimeout(this.maxRecordingTimer);
                     this.maxRecordingTimer = null;
                 }
-                const shouldForceAutoListen = this.stoppedDueToSilence;
-                this.stoppedDueToSilence = false;
-                this.scheduleAutoListen(undefined, shouldForceAutoListen);
+                this.scheduleAutoListen();
             }
         };
 
@@ -1092,7 +1104,7 @@ class MckVoice {
             return;
         }
         const elapsed = Date.now() - this.silenceStart;
-        const delay = Math.max(this._SILENCE_DURATION - elapsed, 0);
+        const delay = Math.max(this.voiceInputSettings.silenceDuration - elapsed, 0);
         if (delay === 0) {
             this.handleSilenceTimeout();
             return;
@@ -1106,16 +1118,16 @@ class MckVoice {
             return;
         }
         const silenceDuration = this.silenceStart ? Date.now() - this.silenceStart : 0;
-        if (silenceDuration < this._SILENCE_DURATION) {
+        if (silenceDuration < this.voiceInputSettings.silenceDuration) {
             this.startSilenceTimeout();
             return;
         }
         console.debug('User silent for a few moments, stopping recording');
         this.addThinkingAnimation();
-        this.exitVoiceModeWithMessage(
-            'voiceInterface.silenceTimeout',
-            'No speech detected. Switching to chat.'
-        );
+        this.updateLiveTranscript('No speech detected. Listening for more...', {
+            autoHide: 2000,
+        });
+        this.stopRecording();
     }
 
     enableAutoListening() {
@@ -1132,9 +1144,9 @@ class MckVoice {
         this.clearVoiceModeTimeout();
     }
 
-    scheduleAutoListen(delay = 300, force = false) {
+    scheduleAutoListen(delay = 300) {
         this.clearAutoListenTimeout();
-        if (!force && this.lastRecordingEnd) {
+        if (this.lastRecordingEnd) {
             const cooldownElapsed = Date.now() - this.lastRecordingEnd;
             if (cooldownElapsed < this._AUTO_LISTEN_COOLDOWN) {
                 return;
@@ -1317,11 +1329,11 @@ class MckVoice {
 
             const rms = Math.sqrt(sumSquares / Math.max(timeData.length, 1));
             const zeroCrossRate = zeroCrossings / Math.max(timeData.length - 1, 1);
+            const { rmsThreshold, zeroCrossThreshold, minSpeechDuration } = this.voiceInputSettings;
 
             this.totalSamples++;
 
-            const isSpeech =
-                rms > this._RMS_THRESHOLD || zeroCrossRate > this._ZERO_CROSSING_THRESHOLD;
+            const isSpeech = rms > rmsThreshold || zeroCrossRate > zeroCrossThreshold;
 
             if (isSpeech) {
                 this.hasSoundDetected = true;
@@ -1349,7 +1361,7 @@ class MckVoice {
                 if (this.silenceStart === null) {
                     if (
                         this.firstSpeechTimestamp &&
-                        Date.now() - this.firstSpeechTimestamp < this._MIN_SPEECH_DURATION
+                        Date.now() - this.firstSpeechTimestamp < minSpeechDuration
                     ) {
                         return;
                     }
@@ -1360,14 +1372,15 @@ class MckVoice {
                     this.startSilenceTimeout();
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
-                    if (silenceDuration >= this._SILENCE_DURATION) {
+                    const silenceSettings = this.voiceInputSettings;
+                    if (silenceDuration >= silenceSettings.silenceDuration) {
                         this.clearSilenceTimeout();
-                        this.stoppedDueToSilence = true;
                         this.addThinkingAnimation();
-                        this.exitVoiceModeWithMessage(
-                            null,
-                            'No speech detected. Switching to chat.'
-                        );
+                        this.updateLiveTranscript('No speech detected. Listening for more...', {
+                            autoHide: 2000,
+                        });
+                        this.silenceStart = Date.now();
+                        this.startSilenceTimeout();
                     }
                 }
             }
