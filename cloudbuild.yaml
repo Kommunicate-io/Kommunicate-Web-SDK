@@ -147,14 +147,26 @@ steps:
     - '-c'
     - |
       if [ "$_DEPLOY_CDN" = "true" ]; then
-        echo "Applying CDN cache headers (safe mode)"
+        echo "Applying CDN cache headers (explicit rules)"
 
-        # 1️⃣ Default: ALL assets → long cache (versioned-safe)
-        gsutil -m setmeta -r \
+        #  Long cache ONLY for versioned build folders 
+        gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
-          gs://$_CDN_BUCKET/
+          gs://$_CDN_BUCKET/[0-9]*/resources/** || true
 
-        # 2️⃣ Short cache for entry points / loaders
+        # Long cache for shared static assets
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          gs://$_CDN_BUCKET/css/** \
+          gs://$_CDN_BUCKET/plugin/** \
+          gs://$_CDN_BUCKET/resources/third-party-scripts/** || true
+
+        # Fonts
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          gs://$_CDN_BUCKET/css/app/fonts/** || true
+
+        # Short cache for entry points / loaders
         gsutil setmeta \
           -h "Cache-Control:public,max-age=300" \
           gs://$_CDN_BUCKET/index.html || true
@@ -165,9 +177,13 @@ steps:
 
         gsutil setmeta \
           -h "Cache-Control:public,max-age=300" \
+          gs://$_CDN_BUCKET/v2/kommunicate.app || true
+
+        gsutil setmeta \
+          -h "Cache-Control:public,max-age=300" \
           gs://$_CDN_BUCKET/v3/kommunicate.app || true
 
-        echo "CDN cache headers applied successfully"
+        echo "CDN cache headers applied successfully (explicit mode)"
       else
         echo "Skipping CDN cache headers"
       fi
