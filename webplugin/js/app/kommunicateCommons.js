@@ -56,7 +56,11 @@ function KommunicateCommons() {
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
             !_this.isModernLayoutEnabled ||
-            !_this.isModernLayoutEnabled()
+            !_this.isModernLayoutEnabled() ||
+            (iframeElement.classList &&
+                (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
+                    iframeElement.classList.contains('chat-popup-widget-vertical') ||
+                    iframeElement.classList.contains('chat-popup-widget-actionable')))
         ) {
             return;
         }

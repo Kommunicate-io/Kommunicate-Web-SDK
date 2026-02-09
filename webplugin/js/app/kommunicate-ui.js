@@ -6,6 +6,8 @@ var kommunicateCommons = new KommunicateCommons();
 var KM_GLOBAL = kommunicate._globals;
 var bottomTabsManagerRef = null;
 var topBarManagerRef = null;
+var KM_GREETING_AUTO_CLOSE_TIMER = null;
+var KM_GREETING_AUTO_CLOSE_DELAY = 45000;
 
 function getFaqClearButton() {
     if (typeof document === 'undefined') {
@@ -915,6 +917,10 @@ KommunicateUI = {
             keepConversationHeader && isModernLayout && KommunicateUI.isConversationListView;
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
+        if (KM_GREETING_AUTO_CLOSE_TIMER) {
+            clearTimeout(KM_GREETING_AUTO_CLOSE_TIMER);
+            KM_GREETING_AUTO_CLOSE_TIMER = null;
+        }
 
         // Check if conversations tab is active before setting conversation subsections
         var sideboxContent = document.getElementById('mck-sidebox-content');
@@ -1619,6 +1625,12 @@ KommunicateUI = {
                     },
                     'align-left'
                 );
+            if (KM_GREETING_AUTO_CLOSE_TIMER) {
+                clearTimeout(KM_GREETING_AUTO_CLOSE_TIMER);
+            }
+            KM_GREETING_AUTO_CLOSE_TIMER = setTimeout(function () {
+                KommunicateUI.togglePopupChatTemplate(popupTemplateKey, false);
+            }, KM_GREETING_AUTO_CLOSE_DELAY);
         } else {
             kommunicateCommons.modifyClassList(
                 { id: ['mck-sidebox-launcher', 'launcher-svg-container'] },
@@ -1637,6 +1649,17 @@ KommunicateUI = {
                 kommunicateIframe.style.height = '';
                 kommunicateIframe.style.width = '';
                 kommunicateIframe.style.minHeight = '';
+                if (
+                    kommunicateCommons &&
+                    typeof kommunicateCommons.isWidgetOpen === 'function' &&
+                    kommunicateCommons.isWidgetOpen()
+                ) {
+                    kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+                }
+            }
+            if (KM_GREETING_AUTO_CLOSE_TIMER) {
+                clearTimeout(KM_GREETING_AUTO_CLOSE_TIMER);
+                KM_GREETING_AUTO_CLOSE_TIMER = null;
             }
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
