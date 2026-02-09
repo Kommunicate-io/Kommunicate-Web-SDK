@@ -1529,6 +1529,9 @@ KommunicateUI = {
         mckChatPopupNotificationTone
     ) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        if (!kommunicateIframe) {
+            return;
+        }
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
@@ -1587,8 +1590,6 @@ KommunicateUI = {
                     var wrapperRect = el.getBoundingClientRect();
                     var textEl = el.querySelector('.chat-popup-widget-text');
                     var width = textEl ? textEl.scrollWidth : el.scrollWidth;
-
-                    console.log('wrapperRect', width);
                     window.parent.postMessage(
                         {
                             type: 'km_popup_resize',
