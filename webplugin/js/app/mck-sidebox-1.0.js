@@ -9045,7 +9045,9 @@ const firstVisibleMsg = {
                 }
 
                 const isVoiceInterfaceActive =
-                    mckVoice && typeof mckVoice.isVoiceModeActive === 'function'
+                    typeof mckVoice !== 'undefined' &&
+                    mckVoice &&
+                    typeof mckVoice.isVoiceModeActive === 'function'
                         ? mckVoice.isVoiceModeActive()
                         : false;
 
