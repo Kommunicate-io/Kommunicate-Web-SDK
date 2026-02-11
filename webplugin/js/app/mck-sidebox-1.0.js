@@ -3240,7 +3240,7 @@ const firstVisibleMsg = {
                 }
                 closeButton.addEventListener('click', closeChatBox);
 
-                if (appOptions.voiceChat) {
+                if (appOptions.voiceChat && typeof mckVoice !== 'undefined' && mckVoice) {
                     mckVoice.addEventListeners();
                     var voiceInterfaceBackBtn = document.querySelector(
                         '.mck-voice-interface-back-btn'
@@ -8314,7 +8314,10 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-contacts-content');
                     kommunicateCommons.show($modal_footer_content, '#mck-sidebox-ft');
 
-                    appOptions.voiceChat && mckVoice.showMic(appOptions);
+                    appOptions.voiceChat &&
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        mckVoice.showMic(appOptions);
                     kommunicateCommons.show('#mck-btn-clear-messages');
                     kommunicateCommons.hide('.mck-group-menu-options', '#mck-waiting-queue');
                     if (params.isGroup) {
