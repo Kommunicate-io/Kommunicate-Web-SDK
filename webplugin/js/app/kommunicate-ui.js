@@ -915,6 +915,8 @@ KommunicateUI = {
             keepConversationHeader && isModernLayout && KommunicateUI.isConversationListView;
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
+        // Ensure container mode is applied when showing chat
+        kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
 
         // Check if conversations tab is active before setting conversation subsections
         var sideboxContent = document.getElementById('mck-sidebox-content');
