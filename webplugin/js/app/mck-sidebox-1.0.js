@@ -827,6 +827,8 @@ const firstVisibleMsg = {
             } else {
                 kommunicateIframe.style.height = '';
             }
+            // Apply container mode styling if in container
+            kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
         }
 
         _this.mckLaunchSideboxChat = function () {

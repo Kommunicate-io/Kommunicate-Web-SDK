@@ -80,6 +80,22 @@
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
 
+/* Container mode: when widget is embedded in a custom container */
+.mck-sidebox.km-container-mode {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
 .mck-sidebox-launcher:focus {
     box-shadow: var(--km-primary-color, #5f46f8) 0px 0px 0px 5px;
 }

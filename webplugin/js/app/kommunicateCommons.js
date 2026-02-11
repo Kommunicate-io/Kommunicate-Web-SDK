@@ -13,6 +13,45 @@ function KommunicateCommons() {
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
+        // Apply container mode class if widget is in a custom container
+        _this.applyContainerMode();
+    };
+
+    _this.isInContainerMode = function () {
+        try {
+            if (typeof window === 'undefined' || !window.parent || !window.parent.document) {
+                return false;
+            }
+            var iframeEl = window.parent.document.getElementById('kommunicate-widget-iframe');
+            if (!iframeEl) {
+                return false;
+            }
+            var containerAttr = iframeEl.getAttribute('data-km-widget-container');
+            return containerAttr === 'true';
+        } catch (e) {
+            // Cross-origin access denied or other error
+            return false;
+        }
+    };
+
+    _this.applyContainerMode = function () {
+        try {
+            if (!_this.isInContainerMode()) {
+                return;
+            }
+            var sideboxEl =
+                typeof document !== 'undefined' && document.getElementById('mck-sidebox');
+            if (
+                sideboxEl &&
+                sideboxEl.classList &&
+                !sideboxEl.classList.contains('km-container-mode')
+            ) {
+                console.log('[KM Container Mode] Applying container mode styling to mck-sidebox');
+                sideboxEl.classList.add('km-container-mode');
+            }
+        } catch (e) {
+            console.error('[KM Container Mode] Error applying container mode:', e);
+        }
     };
 
     _this.getLayout = function () {
