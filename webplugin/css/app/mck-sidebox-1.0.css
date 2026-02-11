@@ -81,7 +81,9 @@
 }
 
 /* Container mode: when widget is embedded in a custom container */
-.mck-sidebox.km-container-mode {
+.mck-sidebox.km-container-mode,
+.mck-sidebox.km-container-mode.fade,
+.mck-sidebox.km-container-mode.fade.in {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -90,10 +92,47 @@
     width: 100% !important;
     height: 100% !important;
     max-height: 100% !important;
+    max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+}
+
+/* Container mode: override inner element widths */
+.mck-sidebox.km-container-mode .mck-box-sm,
+.mck-sidebox.km-container-mode .mck-box-md,
+.mck-sidebox.km-container-mode .mck-box-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Ensure container mode works in all media queries */
+@media (min-width: 310px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+    }
 }
 
 .mck-sidebox-launcher:focus {
