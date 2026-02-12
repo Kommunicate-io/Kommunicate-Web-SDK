@@ -439,6 +439,9 @@
                 preChatEnabled: false,
             };
 
+            const allowedLayouts = ['modern', 'classic'];
+            const allowedContainerModes = ['outside', 'inside', 'iframe'];
+
             const form = document.getElementById('widget-config-form');
             const status = document.getElementById('config-status');
             const preview = document.getElementById('widget-preview');
@@ -514,16 +517,20 @@
                 }
 
                 document.getElementById('appId').value = config.appId || defaultState.appId;
+                const layoutValue = allowedLayouts.includes(config.layout)
+                    ? config.layout
+                    : defaultState.layout;
                 const layoutOption = document.querySelector(
-                    `input[name="layout"][value="${config.layout || defaultState.layout}"]`
+                    `input[name="layout"][value="${layoutValue}"]`
                 );
                 if (layoutOption) {
                     layoutOption.checked = true;
                 }
+                const containerModeValue = allowedContainerModes.includes(config.containerMode)
+                    ? config.containerMode
+                    : defaultState.containerMode;
                 const containerModeOption = document.querySelector(
-                    `input[name="containerMode"][value="${
-                        config.containerMode || defaultState.containerMode
-                    }"]`
+                    `input[name="containerMode"][value="${containerModeValue}"]`
                 );
                 if (containerModeOption) {
                     containerModeOption.checked = true;
@@ -540,7 +547,7 @@
                     preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 }
                 updatePreChatTextareaState();
-                setIframeSnippetVisibility(config.containerMode === 'iframe');
+                setIframeSnippetVisibility(containerModeValue === 'iframe');
             }
 
             function parseJsonInput(textarea) {
