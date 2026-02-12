@@ -8,10 +8,7 @@
             :root {
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
                 color: #0f172a;
-                background-color: #eef3ff;
-                --surface: #ffffff;
-                --border: #c7d2ff;
-                --muted: #475569;
+                background-color: #f5f6fb;
             }
 
             * {
@@ -20,32 +17,24 @@
 
             body {
                 margin: 0;
-                padding: 32px;
-                display: flex;
-                justify-content: center;
-                min-height: 100vh;
-                background: radial-gradient(
-                        circle at top,
-                        rgba(59, 130, 246, 0.12),
-                        transparent 45%
-                    ),
-                    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.15), transparent 35%),
-                    #eef3ff;
+                padding: 24px;
+                background-color: #f5f6fb;
             }
 
             main {
-                width: min(1200px, 100%);
+                max-width: 1100px;
+                margin: 0 auto;
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                 gap: 24px;
             }
 
             .panel {
-                background: var(--surface);
-                border-radius: 28px;
-                padding: 28px;
-                box-shadow: 0 35px 70px rgba(15, 23, 42, 0.15);
-                border: 1px solid rgba(147, 197, 253, 0.7);
+                background: #ffffff;
+                border-radius: 16px;
+                padding: 22px;
+                border: 1px solid #dbe2f0;
+                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
             }
 
             .panel h1,
@@ -55,123 +44,126 @@
 
             .panel p {
                 margin-top: 4px;
-                color: var(--muted);
-                font-size: 14px;
+                color: #475569;
+                font-size: 15px;
             }
 
             form {
-                margin-top: 16px;
-                display: flex;
-                flex-direction: column;
-                gap: 18px;
+                margin-top: 12px;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
             }
 
-            label,
-            fieldset {
+            .compact-row {
                 display: flex;
-                flex-direction: column;
-                gap: 8px;
-                font-size: 14px;
-                color: #0f172a;
-            }
-
-            .toggle-row {
-                flex-direction: row;
                 align-items: center;
                 gap: 12px;
             }
 
+            label,
             fieldset {
-                border: 1px dashed rgba(59, 130, 246, 0.5);
-                border-radius: 16px;
-                padding: 16px 18px;
-                background: rgba(59, 130, 246, 0.04);
+                font-size: 14px;
+                color: #0f172a;
+            }
+
+            fieldset {
+                border: 1px dashed #cbd5f5;
+                border-radius: 12px;
+                padding: 10px 14px;
             }
 
             fieldset legend {
                 font-weight: 600;
                 color: #1d4ed8;
-                font-size: 16px;
-            }
-
-            input[type='text'],
-            textarea {
-                font-size: 14px;
-                padding: 14px;
-                border-radius: 16px;
-                border: 1px solid #dbeafe;
-                background: #f8fbff;
-                font-family: inherit;
-                resize: vertical;
-                box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.08);
-                transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            input[type='text']:focus,
-            textarea:focus {
-                outline: none;
-                border-color: #2563eb;
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-            }
-
-            textarea {
-                min-height: 140px;
-                font-family: 'Inter', 'Segoe UI', sans-serif;
             }
 
             .inline-options {
                 display: flex;
-                gap: 12px;
+                gap: 8px;
                 flex-wrap: wrap;
+                margin: 0;
+                padding: 0;
             }
 
             .inline-options label {
                 flex: 1;
-                flex-direction: row;
+                display: flex;
                 align-items: center;
-                gap: 8px;
-                font-weight: 500;
-                padding: 10px 16px;
-                border-radius: 16px;
-                border: 1px solid rgba(99, 102, 241, 0.3);
-                background: rgba(99, 102, 241, 0.04);
-                transition: border-color 0.2s, background 0.2s;
+                gap: 6px;
+                padding: 6px 10px;
             }
 
-            .inline-options input[type='radio'] {
-                accent-color: #2563eb;
+            details.collapsible {
+                border: 1px dashed #cbd5f5;
+                border-radius: 12px;
+                padding: 10px 12px;
+                background: #fafbff;
+            }
+
+            details summary {
+                list-style: none;
+                cursor: pointer;
+                font-weight: 600;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: #1f3e8a;
+                gap: 12px;
+            }
+
+            details summary::-webkit-details-marker,
+            details summary::marker {
+                display: none;
+            }
+
+            .collapsible textarea {
+                margin-top: 10px;
+                min-height: 120px;
+            }
+
+            .compact-row label {
+                font-weight: 600;
+            }
+
+            .hint {
+                font-size: 12px;
+                color: #475569;
+                margin: 6px 0 0;
+            }
+
+            input[type='text'],
+            textarea {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #d1d9f2;
+                background: #f8fafc;
+                font-family: inherit;
+                resize: vertical;
+            }
+
+            textarea {
+                min-height: 120px;
             }
 
             .actions {
                 display: flex;
-                gap: 12px;
+                gap: 10px;
                 flex-wrap: wrap;
                 margin-top: 8px;
             }
 
             .actions button {
                 cursor: pointer;
-                border: none;
                 border-radius: 999px;
-                padding: 10px 26px;
-                font-size: 15px;
+                padding: 10px 22px;
+                font-size: 14px;
                 font-weight: 600;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .actions button:focus-visible {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
-            }
-
-            .actions button:hover {
-                transform: translateY(-1px);
-            }
-
-            .primary-btn {
-                background: linear-gradient(120deg, #2563eb, #7c3aed);
+                border: none;
+                background: #2563eb;
                 color: white;
-                box-shadow: 0 15px 30px rgba(37, 99, 235, 0.35);
             }
 
             .secondary-btn {
@@ -180,54 +172,42 @@
             }
 
             #config-status {
-                border-radius: 16px;
-                padding: 16px 18px;
+                margin-top: 14px;
+                font-size: 13px;
                 background: #eef2ff;
-                color: #312e81;
+                border-radius: 12px;
+                padding: 10px 14px;
                 border: 1px solid #c7d2fe;
-                font-size: 14px;
-                margin-top: 12px;
             }
 
             .preview-panel {
                 display: flex;
                 flex-direction: column;
-                gap: 12px;
+                gap: 2px;
             }
 
             .widget-preview {
-                border: 1px solid rgba(59, 130, 246, 0.4);
-                border-radius: 24px;
-                min-height: 340px;
+                border: 1px solid #d1d9f2;
+                border-radius: 18px;
+                min-height: 600px;
                 padding: 20px;
-                background: linear-gradient(
-                    180deg,
-                    rgba(37, 99, 235, 0.08),
-                    rgba(59, 130, 246, 0.02)
-                );
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 position: relative;
-                transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .widget-preview[data-mode-info='floating outside'] {
-                border-color: rgba(59, 130, 246, 0.8);
-                box-shadow: 0 25px 50px rgba(37, 99, 235, 0.25);
+                background: #f8fafc;
             }
 
             .widget-preview::after {
                 content: attr(data-mode-info);
                 position: absolute;
-                top: 16px;
-                right: 16px;
-                font-size: 12px;
-                background: rgba(15, 23, 42, 0.75);
-                color: #f8fafc;
-                padding: 4px 12px;
+                top: 14px;
+                right: 14px;
+                font-size: 11px;
+                background: rgba(15, 23, 42, 0.7);
+                color: #fff;
+                padding: 4px 10px;
                 border-radius: 999px;
-                text-transform: capitalize;
             }
 
             #widget-container {
@@ -235,13 +215,40 @@
                 height: 100%;
             }
 
+            .iframe-note {
+                border: 1px solid #cbd5f5;
+                border-radius: 12px;
+                padding: 12px;
+                background: #f9fbff;
+                font-family: 'JetBrains Mono', Consolas, monospace;
+                font-size: 13px;
+                color: #0f172a;
+                margin: 8px 0 0;
+            }
+
+            .iframe-note pre {
+                margin: 0 0 8px;
+                background: #eef2ff;
+                padding: 8px;
+                border-radius: 10px;
+            }
+
+            #legacy-iframe {
+                width: 100%;
+                height: 100%;
+                border-radius: 12px;
+                border: 1px solid #d1d9f2;
+                background: #fff;
+                display: none;
+            }
+
             @media (max-width: 640px) {
                 body {
-                    padding: 16px;
+                    padding: 12px;
                 }
 
                 .panel {
-                    padding: 20px;
+                    padding: 18px;
                 }
 
                 .actions {
@@ -250,7 +257,7 @@
 
                 .widget-preview::after {
                     position: static;
-                    margin-top: 8px;
+                    margin-top: 6px;
                 }
             }
         </style>
@@ -270,22 +277,19 @@
                     Kommunicate
                 </p>
                 <h1>Widget configuration playground</h1>
-                <p>
-                    Tell the widget how to behave before injecting it. You can tweak the app ID,
-                    layout, placement, widget settings, or pre-chat lead fields and then launch it.
-                </p>
 
                 <form id="widget-config-form">
-                    <label>
-                        App ID
+                    <div class="compact-row">
+                        <label for="appId" style="flex: 0 0 auto; min-width: 70px">App ID</label>
                         <input
                             type="text"
                             id="appId"
                             name="appId"
                             required
                             value="kommunicate-support"
+                            style="flex: 1"
                         />
-                    </label>
+                    </div>
 
                     <fieldset>
                         <legend>Layout</legend>
@@ -311,32 +315,55 @@
                                 ><input type="radio" name="containerMode" value="inside" /> Anchor
                                 inside preview</label
                             >
+                            <label
+                                ><input type="radio" name="containerMode" value="iframe" /> Legacy
+                                iframe embed</label
+                            >
                         </div>
                     </fieldset>
 
-                    <label>
-                        Widget settings (JSON)
+                    <div id="iframe-snippet" class="iframe-note" hidden>
+                        <p style="margin: 0 0 8px; font-weight: 600">Legacy iframe snippet</p>
+                        <pre>
+&lt;iframe
+    style="border: none;"
+    height="600px"
+    width="400px"
+    src="/chat?appId=kommunicate-support"
+    allow="microphone; geolocation;"
+&gt;
+&lt;/iframe&gt;
+                        </pre>
+                        <p style="margin: 0; font-size: 13px; color: #475569">
+                            Use this markup directly on pages where the script-based integration is
+                            not available.
+                        </p>
+                    </div>
+
+                    <details class="collapsible" open>
+                        <summary>Widget settings (JSON)</summary>
                         <textarea id="widgetSettings" name="widgetSettings" spellcheck="false">
 {
   "preCreateUser": false,
   "popup": false
 }
                         </textarea>
-                    </label>
+                    </details>
 
-                    <fieldset>
-                        <legend>Pre-chat leads</legend>
-                        <label class="toggle-row" style="font-weight: 500">
-                            <input
-                                type="checkbox"
-                                id="preChatEnabled"
-                                name="preChatEnabled"
-                                checked
-                            />
-                            <span>Enable pre-chat lead collection</span>
-                        </label>
-                        <label>
-                            Pre-chat lead fields (JSON array)
+                    <details class="collapsible" open>
+                        <summary class="split-summary">
+                            <span>Pre-chat leads</span>
+                            <label class="toggle-row" style="font-weight: 500; margin: 0">
+                                <input
+                                    type="checkbox"
+                                    id="preChatEnabled"
+                                    name="preChatEnabled"
+                                    checked
+                                />
+                                <span>Enable collection</span>
+                            </label>
+                        </summary>
+                        <div id="preChatFields">
                             <textarea id="preChat" name="preChat" spellcheck="false">
 [
   {
@@ -350,11 +377,9 @@
   }
 ]
                             </textarea>
-                            <span style="font-size: 12px; color: #475569"
-                                >Leave empty or use [] to skip pre-chat leads.</span
-                            >
-                        </label>
-                    </fieldset>
+                            <p class="hint">Leave empty or use [] to skip pre-chat leads.</p>
+                        </div>
+                    </details>
                 </form>
 
                 <div class="actions">
@@ -374,11 +399,6 @@
             <section class="panel preview-panel">
                 <div>
                     <h2>Live preview area</h2>
-                    <p>
-                        This container represents the inside placement. The widget will appear
-                        inside when "Anchor inside preview" is selected and the matching container
-                        ID is supplied.
-                    </p>
                 </div>
                 <div id="widget-preview" class="widget-preview" data-mode-info="waiting for launch">
                     <div id="widget-container">
@@ -386,11 +406,15 @@
                             Inside placement target
                         </p>
                     </div>
+                    <iframe
+                        id="legacy-iframe"
+                        src="/chat?appId=kommunicate-support"
+                        allow="microphone; geolocation;"
+                        title="Legacy iframe preview"
+                        loading="lazy"
+                        style="width: 100%; height: 100%; border-radius: 24px"
+                    ></iframe>
                 </div>
-                <p style="margin-bottom: 0; font-size: 13px; color: #475569">
-                    After launching, check the developer console or refresh the page to reconfigure
-                    the widget.
-                </p>
             </section>
         </main>
 
@@ -415,7 +439,7 @@
                         type: 'email',
                     },
                 ],
-                preChatEnabled: true,
+                preChatEnabled: false,
             };
 
             const form = document.getElementById('widget-config-form');
@@ -424,8 +448,13 @@
             const widgetSettingsTextarea = document.getElementById('widgetSettings');
             const preChatTextarea = document.getElementById('preChat');
             const preChatEnabledCheckbox = document.getElementById('preChatEnabled');
+            const preChatFields = document.getElementById('preChatFields');
+            const iframeSnippet = document.getElementById('iframe-snippet');
+            const legacyIframe = document.getElementById('legacy-iframe');
+            const placementRadios = document.querySelectorAll('input[name="containerMode"]');
             const resetButton = document.getElementById('reset-form');
             const pendingConfigKey = 'kommunicate-demo-pending-config';
+            const appIdInput = document.getElementById('appId');
 
             function formatJson(value) {
                 return JSON.stringify(value, null, 2);
@@ -447,6 +476,7 @@
                     'waiting for launch',
                     'Ready to launch. Configure your settings and press Launch.'
                 );
+                handlePlacementChange();
             }
 
             function updatePreviewStatus(modeInfo, message) {
@@ -460,6 +490,25 @@
                 const disabled = !preChatEnabledCheckbox.checked;
                 preChatTextarea.disabled = disabled;
                 preChatTextarea.style.opacity = disabled ? '0.5' : '1';
+                preChatFields.style.display = disabled ? 'none' : 'block';
+            }
+            function setIframeSnippetVisibility(visible) {
+                iframeSnippet.hidden = !visible;
+            }
+
+            function handlePlacementChange() {
+                const selected = document.querySelector('input[name="containerMode"]:checked')
+                    .value;
+                setIframeSnippetVisibility(selected === 'iframe');
+                if (selected === 'iframe') {
+                    legacyIframe.style.display = 'block';
+                    const currentAppId = (appIdInput.value || defaultState.appId).trim();
+                    legacyIframe.src = `/chat?appId=${encodeURIComponent(currentAppId)}`;
+                    preview.dataset.modeInfo = 'legacy iframe preview';
+                } else {
+                    legacyIframe.style.display = 'none';
+                    preview.dataset.modeInfo = 'waiting for launch';
+                }
             }
 
             function applyConfigToForm(config) {
@@ -494,6 +543,7 @@
                     preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 }
                 updatePreChatTextareaState();
+                setIframeSnippetVisibility(config.containerMode === 'iframe');
             }
 
             function parseJsonInput(textarea) {
@@ -608,6 +658,14 @@
                 event.preventDefault();
                 try {
                     const config = buildLaunchConfig();
+                    if (config.containerMode === 'iframe') {
+                        setIframeSnippetVisibility(true);
+                        status.textContent =
+                            'Copy the iframe snippet above instead of launching via script.';
+                        status.style.background = '#fef3c7';
+                        status.style.color = '#92400e';
+                        return;
+                    }
                     sessionStorage.setItem(pendingConfigKey, JSON.stringify(config));
                     status.textContent = 'Reloading to apply the updated configuration...';
                     status.style.background = '#fef3c7';
@@ -624,6 +682,9 @@
                 resetForm();
             });
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
+            placementRadios.forEach((radio) =>
+                radio.addEventListener('change', handlePlacementChange)
+            );
 
             function handlePendingLaunch() {
                 const pending = sessionStorage.getItem(pendingConfigKey);
