@@ -62,8 +62,37 @@
                             iframeStyle.type = 'text/css';
                             iframeStyle.innerHTML = classSettings;
                             document.getElementsByTagName('head')[0].appendChild(iframeStyle);
+
+                            // Inject comprehensive full-screen styles matching container mode
                             var launcherIconStyle =
-                                '@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}';
+                                'html, body { height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }' +
+                                'body.mck-box-open { height: 100% !important; }' +
+                                '.layout-modern { height: 100% !important; }' +
+                                '.mck-sidebox, .mck-sidebox.fade, .mck-sidebox.fade.in, ' +
+                                '.mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in, ' +
+                                '.layout-modern .mck-sidebox, .layout-modern .mck-sidebox.fade, ' +
+                                '.layout-modern .mck-sidebox.fade.in, ' +
+                                '.layout-modern .mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in ' +
+                                '{ position: absolute !important; inset: 0 !important; width: 100% !important; ' +
+                                'height: 100% !important; max-height: 100% !important; max-width: 100% !important; ' +
+                                'min-width: 0 !important; margin: 0 !important; border-radius: 0 !important; ' +
+                                'box-shadow: none !important; }' +
+                                '.mck-sidebox .mck-box-sm, .mck-sidebox .mck-box-md, .mck-sidebox .mck-box-dialog ' +
+                                '{ width: 100% !important; max-width: 100% !important; height: 100% !important; }' +
+                                '.mck-sidebox .mck-right, .mck-sidebox .mck-left, .mck-sidebox .mck-top, .mck-sidebox .mck-bottom ' +
+                                '{ top: 0 !important; bottom: 0 !important; height: auto !important; }' +
+                                '@media (min-width: 310px) {' +
+                                '.mck-sidebox, .mck-sidebox.fade.in ' +
+                                '{ position: absolute !important; inset: 0 !important; width: 100% !important; ' +
+                                'height: 100% !important; max-height: 100% !important; }' +
+                                '.mck-sidebox .mck-box-sm, .mck-sidebox .mck-box-md ' +
+                                '{ width: 100% !important; max-width: 100% !important; }' +
+                                '}' +
+                                '@media (max-width: 600px) {' +
+                                '.mck-sidebox, .mck-sidebox.fade.in ' +
+                                '{ position: absolute !important; inset: 0 !important; width: 100% !important; ' +
+                                'height: 100% !important; max-height: 100% !important; }' +
+                                '}';
                             Kommunicate.customizeWidgetCss(launcherIconStyle);
                             var iframe = document.getElementById('kommunicate-widget-iframe'),
                                 launcher = KommunicateGlobal.document.getElementById(

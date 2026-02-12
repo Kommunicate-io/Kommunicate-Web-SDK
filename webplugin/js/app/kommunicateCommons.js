@@ -49,6 +49,13 @@ function KommunicateCommons() {
                 console.log('[KM Container Mode] Applying container mode styling to mck-sidebox');
                 sideboxEl.classList.add('km-container-mode');
             }
+            // Also add class to body to enable full-height styling
+            if (typeof document !== 'undefined' && document.body && document.body.classList) {
+                if (!document.body.classList.contains('km-container-mode')) {
+                    console.log('[KM Container Mode] Applying container mode to document body');
+                    document.body.classList.add('km-container-mode');
+                }
+            }
         } catch (e) {
             console.error('[KM Container Mode] Error applying container mode:', e);
         }
