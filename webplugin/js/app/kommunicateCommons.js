@@ -17,8 +17,21 @@ function KommunicateCommons() {
         _this.applyContainerMode();
     };
 
+    function getKommunicateGlobals() {
+        return (
+            (typeof Kommunicate !== 'undefined' && Kommunicate._globals) ||
+            (typeof kommunicate !== 'undefined' && kommunicate._globals) ||
+            (typeof applozic !== 'undefined' && applozic._globals) ||
+            null
+        );
+    }
+
     _this.isInContainerMode = function () {
         try {
+            var containerIdFromGlobals = _this.getContainerId();
+            if (containerIdFromGlobals) {
+                return true;
+            }
             if (typeof window === 'undefined' || !window.parent || !window.parent.document) {
                 return false;
             }
@@ -55,14 +68,28 @@ function KommunicateCommons() {
                     console.log('[KM Container Mode] Applying container mode to document body');
                     document.body.classList.add('km-container-mode');
                 }
+                var globals = getKommunicateGlobals();
+                var shouldHideControls = globals?.containerModeHideControls === true;
+                if (shouldHideControls) {
+                    document.body.classList.add('km-container-mode--hide-controls');
+                } else {
+                    document.body.classList.remove('km-container-mode--hide-controls');
+                }
             }
         } catch (e) {
             console.error('[KM Container Mode] Error applying container mode:', e);
         }
     };
 
+    _this.getContainerId = function () {
+        var globals = getKommunicateGlobals();
+        var containerId =
+            globals && typeof globals.containerId === 'string' ? globals.containerId.trim() : null;
+        return containerId && containerId.length ? containerId : null;
+    };
+
     _this.getLayout = function () {
-        var globals = Kommunicate?._globals;
+        var globals = getKommunicateGlobals();
         var appSettings = globals?.appSettings;
         var layoutFromGlobals =
             globals?.layout || appSettings?.layout || appSettings?.chatWidget?.layout || null;

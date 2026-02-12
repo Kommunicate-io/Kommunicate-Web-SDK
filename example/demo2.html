@@ -324,21 +324,18 @@
                         </div>
                     </fieldset>
 
-                    <div id="iframe-snippet" class="iframe-note" hidden>
-                        <p style="margin: 0 0 8px; font-weight: 600">Legacy iframe snippet</p>
-                        <pre>
-&lt;iframe
-    style="border: none;"
-    height="600px"
-    width="400px"
-    src="/chat?appId=kommunicate-support"
-    allow="microphone; geolocation;"
-&gt;
-&lt;/iframe&gt;
-                        </pre>
-                        <p style="margin: 0; font-size: 13px; color: #475569">
-                            Use this markup directly on pages where the script-based integration is
-                            not available.
+                    <div>
+                        <label class="inline-options" style="margin-top: 4px">
+                            <input
+                                type="checkbox"
+                                id="containerModeHideControls"
+                                name="containerModeHideControls"
+                            />
+                            <span>Hide header controls (minimize + close) in container</span>
+                        </label>
+                        <p class="hint" style="margin: 0">
+                            Works only when “Anchor inside preview” is selected so the widget can
+                            use the full container real estate.
                         </p>
                     </div>
 
@@ -437,6 +434,7 @@
                     },
                 ],
                 preChatEnabled: false,
+                containerModeHideControls: false,
             };
 
             const allowedLayouts = ['modern', 'classic'];
@@ -449,10 +447,12 @@
             const preChatTextarea = document.getElementById('preChat');
             const preChatEnabledCheckbox = document.getElementById('preChatEnabled');
             const preChatFields = document.getElementById('preChatFields');
-            const iframeSnippet = document.getElementById('iframe-snippet');
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
             const resetButton = document.getElementById('reset-form');
+            const containerModeHideControlsCheckbox = document.getElementById(
+                'containerModeHideControls'
+            );
             const pendingConfigKey = 'kommunicate-demo-pending-config';
             const appIdInput = document.getElementById('appId');
 
@@ -471,6 +471,7 @@
                 widgetSettingsTextarea.value = formatJson(defaultState.widgetSettings);
                 preChatTextarea.value = formatJson(defaultState.preChat);
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
+                containerModeHideControlsCheckbox.checked = defaultState.containerModeHideControls;
                 updatePreChatTextareaState();
                 updatePreviewStatus(
                     'waiting for launch',
@@ -492,14 +493,10 @@
                 preChatTextarea.style.opacity = disabled ? '0.5' : '1';
                 preChatFields.style.display = disabled ? 'none' : 'block';
             }
-            function setIframeSnippetVisibility(visible) {
-                iframeSnippet.hidden = !visible;
-            }
 
             function handlePlacementChange() {
                 const selected = document.querySelector('input[name="containerMode"]:checked')
                     .value;
-                setIframeSnippetVisibility(selected === 'iframe');
                 if (selected === 'iframe') {
                     legacyIframe.style.display = 'block';
                     const currentAppId = (appIdInput.value || defaultState.appId).trim();
@@ -546,8 +543,10 @@
                 } else {
                     preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 }
+                containerModeHideControlsCheckbox.checked = Boolean(
+                    config.containerModeHideControls
+                );
                 updatePreChatTextareaState();
-                setIframeSnippetVisibility(containerModeValue === 'iframe');
             }
 
             function parseJsonInput(textarea) {
@@ -588,6 +587,7 @@
                     widgetSettings,
                     preChat,
                     preChatEnabled,
+                    containerModeHideControls: containerModeHideControlsCheckbox.checked,
                 };
             }
 
@@ -623,6 +623,7 @@
                 if (config.containerMode === 'inside') {
                     globalSettings.popupWidget = false;
                     globalSettings.containerId = config.containerId;
+                    globalSettings.containerModeHideControls = config.containerModeHideControls;
                 }
 
                 if (Array.isArray(config.preChat) && config.preChat.length) {
@@ -663,7 +664,6 @@
                 try {
                     const config = buildLaunchConfig();
                     if (config.containerMode === 'iframe') {
-                        setIframeSnippetVisibility(true);
                         status.textContent = 'Legacy iframe preview is shown.';
                         status.style.background = '#fef3c7';
                         status.style.color = '#92400e';

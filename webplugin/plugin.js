@@ -172,6 +172,34 @@ function applyContainerDimensions(containerElement) {
     }
 }
 
+function attemptContainerAutoLaunch(iframeElement) {
+    if (!iframeElement || iframeElement.getAttribute('data-km-widget-container') !== 'true') {
+        return;
+    }
+    var attempts = 0;
+    var maxAttempts = 40;
+    function checkLaunch() {
+        try {
+            var iframeWindow = iframeElement.contentWindow;
+            if (
+                iframeWindow &&
+                iframeWindow.Kommunicate &&
+                typeof iframeWindow.Kommunicate.launchConversation === 'function'
+            ) {
+                iframeWindow.Kommunicate.launchConversation();
+                return;
+            }
+        } catch (e) {
+            // ignore cross-origin until ready
+        }
+        attempts++;
+        if (attempts < maxAttempts) {
+            window.setTimeout(checkLaunch, 150);
+        }
+    }
+    window.setTimeout(checkLaunch, 200);
+}
+
 if (!window.__kmPopupResizeListener) {
     window.__kmPopupResizeListener = true;
     window.addEventListener('message', function (event) {
@@ -377,6 +405,7 @@ function createKommunicateIframe() {
         document.body.appendChild(kommunicateIframe);
     }
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
+    attemptContainerAutoLaunch(kommunicateIframe);
 
     if (!iframeSupportsSrcdoc) {
         var writeSrcdocIntoAboutBlank = function () {

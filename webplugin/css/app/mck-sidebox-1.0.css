@@ -133,6 +133,16 @@ body.km-container-mode .layout-modern {
     height: auto !important;
 }
 
+body.km-container-mode.km-container-mode--hide-controls #km-chat-widget-close-button,
+body.km-container-mode.km-container-mode--hide-controls .mck-minimize-icon {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-faq-and-close-btn-container,
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    pointer-events: none;
+}
+
 /* Ensure container mode works in all media queries */
 @media (min-width: 310px) {
     .mck-sidebox.km-container-mode,
