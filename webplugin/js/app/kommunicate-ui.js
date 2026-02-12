@@ -1606,7 +1606,7 @@ KommunicateUI = {
                         {
                             type: 'km_popup_resize',
                             height: Math.ceil(wrapperRect.height + 35),
-                            width: Math.ceil(Math.min(421, width + 120)),
+                            width: Math.ceil(Math.min(421, width + 90)),
                         },
                         '*'
                     );
