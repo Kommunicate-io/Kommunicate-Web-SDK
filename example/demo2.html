@@ -657,8 +657,7 @@
                     const config = buildLaunchConfig();
                     if (config.containerMode === 'iframe') {
                         setIframeSnippetVisibility(true);
-                        status.textContent =
-                            'Copy the iframe snippet above instead of launching via script.';
+                        status.textContent = 'Legacy iframe preview is shown.';
                         status.style.background = '#fef3c7';
                         status.style.color = '#92400e';
                         return;
