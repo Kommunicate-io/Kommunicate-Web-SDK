@@ -3,56 +3,549 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Kommunicate Modern Widget Demo</title>
+        <title>Kommunicate Widget Configurator</title>
+        <style>
+            :root {
+                font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+                color: #0f172a;
+                background-color: #eef3ff;
+                --surface: #ffffff;
+                --border: #c7d2ff;
+                --muted: #475569;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 32px;
+                display: flex;
+                justify-content: center;
+                min-height: 100vh;
+                background: radial-gradient(
+                        circle at top,
+                        rgba(59, 130, 246, 0.12),
+                        transparent 45%
+                    ),
+                    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.15), transparent 35%),
+                    #eef3ff;
+            }
+
+            main {
+                width: min(1200px, 100%);
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                gap: 24px;
+            }
+
+            .panel {
+                background: var(--surface);
+                border-radius: 28px;
+                padding: 28px;
+                box-shadow: 0 35px 70px rgba(15, 23, 42, 0.15);
+                border: 1px solid rgba(147, 197, 253, 0.7);
+            }
+
+            .panel h1,
+            .panel h2 {
+                margin-top: 0;
+            }
+
+            .panel p {
+                margin-top: 4px;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            form {
+                margin-top: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            label,
+            fieldset {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                font-size: 14px;
+                color: #0f172a;
+            }
+
+            .toggle-row {
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+            }
+
+            fieldset {
+                border: 1px dashed rgba(59, 130, 246, 0.5);
+                border-radius: 16px;
+                padding: 16px 18px;
+                background: rgba(59, 130, 246, 0.04);
+            }
+
+            fieldset legend {
+                font-weight: 600;
+                color: #1d4ed8;
+                font-size: 16px;
+            }
+
+            input[type='text'],
+            textarea {
+                font-size: 14px;
+                padding: 14px;
+                border-radius: 16px;
+                border: 1px solid #dbeafe;
+                background: #f8fbff;
+                font-family: inherit;
+                resize: vertical;
+                box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.08);
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            input[type='text']:focus,
+            textarea:focus {
+                outline: none;
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+            }
+
+            textarea {
+                min-height: 140px;
+                font-family: 'Inter', 'Segoe UI', sans-serif;
+            }
+
+            .inline-options {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .inline-options label {
+                flex: 1;
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+                padding: 10px 16px;
+                border-radius: 16px;
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                background: rgba(99, 102, 241, 0.04);
+                transition: border-color 0.2s, background 0.2s;
+            }
+
+            .inline-options input[type='radio'] {
+                accent-color: #2563eb;
+            }
+
+            .actions {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-top: 8px;
+            }
+
+            .actions button {
+                cursor: pointer;
+                border: none;
+                border-radius: 999px;
+                padding: 10px 26px;
+                font-size: 15px;
+                font-weight: 600;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .actions button:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+            }
+
+            .actions button:hover {
+                transform: translateY(-1px);
+            }
+
+            .primary-btn {
+                background: linear-gradient(120deg, #2563eb, #7c3aed);
+                color: white;
+                box-shadow: 0 15px 30px rgba(37, 99, 235, 0.35);
+            }
+
+            .secondary-btn {
+                background: #f1f5f9;
+                color: #0f172a;
+            }
+
+            #config-status {
+                border-radius: 16px;
+                padding: 16px 18px;
+                background: #eef2ff;
+                color: #312e81;
+                border: 1px solid #c7d2fe;
+                font-size: 14px;
+                margin-top: 12px;
+            }
+
+            .preview-panel {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .widget-preview {
+                border: 1px solid rgba(59, 130, 246, 0.4);
+                border-radius: 24px;
+                min-height: 340px;
+                padding: 20px;
+                background: linear-gradient(
+                    180deg,
+                    rgba(37, 99, 235, 0.08),
+                    rgba(59, 130, 246, 0.02)
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .widget-preview[data-mode-info='floating outside'] {
+                border-color: rgba(59, 130, 246, 0.8);
+                box-shadow: 0 25px 50px rgba(37, 99, 235, 0.25);
+            }
+
+            .widget-preview::after {
+                content: attr(data-mode-info);
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                font-size: 12px;
+                background: rgba(15, 23, 42, 0.75);
+                color: #f8fafc;
+                padding: 4px 12px;
+                border-radius: 999px;
+                text-transform: capitalize;
+            }
+
+            #widget-container {
+                width: 100%;
+                height: 100%;
+            }
+
+            @media (max-width: 640px) {
+                body {
+                    padding: 16px;
+                }
+
+                .panel {
+                    padding: 20px;
+                }
+
+                .actions {
+                    flex-direction: column;
+                }
+
+                .widget-preview::after {
+                    position: static;
+                    margin-top: 8px;
+                }
+            }
+        </style>
     </head>
     <body>
-        <h1>Kommunicate Modern Widget Demo</h1>
-        <p>This page loads the Kommunicate widget configured with a sample Modern layout.</p>
+        <main>
+            <section class="panel">
+                <p
+                    style="
+                        text-transform: uppercase;
+                        letter-spacing: 0.2em;
+                        font-size: 12px;
+                        margin: 0;
+                        color: #2563eb;
+                    "
+                >
+                    Kommunicate
+                </p>
+                <h1>Widget configuration playground</h1>
+                <p>
+                    Tell the widget how to behave before injecting it. You can tweak the app ID,
+                    layout, placement, widget settings, or pre-chat lead fields and then launch it.
+                </p>
+
+                <form id="widget-config-form">
+                    <label>
+                        App ID
+                        <input
+                            type="text"
+                            id="appId"
+                            name="appId"
+                            required
+                            value="kommunicate-support"
+                        />
+                    </label>
+
+                    <fieldset>
+                        <legend>Layout</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="layout" value="modern" checked />
+                                Modern</label
+                            >
+                            <label
+                                ><input type="radio" name="layout" value="classic" /> Classic</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Placement</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="containerMode" value="outside" checked />
+                                Float outside (popup)</label
+                            >
+                            <label
+                                ><input type="radio" name="containerMode" value="inside" /> Anchor
+                                inside preview</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <label>
+                        Widget settings (JSON)
+                        <textarea id="widgetSettings" name="widgetSettings" spellcheck="false">
+{
+  "preCreateUser": false,
+  "popup": false
+}
+                        </textarea>
+                    </label>
+
+                    <fieldset>
+                        <legend>Pre-chat leads</legend>
+                        <label class="toggle-row" style="font-weight: 500">
+                            <input
+                                type="checkbox"
+                                id="preChatEnabled"
+                                name="preChatEnabled"
+                                checked
+                            />
+                            <span>Enable pre-chat lead collection</span>
+                        </label>
+                        <label>
+                            Pre-chat lead fields (JSON array)
+                            <textarea id="preChat" name="preChat" spellcheck="false">
+[
+  {
+    "field": "Name",
+    "required": true,
+    "placeholder": "Enter your name"
+  },
+  {
+    "field": "Email",
+    "type": "email"
+  }
+]
+                            </textarea>
+                            <span style="font-size: 12px; color: #475569"
+                                >Leave empty or use [] to skip pre-chat leads.</span
+                            >
+                        </label>
+                    </fieldset>
+                </form>
+
+                <div class="actions">
+                    <button type="submit" form="widget-config-form" class="primary-btn">
+                        Launch widget
+                    </button>
+                    <button type="button" id="reset-form" class="secondary-btn">
+                        Restore defaults
+                    </button>
+                </div>
+
+                <div id="config-status" role="status" aria-live="polite">
+                    Ready to launch. Configure your settings and press Launch.
+                </div>
+            </section>
+
+            <section class="panel preview-panel">
+                <div>
+                    <h2>Live preview area</h2>
+                    <p>
+                        This container represents the inside placement. The widget will appear
+                        inside when "Anchor inside preview" is selected and the matching container
+                        ID is supplied.
+                    </p>
+                </div>
+                <div id="widget-preview" class="widget-preview" data-mode-info="waiting for launch">
+                    <div id="widget-container">
+                        <p style="margin: 0; color: #334155; text-align: center">
+                            Inside placement target
+                        </p>
+                    </div>
+                </div>
+                <p style="margin-bottom: 0; font-size: 13px; color: #475569">
+                    After launching, check the developer console or refresh the page to reconfigure
+                    the widget.
+                </p>
+            </section>
+        </main>
+
         <script>
-            (function (d, m) {
-                var kommunicateSettings = {
-                    // appId: '39187bcfc4dfd93e485509a19be3ed665',
-                    appId: 'kommunicate-support',
-                    popupWidget: true,
-                    layout: 'modern',
+            const defaultState = {
+                appId: 'kommunicate-support',
+                layout: 'modern',
+                containerMode: 'outside',
+                containerId: 'widget-container',
+                widgetSettings: {
+                    preCreateUser: false,
+                    popup: false,
+                },
+                preChat: [
+                    {
+                        field: 'Name',
+                        required: true,
+                        placeholder: 'Enter your name',
+                    },
+                    {
+                        field: 'Email',
+                        type: 'email',
+                    },
+                ],
+                preChatEnabled: true,
+            };
+
+            const form = document.getElementById('widget-config-form');
+            const status = document.getElementById('config-status');
+            const preview = document.getElementById('widget-preview');
+            const widgetSettingsTextarea = document.getElementById('widgetSettings');
+            const preChatTextarea = document.getElementById('preChat');
+            const preChatEnabledCheckbox = document.getElementById('preChatEnabled');
+            const resetButton = document.getElementById('reset-form');
+            const pendingConfigKey = 'kommunicate-demo-pending-config';
+
+            function formatJson(value) {
+                return JSON.stringify(value, null, 2);
+            }
+
+            function resetForm() {
+                document.getElementById('appId').value = defaultState.appId;
+                document.querySelector(
+                    `input[name="layout"][value="${defaultState.layout}"]`
+                ).checked = true;
+                document.querySelector(
+                    `input[name="containerMode"][value="${defaultState.containerMode}"]`
+                ).checked = true;
+                widgetSettingsTextarea.value = formatJson(defaultState.widgetSettings);
+                preChatTextarea.value = formatJson(defaultState.preChat);
+                preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
+                updatePreChatTextareaState();
+                updatePreviewStatus(
+                    'waiting for launch',
+                    'Ready to launch. Configure your settings and press Launch.'
+                );
+            }
+
+            function updatePreviewStatus(modeInfo, message) {
+                preview.dataset.modeInfo = modeInfo;
+                status.textContent = message;
+                status.style.background = '#eef2ff';
+                status.style.color = '#312e81';
+            }
+
+            function updatePreChatTextareaState() {
+                const disabled = !preChatEnabledCheckbox.checked;
+                preChatTextarea.disabled = disabled;
+                preChatTextarea.style.opacity = disabled ? '0.5' : '1';
+            }
+
+            function applyConfigToForm(config) {
+                if (!config) {
+                    return;
+                }
+
+                document.getElementById('appId').value = config.appId || defaultState.appId;
+                const layoutOption = document.querySelector(
+                    `input[name="layout"][value="${config.layout || defaultState.layout}"]`
+                );
+                if (layoutOption) {
+                    layoutOption.checked = true;
+                }
+                const containerModeOption = document.querySelector(
+                    `input[name="containerMode"][value="${
+                        config.containerMode || defaultState.containerMode
+                    }"]`
+                );
+                if (containerModeOption) {
+                    containerModeOption.checked = true;
+                }
+                widgetSettingsTextarea.value = config.widgetSettings
+                    ? formatJson(config.widgetSettings)
+                    : '';
+                preChatTextarea.value = Array.isArray(config.preChat)
+                    ? formatJson(config.preChat)
+                    : '';
+                if (typeof config.preChatEnabled === 'boolean') {
+                    preChatEnabledCheckbox.checked = config.preChatEnabled;
+                } else {
+                    preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
+                }
+                updatePreChatTextareaState();
+            }
+
+            function parseJsonInput(textarea) {
+                const raw = textarea.value.trim();
+                if (!raw) {
+                    return null;
+                }
+                return JSON.parse(raw);
+            }
+
+            function buildLaunchConfig() {
+                const layout = document.querySelector('input[name="layout"]:checked').value;
+                const containerMode = document.querySelector('input[name="containerMode"]:checked')
+                    .value;
+
+                const preChatEnabled = preChatEnabledCheckbox.checked;
+                let widgetSettings;
+                let preChat = null;
+                try {
+                    widgetSettings = parseJsonInput(widgetSettingsTextarea) ?? {};
+                } catch (error) {
+                    throw new Error('Widget settings JSON is invalid. ' + error.message);
+                }
+
+                try {
+                    if (preChatEnabled) {
+                        preChat = parseJsonInput(preChatTextarea);
+                    }
+                } catch (error) {
+                    throw new Error('Pre-chat JSON is invalid. ' + error.message);
+                }
+
+                return {
+                    appId: document.getElementById('appId').value.trim() || defaultState.appId,
+                    layout,
+                    containerMode,
+                    containerId: defaultState.containerId,
+                    widgetSettings,
+                    preChat,
+                    preChatEnabled,
+                };
+            }
+
+            let lastLaunchTimestamp = null;
+
+            function injectWidget(config) {
+                const globalSettings = {
+                    appId: config.appId,
+                    layout: config.layout,
+                    popupWidget: config.containerMode === 'outside',
                     automaticChatOpenOnNavigation: true,
-                    containerId: 'support-chat-container',
-                    onInit: function () {
-                        console.log('Kommunicate widget initialized');
-                        // var defaultSettings = {
-                        //     "defaultAgentIds": ["okies-kijaq"],
-                        //     "defaultBotIds": ["okies-kijaq"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
-                        //     "defaultAssignee": "okies-kijaq", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
-                        //     "skipRouting": true,
-                        // };
-                        // Kommunicate.updateSettings(defaultSettings);
-                        // window.Kommunicate.startConversation();
-                    },
-                    // appSettings: {
-                    //     chatWidget: {
-                    //         popup: false,
-                    //         blockUrlPreview: true,
-                    //     },
-                    //     chatPopupMessage: [
-                    //         {
-                    //             message:
-                    //                 "Hey 👋 , Do not forget to use YEAREND2021 code at the time of check out to avail the discount. Offer Validity: Till 31st Dec 2021",
-                    //         },
-                    //     ],
-                    // },
-                    widgetSettings: {
-                        preCreateUser: false,
-                        // popup: false,
-                        // primaryColor: '#fff000',
-                        // Provide a `theme` map to override exposed CSS vars.
-                        // Alias keys like `chatHeaderText` explain what each color controls.
-                        // theme: {
-                        //     chatHeaderText: '#1f2330',
-                        //     chatHeaderSurfaceText: '#12315a',
-                        //     chatHeaderSurfaceBackground: '#fbf0d9',
-                        //     accentContrastColor: '#ffffff',
-                        // },
-                    },
+                    widgetSettings: config.widgetSettings,
                     whatsNewList: [
                         {
                             title: 'October 2025 Product Release Notes',
@@ -71,69 +564,88 @@
                             linkText: 'Read the case study',
                         },
                     ],
-                    // customLabelLocales: {
-                    //     en: {
-                    //         'conversations.title': 'ਗੱਲਬਾਤ',
-                    //         'faq': 'ਅਕਸਰ ਪੁੱਛੇ ਜਾਣ ਵਾਲੇ ਸਵਾਲ',
-                    //         'start.new': 'ਨਵੀਂ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ',
-                    //     },
-                    // },
-
-                    // preLeadCollection: [
-                    //     {
-                    //         field: 'Name', // Name of the field you want to add
-                    //         required: true, // Set 'true' to make it a mandatory field
-                    //         placeholder: 'Enter your name', // add whatever text you want to show in the placeholder
-                    //     },
-                    //     {
-                    //         field: 'Email',
-                    //         type: 'email',
-                    //         required: true,
-                    //         placeholder: 'Enter your email',
-                    //     },
-                    //     {
-                    //         field: 'Phone',
-                    //         type: 'phone',
-                    //         required: true,
-                    //         enableCountryCode: true,
-                    //         placeholder: 'Enter your phone number',
-                    //     },
-                    // ],
                 };
-                var s = document.createElement('script');
-                s.type = 'text/javascript';
-                s.async = true;
-                var disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-                var scriptUrl = '/kommunicate-widget-3.0.min.js';
-                s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
-                var h = document.getElementsByTagName('head')[0];
-                h.appendChild(s);
-                window.kommunicate = m;
-                m._globals = kommunicateSettings;
-            })(document, window.kommunicate || {});
-        </script>
-        <!-- 
-        <iframe
-            style="border: none;"
-            height="600px"
-            width="400px"
-            src="https://widget-test.kommunicate.io/chat?appId=kommunicate-support"
-            allow="microphone; geolocation;"
-        >
-        </iframe> -->
-    </body>
 
-    <div
-        id="support-chat-container"
-        style="
-            width: 80vw;
-            height: 80vh;
-            border: 2px solid #4f46e5;
-            border-radius: 0;
-            padding: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-        "
-    ></div>
+                if (config.containerMode === 'inside') {
+                    globalSettings.popupWidget = false;
+                    globalSettings.containerId = config.containerId;
+                }
+
+                if (Array.isArray(config.preChat) && config.preChat.length) {
+                    globalSettings.preLeadCollection = config.preChat;
+                }
+
+                const existingScript = document.getElementById('kommunicate-widget-script');
+                if (existingScript) {
+                    existingScript.remove();
+                }
+
+                const disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+                (function (d, m, kommunicateSettings) {
+                    const s = document.createElement('script');
+                    s.id = 'kommunicate-widget-script';
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    const scriptUrl = '/kommunicate-widget-3.0.min.js';
+                    s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
+                    const h = d.getElementsByTagName('head')[0];
+                    h.appendChild(s);
+                    window.kommunicate = m;
+                    m._globals = kommunicateSettings;
+                })(document, window.kommunicate || {}, globalSettings);
+
+                lastLaunchTimestamp = Date.now();
+                updatePreviewStatus(
+                    config.containerMode === 'inside'
+                        ? 'anchored inside preview'
+                        : 'floating outside',
+                    `Widget launched at ${new Date(lastLaunchTimestamp).toLocaleTimeString()}.`
+                );
+            }
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                try {
+                    const config = buildLaunchConfig();
+                    sessionStorage.setItem(pendingConfigKey, JSON.stringify(config));
+                    status.textContent = 'Reloading to apply the updated configuration...';
+                    status.style.background = '#fef3c7';
+                    status.style.color = '#92400e';
+                    window.location.reload();
+                } catch (error) {
+                    status.textContent = error.message;
+                    status.style.background = '#fee2e2';
+                    status.style.color = '#991b1b';
+                }
+            });
+
+            resetButton.addEventListener('click', () => {
+                resetForm();
+            });
+            preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
+
+            function handlePendingLaunch() {
+                const pending = sessionStorage.getItem(pendingConfigKey);
+                if (!pending) {
+                    return;
+                }
+
+                try {
+                    const parsed = JSON.parse(pending);
+                    applyConfigToForm(parsed);
+                    injectWidget(parsed);
+                } catch (error) {
+                    status.textContent = 'Unable to apply pending configuration: ' + error.message;
+                    status.style.background = '#fee2e2';
+                    status.style.color = '#991b1b';
+                } finally {
+                    sessionStorage.removeItem(pendingConfigKey);
+                }
+            }
+
+            resetForm();
+            handlePendingLaunch();
+        </script>
+    </body>
 </html>
