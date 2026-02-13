@@ -1065,7 +1065,6 @@ const firstVisibleMsg = {
                     typeof Kommunicate.setDefaultIframeConfigForClosedChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
-                showPopupChatTemplateOnce();
             } else {
                 mckInit.initializeApp(appOptions, false);
                 mckNotificationService.init();

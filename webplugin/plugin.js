@@ -173,6 +173,7 @@ function applyContainerDimensions(containerElement) {
 }
 
 function attemptContainerAutoLaunch(iframeElement) {
+    // Only auto-launch in container mode, not in popup mode
     if (!iframeElement || iframeElement.getAttribute('data-km-widget-container') !== 'true') {
         return;
     }
@@ -186,7 +187,16 @@ function attemptContainerAutoLaunch(iframeElement) {
                 iframeWindow.Kommunicate &&
                 typeof iframeWindow.Kommunicate.launchConversation === 'function'
             ) {
-                iframeWindow.Kommunicate.launchConversation();
+                // Only auto-launch if widget is ready and no greeting popup is pending
+                // Check if greeting popup feature is enabled
+                var hasGreeting =
+                    iframeWindow.Kommunicate._globals &&
+                    iframeWindow.Kommunicate._globals.greetingMessage;
+
+                // If greeting is configured, let it show naturally instead of forcing launch
+                if (!hasGreeting) {
+                    iframeWindow.Kommunicate.launchConversation();
+                }
                 return;
             }
         } catch (e) {
