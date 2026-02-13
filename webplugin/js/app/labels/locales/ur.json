@@ -198,5 +198,17 @@
   "form.error.invalidValue": "آپ نے ایک غلط قیمت درج کی ہے",
   "location.coordinates.lat": "عرض البلد:",
   "location.coordinates.lon": "طول البلد:",
-  "whatsnew.empty": "جلد ہی نیا آرہا ہے۔"
+  "whatsnew.empty": "جلد ہی نیا آرہا ہے۔",
+  "file.error.invalid": "غلط فائل۔",
+  "file.error.tooLarge": "فائل کا حجم زیادہ سے زیادہ حد سے بڑا ہے۔",
+  "file.error.mimeMismatch": "فائل کی قسم مواد سے میل نہیں کھاتی۔",
+  "file.error.typeNotAllowed": "فائل کی قسم کی اجازت نہیں ہے۔",
+  "file.error.malicious": "فائل میں نقصان دہ مواد ملا۔",
+  "file.error.unauthorized": "صارف سیشن درکار ہے۔",
+  "file.error.emptyFile": "کوئی فائل فراہم نہیں کی گئی۔",
+  "file.error.read": "فائل پڑھنے میں ناکام۔",
+  "file.error.notFound": "دی گئی کلید کے لیے فائل نہیں ملی۔",
+  "file.error.validationFailed": "فائل کی تصدیق ناکام رہی۔",
+  "file.error.uploadFailed": "فائل اپ لوڈ ناکام رہا۔",
+  "file.error.default": "فائل اپ لوڈ ناکام رہا۔"
 }

@@ -198,5 +198,17 @@
   "form.error.invalidValue": "Du har angett ett ogiltigt värde",
   "location.coordinates.lat": "Latitud:",
   "location.coordinates.lon": "Longitud:",
-  "whatsnew.empty": "Nyheter kommer snart."
+  "whatsnew.empty": "Nyheter kommer snart.",
+  "file.error.invalid": "Ogiltig fil.",
+  "file.error.tooLarge": "Filstorleken överskrider den maximalt tillåtna storleken.",
+  "file.error.mimeMismatch": "Filtypen matchar inte filinnehållet.",
+  "file.error.typeNotAllowed": "Filtypen är inte tillåten.",
+  "file.error.malicious": "Skadligt filinnehåll upptäcktes.",
+  "file.error.unauthorized": "Användarsession krävs.",
+  "file.error.emptyFile": "Ingen fil angiven.",
+  "file.error.read": "Det gick inte att läsa filen.",
+  "file.error.notFound": "Filen hittades inte för angiven nyckel.",
+  "file.error.validationFailed": "Filvalidering misslyckades.",
+  "file.error.uploadFailed": "Filuppladdning misslyckades.",
+  "file.error.default": "Filuppladdning misslyckades."
 }
