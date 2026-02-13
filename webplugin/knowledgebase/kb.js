@@ -41,6 +41,13 @@
                     success: function (data) {
                         response.status = 'success';
                         response.data = data.data || [];
+                        var hasArticles = response.data.some(function (category) {
+                            return category && Number(category.articleCount) > 0;
+                        });
+                        if (!hasArticles) {
+                            hideFAQBtn();
+                        }
+
                         if (options.success) {
                             response.data.length === 0 && hideFAQBtn();
                             options.success(response);
@@ -60,6 +67,7 @@
         };
 
         KommunicateKB.getArticles = function (options) {
+            console.log('getArticles called with categoryName: ' + options.data.categoryName);
             try {
                 var articles = [];
                 KommunicateKB.getFaqs({
