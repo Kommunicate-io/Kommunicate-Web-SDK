@@ -67,7 +67,6 @@
         };
 
         KommunicateKB.getArticles = function (options) {
-            console.log('getArticles called with categoryName: ' + options.data.categoryName);
             try {
                 var articles = [];
                 KommunicateKB.getFaqs({
