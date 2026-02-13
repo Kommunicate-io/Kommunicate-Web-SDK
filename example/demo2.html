@@ -637,6 +637,11 @@
 
                 const disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 
+                console.log(
+                    'Injecting Kommunicate widget with kommunicateSettings:',
+                    globalSettings
+                );
+
                 (function (d, m, kommunicateSettings) {
                     const s = document.createElement('script');
                     s.id = 'kommunicate-widget-script';

@@ -99,12 +99,12 @@ Kommunicate.messageTemplate = {
 
 Kommunicate.popupChatTemplate = {
     getPopupChatTemplate: function (popupWidgetContent, chatWidget, isAnonymousChat) {
-        var isPopupEnabled =
-            kommunicateCommons.isObject(chatWidget) &&
-            (chatWidget.popup === true || chatWidget.popup === 'true');
         var chatPopupTemplateMarkup = '';
         var popupMessageContent =
             popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
+
+        // Enable popup template if greeting content exists
+        var isPopupEnabled = popupMessageContent && popupMessageContent.length > 0;
         var buttonDetails =
             popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].buttons;
         var templateKey =
