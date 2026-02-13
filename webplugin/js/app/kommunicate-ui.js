@@ -1489,12 +1489,10 @@ KommunicateUI = {
             chatWidget.hasOwnProperty('enableGreetingMessageInMobile')
                 ? chatWidget.enableGreetingMessageInMobile
                 : true;
-        // If popup is not explicitly set, default to true (show greeting messages)
-        // If popup is explicitly set to false, don't show greeting messages
         var popupSetting =
             kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('popup')
                 ? chatWidget.popup === true || chatWidget.popup === 'true'
-                : true; // default to true if not set
+                : true;
         var isPopupEnabled =
             popupSetting &&
             (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
