@@ -341,12 +341,15 @@
 
                     <details class="collapsible" open>
                         <summary>Widget settings (JSON)</summary>
-                        <textarea id="widgetSettings" name="widgetSettings" spellcheck="false">
-{
-  "preCreateUser": false,
-  "popup": false
-}
-                        </textarea>
+                        <textarea
+                            id="widgetSettings"
+                            name="widgetSettings"
+                            spellcheck="false"
+                            placeholder='{"preCreateUser": false, "popup": true}'
+                        ></textarea>
+                        <p class="hint" style="margin: 4px 0 0">
+                            Leave empty to use the defaults, or paste JSON overrides.
+                        </p>
                     </details>
 
                     <details class="collapsible" open>
@@ -418,10 +421,7 @@
                 layout: 'modern',
                 containerMode: 'outside',
                 containerId: 'widget-container',
-                widgetSettings: {
-                    preCreateUser: false,
-                    popup: false,
-                },
+                widgetSettings: null,
                 preChat: [
                     {
                         field: 'Name',
@@ -468,7 +468,9 @@
                 document.querySelector(
                     `input[name="containerMode"][value="${defaultState.containerMode}"]`
                 ).checked = true;
-                widgetSettingsTextarea.value = formatJson(defaultState.widgetSettings);
+                widgetSettingsTextarea.value = defaultState.widgetSettings
+                    ? formatJson(defaultState.widgetSettings)
+                    : '';
                 preChatTextarea.value = formatJson(defaultState.preChat);
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 containerModeHideControlsCheckbox.checked = defaultState.containerModeHideControls;

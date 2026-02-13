@@ -1484,33 +1484,27 @@ KommunicateUI = {
         if (KommunicateUI.skipPopupChatTemplate) {
             return;
         }
-        var hasGreetingContent = popupChatContent && popupChatContent.length > 0;
         var enableGreetingMessage =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.hasOwnProperty('enableGreetingMessageInMobile')
                 ? chatWidget.enableGreetingMessageInMobile
                 : true;
-        var isHandheld = kommunicateCommons.checkIfDeviceIsHandheld();
-        // Enable popup if greeting content exists
-        var isPopupEnabled = hasGreetingContent && (isHandheld ? enableGreetingMessage : true);
+        // If popup is not explicitly set, default to true (show greeting messages)
+        // If popup is explicitly set to false, don't show greeting messages
+        var popupSetting =
+            kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('popup')
+                ? chatWidget.popup === true || chatWidget.popup === 'true'
+                : true; // default to true if not set
+        var isPopupEnabled =
+            popupSetting &&
+            (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
+
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
-        console.log('displayPopupChatTemplate', {
-            hasContent: hasGreetingContent,
-            hasGreetingContent: hasGreetingContent,
-            isHandheld: isHandheld,
-            enableGreetingMessage: enableGreetingMessage,
-            isPopupEnabled: isPopupEnabled,
-            delay: delay,
-        });
         var popupTemplateKey =
             (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
         if (isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function () {
-                console.log('calling togglePopupChatTemplate', {
-                    templateKey: popupTemplateKey,
-                    delay,
-                });
                 KommunicateUI.togglePopupChatTemplate(
                     popupTemplateKey,
                     true,
