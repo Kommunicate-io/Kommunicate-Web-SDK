@@ -99,6 +99,9 @@ Kommunicate.messageTemplate = {
 
 Kommunicate.popupChatTemplate = {
     getPopupChatTemplate: function (popupWidgetContent, chatWidget, isAnonymousChat) {
+        var isPopupEnabled =
+            kommunicateCommons.isObject(chatWidget) &&
+            (chatWidget.popup === true || chatWidget.popup === 'true');
         var chatPopupTemplateMarkup = '';
         var popupMessageContent =
             popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
@@ -163,7 +166,7 @@ Kommunicate.popupChatTemplate = {
                     '</button></div>');
 
         // Create HTML when greeting content exists (display is controlled by popup setting in displayPopupChatTemplate)
-        if (popupMessageContent && popupMessageContent.length > 0) {
+        if (isPopupEnabled && popupMessageContent && popupMessageContent.length > 0) {
             var launcherClass = isAnonymousChat
                 ? 'km-anonymous-chat-launcher'
                 : 'applozic-launcher';

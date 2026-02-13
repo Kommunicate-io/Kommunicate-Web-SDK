@@ -143,6 +143,15 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     pointer-events: none;
 }
 
+body.km-container-mode.km-container-mode--hide-controls #chat-popup-widget-container
+    .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
 /* Ensure container mode works in all media queries */
 @media (min-width: 310px) {
     .mck-sidebox.km-container-mode,
