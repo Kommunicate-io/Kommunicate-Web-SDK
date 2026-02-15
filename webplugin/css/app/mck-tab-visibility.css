@@ -56,6 +56,9 @@
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
   display: flex !important;
 }
+#mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options.n-vis {
+  display: none !important;
+}
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: inline-flex !important;
   width: auto !important;

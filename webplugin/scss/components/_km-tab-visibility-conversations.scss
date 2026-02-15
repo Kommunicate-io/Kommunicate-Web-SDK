@@ -72,6 +72,9 @@
     #km-widget-options {
         display: flex !important;
     }
+    #km-widget-options.n-vis {
+        display: none !important;
+    }
     #km-faq {
         @extend %km-hidden;
     }
