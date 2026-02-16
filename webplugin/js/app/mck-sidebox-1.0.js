@@ -4315,9 +4315,9 @@ const firstVisibleMsg = {
                     };
 
                     var nowInTimezone = function (timeZone) {
-                        var formatter;
+                        var parts;
                         try {
-                            formatter = new Intl.DateTimeFormat('en-US', {
+                            var formatter = new Intl.DateTimeFormat('en-US', {
                                 timeZone: timeZone,
                                 weekday: 'short',
                                 hour: '2-digit',
@@ -4325,10 +4325,10 @@ const firstVisibleMsg = {
                                 hour12: false,
                                 hourCycle: 'h23',
                             });
+                            parts = formatter.formatToParts(new Date());
                         } catch (error) {
                             return null;
                         }
-                        var parts = formatter.formatToParts(new Date());
                         var weekday;
                         var hour;
                         var minute;
