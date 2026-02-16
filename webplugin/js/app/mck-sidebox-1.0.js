@@ -7438,9 +7438,6 @@ const firstVisibleMsg = {
                     }
                 );
             };
-            var onGroupMessageUpdateCallback = function (group, message, update) {
-                _this.updateRecentConversationList(group, message, update);
-            };
             _this.updateContactList = function (tabId, isGroup) {
                 var data = {};
                 if (isGroup) {
@@ -7466,7 +7463,13 @@ const firstVisibleMsg = {
                                     ? mckGroupService.addGroupFromMessage(
                                           message,
                                           true,
-                                          onGroupMessageUpdateCallback
+                                          function (group, message, update) {
+                                              _this.updateRecentConversationList(
+                                                  group,
+                                                  message,
+                                                  update
+                                              );
+                                          }
                                       )
                                     : mckMessageLayout.addContactsFromMessage(message, true);
                             }
@@ -10436,7 +10439,9 @@ const firstVisibleMsg = {
                             mckGroupService.addGroupFromMessage(
                                 data.message,
                                 false,
-                                onGroupMessageUpdateCallback
+                                function (group, message, update) {
+                                    _this.updateRecentConversationList(group, message, update);
+                                }
                             );
                         } else {
                             _this.addContactsFromMessage(data.message);
@@ -10449,7 +10454,13 @@ const firstVisibleMsg = {
                                     ? mckGroupService.addGroupFromMessage(
                                           message,
                                           true,
-                                          onGroupMessageUpdateCallback
+                                          function (group, message, update) {
+                                              _this.updateRecentConversationList(
+                                                  group,
+                                                  message,
+                                                  update
+                                              );
+                                          }
                                       )
                                     : _this.addContactsFromMessage(message, true);
                                 showMoreDateTime = message.createdAtTime;
@@ -10499,7 +10510,9 @@ const firstVisibleMsg = {
                         mckGroupService.addGroupFromMessage(
                             data.message,
                             false,
-                            onGroupMessageUpdateCallback
+                            function (group, message, update) {
+                                _this.updateRecentConversationList(group, message, update);
+                            }
                         );
                     } else {
                         $applozic.each(data.message, function (i, message) {
@@ -10507,7 +10520,9 @@ const firstVisibleMsg = {
                                 mckGroupService.addGroupFromMessage(
                                     message,
                                     true,
-                                    onGroupMessageUpdateCallback
+                                    function (group, message, update) {
+                                        _this.updateRecentConversationList(group, message, update);
+                                    }
                                 );
                             }
                         });
@@ -11861,7 +11876,9 @@ const firstVisibleMsg = {
                             ? mckGroupService.addGroupFromMessage(
                                   message,
                                   update,
-                                  onGroupMessageUpdateCallback
+                                  function (group, message, update) {
+                                      _this.updateRecentConversationList(group, message, update);
+                                  }
                               )
                             : mckMessageLayout.addContactsFromMessage(message, true);
                     } else {
