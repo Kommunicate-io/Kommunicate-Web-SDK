@@ -641,7 +641,7 @@ const firstVisibleMsg = {
                 }
             },
         });
-        var mckMapService = mapFactory.createService({
+        mapFactory.createService({
             $applozic: $applozic,
             kommunicateCommons: kommunicateCommons,
             mckMapUtils: w.mckMapUtils,
@@ -7438,6 +7438,9 @@ const firstVisibleMsg = {
                     }
                 );
             };
+            var onGroupMessageUpdateCallback = function (group, message, update) {
+                _this.updateRecentConversationList(group, message, update);
+            };
             _this.updateContactList = function (tabId, isGroup) {
                 var data = {};
                 if (isGroup) {
@@ -7463,13 +7466,7 @@ const firstVisibleMsg = {
                                     ? mckGroupService.addGroupFromMessage(
                                           message,
                                           true,
-                                          function (group, message, update) {
-                                              _this.updateRecentConversationList(
-                                                  group,
-                                                  message,
-                                                  update
-                                              );
-                                          }
+                                          onGroupMessageUpdateCallback
                                       )
                                     : mckMessageLayout.addContactsFromMessage(message, true);
                             }
@@ -10439,9 +10436,7 @@ const firstVisibleMsg = {
                             mckGroupService.addGroupFromMessage(
                                 data.message,
                                 false,
-                                function (group, message, update) {
-                                    _this.updateRecentConversationList(group, message, update);
-                                }
+                                onGroupMessageUpdateCallback
                             );
                         } else {
                             _this.addContactsFromMessage(data.message);
@@ -10454,13 +10449,7 @@ const firstVisibleMsg = {
                                     ? mckGroupService.addGroupFromMessage(
                                           message,
                                           true,
-                                          function (group, message, update) {
-                                              _this.updateRecentConversationList(
-                                                  group,
-                                                  message,
-                                                  update
-                                              );
-                                          }
+                                          onGroupMessageUpdateCallback
                                       )
                                     : _this.addContactsFromMessage(message, true);
                                 showMoreDateTime = message.createdAtTime;
@@ -10510,9 +10499,7 @@ const firstVisibleMsg = {
                         mckGroupService.addGroupFromMessage(
                             data.message,
                             false,
-                            function (group, message, update) {
-                                _this.updateRecentConversationList(group, message, update);
-                            }
+                            onGroupMessageUpdateCallback
                         );
                     } else {
                         $applozic.each(data.message, function (i, message) {
@@ -10520,9 +10507,7 @@ const firstVisibleMsg = {
                                 mckGroupService.addGroupFromMessage(
                                     message,
                                     true,
-                                    function (group, message, update) {
-                                        _this.updateRecentConversationList(group, message, update);
-                                    }
+                                    onGroupMessageUpdateCallback
                                 );
                             }
                         });
@@ -11876,9 +11861,7 @@ const firstVisibleMsg = {
                             ? mckGroupService.addGroupFromMessage(
                                   message,
                                   update,
-                                  function (group, message, update) {
-                                      _this.updateRecentConversationList(group, message, update);
-                                  }
+                                  onGroupMessageUpdateCallback
                               )
                             : mckMessageLayout.addContactsFromMessage(message, true);
                     } else {
@@ -12215,7 +12198,6 @@ const firstVisibleMsg = {
                 ) {
                     var group = mckGroupUtils.getGroup(params.tabId);
                     mckGroupLayout.addGroupStatus(group);
-                    var validated = group.type === 6 ? false : true;
                     var validated = true;
                     if (group.type === 6) {
                         mckGroupLayout.validateOpenGroupUser(group);
