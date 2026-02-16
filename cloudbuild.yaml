@@ -147,37 +147,38 @@ steps:
     - '-c'
     - |
       if [ "$_DEPLOY_CDN" = "true" ]; then
-        echo "Applying CDN cache headers"
+        echo "Applying CDN cache headers (default=300, explicit long)"
 
-        # 1️ Immutable versioned builds (hash folders)
+        # Default cache = 300s for EVERYTHING 
+        gsutil -m setmeta -r \
+          -h "Cache-Control:public,max-age=300" \
+          gs://$_CDN_BUCKET/ || true
+
+        # Long cache ONLY for versioned resource assets 
         gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
-          "gs://$_CDN_BUCKET/[0-9]*/**" || true
+          gs://$_CDN_BUCKET/*/resources/** || true
 
-        # 2️ Shared static assets (safe to cache long-term)
+        # Long cache for shared static assets 
         gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
-          "gs://$_CDN_BUCKET/resources/**" \
-          "gs://$_CDN_BUCKET/css/**" \
-          "gs://$_CDN_BUCKET/plugin/**" || true
+          gs://$_CDN_BUCKET/css/** \
+          gs://$_CDN_BUCKET/plugin/** \
+          gs://$_CDN_BUCKET/resources/third-party-scripts/** || true
 
-        # 3️ Stable loaders (MUST stay short cache)
-        gsutil setmeta \
-          -h "Cache-Control:public,max-age=300" \
-          "gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js" || true
+        # Long cache for fonts 
+        gsutil -m setmeta \
+          -h "Cache-Control:public,max-age=31536000,immutable" \
+          gs://$_CDN_BUCKET/*/css/app/fonts/** || true
 
-        gsutil setmeta \
-          -h "Cache-Control:public,max-age=300" \
-          "gs://$_CDN_BUCKET/v3/kommunicate.app" || true
-        
-        # 4️ HTML entry file (VERY IMPORTANT)
-        gsutil setmeta \
-          -h "Cache-Control:public,max-age=300" \
-          "gs://$_CDN_BUCKET/index.html" || true
+        #  
+        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/index.html
+        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
+        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/v2/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/v3/kommunicate.app
 
+        echo "CDN cache headers applied successfully"
       else
         echo "Skipping CDN cache headers"
       fi
-
-
 

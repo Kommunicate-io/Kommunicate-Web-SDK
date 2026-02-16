@@ -479,7 +479,7 @@ input[type=number]::-webkit-outer-spin-button {
   min-height: 70px;
   font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   width: 100%;
-  max-width: 320px;
+  max-width: 440px;
   cursor: pointer;
   /* Reveal close button on hover and when any child receives focus */
   /* Keyboard focus ring on the close button container */
@@ -488,7 +488,7 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
 }
 .chat-popup-widget-container .chat-popup-widget-text-wrapper {
-  position: relative;
+  position: static;
   word-break: break-word;
   min-height: 70px;
   display: flex;
@@ -547,9 +547,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .chat-popup-widget-container--horizontal {
   border-radius: 40px !important;
+  width: calc(100% - 40px) !important;
   bottom: 5px;
-  right: 0;
-  max-width: 360px;
+  right: 0px;
 }
 .chat-popup-widget-container--horizontal.km-animate {
   opacity: 0;
@@ -564,17 +564,30 @@ input[type=number]::-webkit-outer-spin-button {
   animation: km-reveal-animation-horizontal 0.3s ease-in-out 0.3s 1 forwards;
 }
 .chat-popup-widget-container--horizontal.align-left {
-  right: 60px;
+  right: 26px;
+}
+.chat-popup-widget-container--horizontal.align-left .chat-popup-widget-text {
+  padding: 20px 20px 20px 60px;
+}
+.chat-popup-widget-container--horizontal.align-left .chat-popup-widget-close-btn-container {
+  left: auto;
+  right: -8px;
 }
 .chat-popup-widget-container--horizontal .chat-popup-widget-text {
-  padding: 20px 64px 20px 20px;
+  padding: 20px 60px 20px 20px;
+}
+.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
+  position: relative;
+}
+.chat-popup-widget-container--horizontal .chat-popup-widget-close-btn {
+  background: transparent;
 }
 .chat-popup-widget-container--vertical {
   border-radius: 20px;
-  bottom: 80px;
-  right: 10px;
+  bottom: 8px;
+  right: 75px;
   min-height: 75px;
-  max-width: 300px;
+  width: calc(100% - 90px);
 }
 .chat-popup-widget-container--vertical.km-animate {
   -webkit-transform: translateY(12px) scale(0.98);
@@ -588,18 +601,36 @@ input[type=number]::-webkit-outer-spin-button {
   animation: km-reveal-animation-vertical 0.3s ease-in-out 0.3s 1 forwards;
 }
 .chat-popup-widget-container--vertical.align-left {
-  left: 10px;
+  left: 78px;
 }
 .chat-popup-widget-container--vertical.align-left #chat-popup-actionable-btn-container {
   right: unset;
+}
+.chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
+  top: -4px;
+  right: -4px;
+  left: auto;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-text-wrapper {
   min-height: 75px;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
-  top: -10px;
-  left: -12px;
+  top: -5px;
+  left: -5px;
+  right: auto;
   transform: none;
+  width: 18px;
+  height: 18px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.chat-popup-widget-container--vertical .chat-popup-widget-close-btn {
+  background: transparent;
+}
+.chat-popup-widget-container--vertical .chat-popup-widget-close-btn svg {
+  width: 12px;
+  height: 12px;
 }
 .chat-popup-widget-container--actionable {
   border-radius: 20px;
@@ -902,7 +933,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: calc(100% - 80px);
   }
   .chat-popup-widget-container--horizontal {
-    padding-left: 28px;
+    padding-left: 10px;
   }
   .chat-popup-widget-container--actionable {
     width: calc(100% - 50px);
@@ -919,7 +950,7 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
   .chat-popup-widget-container--horizontal {
     width: 61% !important;
-    padding-left: 28px;
+    padding-left: 10px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
     display: flex;
@@ -935,7 +966,7 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
   .chat-popup-widget-container--horizontal {
     width: 65% !important;
-    padding-left: 28px;
+    padding-left: 10px;
   }
   .chat-popup-widget-container .chat-popup-widget-close-btn-container {
     display: flex;
@@ -955,10 +986,10 @@ input[type=number]::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 320px) {
   .chat-popup-widget-container--horizontal {
     width: 61% !important;
-    padding-left: 28px;
+    padding-left: 10px;
   }
   .chat-popup-widget-container--horizontal.km-animate .chat-popup-widget-text {
-    margin: 7px 7px 7px 15px;
+    margin: 7px 7px 7px 7px;
   }
   .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
     width: 88px !important;
@@ -2948,19 +2979,18 @@ input[type=number]::-webkit-outer-spin-button {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.km-faq-list--body_list li {
-  margin-bottom: 12px;
+  margin-bottom: 0px !important;
 }
 
 .km-faq-list--body_list li > a {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
   border: 1px solid rgba(114, 134, 211, 0.2);
-  border-radius: 20px;
-  padding: 16px 18px;
+  margin-bottom: 0px;
+  padding: 8px;
   color: #1c2043;
   background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
   box-shadow: 0 10px 24px rgba(71, 92, 168, 0.12);
@@ -3003,7 +3033,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-faq-list--body_img {
-  padding: 10px 0px 10px 12px;
+  padding: 0;
   /*width: 70px;*/
   height: 50px;
   border-radius: 4px;
@@ -3029,7 +3059,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 18px;
   bottom: 2px;
   left: 12px;
-  margin: 0;
+  margin: 0px !important;
   padding: 12px 16px !important;
   text-align: left;
   word-wrap: break-word;

@@ -303,7 +303,7 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+            kmLocalStorage.getLocalStorage(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         var agentsNameStr = agentList.join('_');
 
         var botsNameStr = botList.join('_');
@@ -432,7 +432,7 @@ $applozic.extend(true, Kommunicate, {
             window.$applozic.fn.applozic('logout');
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
-        kmCookieStorage.deleteUserCookiesOnLogout();
+        kmLocalStorage.deleteUserCookiesOnLogout();
         appOptionSession.removeAppInstanceCount();
         window.Sentry && window.Sentry.close();
         parent.window && parent.window.removeKommunicateScripts();
@@ -488,11 +488,10 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId,
             callback: function (response) {
-                kmCookieStorage.setCookie({
+                kmLocalStorage.setLocalStorage({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     value: newUserId,
                     expiresInDays: 30,
-                    domain: MCK_COOKIE_DOMAIN,
                 });
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', {
@@ -737,9 +736,19 @@ $applozic.extend(true, Kommunicate, {
      */
     displayKommunicateWidget: function (display) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
-        display
-            ? kommunicateIframe.classList.remove('kommunicate-hide-custom-iframe')
-            : kommunicateIframe.classList.add('kommunicate-hide-custom-iframe');
+
+        if (display) {
+            kommunicateIframe &&
+                kommunicateIframe.classList.remove('kommunicate-hide-custom-iframe');
+            var launcherButton = document.querySelector('#mck-sidebox-launcher .applozic-launcher');
+            launcherButton && launcherButton.click();
+        } else {
+            var closeButton = document.getElementById('km-chat-widget-close-button');
+            if (closeButton) {
+                closeButton.click();
+            }
+            kommunicateIframe && kommunicateIframe.classList.add('kommunicate-hide-custom-iframe');
+        }
     },
     // check if the message needs to be processed by addMessage
     visibleMessage: function (msg, msgThroughListAPI) {

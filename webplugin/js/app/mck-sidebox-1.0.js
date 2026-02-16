@@ -15,6 +15,20 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+var FILE_ERROR_LABEL_KEYS = {
+    INVALID_FILE: 'file.error.invalid',
+    FILE_TOO_LARGE: 'file.error.tooLarge',
+    MIME_TYPE_MISMATCH: 'file.error.mimeMismatch',
+    FILE_TYPE_NOT_ALLOWED: 'file.error.typeNotAllowed',
+    MALICIOUS_CONTENT: 'file.error.malicious',
+    UNAUTHORIZED: 'file.error.unauthorized',
+    EMPTY_FILE: 'file.error.emptyFile',
+    FILE_READ_ERROR: 'file.error.read',
+    FILE_NOT_FOUND: 'file.error.notFound',
+    FILE_VALIDATION_FAILED: 'file.error.validationFailed',
+    UPLOAD_FAILED: 'file.error.uploadFailed',
+};
+var FILE_ERROR_DEFAULT_FALLBACK = 'File upload failed.';
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
@@ -1475,14 +1489,12 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
-                kmCookieStorage.deleteCookie({
-                    name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                    domain: MCK_COOKIE_DOMAIN,
-                });
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                );
+                kmLocalStorage.deleteLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                );
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -2230,15 +2242,14 @@ const firstVisibleMsg = {
                 AUTH_CODE = '';
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
+                var isUserIdForLeadCollection = kmLocalStorage.getLocalStorage(
+                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                );
+                var isUserIdForLeadCollectionFlag =
+                    isUserIdForLeadCollection === true || isUserIdForLeadCollection === 'true';
                 if (
-                    kmCookieStorage.getCookie(
-                        KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                    ) &&
-                    !JSON.parse(
-                        kmCookieStorage.getCookie(
-                            KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                        )
-                    ) &&
+                    isUserIdForLeadCollection &&
+                    !isUserIdForLeadCollectionFlag &&
                     KM_ASK_USER_DETAILS &&
                     KM_ASK_USER_DETAILS.length !== 0
                 ) {
@@ -2253,6 +2264,27 @@ const firstVisibleMsg = {
                         KM_PRELEAD_COLLECTION.length !== 0
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
+                        if (
+                            kmLocalStorage.getLocalStorage(
+                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                            ) &&
+                            isUserIdForLeadCollectionFlag
+                        ) {
+                            var userId = kmLocalStorage.getLocalStorage(
+                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                            );
+                            var options = {
+                                userId: userId,
+                                applicationId: MCK_APP_ID,
+                                baseUrl: MCK_BASE_URL,
+                                locShare: IS_MCK_LOCSHARE,
+                                googleApiKey: MCK_GOOGLE_API_KEY,
+                                chatNotificationMailSent: true,
+                            };
+                            PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                            mckInit.initialize(options, loadChat);
+                            return false;
+                        }
                         var kmAnonymousChatLauncher = document.getElementById(
                             'km-anonymous-chat-launcher'
                         );
@@ -2489,7 +2521,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             // if password invalid then clear cookies
-                            kmCookieStorage.deleteUserCookiesOnLogout();
+                            kmLocalStorage.deleteUserCookiesOnLogout();
 
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
@@ -5261,17 +5293,16 @@ const firstVisibleMsg = {
 
                         userId = userIdForCookie;
 
-                        kmCookieStorage.setCookie({
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                             value: userIdForCookie,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
-                        kmCookieStorage.setCookie({
+
+                        kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                             value: true,
                             expiresInDays: 30,
-                            domain: MCK_COOKIE_DOMAIN,
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
@@ -8210,7 +8241,7 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
-                var userId = kmCookieStorage.getCookie(
+                var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
                 (kmLocalStorage.getItemFromLocalStorage('mckActiveConversationInfo', {
@@ -13520,6 +13551,42 @@ const firstVisibleMsg = {
                 }
             };
 
+            var getUploadErrorInfo = function (responseJson) {
+                if (!responseJson || typeof responseJson !== 'object') {
+                    return null;
+                }
+                var errorEntry = null;
+                if (responseJson.errorResponse && responseJson.errorResponse.length) {
+                    errorEntry = responseJson.errorResponse[0];
+                } else if (responseJson.errorCode || responseJson.errorMessage) {
+                    errorEntry = responseJson;
+                }
+                if (!errorEntry) {
+                    return null;
+                }
+                var errorCode = errorEntry.errorCode || errorEntry.code;
+                var errorMessage =
+                    errorEntry.description ||
+                    errorEntry.displayMessage ||
+                    errorEntry.message ||
+                    responseJson.errorMessage;
+                if (!errorCode && !errorMessage) {
+                    return null;
+                }
+                return {
+                    code: errorCode,
+                    message: errorMessage,
+                };
+            };
+
+            var getLocalizedFileErrorMessage = function (errorCode) {
+                var labelKey = FILE_ERROR_LABEL_KEYS[errorCode];
+                if (!labelKey) {
+                    return null;
+                }
+                return kommunicateCommons.getLocalizedLabel(labelKey);
+            };
+
             var handleFileExtensionError = function (
                 xhr,
                 responseJson,
@@ -13528,44 +13595,42 @@ const firstVisibleMsg = {
                 $mck_file_upload,
                 $mck_msg_sbmt
             ) {
-                if (
-                    xhr.status === 403 &&
-                    responseJson &&
-                    responseJson.errorResponse &&
-                    responseJson.errorResponse.length > 0 &&
-                    responseJson.errorResponse[0].errorCode === 'FILE_TYPE_NOT_ALLOWED'
-                ) {
-                    var errorMsg =
-                        (responseJson.errorResponse &&
-                            responseJson.errorResponse[0] &&
-                            (responseJson.errorResponse[0].description ||
-                                responseJson.errorResponse[0].displayMessage)) ||
-                        (responseJson && responseJson.errorMessage) ||
-                        'File type is not allowed.';
-                    showFileExtensionError(errorMsg);
-                    if (messagePxy) {
+                var errorInfo = getUploadErrorInfo(responseJson);
+                if (!errorInfo) {
+                    return false;
+                }
+                var localizedMessage = getLocalizedFileErrorMessage(errorInfo.code);
+                var defaultMessage = kommunicateCommons.getLocalizedLabel(
+                    'file.error.default',
+                    FILE_ERROR_DEFAULT_FALLBACK
+                );
+                var errorMsg = localizedMessage || defaultMessage;
+                showFileExtensionError(errorMsg);
+                if (messagePxy && messagePxy.key) {
+                    if (errorInfo.code === 'MALICIOUS_CONTENT') {
+                        _this.showMaliciousFileError(messagePxy.key);
+                    } else {
                         _this.showFileExtensionError(messagePxy.key);
                     }
-                    if ($file_remove) {
-                        $file_remove.attr('disabled', false);
-                        $file_remove.trigger('click');
-                    }
-                    if ($mck_file_upload) {
-                        $mck_file_upload.attr('disabled', false);
-                    }
-                    if ($mck_msg_sbmt) {
-                        $mck_msg_sbmt.attr('disabled', false);
-                    }
-                    if (messagePxy) {
-                        mckMessageLayout.removedDeletedMessage(
-                            messagePxy.key,
-                            messagePxy.groupId,
-                            true
-                        );
-                    }
-                    return true;
                 }
-                return false;
+                if ($file_remove) {
+                    $file_remove.attr('disabled', false);
+                    $file_remove.trigger('click');
+                }
+                if ($mck_file_upload) {
+                    $mck_file_upload.attr('disabled', false);
+                }
+                if ($mck_msg_sbmt) {
+                    $mck_msg_sbmt.attr('disabled', false);
+                }
+                if (messagePxy) {
+                    mckMessageLayout.removedDeletedMessage(
+                        messagePxy.key,
+                        messagePxy.groupId,
+                        true
+                    );
+                }
+                return true;
             };
 
             _this.uploadFileFunction = function (event, fileToUpload) {
@@ -13951,10 +14016,6 @@ const firstVisibleMsg = {
                     });
                     xhr.addEventListener('load', function (e) {
                         var responseJson = $applozic.parseJSON(this.responseText);
-                        if (responseJson && responseJson?.errorCode === 'MALICIOUS_CONTENT') {
-                            _this.showMaliciousFileError(messagePxy.key);
-                            return;
-                        }
                         if (
                             handleFileExtensionError(
                                 this,
