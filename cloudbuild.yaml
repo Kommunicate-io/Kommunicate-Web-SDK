@@ -172,13 +172,14 @@ steps:
           gs://$_CDN_BUCKET/*/css/app/fonts/** || true
 
         #  
-        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/index.html
-        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
-        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/v2/kommunicate.app
-        gsutil setmeta -h "Cache-Control:public,max-age=300" gs://$_CDN_BUCKET/v3/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/index.html
+        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
+        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/v2/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/v3/kommunicate.app
 
         echo "CDN cache headers applied successfully"
       else
         echo "Skipping CDN cache headers"
       fi
+
 
