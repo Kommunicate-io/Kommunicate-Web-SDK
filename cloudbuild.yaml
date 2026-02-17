@@ -181,5 +181,3 @@ steps:
       else
         echo "Skipping CDN cache headers"
       fi
-
-
