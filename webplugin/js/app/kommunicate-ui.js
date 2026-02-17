@@ -931,6 +931,8 @@ KommunicateUI = {
             keepConversationHeader && isModernLayout && KommunicateUI.isConversationListView;
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
+        // Ensure container mode is applied when showing chat
+        kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
         clearGreetingAutoCloseTimer();
 
         // Check if conversations tab is active before setting conversation subsections
@@ -1500,29 +1502,25 @@ KommunicateUI = {
         if (KommunicateUI.skipPopupChatTemplate) {
             return;
         }
-        console.log('displayPopupChatTemplate', {
-            hasContent: Boolean(popupChatContent && popupChatContent.length),
-            chatWidgetPopup: chatWidget && chatWidget.popup,
-        });
         var enableGreetingMessage =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.hasOwnProperty('enableGreetingMessageInMobile')
                 ? chatWidget.enableGreetingMessageInMobile
                 : true;
+        var popupSetting =
+            kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('popup')
+                ? chatWidget.popup === true || chatWidget.popup === 'true'
+                : true;
         var isPopupEnabled =
-            kommunicateCommons.isObject(chatWidget) &&
-            (chatWidget.popup === true || chatWidget.popup === 'true') &&
+            popupSetting &&
             (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
+
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey =
             (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
         if (isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function () {
-                console.log('calling togglePopupChatTemplate', {
-                    templateKey: popupTemplateKey,
-                    delay,
-                });
                 KommunicateUI.togglePopupChatTemplate(
                     popupTemplateKey,
                     true,
@@ -1547,7 +1545,14 @@ KommunicateUI = {
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        if (showTemplate && kommunicateCommons.isWidgetOpen()) {
+        var isOpen = kommunicateCommons.isWidgetOpen();
+        console.log('togglePopupChatTemplate', {
+            showTemplate: showTemplate,
+            isWidgetOpen: isOpen,
+            willReturn: showTemplate && isOpen,
+        });
+        if (showTemplate && isOpen) {
+            console.log('Greeting popup blocked because widget is already open');
             return;
         }
         if (showTemplate) {
