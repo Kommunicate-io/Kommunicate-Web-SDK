@@ -131,6 +131,12 @@ Kommunicate.mediaService = {
             } else if (message && message.tokenMessage) {
                 return;
             }
+            function cleanMessage(messageObj) {
+                if (!messageObj?.message) return messageObj;
+
+                messageObj.message = messageObj.message.replace(/\*\*(.*?)\*\*/g, '$1');
+                return messageObj;
+            }
 
             // if voiceOutput is enabled
             if (appOptions.voiceOutput) {
@@ -152,7 +158,8 @@ Kommunicate.mediaService = {
                     message.message &&
                     message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
                 ) {
-                    textToSpeak += message.message;
+                    const messageText = cleanMessage(JSON.parse(JSON.stringify(message)))?.message;
+                    textToSpeak += messageText;
                 }
 
                 if (textToSpeak) {
