@@ -70,7 +70,7 @@
 
 %km-conversation-individual {
     #km-widget-options {
-        display: flex !important;
+        display: flex;
     }
     #km-faq {
         @extend %km-hidden;

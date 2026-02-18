@@ -80,6 +80,131 @@
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
 
+/* Container mode: ensure html, body, and wrapper elements have full height */
+body.km-container-mode,
+body.km-container-mode.mck-box-open {
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+html:has(body.km-container-mode),
+body.km-container-mode .layout-modern {
+    height: 100% !important;
+}
+
+/* Container mode: when widget is embedded in a custom container */
+.mck-sidebox.km-container-mode,
+.mck-sidebox.km-container-mode.fade,
+.mck-sidebox.km-container-mode.fade.in,
+.mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+.layout-modern .mck-sidebox.km-container-mode,
+.layout-modern .mck-sidebox.km-container-mode.fade,
+.layout-modern .mck-sidebox.km-container-mode.fade.in,
+.layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Container mode: override inner element widths and heights */
+.mck-sidebox.km-container-mode .mck-box-sm,
+.mck-sidebox.km-container-mode .mck-box-md,
+.mck-sidebox.km-container-mode .mck-box-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+/* Ensure absolutely positioned elements in container mode get proper height */
+.mck-sidebox.km-container-mode .mck-right,
+.mck-sidebox.km-container-mode .mck-left,
+.mck-sidebox.km-container-mode .mck-top,
+.mck-sidebox.km-container-mode .mck-bottom {
+    top: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls #km-chat-widget-close-button,
+body.km-container-mode.km-container-mode--hide-controls .mck-minimize-icon {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-faq-and-close-btn-container,
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    pointer-events: none;
+}
+
+body.km-container-mode.km-container-mode--hide-controls #chat-popup-widget-container
+    .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
+/* Ensure container mode works in all media queries */
+@media (min-width: 310px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in,
+    .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+    .layout-modern .mck-sidebox.km-container-mode,
+    .layout-modern .mck-sidebox.km-container-mode.fade.in,
+    .layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-right,
+    .mck-sidebox.km-container-mode .mck-left,
+    .mck-sidebox.km-container-mode .mck-top,
+    .mck-sidebox.km-container-mode .mck-bottom {
+        top: 0 !important;
+        bottom: 0 !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in,
+    .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+    .layout-modern .mck-sidebox.km-container-mode,
+    .layout-modern .mck-sidebox.km-container-mode.fade.in,
+    .layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-right,
+    .mck-sidebox.km-container-mode .mck-left,
+    .mck-sidebox.km-container-mode .mck-top,
+    .mck-sidebox.km-container-mode .mck-bottom {
+        top: 0 !important;
+        bottom: 0 !important;
+        height: auto !important;
+    }
+}
+
 .mck-sidebox-launcher:focus {
     box-shadow: var(--km-primary-color, #5f46f8) 0px 0px 0px 5px;
 }

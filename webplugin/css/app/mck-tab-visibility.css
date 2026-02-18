@@ -3,8 +3,7 @@
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #km-widget-options,
-#mck-tab-conversation,
+#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #mck-tab-conversation,
 #mck-tab-individual,
 #mck-contacts-content,
 #km-faqdiv,
@@ -54,7 +53,7 @@
   display: block !important;
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-widget-options {
-  display: flex !important;
+  display: flex;
 }
 #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .mck-back-btn-container {
   display: inline-flex !important;

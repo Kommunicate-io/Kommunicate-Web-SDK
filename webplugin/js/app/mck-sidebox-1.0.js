@@ -827,6 +827,8 @@ const firstVisibleMsg = {
             } else {
                 kommunicateIframe.style.height = '';
             }
+            // Apply container mode styling if in container
+            kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
         }
 
         _this.mckLaunchSideboxChat = function () {
@@ -1063,7 +1065,6 @@ const firstVisibleMsg = {
                     typeof Kommunicate.setDefaultIframeConfigForClosedChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
-                showPopupChatTemplateOnce();
             } else {
                 mckInit.initializeApp(appOptions, false);
                 mckNotificationService.init();
@@ -2135,6 +2136,17 @@ const firstVisibleMsg = {
             var PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY = 150;
             var loginModalFocusFallbacks = ['#km-anonymous-chat-launcher', '#mck-sidebox-launcher'];
 
+            function syncLeadCollectionModalContainerMode(modalElement) {
+                if (!modalElement || !modalElement.classList) {
+                    return;
+                }
+                if (kommunicateCommons.isInContainerMode()) {
+                    modalElement.classList.add('km-container-mode');
+                } else {
+                    modalElement.classList.remove('km-container-mode');
+                }
+            }
+
             function autoOpenPreChatLeadCollectionModal(launcher) {
                 if (!launcher || PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED) {
                     return;
@@ -2292,6 +2304,7 @@ const firstVisibleMsg = {
                             'km-anonymous-chat-launcher'
                         );
                         var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                        syncLeadCollectionModalContainerMode(kmChatLoginModal);
                         var defaultLauncher = document.getElementById('mck-sidebox-launcher');
                         if (!kmAnonymousChatLauncher) {
                             kmAnonymousChatLauncher = document.createElement('div');
@@ -2386,6 +2399,7 @@ const firstVisibleMsg = {
                         };
 
                         var showPreChatLeadModal = function () {
+                            syncLeadCollectionModalContainerMode(kmChatLoginModal);
                             if (kmChatLoginModal) {
                                 kommunicateCommons.setDialogVisibility(
                                     kmChatLoginModal,

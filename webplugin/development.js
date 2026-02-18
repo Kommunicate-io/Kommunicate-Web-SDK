@@ -212,6 +212,8 @@ const generateBuildFiles = () => {
 
     copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
 
+    copyFileToBuild('../example/demo3.html', `${buildDir}/demo3.html`);
+
     // legacy path for emoticon script redirect
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyPluginLibDir}/mck-emojis.min.js`);
