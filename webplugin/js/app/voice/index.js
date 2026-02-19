@@ -85,8 +85,12 @@ class Voice {
         };
         const config = this.omnichannelConfig || {};
         const authHeaderName = config.authHeaderName || 'Authorization';
-        const authToken = config.authToken || config.token || null;
-        if (authToken) {
+        const rawAuthToken = config.authToken ?? config.token ?? null;
+        if (rawAuthToken !== null && rawAuthToken !== undefined && rawAuthToken !== '') {
+            const authToken = String(rawAuthToken).trim();
+            if (!authToken) {
+                return headers;
+            }
             headers[authHeaderName] = authToken.startsWith('Bearer ')
                 ? authToken
                 : `Bearer ${authToken}`;
