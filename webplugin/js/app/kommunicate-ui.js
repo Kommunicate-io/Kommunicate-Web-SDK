@@ -1131,7 +1131,15 @@ KommunicateUI = {
         if (!KommunicateUI.hasConversationHistory && hasContacts) {
             KommunicateUI.hasConversationHistory = true;
         }
-        var chatLabel = KommunicateUI.getLabel('start.chat', 'Chat');
+        var isVoiceChatEnabled = Boolean(
+            typeof kommunicate === 'object' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChat
+        );
+        var chatLabel = isVoiceChatEnabled
+            ? KommunicateUI.getLabel('start.chat', 'Chat')
+            : KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
         var voiceLabel = KommunicateUI.getLabel('start.voice', 'Voice');
         var sendLabelNode = sendCta.querySelector('span');
         if (sendLabelNode) {
@@ -1140,6 +1148,7 @@ KommunicateUI = {
             sendCta.textContent = chatLabel;
         }
         sendCta.setAttribute('title', chatLabel);
+        sendCta.classList.toggle('km-legacy-cta', !isVoiceChatEnabled);
         if (voiceCta) {
             var voiceLabelNode = voiceCta.querySelector('span');
             if (voiceLabelNode) {

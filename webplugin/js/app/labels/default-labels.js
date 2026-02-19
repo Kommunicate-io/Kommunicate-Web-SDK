@@ -155,28 +155,47 @@ class KMLabel {
         ].forEach(function (binding) {
             setHtmlAndTitleForSelector(binding.selector, binding.path);
         });
-        var startChatLabel = resolveLabel('start.chat');
-        if (startChatLabel) {
+        var isVoiceChatEnabled = Boolean(
+            typeof kommunicate === 'object' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChat
+        );
+        var setButtonLabel = function (selector, path) {
+            var label = resolveLabel(path);
+            if (!label) {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                var textNode = node.querySelector('span');
+                textNode ? (textNode.innerHTML = label) : (node.innerHTML = label);
+                node.setAttribute('title', label);
+            });
+        };
+        if (isVoiceChatEnabled) {
+            setButtonLabel(
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta',
+                'start.chat'
+            );
+            setButtonLabel(
+                '#km-start-with-voice-cta, #km-conversations-empty-voice-cta, #km-empty-conversation-voice-cta',
+                'start.voice'
+            );
             getNodes(
                 '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta'
             ).forEach(function (node) {
-                var textNode = node.querySelector('span');
-                textNode
-                    ? (textNode.innerHTML = startChatLabel)
-                    : (node.innerHTML = startChatLabel);
-                node.setAttribute('title', startChatLabel);
+                node.classList.remove('km-legacy-cta');
             });
-        }
-        var startVoiceLabel = resolveLabel('start.voice');
-        if (startVoiceLabel) {
+        } else {
+            setButtonLabel('#mck-msg-new', 'start.new');
+            setButtonLabel(
+                '#km-conversations-empty-cta, #km-empty-conversation-cta',
+                'mck.empty.welcome.cta'
+            );
             getNodes(
-                '#km-start-with-voice-cta, #km-conversations-empty-voice-cta, #km-empty-conversation-voice-cta'
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta'
             ).forEach(function (node) {
-                var textNode = node.querySelector('span');
-                textNode
-                    ? (textNode.innerHTML = startVoiceLabel)
-                    : (node.innerHTML = startVoiceLabel);
-                node.setAttribute('title', startVoiceLabel);
+                node.classList.add('km-legacy-cta');
             });
         }
         var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');

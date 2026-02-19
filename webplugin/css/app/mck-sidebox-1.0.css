@@ -4187,6 +4187,12 @@ ul.mck-intent-menu > li:hover {
 #km-empty-conversation-voice-cta svg {
     flex: 0 0 auto;
 }
+.km-legacy-cta svg {
+    display: none !important;
+}
+.km-legacy-cta {
+    gap: 0 !important;
+}
 .mck-msg-list-icon {
     /* filter:invert(1); */
     display: block;

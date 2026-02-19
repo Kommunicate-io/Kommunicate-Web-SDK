@@ -325,6 +325,21 @@
                     </fieldset>
 
                     <fieldset>
+                        <legend>Voice Mode</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    id="voiceModeEnabled"
+                                    name="voiceModeEnabled"
+                                    checked
+                                />
+                                Enable voice mode</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
                         <legend>Voice Recognition Mode</legend>
                         <div class="inline-options">
                             <label
@@ -444,6 +459,7 @@
                 layout: 'modern',
                 containerMode: 'outside',
                 recognitionMode: 'omnichannel',
+                voiceModeEnabled: true,
                 containerId: 'widget-container',
                 widgetSettings: null,
                 preChat: [
@@ -480,6 +496,10 @@
             );
             const pendingConfigKey = 'kommunicate-demo-pending-config';
             const appIdInput = document.getElementById('appId');
+            const voiceModeEnabledCheckbox = document.getElementById('voiceModeEnabled');
+            const recognitionModeRadios = document.querySelectorAll(
+                'input[name="recognitionMode"]'
+            );
 
             function formatJson(value) {
                 return JSON.stringify(value, null, 2);
@@ -496,6 +516,7 @@
                 document.querySelector(
                     `input[name="recognitionMode"][value="${defaultState.recognitionMode}"]`
                 ).checked = true;
+                voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
                 widgetSettingsTextarea.value = defaultState.widgetSettings
                     ? formatJson(defaultState.widgetSettings)
                     : '';
@@ -503,6 +524,7 @@
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 containerModeHideControlsCheckbox.checked = defaultState.containerModeHideControls;
                 updatePreChatTextareaState();
+                updateVoiceModeState();
                 updatePreviewStatus(
                     'waiting for launch',
                     'Ready to launch. Configure your settings and press Launch.'
@@ -536,6 +558,13 @@
                     legacyIframe.style.display = 'none';
                     preview.dataset.modeInfo = 'waiting for launch';
                 }
+            }
+
+            function updateVoiceModeState() {
+                const voiceModeEnabled = voiceModeEnabledCheckbox.checked;
+                recognitionModeRadios.forEach((radio) => {
+                    radio.disabled = !voiceModeEnabled;
+                });
             }
 
             function applyConfigToForm(config) {
@@ -573,6 +602,11 @@
                 if (recognitionModeOption) {
                     recognitionModeOption.checked = true;
                 }
+                if (typeof config.voiceModeEnabled === 'boolean') {
+                    voiceModeEnabledCheckbox.checked = config.voiceModeEnabled;
+                } else {
+                    voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
+                }
                 widgetSettingsTextarea.value = config.widgetSettings
                     ? formatJson(config.widgetSettings)
                     : '';
@@ -588,6 +622,7 @@
                     config.containerModeHideControls
                 );
                 updatePreChatTextareaState();
+                updateVoiceModeState();
             }
 
             function parseJsonInput(textarea) {
@@ -628,6 +663,7 @@
                     layout,
                     containerMode,
                     recognitionMode,
+                    voiceModeEnabled: voiceModeEnabledCheckbox.checked,
                     containerId: defaultState.containerId,
                     widgetSettings,
                     preChat,
@@ -644,11 +680,7 @@
                     layout: config.layout,
                     popupWidget: config.containerMode === 'outside',
                     automaticChatOpenOnNavigation: true,
-                    voiceChat: true,
-                    voiceInputSettings: {
-                        recognitionMode: config.recognitionMode,
-                        voiceRecognitionMode: config.recognitionMode,
-                    },
+                    voiceChat: config.voiceModeEnabled,
                     widgetSettings: config.widgetSettings,
                     whatsNewList: [
                         {
@@ -674,6 +706,13 @@
                     globalSettings.popupWidget = false;
                     globalSettings.containerId = config.containerId;
                     globalSettings.containerModeHideControls = config.containerModeHideControls;
+                }
+
+                if (config.voiceModeEnabled) {
+                    globalSettings.voiceInputSettings = {
+                        recognitionMode: config.recognitionMode,
+                        voiceRecognitionMode: config.recognitionMode,
+                    };
                 }
 
                 if (Array.isArray(config.preChat) && config.preChat.length) {
@@ -740,6 +779,7 @@
                 resetForm();
             });
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
+            voiceModeEnabledCheckbox.addEventListener('change', updateVoiceModeState);
             placementRadios.forEach((radio) =>
                 radio.addEventListener('change', handlePlacementChange)
             );
