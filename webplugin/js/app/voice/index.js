@@ -94,14 +94,77 @@ class Voice {
         return headers;
     }
 
+    normalizeLanguageCode(languageCode) {
+        if (languageCode == null) {
+            return '';
+        }
+        return String(languageCode).trim().replace(/_/g, '-');
+    }
+
+    getChatContextLanguageCode() {
+        let chatContext = null;
+        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
+            chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
+        }
+        chatContext = chatContext && typeof chatContext === 'object' ? chatContext : {};
+
+        const activeGroupId =
+            typeof CURRENT_GROUP_DATA !== 'undefined' &&
+            CURRENT_GROUP_DATA &&
+            CURRENT_GROUP_DATA.tabId;
+        if (
+            !chatContext.kmUserLanguageCode &&
+            activeGroupId &&
+            typeof MCK_GROUP_MAP !== 'undefined' &&
+            MCK_GROUP_MAP &&
+            MCK_GROUP_MAP[activeGroupId] &&
+            MCK_GROUP_MAP[activeGroupId].metadata &&
+            MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT
+        ) {
+            const groupChatContext = MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT;
+            let parsedContext = groupChatContext;
+            if (typeof groupChatContext === 'string') {
+                try {
+                    parsedContext = JSON.parse(groupChatContext || '{}');
+                } catch (error) {
+                    parsedContext = {};
+                }
+            }
+            if (parsedContext && parsedContext.kmUserLanguageCode) {
+                return this.normalizeLanguageCode(parsedContext.kmUserLanguageCode);
+            }
+            if (parsedContext && parsedContext.kmUserLocale) {
+                return this.normalizeLanguageCode(parsedContext.kmUserLocale);
+            }
+        }
+
+        return this.normalizeLanguageCode(
+            chatContext.kmUserLanguageCode || chatContext.kmUserLocale || ''
+        );
+    }
+
     getVoiceLanguageCode() {
-        const languageFromConfig =
+        const languageFromConfig = this.normalizeLanguageCode(
             this.voiceInputConfig.voiceLanguage ||
-            this.voiceInputConfig.languageCode ||
-            this.voiceChatConfig.languageCode;
+                this.voiceInputConfig.languageCode ||
+                this.voiceChatConfig.languageCode
+        );
+        const languageFromChatContext = this.getChatContextLanguageCode();
+        const languageFromUserLocale = this.normalizeLanguageCode(
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate._globals &&
+                kommunicate._globals.userLocale) ||
+                ''
+        );
+        const languageFromNavigator = this.normalizeLanguageCode(
+            (typeof navigator !== 'undefined' && navigator.language) || ''
+        );
+
         return (
             languageFromConfig ||
-            (typeof navigator !== 'undefined' && navigator.language) ||
+            languageFromChatContext ||
+            languageFromUserLocale ||
+            languageFromNavigator ||
             'en-US'
         );
     }
@@ -116,13 +179,36 @@ class Voice {
         const fromInputConfig = this.voiceInputConfig.alternativeLanguageCodes;
         const fromChatConfig = this.voiceChatConfig.alternativeLanguageCodes;
         const fromOmnichannelConfig = this.omnichannelConfig.alternativeLanguageCodes;
-        const value = fromInputConfig || fromChatConfig || fromOmnichannelConfig || [];
-        if (!Array.isArray(value)) {
-            return [];
+        const configuredValue = fromInputConfig || fromChatConfig || fromOmnichannelConfig;
+        const primaryLanguageCode = this.getVoiceLanguageCode();
+        let values = Array.isArray(configuredValue) ? configuredValue : [];
+        if (
+            !values.length &&
+            typeof navigator !== 'undefined' &&
+            Array.isArray(navigator.languages)
+        ) {
+            values = navigator.languages;
         }
-        return value
-            .map((code) => (code == null ? '' : String(code).trim()))
-            .filter((code) => Boolean(code));
+        const normalizedPrimaryLanguageCode = this.normalizeLanguageCode(primaryLanguageCode);
+        const uniqueCodes = [];
+        values.forEach((code) => {
+            const normalizedCode = this.normalizeLanguageCode(code);
+            if (
+                !normalizedCode ||
+                normalizedCode === normalizedPrimaryLanguageCode ||
+                uniqueCodes.indexOf(normalizedCode) !== -1
+            ) {
+                return;
+            }
+            uniqueCodes.push(normalizedCode);
+        });
+        return uniqueCodes;
+    }
+
+    getSpeechLanguageConfig() {
+        const languageCode = this.getVoiceLanguageCode();
+        const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
+        return { languageCode, alternativeLanguageCodes };
     }
 
     getVoiceToTextSampleRate() {
@@ -225,9 +311,14 @@ class Voice {
         };
 
         const formdata = new FormData();
+        const { languageCode, alternativeLanguageCodes } = this.getSpeechLanguageConfig();
         formdata.append('model_id', 'scribe_v1');
         formdata.append('file', audioBlob, 'file');
         formdata.append('tag_audio_events', false);
+        formdata.append('language_code', languageCode);
+        if (alternativeLanguageCodes.length) {
+            formdata.append('alternative_language_codes', alternativeLanguageCodes.join(','));
+        }
 
         const requestOptions = {
             method: 'POST',
@@ -260,15 +351,15 @@ class Voice {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
             throw silentAudioError;
         }
+        const { languageCode, alternativeLanguageCodes } = this.getSpeechLanguageConfig();
         const payload = {
             samples,
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            languageCode: this.getVoiceLanguageCode(),
+            languageCode,
         };
-        const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
         if (alternativeLanguageCodes.length) {
             payload.alternativeLanguageCodes = alternativeLanguageCodes;
         }
