@@ -782,12 +782,26 @@ class MckVoice {
                     this.updateVoiceStatus(
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
-                    const data =
-                        this.activeRecognitionMode === 'omnichannel'
-                            ? await kmVoice.voiceToText(audioBlob, {
-                                  ucid: this.voiceInputSettings.ucid,
-                              })
-                            : await kmVoice.speechToText(audioBlob);
+                    let data;
+                    if (this.activeRecognitionMode === 'omnichannel') {
+                        try {
+                            data = await kmVoice.voiceToText(audioBlob, {
+                                ucid: this.voiceInputSettings.ucid,
+                            });
+                        } catch (error) {
+                            if (error && error.status === 422) {
+                                console.warn(
+                                    'voice-to-text returned 422, falling back to speech-to-text',
+                                    error
+                                );
+                                data = await kmVoice.speechToText(audioBlob);
+                            } else {
+                                throw error;
+                            }
+                        }
+                    } else {
+                        data = await kmVoice.speechToText(audioBlob);
+                    }
                     if (!data) {
                         this.updateLiveTranscript(
                             this.getVoiceLabel(

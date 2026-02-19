@@ -3295,12 +3295,10 @@ const firstVisibleMsg = {
                         voiceInterfaceBackBtn &&
                         !voiceInterfaceBackBtn.dataset.voiceBackListenerAttached
                     ) {
-                        voiceInterfaceBackBtn.addEventListener('click', function () {
+                        var onVoiceInterfaceBackClick = function () {
                             mckVoice.stopVoiceMode();
-
-                            var voiceInterfaceEl = document.getElementById('mck-voice-interface');
-                            voiceInterfaceEl && kommunicateCommons.hide('#mck-voice-interface');
-                        });
+                        };
+                        voiceInterfaceBackBtn.addEventListener('click', onVoiceInterfaceBackClick);
                         voiceInterfaceBackBtn.dataset.voiceBackListenerAttached = 'true';
                     }
                 }

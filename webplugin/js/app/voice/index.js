@@ -3,11 +3,12 @@ class Voice {
     _VOICE_PLATFORM_API_KEY = kommunicate._globals.voiceChatApiKey;
     _OMNICHANNEL_BASE_URL = 'https://omni-channel-test.kommunicate.io';
     _OMNICHANNEL_API_PREFIX = '/voice';
-    _OMNICHANNEL_AUDIO_CONFIG = {
+    _OMNICHANNEL_STT_AUDIO_CONFIG = {
         bitsPerSample: 16,
-        sampleRate: 8000,
+        sampleRate: 16000,
         channelCount: 1,
     };
+    _OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE = 24000;
 
     get voiceChatConfig() {
         return (
@@ -90,6 +91,56 @@ class Voice {
         return headers;
     }
 
+    getVoiceLanguageCode() {
+        const languageFromConfig =
+            this.voiceInputConfig.voiceLanguage ||
+            this.voiceInputConfig.languageCode ||
+            this.voiceChatConfig.languageCode;
+        return (
+            languageFromConfig ||
+            (typeof navigator !== 'undefined' && navigator.language) ||
+            'en-US'
+        );
+    }
+
+    getOmnichannelSource(source) {
+        const sourceValue =
+            source || this.omnichannelConfig.source || this.voiceInputConfig.source || 'web';
+        return sourceValue === 'call' ? 'call' : 'web';
+    }
+
+    getAlternativeLanguageCodes() {
+        const fromInputConfig = this.voiceInputConfig.alternativeLanguageCodes;
+        const fromChatConfig = this.voiceChatConfig.alternativeLanguageCodes;
+        const fromOmnichannelConfig = this.omnichannelConfig.alternativeLanguageCodes;
+        const value = fromInputConfig || fromChatConfig || fromOmnichannelConfig || [];
+        if (!Array.isArray(value)) {
+            return [];
+        }
+        return value
+            .map((code) => (code == null ? '' : String(code).trim()))
+            .filter((code) => Boolean(code));
+    }
+
+    getVoiceToTextSampleRate() {
+        const sampleRate =
+            this.voiceInputConfig.sampleRate ||
+            this.voiceInputConfig.voiceSampleRate ||
+            this.omnichannelConfig.sampleRate ||
+            this._OMNICHANNEL_STT_AUDIO_CONFIG.sampleRate;
+        return Number(sampleRate) || this._OMNICHANNEL_STT_AUDIO_CONFIG.sampleRate;
+    }
+
+    getTextToVoiceSampleRate() {
+        const sampleRate =
+            this.voiceChatConfig.sampleRate ||
+            this.voiceChatConfig.ttsSampleRate ||
+            this.omnichannelConfig.ttsSampleRate ||
+            this.omnichannelConfig.sampleRate ||
+            this._OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE;
+        return Number(sampleRate) || this._OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE;
+    }
+
     textToSpeechStream(text = '') {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/${this.voiceId}/stream`;
         const headers = {
@@ -129,10 +180,27 @@ class Voice {
     }
 
     textToVoice(text = '') {
+        const payload = {
+            text,
+            source: this.getOmnichannelSource(this.voiceChatConfig.source),
+            languageCode: this.getVoiceLanguageCode(),
+            sampleRate: this.getTextToVoiceSampleRate(),
+        };
+        const config = this.voiceChatConfig || {};
+        if (config.ssmlGender) {
+            payload.ssmlGender = config.ssmlGender;
+        }
+        if (config.voiceName) {
+            payload.voiceName = config.voiceName;
+        }
+        if (Array.isArray(config.effectsProfileId) && config.effectsProfileId.length) {
+            payload.effectsProfileId = config.effectsProfileId;
+        }
+
         return fetch(this.getOmnichannelApiUrl('/text-to-voice'), {
             method: 'POST',
             headers: this.getOmnichannelHeaders(),
-            body: JSON.stringify({ text }),
+            body: JSON.stringify(payload),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -182,16 +250,31 @@ class Voice {
     }
 
     async voiceToText(audioBlob, { ucid } = {}) {
+        const sampleRate = this.getVoiceToTextSampleRate();
         const samples = await this.extractPcmInt16Samples(audioBlob);
         const payload = {
             samples,
-            bitsPerSample: this._OMNICHANNEL_AUDIO_CONFIG.bitsPerSample,
-            sampleRate: this._OMNICHANNEL_AUDIO_CONFIG.sampleRate,
-            channelCount: this._OMNICHANNEL_AUDIO_CONFIG.channelCount,
+            bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
+            sampleRate,
+            channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
+            source: this.getOmnichannelSource(this.voiceInputConfig.source),
+            languageCode: this.getVoiceLanguageCode(),
         };
-        const resolvedUcid = ucid || this.voiceInputConfig.ucid || this.omnichannelConfig.ucid;
-        if (resolvedUcid) {
-            payload.ucid = resolvedUcid;
+        const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
+        if (alternativeLanguageCodes.length) {
+            payload.alternativeLanguageCodes = alternativeLanguageCodes;
+        }
+        const activeConversationUcid =
+            typeof CURRENT_GROUP_DATA !== 'undefined' &&
+            CURRENT_GROUP_DATA &&
+            CURRENT_GROUP_DATA.tabId;
+        const resolvedUcid =
+            ucid ||
+            this.voiceInputConfig.ucid ||
+            this.omnichannelConfig.ucid ||
+            activeConversationUcid;
+        if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
+            payload.ucid = String(resolvedUcid);
         }
 
         return fetch(this.getOmnichannelApiUrl('/voice-to-text'), {
@@ -199,9 +282,9 @@ class Voice {
             headers: this.getOmnichannelHeaders(),
             body: JSON.stringify(payload),
         })
-            .then((response) => {
+            .then(async (response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw await this.buildHttpError(response, 'voice-to-text');
                 }
                 return response.json();
             })
@@ -211,13 +294,29 @@ class Voice {
             });
     }
 
+    async buildHttpError(response, operation) {
+        const status = response && typeof response.status === 'number' ? response.status : 0;
+        let details = '';
+        try {
+            details = await response.text();
+        } catch (err) {}
+        const message = details
+            ? `${operation} failed with status ${status}: ${details}`
+            : `${operation} failed with status ${status}`;
+        const error = new Error(message);
+        error.status = status;
+        error.responseBody = details;
+        return error;
+    }
+
     async extractPcmInt16Samples(audioBlob) {
+        const targetSampleRate = this.getVoiceToTextSampleRate();
         const audioBuffer = await this.decodeAudioBlob(audioBlob);
         const mono = this.getMonoChannelData(audioBuffer);
         const downsampled = this.resampleToTargetRate(
             mono,
             audioBuffer.sampleRate,
-            this._OMNICHANNEL_AUDIO_CONFIG.sampleRate
+            targetSampleRate
         );
         const int16Samples = this.float32ToInt16(downsampled);
         return Array.from(int16Samples);
@@ -296,9 +395,9 @@ class Voice {
         const pcmData = Int16Array.from(flattened);
         return this.createWavBlobFromPcmData(
             pcmData,
-            payload.sampleRate || this._OMNICHANNEL_AUDIO_CONFIG.sampleRate,
-            payload.channelCount || this._OMNICHANNEL_AUDIO_CONFIG.channelCount,
-            payload.bitsPerSample || this._OMNICHANNEL_AUDIO_CONFIG.bitsPerSample
+            payload.sampleRate || this.getTextToVoiceSampleRate(),
+            payload.channelCount || this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
+            payload.bitsPerSample || this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
         );
     }
 
