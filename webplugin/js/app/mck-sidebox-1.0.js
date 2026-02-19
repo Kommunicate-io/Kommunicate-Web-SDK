@@ -3532,8 +3532,13 @@ const firstVisibleMsg = {
                             separateDialCode: true,
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
-                            utilsScript:
-                                'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
+                            loadUtils: function () {
+                                return import(
+                                    'https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/utils.js'
+                                );
+                            },
+                            formatAsYouType: false,
+                            strictMode: false,
                             useFullscreenPopup: false,
                             dropdownContainer:
                                 phoneField.closest('.km-form-group') || document.body,
