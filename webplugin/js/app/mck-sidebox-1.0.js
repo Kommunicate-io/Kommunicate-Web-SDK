@@ -6319,8 +6319,9 @@ const firstVisibleMsg = {
                 if (!metadata.KM_CLIENT_MESSAGE_ID) {
                     metadata.KM_CLIENT_MESSAGE_ID = randomId;
                 }
+                messagePxy.metadata = metadata;
                 if (MCK_CHECK_USER_BUSY_STATUS) {
-                    metadata = $applozic.extend(messagePxy.metadata, {
+                    metadata = $applozic.extend(metadata, {
                         userStatus: 4,
                     });
                 }
