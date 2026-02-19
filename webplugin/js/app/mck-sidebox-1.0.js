@@ -6316,7 +6316,9 @@ const firstVisibleMsg = {
             _this.submitMessage = function (messagePxy, optns) {
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
-
+                if (!metadata.KM_CLIENT_MESSAGE_ID) {
+                    metadata.KM_CLIENT_MESSAGE_ID = randomId;
+                }
                 if (MCK_CHECK_USER_BUSY_STATUS) {
                     metadata = $applozic.extend(messagePxy.metadata, {
                         userStatus: 4,
@@ -12027,6 +12029,24 @@ const firstVisibleMsg = {
                             }
                         }
                     } else if (messageType === 'APPLOZIC_02' && !(message.contentType == 102)) {
+                        var clientMessageId =
+                            message.metadata && message.metadata.KM_CLIENT_MESSAGE_ID;
+                        if (clientMessageId && $applozic('.' + clientMessageId).length) {
+                            var $clientMsg = $applozic('.' + clientMessageId).first();
+                            if (message.conversationId) {
+                                $mck_msg_inner.data('mck-conversationid', message.conversationId);
+                            }
+                            $clientMsg
+                                .removeClass(clientMessageId)
+                                .addClass(message.key)
+                                .data('msgkey', message.key);
+                            $applozic('.' + message.key + ' .mck-message-status')
+                                .removeClass('mck-pending-icon')
+                                .addClass('mck-sent-icon')
+                                .attr('title', 'sent');
+                            mckMessageLayout.addTooltip(message.key);
+                            return;
+                        }
                         if (
                             ((typeof message.oldKey === 'undefined' ||
                                 $applozic('.' + message.oldKey).length === 0) &&

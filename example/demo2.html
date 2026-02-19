@@ -324,6 +324,20 @@
                         </div>
                     </fieldset>
 
+                    <fieldset>
+                        <legend>Widget position</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="widgetPosition" value="right" checked />
+                                Right</label
+                            >
+                            <label
+                                ><input type="radio" name="widgetPosition" value="left" />
+                                Left</label
+                            >
+                        </div>
+                    </fieldset>
+
                     <div>
                         <label class="inline-options" style="margin-top: 4px">
                             <input
@@ -420,6 +434,7 @@
                 appId: 'kommunicate-support',
                 layout: 'modern',
                 containerMode: 'outside',
+                widgetPosition: 'right',
                 containerId: 'widget-container',
                 widgetSettings: null,
                 preChat: [
@@ -439,6 +454,7 @@
 
             const allowedLayouts = ['modern', 'classic'];
             const allowedContainerModes = ['outside', 'inside', 'iframe'];
+            const allowedWidgetPositions = ['left', 'right'];
 
             const form = document.getElementById('widget-config-form');
             const status = document.getElementById('config-status');
@@ -449,6 +465,7 @@
             const preChatFields = document.getElementById('preChatFields');
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
+            const widgetPositionRadios = document.querySelectorAll('input[name="widgetPosition"]');
             const resetButton = document.getElementById('reset-form');
             const containerModeHideControlsCheckbox = document.getElementById(
                 'containerModeHideControls'
@@ -467,6 +484,9 @@
                 ).checked = true;
                 document.querySelector(
                     `input[name="containerMode"][value="${defaultState.containerMode}"]`
+                ).checked = true;
+                document.querySelector(
+                    `input[name="widgetPosition"][value="${defaultState.widgetPosition}"]`
                 ).checked = true;
                 widgetSettingsTextarea.value = defaultState.widgetSettings
                     ? formatJson(defaultState.widgetSettings)
@@ -534,6 +554,19 @@
                 if (containerModeOption) {
                     containerModeOption.checked = true;
                 }
+                const widgetPositionValue =
+                    config.widgetPosition ||
+                    (config.widgetSettings && config.widgetSettings.position) ||
+                    defaultState.widgetPosition;
+                const resolvedWidgetPosition = allowedWidgetPositions.includes(widgetPositionValue)
+                    ? widgetPositionValue
+                    : defaultState.widgetPosition;
+                const widgetPositionOption = document.querySelector(
+                    `input[name="widgetPosition"][value="${resolvedWidgetPosition}"]`
+                );
+                if (widgetPositionOption) {
+                    widgetPositionOption.checked = true;
+                }
                 widgetSettingsTextarea.value = config.widgetSettings
                     ? formatJson(config.widgetSettings)
                     : '';
@@ -563,6 +596,9 @@
                 const layout = document.querySelector('input[name="layout"]:checked').value;
                 const containerMode = document.querySelector('input[name="containerMode"]:checked')
                     .value;
+                const widgetPosition = document.querySelector(
+                    'input[name="widgetPosition"]:checked'
+                ).value;
 
                 const preChatEnabled = preChatEnabledCheckbox.checked;
                 let widgetSettings;
@@ -585,6 +621,7 @@
                     appId: document.getElementById('appId').value.trim() || defaultState.appId,
                     layout,
                     containerMode,
+                    widgetPosition,
                     containerId: defaultState.containerId,
                     widgetSettings,
                     preChat,
@@ -627,6 +664,13 @@
                     globalSettings.containerId = config.containerId;
                     globalSettings.containerModeHideControls = config.containerModeHideControls;
                 }
+                if (
+                    !globalSettings.widgetSettings ||
+                    typeof globalSettings.widgetSettings !== 'object'
+                ) {
+                    globalSettings.widgetSettings = {};
+                }
+                globalSettings.widgetSettings.position = config.widgetPosition;
 
                 if (Array.isArray(config.preChat) && config.preChat.length) {
                     globalSettings.preLeadCollection = config.preChat;
