@@ -9,6 +9,9 @@ class Voice {
         channelCount: 1,
     };
     _OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE = 24000;
+    _SILENCE_NON_ZERO_RATIO_THRESHOLD = 0.005;
+    _SILENCE_PEAK_ABS_THRESHOLD = 8;
+    _SILENCE_RMS_THRESHOLD = 2;
 
     get voiceChatConfig() {
         return (
@@ -252,6 +255,11 @@ class Voice {
     async voiceToText(audioBlob, { ucid } = {}) {
         const sampleRate = this.getVoiceToTextSampleRate();
         const samples = await this.extractPcmInt16Samples(audioBlob);
+        const audioMetrics = this.evaluatePcmInt16Quality(samples);
+        if (audioMetrics.isSilent) {
+            const silentAudioError = this.createSilentAudioError(audioMetrics);
+            throw silentAudioError;
+        }
         const payload = {
             samples,
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
@@ -289,9 +297,67 @@ class Voice {
                 return response.json();
             })
             .catch((error) => {
-                console.error('There was a problem with the fetch operation:', error);
+                if (error && error.code === 'SILENT_AUDIO') {
+                    console.warn('Silent audio blocked before voice-to-text API call', {
+                        sampleCount: error.sampleCount,
+                        nonZeroRatio: error.nonZeroRatio,
+                        rms: error.rms,
+                        peakAbs: error.peakAbs,
+                    });
+                } else {
+                    console.error('There was a problem with the fetch operation:', error);
+                }
                 throw error;
             });
+    }
+
+    evaluatePcmInt16Quality(samples = []) {
+        const sampleCount = Array.isArray(samples) ? samples.length : 0;
+        if (!sampleCount) {
+            return {
+                isSilent: true,
+                sampleCount: 0,
+                nonZeroRatio: 0,
+                rms: 0,
+                peakAbs: 0,
+            };
+        }
+        let nonZeroCount = 0;
+        let sumSquares = 0;
+        let peakAbs = 0;
+        for (let i = 0; i < sampleCount; i++) {
+            const value = Number(samples[i]) || 0;
+            const absValue = Math.abs(value);
+            if (value !== 0) {
+                nonZeroCount++;
+            }
+            if (absValue > peakAbs) {
+                peakAbs = absValue;
+            }
+            sumSquares += value * value;
+        }
+        const nonZeroRatio = nonZeroCount / sampleCount;
+        const rms = Math.sqrt(sumSquares / sampleCount);
+        const isSilent =
+            nonZeroRatio < this._SILENCE_NON_ZERO_RATIO_THRESHOLD ||
+            (peakAbs <= this._SILENCE_PEAK_ABS_THRESHOLD && rms <= this._SILENCE_RMS_THRESHOLD);
+        return {
+            isSilent,
+            sampleCount,
+            nonZeroRatio: Number(nonZeroRatio.toFixed(6)),
+            rms: Number(rms.toFixed(3)),
+            peakAbs,
+        };
+    }
+
+    createSilentAudioError(metrics) {
+        const error = new Error('Silent audio detected. Skipping voice-to-text request.');
+        error.code = 'SILENT_AUDIO';
+        error.sampleCount = metrics.sampleCount;
+        error.nonZeroRatio = metrics.nonZeroRatio;
+        error.rms = metrics.rms;
+        error.peakAbs = metrics.peakAbs;
+        return error;
     }
 
     async buildHttpError(response, operation) {

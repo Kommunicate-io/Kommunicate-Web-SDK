@@ -782,12 +782,35 @@ class MckVoice {
                     this.updateVoiceStatus(
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
-                    const data =
-                        this.activeRecognitionMode === 'omnichannel'
-                            ? await kmVoice.voiceToText(audioBlob, {
-                                  ucid: this.voiceInputSettings.ucid,
-                              })
-                            : await kmVoice.speechToText(audioBlob);
+                    let data;
+                    try {
+                        data =
+                            this.activeRecognitionMode === 'omnichannel'
+                                ? await kmVoice.voiceToText(audioBlob, {
+                                      ucid: this.voiceInputSettings.ucid,
+                                  })
+                                : await kmVoice.speechToText(audioBlob);
+                    } catch (error) {
+                        if (error && error.code === 'SILENT_AUDIO') {
+                            console.debug('Silent audio clip detected during voice mode', {
+                                sampleCount: error.sampleCount,
+                                nonZeroRatio: error.nonZeroRatio,
+                                rms: error.rms,
+                                peakAbs: error.peakAbs,
+                            });
+                            this.removeAllAnimation();
+                            this.clearVoiceStatus();
+                            this.updateLiveTranscript(
+                                this.getVoiceLabel(
+                                    'voiceInterface.noSpeechDetected',
+                                    'No speech detected. Please try again.'
+                                ),
+                                { autoHide: 3000 }
+                            );
+                            return;
+                        }
+                        throw error;
+                    }
                     if (!data) {
                         this.updateLiveTranscript(
                             this.getVoiceLabel(
