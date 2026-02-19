@@ -908,9 +908,7 @@ class MckVoice {
             if (this.isRecording) {
                 console.debug('Max recording duration reached, stopping');
                 this.addThinkingAnimation();
-                this.exitVoiceModeWithMessage('voiceInterface.maxRecording', {
-                    fallback: 'Recording limit reached. Switching to chat.',
-                });
+                this.stopRecording();
             }
         }, this._MAX_RECORDING_DURATION);
 
@@ -1601,11 +1599,7 @@ class MckVoice {
             this.startVoiceModeTimeout();
             return;
         }
-        const message = `${this.getVoiceLabel(
-            'voiceInterface.chat',
-            'Switch to chat'
-        )} • Voice session timed out.`;
-        this.exitVoiceModeWithMessage(message, { autoHide: 5000 });
+        this.startVoiceModeTimeout();
     }
 
     setupSilenceDetection(stream) {
