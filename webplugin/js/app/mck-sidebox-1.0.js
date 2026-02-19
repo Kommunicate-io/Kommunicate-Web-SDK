@@ -3296,11 +3296,7 @@ const firstVisibleMsg = {
                         !voiceInterfaceBackBtn.dataset.voiceBackListenerAttached
                     ) {
                         var onVoiceInterfaceBackClick = function () {
-                            mckVoice.stopRecording(true);
-                            mckVoice.disableAutoListening();
-                            mckVoice.updateVoiceStatus('');
-                            mckVoice.updateLiveTranscript('');
-                            mckVoice.updateResponseText('');
+                            mckVoice.stopVoiceMode();
                             kommunicateCommons.hide('#mck-voice-interface');
                         };
                         voiceInterfaceBackBtn.addEventListener('click', onVoiceInterfaceBackClick);

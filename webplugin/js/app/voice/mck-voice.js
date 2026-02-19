@@ -527,6 +527,18 @@ class MckVoice {
 
     addEventListeners() {
         const self = this;
+        const bindOnce = (element, eventName, handler, flagName) => {
+            if (!element) {
+                return;
+            }
+            if (element.dataset && element.dataset[flagName] === 'true') {
+                return;
+            }
+            element.addEventListener(eventName, handler);
+            if (element.dataset) {
+                element.dataset[flagName] = 'true';
+            }
+        };
         const responseLabelElement = document.getElementById('mck-voice-response-label');
         if (responseLabelElement) {
             responseLabelElement.textContent = this.getVoiceLabel(
@@ -536,50 +548,72 @@ class MckVoice {
         }
         this.updateMuteButton();
         this.updateChatButtonText();
-        document.querySelector('.mck-voice-web').addEventListener('click', () => {
-            this.disableNativeVoiceOutputForVoiceMode();
-            this.enableAutoListening();
-            this.setVoiceMuted(false);
-            kommunicateCommons.modifyClassList(
-                { class: ['voice-ring-1'] },
-                '',
-                'mck-ring-remove-animation'
-            );
-            kommunicateCommons.modifyClassList(
-                {
-                    class: ['mck-voice-repeat-last-msg'],
-                },
-                'mck-hidden'
-            );
-            // Call the audio recording function
-            this.requestAudioRecordingWhenReady();
-        });
+        bindOnce(
+            document.querySelector('.mck-voice-web'),
+            'click',
+            () => {
+                this.disableNativeVoiceOutputForVoiceMode();
+                this.enableAutoListening();
+                this.setVoiceMuted(false);
+                kommunicateCommons.modifyClassList(
+                    { class: ['voice-ring-1'] },
+                    '',
+                    'mck-ring-remove-animation'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-voice-repeat-last-msg'],
+                    },
+                    'mck-hidden'
+                );
+                // Call the audio recording function
+                this.requestAudioRecordingWhenReady();
+            },
+            'voiceOpenListenerAttached'
+        );
 
-        document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
-            kommunicateCommons.modifyClassList(
-                { class: ['mck-voice-repeat-last-msg'] },
-                'mck-hidden'
-            );
-            this.stopVoiceMode();
-        });
+        bindOnce(
+            document.querySelector('#mck-voice-chat-btn'),
+            'click',
+            () => {
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-voice-repeat-last-msg'] },
+                    'mck-hidden'
+                );
+                this.stopVoiceMode();
+            },
+            'voiceChatSwitchListenerAttached'
+        );
 
-        document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
-            this.toggleMute();
-        });
+        bindOnce(
+            document.querySelector('#mck-voice-speak-btn'),
+            'click',
+            () => {
+                this.toggleMute();
+            },
+            'voiceMuteToggleListenerAttached'
+        );
 
-        document.getElementById('mck-voice-repeat-last-msg').addEventListener('click', function () {
-            this.classList.toggle('mck-hidden');
+        bindOnce(
+            document.getElementById('mck-voice-repeat-last-msg'),
+            'click',
+            function () {
+                this.classList.toggle('mck-hidden');
 
-            kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
-            const ring1 = document.querySelector('.voice-ring-1');
-            ring1.classList.remove('mck-ring-remove-animation');
+                kommunicateCommons.show('.voice-ring-2', '.voice-ring-3');
+                const ring1 = document.querySelector('.voice-ring-1');
+                ring1.classList.remove('mck-ring-remove-animation');
 
-            self.repeatLastMsgAudio(self.agentOrBotLastMsgAudio);
-        });
+                self.repeatLastMsgAudio(self.agentOrBotLastMsgAudio);
+            },
+            'voiceRepeatListenerAttached'
+        );
 
         const inlineActionBtn = document.getElementById('km-voice-inline-action-btn');
-        if (inlineActionBtn) {
-            inlineActionBtn.addEventListener('click', () => {
+        bindOnce(
+            inlineActionBtn,
+            'click',
+            () => {
                 this.stopVoiceMode();
                 if (
                     typeof KommunicateUI === 'object' &&
@@ -588,14 +622,18 @@ class MckVoice {
                 ) {
                     KommunicateUI.activateTypingField();
                 }
-            });
-        }
+            },
+            'voiceInlineActionListenerAttached'
+        );
         const inlineMicBtn = document.getElementById('km-voice-inline-mic-btn');
-        if (inlineMicBtn) {
-            inlineMicBtn.addEventListener('click', () => {
+        bindOnce(
+            inlineMicBtn,
+            'click',
+            () => {
                 this.toggleMute();
-            });
-        }
+            },
+            'voiceInlineMicListenerAttached'
+        );
     }
 
     getUserOverride() {
@@ -1419,7 +1457,7 @@ class MckVoice {
         if (this.lastRecordingEnd) {
             const cooldownElapsed = Date.now() - this.lastRecordingEnd;
             if (cooldownElapsed < this._AUTO_LISTEN_COOLDOWN) {
-                return;
+                delay = Math.max(delay, this._AUTO_LISTEN_COOLDOWN - cooldownElapsed);
             }
         }
         if (
@@ -1555,6 +1593,12 @@ class MckVoice {
     handleVoiceModeTimeout() {
         this.voiceModeTimeoutId = null;
         if (!this.isVoiceInterfaceVisible()) {
+            return;
+        }
+        const isVoicePlaybackActive =
+            this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+        if (this.isRecording || isVoicePlaybackActive) {
+            this.startVoiceModeTimeout();
             return;
         }
         const message = `${this.getVoiceLabel(
