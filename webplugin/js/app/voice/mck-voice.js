@@ -5,7 +5,7 @@ class MckVoice {
     _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping (ideal for customer support flows)
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
-    _VOICE_MODE_SESSION_TIMEOUT = 120000; // close voice mode if it runs this long without switching to chat
+    _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     // Threshold for frequency-domain visualizer (0..255 scale)
@@ -59,7 +59,7 @@ class MckVoice {
         this.nativeRecognitionActive = false;
         this.nativeRecognitionShouldRestart = false;
         this.nativeRecognitionFailed = false;
-        this.activeRecognitionMode = 'native';
+        this.activeRecognitionMode = 'omnichannel';
         this.nativeSpeechUtterance = null;
         this.adaptiveVadState = null;
         this.voiceInputSettings = this.getVoiceInputSettings();
@@ -76,7 +76,7 @@ class MckVoice {
         const requestedMode = (
             config.recognitionMode ||
             config.voiceRecognitionMode ||
-            'elevenlabs'
+            'omnichannel'
         )
             .toString()
             .toLowerCase();
@@ -88,6 +88,7 @@ class MckVoice {
         return {
             recognitionMode: requestedMode,
             voiceLanguage: language,
+            ucid: config.ucid || null,
             silenceDuration: config.silenceDuration ?? this._SILENCE_DURATION,
             minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
             vad: {
@@ -123,6 +124,7 @@ class MckVoice {
                 /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
                 ''
             );
+            const spokenText = messageWithoutSource.trim();
 
             this.agentOrBotName = displayName;
             const responseText = displayName
@@ -132,15 +134,27 @@ class MckVoice {
             this.agentOrBotLastMsg = messageWithoutSource;
             this.agentOrBotLastMsgAudio = null;
 
-            if (this.shouldUseNativeSpeechSynthesis()) {
-                this.playNativeSpeech(messageWithoutSource);
+            if (!spokenText) {
+                this.advanceQueueAfterPlayback();
                 return;
             }
 
-            const response = await kmVoice.textToSpeechStream(messageWithoutSource);
+            if (this.shouldUseNativeSpeechSynthesis()) {
+                this.playNativeSpeech(spokenText);
+                return;
+            }
+
+            if (this.activeRecognitionMode === 'omnichannel') {
+                const data = await kmVoice.textToVoice(spokenText);
+                const wavBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                this.playAudioBlobWithQueue(wavBlob);
+                return;
+            }
+
+            const response = await kmVoice.textToSpeechStream(spokenText);
             this.playAudioWithMediaSource(response);
         } catch (err) {
-            console.error(err);
+            this.handlePlaybackFailure(err);
         }
     }
 
@@ -156,6 +170,9 @@ class MckVoice {
         const fullChunks = [];
 
         try {
+            if (!response || !response.body || typeof response.body.getReader !== 'function') {
+                throw new Error('Invalid TTS stream response');
+            }
             const sourceOpenPromise = new Promise((resolve) => {
                 mediaSource.addEventListener('sourceopen', resolve, { once: true });
             });
@@ -303,7 +320,82 @@ class MckVoice {
                     mediaSource.endOfStream();
                 } catch (e) {}
             }
+            this.handlePlaybackFailure(err);
         }
+    }
+
+    playAudioBlobWithQueue(audioBlob) {
+        this.clearDeferredRecordingHandler(this.audioElement);
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        if (this.audioElement) {
+            this.audioElement.pause();
+            this.audioElement.currentTime = 0;
+        }
+
+        const blobUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(blobUrl);
+        this.audioElement = audio;
+        this.addSpeakingAnimation();
+
+        audio.onerror = (error) => {
+            console.error(error, 'audio play error');
+            URL.revokeObjectURL(blobUrl);
+            this.audioElement = null;
+            const nextMsg = this.shiftToNextQueuedMessage();
+            nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+        };
+
+        audio.addEventListener(
+            'canplay',
+            () => {
+                audio.play().catch(console.error);
+                this.visualizerCleanup = this.createAudioVisualizer(audio);
+            },
+            { once: true }
+        );
+
+        audio.addEventListener('ended', () => {
+            const nextMsg = this.shiftToNextQueuedMessage();
+
+            if (nextMsg) {
+                URL.revokeObjectURL(blobUrl);
+                if (this.visualizerCleanup) {
+                    this.visualizerCleanup();
+                    this.visualizerCleanup = null;
+                }
+                this.audioElement = null;
+                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                return;
+            }
+
+            if (this.agentOrBotLastMsgAudio) {
+                URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+            }
+            this.agentOrBotLastMsgAudio = blobUrl;
+
+            document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
+
+            if (this.visualizerCleanup) {
+                this.visualizerCleanup();
+                this.visualizerCleanup = null;
+            }
+
+            kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
+            const ring1 = document.querySelector('.voice-ring-1');
+            ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+            ring1.classList.add('ring-recede');
+
+            setTimeout(() => {
+                ring1.classList.remove('ring-recede');
+                this.removeAllAnimation();
+                this.scheduleAutoListen();
+                this.clearVoiceStatus();
+            }, this._RING_RECEDE_DURATION);
+            this.audioElement = null;
+        });
     }
 
     shiftToNextQueuedMessage() {
@@ -324,7 +416,7 @@ class MckVoice {
 
     playNativeSpeech(text) {
         if (!text || !this.isNativeSpeechSynthesisAvailable()) {
-            this.scheduleAutoListen();
+            this.advanceQueueAfterPlayback();
             return;
         }
         this.cancelNativeSpeech();
@@ -334,7 +426,11 @@ class MckVoice {
         utterance.onend = () => this.onNativeSpeechEnded();
         utterance.onerror = () => this.onNativeSpeechEnded();
         this.nativeSpeechUtterance = utterance;
-        speechSynthesis.speak(utterance);
+        try {
+            speechSynthesis.speak(utterance);
+        } catch (error) {
+            this.handlePlaybackFailure(error);
+        }
     }
 
     cancelNativeSpeech() {
@@ -348,12 +444,25 @@ class MckVoice {
         this.nativeSpeechUtterance = null;
         this.removeAllAnimation();
         this.clearVoiceStatus();
+        this.advanceQueueAfterPlayback();
+    }
+
+    advanceQueueAfterPlayback() {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
             this.processNextMessage(nextMsg.msg, nextMsg.displayName);
             return;
         }
         this.scheduleAutoListen();
+    }
+
+    handlePlaybackFailure(error) {
+        console.error(error);
+        this.removeAllAnimation();
+        this.clearVoiceStatus();
+        this.audioElement = null;
+        this.nativeSpeechUtterance = null;
+        this.advanceQueueAfterPlayback();
     }
 
     async repeatLastMsgAudio(blobUrl) {
@@ -673,7 +782,12 @@ class MckVoice {
                     this.updateVoiceStatus(
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
-                    const data = await kmVoice.speechToText(audioBlob);
+                    const data =
+                        this.activeRecognitionMode === 'omnichannel'
+                            ? await kmVoice.voiceToText(audioBlob, {
+                                  ucid: this.voiceInputSettings.ucid,
+                              })
+                            : await kmVoice.speechToText(audioBlob);
                     if (!data) {
                         this.updateLiveTranscript(
                             this.getVoiceLabel(
@@ -1393,6 +1507,7 @@ class MckVoice {
             this.stopRecording(true);
         }
     }
+
     startVoiceModeTimeout() {
         this.clearVoiceModeTimeout();
         if (!this.isVoiceInterfaceVisible()) {
@@ -1422,6 +1537,7 @@ class MckVoice {
         )} • Voice session timed out.`;
         this.exitVoiceModeWithMessage(message, { autoHide: 5000 });
     }
+
     setupSilenceDetection(stream) {
         // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1608,9 +1724,12 @@ class MckVoice {
     }
 
     determineRecognitionMode() {
-        const requested = (this.voiceInputSettings?.recognitionMode || 'native')
+        const requested = (this.voiceInputSettings?.recognitionMode || 'omnichannel')
             .toString()
             .toLowerCase();
+        if (requested === 'omnichannel') {
+            return 'omnichannel';
+        }
         if (
             requested === 'native' &&
             !this.nativeRecognitionFailed &&
@@ -1745,7 +1864,7 @@ class MckVoice {
         this.nativeRecognitionFailed = true;
         this.refreshRecognitionMode();
         this.stopNativeRecognition();
-        if (this.activeRecognitionMode === 'elevenlabs' && this.isVoiceModeActive()) {
+        if (this.activeRecognitionMode !== 'native' && this.isVoiceModeActive()) {
             this.requestAudioRecording();
         }
     }
