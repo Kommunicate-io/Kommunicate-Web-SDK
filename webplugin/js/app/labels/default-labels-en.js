@@ -18,6 +18,10 @@
         'modern.whatsnew.readmore': 'Learn more',
         'whatsnew.empty': "What's New coming soon.",
         'start.new': 'Start New Conversation',
+        'start.chat': 'Chat',
+        'start.voice': 'Voice',
+        'start.with.voice': 'Start with Voice',
+        'voice.permission.required': 'Microphone permission is required for voice mode.',
         'search.contacts': 'Contacts',
         'search.groups': 'Groups',
         'char.limit.warn':

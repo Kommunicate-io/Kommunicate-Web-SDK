@@ -1119,6 +1119,8 @@ KommunicateUI = {
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');
+        var voiceCta = document.getElementById('km-empty-conversation-voice-cta');
+        var ctaActions = document.getElementById('km-empty-conversation-actions');
         var continueCta = document.getElementById('km-empty-conversation-continue');
         if (!sendCta || !continueCta) {
             setTimeout(KommunicateUI.updateWelcomeCtaLabel, 50);
@@ -1129,12 +1131,34 @@ KommunicateUI = {
         if (!KommunicateUI.hasConversationHistory && hasContacts) {
             KommunicateUI.hasConversationHistory = true;
         }
-        sendCta.textContent = KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
+        var chatLabel = KommunicateUI.getLabel('start.chat', 'Chat');
+        var voiceLabel = KommunicateUI.getLabel('start.voice', 'Voice');
+        var sendLabelNode = sendCta.querySelector('span');
+        if (sendLabelNode) {
+            sendLabelNode.textContent = chatLabel;
+        } else {
+            sendCta.textContent = chatLabel;
+        }
+        sendCta.setAttribute('title', chatLabel);
+        if (voiceCta) {
+            var voiceLabelNode = voiceCta.querySelector('span');
+            if (voiceLabelNode) {
+                voiceLabelNode.textContent = voiceLabel;
+            } else {
+                voiceCta.textContent = voiceLabel;
+            }
+            voiceCta.setAttribute('title', voiceLabel);
+        }
         continueCta.textContent = KommunicateUI.getLabel(
             'mck.empty.welcome.cta.continue',
             'View conversations'
         );
-        sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        if (ctaActions) {
+            ctaActions.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        } else {
+            sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+            voiceCta && voiceCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        }
         continueCta.classList.toggle('n-vis', !KommunicateUI.hasConversationHistory);
     },
     getLabel: function (key, fallback) {

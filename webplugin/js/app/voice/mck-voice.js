@@ -62,8 +62,64 @@ class MckVoice {
         this.activeRecognitionMode = 'omnichannel';
         this.nativeSpeechUtterance = null;
         this.adaptiveVadState = null;
+        this.pendingVoiceSessionSource = null;
+        this.VOICE_ENTRY_SOURCE = {
+            START_CONVERSATION_SCREEN: 'start_conversation_screen',
+            CONVERSATIONS_SCREEN: 'conversations_screen',
+        };
         this.voiceInputSettings = this.getVoiceInputSettings();
         this.activeRecognitionMode = this.determineRecognitionMode();
+    }
+
+    getVoiceEntrySources() {
+        return this.VOICE_ENTRY_SOURCE;
+    }
+
+    trackVoiceEvent(eventKey, source) {
+        if (
+            typeof kmWidgetEvents === 'object' &&
+            kmWidgetEvents &&
+            typeof kmWidgetEvents.eventTracking === 'function' &&
+            typeof eventMapping === 'object' &&
+            eventMapping &&
+            eventMapping[eventKey]
+        ) {
+            kmWidgetEvents.eventTracking(eventMapping[eventKey], source);
+        }
+    }
+
+    async startVoiceMode(
+        source = 'start_conversation_screen',
+        { onPermissionDenied = null, suppressPermissionAlert = false } = {}
+    ) {
+        this.trackVoiceEvent('onVoiceEntryClicked', source);
+        this.trackVoiceEvent('onVoiceIconClick', source);
+        this.disableNativeVoiceOutputForVoiceMode();
+        this.enableAutoListening();
+        this.setVoiceMuted(false);
+        kommunicateCommons.modifyClassList(
+            { class: ['voice-ring-1'] },
+            '',
+            'mck-ring-remove-animation'
+        );
+        kommunicateCommons.modifyClassList(
+            {
+                class: ['mck-voice-repeat-last-msg'],
+            },
+            'mck-hidden'
+        );
+        this.pendingVoiceSessionSource = source;
+        const isRecordingStarted = await this.requestAudioRecordingWhenReady({
+            source,
+            onPermissionDenied,
+            suppressPermissionAlert,
+            trackPermission: true,
+        });
+        if (!isRecordingStarted) {
+            this.pendingVoiceSessionSource = null;
+            this.stopVoiceMode();
+        }
+        return Boolean(isRecordingStarted);
     }
 
     getVoiceInputSettings() {
@@ -551,24 +607,7 @@ class MckVoice {
         bindOnce(
             document.querySelector('.mck-voice-web'),
             'click',
-            () => {
-                this.disableNativeVoiceOutputForVoiceMode();
-                this.enableAutoListening();
-                this.setVoiceMuted(false);
-                kommunicateCommons.modifyClassList(
-                    { class: ['voice-ring-1'] },
-                    '',
-                    'mck-ring-remove-animation'
-                );
-                kommunicateCommons.modifyClassList(
-                    {
-                        class: ['mck-voice-repeat-last-msg'],
-                    },
-                    'mck-hidden'
-                );
-                // Call the audio recording function
-                this.requestAudioRecordingWhenReady();
-            },
+            () => this.startVoiceMode(this.VOICE_ENTRY_SOURCE.START_CONVERSATION_SCREEN),
             'voiceOpenListenerAttached'
         );
 
@@ -685,46 +724,72 @@ class MckVoice {
         }
     }
 
-    requestAudioRecording() {
+    async requestAudioRecording({
+        source = 'start_conversation_screen',
+        onPermissionDenied = null,
+        suppressPermissionAlert = false,
+        trackPermission = false,
+    } = {}) {
         if (this.isRecording) {
             this.stopRecording();
-            return;
+            return false;
         }
 
         this.refreshRecognitionMode();
         if (this.activeRecognitionMode === 'native') {
             this.startNativeRecognition();
-            return;
+            if (trackPermission) {
+                this.trackVoiceEvent('onVoicePermissionGranted', source);
+            }
+            return true;
         }
 
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
-            alert('Your browser does not support audio recording');
-            return;
+            if (!suppressPermissionAlert) {
+                alert('Your browser does not support audio recording');
+            }
+            return false;
         }
 
         // Request audio permission
-        navigator.mediaDevices
-            .getUserMedia({ audio: true })
-            .then((stream) => {
-                this.voiceInputSettings = this.getVoiceInputSettings();
-                this.startRecording(stream);
-            })
-            .catch((error) => {
-                console.error('Error accessing microphone:', error);
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            this.voiceInputSettings = this.getVoiceInputSettings();
+            this.startRecording(stream);
+            if (trackPermission) {
+                this.trackVoiceEvent('onVoicePermissionGranted', source);
+            }
+            return true;
+        } catch (error) {
+            const isPermissionDenied =
+                error &&
+                (error.name === 'NotAllowedError' ||
+                    error.name === 'PermissionDeniedError' ||
+                    error.name === 'SecurityError');
+            if (trackPermission && isPermissionDenied) {
+                this.trackVoiceEvent('onVoicePermissionDenied', source);
+            }
+            console.error('Error accessing microphone:', error);
+            if (isPermissionDenied && typeof onPermissionDenied === 'function') {
+                onPermissionDenied(error);
+            }
+            if (!suppressPermissionAlert) {
                 alert(
                     'Could not access your microphone. Please allow microphone access and try again.'
                 );
-            });
+            }
+            return false;
+        }
     }
 
-    requestAudioRecordingWhenReady() {
+    async requestAudioRecordingWhenReady(options = {}) {
         if (this.audioElement && !this.audioElement.paused && !this.audioElement.ended) {
             this.deferRecordingUntilPlaybackEnds();
-            return;
+            return true;
         }
-        this.requestAudioRecording();
+        return this.requestAudioRecording(options);
     }
 
     deferRecordingUntilPlaybackEnds() {
@@ -902,6 +967,10 @@ class MckVoice {
 
         // Start recording
         this.mediaRecorder.start(); // Collect data every second
+        if (this.pendingVoiceSessionSource) {
+            this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
+            this.pendingVoiceSessionSource = null;
+        }
         console.debug('Recording started');
 
         this.maxRecordingTimer = setTimeout(() => {
@@ -1996,6 +2065,7 @@ class MckVoice {
         this.hideInlineMicButton();
         this.updateMuteButton();
         this.updateChatButtonText();
+        this.pendingVoiceSessionSource = null;
         this.setTextboxVoiceActive(false);
         this.setVoiceButtonState('idle');
         this.hideVoiceStopButton();

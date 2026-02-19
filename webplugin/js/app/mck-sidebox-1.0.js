@@ -4666,6 +4666,29 @@ const firstVisibleMsg = {
                         setActiveSubsectionState('conversation-individual');
                 }
 
+                function showVoicePermissionRequiredMessage() {
+                    var message =
+                        (typeof KommunicateUI === 'object' &&
+                            KommunicateUI &&
+                            typeof KommunicateUI.getLabel === 'function' &&
+                            KommunicateUI.getLabel(
+                                'voice.permission.required',
+                                'Microphone permission is required for voice mode.'
+                            )) ||
+                        'Microphone permission is required for voice mode.';
+                    var errorElement = document.getElementById('mck-msg-error');
+                    if (!errorElement) {
+                        return;
+                    }
+                    errorElement.innerHTML = message;
+                    errorElement.classList.add('mck-no-mb');
+                    kommunicateCommons.show(errorElement);
+                    setTimeout(function () {
+                        kommunicateCommons.hide(errorElement);
+                        errorElement.classList.remove('mck-no-mb');
+                    }, 5000);
+                }
+
                 function startNewConversation(onConversationCreated) {
                     KommunicateUI.toggleConversationsEmptyState &&
                         KommunicateUI.toggleConversationsEmptyState(false);
@@ -4691,9 +4714,57 @@ const firstVisibleMsg = {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
                     startNewConversation();
                 }
+                function handleStartVoiceConversation(event) {
+                    event && typeof event.preventDefault === 'function' && event.preventDefault();
+                    startNewConversation(function () {
+                        if (
+                            !appOptions.voiceChat ||
+                            typeof mckVoice === 'undefined' ||
+                            !mckVoice ||
+                            typeof mckVoice.startVoiceMode !== 'function'
+                        ) {
+                            return;
+                        }
+                        var source =
+                            (typeof mckVoice.getVoiceEntrySources === 'function' &&
+                                mckVoice.getVoiceEntrySources().CONVERSATIONS_SCREEN) ||
+                            'conversations_screen';
+                        mckVoice.startVoiceMode(source, {
+                            suppressPermissionAlert: true,
+                            onPermissionDenied: showVoicePermissionRequiredMessage,
+                        });
+                    });
+                }
                 $mck_contact_search.click(handleStartNewConversation);
                 $applozic(d).on('click', '#km-empty-conversation-cta', handleStartNewConversation);
                 $applozic(d).on('click', '#km-conversations-empty-cta', handleStartNewConversation);
+                $applozic(d).on('click', '#km-start-with-voice-cta', handleStartVoiceConversation);
+                $applozic(d).on(
+                    'click',
+                    '#km-empty-conversation-voice-cta',
+                    handleStartVoiceConversation
+                );
+                $applozic(d).on(
+                    'click',
+                    '#km-conversations-empty-voice-cta',
+                    handleStartVoiceConversation
+                );
+                if (appOptions.voiceChat) {
+                    kommunicateCommons.show(
+                        '#km-start-with-voice-cta',
+                        '#km-empty-conversation-voice-cta',
+                        '#km-conversations-empty-voice-cta'
+                    );
+                    [
+                        'km-start-conversation-actions',
+                        'km-empty-conversation-actions',
+                        'km-conversations-empty-actions',
+                    ].forEach(function (containerId) {
+                        var startActionsContainer = document.getElementById(containerId);
+                        startActionsContainer &&
+                            startActionsContainer.classList.add('km-voice-option-enabled');
+                    });
+                }
                 $applozic(d).on(
                     'click',
                     '#km-empty-conversation-continue',

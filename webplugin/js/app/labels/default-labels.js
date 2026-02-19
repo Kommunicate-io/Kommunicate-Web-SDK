@@ -151,10 +151,34 @@ class KMLabel {
 
         [
             { selector: '#mck-conversation-title', path: 'conversations.title' },
-            { selector: '#mck-msg-new, #mck-sidebox-search .mck-box-title', path: 'start.new' },
+            { selector: '#mck-sidebox-search .mck-box-title', path: 'start.new' },
         ].forEach(function (binding) {
             setHtmlAndTitleForSelector(binding.selector, binding.path);
         });
+        var startChatLabel = resolveLabel('start.chat');
+        if (startChatLabel) {
+            getNodes(
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta'
+            ).forEach(function (node) {
+                var textNode = node.querySelector('span');
+                textNode
+                    ? (textNode.innerHTML = startChatLabel)
+                    : (node.innerHTML = startChatLabel);
+                node.setAttribute('title', startChatLabel);
+            });
+        }
+        var startVoiceLabel = resolveLabel('start.voice');
+        if (startVoiceLabel) {
+            getNodes(
+                '#km-start-with-voice-cta, #km-conversations-empty-voice-cta, #km-empty-conversation-voice-cta'
+            ).forEach(function (node) {
+                var textNode = node.querySelector('span');
+                textNode
+                    ? (textNode.innerHTML = startVoiceLabel)
+                    : (node.innerHTML = startVoiceLabel);
+                node.setAttribute('title', startVoiceLabel);
+            });
+        }
         var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');
         if (resolvedTag) {
             getNodes('.mck-conversation-status-badge.vis').forEach(function (node) {
@@ -268,11 +292,9 @@ class KMLabel {
             'km-bottom-tab-empty-text': 'modern.nav.empty',
             'km-conversations-empty-title': 'empty.conversations',
             'km-conversations-empty-subtitle': 'mck.empty.welcome.subtitle',
-            'km-conversations-empty-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-eyebrow': 'mck.empty.welcome.eyebrow',
             'km-empty-conversation-title': 'mck.empty.welcome.title',
             'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
-            'km-empty-conversation-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
             'km-local-file-system-warning-description': 'local.file.warning.description',
             'km-local-file-system-warning-link': 'local.file.warning.learnMore',

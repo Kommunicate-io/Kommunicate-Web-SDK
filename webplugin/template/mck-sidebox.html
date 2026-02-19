@@ -472,21 +472,84 @@
                                 class="km-conversations-empty__subtitle"
                                 id="km-conversations-empty-subtitle"
                             ></p>
-                            <button
-                                type="button"
-                                id="km-conversations-empty-cta"
-                                class="km-conversations-empty__cta km-custom-widget-background-color"
-                            ></button>
+                            <div
+                                id="km-conversations-empty-actions"
+                                class="km-start-conversation-actions"
+                            >
+                                <button
+                                    type="button"
+                                    id="km-conversations-empty-cta"
+                                    class="km-conversations-empty__cta mck-btn"
+                                >
+                                    <svg
+                                        focusable="false"
+                                        aria-hidden="true"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <use xlink:href="#icon-66" href="#icon-66"></use>
+                                    </svg>
+                                    <span>Chat</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    id="km-conversations-empty-voice-cta"
+                                    class="km-conversations-empty__cta mck-btn n-vis"
+                                >
+                                    <svg
+                                        focusable="false"
+                                        aria-hidden="true"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <use xlink:href="#icon-65" href="#icon-65"></use>
+                                    </svg>
+                                    <span>Voice</span>
+                                </button>
+                            </div>
                         </div>
                         <div id="mck-contacts-content" class="mck-contacts-content mck-text-center">
-                            <button
-                                type="button"
-                                id="mck-msg-new"
-                                class="mck-contact-search mck-btn"
-                                title="Start New"
+                            <div
+                                id="km-start-conversation-actions"
+                                class="km-start-conversation-actions"
                             >
-                                <span>Start New</span>
-                            </button>
+                                <button
+                                    type="button"
+                                    id="mck-msg-new"
+                                    class="mck-contact-search mck-btn"
+                                    title="Chat"
+                                >
+                                    <svg
+                                        focusable="false"
+                                        aria-hidden="true"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <use xlink:href="#icon-66" href="#icon-66"></use>
+                                    </svg>
+                                    <span>Chat</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    id="km-start-with-voice-cta"
+                                    class="mck-btn n-vis"
+                                    title="Voice"
+                                >
+                                    <svg
+                                        focusable="false"
+                                        aria-hidden="true"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <use xlink:href="#icon-65" href="#icon-65"></use>
+                                    </svg>
+                                    <span>Voice</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div id="faq-common">
@@ -652,11 +715,43 @@
                                     id="km-empty-conversation-subtitle"
                                 ></p>
                                 <div class="km-empty-conversation-card__cta-wrap">
-                                    <button
-                                        type="button"
-                                        id="km-empty-conversation-cta"
-                                        class="km-empty-conversation-card__cta km-custom-widget-background-color"
-                                    ></button>
+                                    <div
+                                        id="km-empty-conversation-actions"
+                                        class="km-start-conversation-actions"
+                                    >
+                                        <button
+                                            type="button"
+                                            id="km-empty-conversation-cta"
+                                            class="km-empty-conversation-card__cta mck-btn"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <use xlink:href="#icon-66" href="#icon-66"></use>
+                                            </svg>
+                                            <span>Chat</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            id="km-empty-conversation-voice-cta"
+                                            class="km-empty-conversation-card__cta mck-btn n-vis"
+                                        >
+                                            <svg
+                                                focusable="false"
+                                                aria-hidden="true"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <use xlink:href="#icon-65" href="#icon-65"></use>
+                                            </svg>
+                                            <span>Voice</span>
+                                        </button>
+                                    </div>
                                     <button
                                         type="button"
                                         id="km-empty-conversation-continue"
