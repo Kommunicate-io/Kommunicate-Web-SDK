@@ -812,16 +812,19 @@ class MckVoice {
                         throw error;
                     }
                     if (!data) {
-                        this.updateLiveTranscript(
-                            this.getVoiceLabel(
-                                'voiceInterface.transcriptionFailed',
-                                'Transcription failed. Please try again.'
-                            ),
-                            { autoHide: 5000 }
+                        console.warn(
+                            'Voice transcription failed: empty response from speechToText'
                         );
                         return;
                     }
-                    const rawText = data.text ?? '';
+                    const rawText = typeof data.text === 'string' ? data.text : '';
+                    if (!rawText.trim()) {
+                        console.warn(
+                            'Voice transcription failed: missing/empty text in speechToText response',
+                            data
+                        );
+                        return;
+                    }
                     const userMsg = rawText.trim();
                     if (!this.handleVoiceQuery(userMsg)) {
                         return;
