@@ -8,6 +8,15 @@ class MckVoice {
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
+    _VOICE_START_THRESHOLD_RMS = 180;
+    _VOICE_STOP_THRESHOLD_RMS = 120;
+    _VOICE_PRE_ROLL_MS = 250;
+    _VOICE_FRAME_MS = 20;
+    _VOICE_MIN_VOICED_MS = 250;
+    _VOICE_MAX_CHUNK_MS = 2800;
+    _VOICE_MIN_SAMPLES_TO_SEND = 3200;
+    _VOICE_MIN_CHUNK_RMS = 120;
+    _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -142,11 +151,24 @@ class MckVoice {
             config.language ||
             (typeof navigator !== 'undefined' && navigator.language) ||
             'en-US';
+        const silenceStopMs =
+            config.silenceStopMs ?? config.silenceDuration ?? this._SILENCE_DURATION;
         return {
             recognitionMode: requestedMode,
             voiceLanguage: language,
             ucid: config.ucid || null,
-            silenceDuration: config.silenceDuration ?? this._SILENCE_DURATION,
+            silenceDuration: silenceStopMs,
+            silenceStopMs,
+            frameMs: config.frameMs ?? this._VOICE_FRAME_MS,
+            startThresholdRms: config.startThresholdRms ?? this._VOICE_START_THRESHOLD_RMS,
+            stopThresholdRms: config.stopThresholdRms ?? this._VOICE_STOP_THRESHOLD_RMS,
+            minVoicedMs: config.minVoicedMs ?? this._VOICE_MIN_VOICED_MS,
+            maxChunkMs: config.maxChunkMs ?? this._VOICE_MAX_CHUNK_MS,
+            preRollMs: config.preRollMs ?? this._VOICE_PRE_ROLL_MS,
+            minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
+            minChunkRms: config.minChunkRms ?? this._VOICE_MIN_CHUNK_RMS,
+            maxAbsSilenceThreshold:
+                config.maxAbsSilenceThreshold ?? this._VOICE_MAX_ABS_SILENCE_THRESHOLD,
             minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
             vad: {
                 startFactor: vadConfig.startFactor ?? 2.6,
@@ -887,35 +909,37 @@ class MckVoice {
                 // Create blob from recorded chunks
                 if (this.isRecording) {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-
-                    const soundPercentage =
-                        this.totalSamples > 0 ? (this.soundSamples / this.totalSamples) * 100 : 0;
-
-                    if (!this.hasSoundDetected || soundPercentage < 5) {
-                        console.debug('Recording was empty or nearly empty');
-
-                        this.hasSoundDetected = false;
-                        this.soundSamples = 0;
-                        this.totalSamples = 0;
-                        this.removeAllAnimation();
-                        return false; // Indicate empty recording
-                    }
+                    const sampleRate = kmVoice.getVoiceToTextSampleRate();
+                    const rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
+                    const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
+                    const { chunks, rawDurationMs, trimmedDurationMs } = preparedAudio;
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
                     this.totalSamples = 0;
+                    if (!chunks.length) {
+                        console.debug('Recording was empty after silence trimming', {
+                            rawDurationMs,
+                            trimmedDurationMs,
+                        });
+                        this.removeAllAnimation();
+                        this.clearVoiceStatus();
+                        this.updateLiveTranscript(
+                            this.getVoiceLabel(
+                                'voiceInterface.noSpeechDetected',
+                                'No speech detected. Please try again.'
+                            ),
+                            { autoHide: 3000 }
+                        );
+                        return;
+                    }
 
                     this.updateVoiceStatus(
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
-                    let data;
+                    let data = null;
                     try {
-                        data =
-                            this.activeRecognitionMode === 'omnichannel'
-                                ? await kmVoice.voiceToText(audioBlob, {
-                                      ucid: this.voiceInputSettings.ucid,
-                                  })
-                                : await kmVoice.speechToText(audioBlob);
+                        data = await this.transcribePreparedVoiceChunks(chunks, sampleRate);
                     } catch (error) {
                         if (error && error.code === 'SILENT_AUDIO') {
                             console.debug('Silent audio clip detected during voice mode', {
@@ -1009,6 +1033,254 @@ class MckVoice {
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.updateLiveTranscript('');
+    }
+
+    prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
+        const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
+        const preRollMs = Number(this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS);
+        const maxChunkMs = Number(this.voiceInputSettings.maxChunkMs || this._VOICE_MAX_CHUNK_MS);
+        const startThresholdRms = Number(this.voiceInputSettings.startThresholdRms);
+        const stopThresholdRms = Number(this.voiceInputSettings.stopThresholdRms);
+        const frameMs = Number(this.voiceInputSettings.frameMs || this._VOICE_FRAME_MS);
+        const minVoicedMs = Number(
+            this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
+        );
+        const frameSize = Math.max(1, Math.round((sampleRate * frameMs) / 1000));
+        const preRollSamples = Math.max(0, Math.round((sampleRate * preRollMs) / 1000));
+        const maxChunkSamples = Math.max(frameSize, Math.round((sampleRate * maxChunkMs) / 1000));
+        const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
+        const rawDurationMs = totalSamples > 0 ? Math.round((totalSamples / sampleRate) * 1000) : 0;
+
+        if (!totalSamples) {
+            console.debug('Voice VAD trim stats', {
+                rawDurationMs,
+                trimmedDurationMs: 0,
+                trimStartMs: 0,
+                trimEndMs: 0,
+                finalSamplesCount: 0,
+            });
+            return {
+                chunks: [],
+                rawDurationMs,
+                trimmedDurationMs: 0,
+                trimStartMs: 0,
+                trimEndMs: 0,
+            };
+        }
+
+        let firstSpeechFrameIndex = -1;
+        let lastSpeechFrameIndex = -1;
+        let currentVoicedRun = 0;
+        const frameCount = Math.ceil(totalSamples / frameSize);
+        for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+            const start = frameIndex * frameSize;
+            const end = Math.min(start + frameSize, totalSamples);
+            let sumSquares = 0;
+            let frameLength = 0;
+            for (let i = start; i < end; i++) {
+                const sample = Number(rawSamples[i]) || 0;
+                sumSquares += sample * sample;
+                frameLength++;
+            }
+            const frameRms = frameLength ? Math.sqrt(sumSquares / frameLength) : 0;
+            const isStartVoiceFrame = frameRms >= startThresholdRms;
+            const isStopVoiceFrame = frameRms >= stopThresholdRms;
+            if (isStartVoiceFrame) {
+                currentVoicedRun++;
+            } else {
+                currentVoicedRun = 0;
+            }
+            if (firstSpeechFrameIndex === -1 && currentVoicedRun >= minVoicedFrames) {
+                firstSpeechFrameIndex = Math.max(0, frameIndex - minVoicedFrames + 1);
+            }
+            if (isStopVoiceFrame) {
+                lastSpeechFrameIndex = frameIndex;
+            }
+        }
+
+        if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
+            console.debug('Voice VAD trim stats', {
+                rawDurationMs,
+                trimmedDurationMs: 0,
+                trimStartMs: rawDurationMs,
+                trimEndMs: 0,
+                finalSamplesCount: 0,
+            });
+            return {
+                chunks: [],
+                rawDurationMs,
+                trimmedDurationMs: 0,
+                trimStartMs: rawDurationMs,
+                trimEndMs: 0,
+            };
+        }
+
+        const firstSpeechSample = firstSpeechFrameIndex * frameSize;
+        const startSample = Math.max(0, firstSpeechSample - preRollSamples);
+        const endSample = Math.min(totalSamples, (lastSpeechFrameIndex + 1) * frameSize);
+        const trimmedSamples = rawSamples.slice(startSample, endSample);
+        const trimmedDurationMs = Math.round((trimmedSamples.length / sampleRate) * 1000);
+        const trimStartMs = Math.round((startSample / sampleRate) * 1000);
+        const trimEndMs = Math.max(0, rawDurationMs - trimmedDurationMs - trimStartMs);
+
+        const chunks = [];
+        for (let i = 0; i < trimmedSamples.length; i += maxChunkSamples) {
+            chunks.push(
+                trimmedSamples.slice(i, Math.min(i + maxChunkSamples, trimmedSamples.length))
+            );
+        }
+
+        console.debug('Voice VAD trim stats', {
+            rawDurationMs,
+            trimmedDurationMs,
+            trimStartMs,
+            trimEndMs,
+            finalSamplesCount: trimmedSamples.length,
+            chunkCount: chunks.length,
+        });
+
+        return {
+            chunks,
+            rawDurationMs,
+            trimmedDurationMs,
+            trimStartMs,
+            trimEndMs,
+        };
+    }
+
+    async transcribePreparedVoiceChunks(chunks = [], sampleRate = 16000) {
+        if (!Array.isArray(chunks) || !chunks.length) {
+            return null;
+        }
+        const transcriptParts = [];
+        let sentSamplesCount = 0;
+        const minSamplesToSend = Number(
+            this.voiceInputSettings.minSamplesToSend || this._VOICE_MIN_SAMPLES_TO_SEND
+        );
+        const minChunkRms = Number(
+            this.voiceInputSettings.minChunkRms || this._VOICE_MIN_CHUNK_RMS
+        );
+        const maxAbsSilenceThreshold = Number(
+            this.voiceInputSettings.maxAbsSilenceThreshold || this._VOICE_MAX_ABS_SILENCE_THRESHOLD
+        );
+        const frameMs = Number(this.voiceInputSettings.frameMs || this._VOICE_FRAME_MS);
+        const frameSize = Math.max(1, Math.round((sampleRate * frameMs) / 1000));
+        const startThresholdRms = Math.max(
+            Number(this.voiceInputSettings.startThresholdRms || this._VOICE_START_THRESHOLD_RMS),
+            this._VOICE_START_THRESHOLD_RMS
+        );
+        const stopThresholdRms = Math.max(
+            Number(this.voiceInputSettings.stopThresholdRms || this._VOICE_STOP_THRESHOLD_RMS),
+            this._VOICE_STOP_THRESHOLD_RMS
+        );
+        const minVoicedMs = Number(
+            this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
+        );
+        const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
+        for (let i = 0; i < chunks.length; i++) {
+            const chunkSamples = chunks[i];
+            if (!chunkSamples || !chunkSamples.length) {
+                continue;
+            }
+
+            let firstVoiceFrame = -1;
+            let lastVoiceFrame = -1;
+            let consecutiveStartFrames = 0;
+            let maxConsecutiveStartFrames = 0;
+            const frameCount = Math.ceil(chunkSamples.length / frameSize);
+            for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                const start = frameIndex * frameSize;
+                const end = Math.min(start + frameSize, chunkSamples.length);
+                let frameSumSquares = 0;
+                let frameLength = 0;
+                for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
+                    const sample = Number(chunkSamples[sampleIndex]) || 0;
+                    frameSumSquares += sample * sample;
+                    frameLength++;
+                }
+                const frameRms = frameLength ? Math.sqrt(frameSumSquares / frameLength) : 0;
+                if (frameRms >= startThresholdRms) {
+                    consecutiveStartFrames++;
+                    if (consecutiveStartFrames > maxConsecutiveStartFrames) {
+                        maxConsecutiveStartFrames = consecutiveStartFrames;
+                    }
+                } else {
+                    consecutiveStartFrames = 0;
+                }
+                if (frameRms >= stopThresholdRms) {
+                    if (firstVoiceFrame === -1) {
+                        firstVoiceFrame = frameIndex;
+                    }
+                    lastVoiceFrame = frameIndex;
+                }
+            }
+
+            if (maxConsecutiveStartFrames < minVoicedFrames || firstVoiceFrame === -1) {
+                console.debug('Dropping chunk due to insufficient voiced run', {
+                    index: i,
+                    maxConsecutiveStartFrames,
+                    minVoicedFrames,
+                    chunkSamplesLength: chunkSamples.length,
+                });
+                continue;
+            }
+
+            const trimmedStart = firstVoiceFrame * frameSize;
+            const trimmedEnd = Math.min(chunkSamples.length, (lastVoiceFrame + 1) * frameSize);
+            const processedChunkSamples = chunkSamples.slice(trimmedStart, trimmedEnd);
+            if (processedChunkSamples.length < minSamplesToSend) {
+                continue;
+            }
+
+            let sumSquares = 0;
+            let maxAbs = 0;
+            for (let j = 0; j < processedChunkSamples.length; j++) {
+                const value = Number(processedChunkSamples[j]) || 0;
+                const absValue = Math.abs(value);
+                sumSquares += value * value;
+                if (absValue > maxAbs) {
+                    maxAbs = absValue;
+                }
+            }
+            const chunkRms = Math.sqrt(sumSquares / Math.max(processedChunkSamples.length, 1));
+            if (chunkRms < minChunkRms || maxAbs < maxAbsSilenceThreshold) {
+                continue;
+            }
+            sentSamplesCount += processedChunkSamples.length;
+            const chunkBlob = kmVoice.createWavBlobFromPcmData(
+                Int16Array.from(processedChunkSamples),
+                sampleRate,
+                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
+                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
+            );
+            let response;
+            try {
+                response =
+                    this.activeRecognitionMode === 'omnichannel'
+                        ? await kmVoice.voiceToText(chunkBlob, {
+                              ucid: this.voiceInputSettings.ucid,
+                          })
+                        : await kmVoice.speechToText(chunkBlob);
+            } catch (error) {
+                if (error && error.code === 'SILENT_AUDIO') {
+                    continue;
+                }
+                throw error;
+            }
+            if (response && typeof response.text === 'string' && response.text.trim()) {
+                transcriptParts.push(response.text.trim());
+            }
+        }
+
+        console.debug('Voice final samples count sent', {
+            finalSamplesCount: sentSamplesCount,
+            chunkCount: chunks.length,
+        });
+
+        if (!transcriptParts.length) {
+            return null;
+        }
+        return { text: transcriptParts.join(' ').trim() };
     }
 
     addThinkingAnimation() {

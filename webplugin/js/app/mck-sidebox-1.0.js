@@ -949,6 +949,19 @@ const firstVisibleMsg = {
                         true
                     );
                 }
+                // Temporarily disabled: voice socket topic lifecycle on connect.
+                // var currentTabId = $mck_message_inner.data('mck-id');
+                // var isCurrentGroup = $mck_message_inner.data('isgroup');
+                // if (currentTabId) {
+                //     var voiceSubscribeId = isCurrentGroup ? currentTabId : MCK_USER_ID;
+                //     if (
+                //         typeof kmVoice !== 'undefined' &&
+                //         kmVoice &&
+                //         typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                //     ) {
+                //         kmVoice.subscribeToVoiceSocketTopic(voiceSubscribeId);
+                //     }
+                // }
             },
             onMessageDelivered: function (resp) {},
             onMessageRead: function (resp) {},
@@ -5982,6 +5995,14 @@ const firstVisibleMsg = {
                     }
                 }
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                // Temporarily disabled: voice socket topic lifecycle on sidebox close.
+                // if (
+                //     typeof kmVoice !== 'undefined' &&
+                //     kmVoice &&
+                //     typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                // ) {
+                //     kmVoice.unsubscribeVoiceSocketTopic();
+                // }
             };
             _this.softHideSidebox = function () {
                 if (typeof document === 'undefined') {
@@ -8506,6 +8527,14 @@ const firstVisibleMsg = {
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
                     window.Applozic.ALSocket.subscibeToTypingChannel(subscribeId);
+                    // Temporarily disabled: voice socket topic lifecycle on tab subscribe.
+                    // if (
+                    //     typeof kmVoice !== 'undefined' &&
+                    //     kmVoice &&
+                    //     typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                    // ) {
+                    //     kmVoice.subscribeToVoiceSocketTopic(subscribeId);
+                    // }
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
@@ -8535,6 +8564,14 @@ const firstVisibleMsg = {
 
                     var mckMessageArray = ALStorage.getLatestMessageArray();
                     window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                    // Temporarily disabled: voice socket topic lifecycle on tab unsubscribe.
+                    // if (
+                    //     typeof kmVoice !== 'undefined' &&
+                    //     kmVoice &&
+                    //     typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                    // ) {
+                    //     kmVoice.unsubscribeVoiceSocketTopic();
+                    // }
                     if (mckMessageArray !== null && mckMessageArray.length > 0) {
                         params.isReload = true;
                         mckMessageLayout.addContactsFromMessageList(

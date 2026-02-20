@@ -12,6 +12,13 @@ class Voice {
     _SILENCE_NON_ZERO_RATIO_THRESHOLD = 0.005;
     _SILENCE_PEAK_ABS_THRESHOLD = 8;
     _SILENCE_RMS_THRESHOLD = 2;
+    _VOICE_SOCKET_TIMEOUT_MS = 30000;
+    _voiceSocketClient = null;
+    _voiceSocketSubscription = null;
+    _voiceSocketRequestSeq = 0;
+    _voiceSocketPendingRequests = {};
+    _voiceSocketChannelId = null;
+    _voiceSocketResponseTopic = null;
 
     get voiceChatConfig() {
         return (
@@ -234,6 +241,321 @@ class Voice {
         return Number(sampleRate) || this._OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE;
     }
 
+    getVoiceSocketConfig() {
+        const globalSocketConfig =
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceSocket) ||
+            {};
+        const omnichannelSocketConfig =
+            (this.omnichannelConfig && this.omnichannelConfig.socket) || {};
+        const voiceInputSocketConfig = this.voiceInputConfig.socket || {};
+        const voiceChatSocketConfig = this.voiceChatConfig.socket || {};
+        return {
+            ...globalSocketConfig,
+            ...omnichannelSocketConfig,
+            ...voiceInputSocketConfig,
+            ...voiceChatSocketConfig,
+        };
+    }
+
+    getVoiceSocketChannelId(channelId) {
+        if (channelId !== undefined && channelId !== null && channelId !== '') {
+            return String(channelId);
+        }
+        if (this._voiceSocketChannelId) {
+            return this._voiceSocketChannelId;
+        }
+        if (typeof MCK_USER_ID !== 'undefined' && MCK_USER_ID) {
+            return String(MCK_USER_ID);
+        }
+        return null;
+    }
+
+    resolveVoiceSocketTopic(rawTopic, channelId) {
+        if (!rawTopic) {
+            return '';
+        }
+        const topic = String(rawTopic);
+        if (topic.indexOf('{id}') !== -1) {
+            return topic.replace('{id}', channelId || '');
+        }
+        if (topic.indexOf('{channelId}') !== -1) {
+            return topic.replace('{channelId}', channelId || '');
+        }
+        return topic;
+    }
+
+    getVoiceSocketResponseTopic(socketConfig, channelId) {
+        return this.resolveVoiceSocketTopic(
+            socketConfig.responseTopicTemplate || socketConfig.responseTopic,
+            channelId
+        );
+    }
+
+    getVoiceSocketRequestTopic(socketConfig, channelId) {
+        return this.resolveVoiceSocketTopic(
+            socketConfig.requestTopicTemplate || socketConfig.requestTopic,
+            channelId
+        );
+    }
+
+    resolveVoiceSocketClient(socketConfig) {
+        if (
+            socketConfig.client &&
+            typeof socketConfig.client.publish === 'function' &&
+            typeof socketConfig.client.subscribe === 'function'
+        ) {
+            return socketConfig.client;
+        }
+
+        const stompClient =
+            typeof window !== 'undefined' &&
+            window.Applozic &&
+            window.Applozic.ALSocket &&
+            window.Applozic.ALSocket.stompClient;
+        if (
+            stompClient &&
+            typeof stompClient.send === 'function' &&
+            typeof stompClient.subscribe === 'function'
+        ) {
+            return {
+                publish(topic, payload, headers = {}) {
+                    stompClient.send(topic, headers, JSON.stringify(payload));
+                },
+                subscribe(topic, handler) {
+                    return stompClient.subscribe(topic, function (frame) {
+                        handler(frame && frame.body ? frame.body : frame);
+                    });
+                },
+                unsubscribe(subscription) {
+                    if (subscription && typeof subscription.unsubscribe === 'function') {
+                        subscription.unsubscribe();
+                    }
+                },
+            };
+        }
+        return null;
+    }
+
+    isVoiceSocketEnabled(socketConfig = this.getVoiceSocketConfig()) {
+        if (!socketConfig || !socketConfig.enabled) {
+            return false;
+        }
+        const channelId = this.getVoiceSocketChannelId();
+        const requestTopic = this.getVoiceSocketRequestTopic(socketConfig, channelId);
+        const responseTopic = this.getVoiceSocketResponseTopic(socketConfig, channelId);
+        if (!requestTopic || !responseTopic) {
+            return false;
+        }
+        return Boolean(this.resolveVoiceSocketClient(socketConfig));
+    }
+
+    clearVoiceSocketPendingRequests(reason) {
+        const pendingRequestIds = Object.keys(this._voiceSocketPendingRequests);
+        for (let i = 0; i < pendingRequestIds.length; i++) {
+            const requestId = pendingRequestIds[i];
+            const pending = this._voiceSocketPendingRequests[requestId];
+            if (!pending) {
+                continue;
+            }
+            clearTimeout(pending.timeoutId);
+            pending.reject(
+                new Error(reason || 'Voice socket subscription was reset before receiving response')
+            );
+            delete this._voiceSocketPendingRequests[requestId];
+        }
+    }
+
+    unsubscribeVoiceSocketTopic() {
+        if (this._voiceSocketClient && this._voiceSocketSubscription) {
+            try {
+                this._voiceSocketClient.unsubscribe(this._voiceSocketSubscription);
+            } catch (error) {}
+        }
+        this._voiceSocketSubscription = null;
+        this._voiceSocketResponseTopic = null;
+        this.clearVoiceSocketPendingRequests('Voice socket topic unsubscribed');
+    }
+
+    subscribeToVoiceSocketTopic(channelId) {
+        const socketConfig = this.getVoiceSocketConfig();
+        if (!this.isVoiceSocketEnabled(socketConfig)) {
+            return false;
+        }
+        const resolvedChannelId = this.getVoiceSocketChannelId(channelId);
+        const responseTopic = this.getVoiceSocketResponseTopic(socketConfig, resolvedChannelId);
+        if (!responseTopic) {
+            return false;
+        }
+        if (
+            this._voiceSocketSubscription &&
+            this._voiceSocketResponseTopic &&
+            this._voiceSocketResponseTopic === responseTopic
+        ) {
+            this._voiceSocketChannelId = resolvedChannelId;
+            return true;
+        }
+
+        this.unsubscribeVoiceSocketTopic();
+
+        const client = this.resolveVoiceSocketClient(socketConfig);
+        if (!client) {
+            throw new Error('Voice socket client is not available');
+        }
+        this._voiceSocketClient = client;
+        this._voiceSocketSubscription = client.subscribe(
+            responseTopic,
+            this.onVoiceSocketMessage.bind(this)
+        );
+        this._voiceSocketResponseTopic = responseTopic;
+        this._voiceSocketChannelId = resolvedChannelId;
+        return true;
+    }
+
+    ensureVoiceSocketSubscription(channelId) {
+        const resolvedChannelId = this.getVoiceSocketChannelId(channelId);
+        this.subscribeToVoiceSocketTopic(resolvedChannelId);
+    }
+
+    createVoiceSocketRequestId() {
+        this._voiceSocketRequestSeq = this._voiceSocketRequestSeq + 1;
+        return `km-voice-${Date.now()}-${this._voiceSocketRequestSeq}`;
+    }
+
+    parseVoiceSocketMessage(rawMessage) {
+        if (!rawMessage) {
+            return null;
+        }
+        if (typeof rawMessage === 'object') {
+            return rawMessage;
+        }
+        try {
+            return JSON.parse(rawMessage);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    onVoiceSocketMessage(rawMessage) {
+        const message = this.parseVoiceSocketMessage(rawMessage);
+        if (!message || typeof message !== 'object') {
+            return;
+        }
+        const requestId = message.requestId || message.correlationId || message.id;
+        if (!requestId) {
+            return;
+        }
+        const pending = this._voiceSocketPendingRequests[requestId];
+        if (!pending) {
+            return;
+        }
+        clearTimeout(pending.timeoutId);
+        delete this._voiceSocketPendingRequests[requestId];
+
+        const isError = message.error || message.status === 'error';
+        if (isError) {
+            const errorMessage =
+                (message.error && (message.error.message || message.error)) ||
+                message.message ||
+                'Voice socket request failed';
+            pending.reject(new Error(String(errorMessage)));
+            return;
+        }
+
+        const payload =
+            message.payload !== undefined
+                ? message.payload
+                : message.data !== undefined
+                ? message.data
+                : message;
+        pending.resolve(payload);
+    }
+
+    async requestVoiceSocket(action, payload, options = {}) {
+        const socketConfig = this.getVoiceSocketConfig();
+        if (!this.isVoiceSocketEnabled(socketConfig)) {
+            throw new Error('Voice socket transport is not enabled');
+        }
+        const channelId = this.getVoiceSocketChannelId(options.channelId);
+        this.ensureVoiceSocketSubscription(channelId);
+
+        const requestId = this.createVoiceSocketRequestId();
+        const timeoutMs = Number(
+            options.timeoutMs || socketConfig.timeoutMs || this._VOICE_SOCKET_TIMEOUT_MS
+        );
+        const requestTopic = this.getVoiceSocketRequestTopic(socketConfig, channelId);
+        if (!requestTopic) {
+            throw new Error('Voice socket request topic is missing');
+        }
+        const requestEnvelope = {
+            action,
+            requestId,
+            timestamp: Date.now(),
+            payload,
+            context: {
+                conversationId:
+                    typeof CURRENT_GROUP_DATA !== 'undefined' && CURRENT_GROUP_DATA
+                        ? CURRENT_GROUP_DATA.tabId || null
+                        : null,
+            },
+        };
+
+        return new Promise((resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                delete this._voiceSocketPendingRequests[requestId];
+                reject(new Error(`Voice socket request timed out for action ${action}`));
+            }, timeoutMs);
+
+            this._voiceSocketPendingRequests[requestId] = {
+                resolve,
+                reject,
+                timeoutId,
+            };
+
+            try {
+                this._voiceSocketClient.publish(
+                    requestTopic,
+                    requestEnvelope,
+                    socketConfig.publishHeaders || {}
+                );
+            } catch (error) {
+                clearTimeout(timeoutId);
+                delete this._voiceSocketPendingRequests[requestId];
+                reject(error);
+            }
+        });
+    }
+
+    normalizeTextToVoiceSocketPayload(socketPayload) {
+        if (socketPayload && Array.isArray(socketPayload.frames)) {
+            return socketPayload;
+        }
+        if (
+            socketPayload &&
+            socketPayload.textToVoice &&
+            Array.isArray(socketPayload.textToVoice.frames)
+        ) {
+            return socketPayload.textToVoice;
+        }
+        return socketPayload;
+    }
+
+    normalizeVoiceToTextSocketPayload(socketPayload) {
+        if (socketPayload && typeof socketPayload.text === 'string') {
+            return socketPayload;
+        }
+        if (
+            socketPayload &&
+            socketPayload.voiceToText &&
+            typeof socketPayload.voiceToText.text === 'string'
+        ) {
+            return socketPayload.voiceToText;
+        }
+        return socketPayload;
+    }
+
     textToSpeechStream(text = '') {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/${this.voiceId}/stream`;
         const headers = {
@@ -290,6 +612,19 @@ class Voice {
             payload.effectsProfileId = config.effectsProfileId;
         }
 
+        const socketConfig = this.getVoiceSocketConfig();
+        if (this.isVoiceSocketEnabled(socketConfig)) {
+            return this.requestVoiceSocket(
+                socketConfig.textToVoiceAction || 'text_to_voice',
+                payload
+            )
+                .then((data) => this.normalizeTextToVoiceSocketPayload(data))
+                .catch((error) => {
+                    console.error('There was a problem with the voice socket operation:', error);
+                    throw error;
+                });
+        }
+
         return fetch(this.getOmnichannelApiUrl('/text-to-voice'), {
             method: 'POST',
             headers: this.getOmnichannelHeaders(),
@@ -315,11 +650,11 @@ class Voice {
         };
 
         const formdata = new FormData();
-        const { languageCode, alternativeLanguageCodes } = this.getSpeechLanguageConfig();
         formdata.append('model_id', 'scribe_v1');
         formdata.append('file', audioBlob, 'file');
         formdata.append('tag_audio_events', false);
-        // formdata.append('language_code', languageCode);
+        // formdata.append('language_code', this.getVoiceLanguageCode());
+        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
         // if (alternativeLanguageCodes.length) {
         //     formdata.append('alternative_language_codes', alternativeLanguageCodes.join(','));
         // }
@@ -338,9 +673,6 @@ class Voice {
                 }
                 return response.json();
             })
-            .then((data) => {
-                return data;
-            })
             .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
                 throw error;
@@ -355,15 +687,15 @@ class Voice {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
             throw silentAudioError;
         }
-        const { languageCode, alternativeLanguageCodes } = this.getSpeechLanguageConfig();
         const payload = {
             samples,
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            // languageCode,
+            // languageCode: this.getVoiceLanguageCode(),
         };
+        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
         // if (alternativeLanguageCodes.length) {
         //     payload.alternativeLanguageCodes = alternativeLanguageCodes;
         // }
@@ -378,6 +710,31 @@ class Voice {
             activeConversationUcid;
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
+        }
+
+        const socketConfig = this.getVoiceSocketConfig();
+        if (this.isVoiceSocketEnabled(socketConfig)) {
+            return this.requestVoiceSocket(
+                socketConfig.voiceToTextAction || 'voice_to_text',
+                payload
+            )
+                .then((data) => this.normalizeVoiceToTextSocketPayload(data))
+                .catch((error) => {
+                    if (error && error.code === 'SILENT_AUDIO') {
+                        console.warn('Silent audio blocked before voice-to-text socket request', {
+                            sampleCount: error.sampleCount,
+                            nonZeroRatio: error.nonZeroRatio,
+                            rms: error.rms,
+                            peakAbs: error.peakAbs,
+                        });
+                    } else {
+                        console.error(
+                            'There was a problem with the voice socket operation:',
+                            error
+                        );
+                    }
+                    throw error;
+                });
         }
 
         return fetch(this.getOmnichannelApiUrl('/voice-to-text'), {
