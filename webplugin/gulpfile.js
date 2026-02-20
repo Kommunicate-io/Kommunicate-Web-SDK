@@ -39,7 +39,12 @@ const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
-const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration || {};
+const { sentry, ...MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY } = THIRD_PARTY_INTEGRATION;
+const MCK_THIRD_PARTY_INTEGRATION =
+    sentry && sentry.enabled === false
+        ? MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY
+        : THIRD_PARTY_INTEGRATION;
 const pluginVersions = ['v1', 'v2', 'v3'];
 
 PLUGIN_SETTING.kommunicateApiUrl =
@@ -51,17 +56,20 @@ PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboa
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
-const SENTRY_ENABLED = MCK_THIRD_PARTY_INTEGRATION.sentry.enabled;
+const sentryCfg = THIRD_PARTY_INTEGRATION.sentry || null;
+const SENTRY_ENABLED = !!(sentryCfg && sentryCfg.enabled);
 
-const cli = new SentryCli(null, {
-    authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
-    org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
-    project: MCK_THIRD_PARTY_INTEGRATION.sentry.PROJECT,
-    sourcemaps: {
-        rewrite: true,
-        ignore_file: ['node_modules'],
-    },
-});
+const cli = SENTRY_ENABLED
+    ? new SentryCli(null, {
+          authToken: sentryCfg.AUTH_TOKEN,
+          org: sentryCfg.ORG,
+          project: sentryCfg.PROJECT,
+          sourcemaps: {
+              rewrite: true,
+              ignore_file: ['node_modules'],
+          },
+      })
+    : null;
 
 let pathToResource = !env
     ? `${BUILD_URL}/${version}/resources`
@@ -101,7 +109,7 @@ const generateResourceFolder = () => {
 };
 
 const generateThirdPartyJSFiles = () => {
-    console.log('sentry.enabled: ' + MCK_THIRD_PARTY_INTEGRATION.sentry.enabled);
+    console.log('sentry.enabled: ' + SENTRY_ENABLED);
 
     let inputScripts = THIRD_PARTY_SCRIPTS;
 
