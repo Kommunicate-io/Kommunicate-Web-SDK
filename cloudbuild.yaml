@@ -169,7 +169,6 @@ steps:
           -h "Cache-Control:public,max-age=31536000,immutable" \
           gs://$_CDN_BUCKET/*/css/app/fonts/** || true
 
-
         # --------------------------------------------------
         # ENV-SPECIFIC TTL
         # --------------------------------------------------
@@ -181,12 +180,12 @@ steps:
           TTL=1800
         fi
 
-        gsutil setmeta -h "Cache-Control:public,max-age=${TTL}" gs://$_CDN_BUCKET/index.html
-        gsutil setmeta -h "Cache-Control:public,max-age=${TTL}" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
-        gsutil setmeta -h "Cache-Control:public,max-age=${TTL}" gs://$_CDN_BUCKET/v2/kommunicate.app
-        gsutil setmeta -h "Cache-Control:public,max-age=${TTL}" gs://$_CDN_BUCKET/v3/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/index.html
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/v2/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/v3/kommunicate.app
 
-        echo "CDN cache headers applied successfully (TTL=${TTL})"
+        echo "CDN cache headers applied successfully (TTL=$$TTL)"
       else
         echo "Skipping CDN cache headers"
       fi
