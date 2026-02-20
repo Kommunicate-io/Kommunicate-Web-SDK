@@ -119,8 +119,8 @@ function KommunicateCommons() {
         return MCK_LABELS[labelKey] || fallback || null;
     };
 
-    var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
-    var MODERN_NAV_HEIGHT_EXTRA = 22;
+    var DEFAULT_BOTTOM_NAV_HEIGHT = 90;
+    var MODERN_NAV_HEIGHT_EXTRA = 20;
     var NAV_HEIGHT_OFFSET = 16;
     var cachedBottomNavHeight = null;
 
