@@ -3534,7 +3534,7 @@ const firstVisibleMsg = {
                             geoIpLookup: _this.geoIpLookupFunction,
                             loadUtils: function () {
                                 return import(
-                                    'https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/utils.js'
+                                    'https://cdn.kommunicate.io/resources/third-party-scripts/intl-tel-utils-25.14.0.js'
                                 );
                             },
                             formatAsYouType: false,
