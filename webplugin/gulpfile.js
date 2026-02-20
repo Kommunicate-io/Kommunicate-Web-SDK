@@ -259,12 +259,6 @@ const generateBuildFiles = () => {
             'lib/js/mck-emojis.min.js',
             `${resourceLocation}/third-party-scripts/mck-emojis.min.js`
         );
-        // intl-tel-input utils for pre-chat phone validation
-        copyFileToBuild(
-            'lib/js/intl-tel-utils.js',
-            `${resourceLocation}/third-party-scripts/intl-tel-utils.js`
-        );
-        copyFileToBuild('lib/js/intl-tel-utils.js', `${legacyThirdPartyDir}/intl-tel-utils.js`);
         // legacy path for existing redirects
         copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
         // legacy /plugin/lib/js path for CDN compatibility

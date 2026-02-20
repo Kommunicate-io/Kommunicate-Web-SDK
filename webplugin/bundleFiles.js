@@ -111,7 +111,7 @@ const THIRD_PARTY_FILE_INFO = [
         shouldMinify: true,
     },
     {
-        source: path.join(__dirname, 'lib/js/intl-tel-lib.js'),
+        source: path.join(__dirname, 'lib/js/intl-tel-lib-with-utils.js'),
         outputName: `intl-tel-lib.min.js`,
         type: 'js',
     },
