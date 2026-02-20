@@ -9162,7 +9162,10 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                if (floatWhere != 'mck-msg-right' && typeof kmVoiceMessageHandler !== 'undefined') {
+                if (
+                    typeof kmVoiceMessageHandler !== 'undefined' &&
+                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
+                ) {
                     kmVoiceMessageHandler.queueFromMessageRender(
                         msg,
                         displayName,

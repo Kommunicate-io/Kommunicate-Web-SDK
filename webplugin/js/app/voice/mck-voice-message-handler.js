@@ -53,7 +53,6 @@ var kmVoiceMessageHandler = {
             message &&
             message.message &&
             !message._kmVoiceQueued &&
-            !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
             appOptions &&
             appOptions.voiceChat
         );
