@@ -9162,21 +9162,13 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                const isVoiceInterfaceActive =
-                    typeof mckVoice !== 'undefined' &&
-                    mckVoice &&
-                    typeof mckVoice.isVoiceModeActive === 'function'
-                        ? mckVoice.isVoiceModeActive()
-                        : false;
-
-                if (
-                    isVoiceInterfaceActive &&
-                    floatWhere != 'mck-msg-right' &&
-                    msg.message &&
-                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
-                    appOptions.voiceChat
-                ) {
-                    mckVoice.processMessagesAsAudio(msg, displayName);
+                if (floatWhere != 'mck-msg-right' && typeof kmVoiceMessageHandler !== 'undefined') {
+                    kmVoiceMessageHandler.queueFromMessageRender(
+                        msg,
+                        displayName,
+                        appOptions,
+                        msgThroughListAPI
+                    );
                 }
                 var downloadIconVisible = 'n-vis';
                 var msgFeatExpr = 'n-vis';
@@ -15236,6 +15228,13 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
+                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                            kmVoiceMessageHandler.queueFromSocketReceive(
+                                message,
+                                tabId,
+                                appOptions
+                            );
+                        }
 
                         if (
                             resp.message.metadata &&
