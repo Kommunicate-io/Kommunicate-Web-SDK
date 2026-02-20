@@ -276,7 +276,7 @@ class Voice {
         const payload = {
             text,
             source: this.getOmnichannelSource(this.voiceChatConfig.source),
-            languageCode: this.getVoiceLanguageCode(),
+            // languageCode: this.getVoiceLanguageCode(),
             sampleRate: this.getTextToVoiceSampleRate(),
         };
         const config = this.voiceChatConfig || {};
@@ -319,10 +319,10 @@ class Voice {
         formdata.append('model_id', 'scribe_v1');
         formdata.append('file', audioBlob, 'file');
         formdata.append('tag_audio_events', false);
-        formdata.append('language_code', languageCode);
-        if (alternativeLanguageCodes.length) {
-            formdata.append('alternative_language_codes', alternativeLanguageCodes.join(','));
-        }
+        // formdata.append('language_code', languageCode);
+        // if (alternativeLanguageCodes.length) {
+        //     formdata.append('alternative_language_codes', alternativeLanguageCodes.join(','));
+        // }
 
         const requestOptions = {
             method: 'POST',
@@ -362,11 +362,11 @@ class Voice {
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            languageCode,
+            // languageCode,
         };
-        if (alternativeLanguageCodes.length) {
-            payload.alternativeLanguageCodes = alternativeLanguageCodes;
-        }
+        // if (alternativeLanguageCodes.length) {
+        //     payload.alternativeLanguageCodes = alternativeLanguageCodes;
+        // }
         const activeConversationUcid =
             typeof CURRENT_GROUP_DATA !== 'undefined' &&
             CURRENT_GROUP_DATA &&
