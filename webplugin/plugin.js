@@ -627,7 +627,8 @@ function injectJquery() {
     }
 
     function loadKommunicateWithSentry() {
-        if (!shouldLoadSentryScript()) {
+        var sentryEnabled = shouldLoadSentryScript();
+        if (!sentryEnabled) {
             addKommunicatePluginToIframe();
             return Promise.resolve();
         }
@@ -635,7 +636,7 @@ function injectJquery() {
         return scriptLoader({
             _document: addableDocument, // kommunicate iframe document
             url: THIRD_PARTY_SCRIPTS.sentry.js, // kommunicate modified version of sentry
-            enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+            enabled: sentryEnabled,
             ignoreIfError: true, // ignore if error occurs while loading sentry script load km plugin script
         })
             .then(addKommunicatePluginToIframe)

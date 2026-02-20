@@ -26,7 +26,12 @@ const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
-const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration || {};
+const { sentry, ...MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY } = THIRD_PARTY_INTEGRATION;
+const MCK_THIRD_PARTY_INTEGRATION =
+    sentry && sentry.enabled === false
+        ? MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY
+        : THIRD_PARTY_INTEGRATION;
 
 const pluginVersions = ['v1', 'v2', 'v3'];
 
