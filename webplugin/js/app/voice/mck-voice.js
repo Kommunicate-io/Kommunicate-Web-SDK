@@ -62,6 +62,7 @@ class MckVoice {
         this.activeRecognitionMode = 'omnichannel';
         this.nativeSpeechUtterance = null;
         this.adaptiveVadState = null;
+        this.inlineActionDelegatedBound = false;
         this.pendingVoiceSessionSource = null;
         this.VOICE_ENTRY_SOURCE = {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
@@ -583,6 +584,16 @@ class MckVoice {
 
     addEventListeners() {
         const self = this;
+        const stopVoiceAndFocusTyping = () => {
+            this.stopVoiceMode();
+            if (
+                typeof KommunicateUI === 'object' &&
+                KommunicateUI &&
+                typeof KommunicateUI.activateTypingField === 'function'
+            ) {
+                KommunicateUI.activateTypingField();
+            }
+        };
         const bindOnce = (element, eventName, handler, flagName) => {
             if (!element) {
                 return;
@@ -653,14 +664,7 @@ class MckVoice {
             inlineActionBtn,
             'click',
             () => {
-                this.stopVoiceMode();
-                if (
-                    typeof KommunicateUI === 'object' &&
-                    KommunicateUI &&
-                    typeof KommunicateUI.activateTypingField === 'function'
-                ) {
-                    KommunicateUI.activateTypingField();
-                }
+                stopVoiceAndFocusTyping();
             },
             'voiceInlineActionListenerAttached'
         );
@@ -673,6 +677,25 @@ class MckVoice {
             },
             'voiceInlineMicListenerAttached'
         );
+        if (!this.inlineActionDelegatedBound && typeof document !== 'undefined') {
+            document.addEventListener(
+                'click',
+                (event) => {
+                    const actionBtn =
+                        event &&
+                        event.target &&
+                        typeof event.target.closest === 'function' &&
+                        event.target.closest('#km-voice-inline-action-btn');
+                    if (!actionBtn) {
+                        return;
+                    }
+                    event.preventDefault();
+                    stopVoiceAndFocusTyping();
+                },
+                true
+            );
+            this.inlineActionDelegatedBound = true;
+        }
     }
 
     getUserOverride() {
