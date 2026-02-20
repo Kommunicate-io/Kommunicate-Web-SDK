@@ -1206,28 +1206,28 @@ class MckVoice {
         }
     }
     getStatusElement() {
-        if (!this.statusElement) {
+        if (!this.statusElement || !this.statusElement.isConnected) {
             this.statusElement = document.getElementById('km-voice-inline-text');
         }
         return this.statusElement;
     }
 
     getTranscriptElement() {
-        if (!this.transcriptElement) {
+        if (!this.transcriptElement || !this.transcriptElement.isConnected) {
             this.transcriptElement = document.getElementById('mck-voice-live-transcript');
         }
         return this.transcriptElement;
     }
 
     getResponseElement() {
-        if (!this.responseElement) {
+        if (!this.responseElement || !this.responseElement.isConnected) {
             this.responseElement = document.getElementById('mck-voice-response-text');
         }
         return this.responseElement;
     }
 
     getInlineStatusContainer() {
-        if (!this.inlineStatusContainer) {
+        if (!this.inlineStatusContainer || !this.inlineStatusContainer.isConnected) {
             this.inlineStatusContainer = document.getElementById('km-voice-listening-status');
         }
         return this.inlineStatusContainer;
@@ -1454,7 +1454,7 @@ class MckVoice {
     }
 
     getResponseContainer() {
-        if (!this.responseContainer) {
+        if (!this.responseContainer || !this.responseContainer.isConnected) {
             this.responseContainer = document.getElementById('mck-voice-response');
         }
         return this.responseContainer;
