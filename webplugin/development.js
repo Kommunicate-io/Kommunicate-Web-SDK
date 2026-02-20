@@ -217,6 +217,8 @@ const generateBuildFiles = () => {
     // legacy path for emoticon script redirect
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyPluginLibDir}/mck-emojis.min.js`);
+    // legacy /plugin/lib/js path for local dev + CDN compatibility
+    copyFileToBuild('lib/js/intl-tel-utils.js', `${legacyPluginLibDir}/intl-tel-utils.js`);
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);

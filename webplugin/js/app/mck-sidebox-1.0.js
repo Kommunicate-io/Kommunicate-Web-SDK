@@ -3523,6 +3523,7 @@ const firstVisibleMsg = {
 
             _this.addPhoneNumberValidation = function (enableCountryCode) {
                 var phoneField = document.getElementById('km-phone');
+                debugger;
                 if (phoneField !== null) {
                     if (enableCountryCode) {
                         phoneField.type = 'tel';
@@ -3533,9 +3534,8 @@ const firstVisibleMsg = {
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
                             loadUtils: function () {
-                                return import(
-                                    'https://cdn.kommunicate.io/resources/third-party-scripts/intl-tel-utils.js'
-                                );
+                                var staticPath = window.MCK_STATICPATH || '';
+                                return import(staticPath + '/lib/js/intl-tel-utils.js');
                             },
                             formatAsYouType: false,
                             strictMode: false,
@@ -5344,6 +5344,7 @@ const firstVisibleMsg = {
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
+                    debugger;
                     if (contactNumber) {
                         if (INTL_TEL_INSTANCE) {
                             // get number in international format as a string
