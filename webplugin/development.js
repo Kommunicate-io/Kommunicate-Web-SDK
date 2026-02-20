@@ -23,15 +23,11 @@ const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts')
 const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
+const { getThirdPartyIntegrationContext } = require('./third-party-integration');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
-const THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration || {};
-const { sentry, ...MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY } = THIRD_PARTY_INTEGRATION;
-const MCK_THIRD_PARTY_INTEGRATION =
-    sentry && sentry.enabled === false
-        ? MCK_THIRD_PARTY_INTEGRATION_WITHOUT_SENTRY
-        : THIRD_PARTY_INTEGRATION;
+const { MCK_THIRD_PARTY_INTEGRATION } = getThirdPartyIntegrationContext(config);
 
 const pluginVersions = ['v1', 'v2', 'v3'];
 
