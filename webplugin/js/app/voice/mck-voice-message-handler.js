@@ -53,6 +53,10 @@ var kmVoiceMessageHandler = {
             message &&
             message.message &&
             !message._kmVoiceQueued &&
+            // Skip intermediate streaming tokens — only queue the final complete message.
+            // Token messages have tokenMessage=true; the complete message that replaces
+            // them does not, so TTS fires exactly once per bot turn.
+            !message.tokenMessage &&
             appOptions &&
             appOptions.voiceChat
         );
