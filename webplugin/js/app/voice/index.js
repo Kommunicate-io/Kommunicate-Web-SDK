@@ -670,6 +670,13 @@ class Voice {
             headers: headers,
         };
 
+        console.debug('Voice STT request send (elevenlabs)', {
+            ts: Date.now(),
+            iso: new Date().toISOString(),
+            url: apiUrl,
+            provider: 'elevenlabs',
+        });
+
         return fetch(apiUrl, requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -683,7 +690,7 @@ class Voice {
             });
     }
 
-    async voiceToText(audioBlob, { ucid } = {}) {
+    async voiceToText(audioBlob, { ucid, sttMode } = {}) {
         const sampleRate = this.getVoiceToTextSampleRate();
         const samples = await this.extractPcmInt16Samples(audioBlob);
         const audioMetrics = this.evaluatePcmInt16Quality(samples);
@@ -697,7 +704,7 @@ class Voice {
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            sttMode: 'recognize',
+            sttMode: sttMode || 'recognize',
             // languageCode: this.getVoiceLanguageCode(),
         };
         // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
@@ -719,6 +726,16 @@ class Voice {
 
         const socketConfig = this.getVoiceSocketConfig();
         if (this.isVoiceSocketEnabled(socketConfig)) {
+            console.debug('Voice STT request send (socket)', {
+                ts: Date.now(),
+                iso: new Date().toISOString(),
+                provider: 'omnichannel',
+                transport: 'socket',
+                action: socketConfig.voiceToTextAction || 'voice_to_text',
+                sttMode: payload.sttMode,
+                sampleRate: payload.sampleRate,
+                sampleCount: Array.isArray(payload.samples) ? payload.samples.length : 0,
+            });
             return this.requestVoiceSocket(
                 socketConfig.voiceToTextAction || 'voice_to_text',
                 payload
@@ -742,7 +759,19 @@ class Voice {
                 });
         }
 
-        return fetch(this.getOmnichannelApiUrl('/voice-to-text'), {
+        const voiceToTextUrl = this.getOmnichannelApiUrl('/voice-to-text');
+        console.debug('Voice STT request send (http)', {
+            ts: Date.now(),
+            iso: new Date().toISOString(),
+            provider: 'omnichannel',
+            transport: 'http',
+            url: voiceToTextUrl,
+            sttMode: payload.sttMode,
+            sampleRate: payload.sampleRate,
+            sampleCount: Array.isArray(payload.samples) ? payload.samples.length : 0,
+        });
+
+        return fetch(voiceToTextUrl, {
             method: 'POST',
             headers: this.getOmnichannelHeaders(),
             body: JSON.stringify(payload),

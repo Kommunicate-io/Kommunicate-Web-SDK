@@ -17,6 +17,8 @@ class MckVoice {
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
+    _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
+    _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -73,6 +75,8 @@ class MckVoice {
         this.adaptiveVadState = null;
         this.inlineActionDelegatedBound = false;
         this.pendingVoiceSessionSource = null;
+        this.consecutiveEmptySttResponses = 0;
+        this.lastEmptySttResponseAt = 0;
         this.VOICE_ENTRY_SOURCE = {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
             CONVERSATIONS_SCREEN: 'conversations_screen',
@@ -98,6 +102,19 @@ class MckVoice {
         }
     }
 
+    resetVoicePlaybackQueue(reason = 'manual_reset') {
+        const pendingCount = this.messagesQueue.length;
+        this.messagesQueue = [];
+        if (pendingCount > 0) {
+            console.debug('Voice playback queue reset', {
+                ts: Date.now(),
+                iso: new Date().toISOString(),
+                reason,
+                clearedCount: pendingCount,
+            });
+        }
+    }
+
     async startVoiceMode(
         source = 'start_conversation_screen',
         { onPermissionDenied = null, suppressPermissionAlert = false } = {}
@@ -107,6 +124,7 @@ class MckVoice {
         this.disableNativeVoiceOutputForVoiceMode();
         this.enableAutoListening();
         this.setVoiceMuted(false);
+        this.resetVoicePlaybackQueue('start_voice_mode');
         kommunicateCommons.modifyClassList(
             { class: ['voice-ring-1'] },
             '',
@@ -905,6 +923,12 @@ class MckVoice {
 
         // Handle recording stop event
         this.mediaRecorder.onstop = async () => {
+            console.debug('Voice recording onstop fired', {
+                ts: Date.now(),
+                iso: new Date().toISOString(),
+                chunkCount: this.audioChunks.length,
+                isRecording: this.isRecording,
+            });
             try {
                 // Create blob from recorded chunks
                 if (this.isRecording) {
@@ -1018,7 +1042,10 @@ class MckVoice {
             this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
             this.pendingVoiceSessionSource = null;
         }
-        console.debug('Recording started');
+        console.debug('Voice recording started', {
+            ts: Date.now(),
+            iso: new Date().toISOString(),
+        });
 
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
@@ -1069,8 +1096,10 @@ class MckVoice {
         }
 
         let firstSpeechFrameIndex = -1;
+        let firstStopSpeechFrameIndex = -1;
         let lastSpeechFrameIndex = -1;
         let currentVoicedRun = 0;
+        const frameRmsValues = [];
         const frameCount = Math.ceil(totalSamples / frameSize);
         for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
             const start = frameIndex * frameSize;
@@ -1083,6 +1112,7 @@ class MckVoice {
                 frameLength++;
             }
             const frameRms = frameLength ? Math.sqrt(sumSquares / frameLength) : 0;
+            frameRmsValues.push(frameRms);
             const isStartVoiceFrame = frameRms >= startThresholdRms;
             const isStopVoiceFrame = frameRms >= stopThresholdRms;
             if (isStartVoiceFrame) {
@@ -1094,8 +1124,62 @@ class MckVoice {
                 firstSpeechFrameIndex = Math.max(0, frameIndex - minVoicedFrames + 1);
             }
             if (isStopVoiceFrame) {
+                if (firstStopSpeechFrameIndex === -1) {
+                    firstStopSpeechFrameIndex = frameIndex;
+                }
                 lastSpeechFrameIndex = frameIndex;
             }
+        }
+
+        // Fallback for softer speech that doesn't hit strict startThreshold consecutively.
+        if (firstSpeechFrameIndex === -1 && firstStopSpeechFrameIndex !== -1) {
+            const relaxedStartThreshold = Math.max(
+                stopThresholdRms,
+                Math.round(startThresholdRms * 0.75)
+            );
+            const relaxedMinVoicedFrames = Math.max(1, Math.round(minVoicedFrames / 2));
+            let relaxedRun = 0;
+            for (let frameIndex = 0; frameIndex < frameRmsValues.length; frameIndex++) {
+                if (frameRmsValues[frameIndex] >= relaxedStartThreshold) {
+                    relaxedRun++;
+                    if (relaxedRun >= relaxedMinVoicedFrames) {
+                        firstSpeechFrameIndex = Math.max(
+                            0,
+                            frameIndex - relaxedMinVoicedFrames + 1
+                        );
+                        break;
+                    }
+                } else {
+                    relaxedRun = 0;
+                }
+            }
+            if (firstSpeechFrameIndex === -1) {
+                firstSpeechFrameIndex = Math.max(
+                    0,
+                    firstStopSpeechFrameIndex - relaxedMinVoicedFrames + 1
+                );
+            }
+            console.debug('Voice VAD fallback start detection applied', {
+                relaxedStartThreshold,
+                relaxedMinVoicedFrames,
+                firstSpeechFrameIndex,
+                firstStopSpeechFrameIndex,
+                lastSpeechFrameIndex,
+            });
+        }
+
+        // Guardrail: if start is detected after the first stop-threshold hit, anchor start earlier.
+        // This avoids dropping the beginning of a sentence when opening words are softer.
+        if (firstStopSpeechFrameIndex !== -1 && firstSpeechFrameIndex > firstStopSpeechFrameIndex) {
+            const anchorFrames = Math.max(1, Math.round(minVoicedFrames / 2));
+            const anchoredStartIndex = Math.max(0, firstStopSpeechFrameIndex - anchorFrames + 1);
+            console.debug('Voice VAD start index anchored to earliest speech boundary', {
+                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
+                firstStopSpeechFrameIndex,
+                anchoredStartIndex,
+                anchorFrames,
+            });
+            firstSpeechFrameIndex = anchoredStartIndex;
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
@@ -1165,13 +1249,11 @@ class MckVoice {
         );
         const frameMs = Number(this.voiceInputSettings.frameMs || this._VOICE_FRAME_MS);
         const frameSize = Math.max(1, Math.round((sampleRate * frameMs) / 1000));
-        const startThresholdRms = Math.max(
-            Number(this.voiceInputSettings.startThresholdRms || this._VOICE_START_THRESHOLD_RMS),
-            this._VOICE_START_THRESHOLD_RMS
+        const startThresholdRms = Number(
+            this.voiceInputSettings.startThresholdRms || this._VOICE_START_THRESHOLD_RMS
         );
-        const stopThresholdRms = Math.max(
-            Number(this.voiceInputSettings.stopThresholdRms || this._VOICE_STOP_THRESHOLD_RMS),
-            this._VOICE_STOP_THRESHOLD_RMS
+        const stopThresholdRms = Number(
+            this.voiceInputSettings.stopThresholdRms || this._VOICE_STOP_THRESHOLD_RMS
         );
         const minVoicedMs = Number(
             this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
@@ -1187,6 +1269,7 @@ class MckVoice {
             let lastVoiceFrame = -1;
             let consecutiveStartFrames = 0;
             let maxConsecutiveStartFrames = 0;
+            let stopVoiceFrames = 0;
             const frameCount = Math.ceil(chunkSamples.length / frameSize);
             for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
                 const start = frameIndex * frameSize;
@@ -1208,6 +1291,7 @@ class MckVoice {
                     consecutiveStartFrames = 0;
                 }
                 if (frameRms >= stopThresholdRms) {
+                    stopVoiceFrames++;
                     if (firstVoiceFrame === -1) {
                         firstVoiceFrame = frameIndex;
                     }
@@ -1216,13 +1300,58 @@ class MckVoice {
             }
 
             if (maxConsecutiveStartFrames < minVoicedFrames || firstVoiceFrame === -1) {
-                console.debug('Dropping chunk due to insufficient voiced run', {
-                    index: i,
-                    maxConsecutiveStartFrames,
-                    minVoicedFrames,
-                    chunkSamplesLength: chunkSamples.length,
-                });
-                continue;
+                const relaxedStartThreshold = Math.max(
+                    stopThresholdRms,
+                    Math.round(startThresholdRms * 0.75)
+                );
+                const relaxedMinVoicedFrames = Math.max(1, Math.round(minVoicedFrames / 2));
+                let relaxedRun = 0;
+                let relaxedFirstVoiceFrame = -1;
+                for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                    const start = frameIndex * frameSize;
+                    const end = Math.min(start + frameSize, chunkSamples.length);
+                    let frameSumSquares = 0;
+                    let frameLength = 0;
+                    for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
+                        const sample = Number(chunkSamples[sampleIndex]) || 0;
+                        frameSumSquares += sample * sample;
+                        frameLength++;
+                    }
+                    const frameRms = frameLength ? Math.sqrt(frameSumSquares / frameLength) : 0;
+                    if (frameRms >= relaxedStartThreshold) {
+                        relaxedRun++;
+                        if (relaxedRun >= relaxedMinVoicedFrames && relaxedFirstVoiceFrame === -1) {
+                            relaxedFirstVoiceFrame = Math.max(
+                                0,
+                                frameIndex - relaxedMinVoicedFrames + 1
+                            );
+                        }
+                    } else {
+                        relaxedRun = 0;
+                    }
+                    if (frameRms >= stopThresholdRms && firstVoiceFrame === -1) {
+                        firstVoiceFrame = frameIndex;
+                    }
+                    if (frameRms >= stopThresholdRms) {
+                        lastVoiceFrame = frameIndex;
+                    }
+                }
+                if (relaxedFirstVoiceFrame !== -1) {
+                    firstVoiceFrame = relaxedFirstVoiceFrame;
+                    console.debug('Relaxed chunk voiced-run gate accepted', {
+                        index: i,
+                        relaxedStartThreshold,
+                        relaxedMinVoicedFrames,
+                    });
+                } else if (firstVoiceFrame === -1) {
+                    console.debug('Dropping chunk due to insufficient voiced run', {
+                        index: i,
+                        maxConsecutiveStartFrames,
+                        minVoicedFrames,
+                        chunkSamplesLength: chunkSamples.length,
+                    });
+                    continue;
+                }
             }
 
             const trimmedStart = firstVoiceFrame * frameSize;
@@ -1246,6 +1375,24 @@ class MckVoice {
             if (chunkRms < minChunkRms || maxAbs < maxAbsSilenceThreshold) {
                 continue;
             }
+            const stopVoiceRatio = frameCount > 0 ? stopVoiceFrames / frameCount : 0;
+            const now = Date.now();
+            const inEmptySuppressWindow =
+                this.consecutiveEmptySttResponses >= this._VOICE_EMPTY_STT_SUPPRESS_COUNT &&
+                now - this.lastEmptySttResponseAt < this._VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS;
+            const isHighConfidenceChunk =
+                chunkRms >= minChunkRms * 1.6 ||
+                (maxAbs >= maxAbsSilenceThreshold * 3 && stopVoiceRatio >= 0.25);
+            if (inEmptySuppressWindow && !isHighConfidenceChunk) {
+                console.debug('Skipping low-confidence chunk after repeated empty STT responses', {
+                    index: i,
+                    chunkRms,
+                    maxAbs,
+                    stopVoiceRatio,
+                    consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
+                });
+                continue;
+            }
             sentSamplesCount += processedChunkSamples.length;
             const chunkBlob = kmVoice.createWavBlobFromPcmData(
                 Int16Array.from(processedChunkSamples),
@@ -1259,6 +1406,7 @@ class MckVoice {
                     this.activeRecognitionMode === 'omnichannel'
                         ? await kmVoice.voiceToText(chunkBlob, {
                               ucid: this.voiceInputSettings.ucid,
+                              sttMode: 'recognize',
                           })
                         : await kmVoice.speechToText(chunkBlob);
             } catch (error) {
@@ -1267,8 +1415,40 @@ class MckVoice {
                 }
                 throw error;
             }
+            if (
+                this.activeRecognitionMode === 'omnichannel' &&
+                (!response || typeof response.text !== 'string' || !response.text.trim())
+            ) {
+                try {
+                    console.debug('Voice STT retry with streaming mode after empty recognize', {
+                        index: i,
+                        sampleCount: processedChunkSamples.length,
+                    });
+                    response = await kmVoice.voiceToText(chunkBlob, {
+                        ucid: this.voiceInputSettings.ucid,
+                        sttMode: 'streaming',
+                    });
+                } catch (retryError) {
+                    if (!retryError || retryError.code !== 'SILENT_AUDIO') {
+                        throw retryError;
+                    }
+                    continue;
+                }
+            }
             if (response && typeof response.text === 'string' && response.text.trim()) {
                 transcriptParts.push(response.text.trim());
+                this.consecutiveEmptySttResponses = 0;
+                this.lastEmptySttResponseAt = 0;
+            } else {
+                this.consecutiveEmptySttResponses++;
+                this.lastEmptySttResponseAt = Date.now();
+                console.debug('Empty STT response received for chunk', {
+                    index: i,
+                    consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
+                    chunkRms,
+                    maxAbs,
+                    stopVoiceRatio,
+                });
             }
         }
 
@@ -2311,9 +2491,17 @@ class MckVoice {
             return;
         }
         if (this.mediaRecorder && this.isRecording) {
+            console.debug('Voice recording stop requested', {
+                ts: Date.now(),
+                iso: new Date().toISOString(),
+                forceStop: Boolean(forceStop),
+            });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
-            console.log('Recording stopped');
+            console.debug('Voice recording stop invoked', {
+                ts: Date.now(),
+                iso: new Date().toISOString(),
+            });
 
             if (this.maxRecordingTimer) {
                 clearTimeout(this.maxRecordingTimer);
@@ -2347,6 +2535,7 @@ class MckVoice {
         this.disableAutoListening();
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
+        this.resetVoicePlaybackQueue('stop_voice_mode');
         this.nativeRecognitionShouldRestart = false;
         this.stopRecording(true);
         this.cancelNativeSpeech();
