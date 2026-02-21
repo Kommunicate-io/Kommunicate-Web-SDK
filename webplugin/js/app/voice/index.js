@@ -109,7 +109,14 @@ class Voice {
         if (languageCode == null) {
             return '';
         }
-        return String(languageCode).trim().replace(/_/g, '-');
+        const normalized = String(languageCode).trim().replace(/_/g, '-');
+        if (!normalized) {
+            return '';
+        }
+        if (/^en$/i.test(normalized)) {
+            return 'en-US';
+        }
+        return normalized;
     }
 
     getChatContextLanguageCode() {
@@ -653,11 +660,6 @@ class Voice {
         formdata.append('model_id', 'scribe_v1');
         formdata.append('file', audioBlob, 'file');
         formdata.append('tag_audio_events', false);
-        // formdata.append('language_code', this.getVoiceLanguageCode());
-        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
-        // if (alternativeLanguageCodes.length) {
-        //     formdata.append('alternative_language_codes', alternativeLanguageCodes.join(','));
-        // }
 
         const requestOptions = {
             method: 'POST',
@@ -693,6 +695,7 @@ class Voice {
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
+            sttMode: 'recognize',
             // languageCode: this.getVoiceLanguageCode(),
         };
         // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
