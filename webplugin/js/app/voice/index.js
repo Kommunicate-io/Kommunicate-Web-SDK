@@ -12,6 +12,8 @@ class Voice {
     _SILENCE_NON_ZERO_RATIO_THRESHOLD = 0.005;
     _SILENCE_PEAK_ABS_THRESHOLD = 8;
     _SILENCE_RMS_THRESHOLD = 2;
+    _SILENCE_MAX_ZCR_THRESHOLD = 0.42;
+    _SILENCE_HIGH_ZCR_MAX_RMS = 1200;
     _VOICE_SOCKET_TIMEOUT_MS = 30000;
     _voiceSocketClient = null;
     _voiceSocketSubscription = null;
@@ -775,11 +777,14 @@ class Voice {
                 nonZeroRatio: 0,
                 rms: 0,
                 peakAbs: 0,
+                zcr: 0,
             };
         }
         let nonZeroCount = 0;
         let sumSquares = 0;
         let peakAbs = 0;
+        let zeroCrossings = 0;
+        let previousSign = null;
         for (let i = 0; i < sampleCount; i++) {
             const value = Number(samples[i]) || 0;
             const absValue = Math.abs(value);
@@ -790,18 +795,28 @@ class Voice {
                 peakAbs = absValue;
             }
             sumSquares += value * value;
+            const currentSign = value >= 0;
+            if (previousSign !== null && currentSign !== previousSign) {
+                zeroCrossings++;
+            }
+            previousSign = currentSign;
         }
         const nonZeroRatio = nonZeroCount / sampleCount;
         const rms = Math.sqrt(sumSquares / sampleCount);
+        const zcr = sampleCount > 1 ? zeroCrossings / (sampleCount - 1) : 0;
+        const isHighFrequencyNoise =
+            zcr > this._SILENCE_MAX_ZCR_THRESHOLD && rms < this._SILENCE_HIGH_ZCR_MAX_RMS;
         const isSilent =
             nonZeroRatio < this._SILENCE_NON_ZERO_RATIO_THRESHOLD ||
-            (peakAbs <= this._SILENCE_PEAK_ABS_THRESHOLD && rms <= this._SILENCE_RMS_THRESHOLD);
+            (peakAbs <= this._SILENCE_PEAK_ABS_THRESHOLD && rms <= this._SILENCE_RMS_THRESHOLD) ||
+            isHighFrequencyNoise;
         return {
             isSilent,
             sampleCount,
             nonZeroRatio: Number(nonZeroRatio.toFixed(6)),
             rms: Number(rms.toFixed(3)),
             peakAbs,
+            zcr: Number(zcr.toFixed(6)),
         };
     }
 
@@ -812,6 +827,7 @@ class Voice {
         error.nonZeroRatio = metrics.nonZeroRatio;
         error.rms = metrics.rms;
         error.peakAbs = metrics.peakAbs;
+        error.zcr = metrics.zcr;
         return error;
     }
 

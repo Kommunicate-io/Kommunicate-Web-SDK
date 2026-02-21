@@ -2,7 +2,7 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 600; // 0.6 seconds of silence before stopping (ideal for customer support flows)
+    _SILENCE_DURATION = 350; // quicker turn-taking while still allowing short pauses
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
@@ -174,7 +174,7 @@ class MckVoice {
                 startFactor: vadConfig.startFactor ?? 2.6,
                 endFactor: vadConfig.endFactor ?? 1.2,
                 startFrames: vadConfig.startFrames ?? 3,
-                endFrames: vadConfig.endFrames ?? 40,
+                endFrames: vadConfig.endFrames ?? 20,
                 noiseAlpha: vadConfig.noiseAlpha ?? 0.95,
                 historyMs: vadConfig.historyMs ?? 2000,
             },
@@ -2030,7 +2030,7 @@ class MckVoice {
             startFactor: vadSettings.startFactor ?? 2.6,
             endFactor: vadSettings.endFactor ?? 1.2,
             startFrames: vadSettings.startFrames ?? 3,
-            endFrames: vadSettings.endFrames ?? 40,
+            endFrames: vadSettings.endFrames ?? 20,
             noiseAlpha: vadSettings.noiseAlpha ?? 0.95,
             noiseFloor: 0.002,
             noiseZcr: 0.02,
