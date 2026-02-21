@@ -704,7 +704,7 @@ class Voice {
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            sttMode: sttMode || 'recognize',
+            sttMode: 'recognize',
             // languageCode: this.getVoiceLanguageCode(),
         };
         // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();

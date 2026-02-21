@@ -341,6 +341,7 @@ class MckVoice {
 
                 if (this.agentOrBotLastMsgAudio) {
                     URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+                    this.agentOrBotLastMsgAudio = null;
                 }
                 this.agentOrBotLastMsgAudio = blobUrl;
 
@@ -470,6 +471,7 @@ class MckVoice {
 
             if (this.agentOrBotLastMsgAudio) {
                 URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+                this.agentOrBotLastMsgAudio = null;
             }
             this.agentOrBotLastMsgAudio = blobUrl;
 
@@ -563,6 +565,10 @@ class MckVoice {
     }
 
     async repeatLastMsgAudio(blobUrl) {
+        if (!blobUrl) {
+            console.debug('repeatLastMsgAudio: no audio stored yet');
+            return;
+        }
         try {
             if (this.visualizerCleanup) {
                 this.visualizerCleanup();
@@ -807,6 +813,17 @@ class MckVoice {
             return true;
         }
 
+        // getUserMedia requires a secure context (HTTPS or localhost).
+        if (typeof window !== 'undefined' && window.isSecureContext === false) {
+            console.error('Voice recording requires a secure (HTTPS) context');
+            if (!suppressPermissionAlert) {
+                alert(
+                    'Voice recording is not available over an insecure connection. Please use HTTPS.'
+                );
+            }
+            return false;
+        }
+
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
@@ -979,8 +996,11 @@ class MckVoice {
                                     'voiceInterface.noSpeechDetected',
                                     'No speech detected. Please try again.'
                                 ),
-                                { autoHide: 3000 }
+                                { autoHide: 2500 }
                             );
+                            // Re-enter listening automatically so the user doesn't
+                            // have to tap the mic button again.
+                            this.scheduleAutoListen(2600);
                             return;
                         }
                         throw error;
@@ -989,6 +1009,19 @@ class MckVoice {
                         console.warn(
                             'Voice transcription failed: empty response from speechToText'
                         );
+                        this.removeAllAnimation();
+                        this.clearVoiceStatus();
+                        // Show a brief "didn't catch that" hint, then re-enter
+                        // listening mode automatically so the conversation continues
+                        // without the user having to tap the mic again.
+                        this.updateLiveTranscript(
+                            this.getVoiceLabel(
+                                'voiceInterface.didNotCatchThat',
+                                "Didn't catch that. Please try again."
+                            ),
+                            { autoHide: 2500 }
+                        );
+                        this.scheduleAutoListen(2600);
                         return;
                     }
                     const rawText = typeof data.text === 'string' ? data.text : '';
@@ -1381,7 +1414,7 @@ class MckVoice {
                 this.consecutiveEmptySttResponses >= this._VOICE_EMPTY_STT_SUPPRESS_COUNT &&
                 now - this.lastEmptySttResponseAt < this._VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS;
             const isHighConfidenceChunk =
-                chunkRms >= minChunkRms * 1.6 ||
+                (chunkRms >= minChunkRms * 1.6 && stopVoiceRatio >= 0.2) ||
                 (maxAbs >= maxAbsSilenceThreshold * 3 && stopVoiceRatio >= 0.25);
             if (inEmptySuppressWindow && !isHighConfidenceChunk) {
                 console.debug('Skipping low-confidence chunk after repeated empty STT responses', {
@@ -1414,26 +1447,6 @@ class MckVoice {
                     continue;
                 }
                 throw error;
-            }
-            if (
-                this.activeRecognitionMode === 'omnichannel' &&
-                (!response || typeof response.text !== 'string' || !response.text.trim())
-            ) {
-                try {
-                    console.debug('Voice STT retry with streaming mode after empty recognize', {
-                        index: i,
-                        sampleCount: processedChunkSamples.length,
-                    });
-                    response = await kmVoice.voiceToText(chunkBlob, {
-                        ucid: this.voiceInputSettings.ucid,
-                        sttMode: 'streaming',
-                    });
-                } catch (retryError) {
-                    if (!retryError || retryError.code !== 'SILENT_AUDIO') {
-                        throw retryError;
-                    }
-                    continue;
-                }
             }
             if (response && typeof response.text === 'string' && response.text.trim()) {
                 transcriptParts.push(response.text.trim());
@@ -2147,6 +2160,14 @@ class MckVoice {
     }
 
     setupSilenceDetection(stream) {
+        // Close any leftover context from a previous recording session that wasn't
+        // cleaned up (e.g. if an exception interrupted the onaudioprocess teardown).
+        if (this.silenceDetectionContext) {
+            try {
+                this.silenceDetectionContext.close();
+            } catch (_) {}
+            this.silenceDetectionContext = null;
+        }
         // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const analyser = audioContext.createAnalyser();
@@ -2203,6 +2224,13 @@ class MckVoice {
         const frameDurationMs = (fftSize / sampleRate) * 1000;
         const historyMs = vadSettings.historyMs ?? 2000;
         const maxHistoryFrames = Math.max(1, Math.round(historyMs / Math.max(frameDurationMs, 1)));
+        // Calibration: suppress speech detection for the first ~400ms so the noise
+        // floor has time to converge before we start listening for speech.
+        const calibrationMs = vadSettings.calibrationMs ?? 400;
+        const calibrationFrameTarget = Math.max(
+            1,
+            Math.round(calibrationMs / Math.max(frameDurationMs, 1))
+        );
         this.adaptiveVadState = {
             frameDurationMs,
             maxHistoryFrames,
@@ -2217,6 +2245,12 @@ class MckVoice {
             speechActive: false,
             startCounter: 0,
             endCounter: 0,
+            // Calibration state
+            calibrating: true,
+            calibrationFrames: 0,
+            calibrationFrameTarget,
+            // Faster alpha during calibration so the floor converges quickly
+            calibrationNoiseAlpha: vadSettings.calibrationNoiseAlpha ?? 0.7,
         };
     }
 
@@ -2235,10 +2269,32 @@ class MckVoice {
             state.history.shift();
         }
 
+        // Calibration phase: update noise floor aggressively but don't trigger
+        // speech detection yet. This prevents false starts in noisy environments
+        // (fan noise, AC, background chatter) before the floor has converged.
+        if (state.calibrating) {
+            state.calibrationFrames++;
+            const alpha = state.calibrationNoiseAlpha;
+            state.noiseFloor = Math.max(state.noiseFloor * alpha + rms * (1 - alpha), 5e-5);
+            state.noiseZcr = Math.max(state.noiseZcr * alpha + zcr * (1 - alpha), 0.001);
+            if (state.calibrationFrames >= state.calibrationFrameTarget) {
+                state.calibrating = false;
+            }
+            return;
+        }
+
         const noiseFloor = Math.max(state.noiseFloor, 1e-5);
         const startThreshold = noiseFloor * state.startFactor;
         const endThreshold = noiseFloor * Math.max(state.endFactor, 0.5);
-        const startCandidate = rms > startThreshold;
+
+        // Use ZCR to distinguish voiced speech from unvoiced noise.
+        // Voiced speech (vowels, nasals) has lower ZCR than broadband noise or
+        // fricatives. Require the ZCR not to be excessively high relative to the
+        // noise baseline for a start-candidate to count as speech. This reduces
+        // false triggers from hissing fans, keyboards, or breath noises.
+        const noiseZcr = Math.max(state.noiseZcr, 0.001);
+        const zcrNotNoise = zcr < noiseZcr * 4.0;
+        const startCandidate = rms > startThreshold && zcrNotNoise;
         const endCandidate = rms < endThreshold;
 
         const isSpeechFrame = state.speechActive || startCandidate;
@@ -2376,13 +2432,35 @@ class MckVoice {
         recognition.onend = () => {
             this.nativeRecognitionActive = false;
             this.isRecording = false;
+            if (this._nativeRecognitionWatchdog) {
+                clearTimeout(this._nativeRecognitionWatchdog);
+                this._nativeRecognitionWatchdog = null;
+            }
             if (this.nativeRecognitionShouldRestart && this.activeRecognitionMode === 'native') {
                 try {
                     recognition.start();
                     this.nativeRecognitionActive = true;
                     this.isRecording = true;
+                    // Watchdog: if no onresult/onerror fires within 3s the browser
+                    // silently failed to start — reset state and retry from scratch.
+                    this._nativeRecognitionWatchdog = setTimeout(() => {
+                        this._nativeRecognitionWatchdog = null;
+                        if (this.nativeRecognitionActive && !this._nativeRecognitionEventFired) {
+                            console.warn('SpeechRecognition silent failure detected, resetting');
+                            this.nativeRecognitionActive = false;
+                            this.isRecording = false;
+                            this.nativeRecognition = null;
+                            if (this.nativeRecognitionShouldRestart && this.isVoiceModeActive()) {
+                                this.startNativeRecognition();
+                            }
+                        }
+                    }, 3000);
+                    this._nativeRecognitionEventFired = false;
                 } catch (err) {
                     console.error('SpeechRecognition restart failed:', err);
+                    this.nativeRecognitionActive = false;
+                    this.isRecording = false;
+                    this.nativeRecognitionShouldRestart = false;
                 }
             }
         };
@@ -2428,6 +2506,10 @@ class MckVoice {
 
     stopNativeRecognition() {
         this.nativeRecognitionShouldRestart = false;
+        if (this._nativeRecognitionWatchdog) {
+            clearTimeout(this._nativeRecognitionWatchdog);
+            this._nativeRecognitionWatchdog = null;
+        }
         if (this.nativeRecognition && this.nativeRecognitionActive) {
             try {
                 this.nativeRecognition.stop();
@@ -2440,6 +2522,7 @@ class MckVoice {
     }
 
     handleNativeRecognitionResult(event) {
+        this._nativeRecognitionEventFired = true;
         if (!event || !event.results) {
             return;
         }
@@ -2465,6 +2548,7 @@ class MckVoice {
     }
 
     handleNativeRecognitionError(event) {
+        this._nativeRecognitionEventFired = true;
         if (!event) {
             return;
         }
