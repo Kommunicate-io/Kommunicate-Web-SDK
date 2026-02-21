@@ -250,23 +250,41 @@ class Voice {
         return Number(sampleRate) || this._OMNICHANNEL_TTS_DEFAULT_SAMPLE_RATE;
     }
 
-    getVoiceSocketConfig() {
-        const globalSocketConfig =
+    getRawVoiceSocketConfig() {
+        return (
             (typeof kommunicate !== 'undefined' &&
                 kommunicate &&
                 kommunicate._globals &&
                 kommunicate._globals.voiceSocket) ||
-            {};
-        const omnichannelSocketConfig =
-            (this.omnichannelConfig && this.omnichannelConfig.socket) || {};
-        const voiceInputSocketConfig = this.voiceInputConfig.socket || {};
-        const voiceChatSocketConfig = this.voiceChatConfig.socket || {};
-        return {
-            ...globalSocketConfig,
-            ...omnichannelSocketConfig,
-            ...voiceInputSocketConfig,
-            ...voiceChatSocketConfig,
-        };
+            {}
+        );
+    }
+
+    mergeVoiceSocketConfig(baseConfig = {}, overrideConfig = {}) {
+        const mergedConfig = Object.assign({}, baseConfig, overrideConfig);
+        delete mergedConfig.tts;
+        delete mergedConfig.stt;
+        delete mergedConfig.sst;
+        return mergedConfig;
+    }
+
+    getVoiceSocketConfig(mode = 'tts') {
+        const rawConfig = this.getRawVoiceSocketConfig();
+        if (!rawConfig || typeof rawConfig !== 'object') {
+            return {};
+        }
+        if (mode === 'stt' || mode === 'sst') {
+            const nestedSttConfig = rawConfig.stt || rawConfig.sst;
+            if (!nestedSttConfig || typeof nestedSttConfig !== 'object') {
+                return { enabled: false };
+            }
+            return this.mergeVoiceSocketConfig(rawConfig, nestedSttConfig);
+        }
+        const nestedTtsConfig = rawConfig.tts;
+        if (nestedTtsConfig && typeof nestedTtsConfig === 'object') {
+            return this.mergeVoiceSocketConfig(rawConfig, nestedTtsConfig);
+        }
+        return rawConfig;
     }
 
     getVoiceSocketChannelId(channelId) {
@@ -388,8 +406,8 @@ class Voice {
         this.clearVoiceSocketPendingRequests('Voice socket topic unsubscribed');
     }
 
-    subscribeToVoiceSocketTopic(channelId) {
-        const socketConfig = this.getVoiceSocketConfig();
+    subscribeToVoiceSocketTopic(channelId, socketConfigOverride) {
+        const socketConfig = socketConfigOverride || this.getVoiceSocketConfig('tts');
         if (!this.isVoiceSocketEnabled(socketConfig)) {
             return false;
         }
@@ -423,9 +441,9 @@ class Voice {
         return true;
     }
 
-    ensureVoiceSocketSubscription(channelId) {
+    ensureVoiceSocketSubscription(channelId, socketConfigOverride) {
         const resolvedChannelId = this.getVoiceSocketChannelId(channelId);
-        this.subscribeToVoiceSocketTopic(resolvedChannelId);
+        this.subscribeToVoiceSocketTopic(resolvedChannelId, socketConfigOverride);
     }
 
     createVoiceSocketRequestId() {
@@ -483,12 +501,12 @@ class Voice {
     }
 
     async requestVoiceSocket(action, payload, options = {}) {
-        const socketConfig = this.getVoiceSocketConfig();
+        const socketConfig = options.socketConfig || this.getVoiceSocketConfig('tts');
         if (!this.isVoiceSocketEnabled(socketConfig)) {
             throw new Error('Voice socket transport is not enabled');
         }
         const channelId = this.getVoiceSocketChannelId(options.channelId);
-        this.ensureVoiceSocketSubscription(channelId);
+        this.ensureVoiceSocketSubscription(channelId, socketConfig);
 
         const requestId = this.createVoiceSocketRequestId();
         const timeoutMs = Number(
@@ -565,6 +583,132 @@ class Voice {
         return socketPayload;
     }
 
+    logOmnichannelVoiceRequest({
+        transport,
+        url,
+        action,
+        sttMode,
+        sampleRate,
+        sampleCount,
+        operation,
+    }) {
+        const metadata = {
+            ts: Date.now(),
+            iso: new Date().toISOString(),
+            provider: 'omnichannel',
+            transport,
+            operation,
+        };
+        if (url) {
+            metadata.url = url;
+        }
+        if (action) {
+            metadata.action = action;
+        }
+        if (sttMode) {
+            metadata.sttMode = sttMode;
+        }
+        if (sampleRate) {
+            metadata.sampleRate = sampleRate;
+        }
+        if (typeof sampleCount === 'number') {
+            metadata.sampleCount = sampleCount;
+        }
+        const logLabel =
+            operation === 'voiceToText'
+                ? `Voice STT request send (${transport})`
+                : 'Voice request send';
+        console.debug(logLabel, metadata);
+    }
+
+    handleOmnichannelVoiceError(error, { transport, silentMessage, defaultMessage }) {
+        if (error && error.code === 'SILENT_AUDIO') {
+            console.warn(silentMessage || 'Silent audio blocked before voice request', {
+                sampleCount: error.sampleCount,
+                nonZeroRatio: error.nonZeroRatio,
+                rms: error.rms,
+                peakAbs: error.peakAbs,
+            });
+            return;
+        }
+        const message =
+            transport === 'socket'
+                ? defaultMessage || 'There was a problem with the voice socket operation:'
+                : defaultMessage || 'There was a problem with the fetch operation:';
+        console.error(message, error);
+    }
+
+    async requestOmnichannelVoiceTransport({
+        payload,
+        socketAction,
+        socketConfig,
+        socketNormalizePayload,
+        httpPath,
+        httpErrorOperation,
+        operation,
+        enableSilentAudioLogging = false,
+        preferSocket = true,
+    }) {
+        const resolvedSocketConfig = socketConfig || this.getVoiceSocketConfig('tts');
+        const sampleCount = Array.isArray(payload && payload.samples)
+            ? payload.samples.length
+            : null;
+        if (preferSocket && this.isVoiceSocketEnabled(resolvedSocketConfig)) {
+            this.logOmnichannelVoiceRequest({
+                transport: 'socket',
+                action: socketAction,
+                sttMode: payload && payload.sttMode,
+                sampleRate: payload && payload.sampleRate,
+                sampleCount,
+                operation,
+            });
+            try {
+                const data = await this.requestVoiceSocket(socketAction, payload, {
+                    socketConfig: resolvedSocketConfig,
+                });
+                return socketNormalizePayload ? socketNormalizePayload.call(this, data) : data;
+            } catch (error) {
+                this.handleOmnichannelVoiceError(error, {
+                    transport: 'socket',
+                    silentMessage: 'Silent audio blocked before voice-to-text socket request',
+                });
+                throw error;
+            }
+        }
+
+        const httpUrl = this.getOmnichannelApiUrl(httpPath);
+        this.logOmnichannelVoiceRequest({
+            transport: 'http',
+            url: httpUrl,
+            sttMode: payload && payload.sttMode,
+            sampleRate: payload && payload.sampleRate,
+            sampleCount,
+            operation,
+        });
+        try {
+            const response = await fetch(httpUrl, {
+                method: 'POST',
+                headers: this.getOmnichannelHeaders(),
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+                if (httpErrorOperation) {
+                    throw await this.buildHttpError(response, httpErrorOperation);
+                }
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        } catch (error) {
+            this.handleOmnichannelVoiceError(error, {
+                transport: 'http',
+                silentMessage: enableSilentAudioLogging
+                    ? 'Silent audio blocked before voice-to-text API call'
+                    : undefined,
+            });
+            throw error;
+        }
+    }
+
     textToSpeechStream(text = '') {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/${this.voiceId}/stream`;
         const headers = {
@@ -620,35 +764,17 @@ class Voice {
         if (Array.isArray(config.effectsProfileId) && config.effectsProfileId.length) {
             payload.effectsProfileId = config.effectsProfileId;
         }
-
         const socketConfig = this.getVoiceSocketConfig();
-        if (this.isVoiceSocketEnabled(socketConfig)) {
-            return this.requestVoiceSocket(
-                socketConfig.textToVoiceAction || 'text_to_voice',
-                payload
-            )
-                .then((data) => this.normalizeTextToVoiceSocketPayload(data))
-                .catch((error) => {
-                    console.error('There was a problem with the voice socket operation:', error);
-                    throw error;
-                });
-        }
 
-        return fetch(this.getOmnichannelApiUrl('/text-to-voice'), {
-            method: 'POST',
-            headers: this.getOmnichannelHeaders(),
-            body: JSON.stringify(payload),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .catch((error) => {
-                console.error('There was a problem with the fetch operation:', error);
-                throw error;
-            });
+        return this.requestOmnichannelVoiceTransport({
+            payload,
+            socketConfig,
+            socketAction: socketConfig.textToVoiceAction || 'text_to_voice',
+            socketNormalizePayload: this.normalizeTextToVoiceSocketPayload,
+            httpPath: '/text-to-voice',
+            operation: 'textToVoice',
+            preferSocket: true,
+        });
     }
 
     speechToText(audioBlob) {
@@ -723,78 +849,19 @@ class Voice {
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
+        const socketConfig = this.getVoiceSocketConfig('stt');
 
-        const socketConfig = this.getVoiceSocketConfig();
-        if (this.isVoiceSocketEnabled(socketConfig)) {
-            console.debug('Voice STT request send (socket)', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                provider: 'omnichannel',
-                transport: 'socket',
-                action: socketConfig.voiceToTextAction || 'voice_to_text',
-                sttMode: payload.sttMode,
-                sampleRate: payload.sampleRate,
-                sampleCount: Array.isArray(payload.samples) ? payload.samples.length : 0,
-            });
-            return this.requestVoiceSocket(
-                socketConfig.voiceToTextAction || 'voice_to_text',
-                payload
-            )
-                .then((data) => this.normalizeVoiceToTextSocketPayload(data))
-                .catch((error) => {
-                    if (error && error.code === 'SILENT_AUDIO') {
-                        console.warn('Silent audio blocked before voice-to-text socket request', {
-                            sampleCount: error.sampleCount,
-                            nonZeroRatio: error.nonZeroRatio,
-                            rms: error.rms,
-                            peakAbs: error.peakAbs,
-                        });
-                    } else {
-                        console.error(
-                            'There was a problem with the voice socket operation:',
-                            error
-                        );
-                    }
-                    throw error;
-                });
-        }
-
-        const voiceToTextUrl = this.getOmnichannelApiUrl('/voice-to-text');
-        console.debug('Voice STT request send (http)', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            transport: 'http',
-            url: voiceToTextUrl,
-            sttMode: payload.sttMode,
-            sampleRate: payload.sampleRate,
-            sampleCount: Array.isArray(payload.samples) ? payload.samples.length : 0,
+        return this.requestOmnichannelVoiceTransport({
+            payload,
+            socketConfig,
+            socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
+            socketNormalizePayload: this.normalizeVoiceToTextSocketPayload,
+            httpPath: '/voice-to-text',
+            httpErrorOperation: 'voice-to-text',
+            operation: 'voiceToText',
+            enableSilentAudioLogging: true,
+            preferSocket: false,
         });
-
-        return fetch(voiceToTextUrl, {
-            method: 'POST',
-            headers: this.getOmnichannelHeaders(),
-            body: JSON.stringify(payload),
-        })
-            .then(async (response) => {
-                if (!response.ok) {
-                    throw await this.buildHttpError(response, 'voice-to-text');
-                }
-                return response.json();
-            })
-            .catch((error) => {
-                if (error && error.code === 'SILENT_AUDIO') {
-                    console.warn('Silent audio blocked before voice-to-text API call', {
-                        sampleCount: error.sampleCount,
-                        nonZeroRatio: error.nonZeroRatio,
-                        rms: error.rms,
-                        peakAbs: error.peakAbs,
-                    });
-                } else {
-                    console.error('There was a problem with the fetch operation:', error);
-                }
-                throw error;
-            });
     }
 
     evaluatePcmInt16Quality(samples = []) {
