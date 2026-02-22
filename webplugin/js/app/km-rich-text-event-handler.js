@@ -134,7 +134,6 @@ Kommunicate.attachmentEventHandler = {
         }
     },
     progressMeter: function (value, key) {
-        var control = document.getElementById('km-progress-meter-input');
         var selector = '.progress-meter-' + key + ' .km-progress-value';
         var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
         if (stopUpload) {
@@ -647,25 +646,19 @@ Kommunicate.richMsgEventHandler = {
             },
         };
         Kommunicate.sendMessage(messagePxy);
-        console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);
         var message = e.target.title;
-        var metadata = {};
-        try {
-            metadata = JSON.parse(e.target.dataset.metadata);
-        } catch (e) {}
+        var metadata = Kommunicate.richMsgEventHandler.parseMetadata(e.target);
         var languageCode = e.target.dataset.languagecode;
-        languageCode && Kommunicate.updateUserLanguage(languageCode);
-        var messagePxy = {
-            message: message, //message to send
-            metadata: metadata,
-        };
-        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
-
         document.getElementById('mck-text-box').setAttribute('data-quick-reply', true);
-        Kommunicate.sendMessage(messagePxy);
+        Kommunicate.richMsgEventHandler.sendRichReplyMessage({
+            e: e,
+            message: message,
+            metadata: metadata,
+            languageCode: languageCode,
+        });
     },
     processClickOnListItem: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);
@@ -675,24 +668,17 @@ Kommunicate.richMsgEventHandler = {
         var articleId = target.dataset.articleid;
         var source = target.dataset.source;
         var languageCode = target.dataset.languagecode;
-        var metadata = {};
-
-        try {
-            metadata = JSON.parse(target.dataset.metadata);
-        } catch (e) {
-            console.error('Metadata is not parsable' + e);
-        }
+        var metadata = Kommunicate.richMsgEventHandler.parseMetadata(target, true);
 
         metadata.KM_FAQ_ID = articleId;
         metadata.source = source;
         if (type && type == 'quick_reply') {
-            languageCode && Kommunicate.updateUserLanguage(languageCode);
-            var messagePxy = {
-                message: reply, //message to send
+            Kommunicate.richMsgEventHandler.sendRichReplyMessage({
+                e: e,
+                message: reply,
                 metadata: metadata,
-            };
-            Kommunicate.richMsgEventHandler.handleDisableCTA(e);
-            Kommunicate.sendMessage(messagePxy);
+                languageCode: languageCode,
+            });
         } else if (type && type == 'submit') {
             //TODO : support for post request with data.
         }
@@ -707,14 +693,12 @@ Kommunicate.richMsgEventHandler = {
         var metadata = (target.dataset && target.dataset.metadata) || {};
         metadata.KM_BUTTON_CLICKED = true;
         if (type && type == 'quick_reply') {
-            languageCode && Kommunicate.updateUserLanguage(languageCode);
-            var messagePxy = {
-                message: reply, //message to send
+            Kommunicate.richMsgEventHandler.sendRichReplyMessage({
+                e: e,
+                message: reply,
                 metadata: metadata,
-            };
-
-            Kommunicate.richMsgEventHandler.handleDisableCTA(e);
-            Kommunicate.sendMessage(messagePxy);
+                languageCode: languageCode,
+            });
         } else if (type && type == 'submit') {
             //TODO : support for post request with data.
         }
@@ -723,20 +707,15 @@ Kommunicate.richMsgEventHandler = {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);
         var target = e.currentTarget;
         var reply = target.dataset.reply;
-        var metadata = {};
-        try {
-            metadata = JSON.parse(target.dataset.metadata);
-        } catch (e) {}
+        var metadata = Kommunicate.richMsgEventHandler.parseMetadata(target);
 
         // default value for  metadata.skipBot is true for backward compatibility
         metadata.skipBot = typeof metadata.skipBot != 'undefined' ? metadata.skipBot : true;
-        var messagePxy = {
-            message: reply, //message to send
+        Kommunicate.richMsgEventHandler.sendRichReplyMessage({
+            e: e,
+            message: reply,
             metadata: metadata,
-        };
-
-        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
-        Kommunicate.sendMessage(messagePxy);
+        });
     },
     handleLinkButtonClick: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);
@@ -760,5 +739,25 @@ Kommunicate.richMsgEventHandler = {
             (ele = {}) => (ele.disabled = false)
         );
         Kommunicate.richMsgEventHandler.disabledCTAMap = [];
+    },
+    parseMetadata: function (target, logOnError) {
+        var metadata = {};
+        if (!target || !target.dataset || !target.dataset.metadata) {
+            return metadata;
+        }
+        try {
+            metadata = JSON.parse(target.dataset.metadata);
+        } catch (e) {
+            logOnError && console.error('Metadata is not parsable' + e);
+        }
+        return metadata;
+    },
+    sendRichReplyMessage: function ({ e, message, metadata, languageCode }) {
+        languageCode && Kommunicate.updateUserLanguage(languageCode);
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
+        Kommunicate.sendMessage({
+            message: message,
+            metadata: metadata,
+        });
     },
 };
