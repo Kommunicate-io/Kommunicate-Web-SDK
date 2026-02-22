@@ -2210,11 +2210,6 @@ class MckVoice {
                 this.isVoiceInterfaceVisible() &&
                 this.audioElement === null
             ) {
-                const listeningLabel = this.getVoiceLabel(
-                    'voiceInterface.listening',
-                    'Listening...'
-                );
-                this.updateVoiceStatus(listeningLabel, true);
                 this.requestAudioRecording();
             }
         }, delay);
@@ -2544,6 +2539,9 @@ class MckVoice {
         this.isInSilence = false;
         this.clearSilenceTimeout();
         this.silenceStart = null;
+        const hearingLabel = this.getVoiceLabel('voiceInterface.hearingYou', 'Hearing you...');
+        this.updateVoiceStatus(hearingLabel, true);
+        this.showVoiceProgressMessage(hearingLabel, { state: 'listening' });
         if (!this.firstSpeechTimestamp) {
             this.firstSpeechTimestamp = Date.now();
         }
@@ -2555,6 +2553,9 @@ class MckVoice {
         }
         this.speechDetected = false;
         this.isInSilence = true;
+        const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
+        this.updateVoiceStatus(listeningLabel, true);
+        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
         this.silenceStart = Date.now();
         this.startSilenceTimeout();
     }
