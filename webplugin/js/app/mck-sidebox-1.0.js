@@ -3533,9 +3533,8 @@ const firstVisibleMsg = {
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
                             loadUtils: function () {
-                                return import(
-                                    'https://cdn.kommunicate.io/resources/third-party-scripts/intl-tel-utils.js'
-                                );
+                                var staticPath = window.MCK_STATICPATH || '';
+                                return import(staticPath + '/lib/js/intl-tel-utils.js');
                             },
                             formatAsYouType: false,
                             strictMode: false,
