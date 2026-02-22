@@ -77,6 +77,8 @@ class MckVoice {
         this.pendingVoiceSessionSource = null;
         this.consecutiveEmptySttResponses = 0;
         this.lastEmptySttResponseAt = 0;
+        this.voiceProgressElement = null;
+        this.voiceProgressAutoHideTimeout = null;
         this.VOICE_ENTRY_SOURCE = {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
             CONVERSATIONS_SCREEN: 'conversations_screen',
@@ -201,6 +203,7 @@ class MckVoice {
 
     async processMessagesAsAudio(msg, displayName) {
         try {
+            this.clearVoiceProgressMessage();
             this.messagesQueue.push({ msg, displayName });
             if (this.messagesQueue.length === 1) {
                 this.processNextMessage(msg, displayName);
@@ -978,6 +981,10 @@ class MckVoice {
                     this.updateVoiceStatus(
                         this.getVoiceLabel('voiceInterface.processing', 'Processing')
                     );
+                    this.showVoiceProgressMessage(
+                        this.getVoiceLabel('voiceInterface.transcribing', 'Transcribing...'),
+                        { state: 'transcribing' }
+                    );
                     let data = null;
                     try {
                         data = await this.transcribePreparedVoiceChunks(chunks, sampleRate);
@@ -1093,6 +1100,7 @@ class MckVoice {
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.updateLiveTranscript('');
+        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
     }
 
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
@@ -1822,6 +1830,54 @@ class MckVoice {
         }
     }
 
+    getVoiceProgressContainer() {
+        return document.querySelector('#mck-message-cell .mck-message-inner');
+    }
+
+    clearVoiceProgressAutoHide() {
+        if (this.voiceProgressAutoHideTimeout) {
+            clearTimeout(this.voiceProgressAutoHideTimeout);
+            this.voiceProgressAutoHideTimeout = null;
+        }
+    }
+
+    showVoiceProgressMessage(text, { state = 'listening', autoHide = 0 } = {}) {
+        const container = this.getVoiceProgressContainer();
+        if (!container) {
+            return;
+        }
+        this.clearVoiceProgressAutoHide();
+        if (!this.voiceProgressElement || !this.voiceProgressElement.isConnected) {
+            const wrapper = document.createElement('div');
+            wrapper.id = 'km-voice-progress-message';
+            wrapper.className = 'km-voice-progress-message';
+            const bubble = document.createElement('div');
+            bubble.className = 'km-voice-progress-bubble';
+            wrapper.appendChild(bubble);
+            container.appendChild(wrapper);
+            this.voiceProgressElement = wrapper;
+        }
+        this.voiceProgressElement.dataset.state = state;
+        const bubble = this.voiceProgressElement.querySelector('.km-voice-progress-bubble');
+        if (bubble) {
+            bubble.textContent = text || '';
+        }
+        container.scrollTop = container.scrollHeight;
+        if (autoHide > 0) {
+            this.voiceProgressAutoHideTimeout = setTimeout(() => {
+                this.clearVoiceProgressMessage();
+            }, autoHide);
+        }
+    }
+
+    clearVoiceProgressMessage() {
+        this.clearVoiceProgressAutoHide();
+        if (this.voiceProgressElement && this.voiceProgressElement.parentNode) {
+            this.voiceProgressElement.parentNode.removeChild(this.voiceProgressElement);
+        }
+        this.voiceProgressElement = null;
+    }
+
     exitVoiceModeWithMessage(labelKeyOrMessage, fallbackOrOptions) {
         this.stopVoiceMode();
 
@@ -1878,6 +1934,7 @@ class MckVoice {
             );
             return false;
         }
+        this.clearVoiceProgressMessage();
         kommunicate.sendMessage({
             contentType: 10,
             source: 1,
@@ -2629,6 +2686,7 @@ class MckVoice {
         this.clearVoiceStatus();
         this.updateLiveTranscript('');
         this.updateResponseText('');
+        this.clearVoiceProgressMessage();
         this.hideInlineStatus();
         this.hideInlineMicButton();
         this.updateMuteButton();

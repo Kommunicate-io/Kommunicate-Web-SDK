@@ -7,6 +7,15 @@ $voice-primary-start: #6c5ce7;
 $voice-primary-end: #5b4fd8;
 $voice-listening-start: #4facfe;
 $voice-listening-end: #00f2fe;
+$voice-progress-text: var(--km-font-body-color, #334155);
+$voice-progress-bg: var(--km-tabicon-bg, #edf0f5);
+$voice-progress-border: rgba($voice-primary-start, 0.26);
+$voice-progress-listening-bg: rgba($voice-listening-start, 0.14);
+$voice-progress-listening-border: rgba($voice-listening-start, 0.4);
+$voice-progress-listening-text: #0f766e;
+$voice-progress-transcribing-bg: rgba(#ff9f7b, 0.16);
+$voice-progress-transcribing-border: rgba(#ff9f7b, 0.45);
+$voice-progress-transcribing-text: #9a3412;
 
 #mck-voice-interface {
     display: none;
@@ -100,6 +109,37 @@ $voice-listening-end: #00f2fe;
 #km-voice-inline-text,
 .km-voice-inline-left {
     @include voice-visually-hidden;
+}
+
+.km-voice-progress-message {
+    display: flex;
+    justify-content: flex-end;
+    margin: 8px 12px 8px 0;
+    pointer-events: none;
+}
+
+.km-voice-progress-bubble {
+    max-width: 78%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: $voice-progress-text;
+    background: $voice-progress-bg;
+    border: 1px solid $voice-progress-border;
+    box-shadow: 0 1px 4px rgba($voice-primary-start, 0.12);
+}
+
+.km-voice-progress-message[data-state='listening'] .km-voice-progress-bubble {
+    background: $voice-progress-listening-bg;
+    border-color: $voice-progress-listening-border;
+    color: $voice-progress-listening-text;
+}
+
+.km-voice-progress-message[data-state='transcribing'] .km-voice-progress-bubble {
+    background: $voice-progress-transcribing-bg;
+    border-color: $voice-progress-transcribing-border;
+    color: $voice-progress-transcribing-text;
 }
 
 /* ========================================

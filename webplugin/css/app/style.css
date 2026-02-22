@@ -4288,6 +4288,37 @@ div#mck-rated:before {
   border: 0;
 }
 
+.km-voice-progress-message {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 12px 8px 0;
+  pointer-events: none;
+}
+
+.km-voice-progress-bubble {
+  max-width: 78%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--km-font-body-color, #334155);
+  background: var(--km-tabicon-bg, #edf0f5);
+  border: 1px solid rgba(108, 92, 231, 0.26);
+  box-shadow: 0 1px 4px rgba(108, 92, 231, 0.12);
+}
+
+.km-voice-progress-message[data-state=listening] .km-voice-progress-bubble {
+  background: rgba(79, 172, 254, 0.14);
+  border-color: rgba(79, 172, 254, 0.4);
+  color: #0f766e;
+}
+
+.km-voice-progress-message[data-state=transcribing] .km-voice-progress-bubble {
+  background: rgba(255, 159, 123, 0.16);
+  border-color: rgba(255, 159, 123, 0.45);
+  color: #9a3412;
+}
+
 /* ========================================
    ACTION BUTTON (Switch to Chat)
    ======================================== */
