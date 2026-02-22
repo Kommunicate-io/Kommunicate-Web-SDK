@@ -80,6 +80,8 @@ class MckVoice {
         this.lastEmptySttResponseAt = 0;
         this.voiceProgressElement = null;
         this.voiceProgressAutoHideTimeout = null;
+        this.awaitingBotResponsePlayback = false;
+        this.awaitingBotResponseTimeout = null;
         this.VOICE_ENTRY_SOURCE = {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
             CONVERSATIONS_SCREEN: 'conversations_screen',
@@ -381,13 +383,13 @@ class MckVoice {
                 console.debug('Playback ended, starting recede animation');
 
                 // Wait for animation to complete before removing all classes
+                this.audioElement = null;
+                this.scheduleAutoListen(0);
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                     this.removeAllAnimation();
-                    this.scheduleAutoListen();
                     this.clearVoiceStatus();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
-                this.audioElement = null;
             });
 
             async function processStream() {
@@ -504,13 +506,13 @@ class MckVoice {
             ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
             ring1.classList.add('ring-recede');
 
+            this.audioElement = null;
+            this.scheduleAutoListen(0);
             setTimeout(() => {
                 ring1.classList.remove('ring-recede');
                 this.removeAllAnimation();
-                this.scheduleAutoListen();
                 this.clearVoiceStatus();
             }, this._RING_RECEDE_DURATION);
-            this.audioElement = null;
         });
     }
 
@@ -569,7 +571,8 @@ class MckVoice {
             this.processNextMessage(nextMsg.msg, nextMsg.displayName);
             return;
         }
-        this.scheduleAutoListen();
+        this.setAwaitingBotResponsePlayback(false);
+        this.scheduleAutoListen(0);
     }
 
     handlePlaybackFailure(error) {
@@ -633,12 +636,12 @@ class MckVoice {
                 console.debug('Playback ended, starting recede animation');
 
                 // Remove ring-recede class after animation completes
+                this.audioElement = null;
+                this.scheduleAutoListen(0);
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
-                    this.scheduleAutoListen();
                     this.clearVoiceStatus();
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
-                this.audioElement = null;
             };
         } catch (error) {
             console.error('Playback failed:', error);
@@ -2027,6 +2030,7 @@ class MckVoice {
             );
             return false;
         }
+        this.setAwaitingBotResponsePlayback(true);
         this.clearVoiceProgressMessage();
         kommunicate.sendMessage({
             contentType: 10,
@@ -2095,6 +2099,25 @@ class MckVoice {
         if (this.responseTimeout) {
             clearTimeout(this.responseTimeout);
             this.responseTimeout = null;
+        }
+    }
+
+    clearAwaitingBotResponseTimeout() {
+        if (this.awaitingBotResponseTimeout) {
+            clearTimeout(this.awaitingBotResponseTimeout);
+            this.awaitingBotResponseTimeout = null;
+        }
+    }
+
+    setAwaitingBotResponsePlayback(isPending, timeoutMs = 15000) {
+        this.awaitingBotResponsePlayback = Boolean(isPending);
+        this.clearAwaitingBotResponseTimeout();
+        if (this.awaitingBotResponsePlayback) {
+            this.awaitingBotResponseTimeout = setTimeout(() => {
+                this.awaitingBotResponsePlayback = false;
+                this.awaitingBotResponseTimeout = null;
+                this.scheduleAutoListen(0);
+            }, timeoutMs);
         }
     }
 
@@ -2169,6 +2192,8 @@ class MckVoice {
             !this.autoListeningEnabled ||
             this.voiceMuted ||
             this.isRecording ||
+            this.awaitingBotResponsePlayback ||
+            this.messagesQueue.length > 0 ||
             !this.isVoiceInterfaceVisible() ||
             this.audioElement !== null
         ) {
@@ -2180,6 +2205,8 @@ class MckVoice {
                 this.autoListeningEnabled &&
                 !this.voiceMuted &&
                 !this.isRecording &&
+                !this.awaitingBotResponsePlayback &&
+                this.messagesQueue.length === 0 &&
                 this.isVoiceInterfaceVisible() &&
                 this.audioElement === null
             ) {
@@ -2769,6 +2796,7 @@ class MckVoice {
         this.disableAutoListening();
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
+        this.setAwaitingBotResponsePlayback(false);
         this.resetVoicePlaybackQueue('stop_voice_mode');
         this.nativeRecognitionShouldRestart = false;
         this.stopRecording(true);
