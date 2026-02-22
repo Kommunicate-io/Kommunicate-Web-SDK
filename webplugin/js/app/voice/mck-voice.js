@@ -10,7 +10,7 @@ class MckVoice {
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     _VOICE_START_THRESHOLD_RMS = 180;
     _VOICE_STOP_THRESHOLD_RMS = 120;
-    _VOICE_PRE_ROLL_MS = 250;
+    _VOICE_PRE_ROLL_MS = 700;
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 250;
     _VOICE_MAX_CHUNK_MS = 2800;
@@ -384,11 +384,14 @@ class MckVoice {
 
                 // Wait for animation to complete before removing all classes
                 this.audioElement = null;
-                this.scheduleAutoListen(0);
+                this.setAwaitingBotResponsePlayback(false);
+                this.resumeListeningAfterPlayback();
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
-                    this.removeAllAnimation();
-                    this.clearVoiceStatus();
+                    if (!this.isRecording) {
+                        this.removeAllAnimation();
+                        this.clearVoiceStatus();
+                    }
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
             });
 
@@ -507,11 +510,14 @@ class MckVoice {
             ring1.classList.add('ring-recede');
 
             this.audioElement = null;
-            this.scheduleAutoListen(0);
+            this.setAwaitingBotResponsePlayback(false);
+            this.resumeListeningAfterPlayback();
             setTimeout(() => {
                 ring1.classList.remove('ring-recede');
-                this.removeAllAnimation();
-                this.clearVoiceStatus();
+                if (!this.isRecording) {
+                    this.removeAllAnimation();
+                    this.clearVoiceStatus();
+                }
             }, this._RING_RECEDE_DURATION);
         });
     }
@@ -561,7 +567,6 @@ class MckVoice {
     onNativeSpeechEnded() {
         this.nativeSpeechUtterance = null;
         this.removeAllAnimation();
-        this.clearVoiceStatus();
         this.advanceQueueAfterPlayback();
     }
 
@@ -572,7 +577,7 @@ class MckVoice {
             return;
         }
         this.setAwaitingBotResponsePlayback(false);
-        this.scheduleAutoListen(0);
+        this.resumeListeningAfterPlayback();
     }
 
     handlePlaybackFailure(error) {
@@ -637,10 +642,12 @@ class MckVoice {
 
                 // Remove ring-recede class after animation completes
                 this.audioElement = null;
-                this.scheduleAutoListen(0);
+                this.resumeListeningAfterPlayback();
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
-                    this.clearVoiceStatus();
+                    if (!this.isRecording) {
+                        this.clearVoiceStatus();
+                    }
                 }, this._RING_RECEDE_DURATION); // Match animation duration in CSS
             };
         } catch (error) {
@@ -819,6 +826,13 @@ class MckVoice {
         suppressPermissionAlert = false,
         trackPermission = false,
     } = {}) {
+        if (this.awaitingBotResponsePlayback || this.messagesQueue.length > 0) {
+            return false;
+        }
+        if (this.audioElement && !this.audioElement.paused && !this.audioElement.ended) {
+            this.deferRecordingUntilPlaybackEnds();
+            return false;
+        }
         if (this.isRecording) {
             this.stopRecording();
             return false;
@@ -960,15 +974,28 @@ class MckVoice {
 
         // Handle recording stop event
         this.mediaRecorder.onstop = async () => {
+            const shouldProcessRecording = Boolean(this.isRecording);
+            // Mark recording as ended immediately so stale VAD/silence loops
+            // cannot keep firing while STT work is still running.
+            this.isRecording = false;
+            this.clearSilenceTimeout();
+            if (this.silenceTimer) {
+                clearInterval(this.silenceTimer);
+                this.silenceTimer = null;
+            }
+            if (this.maxRecordingTimer) {
+                clearTimeout(this.maxRecordingTimer);
+                this.maxRecordingTimer = null;
+            }
             console.debug('Voice recording onstop fired', {
                 ts: Date.now(),
                 iso: new Date().toISOString(),
                 chunkCount: this.audioChunks.length,
-                isRecording: this.isRecording,
+                wasRecording: shouldProcessRecording,
             });
             try {
                 // Create blob from recorded chunks
-                if (this.isRecording) {
+                if (shouldProcessRecording) {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
                     const sampleRate = kmVoice.getVoiceToTextSampleRate();
                     const rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
@@ -1074,9 +1101,8 @@ class MckVoice {
                 );
             } finally {
                 // Clean up the stream tracks
-                this.stream.getTracks().forEach((track) => track.stop());
+                this.stream && this.stream.getTracks().forEach((track) => track.stop());
                 this.stream = null;
-                this.isRecording = false;
                 this.lastRecordingEnd = Date.now();
 
                 // Clear any silence detection timers
@@ -1238,6 +1264,21 @@ class MckVoice {
                 anchorFrames,
             });
             firstSpeechFrameIndex = anchoredStartIndex;
+        }
+
+        // If speech appears near the beginning, keep the capture from frame 0 so
+        // opening words are not clipped by threshold warm-up.
+        if (
+            firstStopSpeechFrameIndex !== -1 &&
+            firstStopSpeechFrameIndex <= Math.max(minVoicedFrames * 3, 6) &&
+            firstSpeechFrameIndex > 0
+        ) {
+            console.debug('Voice VAD start preserved from beginning for early speech', {
+                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
+                firstStopSpeechFrameIndex,
+                minVoicedFrames,
+            });
+            firstSpeechFrameIndex = 0;
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
@@ -2180,9 +2221,9 @@ class MckVoice {
         this.clearVoiceModeTimeout();
     }
 
-    scheduleAutoListen(delay = 300) {
+    scheduleAutoListen(delay = 300, { skipCooldown = false } = {}) {
         this.clearAutoListenTimeout();
-        if (this.lastRecordingEnd) {
+        if (!skipCooldown && this.lastRecordingEnd) {
             const cooldownElapsed = Date.now() - this.lastRecordingEnd;
             if (cooldownElapsed < this._AUTO_LISTEN_COOLDOWN) {
                 delay = Math.max(delay, this._AUTO_LISTEN_COOLDOWN - cooldownElapsed);
@@ -2213,6 +2254,13 @@ class MckVoice {
                 this.requestAudioRecording();
             }
         }, delay);
+    }
+
+    resumeListeningAfterPlayback() {
+        const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
+        this.updateVoiceStatus(listeningLabel, true);
+        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+        this.scheduleAutoListen(0, { skipCooldown: true });
     }
     updateMuteButton() {
         const button = document.getElementById('mck-voice-speak-btn');
@@ -2396,9 +2444,9 @@ class MckVoice {
         const frameDurationMs = (fftSize / sampleRate) * 1000;
         const historyMs = vadSettings.historyMs ?? 2000;
         const maxHistoryFrames = Math.max(1, Math.round(historyMs / Math.max(frameDurationMs, 1)));
-        // Calibration: suppress speech detection for the first ~400ms so the noise
+        // Calibration: suppress speech detection briefly so the noise
         // floor has time to converge before we start listening for speech.
-        const calibrationMs = vadSettings.calibrationMs ?? 400;
+        const calibrationMs = vadSettings.calibrationMs ?? 180;
         const calibrationFrameTarget = Math.max(
             1,
             Math.round(calibrationMs / Math.max(frameDurationMs, 1))
