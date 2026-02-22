@@ -14,6 +14,7 @@ class MckVoice {
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 250;
     _VOICE_MAX_CHUNK_MS = 2800;
+    _VOICE_STT_MERGE_MAX_MS = 30000;
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
@@ -171,8 +172,12 @@ class MckVoice {
             config.language ||
             (typeof navigator !== 'undefined' && navigator.language) ||
             'en-US';
-        const silenceStopMs =
+        const rawSilenceStopMs =
             config.silenceStopMs ?? config.silenceDuration ?? this._SILENCE_DURATION;
+        const normalizedSilenceStopMs =
+            Number(rawSilenceStopMs) > 0 ? Number(rawSilenceStopMs) : this._SILENCE_DURATION;
+        // Guardrail: avoid very large silence windows that delay first STT call.
+        const silenceStopMs = Math.min(Math.max(normalizedSilenceStopMs, 300), 2500);
         return {
             recognitionMode: requestedMode,
             voiceLanguage: language,
@@ -203,6 +208,15 @@ class MckVoice {
 
     async processMessagesAsAudio(msg, displayName) {
         try {
+            // If bot response audio is about to play, stop any active recording capture.
+            // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
+            if (this.isRecording) {
+                console.debug('Stopping active recording before bot audio playback queueing', {
+                    ts: Date.now(),
+                    iso: new Date().toISOString(),
+                });
+                this.stopRecording(true);
+            }
             this.clearVoiceProgressMessage();
             this.messagesQueue.push({ msg, displayName });
             if (this.messagesQueue.length === 1) {
@@ -1278,7 +1292,9 @@ class MckVoice {
             return null;
         }
         const transcriptParts = [];
+        const acceptedChunkSamples = [];
         let sentSamplesCount = 0;
+        let sttRequestCount = 0;
         const minSamplesToSend = Number(
             this.voiceInputSettings.minSamplesToSend || this._VOICE_MIN_SAMPLES_TO_SEND
         );
@@ -1300,6 +1316,95 @@ class MckVoice {
             this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
         );
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
+        const maxMergedChunkMs = Number(
+            this.voiceInputSettings.sttMergeMaxMs || this._VOICE_STT_MERGE_MAX_MS
+        );
+        const maxMergedSamples = Math.max(
+            frameSize,
+            Math.round((sampleRate * Math.max(1000, maxMergedChunkMs)) / 1000)
+        );
+
+        const sendSamplesForStt = async (samples, label = '') => {
+            if (!samples || !samples.length) {
+                return null;
+            }
+            sentSamplesCount += samples.length;
+            const chunkBlob = kmVoice.createWavBlobFromPcmData(
+                Int16Array.from(samples),
+                sampleRate,
+                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
+                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
+            );
+            sttRequestCount++;
+            let response;
+            try {
+                response =
+                    this.activeRecognitionMode === 'omnichannel'
+                        ? await kmVoice.voiceToText(chunkBlob, {
+                              ucid: this.voiceInputSettings.ucid,
+                              sttMode: 'recognize',
+                          })
+                        : await kmVoice.speechToText(chunkBlob);
+            } catch (error) {
+                if (error && error.code === 'SILENT_AUDIO') {
+                    return null;
+                }
+                throw error;
+            }
+            if (response && typeof response.text === 'string' && response.text.trim()) {
+                transcriptParts.push(response.text.trim());
+                this.consecutiveEmptySttResponses = 0;
+                this.lastEmptySttResponseAt = 0;
+                return response;
+            }
+            this.consecutiveEmptySttResponses++;
+            this.lastEmptySttResponseAt = Date.now();
+            console.debug('Empty STT response received for chunk', {
+                label,
+                consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
+                sampleCount: samples.length,
+            });
+            return response || null;
+        };
+
+        const mergeChunkGroups = (candidateChunks, maxSamplesPerGroup) => {
+            const groups = [];
+            let currentGroup = [];
+            let currentSampleCount = 0;
+            for (let i = 0; i < candidateChunks.length; i++) {
+                const candidate = candidateChunks[i];
+                const candidateLength = candidate.length;
+                if (
+                    currentGroup.length &&
+                    currentSampleCount + candidateLength > maxSamplesPerGroup
+                ) {
+                    groups.push(currentGroup);
+                    currentGroup = [];
+                    currentSampleCount = 0;
+                }
+                currentGroup.push(candidate);
+                currentSampleCount += candidateLength;
+            }
+            if (currentGroup.length) {
+                groups.push(currentGroup);
+            }
+            return groups;
+        };
+
+        const flattenChunkGroup = (group) => {
+            const totalSamples = group.reduce(
+                (total, chunkSamples) => total + chunkSamples.length,
+                0
+            );
+            const merged = new Int16Array(totalSamples);
+            let offset = 0;
+            for (let i = 0; i < group.length; i++) {
+                merged.set(group[i], offset);
+                offset += group[i].length;
+            }
+            return merged;
+        };
+
         for (let i = 0; i < chunks.length; i++) {
             const chunkSamples = chunks[i];
             if (!chunkSamples || !chunkSamples.length) {
@@ -1434,48 +1539,36 @@ class MckVoice {
                 });
                 continue;
             }
-            sentSamplesCount += processedChunkSamples.length;
-            const chunkBlob = kmVoice.createWavBlobFromPcmData(
-                Int16Array.from(processedChunkSamples),
-                sampleRate,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
-            );
-            let response;
-            try {
-                response =
-                    this.activeRecognitionMode === 'omnichannel'
-                        ? await kmVoice.voiceToText(chunkBlob, {
-                              ucid: this.voiceInputSettings.ucid,
-                              sttMode: 'recognize',
-                          })
-                        : await kmVoice.speechToText(chunkBlob);
-            } catch (error) {
-                if (error && error.code === 'SILENT_AUDIO') {
-                    continue;
-                }
-                throw error;
+            acceptedChunkSamples.push(Int16Array.from(processedChunkSamples));
+        }
+
+        if (!acceptedChunkSamples.length) {
+            console.debug('Voice final samples count sent', {
+                finalSamplesCount: 0,
+                chunkCount: chunks.length,
+                acceptedChunkCount: 0,
+                sttRequestCount: 0,
+            });
+            return null;
+        }
+
+        if (this.activeRecognitionMode === 'omnichannel') {
+            const mergedGroups = mergeChunkGroups(acceptedChunkSamples, maxMergedSamples);
+            for (let i = 0; i < mergedGroups.length; i++) {
+                const mergedSamples = flattenChunkGroup(mergedGroups[i]);
+                await sendSamplesForStt(mergedSamples, `merged-${i}`);
             }
-            if (response && typeof response.text === 'string' && response.text.trim()) {
-                transcriptParts.push(response.text.trim());
-                this.consecutiveEmptySttResponses = 0;
-                this.lastEmptySttResponseAt = 0;
-            } else {
-                this.consecutiveEmptySttResponses++;
-                this.lastEmptySttResponseAt = Date.now();
-                console.debug('Empty STT response received for chunk', {
-                    index: i,
-                    consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                    chunkRms,
-                    maxAbs,
-                    stopVoiceRatio,
-                });
+        } else {
+            for (let i = 0; i < acceptedChunkSamples.length; i++) {
+                await sendSamplesForStt(acceptedChunkSamples[i], `chunk-${i}`);
             }
         }
 
         console.debug('Voice final samples count sent', {
             finalSamplesCount: sentSamplesCount,
             chunkCount: chunks.length,
+            acceptedChunkCount: acceptedChunkSamples.length,
+            sttRequestCount,
         });
 
         if (!transcriptParts.length) {
