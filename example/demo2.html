@@ -293,6 +293,19 @@
                         />
                     </div>
 
+                    <div class="compact-row">
+                        <label for="agentId" style="flex: 0 0 auto; min-width: 70px"
+                            >Agent ID</label
+                        >
+                        <input
+                            type="text"
+                            id="agentId"
+                            name="agentId"
+                            placeholder="Optional: route chat to this agent"
+                            style="flex: 1"
+                        />
+                    </div>
+
                     <fieldset>
                         <legend>Layout</legend>
                         <div class="inline-options">
@@ -456,6 +469,7 @@
         <script>
             const defaultState = {
                 appId: 'kommunicate-support',
+                agentId: 'voice-agent-ri5ko',
                 layout: 'modern',
                 containerMode: 'outside',
                 recognitionMode: 'omnichannel',
@@ -496,6 +510,7 @@
             );
             const pendingConfigKey = 'kommunicate-demo-pending-config';
             const appIdInput = document.getElementById('appId');
+            const agentIdInput = document.getElementById('agentId');
             const voiceModeEnabledCheckbox = document.getElementById('voiceModeEnabled');
             const recognitionModeRadios = document.querySelectorAll(
                 'input[name="recognitionMode"]'
@@ -507,6 +522,7 @@
 
             function resetForm() {
                 document.getElementById('appId').value = defaultState.appId;
+                agentIdInput.value = defaultState.agentId;
                 document.querySelector(
                     `input[name="layout"][value="${defaultState.layout}"]`
                 ).checked = true;
@@ -573,6 +589,8 @@
                 }
 
                 document.getElementById('appId').value = config.appId || defaultState.appId;
+                agentIdInput.value =
+                    typeof config.agentId === 'string' ? config.agentId : defaultState.agentId;
                 const layoutValue = allowedLayouts.includes(config.layout)
                     ? config.layout
                     : defaultState.layout;
@@ -660,6 +678,7 @@
 
                 return {
                     appId: document.getElementById('appId').value.trim() || defaultState.appId,
+                    agentId: agentIdInput.value.trim(),
                     layout,
                     containerMode,
                     recognitionMode,
@@ -702,6 +721,12 @@
                     ],
                 };
 
+                const existingOnInit =
+                    globalSettings.onInit ||
+                    (window.kommunicate &&
+                        window.kommunicate._globals &&
+                        window.kommunicate._globals.onInit);
+
                 if (config.containerMode === 'inside') {
                     globalSettings.popupWidget = false;
                     globalSettings.containerId = config.containerId;
@@ -717,6 +742,31 @@
 
                 if (Array.isArray(config.preChat) && config.preChat.length) {
                     globalSettings.preLeadCollection = config.preChat;
+                }
+
+                if (config.agentId) {
+                    const agentRoutingSettings = {
+                        defaultAgentIds: [config.agentId],
+                        defaultAssignee: config.agentId,
+                        skipRouting: true,
+                    };
+                    globalSettings.onInit = function () {
+                        try {
+                            if (
+                                typeof Kommunicate !== 'undefined' &&
+                                Kommunicate &&
+                                typeof Kommunicate.updateSettings === 'function'
+                            ) {
+                                Kommunicate.updateSettings(agentRoutingSettings);
+                            }
+                        } catch (error) {
+                            console.error('Failed to apply agent routing settings', error);
+                        }
+
+                        if (typeof existingOnInit === 'function') {
+                            existingOnInit.apply(this, arguments);
+                        }
+                    };
                 }
 
                 const existingScript = document.getElementById('kommunicate-widget-script');
