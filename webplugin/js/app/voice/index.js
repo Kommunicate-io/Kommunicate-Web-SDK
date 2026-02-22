@@ -210,6 +210,24 @@ class Voice {
             values = navigator.languages;
         }
         const normalizedPrimaryLanguageCode = this.normalizeLanguageCode(primaryLanguageCode);
+        const primaryParts = normalizedPrimaryLanguageCode.split('-');
+        const primaryRegion = primaryParts.length > 1 ? String(primaryParts[1]).toUpperCase() : '';
+        const primaryLanguage = (primaryParts[0] || '').toLowerCase();
+        const userLocale = this.normalizeLanguageCode(
+            (typeof kommunicate !== 'undefined' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.userLocale) ||
+                ''
+        );
+        const navigatorLocale = this.normalizeLanguageCode(
+            (typeof navigator !== 'undefined' && navigator.language) || ''
+        );
+        const localeSignals = [normalizedPrimaryLanguageCode, userLocale, navigatorLocale];
+        const isIndiaLocale = localeSignals.some((localeCode) => /-IN$/i.test(localeCode));
+        if (isIndiaLocale || primaryRegion === 'IN' || primaryLanguage === 'hi') {
+            values = values.concat(['en-IN', 'hi-IN']);
+        }
         const uniqueCodes = [];
         values.forEach((code) => {
             const normalizedCode = this.normalizeLanguageCode(code);
@@ -751,7 +769,7 @@ class Voice {
         const payload = {
             text,
             source: this.getOmnichannelSource(this.voiceChatConfig.source),
-            // languageCode: this.getVoiceLanguageCode(),
+            languageCode: this.getVoiceLanguageCode(),
             sampleRate: this.getTextToVoiceSampleRate(),
         };
         const config = this.voiceChatConfig || {};
@@ -831,12 +849,12 @@ class Voice {
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
             sttMode: 'recognize',
-            // languageCode: this.getVoiceLanguageCode(),
+            languageCode: this.getVoiceLanguageCode(),
         };
-        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
-        // if (alternativeLanguageCodes.length) {
-        //     payload.alternativeLanguageCodes = alternativeLanguageCodes;
-        // }
+        const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
+        if (alternativeLanguageCodes.length) {
+            payload.alternativeLanguageCodes = alternativeLanguageCodes;
+        }
         const activeConversationUcid =
             typeof CURRENT_GROUP_DATA !== 'undefined' &&
             CURRENT_GROUP_DATA &&
