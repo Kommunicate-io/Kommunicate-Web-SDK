@@ -129,7 +129,7 @@ function KommunicateCommons() {
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
             !_this.isModernLayoutEnabled ||
-            !_this.isModernLayoutEnabled() ||
+            // !_this.isModernLayoutEnabled() ||
             (iframeElement.classList &&
                 (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
@@ -268,9 +268,9 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        if (_this.isModernLayoutEnabled()) {
-            height -= MODERN_NAV_HEIGHT_EXTRA;
-        }
+        // if (_this.isModernLayoutEnabled()) {
+        height -= MODERN_NAV_HEIGHT_EXTRA;
+        // }
         height -= NAV_HEIGHT_OFFSET;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
