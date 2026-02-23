@@ -80,6 +80,8 @@ class MckVoice {
         this.pendingVoiceSessionSource = null;
         this.consecutiveEmptySttResponses = 0;
         this.lastEmptySttResponseAt = 0;
+        this.vadCaptureChunks = [];
+        this.vadCaptureSampleRate = 0;
         this.voiceProgressElement = null;
         this.voiceProgressAutoHideTimeout = null;
         this.awaitingBotResponsePlayback = false;
@@ -157,6 +159,43 @@ class MckVoice {
         return Boolean(isRecordingStarted);
     }
 
+    isSafariBrowser() {
+        if (typeof navigator === 'undefined' || !navigator.userAgent) {
+            return false;
+        }
+        const ua = navigator.userAgent;
+        const isSafari = /Safari/i.test(ua);
+        const isOtherWebkitBrowser = /Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|SamsungBrowser/i.test(
+            ua
+        );
+        return isSafari && !isOtherWebkitBrowser;
+    }
+
+    getAudioCaptureConstraints() {
+        if (this.isSafariBrowser()) {
+            return {
+                audio: {
+                    // Safari can over-process mic input causing weak speech capture.
+                    // Keep capture raw and normalize in STT preprocessing.
+                    echoCancellation: false,
+                    noiseSuppression: false,
+                    autoGainControl: false,
+                    channelCount: 1,
+                    sampleRate: 44100,
+                    sampleSize: 16,
+                },
+            };
+        }
+        return {
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+                channelCount: 1,
+            },
+        };
+    }
+
     getVoiceInputSettings() {
         const config =
             (typeof kommunicate !== 'undefined' &&
@@ -203,17 +242,23 @@ class MckVoice {
             minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
             vad: {
                 startFactor: vadConfig.startFactor ?? 2.2,
-                endFactor: vadConfig.endFactor ?? 1.2,
+                endFactor: vadConfig.endFactor ?? 1.8,
                 startFrames: vadConfig.startFrames ?? 3,
                 endFrames: vadConfig.endFrames ?? 20,
                 noiseAlpha: vadConfig.noiseAlpha ?? 0.95,
                 historyMs: vadConfig.historyMs ?? 2000,
+                minStartRms: vadConfig.minStartRms ?? 0.008,
             },
         };
     }
 
     async processMessagesAsAudio(msg, displayName) {
         try {
+            // Block any pending auto-listen immediately when a bot reply is queued.
+            // This prevents recording from starting in the short async gap before
+            // TTS audio element is created/played.
+            this.clearAutoListenTimeout();
+            this.setAwaitingBotResponsePlayback(true);
             // If bot response audio is about to play, stop any active recording capture.
             // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
             if (this.isRecording) {
@@ -873,7 +918,20 @@ class MckVoice {
 
         // Request audio permission
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const constraints = this.getAudioCaptureConstraints();
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            try {
+                const audioTrack = stream && stream.getAudioTracks && stream.getAudioTracks()[0];
+                const audioSettings =
+                    audioTrack &&
+                    typeof audioTrack.getSettings === 'function' &&
+                    audioTrack.getSettings();
+                console.debug('Voice capture constraints applied', {
+                    constraints,
+                    settings: audioSettings || null,
+                    isSafari: this.isSafariBrowser(),
+                });
+            } catch (_) {}
             this.voiceInputSettings = this.getVoiceInputSettings();
             this.startRecording(stream);
             if (trackPermission) {
@@ -965,6 +1023,8 @@ class MckVoice {
         this.lastRecordingEnd = 0;
         this.silenceNoiseStart = null;
         this.silenceTimeout = null;
+        this.vadCaptureChunks = [];
+        this.vadCaptureSampleRate = 0;
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -1003,7 +1063,21 @@ class MckVoice {
                 if (shouldProcessRecording) {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
                     const sampleRate = kmVoice.getVoiceToTextSampleRate();
-                    const rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
+                    let rawSamples = [];
+                    if (this.isSafariBrowser()) {
+                        rawSamples = this.extractPcmInt16FromVadCapture();
+                        console.debug('Using VAD PCM capture for Safari STT', {
+                            sampleCount: rawSamples.length,
+                            captureSampleRate: this.vadCaptureSampleRate || null,
+                        });
+                    }
+                    if (!rawSamples.length) {
+                        rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
+                        console.debug('Using MediaRecorder blob decode for STT', {
+                            sampleCount: rawSamples.length,
+                            isSafari: this.isSafariBrowser(),
+                        });
+                    }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
                     const { chunks, rawDurationMs, trimmedDurationMs } = preparedAudio;
 
@@ -1108,6 +1182,8 @@ class MckVoice {
                 // Clean up the stream tracks
                 this.stream && this.stream.getTracks().forEach((track) => track.stop());
                 this.stream = null;
+                this.vadCaptureChunks = [];
+                this.vadCaptureSampleRate = 0;
                 this.lastRecordingEnd = Date.now();
 
                 // Clear any silence detection timers
@@ -1391,13 +1467,45 @@ class MckVoice {
             Math.round((sampleRate * Math.max(1000, maxMergedChunkMs)) / 1000)
         );
 
+        const normalizeSamplesForStt = (samples) => {
+            if (!samples || !samples.length) {
+                return samples || new Int16Array(0);
+            }
+            let peak = 0;
+            for (let i = 0; i < samples.length; i++) {
+                const abs = Math.abs(samples[i]);
+                if (abs > peak) {
+                    peak = abs;
+                }
+            }
+            // Safari can produce very low-amplitude PCM even when speech exists.
+            // Boost quiet captures before STT to improve recognition reliability.
+            if (peak > 0 && peak < 2200) {
+                const targetPeak = 14000;
+                const gain = Math.min(targetPeak / peak, 24);
+                const normalized = new Int16Array(samples.length);
+                for (let i = 0; i < samples.length; i++) {
+                    const amplified = Math.round(samples[i] * gain);
+                    normalized[i] = Math.max(-32768, Math.min(32767, amplified));
+                }
+                console.debug('Voice STT input normalized for low amplitude', {
+                    originalPeak: peak,
+                    gain,
+                    sampleCount: samples.length,
+                });
+                return normalized;
+            }
+            return samples;
+        };
+
         const sendSamplesForStt = async (samples, label = '') => {
             if (!samples || !samples.length) {
                 return null;
             }
-            sentSamplesCount += samples.length;
+            const preparedSamples = normalizeSamplesForStt(samples);
+            sentSamplesCount += preparedSamples.length;
             const chunkBlob = kmVoice.createWavBlobFromPcmData(
-                Int16Array.from(samples),
+                Int16Array.from(preparedSamples),
                 sampleRate,
                 kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
                 kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
@@ -1429,7 +1537,7 @@ class MckVoice {
             console.debug('Empty STT response received for chunk', {
                 label,
                 consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                sampleCount: samples.length,
+                sampleCount: preparedSamples.length,
             });
             return response || null;
         };
@@ -1610,6 +1718,44 @@ class MckVoice {
         }
 
         if (!acceptedChunkSamples.length) {
+            // Fallback: Safari/low-gain inputs can fail strict chunk gates even when
+            // speech exists. Send one merged low-threshold attempt instead of returning empty.
+            const mergedSamples = flattenChunkGroup(
+                chunks.map((chunkSamples) => Int16Array.from(chunkSamples || []))
+            );
+            if (mergedSamples.length >= minSamplesToSend) {
+                let nonZero = 0;
+                let maxAbs = 0;
+                for (let i = 0; i < mergedSamples.length; i++) {
+                    const abs = Math.abs(mergedSamples[i]);
+                    if (abs > 0) {
+                        nonZero++;
+                    }
+                    if (abs > maxAbs) {
+                        maxAbs = abs;
+                    }
+                }
+                const nonZeroRatio = nonZero / Math.max(mergedSamples.length, 1);
+                const fallbackPeakThreshold = Math.max(
+                    20,
+                    Math.round(maxAbsSilenceThreshold * 0.35)
+                );
+                if (maxAbs >= fallbackPeakThreshold && nonZeroRatio >= 0.01) {
+                    console.debug(
+                        'Voice fallback accepting merged chunk after strict gate reject',
+                        {
+                            sampleCount: mergedSamples.length,
+                            maxAbs,
+                            nonZeroRatio,
+                            fallbackPeakThreshold,
+                        }
+                    );
+                    acceptedChunkSamples.push(mergedSamples);
+                }
+            }
+        }
+
+        if (!acceptedChunkSamples.length) {
             console.debug('Voice final samples count sent', {
                 finalSamplesCount: 0,
                 chunkCount: chunks.length,
@@ -1709,6 +1855,26 @@ class MckVoice {
             ring.style.opacity = '';
             ring.style.zIndex = '';
         });
+    }
+
+    recoverListeningAfterPlaybackIfIdle(reason = 'unknown') {
+        if (!this.autoListeningEnabled || this.voiceMuted || this.isRecording) {
+            return;
+        }
+        const isAudioActive =
+            this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+        if (isAudioActive || this.messagesQueue.length > 0) {
+            return;
+        }
+        if (this.awaitingBotResponsePlayback) {
+            console.debug('Recovering listening after playback cleanup', {
+                reason,
+                awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
+                queuedMessages: this.messagesQueue.length,
+            });
+            this.setAwaitingBotResponsePlayback(false);
+        }
+        this.resumeListeningAfterPlayback();
     }
 
     createAudioVisualizer(audioElement) {
@@ -1829,6 +1995,9 @@ class MckVoice {
                 } catch (e) {
                     console.error('Error disconnecting audio nodes:', e);
                 }
+                setTimeout(() => {
+                    this.recoverListeningAfterPlaybackIfIdle('visualizer_cleanup');
+                }, 0);
             };
         } catch (error) {
             console.error('Error creating audio visualizer:', error);
@@ -2173,11 +2342,18 @@ class MckVoice {
         }
     }
 
-    setAwaitingBotResponsePlayback(isPending, timeoutMs = 15000) {
+    setAwaitingBotResponsePlayback(isPending, timeoutMs = 30000) {
         this.awaitingBotResponsePlayback = Boolean(isPending);
         this.clearAwaitingBotResponseTimeout();
         if (this.awaitingBotResponsePlayback) {
             this.awaitingBotResponseTimeout = setTimeout(() => {
+                const isPlaybackStillActive =
+                    this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+                const hasQueuedBotMessages = this.messagesQueue.length > 0;
+                if (isPlaybackStillActive || hasQueuedBotMessages) {
+                    this.setAwaitingBotResponsePlayback(true, timeoutMs);
+                    return;
+                }
                 this.awaitingBotResponsePlayback = false;
                 this.awaitingBotResponseTimeout = null;
                 this.scheduleAutoListen(0);
@@ -2450,7 +2626,16 @@ class MckVoice {
         this.silenceTimer = setInterval(silenceDetection, detectionInterval);
 
         // Clean up when recording stops
-        scriptProcessor.onaudioprocess = () => {
+        scriptProcessor.onaudioprocess = (event) => {
+            if (this.isRecording && event && event.inputBuffer) {
+                const inputChannel = event.inputBuffer.getChannelData(0);
+                if (inputChannel && inputChannel.length) {
+                    this.vadCaptureChunks.push(new Float32Array(inputChannel));
+                    if (!this.vadCaptureSampleRate) {
+                        this.vadCaptureSampleRate = audioContext.sampleRate;
+                    }
+                }
+            }
             if (!this.isRecording) {
                 this.clearSilenceTimeout();
                 if (this.silenceTimer) {
@@ -2467,6 +2652,35 @@ class MckVoice {
                 this.adaptiveVadState = null;
             }
         };
+    }
+
+    extractPcmInt16FromVadCapture() {
+        if (!Array.isArray(this.vadCaptureChunks) || !this.vadCaptureChunks.length) {
+            return [];
+        }
+        let totalLength = 0;
+        for (let i = 0; i < this.vadCaptureChunks.length; i++) {
+            totalLength += this.vadCaptureChunks[i].length;
+        }
+        if (!totalLength) {
+            return [];
+        }
+        const merged = new Float32Array(totalLength);
+        let offset = 0;
+        for (let i = 0; i < this.vadCaptureChunks.length; i++) {
+            const chunk = this.vadCaptureChunks[i];
+            merged.set(chunk, offset);
+            offset += chunk.length;
+        }
+        const sourceRate = this.vadCaptureSampleRate || 16000;
+        const targetRate = kmVoice.getVoiceToTextSampleRate();
+        const preprocessed =
+            typeof kmVoice.preprocessSttFloat32Samples === 'function'
+                ? kmVoice.preprocessSttFloat32Samples(merged, sourceRate)
+                : merged;
+        const resampled = kmVoice.resampleToTargetRate(preprocessed, sourceRate, targetRate);
+        const int16 = kmVoice.float32ToInt16(resampled);
+        return Array.from(int16);
     }
 
     initializeAdaptiveVad(sampleRate, fftSize) {
@@ -2486,10 +2700,11 @@ class MckVoice {
             maxHistoryFrames,
             history: [],
             startFactor: vadSettings.startFactor ?? 2.2,
-            endFactor: vadSettings.endFactor ?? 1.2,
+            endFactor: vadSettings.endFactor ?? 1.8,
             startFrames: vadSettings.startFrames ?? 3,
             endFrames: vadSettings.endFrames ?? 20,
             noiseAlpha: vadSettings.noiseAlpha ?? 0.95,
+            minStartRms: vadSettings.minStartRms ?? 0.008,
             noiseFloor: 0.002,
             noiseZcr: 0.02,
             speechActive: false,
@@ -2536,6 +2751,7 @@ class MckVoice {
         const noiseFloor = Math.max(state.noiseFloor, 1e-5);
         const startThreshold = noiseFloor * state.startFactor;
         const endThreshold = noiseFloor * Math.max(state.endFactor, 0.5);
+        const minStartRms = Number(state.minStartRms || 0.008);
 
         // Use ZCR to distinguish voiced speech from unvoiced noise.
         // Voiced speech (vowels, nasals) has lower ZCR than broadband noise or
@@ -2544,7 +2760,7 @@ class MckVoice {
         // false triggers from hissing fans, keyboards, or breath noises.
         const noiseZcr = Math.max(state.noiseZcr, 0.001);
         const zcrNotNoise = zcr < noiseZcr * 4.0;
-        const startCandidate = rms > startThreshold && zcrNotNoise;
+        const startCandidate = rms > Math.max(startThreshold, minStartRms) && zcrNotNoise;
         const endCandidate = rms < endThreshold;
 
         const isSpeechFrame = state.speechActive || startCandidate;

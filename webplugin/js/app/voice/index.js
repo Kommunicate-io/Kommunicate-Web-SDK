@@ -848,13 +848,14 @@ class Voice {
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
-            sttMode: 'recognize',
+            sttMode: sttMode || 'recognize',
             languageCode: this.getVoiceLanguageCode(),
         };
-        const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
-        if (alternativeLanguageCodes.length) {
-            payload.alternativeLanguageCodes = alternativeLanguageCodes;
-        }
+        // Temporarily disabled to troubleshoot Safari STT behavior.
+        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
+        // if (alternativeLanguageCodes.length) {
+        //     payload.alternativeLanguageCodes = alternativeLanguageCodes;
+        // }
         const activeConversationUcid =
             typeof CURRENT_GROUP_DATA !== 'undefined' &&
             CURRENT_GROUP_DATA &&
@@ -964,13 +965,74 @@ class Voice {
         const targetSampleRate = this.getVoiceToTextSampleRate();
         const audioBuffer = await this.decodeAudioBlob(audioBlob);
         const mono = this.getMonoChannelData(audioBuffer);
+        const preprocessed = this.preprocessSttFloat32Samples(mono, audioBuffer.sampleRate);
         const downsampled = this.resampleToTargetRate(
-            mono,
+            preprocessed,
             audioBuffer.sampleRate,
             targetSampleRate
         );
         const int16Samples = this.float32ToInt16(downsampled);
         return Array.from(int16Samples);
+    }
+
+    preprocessSttFloat32Samples(floatData, sampleRate) {
+        if (!floatData || !floatData.length) {
+            return new Float32Array(0);
+        }
+
+        const processed = new Float32Array(floatData.length);
+
+        // Remove DC offset first to keep VAD/STT energy metrics stable.
+        let mean = 0;
+        for (let i = 0; i < floatData.length; i++) {
+            mean += floatData[i];
+        }
+        mean = mean / floatData.length;
+        for (let i = 0; i < floatData.length; i++) {
+            processed[i] = floatData[i] - mean;
+        }
+
+        // One-pole high-pass filter to suppress low-frequency rumble.
+        const cutoffHz = 90;
+        const dt = 1 / Math.max(sampleRate || 16000, 1);
+        const rc = 1 / (2 * Math.PI * cutoffHz);
+        const alpha = rc / (rc + dt);
+        let previousInput = processed[0] || 0;
+        let previousOutput = 0;
+        for (let i = 0; i < processed.length; i++) {
+            const currentInput = processed[i];
+            const output = alpha * (previousOutput + currentInput - previousInput);
+            processed[i] = output;
+            previousInput = currentInput;
+            previousOutput = output;
+        }
+
+        // Safe gain for weak captures (seen frequently on Safari).
+        let peakAbs = 0;
+        let sumSquares = 0;
+        for (let i = 0; i < processed.length; i++) {
+            const abs = Math.abs(processed[i]);
+            if (abs > peakAbs) {
+                peakAbs = abs;
+            }
+            sumSquares += processed[i] * processed[i];
+        }
+        const rms = Math.sqrt(sumSquares / processed.length);
+        if (peakAbs > 0 && peakAbs < 0.08 && rms > 0.001) {
+            const targetPeak = 0.42;
+            const gain = Math.min(targetPeak / peakAbs, 14);
+            for (let i = 0; i < processed.length; i++) {
+                processed[i] = Math.max(-0.98, Math.min(0.98, processed[i] * gain));
+            }
+            console.debug('STT float audio normalized for low amplitude', {
+                originalPeak: Number(peakAbs.toFixed(6)),
+                originalRms: Number(rms.toFixed(6)),
+                gain: Number(gain.toFixed(3)),
+                sampleCount: processed.length,
+            });
+        }
+
+        return processed;
     }
 
     async decodeAudioBlob(audioBlob) {
@@ -1043,7 +1105,26 @@ class Voice {
                 flattened.push(frame[j]);
             }
         }
-        const pcmData = Int16Array.from(flattened);
+        let pcmData = Int16Array.from(flattened);
+        // Normalize low-amplitude PCM for more consistent playback loudness,
+        // especially on Safari output paths that can sound very quiet.
+        let peak = 0;
+        for (let i = 0; i < pcmData.length; i++) {
+            const abs = Math.abs(pcmData[i]);
+            if (abs > peak) {
+                peak = abs;
+            }
+        }
+        if (peak > 0 && peak < 12000) {
+            const targetPeak = 18000;
+            const gain = Math.min(targetPeak / peak, 4);
+            const normalized = new Int16Array(pcmData.length);
+            for (let i = 0; i < pcmData.length; i++) {
+                const amplified = Math.round(pcmData[i] * gain);
+                normalized[i] = Math.max(-32768, Math.min(32767, amplified));
+            }
+            pcmData = normalized;
+        }
         return this.createWavBlobFromPcmData(
             pcmData,
             payload.sampleRate || this.getTextToVoiceSampleRate(),
