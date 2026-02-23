@@ -287,7 +287,7 @@ const generateBuildFiles = () => {
     copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
 
     // copy applozic.chat.{version}.min.js to build
-    copyFileToBuild('js/app/applozic.chat-6.2.8.min.js', `${buildDir}/applozic.chat-6.2.8.min.js`);
+    copyFileToBuild('js/app/applozic.chat-6.2.9.min.js', `${buildDir}/applozic.chat-6.2.9.min.js`);
 
     // copy fonts required by the compiled CSS for local/hosted builds
     copyDirectoryRecursive(

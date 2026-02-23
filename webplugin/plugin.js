@@ -58,8 +58,9 @@ var kmCustomIframe =
     '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3)' +
     '} \n ' +
     '.km-iframe-dimension-with-popup{ ' +
-    '    height: 700px; ' +
-    '    width: 442px; ' +
+    '    height: 95vh; ' +
+    '    width: 30vw; ' +
+    '   min-width: 442px; ' +
     '} \n ' +
     '.km-iframe-closed{ ' +
     '    height: 75px; ' +
