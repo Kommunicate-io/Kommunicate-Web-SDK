@@ -23,11 +23,18 @@ var kmVoiceMessageHandler = {
         if (!message) {
             return false;
         }
+        var isFinalStreamingMessage =
+            message &&
+            message.metadata &&
+            message.metadata.lastToken === 'true' &&
+            !message.tokenMessage &&
+            Boolean(message.message);
         if (
             typeof Kommunicate !== 'undefined' &&
             Kommunicate &&
             typeof Kommunicate.visibleMessage === 'function' &&
-            !Kommunicate.visibleMessage(message, msgThroughListAPI)
+            !Kommunicate.visibleMessage(message, msgThroughListAPI) &&
+            !isFinalStreamingMessage
         ) {
             return false;
         }
