@@ -8,12 +8,13 @@ class MckVoice {
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
     _SILENCE_NOISE_TOLERANCE = 200; // ignore short spikes after silence starts
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
-    _VOICE_START_THRESHOLD_RMS = 180;
+    _VOICE_START_THRESHOLD_RMS = 160;
     _VOICE_STOP_THRESHOLD_RMS = 120;
     _VOICE_PRE_ROLL_MS = 700;
     _VOICE_FRAME_MS = 20;
-    _VOICE_MIN_VOICED_MS = 250;
+    _VOICE_MIN_VOICED_MS = 160;
     _VOICE_MAX_CHUNK_MS = 2800;
+    _VOICE_INITIAL_SPEECH_TIMEOUT_MS = 5000;
     _VOICE_STT_MERGE_MAX_MS = 30000;
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
@@ -62,6 +63,7 @@ class MckVoice {
         this.deferredRecordingHandler = null;
         this.silenceDetectionContext = null;
         this.silenceTimeout = null;
+        this.initialSpeechTimeout = null;
         this.silenceNoiseStart = null;
         this.lastRecordingEnd = 0;
         this.voiceModeTimeoutId = null;
@@ -190,6 +192,8 @@ class MckVoice {
             startThresholdRms: config.startThresholdRms ?? this._VOICE_START_THRESHOLD_RMS,
             stopThresholdRms: config.stopThresholdRms ?? this._VOICE_STOP_THRESHOLD_RMS,
             minVoicedMs: config.minVoicedMs ?? this._VOICE_MIN_VOICED_MS,
+            initialSpeechTimeoutMs:
+                config.initialSpeechTimeoutMs ?? this._VOICE_INITIAL_SPEECH_TIMEOUT_MS,
             maxChunkMs: config.maxChunkMs ?? this._VOICE_MAX_CHUNK_MS,
             preRollMs: config.preRollMs ?? this._VOICE_PRE_ROLL_MS,
             minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
@@ -198,7 +202,7 @@ class MckVoice {
                 config.maxAbsSilenceThreshold ?? this._VOICE_MAX_ABS_SILENCE_THRESHOLD,
             minSpeechDuration: config.minSpeechDuration ?? this._MIN_SPEECH_DURATION,
             vad: {
-                startFactor: vadConfig.startFactor ?? 2.6,
+                startFactor: vadConfig.startFactor ?? 2.2,
                 endFactor: vadConfig.endFactor ?? 1.2,
                 startFrames: vadConfig.startFrames ?? 3,
                 endFrames: vadConfig.endFrames ?? 20,
@@ -978,6 +982,7 @@ class MckVoice {
             // Mark recording as ended immediately so stale VAD/silence loops
             // cannot keep firing while STT work is still running.
             this.isRecording = false;
+            this.clearInitialSpeechTimeout();
             this.clearSilenceTimeout();
             if (this.silenceTimer) {
                 clearInterval(this.silenceTimer);
@@ -1115,6 +1120,7 @@ class MckVoice {
                     clearTimeout(this.maxRecordingTimer);
                     this.maxRecordingTimer = null;
                 }
+                this.clearInitialSpeechTimeout();
                 this.scheduleAutoListen();
             }
         };
@@ -1137,6 +1143,23 @@ class MckVoice {
                 this.stopRecording();
             }
         }, this._MAX_RECORDING_DURATION);
+
+        this.clearInitialSpeechTimeout();
+        const initialSpeechTimeoutMs = Number(
+            this.voiceInputSettings.initialSpeechTimeoutMs || this._VOICE_INITIAL_SPEECH_TIMEOUT_MS
+        );
+        if (initialSpeechTimeoutMs > 0) {
+            this.initialSpeechTimeout = setTimeout(() => {
+                if (!this.isRecording || this.speechDetected) {
+                    return;
+                }
+                console.debug('No speech detected within initial window, stopping recording', {
+                    initialSpeechTimeoutMs,
+                });
+                this.addThinkingAnimation();
+                this.stopRecording();
+            }, initialSpeechTimeoutMs);
+        }
 
         // Set up audio analysis for silence detection
         this.setupSilenceDetection(stream);
@@ -2170,6 +2193,13 @@ class MckVoice {
         this.silenceNoiseStart = null;
     }
 
+    clearInitialSpeechTimeout() {
+        if (this.initialSpeechTimeout) {
+            clearTimeout(this.initialSpeechTimeout);
+            this.initialSpeechTimeout = null;
+        }
+    }
+
     startSilenceTimeout() {
         this.clearSilenceTimeout();
         if (!this.silenceStart) {
@@ -2455,7 +2485,7 @@ class MckVoice {
             frameDurationMs,
             maxHistoryFrames,
             history: [],
-            startFactor: vadSettings.startFactor ?? 2.6,
+            startFactor: vadSettings.startFactor ?? 2.2,
             endFactor: vadSettings.endFactor ?? 1.2,
             startFrames: vadSettings.startFrames ?? 3,
             endFrames: vadSettings.endFrames ?? 20,
@@ -2585,6 +2615,7 @@ class MckVoice {
     onVadSpeechStart() {
         this.speechDetected = true;
         this.isInSilence = false;
+        this.clearInitialSpeechTimeout();
         this.clearSilenceTimeout();
         this.silenceStart = null;
         const hearingLabel = this.getVoiceLabel('voiceInterface.hearingYou', 'Hearing you...');
@@ -2788,6 +2819,7 @@ class MckVoice {
     }
 
     stopRecording(forceStop = false) {
+        this.clearInitialSpeechTimeout();
         this.clearSilenceTimeout();
         if (this.activeRecognitionMode === 'native') {
             this.nativeRecognitionShouldRestart = false;
