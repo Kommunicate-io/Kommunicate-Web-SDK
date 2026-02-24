@@ -132,7 +132,11 @@ class MckVoice {
         this.trackVoiceEvent('onVoiceIconClick', source);
         this.disableNativeVoiceOutputForVoiceMode();
         this.enableAutoListening();
-        this.setVoiceMuted(false);
+        this.voiceMuted = false;
+        this.updateMuteButton();
+        this.clearVoiceStatus();
+        this.hideInlineStatus();
+        this.hideInlineMicButton();
         this.resetVoicePlaybackQueue('start_voice_mode');
         kommunicateCommons.modifyClassList(
             { class: ['voice-ring-1'] },
@@ -2961,6 +2965,7 @@ class MckVoice {
         try {
             recognition.start();
             this.nativeRecognitionActive = true;
+            this.setTextboxVoiceActive(true);
             this.addListeningAnimation();
             const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
             this.updateVoiceStatus(listeningLabel, true);
