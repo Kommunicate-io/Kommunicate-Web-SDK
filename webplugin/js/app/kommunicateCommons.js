@@ -129,7 +129,6 @@ function KommunicateCommons() {
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
             !_this.isModernLayoutEnabled ||
-            // !_this.isModernLayoutEnabled() ||
             (iframeElement.classList &&
                 (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
@@ -157,8 +156,8 @@ function KommunicateCommons() {
         if (isNaN(navHeight) || navHeight <= 0) {
             navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        var reducedHeight = baseHeight - navHeight;
-        var calculatedHeight = reducedHeight > 0 ? reducedHeight : baseHeight;
+        var navAdjustedIframeHeight = baseHeight - navHeight;
+        var finalIframeHeight = navAdjustedIframeHeight > 0 ? navAdjustedIframeHeight : baseHeight;
         var shouldEnforceTopGap =
             iframeElement.classList &&
             iframeElement.classList.contains('km-iframe-dimension-with-popup');
@@ -167,12 +166,12 @@ function KommunicateCommons() {
                 heightSourceWindow && heightSourceWindow.innerHeight
                     ? heightSourceWindow.innerHeight
                     : window.innerHeight;
-            var maxAllowedHeight = viewportHeight - 75 - 15;
-            if (!isNaN(maxAllowedHeight) && maxAllowedHeight > 0) {
-                calculatedHeight = Math.max(calculatedHeight, maxAllowedHeight);
+            var maxIframeHeightForTopGap = viewportHeight - 75 - 15;
+            if (!isNaN(maxIframeHeightForTopGap) && maxIframeHeightForTopGap > 0) {
+                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeightForTopGap);
             }
         }
-        iframeElement.style.height = calculatedHeight + 'px';
+        iframeElement.style.height = finalIframeHeight + 'px';
 
         if (heightSourceWindow && typeof heightSourceWindow.addEventListener === 'function') {
             var existingHandler = iframeResizeListeners
@@ -282,9 +281,7 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        // if (_this.isModernLayoutEnabled()) {
         height -= MODERN_NAV_HEIGHT_EXTRA;
-        // }
         height -= NAV_HEIGHT_OFFSET;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
