@@ -120,8 +120,7 @@ function KommunicateCommons() {
     };
 
     var DEFAULT_BOTTOM_NAV_HEIGHT = 90;
-    var MODERN_NAV_HEIGHT_EXTRA = 20;
-    var NAV_HEIGHT_OFFSET = 16;
+    var NAV_HEIGHT_ADJUSTMENT = 36;
     var MIN_TOP_CTA_GAP = 75;
     var IFRAME_BOTTOM_OFFSET = 15;
     var cachedBottomNavHeight = null;
@@ -282,8 +281,7 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        height -= MODERN_NAV_HEIGHT_EXTRA;
-        height -= NAV_HEIGHT_OFFSET;
+        height -= NAV_HEIGHT_ADJUSTMENT;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
     }
