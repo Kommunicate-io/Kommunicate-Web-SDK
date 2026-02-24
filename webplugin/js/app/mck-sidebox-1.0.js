@@ -3227,8 +3227,25 @@ const firstVisibleMsg = {
                     openWidgetIframe();
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
+                function stopVoiceOnWidgetClose() {
+                    if (
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        typeof mckVoice.stopVoiceMode === 'function'
+                    ) {
+                        mckVoice.stopVoiceMode();
+                    }
+                    if (
+                        typeof Kommunicate !== 'undefined' &&
+                        Kommunicate.mediaService &&
+                        typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                    ) {
+                        Kommunicate.mediaService.stopVoiceOutput();
+                    }
+                }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
+                    stopVoiceOnWidgetClose();
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
