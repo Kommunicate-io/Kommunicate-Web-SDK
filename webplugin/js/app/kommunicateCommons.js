@@ -122,13 +122,14 @@ function KommunicateCommons() {
     var DEFAULT_BOTTOM_NAV_HEIGHT = 90;
     var MODERN_NAV_HEIGHT_EXTRA = 20;
     var NAV_HEIGHT_OFFSET = 16;
+    var MIN_TOP_CTA_GAP = 75;
+    var IFRAME_BOTTOM_OFFSET = 15;
     var cachedBottomNavHeight = null;
 
     _this.adjustIframeHeightForLayout = function (iframeElement) {
         if (
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
-            !_this.isModernLayoutEnabled ||
             (iframeElement.classList &&
                 (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
@@ -166,9 +167,9 @@ function KommunicateCommons() {
                 heightSourceWindow && heightSourceWindow.innerHeight
                     ? heightSourceWindow.innerHeight
                     : window.innerHeight;
-            var maxIframeHeightForTopGap = viewportHeight - 75 - 15;
-            if (!isNaN(maxIframeHeightForTopGap) && maxIframeHeightForTopGap > 0) {
-                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeightForTopGap);
+            var maxIframeHeighWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - IFRAME_BOTTOM_OFFSET;
+            if (!isNaN(maxIframeHeighWithTopGap) && maxIframeHeighWithTopGap > 0) {
+                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeighWithTopGap);
             }
         }
         iframeElement.style.height = finalIframeHeight + 'px';
