@@ -158,7 +158,21 @@ function KommunicateCommons() {
             navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
         var reducedHeight = baseHeight - navHeight;
-        iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
+        var calculatedHeight = reducedHeight > 0 ? reducedHeight : baseHeight;
+        var shouldEnforceTopGap =
+            iframeElement.classList &&
+            iframeElement.classList.contains('km-iframe-dimension-with-popup');
+        if (shouldEnforceTopGap) {
+            var viewportHeight =
+                heightSourceWindow && heightSourceWindow.innerHeight
+                    ? heightSourceWindow.innerHeight
+                    : window.innerHeight;
+            var maxAllowedHeight = viewportHeight - 75 - 15;
+            if (!isNaN(maxAllowedHeight) && maxAllowedHeight > 0) {
+                calculatedHeight = Math.max(calculatedHeight, maxAllowedHeight);
+            }
+        }
+        iframeElement.style.height = calculatedHeight + 'px';
 
         if (heightSourceWindow && typeof heightSourceWindow.addEventListener === 'function') {
             var existingHandler = iframeResizeListeners
