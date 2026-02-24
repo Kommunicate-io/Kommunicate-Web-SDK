@@ -14940,7 +14940,8 @@ const firstVisibleMsg = {
                             .removeClass('mck-pending-icon')
                             .removeClass('mck-sent-icon')
                             .removeClass('mck-delivered-icon')
-                            .addClass('mck-read-icon');
+                            .addClass('mck-read-icon')
+                            .attr('title', 'read');
                         mckMessageLayout.addTooltip(readKey);
                     } else {
                         pendingMessageStatusUpdates[readKey] = 'read';
