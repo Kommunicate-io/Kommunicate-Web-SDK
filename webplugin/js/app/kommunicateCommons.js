@@ -166,9 +166,9 @@ function KommunicateCommons() {
                 heightSourceWindow && heightSourceWindow.innerHeight
                     ? heightSourceWindow.innerHeight
                     : window.innerHeight;
-            var maxIframeHeighWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - IFRAME_BOTTOM_OFFSET;
-            if (!isNaN(maxIframeHeighWithTopGap) && maxIframeHeighWithTopGap > 0) {
-                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeighWithTopGap);
+            var maxIframeHeightWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - IFRAME_BOTTOM_OFFSET;
+            if (!isNaN(maxIframeHeightWithTopGap) && maxIframeHeightWithTopGap > 0) {
+                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeightWithTopGap);
             }
         }
         iframeElement.style.height = finalIframeHeight + 'px';
