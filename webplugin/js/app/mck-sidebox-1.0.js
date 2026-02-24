@@ -744,6 +744,10 @@ const firstVisibleMsg = {
             WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval
                 ? WIDGET_SETTINGS.botMessageDelayInterval
                 : 0;
+        var ECHO_MESSAGE_RETRY_LIMIT = 4;
+        var ECHO_MESSAGE_RETRY_DELAY = 1000;
+        var echoMessageRetryTracker = {};
+        var pendingMessageStatusUpdates = {};
         var MCK_CUSTOM_BRANDING = WIDGET_SETTINGS && WIDGET_SETTINGS.customBranding;
         var WIDGET_POSITION =
             WIDGET_SETTINGS &&
@@ -6316,10 +6320,6 @@ const firstVisibleMsg = {
             _this.submitMessage = function (messagePxy, optns) {
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
-                if (!metadata.KM_CLIENT_MESSAGE_ID) {
-                    metadata.KM_CLIENT_MESSAGE_ID = randomId;
-                }
-                messagePxy.metadata = metadata;
                 if (MCK_CHECK_USER_BUSY_STATUS) {
                     metadata = $applozic.extend(metadata, {
                         userStatus: 4,
@@ -12030,24 +12030,6 @@ const firstVisibleMsg = {
                             }
                         }
                     } else if (messageType === 'APPLOZIC_02' && !(message.contentType == 102)) {
-                        var clientMessageId =
-                            message.metadata && message.metadata.KM_CLIENT_MESSAGE_ID;
-                        if (clientMessageId && $applozic('.' + clientMessageId).length) {
-                            var $clientMsg = $applozic('.' + clientMessageId).first();
-                            if (message.conversationId) {
-                                $mck_msg_inner.data('mck-conversationid', message.conversationId);
-                            }
-                            $clientMsg
-                                .removeClass(clientMessageId)
-                                .addClass(message.key)
-                                .data('msgkey', message.key);
-                            $applozic('.' + message.key + ' .mck-message-status')
-                                .removeClass('mck-pending-icon')
-                                .addClass('mck-sent-icon')
-                                .attr('title', 'sent');
-                            mckMessageLayout.addTooltip(message.key);
-                            return;
-                        }
                         if (
                             ((typeof message.oldKey === 'undefined' ||
                                 $applozic('.' + message.oldKey).length === 0) &&
@@ -12074,13 +12056,7 @@ const firstVisibleMsg = {
                                             !message.metadata ||
                                             message.metadata.category !== 'HIDDEN'
                                         ) {
-                                            mckMessageLayout.addMessage(
-                                                message,
-                                                contact,
-                                                true,
-                                                true,
-                                                validated
-                                            );
+                                            scheduleEchoMessageAdd(message, contact, validated);
                                         }
                                         if (message.type === 3) {
                                             $applozic('.' + message.key + ' .mck-message-status')
@@ -12138,6 +12114,70 @@ const firstVisibleMsg = {
                 messageFeed.source = message.source;
                 messageFeed.metadata = message.metadata;
                 return messageFeed;
+            };
+
+            var applyPendingStatusUpdate = function (messageKey) {
+                if (!messageKey || !pendingMessageStatusUpdates[messageKey]) {
+                    return;
+                }
+                var statusType = pendingMessageStatusUpdates[messageKey];
+                var $status = $applozic('.' + messageKey + ' .mck-message-status');
+                if (!$status.length) {
+                    return;
+                }
+                if (statusType === 'delivered') {
+                    $status
+                        .removeClass('mck-pending-icon')
+                        .removeClass('mck-sent-icon')
+                        .addClass('mck-delivered-icon')
+                        .attr('title', 'delivered');
+                    mckMessageLayout.addTooltip(messageKey);
+                } else if (statusType === 'read') {
+                    $status
+                        .removeClass('mck-pending-icon')
+                        .removeClass('mck-sent-icon')
+                        .removeClass('mck-delivered-icon')
+                        .addClass('mck-read-icon')
+                        .attr('title', 'read');
+                    mckMessageLayout.addTooltip(messageKey);
+                }
+                delete pendingMessageStatusUpdates[messageKey];
+            };
+
+            var scheduleEchoMessageAdd = function (message, contact, validated) {
+                var messageKey = message && message.key;
+                if (!messageKey) {
+                    return;
+                }
+                var hasOldKeyInitial =
+                    typeof message.oldKey !== 'undefined' &&
+                    $applozic('.' + message.oldKey).length > 0;
+                var hasKeyInitial = $applozic('.' + message.key).length > 0;
+                if (hasOldKeyInitial || hasKeyInitial) {
+                    applyPendingStatusUpdate(hasKeyInitial ? message.key : message.oldKey);
+                    delete echoMessageRetryTracker[messageKey];
+                    return;
+                }
+                var attempt = echoMessageRetryTracker[messageKey] || 0;
+                if (attempt >= ECHO_MESSAGE_RETRY_LIMIT) {
+                    delete echoMessageRetryTracker[messageKey];
+                    mckMessageLayout.addMessage(message, contact, true, true, validated);
+                    applyPendingStatusUpdate(messageKey);
+                    return;
+                }
+                echoMessageRetryTracker[messageKey] = attempt + 1;
+                setTimeout(function () {
+                    var hasOldKey =
+                        typeof message.oldKey !== 'undefined' &&
+                        $applozic('.' + message.oldKey).length > 0;
+                    var hasKey = $applozic('.' + message.key).length > 0;
+                    if (hasOldKey || hasKey) {
+                        applyPendingStatusUpdate(hasKey ? message.key : message.oldKey);
+                        delete echoMessageRetryTracker[messageKey];
+                        return;
+                    }
+                    scheduleEchoMessageAdd(message, contact, validated);
+                }, ECHO_MESSAGE_RETRY_DELAY);
             };
             _this.updateUnreadCountonChatIcon = function (userDetails) {
                 if (IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED && userDetails.length > 0) {
@@ -14874,12 +14914,18 @@ const firstVisibleMsg = {
                     CURRENT_GROUP_DATA.teamId = updatedTeamId;
                 }
                 if (messageType === 'APPLOZIC_04' || messageType === 'MESSAGE_DELIVERED') {
-                    $applozic('.' + resp.message.split(',')[0] + ' .mck-message-status')
-                        .removeClass('mck-pending-icon')
-                        .removeClass('mck-sent-icon')
-                        .addClass('mck-delivered-icon')
-                        .attr('title', 'delivered');
-                    mckMessageLayout.addTooltip(resp.message.split(',')[0]);
+                    var deliveredKey = resp.message.split(',')[0];
+                    var $deliveredStatus = $applozic('.' + deliveredKey + ' .mck-message-status');
+                    if ($deliveredStatus.length) {
+                        $deliveredStatus
+                            .removeClass('mck-pending-icon')
+                            .removeClass('mck-sent-icon')
+                            .addClass('mck-delivered-icon')
+                            .attr('title', 'delivered');
+                        mckMessageLayout.addTooltip(deliveredKey);
+                    } else {
+                        pendingMessageStatusUpdates[deliveredKey] = 'delivered';
+                    }
                     // events.onMessageDelivered({
                     //     'messageKey': resp.message.split(",")[0]
                     // });
@@ -14887,12 +14933,18 @@ const firstVisibleMsg = {
                     messageType === 'APPLOZIC_08' ||
                     messageType === 'MT_MESSAGE_DELIVERED_READ'
                 ) {
-                    $applozic('.' + resp.message.split(',')[0] + ' .mck-message-status')
-                        .removeClass('mck-pending-icon')
-                        .removeClass('mck-sent-icon')
-                        .removeClass('mck-delivered-icon')
-                        .addClass('mck-read-icon');
-                    mckMessageLayout.addTooltip(resp.message.split(',')[0]);
+                    var readKey = resp.message.split(',')[0];
+                    var $readStatus = $applozic('.' + readKey + ' .mck-message-status');
+                    if ($readStatus.length) {
+                        $readStatus
+                            .removeClass('mck-pending-icon')
+                            .removeClass('mck-sent-icon')
+                            .removeClass('mck-delivered-icon')
+                            .addClass('mck-read-icon');
+                        mckMessageLayout.addTooltip(readKey);
+                    } else {
+                        pendingMessageStatusUpdates[readKey] = 'read';
+                    }
                     // events.onMessageRead({
                     //     'messageKey': resp.message.split(",")[0]
                     // });
