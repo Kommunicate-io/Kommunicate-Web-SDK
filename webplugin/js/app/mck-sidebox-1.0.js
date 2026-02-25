@@ -3348,18 +3348,30 @@ const firstVisibleMsg = {
                 });
 
                 var iframeMedia = parent.window.matchMedia('(max-width: 600px)');
-                iframeMedia.addListener(function () {
+                var updateShadowForCompactState = function () {
+                    var sideboxElement = document.getElementById('mck-sidebox');
+                    var boxContentElement = document.querySelector('.mck-box-content');
+                    var parentIframe = parent.document.getElementById('kommunicate-widget-iframe');
                     if (iframeMedia.matches) {
-                        // If media query matches
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.remove('km-iframe-sidebox-border-radius');
+                        sideboxElement &&
+                            sideboxElement.classList.remove('km-iframe-sidebox-border-radius');
+                        sideboxElement && (sideboxElement.style.boxShadow = 'none');
+                        sideboxElement && (sideboxElement.style.webkitBoxShadow = 'none');
+                        boxContentElement && (boxContentElement.style.boxShadow = 'none');
+                        boxContentElement && (boxContentElement.style.webkitBoxShadow = 'none');
+                        parentIframe && (parentIframe.style.boxShadow = 'none');
                     } else {
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.add('km-iframe-sidebox-border-radius');
+                        sideboxElement &&
+                            sideboxElement.classList.add('km-iframe-sidebox-border-radius');
+                        sideboxElement && (sideboxElement.style.boxShadow = '');
+                        sideboxElement && (sideboxElement.style.webkitBoxShadow = '');
+                        boxContentElement && (boxContentElement.style.boxShadow = '');
+                        boxContentElement && (boxContentElement.style.webkitBoxShadow = '');
+                        parentIframe && (parentIframe.style.boxShadow = '');
                     }
-                });
+                };
+                updateShadowForCompactState();
+                iframeMedia.addListener(updateShadowForCompactState);
             };
 
             _this.restrictScrollOnHandHeldDevices = function () {
