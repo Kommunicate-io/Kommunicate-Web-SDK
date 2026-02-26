@@ -2269,13 +2269,19 @@ class MckVoice {
         }
         this.setAwaitingBotResponsePlayback(true);
         this.clearVoiceProgressMessage();
-        kommunicate.sendMessage({
+        const messagePayload = {
             contentType: 10,
             source: 1,
             type: 5,
             message: trimmedMessage,
             groupId: CURRENT_GROUP_DATA.tabId,
-        });
+        };
+        if (this.isVoiceModeActive()) {
+            messagePayload.metadata = {
+                KM_INPUT_TYPE: 'VOICE',
+            };
+        }
+        kommunicate.sendMessage(messagePayload);
         return true;
     }
 
