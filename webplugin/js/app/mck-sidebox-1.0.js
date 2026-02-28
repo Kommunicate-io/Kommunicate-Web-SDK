@@ -14276,6 +14276,7 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
             var $mck_msg_inner;
+            var $mck_group_info_tab;
             function openConversationFromNotification($target) {
                 if (!$target || !$target.length) {
                     return;
@@ -14305,6 +14306,7 @@ const firstVisibleMsg = {
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
                 );
                 $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+                $mck_group_info_tab = $applozic('#mck-group-info-tab');
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {
