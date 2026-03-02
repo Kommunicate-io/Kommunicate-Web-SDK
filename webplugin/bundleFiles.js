@@ -32,8 +32,6 @@ exports.THIRD_PARTY_SCRIPTS = [
     // path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
     // path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
     path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js'),
-    path.resolve(__dirname, 'lib/js/moment-js.2.29.4.min.js'),
-    path.resolve(__dirname, 'lib/js/moment-timezone.0.5.23.min.js'),
     path.resolve(__dirname, 'lib/js/marked.min.js'),
 ];
 
@@ -71,6 +69,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),
     path.resolve(__dirname, 'js/app/conversation/gen-ai-service.js'),
+    path.resolve(__dirname, 'js/app/voice/mck-voice-message-handler.js'),
     path.resolve(__dirname, 'js/app/map/mck-map-integration.js'),
     path.resolve(__dirname, 'js/app/km-whats-new.js'),
     path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),

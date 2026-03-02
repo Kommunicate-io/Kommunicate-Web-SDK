@@ -147,7 +147,7 @@ steps:
     - '-c'
     - |
       if [ "$_DEPLOY_CDN" = "true" ]; then
-        echo "Applying CDN cache headers (default=300, explicit long)"
+        echo "Applying CDN cache headers"
 
         # Default cache = 300s for EVERYTHING 
         gsutil -m setmeta -r \
@@ -159,25 +159,33 @@ steps:
           -h "Cache-Control:public,max-age=31536000,immutable" \
           gs://$_CDN_BUCKET/*/resources/** || true
 
-        # Long cache for shared static assets 
         gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
           gs://$_CDN_BUCKET/css/** \
           gs://$_CDN_BUCKET/plugin/** \
           gs://$_CDN_BUCKET/resources/third-party-scripts/** || true
 
-        # Long cache for fonts 
         gsutil -m setmeta \
           -h "Cache-Control:public,max-age=31536000,immutable" \
           gs://$_CDN_BUCKET/*/css/app/fonts/** || true
 
-        #  
-        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/index.html
-        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
-        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/v2/kommunicate.app
-        gsutil setmeta -h "Cache-Control:public,max-age=1800" gs://$_CDN_BUCKET/v3/kommunicate.app
+        # --------------------------------------------------
+        # ENV-SPECIFIC TTL
+        # --------------------------------------------------
+        if [ "$_BUILD_ENV" = "test" ]; then
+          echo "Test env detected → Using 300s TTL"
+          TTL=300
+        else
+          echo "Non-test env → Using 1800s TTL"
+          TTL=1800
+        fi
 
-        echo "CDN cache headers applied successfully"
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/index.html
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/kommunicate-widget-3.0.min.js
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/v2/kommunicate.app
+        gsutil setmeta -h "Cache-Control:public,max-age=$$TTL" gs://$_CDN_BUCKET/v3/kommunicate.app
+
+        echo "CDN cache headers applied successfully (TTL=$$TTL)"
       else
         echo "Skipping CDN cache headers"
       fi

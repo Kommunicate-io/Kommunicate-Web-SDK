@@ -4,6 +4,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'http://localhost:3030',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
@@ -34,6 +35,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.agenticfirst.ai',
             dashboardUrl: 'https://app-test.agenticfirst.ai',
@@ -63,6 +65,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.kommunicate.io',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
@@ -92,6 +95,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-release.kommunicate.io',
             kommunicateBaseUrl: 'https://api-release.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-release.kommunicate.io',
             botPlatformApi: 'https://bots-release.kommunicate.io',
             hostUrl: 'https://widget-release.kommunicate.io',
             dashboardUrl: 'https://dashboard-master.kommunicate.io',
@@ -123,6 +127,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget.kommunicate.io',
             dashboardUrl: 'https://dashboard.kommunicate.io',
@@ -151,6 +156,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget.agenticfirst.ai',
             dashboardUrl: 'https://app.agenticfirst.ai',
@@ -179,6 +185,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-cn.kommunicate.io',
             kommunicateBaseUrl: 'https://api-cn.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-cn.kommunicate.io',
             hostUrl: 'https://widget-cn.kommunicate.io',
             dashboardUrl: 'https://dashboard-cn.kommunicate.io',
         },
@@ -207,6 +214,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-in.kommunicate.io',
             kommunicateBaseUrl: 'https://api-in.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-in.kommunicate.io',
             botPlatformApi: 'https://bots-in.kommunicate.io',
             hostUrl: 'https://widget-in.kommunicate.io',
             dashboardUrl: 'https://dashboard-in.kommunicate.io',
@@ -236,6 +244,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-eu.kommunicate.io',
             kommunicateBaseUrl: 'https://api-eu.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel-eu.kommunicate.io',
             botPlatformApi: 'https://bots-eu.kommunicate.io',
             hostUrl: 'https://widget-eu.kommunicate.io',
             dashboardUrl: 'https://dashboard-eu.kommunicate.io',
@@ -267,6 +276,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api-enterprise.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-enterprise.kommunicate.io',
             dashboardUrl: 'https://dashboard-enterprise.kommunicate.io',
@@ -295,6 +305,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api.kommunicate.io',
+            omnichannelBaseUrl: 'https://omni-channel.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-beta.kommunicate.io',
             dashboardUrl: 'https://beta.kommunicate.io',

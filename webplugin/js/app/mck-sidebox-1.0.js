@@ -468,7 +468,6 @@ const firstVisibleMsg = {
                 ? Boolean(applozic._globals.storageSuffix)
                 : false;
         var INTL_TEL_INSTANCE;
-        //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_VOLUME =
             WIDGET_SETTINGS && typeof WIDGET_SETTINGS.notificationVolume === 'number'
                 ? WIDGET_SETTINGS.notificationVolume
@@ -642,7 +641,7 @@ const firstVisibleMsg = {
                 }
             },
         });
-        var mckMapService = mapFactory.createService({
+        mapFactory.createService({
             $applozic: $applozic,
             kommunicateCommons: kommunicateCommons,
             mckMapUtils: w.mckMapUtils,
@@ -711,7 +710,6 @@ const firstVisibleMsg = {
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
-        var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
         typingService.init(appOptions);
         ratingService.init(appOptions);
@@ -726,7 +724,6 @@ const firstVisibleMsg = {
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
-        var DEFAULT_AGENT_NAME = appOptions.agentName;
         var USE_BRANDING =
             typeof appOptions.useBranding == 'boolean' ? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
@@ -953,6 +950,22 @@ const firstVisibleMsg = {
                         true
                     );
                 }
+                // Voice socket topic lifecycle on connect (safe lookup, no scoped jquery dependency).
+                var messageInner = document.querySelector('#mck-message-cell .mck-message-inner');
+                var currentTabId = messageInner ? messageInner.getAttribute('data-mck-id') : null;
+                var isCurrentGroup = messageInner
+                    ? messageInner.getAttribute('data-isgroup') === 'true'
+                    : false;
+                if (currentTabId) {
+                    var voiceSubscribeId = isCurrentGroup ? currentTabId : MCK_USER_ID;
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.subscribeToVoiceSocketTopic(voiceSubscribeId);
+                    }
+                }
             },
             onMessageDelivered: function (resp) {},
             onMessageRead: function (resp) {},
@@ -1107,7 +1120,7 @@ const firstVisibleMsg = {
                 }
                 function hackForIosDevices() {
                     /** 
-                        it is only for IOS devices so using newer syntax
+                    it is only for IOS devices so using newer syntax
                         IOS devices would not let the speech API run programmatically unless we have triggered manually one time under the user's interaction.
                      */
 
@@ -1121,6 +1134,23 @@ const firstVisibleMsg = {
                 }
                 isIosDevice && hackForIosDevices();
             }
+            function stopVoicePlaybackOnUnload() {
+                if (
+                    Kommunicate.mediaService &&
+                    typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                ) {
+                    Kommunicate.mediaService.stopVoiceOutput();
+                }
+                if (
+                    typeof mckVoice !== 'undefined' &&
+                    mckVoice &&
+                    typeof mckVoice.stopVoiceMode === 'function'
+                ) {
+                    mckVoice.stopVoiceMode();
+                }
+            }
+            window.addEventListener('beforeunload', stopVoicePlaybackOnUnload);
+            window.addEventListener('pagehide', stopVoicePlaybackOnUnload);
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
@@ -2118,7 +2148,6 @@ const firstVisibleMsg = {
             var $mck_file_menu = $applozic('#mck-file-menu');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
-            var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
             var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
             var PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY = 150;
             var loginModalFocusFallbacks = ['#km-anonymous-chat-launcher', '#mck-sidebox-launcher'];
@@ -3202,8 +3231,25 @@ const firstVisibleMsg = {
                     openWidgetIframe();
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
+                function stopVoiceOnWidgetClose() {
+                    if (
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        typeof mckVoice.stopVoiceMode === 'function'
+                    ) {
+                        mckVoice.stopVoiceMode();
+                    }
+                    if (
+                        typeof Kommunicate !== 'undefined' &&
+                        Kommunicate.mediaService &&
+                        typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                    ) {
+                        Kommunicate.mediaService.stopVoiceOutput();
+                    }
+                }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
+                    stopVoiceOnWidgetClose();
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
@@ -3273,20 +3319,22 @@ const firstVisibleMsg = {
                 }
                 closeButton.addEventListener('click', closeChatBox);
 
-                if (appOptions.voiceChat) {
+                if (appOptions.voiceChat && typeof mckVoice !== 'undefined' && mckVoice) {
                     mckVoice.addEventListeners();
-                    document
-                        .querySelector('.mck-voice-interface-back-btn')
-                        .addEventListener('click', function () {
-                            mckVoice.stopRecording(true);
-
+                    var voiceInterfaceBackBtn = document.querySelector(
+                        '.mck-voice-interface-back-btn'
+                    );
+                    if (
+                        voiceInterfaceBackBtn &&
+                        !voiceInterfaceBackBtn.dataset.voiceBackListenerAttached
+                    ) {
+                        var onVoiceInterfaceBackClick = function () {
+                            mckVoice.stopVoiceMode();
                             kommunicateCommons.hide('#mck-voice-interface');
-
-                            kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body');
-
-                            kommunicateCommons.show('.mck-box-top');
-                            window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
-                        });
+                        };
+                        voiceInterfaceBackBtn.addEventListener('click', onVoiceInterfaceBackClick);
+                        voiceInterfaceBackBtn.dataset.voiceBackListenerAttached = 'true';
+                    }
                 }
                 popUpcloseButton.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -3540,8 +3588,11 @@ const firstVisibleMsg = {
                             separateDialCode: true,
                             initialCountry: 'auto',
                             geoIpLookup: _this.geoIpLookupFunction,
-                            utilsScript:
-                                'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
+                            loadUtils: function () {
+                                return import(window.MCK_STATICPATH + '/lib/js/intl-tel-utils.js');
+                            },
+                            formatAsYouType: false,
+                            strictMode: false,
                             useFullscreenPopup: false,
                             dropdownContainer:
                                 phoneField.closest('.km-form-group') || document.body,
@@ -4289,95 +4340,170 @@ const firstVisibleMsg = {
                     ) {
                         return true;
                     }
-                    const userTimestamp = new Date().toISOString().slice(0, 19);
-                    // Convert user's message time to the agent's timezone
-                    const userMessageTimeInAgentTz = moment
-                        .tz(userTimestamp, 'UTC')
-                        .tz(team.timezone);
 
-                    const agentDay = userMessageTimeInAgentTz.day();
+                    var hasOwn = function (obj, key) {
+                        return Object.prototype.hasOwnProperty.call(obj, key);
+                    };
 
-                    // Check if business hours exist for this day
-                    let isCurrentDayMappingPresent = true;
-                    if (!team.businessHourMap.hasOwnProperty(agentDay)) {
-                        isCurrentDayMappingPresent = false;
-                    }
+                    var hasDayMapping = function (day) {
+                        return (
+                            hasOwn(team.businessHourMap, day) ||
+                            hasOwn(team.businessHourMap, String(day))
+                        );
+                    };
 
-                    const [start, end] = (team.businessHourMap[agentDay] || '')
-                        .split('-')
-                        .map((time) => `${time.substring(0, 2)}:${time.substring(2)}`);
+                    var getDayRange = function (day) {
+                        return team.businessHourMap[day] || team.businessHourMap[String(day)] || '';
+                    };
 
-                    // if start and end time are same, then it is a 24 hour business
-                    if (isCurrentDayMappingPresent && start === end) {
+                    var parseTimeRange = function (range) {
+                        if (typeof range !== 'string') {
+                            return null;
+                        }
+                        var values = range.split('-');
+                        if (values.length !== 2) {
+                            return null;
+                        }
+                        var toMinutes = function (value) {
+                            var normalized = String(value || '').trim();
+                            if (!/^\d{4}$/.test(normalized)) {
+                                return null;
+                            }
+                            var hour = Number(normalized.substring(0, 2));
+                            var minute = Number(normalized.substring(2, 4));
+                            if (hour > 23 || minute > 59) {
+                                return null;
+                            }
+                            return hour * 60 + minute;
+                        };
+                        var startMinutes = toMinutes(values[0]);
+                        var endMinutes = toMinutes(values[1]);
+                        if (startMinutes === null || endMinutes === null) {
+                            return null;
+                        }
+                        return {
+                            start: startMinutes,
+                            end: endMinutes,
+                        };
+                    };
+
+                    var nowInTimezone = function (timeZone) {
+                        var parts;
+                        try {
+                            var formatter = new Intl.DateTimeFormat('en-US', {
+                                timeZone: timeZone,
+                                weekday: 'short',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false,
+                                hourCycle: 'h23',
+                            });
+                            parts = formatter.formatToParts(new Date());
+                        } catch (error) {
+                            return null;
+                        }
+                        var weekday;
+                        var hour;
+                        var minute;
+                        for (var idx = 0; idx < parts.length; idx++) {
+                            var part = parts[idx];
+                            if (part.type === 'weekday') {
+                                weekday = part.value;
+                            } else if (part.type === 'hour') {
+                                hour = part.value;
+                            } else if (part.type === 'minute') {
+                                minute = part.value;
+                            }
+                        }
+                        var dayMap = {
+                            Sun: 0,
+                            Mon: 1,
+                            Tue: 2,
+                            Wed: 3,
+                            Thu: 4,
+                            Fri: 5,
+                            Sat: 6,
+                        };
+                        if (typeof dayMap[weekday] === 'undefined') {
+                            return null;
+                        }
+                        var hourNumber = Number(hour);
+                        var minuteNumber = Number(minute);
+                        if (!Number.isFinite(hourNumber) || !Number.isFinite(minuteNumber)) {
+                            return null;
+                        }
+                        if (hourNumber === 24) {
+                            hourNumber = 0;
+                        }
+                        if (
+                            hourNumber < 0 ||
+                            hourNumber > 23 ||
+                            minuteNumber < 0 ||
+                            minuteNumber > 59
+                        ) {
+                            return null;
+                        }
+                        return {
+                            day: dayMap[weekday],
+                            minutes: hourNumber * 60 + minuteNumber,
+                        };
+                    };
+
+                    var agentTime = nowInTimezone(team.timezone);
+                    if (!agentTime) {
                         return true;
                     }
 
-                    const startOfDay = moment.tz(
-                        `${userMessageTimeInAgentTz.format('YYYY-MM-DD')} ${start}`,
-                        'YYYY-MM-DD HH:mm',
-                        team.timezone
-                    );
-                    let endOfDay = moment.tz(
-                        `${userMessageTimeInAgentTz.format('YYYY-MM-DD')} ${end}`,
-                        'YYYY-MM-DD HH:mm',
-                        team.timezone
-                    );
+                    var agentDay = agentTime.day;
+                    var currentDayHasMapping = hasDayMapping(agentDay);
+                    var currentRange = currentDayHasMapping
+                        ? parseTimeRange(getDayRange(agentDay))
+                        : null;
 
-                    if (isCurrentDayMappingPresent && startOfDay.isAfter(endOfDay)) {
-                        // Move endOfDay to the next day
-                        endOfDay = endOfDay.clone().add(1, 'day');
+                    if (currentDayHasMapping && !currentRange) {
+                        return true;
                     }
 
-                    // If the user's time is before the start of the current day's business hours
-                    if (
-                        !isCurrentDayMappingPresent ||
-                        userMessageTimeInAgentTz.isBefore(startOfDay)
-                    ) {
-                        const previousDay = (agentDay - 1 + 7) % 7; // Get the previous day
-                        if (team.businessHourMap.hasOwnProperty(previousDay)) {
-                            const [prevStart, prevEnd] = team.businessHourMap[previousDay]
-                                .split('-')
-                                .map((time) => `${time.substring(0, 2)}:${time.substring(2)}`);
+                    // if start and end are same, then it is a 24 hour business for that day.
+                    if (currentRange && currentRange.start === currentRange.end) {
+                        return true;
+                    }
 
-                            const prevStartOfDay = moment.tz(
-                                `${userMessageTimeInAgentTz
-                                    .clone()
-                                    .subtract(1, 'day')
-                                    .format('YYYY-MM-DD')} ${prevStart}`,
-                                'YYYY-MM-DD HH:mm',
-                                team.timezone
-                            );
-                            let prevEndOfDay = moment.tz(
-                                `${userMessageTimeInAgentTz
-                                    .clone()
-                                    .subtract(1, 'day')
-                                    .format('YYYY-MM-DD')} ${prevEnd}`,
-                                'YYYY-MM-DD HH:mm',
-                                team.timezone
-                            );
-
-                            if (prevStartOfDay.isAfter(prevEndOfDay)) {
-                                prevEndOfDay = prevEndOfDay.clone().add(1, 'day');
-                            }
-
-                            if (
-                                userMessageTimeInAgentTz.isBetween(
-                                    prevStartOfDay,
-                                    prevEndOfDay,
-                                    'minute',
-                                    '[]'
-                                )
-                            ) {
-                                return true;
-                            }
+                    if (currentRange) {
+                        if (
+                            currentRange.start < currentRange.end &&
+                            agentTime.minutes >= currentRange.start &&
+                            agentTime.minutes <= currentRange.end
+                        ) {
+                            return true;
+                        }
+                        if (
+                            currentRange.start > currentRange.end &&
+                            agentTime.minutes >= currentRange.start
+                        ) {
+                            return true;
                         }
                     }
 
-                    if (!isCurrentDayMappingPresent) {
+                    var previousDay = (agentDay - 1 + 7) % 7;
+                    if (hasDayMapping(previousDay)) {
+                        var previousRange = parseTimeRange(getDayRange(previousDay));
+                        if (!previousRange) {
+                            return true;
+                        }
+                        if (
+                            previousRange.start > previousRange.end &&
+                            agentTime.minutes <= previousRange.end
+                        ) {
+                            return true;
+                        }
+                    }
+
+                    if (!currentDayHasMapping) {
                         return false;
                     }
 
-                    return userMessageTimeInAgentTz.isBetween(startOfDay, endOfDay, 'minute', '[]');
+                    return false;
                 } catch (e) {
                     // if there is any error in formatting the business hours allow the user to chat
                     console.error('Error while checking business hours', e);
@@ -4651,6 +4777,29 @@ const firstVisibleMsg = {
                         setActiveSubsectionState('conversation-individual');
                 }
 
+                function showVoicePermissionRequiredMessage() {
+                    var message =
+                        (typeof KommunicateUI === 'object' &&
+                            KommunicateUI &&
+                            typeof KommunicateUI.getLabel === 'function' &&
+                            KommunicateUI.getLabel(
+                                'voice.permission.required',
+                                'Microphone permission is required for voice mode.'
+                            )) ||
+                        'Microphone permission is required for voice mode.';
+                    var errorElement = document.getElementById('mck-msg-error');
+                    if (!errorElement) {
+                        return;
+                    }
+                    errorElement.innerHTML = message;
+                    errorElement.classList.add('mck-no-mb');
+                    kommunicateCommons.show(errorElement);
+                    setTimeout(function () {
+                        kommunicateCommons.hide(errorElement);
+                        errorElement.classList.remove('mck-no-mb');
+                    }, 5000);
+                }
+
                 function startNewConversation(onConversationCreated) {
                     KommunicateUI.toggleConversationsEmptyState &&
                         KommunicateUI.toggleConversationsEmptyState(false);
@@ -4676,9 +4825,57 @@ const firstVisibleMsg = {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
                     startNewConversation();
                 }
+                function handleStartVoiceConversation(event) {
+                    event && typeof event.preventDefault === 'function' && event.preventDefault();
+                    startNewConversation(function () {
+                        if (
+                            !appOptions.voiceChat ||
+                            typeof mckVoice === 'undefined' ||
+                            !mckVoice ||
+                            typeof mckVoice.startVoiceMode !== 'function'
+                        ) {
+                            return;
+                        }
+                        var source =
+                            (typeof mckVoice.getVoiceEntrySources === 'function' &&
+                                mckVoice.getVoiceEntrySources().CONVERSATIONS_SCREEN) ||
+                            'conversations_screen';
+                        mckVoice.startVoiceMode(source, {
+                            suppressPermissionAlert: true,
+                            onPermissionDenied: showVoicePermissionRequiredMessage,
+                        });
+                    });
+                }
                 $mck_contact_search.click(handleStartNewConversation);
                 $applozic(d).on('click', '#km-empty-conversation-cta', handleStartNewConversation);
                 $applozic(d).on('click', '#km-conversations-empty-cta', handleStartNewConversation);
+                $applozic(d).on('click', '#km-start-with-voice-cta', handleStartVoiceConversation);
+                $applozic(d).on(
+                    'click',
+                    '#km-empty-conversation-voice-cta',
+                    handleStartVoiceConversation
+                );
+                $applozic(d).on(
+                    'click',
+                    '#km-conversations-empty-voice-cta',
+                    handleStartVoiceConversation
+                );
+                if (appOptions.voiceChat) {
+                    kommunicateCommons.show(
+                        '#km-start-with-voice-cta',
+                        '#km-empty-conversation-voice-cta',
+                        '#km-conversations-empty-voice-cta'
+                    );
+                    [
+                        'km-start-conversation-actions',
+                        'km-empty-conversation-actions',
+                        'km-conversations-empty-actions',
+                    ].forEach(function (containerId) {
+                        var startActionsContainer = document.getElementById(containerId);
+                        startActionsContainer &&
+                            startActionsContainer.classList.add('km-voice-option-enabled');
+                    });
+                }
                 $applozic(d).on(
                     'click',
                     '#km-empty-conversation-continue',
@@ -5896,6 +6093,13 @@ const firstVisibleMsg = {
                     }
                 }
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                if (
+                    typeof kmVoice !== 'undefined' &&
+                    kmVoice &&
+                    typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                ) {
+                    kmVoice.unsubscribeVoiceSocketTopic();
+                }
             };
             _this.softHideSidebox = function () {
                 if (typeof document === 'undefined') {
@@ -7840,7 +8044,6 @@ const firstVisibleMsg = {
             var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form-container');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            const voiceInterface = document.querySelector('#mck-voice-interface');
             var inlineTemplateIdCounter = 0;
 
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
@@ -8372,7 +8575,10 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-contacts-content');
                     kommunicateCommons.show($modal_footer_content, '#mck-sidebox-ft');
 
-                    appOptions.voiceChat && mckVoice.showMic(appOptions);
+                    appOptions.voiceChat &&
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        mckVoice.showMic(appOptions);
                     kommunicateCommons.show('#mck-btn-clear-messages');
                     kommunicateCommons.hide('.mck-group-menu-options', '#mck-waiting-queue');
                     if (params.isGroup) {
@@ -8446,6 +8652,13 @@ const firstVisibleMsg = {
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
                     window.Applozic.ALSocket.subscibeToTypingChannel(subscribeId);
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.subscribeToVoiceSocketTopic(subscribeId);
+                    }
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
@@ -8475,6 +8688,13 @@ const firstVisibleMsg = {
 
                     var mckMessageArray = ALStorage.getLatestMessageArray();
                     window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.unsubscribeVoiceSocketTopic();
+                    }
                     if (mckMessageArray !== null && mckMessageArray.length > 0) {
                         params.isReload = true;
                         mckMessageLayout.addContactsFromMessageList(
@@ -9102,18 +9322,16 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                const isVoiceInterfaceActive = !(
-                    voiceInterface && voiceInterface.classList.contains('n-vis')
-                );
-
                 if (
-                    isVoiceInterfaceActive &&
-                    floatWhere != 'mck-msg-right' &&
-                    msg.message &&
-                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
-                    appOptions.voiceChat
+                    typeof kmVoiceMessageHandler !== 'undefined' &&
+                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
                 ) {
-                    mckVoice.processMessagesAsAudio(msg, displayName);
+                    kmVoiceMessageHandler.queueFromMessageRender(
+                        msg,
+                        displayName,
+                        appOptions,
+                        msgThroughListAPI
+                    );
                 }
                 var downloadIconVisible = 'n-vis';
                 var msgFeatExpr = 'n-vis';
@@ -11831,9 +12049,6 @@ const firstVisibleMsg = {
                 return displayName && kommunicateCommons.formatHtmlTag(displayName);
             };
             _this.populateMessage = function (messageType, message, notifyUser) {
-                var callDuration = mckDateUtils.convertMilisIntoTime(
-                    message.metadata.CALL_DURATION
-                );
                 var contact = message.groupId
                     ? mckGroupUtils.getGroup(message.groupId)
                     : mckMessageLayout.getContact(message.to);
@@ -12236,7 +12451,6 @@ const firstVisibleMsg = {
                 ) {
                     var group = mckGroupUtils.getGroup(params.tabId);
                     mckGroupLayout.addGroupStatus(group);
-                    var validated = group.type === 6 ? false : true;
                     var validated = true;
                     if (group.type === 6) {
                         mckGroupLayout.validateOpenGroupUser(group);
@@ -14348,6 +14562,7 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
             var $mck_msg_inner;
+            var $mck_group_info_tab;
             function openConversationFromNotification($target) {
                 if (!$target || !$target.length) {
                     return;
@@ -14377,6 +14592,7 @@ const firstVisibleMsg = {
                     '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
                 );
                 $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+                $mck_group_info_tab = $applozic('#mck-group-info-tab');
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {
@@ -15217,6 +15433,13 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
+                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                            kmVoiceMessageHandler.queueFromSocketReceive(
+                                message,
+                                tabId,
+                                appOptions
+                            );
+                        }
 
                         if (
                             resp.message.metadata &&
