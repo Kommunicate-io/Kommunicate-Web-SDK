@@ -23,7 +23,7 @@ var kmCustomElements = {
 // iframe class
 var kmCustomIframe =
     '.kommunicate-custom-iframe { ' +
-    '   max-height: calc(100% - 15%)!important;' +
+    '   max-height: 800px !important;' +
     '   border: none;' +
     '   position: fixed;' +
     '   z-index: 2243000;' +
@@ -59,7 +59,7 @@ var kmCustomIframe =
     '} \n ' +
     '.km-iframe-dimension-with-popup{ ' +
     '    height: 85vh; ' +
-    '    max-height: calc(100vh - 15vh); ' +
+    '    max-height: 800px; ' +
     '    width: 27vw; ' +
     '    min-width: 390px; ' +
     '} \n ' +
