@@ -24,7 +24,15 @@
 }
 
 .mck-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0 10px;
+
+    &.vis,
+    &.show {
+        display: flex;
+    }
 }
 
 .mck-sidebox .mck-tab-title,

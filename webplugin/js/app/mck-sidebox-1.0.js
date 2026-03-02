@@ -946,6 +946,22 @@ const firstVisibleMsg = {
                         true
                     );
                 }
+                // Voice socket topic lifecycle on connect (safe lookup, no scoped jquery dependency).
+                var messageInner = document.querySelector('#mck-message-cell .mck-message-inner');
+                var currentTabId = messageInner ? messageInner.getAttribute('data-mck-id') : null;
+                var isCurrentGroup = messageInner
+                    ? messageInner.getAttribute('data-isgroup') === 'true'
+                    : false;
+                if (currentTabId) {
+                    var voiceSubscribeId = isCurrentGroup ? currentTabId : MCK_USER_ID;
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.subscribeToVoiceSocketTopic(voiceSubscribeId);
+                    }
+                }
             },
             onMessageDelivered: function (resp) {},
             onMessageRead: function (resp) {},
@@ -1100,7 +1116,7 @@ const firstVisibleMsg = {
                 }
                 function hackForIosDevices() {
                     /** 
-                        it is only for IOS devices so using newer syntax
+                    it is only for IOS devices so using newer syntax
                         IOS devices would not let the speech API run programmatically unless we have triggered manually one time under the user's interaction.
                      */
 
@@ -1114,6 +1130,23 @@ const firstVisibleMsg = {
                 }
                 isIosDevice && hackForIosDevices();
             }
+            function stopVoicePlaybackOnUnload() {
+                if (
+                    Kommunicate.mediaService &&
+                    typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                ) {
+                    Kommunicate.mediaService.stopVoiceOutput();
+                }
+                if (
+                    typeof mckVoice !== 'undefined' &&
+                    mckVoice &&
+                    typeof mckVoice.stopVoiceMode === 'function'
+                ) {
+                    mckVoice.stopVoiceMode();
+                }
+            }
+            window.addEventListener('beforeunload', stopVoicePlaybackOnUnload);
+            window.addEventListener('pagehide', stopVoicePlaybackOnUnload);
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
@@ -3194,8 +3227,25 @@ const firstVisibleMsg = {
                     openWidgetIframe();
                 });
                 var closeButton = document.getElementById('km-chat-widget-close-button');
+                function stopVoiceOnWidgetClose() {
+                    if (
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        typeof mckVoice.stopVoiceMode === 'function'
+                    ) {
+                        mckVoice.stopVoiceMode();
+                    }
+                    if (
+                        typeof Kommunicate !== 'undefined' &&
+                        Kommunicate.mediaService &&
+                        typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
+                    ) {
+                        Kommunicate.mediaService.stopVoiceOutput();
+                    }
+                }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
+                    stopVoiceOnWidgetClose();
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
@@ -3265,20 +3315,22 @@ const firstVisibleMsg = {
                 }
                 closeButton.addEventListener('click', closeChatBox);
 
-                if (appOptions.voiceChat) {
+                if (appOptions.voiceChat && typeof mckVoice !== 'undefined' && mckVoice) {
                     mckVoice.addEventListeners();
-                    document
-                        .querySelector('.mck-voice-interface-back-btn')
-                        .addEventListener('click', function () {
-                            mckVoice.stopRecording(true);
-
+                    var voiceInterfaceBackBtn = document.querySelector(
+                        '.mck-voice-interface-back-btn'
+                    );
+                    if (
+                        voiceInterfaceBackBtn &&
+                        !voiceInterfaceBackBtn.dataset.voiceBackListenerAttached
+                    ) {
+                        var onVoiceInterfaceBackClick = function () {
+                            mckVoice.stopVoiceMode();
                             kommunicateCommons.hide('#mck-voice-interface');
-
-                            kommunicateCommons.show('#mck-sidebox-ft', '.mck-box-body');
-
-                            kommunicateCommons.show('.mck-box-top');
-                            window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
-                        });
+                        };
+                        voiceInterfaceBackBtn.addEventListener('click', onVoiceInterfaceBackClick);
+                        voiceInterfaceBackBtn.dataset.voiceBackListenerAttached = 'true';
+                    }
                 }
                 popUpcloseButton.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -4721,6 +4773,29 @@ const firstVisibleMsg = {
                         setActiveSubsectionState('conversation-individual');
                 }
 
+                function showVoicePermissionRequiredMessage() {
+                    var message =
+                        (typeof KommunicateUI === 'object' &&
+                            KommunicateUI &&
+                            typeof KommunicateUI.getLabel === 'function' &&
+                            KommunicateUI.getLabel(
+                                'voice.permission.required',
+                                'Microphone permission is required for voice mode.'
+                            )) ||
+                        'Microphone permission is required for voice mode.';
+                    var errorElement = document.getElementById('mck-msg-error');
+                    if (!errorElement) {
+                        return;
+                    }
+                    errorElement.innerHTML = message;
+                    errorElement.classList.add('mck-no-mb');
+                    kommunicateCommons.show(errorElement);
+                    setTimeout(function () {
+                        kommunicateCommons.hide(errorElement);
+                        errorElement.classList.remove('mck-no-mb');
+                    }, 5000);
+                }
+
                 function startNewConversation(onConversationCreated) {
                     KommunicateUI.toggleConversationsEmptyState &&
                         KommunicateUI.toggleConversationsEmptyState(false);
@@ -4746,9 +4821,57 @@ const firstVisibleMsg = {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
                     startNewConversation();
                 }
+                function handleStartVoiceConversation(event) {
+                    event && typeof event.preventDefault === 'function' && event.preventDefault();
+                    startNewConversation(function () {
+                        if (
+                            !appOptions.voiceChat ||
+                            typeof mckVoice === 'undefined' ||
+                            !mckVoice ||
+                            typeof mckVoice.startVoiceMode !== 'function'
+                        ) {
+                            return;
+                        }
+                        var source =
+                            (typeof mckVoice.getVoiceEntrySources === 'function' &&
+                                mckVoice.getVoiceEntrySources().CONVERSATIONS_SCREEN) ||
+                            'conversations_screen';
+                        mckVoice.startVoiceMode(source, {
+                            suppressPermissionAlert: true,
+                            onPermissionDenied: showVoicePermissionRequiredMessage,
+                        });
+                    });
+                }
                 $mck_contact_search.click(handleStartNewConversation);
                 $applozic(d).on('click', '#km-empty-conversation-cta', handleStartNewConversation);
                 $applozic(d).on('click', '#km-conversations-empty-cta', handleStartNewConversation);
+                $applozic(d).on('click', '#km-start-with-voice-cta', handleStartVoiceConversation);
+                $applozic(d).on(
+                    'click',
+                    '#km-empty-conversation-voice-cta',
+                    handleStartVoiceConversation
+                );
+                $applozic(d).on(
+                    'click',
+                    '#km-conversations-empty-voice-cta',
+                    handleStartVoiceConversation
+                );
+                if (appOptions.voiceChat) {
+                    kommunicateCommons.show(
+                        '#km-start-with-voice-cta',
+                        '#km-empty-conversation-voice-cta',
+                        '#km-conversations-empty-voice-cta'
+                    );
+                    [
+                        'km-start-conversation-actions',
+                        'km-empty-conversation-actions',
+                        'km-conversations-empty-actions',
+                    ].forEach(function (containerId) {
+                        var startActionsContainer = document.getElementById(containerId);
+                        startActionsContainer &&
+                            startActionsContainer.classList.add('km-voice-option-enabled');
+                    });
+                }
                 $applozic(d).on(
                     'click',
                     '#km-empty-conversation-continue',
@@ -5966,6 +6089,13 @@ const firstVisibleMsg = {
                     }
                 }
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                if (
+                    typeof kmVoice !== 'undefined' &&
+                    kmVoice &&
+                    typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                ) {
+                    kmVoice.unsubscribeVoiceSocketTopic();
+                }
             };
             _this.softHideSidebox = function () {
                 if (typeof document === 'undefined') {
@@ -7882,7 +8012,6 @@ const firstVisibleMsg = {
             var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form-container');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-            const voiceInterface = document.querySelector('#mck-voice-interface');
             var inlineTemplateIdCounter = 0;
 
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
@@ -8414,7 +8543,10 @@ const firstVisibleMsg = {
                     kommunicateCommons.hide('#mck-contacts-content');
                     kommunicateCommons.show($modal_footer_content, '#mck-sidebox-ft');
 
-                    appOptions.voiceChat && mckVoice.showMic(appOptions);
+                    appOptions.voiceChat &&
+                        typeof mckVoice !== 'undefined' &&
+                        mckVoice &&
+                        mckVoice.showMic(appOptions);
                     kommunicateCommons.show('#mck-btn-clear-messages');
                     kommunicateCommons.hide('.mck-group-menu-options', '#mck-waiting-queue');
                     if (params.isGroup) {
@@ -8488,6 +8620,13 @@ const firstVisibleMsg = {
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
                     window.Applozic.ALSocket.subscibeToTypingChannel(subscribeId);
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.subscribeToVoiceSocketTopic(subscribeId);
+                    }
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
@@ -8517,6 +8656,13 @@ const firstVisibleMsg = {
 
                     var mckMessageArray = ALStorage.getLatestMessageArray();
                     window.Applozic.ALSocket.unsubscibeToTypingChannel();
+                    if (
+                        typeof kmVoice !== 'undefined' &&
+                        kmVoice &&
+                        typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
+                    ) {
+                        kmVoice.unsubscribeVoiceSocketTopic();
+                    }
                     if (mckMessageArray !== null && mckMessageArray.length > 0) {
                         params.isReload = true;
                         mckMessageLayout.addContactsFromMessageList(
@@ -9144,18 +9290,16 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                const isVoiceInterfaceActive = !(
-                    voiceInterface && voiceInterface.classList.contains('n-vis')
-                );
-
                 if (
-                    isVoiceInterfaceActive &&
-                    floatWhere != 'mck-msg-right' &&
-                    msg.message &&
-                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
-                    appOptions.voiceChat
+                    typeof kmVoiceMessageHandler !== 'undefined' &&
+                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
                 ) {
-                    mckVoice.processMessagesAsAudio(msg, displayName);
+                    kmVoiceMessageHandler.queueFromMessageRender(
+                        msg,
+                        displayName,
+                        appOptions,
+                        msgThroughListAPI
+                    );
                 }
                 var downloadIconVisible = 'n-vis';
                 var msgFeatExpr = 'n-vis';
@@ -15213,6 +15357,13 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
+                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                            kmVoiceMessageHandler.queueFromSocketReceive(
+                                message,
+                                tabId,
+                                appOptions
+                            );
+                        }
 
                         if (
                             resp.message.metadata &&

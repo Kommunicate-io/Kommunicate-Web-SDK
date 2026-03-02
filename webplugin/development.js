@@ -36,6 +36,7 @@ Object.assign(PLUGIN_SETTING, {
     botPlatformApi: PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi,
     applozicBaseUrl: PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl,
     dashboardUrl: PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl,
+    omnichannelBaseUrl: PLUGIN_SETTING.omnichannelBaseUrl || config.urls.omnichannelBaseUrl,
 });
 
 let PLUGIN_FILE_DATA = new Object();
