@@ -12,7 +12,10 @@
 .mck-attach-icon {
     height: auto;
 }
-
+.layout-modern,
+.layout-classic {
+  height: 100% !important;
+}
 .mck-box {
     position: fixed;
     right: 0;
