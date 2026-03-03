@@ -4127,7 +4127,7 @@ const firstVisibleMsg = {
                 }
                 console.log('[PRE-LEAD] loadChat completed, widget re-launched');
             }
-            if (typeof window !== 'undefined' && !window.loadChat) {
+            if (typeof window !== 'undefined' && typeof window.loadChat !== 'function') {
                 window.loadChat = loadChat;
             }
             /*  To trigger welcome event of a bot.
