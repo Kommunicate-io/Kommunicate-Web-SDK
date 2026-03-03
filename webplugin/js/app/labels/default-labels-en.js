@@ -171,6 +171,11 @@
             option: 'Please select',
             password: 'Password',
             errorText: 'Please enter your account password',
+            invalidPassword: 'Invalid password',
+            invalidPasswordMessage:
+                'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
+            supportAgentEmailError:
+                'You are using your support agent email. Please use another email to start this conversation.',
             errorEmail: 'Please enter a valid email address',
             commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
         },

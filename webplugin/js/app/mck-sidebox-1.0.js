@@ -2140,6 +2140,107 @@ const firstVisibleMsg = {
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
 
+            function openWidgetForAuthError() {
+                if (typeof document === 'undefined') {
+                    return;
+                }
+                var sideboxEl = document.getElementById('mck-sidebox');
+                if (sideboxEl && sideboxEl.classList) {
+                    sideboxEl.classList.remove('km-soft-hidden');
+                }
+                var previousConnectOnClick = CONNECT_SOCKET_ON_WIDGET_CLICK;
+                CONNECT_SOCKET_ON_WIDGET_CLICK = false;
+                kommunicateCommons.setWidgetStateOpen(true);
+                CONNECT_SOCKET_ON_WIDGET_CLICK = previousConnectOnClick;
+                !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
+                if (KOMMUNICATE_VERSION === 'v2') {
+                    typeof Kommunicate.setDefaultIframeConfigForOpenChat === 'function' &&
+                        Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
+                    typeof openWidgetIframe === 'function' && openWidgetIframe();
+                }
+                if (
+                    typeof mckMessageService !== 'undefined' &&
+                    typeof mckMessageService.openChatbox === 'function'
+                ) {
+                    mckMessageService.openChatbox();
+                }
+                if ($applozic?.fn?.applozic) {
+                    var previousCreateUserOnWidgetOpen = CREATE_USER_ON_WIDGET_OPEN;
+                    CREATE_USER_ON_WIDGET_OPEN = false;
+                    $applozic.fn.applozic('mckLaunchSideboxChat');
+                    CREATE_USER_ON_WIDGET_OPEN = previousCreateUserOnWidgetOpen;
+                }
+            }
+
+            function isPreLeadCollectionEnabled() {
+                return (
+                    (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !== 0) ||
+                    KM_PRELEAD_COLLECTION.length !== 0
+                );
+            }
+
+            function resolvePreLeadErrorMessage(result, fallbackKey) {
+                var leadLabels = MCK_LABELS['lead.collection'] || {};
+                var supportAgentEmailError =
+                    leadLabels.supportAgentEmailError ||
+                    'You are using your support agent email. Please use another email.';
+                var fallbackMessage =
+                    leadLabels[fallbackKey] || leadLabels.commonErrorMsg || leadLabels.errorText;
+                var rawMessage = '';
+
+                if (result && typeof result === 'object') {
+                    rawMessage =
+                        result.displayMessage ||
+                        result.message ||
+                        result.error ||
+                        result.code ||
+                        '';
+                    if (
+                        !rawMessage &&
+                        Array.isArray(result.errorResponse) &&
+                        result.errorResponse.length
+                    ) {
+                        var firstError = result.errorResponse[0] || {};
+                        rawMessage =
+                            firstError.displayMessage ||
+                            firstError.message ||
+                            firstError.errorMessage ||
+                            '';
+                    }
+                } else if (typeof result === 'string') {
+                    rawMessage = result;
+                }
+
+                if (rawMessage && /support|agent|admin/i.test(rawMessage)) {
+                    return supportAgentEmailError;
+                }
+
+                return fallbackMessage;
+            }
+
+            function showPreChatLoginError(message) {
+                var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                if (kmChatLoginModal) {
+                    kommunicateCommons.setDialogVisibility(
+                        kmChatLoginModal,
+                        true,
+                        loginModalFocusFallbacks
+                    );
+                }
+                var loginErrorNode = document.getElementById('km-error-chat-login');
+                if (loginErrorNode) {
+                    loginErrorNode.textContent = message || '';
+                    loginErrorNode.classList.remove('n-vis', 'hide');
+                    loginErrorNode.classList.add('vis');
+                }
+                var submitBtn = document.getElementById('km-submit-chat-login');
+                if (submitBtn) {
+                    submitBtn.classList.remove('n-vis');
+                    submitBtn.removeAttribute('disabled');
+                }
+                openWidgetForAuthError();
+            }
+
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -2377,6 +2478,15 @@ const firstVisibleMsg = {
                             }
                         };
 
+                        var ensureLeadCollectionSubmitVisible = function () {
+                            var submitBtn = document.getElementById('km-submit-chat-login');
+                            if (!submitBtn) {
+                                return;
+                            }
+                            submitBtn.classList.remove('n-vis');
+                            submitBtn.removeAttribute('disabled');
+                        };
+
                         var showPreChatLeadModal = function () {
                             syncLeadCollectionModalContainerMode(kmChatLoginModal);
                             if (kmChatLoginModal) {
@@ -2386,6 +2496,7 @@ const firstVisibleMsg = {
                                     loginModalFocusFallbacks
                                 );
                             }
+                            ensureLeadCollectionSubmitVisible();
                             adjustIframeForPrelead();
                         };
 
@@ -2478,6 +2589,35 @@ const firstVisibleMsg = {
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
                     success: async function (result) {
+                        var normalizedResult = result;
+                        if (typeof normalizedResult === 'string') {
+                            var trimmedResult = normalizedResult.trim();
+                            if (trimmedResult) {
+                                try {
+                                    normalizedResult = JSON.parse(trimmedResult);
+                                } catch (err) {
+                                    normalizedResult = trimmedResult.replace(/^\"|\"$/g, '');
+                                }
+                            }
+                        }
+                        var resultCode = normalizedResult;
+                        if (normalizedResult && typeof normalizedResult === 'object') {
+                            resultCode =
+                                normalizedResult.status ||
+                                normalizedResult.error ||
+                                normalizedResult.message ||
+                                normalizedResult.code ||
+                                normalizedResult.result ||
+                                normalizedResult.response ||
+                                normalizedResult;
+                        }
+                        if (typeof resultCode === 'string') {
+                            resultCode = resultCode
+                                .trim()
+                                .replace(/^\"|\"$/g, '')
+                                .toUpperCase();
+                        }
+
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //kommunicateCommons.hide("#km-chat-login-modal");
                             kommunicateCommons.hide('#km-chat-login-modal');
@@ -2488,16 +2628,25 @@ const firstVisibleMsg = {
                                 loginModalFocusFallbacks
                             );
                         }
-                        await KommunicateUtils.loadCryptoJS(result);
+                        await KommunicateUtils.loadCryptoJS(normalizedResult);
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
-                        if (result === 'INVALID_PASSWORD') {
+                        if (resultCode === 'INVALID_PASSWORD') {
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                            openWidgetForAuthError();
+                            kommunicateCommons.show('#km-chat-login-modal');
                             kommunicateCommons.setDialogVisibility(
                                 kmChatLoginModal,
                                 true,
                                 loginModalFocusFallbacks
                             );
+                            var loginErrorMessage =
+                                (MCK_LABELS['lead.collection'] || {}).invalidPasswordMessage ||
+                                (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
+                                MCK_LABELS['lead.collection'].errorText;
+                            var invalidPasswordMessage =
+                                (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
+                                MCK_LABELS['lead.collection'].errorText;
                             mckInit.addPasswordField({
                                 id: 'km-password',
                                 type: 'password',
@@ -2505,7 +2654,19 @@ const firstVisibleMsg = {
                                 class: 'km-form-control km-input-width km-login-error',
                                 placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
                                 required: 'true',
+                                errorMessage: invalidPasswordMessage,
                             });
+                            var loginErrorNode = document.getElementById('km-error-chat-login');
+                            if (loginErrorNode) {
+                                loginErrorNode.textContent = loginErrorMessage;
+                                loginErrorNode.classList.remove('n-vis', 'hide');
+                                loginErrorNode.classList.add('vis');
+                            }
+                            var submitBtn = document.getElementById('km-submit-chat-login');
+                            if (submitBtn) {
+                                submitBtn.removeAttribute('disabled');
+                                submitBtn.classList.remove('n-vis');
+                            }
 
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2516,8 +2677,28 @@ const firstVisibleMsg = {
                             // if password invalid then clear cookies
                             kmLocalStorage.deleteUserCookiesOnLogout();
 
-                            throw new Error('INVALID_PASSWORD');
-                        } else if (result === 'INVALID_APPID') {
+                            LAZY_INIT_STARTED = false;
+                            LAZY_INIT_PENDING_OPEN = false;
+                            return;
+                        } else if (
+                            isPreLeadCollectionEnabled() &&
+                            (resultCode === 'ERROR' || resultCode === 'USER_NOT_FOUND')
+                        ) {
+                            var preLeadErrorMessage = resolvePreLeadErrorMessage(
+                                normalizedResult,
+                                'commonErrorMsg'
+                            );
+                            showPreChatLoginError(preLeadErrorMessage);
+                            if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                                MCK_ON_PLUGIN_INIT({
+                                    status: 'error',
+                                    errorMessage: resultCode,
+                                });
+                            }
+                            LAZY_INIT_STARTED = false;
+                            LAZY_INIT_PENDING_OPEN = false;
+                            return;
+                        } else if (resultCode === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2526,7 +2707,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             throw new Error('INVALID APPLICATION ID');
-                        } else if (result === 'error' || result === 'USER_NOT_FOUND') {
+                        } else if (resultCode === 'ERROR' || resultCode === 'USER_NOT_FOUND') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2535,7 +2716,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             throw new Error('USER_NOT_FOUND');
-                        } else if (result === 'APPMODULE_NOT_FOUND') {
+                        } else if (resultCode === 'APPMODULE_NOT_FOUND') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2545,18 +2726,22 @@ const firstVisibleMsg = {
                             }
                             throw new Error('APPMODULE_NOT_FOUND');
                         }
-                        if (typeof result === 'object' && result !== null && result.token) {
-                            result.appId = userPxy.applicationId;
+                        if (
+                            typeof normalizedResult === 'object' &&
+                            normalizedResult !== null &&
+                            normalizedResult.token
+                        ) {
+                            normalizedResult.appId = userPxy.applicationId;
                             if (MCK_ACCESS_TOKEN) {
-                                result.accessToken = MCK_ACCESS_TOKEN;
+                                normalizedResult.accessToken = MCK_ACCESS_TOKEN;
                             }
-                            window.Applozic.ALSocket.AUTH_TOKEN = result.authToken;
-                            _this.onInitApp(result);
+                            window.Applozic.ALSocket.AUTH_TOKEN = normalizedResult.authToken;
+                            _this.onInitApp(normalizedResult);
                             if (typeof onInitCallback === 'function') {
                                 onInitCallback();
                             }
                             // mckUtils.manageIdleTime();
-                        } else if (result == 'CHURNED_CUSTOMER') {
+                        } else if (normalizedResult == 'CHURNED_CUSTOMER') {
                             _this.onInitApp({});
                         } else {
                             Kommunicate.displayKommunicateWidget(false);
@@ -3407,6 +3592,8 @@ const firstVisibleMsg = {
                 var errorContainer = document.querySelector(
                     '#km-password-container .km-login-form-error'
                 );
+                var errorMessage =
+                    (data && data.errorMessage) || MCK_LABELS['lead.collection'].errorText;
 
                 var labelAttribute = {
                     field: 'Password',
@@ -3422,7 +3609,7 @@ const firstVisibleMsg = {
                         errorDiv.innerHTML += `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
                         <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
                         </svg>
-                        <p class='km-error-msg'>${MCK_LABELS['lead.collection'].errorText}</p>`;
+                        <p class='km-error-msg'>${errorMessage}</p>`;
 
                         for (var key in data) {
                             passwordField.setAttribute(key, data[key]);
@@ -3433,10 +3620,15 @@ const firstVisibleMsg = {
                     } else if (isPassField) {
                         errorContainer.style.display = 'flex';
                         isPassField.classList.add('km-login-error');
+                        var errorLabel = errorContainer.querySelector('.km-error-msg');
+                        errorLabel && (errorLabel.textContent = errorMessage);
                     }
                 }
-                submitBtn.removeAttribute('disabled');
-                submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
+                if (submitBtn) {
+                    submitBtn.removeAttribute('disabled');
+                    submitBtn.classList.remove('n-vis');
+                    submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
+                }
             }),
                 (_this.createPreChatLabel = function (leadCollection, inputId) {
                     var kmLabelDiv = document.createElement('div');
@@ -3561,25 +3753,38 @@ const firstVisibleMsg = {
             };
 
             _this.addPreChatInlineValidation = function () {
-                var $error = $applozic('#km-error-chat-login');
+                var errorNode = document.getElementById('km-error-chat-login');
                 var emailField = document.getElementById('km-email');
                 var phoneField = document.getElementById('km-phone');
+
+                var setError = function (message) {
+                    if (!errorNode) {
+                        return;
+                    }
+                    if (message) {
+                        errorNode.classList.remove('hide', 'show');
+                        errorNode.textContent = message;
+                        kommunicateCommons.show(errorNode);
+                    } else {
+                        errorNode.classList.remove('show');
+                        errorNode.classList.add('hide');
+                        errorNode.textContent = '';
+                        kommunicateCommons.hide(errorNode);
+                    }
+                };
 
                 if (emailField) {
                     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
                     var handleEmailValidation = function () {
                         var value = (emailField.value || '').toLowerCase();
                         if (!value) {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
+                            setError('');
                             return;
                         }
                         if (!emailRegex.test(value)) {
-                            $error.removeClass('hide').addClass('show');
-                            $error.html(MCK_LABELS['lead.collection'].errorEmail);
+                            setError(MCK_LABELS['lead.collection'].errorEmail);
                         } else {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
+                            setError('');
                         }
                     };
                     emailField.addEventListener('input', handleEmailValidation);
@@ -3590,8 +3795,7 @@ const firstVisibleMsg = {
                     var handlePhoneValidation = function () {
                         var value = phoneField.value || '';
                         if (!value) {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
+                            setError('');
                             return;
                         }
                         var isValid = true;
@@ -3602,14 +3806,12 @@ const firstVisibleMsg = {
                             isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
                         }
                         if (!isValid) {
-                            $error.removeClass('hide').addClass('show');
-                            $error.html(
+                            setError(
                                 MCK_LABELS['lead.collection'].commonErrorMsg ||
                                     'Please enter a valid phone number'
                             );
                         } else {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
+                            setError('');
                         }
                     };
                     phoneField.addEventListener('input', handlePhoneValidation);
@@ -3645,8 +3847,12 @@ const firstVisibleMsg = {
                 var submitLogin = document.getElementById('km-submit-chat-login');
                 var leadCollectionHeading = document.getElementById('km-lead-collection-heading');
                 var tabTitle = document.getElementById('km-tab-title');
-                submitLogin.innerHTML = LEAD_COLLECTION_LABEL.submit;
-                submitLogin.setAttribute('aria-label', LEAD_COLLECTION_LABEL.submit);
+                if (submitLogin) {
+                    submitLogin.innerHTML = LEAD_COLLECTION_LABEL.submit;
+                    submitLogin.setAttribute('aria-label', LEAD_COLLECTION_LABEL.submit);
+                    submitLogin.classList.remove('n-vis');
+                    submitLogin.removeAttribute('disabled');
+                }
                 leadCollectionHeading.innerHTML = appOptions.headingFromWidget
                     ? LEAD_COLLECTION_LABEL.heading
                     : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
