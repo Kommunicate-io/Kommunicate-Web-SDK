@@ -404,6 +404,20 @@
                     </details>
 
                     <details class="collapsible" open>
+                        <summary>Top-level settings (JSON)</summary>
+                        <textarea
+                            id="globalSettings"
+                            name="globalSettings"
+                            spellcheck="false"
+                            placeholder='{"userId":"test-user-1","password":"ALLOW_TOKEN","authenticationTypeId":0}'
+                        ></textarea>
+                        <p class="hint" style="margin: 4px 0 0">
+                            Use this for top-level options like userId, password, or
+                            authenticationTypeId.
+                        </p>
+                    </details>
+
+                    <details class="collapsible" open>
                         <summary class="split-summary">
                             <span>Pre-chat leads</span>
                             <label class="toggle-row" style="font-weight: 500; margin: 0">
@@ -442,6 +456,9 @@
                     <button type="button" id="reset-form" class="secondary-btn">
                         Restore defaults
                     </button>
+                    <button type="button" id="reset-session" class="secondary-btn">
+                        Reset auth session
+                    </button>
                 </div>
 
                 <div id="config-status" role="status" aria-live="polite">
@@ -476,6 +493,11 @@
                 voiceModeEnabled: true,
                 containerId: 'widget-container',
                 widgetSettings: null,
+                globalSettings: {
+                    userId: 'test-user-1',
+                    password: 'ALLOW_TOKEN',
+                    authenticationTypeId: 0,
+                },
                 preChat: [
                     {
                         field: 'Name',
@@ -499,12 +521,14 @@
             const status = document.getElementById('config-status');
             const preview = document.getElementById('widget-preview');
             const widgetSettingsTextarea = document.getElementById('widgetSettings');
+            const globalSettingsTextarea = document.getElementById('globalSettings');
             const preChatTextarea = document.getElementById('preChat');
             const preChatEnabledCheckbox = document.getElementById('preChatEnabled');
             const preChatFields = document.getElementById('preChatFields');
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
             const resetButton = document.getElementById('reset-form');
+            const resetSessionButton = document.getElementById('reset-session');
             const containerModeHideControlsCheckbox = document.getElementById(
                 'containerModeHideControls'
             );
@@ -535,6 +559,9 @@
                 voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
                 widgetSettingsTextarea.value = defaultState.widgetSettings
                     ? formatJson(defaultState.widgetSettings)
+                    : '';
+                globalSettingsTextarea.value = defaultState.globalSettings
+                    ? formatJson(defaultState.globalSettings)
                     : '';
                 preChatTextarea.value = formatJson(defaultState.preChat);
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
@@ -628,6 +655,9 @@
                 widgetSettingsTextarea.value = config.widgetSettings
                     ? formatJson(config.widgetSettings)
                     : '';
+                globalSettingsTextarea.value = config.globalSettings
+                    ? formatJson(config.globalSettings)
+                    : '';
                 preChatTextarea.value = Array.isArray(config.preChat)
                     ? formatJson(config.preChat)
                     : '';
@@ -661,11 +691,18 @@
 
                 const preChatEnabled = preChatEnabledCheckbox.checked;
                 let widgetSettings;
+                let globalSettings;
                 let preChat = null;
                 try {
                     widgetSettings = parseJsonInput(widgetSettingsTextarea) ?? {};
                 } catch (error) {
                     throw new Error('Widget settings JSON is invalid. ' + error.message);
+                }
+
+                try {
+                    globalSettings = parseJsonInput(globalSettingsTextarea) ?? {};
+                } catch (error) {
+                    throw new Error('Top-level settings JSON is invalid. ' + error.message);
                 }
 
                 try {
@@ -685,6 +722,7 @@
                     voiceModeEnabled: voiceModeEnabledCheckbox.checked,
                     containerId: defaultState.containerId,
                     widgetSettings,
+                    globalSettings,
                     preChat,
                     preChatEnabled,
                     containerModeHideControls: containerModeHideControlsCheckbox.checked,
@@ -721,12 +759,6 @@
                     ],
                 };
 
-                const existingOnInit =
-                    globalSettings.onInit ||
-                    (window.kommunicate &&
-                        window.kommunicate._globals &&
-                        window.kommunicate._globals.onInit);
-
                 if (config.containerMode === 'inside') {
                     globalSettings.popupWidget = false;
                     globalSettings.containerId = config.containerId;
@@ -743,6 +775,22 @@
                 if (Array.isArray(config.preChat) && config.preChat.length) {
                     globalSettings.preLeadCollection = config.preChat;
                 }
+
+                const globalSettingsOverrides =
+                    config.globalSettings && typeof config.globalSettings === 'object'
+                        ? { ...config.globalSettings }
+                        : {};
+                if (
+                    Object.prototype.hasOwnProperty.call(globalSettingsOverrides, 'widgetSettings')
+                ) {
+                    delete globalSettingsOverrides.widgetSettings;
+                }
+                Object.assign(globalSettings, globalSettingsOverrides);
+                const existingOnInit =
+                    globalSettings.onInit ||
+                    (window.kommunicate &&
+                        window.kommunicate._globals &&
+                        window.kommunicate._globals.onInit);
 
                 if (config.agentId) {
                     const agentRoutingSettings = {
@@ -794,6 +842,78 @@
                     m._globals = kommunicateSettings;
                 })(document, window.kommunicate || {}, globalSettings);
 
+                const attachLoginLogger = () => {
+                    const frame = document.getElementById('kommunicate-widget-iframe');
+                    if (!frame || !frame.contentWindow) {
+                        return false;
+                    }
+                    const frameWindow = frame.contentWindow;
+                    if (frameWindow.__kmLoginLoggerAttached || !frameWindow.XMLHttpRequest) {
+                        return Boolean(frameWindow.__kmLoginLoggerAttached);
+                    }
+                    const shouldLogUrl = (url) =>
+                        typeof url === 'string' &&
+                        (url.includes('kommunicate') ||
+                            url.includes('applozic') ||
+                            url.includes('chat-test') ||
+                            url.includes('api-test'));
+                    const authPattern = new RegExp('login|auth|token|rest\\\\/ws\\\\/user', 'i');
+                    const shouldHighlight = (url, status) =>
+                        (typeof status === 'number' && status >= 400) ||
+                        (typeof url === 'string' && authPattern.test(url));
+
+                    const open = frameWindow.XMLHttpRequest.prototype.open;
+                    frameWindow.XMLHttpRequest.prototype.open = function (method, url) {
+                        this.__km_url = url;
+                        this.__km_method = method;
+                        return open.apply(this, arguments);
+                    };
+                    const send = frameWindow.XMLHttpRequest.prototype.send;
+                    frameWindow.XMLHttpRequest.prototype.send = function (body) {
+                        this.addEventListener('load', () => {
+                            if (shouldLogUrl(this.__km_url)) {
+                                const tag = shouldHighlight(this.__km_url, this.status)
+                                    ? 'KM Debug'
+                                    : 'KM Trace';
+                                console.log(
+                                    `[${tag}] XHR`,
+                                    this.__km_method,
+                                    this.__km_url,
+                                    this.status,
+                                    this.responseText
+                                );
+                            }
+                        });
+                        return send.apply(this, arguments);
+                    };
+
+                    if (frameWindow.fetch) {
+                        const originalFetch = frameWindow.fetch.bind(frameWindow);
+                        frameWindow.fetch = async (...args) => {
+                            const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
+                            const response = await originalFetch(...args);
+                            if (shouldLogUrl(url)) {
+                                const tag = shouldHighlight(url, response.status)
+                                    ? 'KM Debug'
+                                    : 'KM Trace';
+                                console.log(`[${tag}] fetch`, url, response.status);
+                            }
+                            return response;
+                        };
+                    }
+                    frameWindow.__kmLoginLoggerAttached = true;
+                    console.log('[KM Debug] Login logger attached.');
+                    return true;
+                };
+
+                let attachAttempts = 0;
+                const attachTimer = setInterval(() => {
+                    attachAttempts += 1;
+                    if (attachLoginLogger() || attachAttempts > 30) {
+                        clearInterval(attachTimer);
+                    }
+                }, 200);
+
                 lastLaunchTimestamp = Date.now();
                 updatePreviewStatus(
                     config.containerMode === 'inside'
@@ -827,6 +947,26 @@
 
             resetButton.addEventListener('click', () => {
                 resetForm();
+            });
+            resetSessionButton.addEventListener('click', () => {
+                try {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                } catch (error) {
+                    console.warn('Unable to clear storage', error);
+                }
+                const iframe = document.getElementById('kommunicate-widget-iframe');
+                if (iframe) {
+                    iframe.remove();
+                }
+                const injectedScript = document.getElementById('kommunicate-widget-script');
+                if (injectedScript) {
+                    injectedScript.remove();
+                }
+                updatePreviewStatus(
+                    'waiting for launch',
+                    'Auth session cleared. Launch again to test.'
+                );
             });
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
             voiceModeEnabledCheckbox.addEventListener('change', updateVoiceModeState);
