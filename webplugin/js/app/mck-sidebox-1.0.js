@@ -2306,7 +2306,7 @@ const firstVisibleMsg = {
                                 chatNotificationMailSent: true,
                             };
                             PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                            mckInit.initialize(options, loadChat);
+                            mckInit.initialize(options, window.loadChat);
                             return false;
                         }
                         var kmAnonymousChatLauncher = document.getElementById(
@@ -4127,6 +4127,9 @@ const firstVisibleMsg = {
                 }
                 console.log('[PRE-LEAD] loadChat completed, widget re-launched');
             }
+            if (typeof window !== 'undefined' && !window.loadChat) {
+                window.loadChat = loadChat;
+            }
             /*  To trigger welcome event of a bot.
                 defaultSettings: if there is any custome event is configured by the user
             */
@@ -5502,7 +5505,7 @@ const firstVisibleMsg = {
                     var options = {
                         userId: userId,
                         applicationId: MCK_APP_ID,
-                        onInit: loadChat,
+                        onInit: window.loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
                         metadata: metadata,
@@ -5529,7 +5532,7 @@ const firstVisibleMsg = {
                     });
                     kommunicateCommons.show($mck_loading);
                     KommunicateUI.skipPopupChatTemplate = true;
-                    mckInit.initialize(options, loadChat);
+                    mckInit.initialize(options, window.loadChat);
 
                     return false;
                 });
