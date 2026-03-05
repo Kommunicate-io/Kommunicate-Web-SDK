@@ -347,7 +347,12 @@
                             <label
                                 ><input type="radio" name="widgetPosition" value="right" checked />
                                 Right</label
-                        <legend>Voice Mode</legend>
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Voice Recognition Mode</legend>
                         <div class="inline-options">
                             <label
                                 ><input
@@ -359,10 +364,6 @@
                                 Enable voice mode</label
                             >
                         </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Voice Recognition Mode</legend>
                         <div class="inline-options">
                             <label
                                 ><input
@@ -478,7 +479,7 @@
         <script>
             const defaultState = {
                 appId: 'kommunicate-support',
-                agentId: 'voice-agent-ri5ko',
+                agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
                 widgetPosition: 'right',
@@ -544,6 +545,7 @@
                 document.querySelector(
                     `input[name="widgetPosition"][value="${defaultState.widgetPosition}"]`
                 ).checked = true;
+                document.querySelector(
                     `input[name="recognitionMode"][value="${defaultState.recognitionMode}"]`
                 ).checked = true;
                 voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
@@ -635,6 +637,7 @@
                 );
                 if (widgetPositionOption) {
                     widgetPositionOption.checked = true;
+                }
                 const recognitionModeValue = allowedRecognitionModes.includes(
                     config.recognitionMode
                 )
@@ -683,6 +686,7 @@
                     .value;
                 const widgetPosition = document.querySelector(
                     'input[name="widgetPosition"]:checked'
+                ).value;
                 const recognitionMode = document.querySelector(
                     'input[name="recognitionMode"]:checked'
                 ).value;
