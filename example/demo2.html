@@ -843,6 +843,9 @@
                 })(document, window.kommunicate || {}, globalSettings);
 
                 const attachLoginLogger = () => {
+                    if (!window.__kmDebug) {
+                        return true;
+                    }
                     const frame = document.getElementById('kommunicate-widget-iframe');
                     if (!frame || !frame.contentWindow) {
                         return false;
@@ -879,8 +882,7 @@
                                     `[${tag}] XHR`,
                                     this.__km_method,
                                     this.__km_url,
-                                    this.status,
-                                    this.responseText
+                                    this.status
                                 );
                             }
                         });
@@ -950,8 +952,25 @@
             });
             resetSessionButton.addEventListener('click', () => {
                 try {
-                    sessionStorage.clear();
-                    localStorage.clear();
+                    const clearKommunicateKeys = (storage) => {
+                        for (let i = storage.length - 1; i >= 0; i -= 1) {
+                            const key = storage.key(i);
+                            if (!key) {
+                                continue;
+                            }
+                            const normalizedKey = key.toLowerCase();
+                            if (
+                                key === pendingConfigKey ||
+                                normalizedKey.startsWith('kommunicate') ||
+                                normalizedKey.startsWith('applozic') ||
+                                normalizedKey.startsWith('km_')
+                            ) {
+                                storage.removeItem(key);
+                            }
+                        }
+                    };
+                    clearKommunicateKeys(sessionStorage);
+                    clearKommunicateKeys(localStorage);
                 } catch (error) {
                     console.warn('Unable to clear storage', error);
                 }

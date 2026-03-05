@@ -2208,7 +2208,7 @@ const firstVisibleMsg = {
             function isPreLeadCollectionEnabled() {
                 return (
                     (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !== 0) ||
-                    KM_PRELEAD_COLLECTION.length !== 0
+                    (Array.isArray(KM_PRELEAD_COLLECTION) && KM_PRELEAD_COLLECTION.length !== 0)
                 );
             }
 
@@ -2676,10 +2676,10 @@ const firstVisibleMsg = {
                             var loginErrorMessage =
                                 (MCK_LABELS['lead.collection'] || {}).invalidPasswordMessage ||
                                 (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
-                                MCK_LABELS['lead.collection'].errorText;
+                                (MCK_LABELS['lead.collection'] || {}).errorText;
                             var invalidPasswordMessage =
                                 (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
-                                MCK_LABELS['lead.collection'].errorText;
+                                (MCK_LABELS['lead.collection'] || {}).errorText;
                             mckInit.addPasswordField({
                                 id: 'km-password',
                                 type: 'password',
@@ -3645,7 +3645,7 @@ const firstVisibleMsg = {
                     '#km-password-container .km-login-form-error'
                 );
                 var errorMessage =
-                    (data && data.errorMessage) || MCK_LABELS['lead.collection'].errorText;
+                    (data && data.errorMessage) || (MCK_LABELS['lead.collection'] || {}).errorText;
 
                 var labelAttribute = {
                     field: 'Password',
