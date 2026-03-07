@@ -13102,12 +13102,14 @@ const firstVisibleMsg = {
                         !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
+                        CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = res?.languageCode || '';
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
                         CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = '';
                         _this.removeWarningsFromTextBox();
                     },
                 });

@@ -15,12 +15,15 @@ class Voice {
     _SILENCE_MAX_ZCR_THRESHOLD = 0.42;
     _SILENCE_HIGH_ZCR_MAX_RMS = 1200;
     _VOICE_SOCKET_TIMEOUT_MS = 30000;
+    _VOICE_LANGUAGE_METADATA_KEY = 'voiceLanguageCode';
+    _DEFAULT_VOICE_SESSION_KEY = '__default_voice_session__';
     _voiceSocketClient = null;
     _voiceSocketSubscription = null;
     _voiceSocketRequestSeq = 0;
     _voiceSocketPendingRequests = {};
     _voiceSocketChannelId = null;
     _voiceSocketResponseTopic = null;
+    _voiceLanguageStateBySessionKey = {};
 
     get voiceChatConfig() {
         return (
@@ -119,6 +122,143 @@ class Voice {
             return 'en-US';
         }
         return normalized;
+    }
+
+    getActiveConversationId() {
+        return (
+            typeof CURRENT_GROUP_DATA !== 'undefined' &&
+            CURRENT_GROUP_DATA &&
+            CURRENT_GROUP_DATA.tabId
+        );
+    }
+
+    getAgentDefaultLanguageCode() {
+        return this.normalizeLanguageCode(this.voiceInputConfig.languageCode) || 'en-US';
+    }
+
+    getBrowserLanguageCode() {
+        return this.normalizeLanguageCode(
+            (typeof navigator !== 'undefined' && navigator.language) || ''
+        );
+    }
+
+    getBotDetailsLanguageCode(groupId) {
+        const activeConversationId = this.getActiveConversationId();
+        if (!groupId || !activeConversationId || String(groupId) !== String(activeConversationId)) {
+            return '';
+        }
+        return this.normalizeLanguageCode(
+            (typeof CURRENT_GROUP_DATA !== 'undefined' &&
+                CURRENT_GROUP_DATA &&
+                CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE) ||
+                ''
+        );
+    }
+
+    getVoiceSessionKey(ucid) {
+        if (ucid !== undefined && ucid !== null && ucid !== '') {
+            return String(ucid);
+        }
+        const activeConversationId = this.getActiveConversationId();
+        if (
+            activeConversationId !== undefined &&
+            activeConversationId !== null &&
+            activeConversationId !== ''
+        ) {
+            return String(activeConversationId);
+        }
+        return this._DEFAULT_VOICE_SESSION_KEY;
+    }
+
+    getVoiceLanguageState(ucid) {
+        const sessionKey = this.getVoiceSessionKey(ucid);
+        if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
+            this._voiceLanguageStateBySessionKey[sessionKey] = {
+                languageCode: '',
+                firstSttCompleted: false,
+            };
+        }
+        return {
+            sessionKey,
+            state: this._voiceLanguageStateBySessionKey[sessionKey],
+        };
+    }
+
+    getSessionVoiceLanguageCode(state) {
+        return this.normalizeLanguageCode((state && state.languageCode) || '');
+    }
+
+    setSessionVoiceLanguageCode(state, languageCode) {
+        const normalizedLanguage = this.normalizeLanguageCode(languageCode);
+        if (!state || !normalizedLanguage || state.languageCode === normalizedLanguage) {
+            return false;
+        }
+        state.languageCode = normalizedLanguage;
+        return true;
+    }
+
+    getFirstSttAlternativeLanguageCodes(primaryLanguageCode, groupId) {
+        const alternatives = [];
+        const addAlternative = (code) => {
+            const normalizedCode = this.normalizeLanguageCode(code);
+            if (
+                !normalizedCode ||
+                normalizedCode === primaryLanguageCode ||
+                alternatives.indexOf(normalizedCode) !== -1
+            ) {
+                return;
+            }
+            alternatives.push(normalizedCode);
+        };
+        addAlternative(this.getBrowserLanguageCode());
+        addAlternative(this.getAgentDefaultLanguageCode());
+        addAlternative(this.getBotDetailsLanguageCode(groupId));
+        const configuredAlternatives = this.getAlternativeLanguageCodes();
+        for (let i = 0; i < configuredAlternatives.length; i++) {
+            addAlternative(configuredAlternatives[i]);
+        }
+        return alternatives;
+    }
+
+    syncVoiceLanguageWithChatContext(languageCode) {
+        const normalizedLanguage = this.normalizeLanguageCode(languageCode);
+        if (normalizedLanguage) {
+            Kommunicate.updateUserLanguage(normalizedLanguage);
+        }
+    }
+
+    async persistVoiceLanguageForGroup(groupId, languageCode) {
+        const normalizedLanguage = this.normalizeLanguageCode(languageCode);
+        if (!groupId || !normalizedLanguage) {
+            return;
+        }
+        try {
+            const updateResponse = Kommunicate.updateConversationMetadata({
+                groupId,
+                metadata: {
+                    [this._VOICE_LANGUAGE_METADATA_KEY]: normalizedLanguage,
+                },
+            });
+            if (updateResponse && typeof updateResponse.then === 'function') {
+                await updateResponse;
+            }
+            if (typeof MCK_GROUP_MAP !== 'undefined' && MCK_GROUP_MAP && MCK_GROUP_MAP[groupId]) {
+                MCK_GROUP_MAP[groupId].metadata = MCK_GROUP_MAP[groupId].metadata || {};
+                MCK_GROUP_MAP[groupId].metadata[
+                    this._VOICE_LANGUAGE_METADATA_KEY
+                ] = normalizedLanguage;
+            }
+            console.debug('Voice language persisted', {
+                groupId,
+                languageCode: normalizedLanguage,
+            });
+        } catch (error) {
+            console.warn('Voice language metadata persist failed', {
+                groupId,
+                languageCode: normalizedLanguage,
+                message: error && error.message ? error.message : '',
+            });
+        }
     }
 
     getChatContextLanguageCode() {
@@ -765,13 +905,19 @@ class Voice {
             });
     }
 
-    textToVoice(text = '') {
+    async textToVoice(text = '') {
+        const activeConversationId = this.getActiveConversationId();
+        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationId);
+        const languageCode = this.getSessionVoiceLanguageCode(state);
+        console.debug('Voice language used for subsequent TTS', { sessionKey, languageCode });
         const payload = {
             text,
             source: this.getOmnichannelSource(this.voiceChatConfig.source),
-            languageCode: this.getVoiceLanguageCode(),
             sampleRate: this.getTextToVoiceSampleRate(),
         };
+        if (languageCode) {
+            payload.languageCode = languageCode;
+        }
         const config = this.voiceChatConfig || {};
         if (config.ssmlGender) {
             payload.ssmlGender = config.ssmlGender;
@@ -842,6 +988,16 @@ class Voice {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
             throw silentAudioError;
         }
+        const activeConversationUcid = this.getActiveConversationId();
+        const resolvedUcid =
+            ucid ||
+            this.voiceInputConfig.ucid ||
+            this.omnichannelConfig.ucid ||
+            activeConversationUcid;
+        const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
+        const isFirstSttRequest = !state.firstSttCompleted;
+        const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
+
         const payload = {
             samples,
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
@@ -849,28 +1005,37 @@ class Voice {
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
             source: this.getOmnichannelSource(this.voiceInputConfig.source),
             sttMode: sttMode || 'recognize',
-            languageCode: this.getVoiceLanguageCode(),
         };
-        // Temporarily disabled to troubleshoot Safari STT behavior.
-        // const alternativeLanguageCodes = this.getAlternativeLanguageCodes();
-        // if (alternativeLanguageCodes.length) {
-        //     payload.alternativeLanguageCodes = alternativeLanguageCodes;
-        // }
-        const activeConversationUcid =
-            typeof CURRENT_GROUP_DATA !== 'undefined' &&
-            CURRENT_GROUP_DATA &&
-            CURRENT_GROUP_DATA.tabId;
-        const resolvedUcid =
-            ucid ||
-            this.voiceInputConfig.ucid ||
-            this.omnichannelConfig.ucid ||
-            activeConversationUcid;
+        if (sttLanguageCode) {
+            payload.languageCode = sttLanguageCode;
+        }
+        if (!sttLanguageCode) {
+            const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
+                sttLanguageCode,
+                activeConversationUcid
+            );
+            if (firstRequestAlternatives.length) {
+                payload.alternativeLanguageCodes = firstRequestAlternatives;
+            }
+        }
+        if (isFirstSttRequest) {
+            console.debug('Voice STT first language sent', {
+                sessionKey,
+                languageCode: sttLanguageCode || '',
+                alternativeLanguageCodes: payload.alternativeLanguageCodes || [],
+            });
+        } else {
+            console.debug('Voice language used for subsequent STT', {
+                sessionKey,
+                languageCode: sttLanguageCode || '',
+            });
+        }
+        state.firstSttCompleted = true;
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
         const socketConfig = this.getVoiceSocketConfig('stt');
-
-        return this.requestOmnichannelVoiceTransport({
+        const response = await this.requestOmnichannelVoiceTransport({
             payload,
             socketConfig,
             socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
@@ -881,6 +1046,22 @@ class Voice {
             enableSilentAudioLogging: true,
             preferSocket: false,
         });
+        const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
+        if (detectedLanguageCode) {
+            console.debug('Voice language detected from server', {
+                sessionKey,
+                languageCode: detectedLanguageCode,
+            });
+            const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
+            if (didUpdateLanguage) {
+                this.syncVoiceLanguageWithChatContext(detectedLanguageCode);
+                await this.persistVoiceLanguageForGroup(
+                    activeConversationUcid,
+                    detectedLanguageCode
+                );
+            }
+        }
+        return response;
     }
 
     evaluatePcmInt16Quality(samples = []) {
