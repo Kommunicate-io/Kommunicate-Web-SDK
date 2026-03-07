@@ -175,7 +175,6 @@ class Voice {
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
             this._voiceLanguageStateBySessionKey[sessionKey] = {
                 languageCode: '',
-                firstSttCompleted: false,
             };
         }
         return {
@@ -1009,17 +1008,18 @@ class Voice {
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
         }
+        // Temporarily disabled: do not send alternativeLanguageCodes to STT.
+        // if (shouldSendAlternativeLanguageCodes) {
+        //     const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
+        //         sttLanguageCode,
+        //         activeConversationUcid
+        //     );
+        //     if (firstRequestAlternatives.length) {
+        //         payload.alternativeLanguageCodes = firstRequestAlternatives;
+        //     }
+        // }
         if (shouldSendAlternativeLanguageCodes) {
-            const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
-                sttLanguageCode,
-                activeConversationUcid
-            );
-            if (firstRequestAlternatives.length) {
-                payload.alternativeLanguageCodes = firstRequestAlternatives;
-            }
-        }
-        if (shouldSendAlternativeLanguageCodes) {
-            console.debug('Voice STT request with alternative language codes', {
+            console.debug('Voice STT request without resolved language code', {
                 sessionKey,
                 languageCode: sttLanguageCode || '',
                 alternativeLanguageCodes: payload.alternativeLanguageCodes || [],
@@ -1030,7 +1030,6 @@ class Voice {
                 languageCode: sttLanguageCode || '',
             });
         }
-        state.firstSttCompleted = true;
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
