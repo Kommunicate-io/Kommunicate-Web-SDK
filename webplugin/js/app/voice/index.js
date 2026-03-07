@@ -995,8 +995,8 @@ class Voice {
             this.omnichannelConfig.ucid ||
             activeConversationUcid;
         const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
-        const isFirstSttRequest = !state.firstSttCompleted;
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
+        const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
 
         const payload = {
             samples,
@@ -1009,7 +1009,7 @@ class Voice {
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
         }
-        if (!sttLanguageCode) {
+        if (shouldSendAlternativeLanguageCodes) {
             const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
                 sttLanguageCode,
                 activeConversationUcid
@@ -1018,8 +1018,8 @@ class Voice {
                 payload.alternativeLanguageCodes = firstRequestAlternatives;
             }
         }
-        if (isFirstSttRequest) {
-            console.debug('Voice STT first language sent', {
+        if (shouldSendAlternativeLanguageCodes) {
+            console.debug('Voice STT request with alternative language codes', {
                 sessionKey,
                 languageCode: sttLanguageCode || '',
                 alternativeLanguageCodes: payload.alternativeLanguageCodes || [],
