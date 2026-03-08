@@ -170,6 +170,15 @@ class Voice {
         return this._DEFAULT_VOICE_SESSION_KEY;
     }
 
+    resolveVoiceSessionUcid(ucid) {
+        return (
+            ucid ||
+            this.voiceInputConfig.ucid ||
+            this.omnichannelConfig.ucid ||
+            this.getActiveConversationId()
+        );
+    }
+
     getVoiceLanguageState(ucid) {
         const sessionKey = this.getVoiceSessionKey(ucid);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
@@ -905,8 +914,8 @@ class Voice {
     }
 
     async textToVoice(text = '') {
-        const activeConversationId = this.getActiveConversationId();
-        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationId);
+        const resolvedUcid = this.resolveVoiceSessionUcid();
+        const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
         const languageCode = this.getSessionVoiceLanguageCode(state);
         console.debug('Voice language used for subsequent TTS', { sessionKey, languageCode });
         const payload = {
@@ -988,11 +997,7 @@ class Voice {
             throw silentAudioError;
         }
         const activeConversationUcid = this.getActiveConversationId();
-        const resolvedUcid =
-            ucid ||
-            this.voiceInputConfig.ucid ||
-            this.omnichannelConfig.ucid ||
-            activeConversationUcid;
+        const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
         const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
         const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
