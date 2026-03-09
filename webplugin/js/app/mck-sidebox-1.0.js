@@ -6278,7 +6278,7 @@ const firstVisibleMsg = {
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
-                    $error_chat_login.removeClass('show', 'vis').addClass('hide', 'n-vis');
+                    $error_chat_login.removeClass('show vis').addClass('hide n-vis');
                     $error_chat_login.html('');
                     AUTH_SUBMIT_TRIGGERED = true;
                     if (
