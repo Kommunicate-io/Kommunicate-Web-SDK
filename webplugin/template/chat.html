@@ -28,7 +28,7 @@
             let teamId = params.get('teamId');
             let skipRouting = params.get('skipRouting');
             let referer = window.document.referrer;
-            let selectedLayout = layout === 'classic' ? 'classic' : 'modern';
+            let selectedLayout = layout === 'modern' ? 'modern' : 'classic';
 
             if (!appId) {
                 document.getElementById('error-msg').innerText = 'no app id';
