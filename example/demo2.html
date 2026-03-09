@@ -827,11 +827,6 @@
                     config.globalSettings && typeof config.globalSettings === 'object'
                         ? { ...config.globalSettings }
                         : {};
-                if (
-                    Object.prototype.hasOwnProperty.call(globalSettingsOverrides, 'widgetSettings')
-                ) {
-                    delete globalSettingsOverrides.widgetSettings;
-                }
                 Object.assign(globalSettings, globalSettingsOverrides);
                 const existingOnInit =
                     globalSettings.onInit ||
@@ -998,6 +993,13 @@
                 resetForm();
             });
             resetSessionButton.addEventListener('click', () => {
+                try {
+                    if (window.Kommunicate && typeof window.Kommunicate.logout === 'function') {
+                        window.Kommunicate.logout();
+                    }
+                } catch (error) {
+                    console.warn('Unable to logout', error);
+                }
                 try {
                     const clearKommunicateKeys = (storage) => {
                         for (let i = storage.length - 1; i >= 0; i -= 1) {

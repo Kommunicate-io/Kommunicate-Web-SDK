@@ -133,7 +133,7 @@
   "lead.collection.errorText": "Veuillez saisir votre mot de passe",
   "lead.collection.errorEmail": "Veuillez entrer une adresse e-mail valide",
   "lead.collection.commonErrorMsg": "Les informations saisies sont invalides ou incorrectes.",
-  "lead.collection.invalidPasswordMessage": "We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.",
+  "lead.collection.invalidPasswordMessage": "Nous n’avons pas pu authentifier votre demande. Veuillez vérifier vos identifiants et réessayer. Si vous vous êtes connecté avec vos identifiants du tableau de bord, ils ne peuvent pas être utilisés ici. Veuillez démarrer la conversation avec une autre adresse e-mail. Si le problème persiste, essayez de réinitialiser votre mot de passe ou contactez le support.",
   "lead.collection.dashboardCredentialError": "Échec de l’authentification. Veuillez vérifier vos identifiants et réessayer.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "Conversation résolue et vous l'avez évaluée comme",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",

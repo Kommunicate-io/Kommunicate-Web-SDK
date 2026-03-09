@@ -2256,6 +2256,7 @@ const firstVisibleMsg = {
                 }
                 var existingModal = document.getElementById('km-chat-login-modal');
                 if (existingModal) {
+                    localizeChatLoginModal(existingModal);
                     return existingModal;
                 }
                 var wrapper = document.createElement('div');
@@ -2301,7 +2302,33 @@ const firstVisibleMsg = {
                     return null;
                 }
                 document.body.appendChild(modal);
+                localizeChatLoginModal(modal);
                 return modal;
+            }
+
+            function localizeChatLoginModal(modal) {
+                if (!modal || typeof MCK_LABELS === 'undefined') {
+                    return;
+                }
+                var closeBtn = modal.querySelector('#km-modal-close');
+                var closeLabel = MCK_LABELS['close'] || 'Close';
+                if (closeBtn && closeLabel) {
+                    closeBtn.setAttribute('aria-label', closeLabel);
+                }
+                var userIdLabel = modal.querySelector('#km-label-user-id');
+                var userIdText = MCK_LABELS['form.label.userId'] || 'User ID';
+                if (userIdLabel && userIdText) {
+                    userIdLabel.textContent = userIdText;
+                }
+                var submitBtn = modal.querySelector('#km-submit-chat-login');
+                var submitText =
+                    (MCK_LABELS['lead.collection'] || {}).submit || 'Start Conversation';
+                if (submitBtn && submitText) {
+                    if (!submitBtn.textContent) {
+                        submitBtn.textContent = submitText;
+                    }
+                    submitBtn.setAttribute('aria-label', submitText);
+                }
             }
 
             function autoOpenPreChatLeadCollectionModal(launcher) {
@@ -2360,6 +2387,8 @@ const firstVisibleMsg = {
                             type: 'password',
                             placeholder: passwordLabel,
                             required: true,
+                            id: 'km-password',
+                            name: 'km-password',
                         })
                     );
                 }
@@ -2411,6 +2440,9 @@ const firstVisibleMsg = {
 
             function emitAuthFailurePostMessage(resultCode, payload) {
                 try {
+                    if (!isLivechatDemoContext()) {
+                        return;
+                    }
                     if (
                         typeof window === 'undefined' ||
                         !window.parent ||
@@ -4083,8 +4115,9 @@ const firstVisibleMsg = {
                 var errorMessage =
                     (data && data.errorMessage) || (MCK_LABELS['lead.collection'] || {}).errorText;
 
+                var passwordLabel = (MCK_LABELS['lead.collection'] || {}).password || 'Password';
                 var labelAttribute = {
-                    field: 'Password',
+                    field: passwordLabel,
                     required: data.required,
                 };
                 var kmLabelDiv = _this.createPreChatLabel(labelAttribute, inputId);
@@ -4092,12 +4125,15 @@ const firstVisibleMsg = {
                     if (isPassField == null) {
                         var passwordField = document.createElement('input');
                         var errorDiv = document.createElement('div');
-                        errorDiv.className += 'km-login-form-error km-error-container';
-
-                        errorDiv.innerHTML += `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
-                        </svg>
-                        <p class='km-error-msg'>${errorMessage}</p>`;
+                        errorDiv.className = 'km-login-form-error km-error-container';
+                        errorDiv.innerHTML =
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">' +
+                            '<path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>' +
+                            '</svg>';
+                        var errorText = document.createElement('p');
+                        errorText.className = 'km-error-msg';
+                        errorText.textContent = errorMessage;
+                        errorDiv.appendChild(errorText);
 
                         for (var key in data) {
                             passwordField.setAttribute(key, data[key]);
@@ -4144,12 +4180,43 @@ const firstVisibleMsg = {
             _this.createInputField = function (preLeadCollection) {
                 var rawField = (preLeadCollection.field || '').toString();
                 var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
+                var localizedUserId = (
+                    (typeof MCK_LABELS !== 'undefined' && MCK_LABELS['form.label.userId']) ||
+                    ''
+                )
+                    .toString()
+                    .toLowerCase()
+                    .replace(/\s+/g, '');
+                var localizedPassword = (
+                    (typeof MCK_LABELS !== 'undefined' &&
+                        (MCK_LABELS['lead.collection'] || {}).password) ||
+                    ''
+                )
+                    .toString()
+                    .toLowerCase()
+                    .replace(/\s+/g, '');
+                var isUserIdField =
+                    normalizedField === 'userid' ||
+                    (localizedUserId && normalizedField === localizedUserId);
+                var isPasswordField =
+                    normalizedField === 'password' ||
+                    (localizedPassword && normalizedField === localizedPassword) ||
+                    preLeadCollection.type === 'password';
+                var forcedId = preLeadCollection.id || preLeadCollection.inputId;
+                if (
+                    !forcedId &&
+                    typeof preLeadCollection.name === 'string' &&
+                    preLeadCollection.name.indexOf('km-') === 0
+                ) {
+                    forcedId = preLeadCollection.name;
+                }
                 var inputId =
-                    normalizedField === 'userid'
+                    forcedId ||
+                    (isUserIdField
                         ? 'km-userId'
-                        : normalizedField === 'password'
+                        : isPasswordField
                         ? 'km-password'
-                        : 'km-' + rawField.toLowerCase().replace(' ', '-');
+                        : 'km-' + rawField.toLowerCase().replace(' ', '-'));
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId);
 
@@ -4162,7 +4229,11 @@ const firstVisibleMsg = {
                 kmChatInput.setAttribute('class', preLeadCollectionClass);
 
                 kmChatInput.setAttribute('id', inputId);
-                kmChatInput.setAttribute('name', inputId);
+                var inputName =
+                    preLeadCollection.name && preLeadCollection.name.indexOf('km-') === 0
+                        ? preLeadCollection.name
+                        : inputId;
+                kmChatInput.setAttribute('name', inputName);
                 if (preLeadCollection.required) {
                     kmChatInput.setAttribute('required', preLeadCollection.required);
                 }
