@@ -181,8 +181,7 @@ class Voice {
     getVoiceLanguageState(ucid) {
         const sessionKey = this.getVoiceSessionKey(ucid);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
-            const persistedLanguageCode =
-                this.getChatContextLanguageCode() || this.getVoiceLanguageCode();
+            const persistedLanguageCode = this.getChatContextUserLanguageCode();
             this._voiceLanguageStateBySessionKey[sessionKey] = {
                 languageCode: persistedLanguageCode,
             };
@@ -286,6 +285,24 @@ class Voice {
                 message: error && error.message ? error.message : '',
             });
         }
+    }
+
+    getChatContextUserLanguageCode() {
+        let chatContext = null;
+        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
+            chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
+        }
+        chatContext = chatContext && typeof chatContext === 'object' ? chatContext : {};
+        if (chatContext.kmUserLanguageCode) {
+            return this.normalizeLanguageCode(chatContext.kmUserLanguageCode);
+        }
+
+        const activeGroupId = this.getActiveConversationId();
+        const parsedContext = this.getGroupChatContext(activeGroupId);
+        if (parsedContext && parsedContext.kmUserLanguageCode) {
+            return this.normalizeLanguageCode(parsedContext.kmUserLanguageCode);
+        }
+        return '';
     }
 
     getChatContextLanguageCode() {
