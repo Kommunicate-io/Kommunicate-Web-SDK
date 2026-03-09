@@ -5204,14 +5204,14 @@ button {
 
 #mck-msg-preview-visual-indicator .mck-close-btn-container.align-left {
     left: auto;
-    right: -30%;
+    right: -15%;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container {
     position: absolute;
     display: none;
     transition: all 0.3s ease-in-out;
     width: 26px;
-    left: -73px;
+    left: -38px;
     padding: 23px;
 }
 .mck-msg-preview-visual-indicator-container.align-left {

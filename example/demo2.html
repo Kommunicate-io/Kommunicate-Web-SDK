@@ -338,7 +338,21 @@
                     </fieldset>
 
                     <fieldset>
-                        <legend>Voice Mode</legend>
+                        <legend>Widget position</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="widgetPosition" value="left" />
+                                Left</label
+                            >
+                            <label
+                                ><input type="radio" name="widgetPosition" value="right" checked />
+                                Right</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Voice Recognition Mode</legend>
                         <div class="inline-options">
                             <label
                                 ><input
@@ -350,10 +364,6 @@
                                 Enable voice mode</label
                             >
                         </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Voice Recognition Mode</legend>
                         <div class="inline-options">
                             <label
                                 ><input
@@ -486,9 +496,10 @@
         <script>
             const defaultState = {
                 appId: 'kommunicate-support',
-                agentId: 'voice-agent-ri5ko',
+                agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
+                widgetPosition: 'right',
                 recognitionMode: 'omnichannel',
                 voiceModeEnabled: true,
                 containerId: 'widget-container',
@@ -515,6 +526,7 @@
 
             const allowedLayouts = ['modern', 'classic'];
             const allowedContainerModes = ['outside', 'inside', 'iframe'];
+            const allowedWidgetPositions = ['left', 'right'];
             const allowedRecognitionModes = ['omnichannel', 'elevenlabs', 'native'];
 
             const form = document.getElementById('widget-config-form');
@@ -527,6 +539,7 @@
             const preChatFields = document.getElementById('preChatFields');
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
+            const widgetPositionRadios = document.querySelectorAll('input[name="widgetPosition"]');
             const resetButton = document.getElementById('reset-form');
             const resetSessionButton = document.getElementById('reset-session');
             const containerModeHideControlsCheckbox = document.getElementById(
@@ -552,6 +565,9 @@
                 ).checked = true;
                 document.querySelector(
                     `input[name="containerMode"][value="${defaultState.containerMode}"]`
+                ).checked = true;
+                document.querySelector(
+                    `input[name="widgetPosition"][value="${defaultState.widgetPosition}"]`
                 ).checked = true;
                 document.querySelector(
                     `input[name="recognitionMode"][value="${defaultState.recognitionMode}"]`
@@ -636,6 +652,19 @@
                 if (containerModeOption) {
                     containerModeOption.checked = true;
                 }
+                const widgetPositionValue =
+                    config.widgetPosition ||
+                    (config.widgetSettings && config.widgetSettings.position) ||
+                    defaultState.widgetPosition;
+                const resolvedWidgetPosition = allowedWidgetPositions.includes(widgetPositionValue)
+                    ? widgetPositionValue
+                    : defaultState.widgetPosition;
+                const widgetPositionOption = document.querySelector(
+                    `input[name="widgetPosition"][value="${resolvedWidgetPosition}"]`
+                );
+                if (widgetPositionOption) {
+                    widgetPositionOption.checked = true;
+                }
                 const recognitionModeValue = allowedRecognitionModes.includes(
                     config.recognitionMode
                 )
@@ -685,6 +714,9 @@
                 const layout = document.querySelector('input[name="layout"]:checked').value;
                 const containerMode = document.querySelector('input[name="containerMode"]:checked')
                     .value;
+                const widgetPosition = document.querySelector(
+                    'input[name="widgetPosition"]:checked'
+                ).value;
                 const recognitionMode = document.querySelector(
                     'input[name="recognitionMode"]:checked'
                 ).value;
@@ -725,6 +757,7 @@
                     agentId: agentIdInput.value.trim(),
                     layout,
                     containerMode,
+                    widgetPosition,
                     recognitionMode,
                     voiceModeEnabled: voiceModeEnabledCheckbox.checked,
                     containerId: defaultState.containerId,
@@ -771,6 +804,13 @@
                     globalSettings.containerId = config.containerId;
                     globalSettings.containerModeHideControls = config.containerModeHideControls;
                 }
+                if (
+                    !globalSettings.widgetSettings ||
+                    typeof globalSettings.widgetSettings !== 'object'
+                ) {
+                    globalSettings.widgetSettings = {};
+                }
+                globalSettings.widgetSettings.position = config.widgetPosition;
 
                 if (config.voiceModeEnabled) {
                     globalSettings.voiceInputSettings = {
