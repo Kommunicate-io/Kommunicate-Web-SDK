@@ -3,6 +3,7 @@ const fs = require('fs');
 const util = require('util');
 const config = require('./../server/config/config-env');
 const { pluginVersionData } = require('./development.js');
+const { getThirdPartyIntegrationContext } = require('./third-party-integration');
 
 exports.getPlugin = async (req, res) => {
     const MCK_PLUGIN_VERSION = req.params.version;
@@ -24,7 +25,7 @@ const generatePluginFile = async (req, res) => {
     const MCK_CONTEXTPATH = config.urls.hostUrl;
     const MCK_STATICPATH = MCK_CONTEXTPATH + '/plugin';
     const PLUGIN_SETTING = config.pluginProperties;
-    const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+    const { MCK_THIRD_PARTY_INTEGRATION } = getThirdPartyIntegrationContext(config);
     const MCK_PLUGIN_VERSION = req.params.version;
     PLUGIN_SETTING.kommunicateApiUrl =
         PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;

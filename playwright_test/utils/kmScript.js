@@ -12,4 +12,6 @@ export const SCRIPT = {
         '{"popupWidget": true, "automaticChatOpenOnNavigation": true, "quickReplies":["Speak with an Agent","Book a Demo","Sample Bots"]}',
     kmAllBooleanIsFalse:
         '{"popupWidget": false, "automaticChatOpenOnNavigation": false,"attachment": false}',
+    kmVoiceModeEnabled:
+        '{"popupWidget": true, "automaticChatOpenOnNavigation": true, "voiceChat": true}',
 };

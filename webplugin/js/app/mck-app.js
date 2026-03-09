@@ -1,6 +1,8 @@
 var $original;
 var oModal = '';
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
+var sentryConfig = (MCK_THIRD_PARTY_INTEGRATION && MCK_THIRD_PARTY_INTEGRATION.sentry) || {
+    enabled: false,
+};
 var MCK_COOKIE_DOMAIN;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);

@@ -293,6 +293,19 @@
                         />
                     </div>
 
+                    <div class="compact-row">
+                        <label for="agentId" style="flex: 0 0 auto; min-width: 70px"
+                            >Agent ID</label
+                        >
+                        <input
+                            type="text"
+                            id="agentId"
+                            name="agentId"
+                            placeholder="Optional: route chat to this agent"
+                            style="flex: 1"
+                        />
+                    </div>
+
                     <fieldset>
                         <legend>Layout</legend>
                         <div class="inline-options">
@@ -320,6 +333,54 @@
                             <label
                                 ><input type="radio" name="containerMode" value="iframe" /> Legacy
                                 iframe embed</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Widget position</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="widgetPosition" value="left" />
+                                Left</label
+                            >
+                            <label
+                                ><input type="radio" name="widgetPosition" value="right" checked />
+                                Right</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Voice Recognition Mode</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    id="voiceModeEnabled"
+                                    name="voiceModeEnabled"
+                                    checked
+                                />
+                                Enable voice mode</label
+                            >
+                        </div>
+                        <div class="inline-options">
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="recognitionMode"
+                                    value="omnichannel"
+                                    checked
+                                />
+                                Omnichannel</label
+                            >
+                            <label
+                                ><input type="radio" name="recognitionMode" value="elevenlabs" />
+                                ElevenLabs</label
+                            >
+                            <label
+                                ><input type="radio" name="recognitionMode" value="native" />
+                                Native</label
                             >
                         </div>
                     </fieldset>
@@ -418,8 +479,12 @@
         <script>
             const defaultState = {
                 appId: 'kommunicate-support',
+                agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
+                widgetPosition: 'right',
+                recognitionMode: 'omnichannel',
+                voiceModeEnabled: true,
                 containerId: 'widget-container',
                 widgetSettings: null,
                 preChat: [
@@ -439,6 +504,8 @@
 
             const allowedLayouts = ['modern', 'classic'];
             const allowedContainerModes = ['outside', 'inside', 'iframe'];
+            const allowedWidgetPositions = ['left', 'right'];
+            const allowedRecognitionModes = ['omnichannel', 'elevenlabs', 'native'];
 
             const form = document.getElementById('widget-config-form');
             const status = document.getElementById('config-status');
@@ -450,12 +517,18 @@
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
             const layoutRadios = document.querySelectorAll('input[name="layout"]');
+            const widgetPositionRadios = document.querySelectorAll('input[name="widgetPosition"]');
             const resetButton = document.getElementById('reset-form');
             const containerModeHideControlsCheckbox = document.getElementById(
                 'containerModeHideControls'
             );
             const pendingConfigKey = 'kommunicate-demo-pending-config';
             const appIdInput = document.getElementById('appId');
+            const agentIdInput = document.getElementById('agentId');
+            const voiceModeEnabledCheckbox = document.getElementById('voiceModeEnabled');
+            const recognitionModeRadios = document.querySelectorAll(
+                'input[name="recognitionMode"]'
+            );
 
             function formatJson(value) {
                 return JSON.stringify(value, null, 2);
@@ -463,12 +536,20 @@
 
             function resetForm() {
                 document.getElementById('appId').value = defaultState.appId;
+                agentIdInput.value = defaultState.agentId;
                 document.querySelector(
                     `input[name="layout"][value="${defaultState.layout}"]`
                 ).checked = true;
                 document.querySelector(
                     `input[name="containerMode"][value="${defaultState.containerMode}"]`
                 ).checked = true;
+                document.querySelector(
+                    `input[name="widgetPosition"][value="${defaultState.widgetPosition}"]`
+                ).checked = true;
+                document.querySelector(
+                    `input[name="recognitionMode"][value="${defaultState.recognitionMode}"]`
+                ).checked = true;
+                voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
                 widgetSettingsTextarea.value = defaultState.widgetSettings
                     ? formatJson(defaultState.widgetSettings)
                     : '';
@@ -476,6 +557,7 @@
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 containerModeHideControlsCheckbox.checked = defaultState.containerModeHideControls;
                 updatePreChatTextareaState();
+                updateVoiceModeState();
                 updatePreviewStatus(
                     'waiting for launch',
                     'Ready to launch. Configure your settings and press Launch.'
@@ -515,12 +597,21 @@
                 }
             }
 
+            function updateVoiceModeState() {
+                const voiceModeEnabled = voiceModeEnabledCheckbox.checked;
+                recognitionModeRadios.forEach((radio) => {
+                    radio.disabled = !voiceModeEnabled;
+                });
+            }
+
             function applyConfigToForm(config) {
                 if (!config) {
                     return;
                 }
 
                 document.getElementById('appId').value = config.appId || defaultState.appId;
+                agentIdInput.value =
+                    typeof config.agentId === 'string' ? config.agentId : defaultState.agentId;
                 const layoutValue = allowedLayouts.includes(config.layout)
                     ? config.layout
                     : defaultState.layout;
@@ -539,6 +630,35 @@
                 if (containerModeOption) {
                     containerModeOption.checked = true;
                 }
+                const widgetPositionValue =
+                    config.widgetPosition ||
+                    (config.widgetSettings && config.widgetSettings.position) ||
+                    defaultState.widgetPosition;
+                const resolvedWidgetPosition = allowedWidgetPositions.includes(widgetPositionValue)
+                    ? widgetPositionValue
+                    : defaultState.widgetPosition;
+                const widgetPositionOption = document.querySelector(
+                    `input[name="widgetPosition"][value="${resolvedWidgetPosition}"]`
+                );
+                if (widgetPositionOption) {
+                    widgetPositionOption.checked = true;
+                }
+                const recognitionModeValue = allowedRecognitionModes.includes(
+                    config.recognitionMode
+                )
+                    ? config.recognitionMode
+                    : defaultState.recognitionMode;
+                const recognitionModeOption = document.querySelector(
+                    `input[name="recognitionMode"][value="${recognitionModeValue}"]`
+                );
+                if (recognitionModeOption) {
+                    recognitionModeOption.checked = true;
+                }
+                if (typeof config.voiceModeEnabled === 'boolean') {
+                    voiceModeEnabledCheckbox.checked = config.voiceModeEnabled;
+                } else {
+                    voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
+                }
                 widgetSettingsTextarea.value = config.widgetSettings
                     ? formatJson(config.widgetSettings)
                     : '';
@@ -554,6 +674,7 @@
                     config.containerModeHideControls
                 );
                 updatePreChatTextareaState();
+                updateVoiceModeState();
             }
 
             function parseJsonInput(textarea) {
@@ -568,6 +689,12 @@
                 const layout = document.querySelector('input[name="layout"]:checked').value;
                 const containerMode = document.querySelector('input[name="containerMode"]:checked')
                     .value;
+                const widgetPosition = document.querySelector(
+                    'input[name="widgetPosition"]:checked'
+                ).value;
+                const recognitionMode = document.querySelector(
+                    'input[name="recognitionMode"]:checked'
+                ).value;
 
                 const preChatEnabled = preChatEnabledCheckbox.checked;
                 let widgetSettings;
@@ -588,8 +715,12 @@
 
                 return {
                     appId: document.getElementById('appId').value.trim() || defaultState.appId,
+                    agentId: agentIdInput.value.trim(),
                     layout,
                     containerMode,
+                    widgetPosition,
+                    recognitionMode,
+                    voiceModeEnabled: voiceModeEnabledCheckbox.checked,
                     containerId: defaultState.containerId,
                     widgetSettings,
                     preChat,
@@ -606,6 +737,7 @@
                     layout: config.layout,
                     popupWidget: config.containerMode === 'outside',
                     automaticChatOpenOnNavigation: true,
+                    voiceChat: config.voiceModeEnabled,
                     widgetSettings: config.widgetSettings,
                     whatsNewList: [
                         {
@@ -627,14 +759,59 @@
                     ],
                 };
 
+                const existingOnInit =
+                    globalSettings.onInit ||
+                    (window.kommunicate &&
+                        window.kommunicate._globals &&
+                        window.kommunicate._globals.onInit);
+
                 if (config.containerMode === 'inside') {
                     globalSettings.popupWidget = false;
                     globalSettings.containerId = config.containerId;
                     globalSettings.containerModeHideControls = config.containerModeHideControls;
                 }
+                if (
+                    !globalSettings.widgetSettings ||
+                    typeof globalSettings.widgetSettings !== 'object'
+                ) {
+                    globalSettings.widgetSettings = {};
+                }
+                globalSettings.widgetSettings.position = config.widgetPosition;
+
+                if (config.voiceModeEnabled) {
+                    globalSettings.voiceInputSettings = {
+                        recognitionMode: config.recognitionMode,
+                        voiceRecognitionMode: config.recognitionMode,
+                    };
+                }
 
                 if (Array.isArray(config.preChat) && config.preChat.length) {
                     globalSettings.preLeadCollection = config.preChat;
+                }
+
+                if (config.agentId) {
+                    const agentRoutingSettings = {
+                        defaultAgentIds: [config.agentId],
+                        defaultAssignee: config.agentId,
+                        skipRouting: true,
+                    };
+                    globalSettings.onInit = function () {
+                        try {
+                            if (
+                                typeof Kommunicate !== 'undefined' &&
+                                Kommunicate &&
+                                typeof Kommunicate.updateSettings === 'function'
+                            ) {
+                                Kommunicate.updateSettings(agentRoutingSettings);
+                            }
+                        } catch (error) {
+                            console.error('Failed to apply agent routing settings', error);
+                        }
+
+                        if (typeof existingOnInit === 'function') {
+                            existingOnInit.apply(this, arguments);
+                        }
+                    };
                 }
 
                 const existingScript = document.getElementById('kommunicate-widget-script');
@@ -697,6 +874,7 @@
                 resetForm();
             });
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
+            voiceModeEnabledCheckbox.addEventListener('change', updateVoiceModeState);
             placementRadios.forEach((radio) =>
                 radio.addEventListener('change', handlePlacementChange)
             );
