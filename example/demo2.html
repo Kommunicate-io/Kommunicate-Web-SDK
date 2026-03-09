@@ -902,7 +902,7 @@
                             url.includes('applozic') ||
                             url.includes('chat-test') ||
                             url.includes('api-test'));
-                    const authPattern = new RegExp('login|auth|token|rest\\\\/ws\\\\/user', 'i');
+                    const authPattern = new RegExp('login|auth|token|rest\\/ws\\/user', 'i');
                     const shouldHighlight = (url, status) =>
                         (typeof status === 'number' && status >= 400) ||
                         (typeof url === 'string' && authPattern.test(url));

@@ -2668,9 +2668,6 @@ const firstVisibleMsg = {
                             ) &&
                             isUserIdForLeadCollectionFlag
                         ) {
-                            if (isLivechatDemoContext()) {
-                                return false;
-                            }
                             if (
                                 LIVECHAT_AUTH_BLOCKED &&
                                 typeof window !== 'undefined' &&
@@ -4287,6 +4284,8 @@ const firstVisibleMsg = {
                     var leadLabels = MCK_LABELS['lead.collection'] || {};
                     if (!hasUserId) {
                         KM_PRELEAD_COLLECTION.push({
+                            id: 'km-userId',
+                            name: 'km-userId',
                             field: leadLabels.userId || 'User ID',
                             type: 'text',
                             placeholder: leadLabels.userId || 'User ID',
@@ -4295,6 +4294,8 @@ const firstVisibleMsg = {
                     }
                     if (!hasPassword) {
                         KM_PRELEAD_COLLECTION.push({
+                            id: 'km-password',
+                            name: 'km-password',
                             field: leadLabels.password || 'Password',
                             type: 'password',
                             placeholder: leadLabels.password || 'Password',
@@ -4464,8 +4465,10 @@ const firstVisibleMsg = {
                         : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
                     leadCollectionHeading.setAttribute('aria-label', LEAD_COLLECTION_LABEL.heading);
                 }
-                tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
-                tabTitle.setAttribute('aria-label', LEAD_COLLECTION_LABEL.title);
+                if (tabTitle) {
+                    tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
+                    tabTitle.setAttribute('aria-label', LEAD_COLLECTION_LABEL.title);
+                }
             };
             _this.setEmojiHoverText = function () {
                 var ratingList = document.getElementsByClassName('mck-rating-box');
@@ -4874,7 +4877,6 @@ const firstVisibleMsg = {
                     typeof window.isLivechatDemoContext === 'function' &&
                     window.isLivechatDemoContext()
                 ) {
-                    console.log('[PRE-LEAD] loadChat blocked due to auth error');
                     return;
                 }
                 KommunicateUI.skipPopupChatTemplate = false;
@@ -5370,7 +5372,6 @@ const firstVisibleMsg = {
                     typeof window.isLivechatDemoContext === 'function' &&
                     window.isLivechatDemoContext()
                 ) {
-                    console.log('[PRE-LEAD] loadConversationWithAgents blocked due to auth error');
                     return;
                 }
                 _this.openChatbox();
