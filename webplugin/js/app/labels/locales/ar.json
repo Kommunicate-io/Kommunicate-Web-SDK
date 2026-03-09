@@ -133,6 +133,8 @@
   "lead.collection.errorText": "يرجى إدخال كلمة مرور الحساب",
   "lead.collection.errorEmail": "يرجى إدخال بريد إلكتروني صالح",
   "lead.collection.commonErrorMsg": "البيانات المقدمة غير صحيحة أو غير صالحة.",
+  "lead.collection.invalidPasswordMessage": "We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.",
+  "lead.collection.dashboardCredentialError": "فشلت المصادقة. يرجى التحقق من بيانات الاعتماد والمحاولة مرة أخرى.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "تم حل المحادثة وقمت بتقييمها كـ",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "قمت بتقييم المحادثة كـ",

@@ -285,6 +285,14 @@ textarea {
   padding-bottom: 35px;
 }
 
+#km-form-chat-login .km-form-group.km-text-center {
+  margin-top: 18px;
+}
+
+body:not(.km-livechat-demo) #km-chat-login-modal #km-submit-chat-login {
+  display: none !important;
+}
+
 .km-modal-span {
   width: 100%;
   font-size: 16px;

@@ -133,6 +133,8 @@
   "lead.collection.errorText": "Por favor, informe a senha da sua conta",
   "lead.collection.errorEmail": "Por favor, informe um e-mail válido",
   "lead.collection.commonErrorMsg": "A informação fornecida é inválida ou incorreta.",
+  "lead.collection.invalidPasswordMessage": "We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.",
+  "lead.collection.dashboardCredentialError": "Falha na autenticação. Verifique suas credenciais e tente novamente.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "Conversa resolvida e você avaliou como",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "Você avaliou a conversa como",

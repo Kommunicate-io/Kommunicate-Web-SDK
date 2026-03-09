@@ -133,6 +133,8 @@
   "lead.collection.errorText": "请输入您的账户密码",
   "lead.collection.errorEmail": "请输入有效的邮箱地址",
   "lead.collection.commonErrorMsg": "您输入的信息无效或不正确。",
+  "lead.collection.invalidPasswordMessage": "We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.",
+  "lead.collection.dashboardCredentialError": "身份验证失败。请检查您的凭据并重试。",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "会话已解决，您评价为",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "您将会话评价为",

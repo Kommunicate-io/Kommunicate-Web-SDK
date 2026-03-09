@@ -367,6 +367,8 @@ const firstVisibleMsg = {
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
         var PRE_CHAT_LEAD_COLLECTION_MODAL_DISPLAY_DELAY = 220;
+        var LIVECHAT_AUTH_BLOCKED = false;
+        var AUTH_SUBMIT_TRIGGERED = false;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
@@ -878,6 +880,15 @@ const firstVisibleMsg = {
                 shouldSkipLeadCollectionConversation: shouldSkipLeadCollectionConversation,
             });
 
+            if (
+                LIVECHAT_AUTH_BLOCKED &&
+                typeof window !== 'undefined' &&
+                typeof window.isLivechatDemoContext === 'function' &&
+                window.isLivechatDemoContext()
+            ) {
+                shouldSkipLeadCollectionConversation = true;
+            }
+
             openWidgetIframe();
 
             !shouldSkipLeadCollectionConversation &&
@@ -1005,6 +1016,14 @@ const firstVisibleMsg = {
 
         var mckInitializeChannel = new MckInitializeChannel();
         function startLazyInitialization(openAfterInit) {
+            if (
+                LIVECHAT_AUTH_BLOCKED &&
+                typeof window !== 'undefined' &&
+                typeof window.isLivechatDemoContext === 'function' &&
+                window.isLivechatDemoContext()
+            ) {
+                return false;
+            }
             if (!CREATE_USER_ON_WIDGET_OPEN || IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED) {
                 return false;
             }
@@ -2159,6 +2178,124 @@ const firstVisibleMsg = {
                 }
             }
 
+            function isLivechatDemoContext() {
+                try {
+                    if (
+                        window.location &&
+                        typeof window.location.pathname === 'string' &&
+                        window.location.pathname.indexOf('/livechat-demo') !== -1
+                    ) {
+                        return true;
+                    }
+                } catch (err) {}
+                try {
+                    if (
+                        window.parent &&
+                        window.parent !== window &&
+                        window.parent.location &&
+                        typeof window.parent.location.pathname === 'string' &&
+                        window.parent.location.pathname.indexOf('/livechat-demo') !== -1
+                    ) {
+                        return true;
+                    }
+                } catch (err) {}
+                try {
+                    var parentFrame =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    var dataUrl = parentFrame && parentFrame.getAttribute('data-url');
+                    if (dataUrl && dataUrl.indexOf('/livechat-demo') !== -1) {
+                        return true;
+                    }
+                } catch (err) {}
+                try {
+                    var frameEl = window.frameElement;
+                    var frameDataUrl = frameEl && frameEl.getAttribute('data-url');
+                    if (frameDataUrl && frameDataUrl.indexOf('/livechat-demo') !== -1) {
+                        return true;
+                    }
+                } catch (err) {}
+                try {
+                    if (
+                        typeof document !== 'undefined' &&
+                        document.referrer &&
+                        document.referrer.indexOf('/livechat-demo') !== -1
+                    ) {
+                        return true;
+                    }
+                } catch (err) {}
+                return false;
+            }
+
+            function applyLivechatDemoClass() {
+                if (typeof document === 'undefined' || !document.body) {
+                    return;
+                }
+                if (isLivechatDemoContext()) {
+                    document.body.classList.add('km-livechat-demo');
+                } else {
+                    document.body.classList.remove('km-livechat-demo');
+                }
+            }
+
+            if (typeof window !== 'undefined' && !window.isLivechatDemoContext) {
+                window.isLivechatDemoContext = isLivechatDemoContext;
+            }
+
+            function ensureChatLoginModalExists() {
+                if (typeof document === 'undefined' || !document.body) {
+                    return null;
+                }
+                var existingModal = document.getElementById('km-chat-login-modal');
+                if (existingModal) {
+                    return existingModal;
+                }
+                var wrapper = document.createElement('div');
+                wrapper.innerHTML =
+                    '<div id="km-chat-login-modal" class="km-sidemodal km-modal" role="dialog" aria-live="polite" aria-labelledby="km-tab-title" aria-hidden="true" style="visibility: hidden">' +
+                    '<div class="km-modal-dialog km-modal-sm">' +
+                    '<div class="km-modal-content">' +
+                    '<div class="km-sidemodal--modal-header km-custom-widget-background-color">' +
+                    '<div class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate">' +
+                    '<div id="km-tab-title" class="mck-tab-title mck-truncate mck-display-name"></div>' +
+                    '</div>' +
+                    '<div class="blk-lg-2 mck-close-btn">' +
+                    '<button type="button" id="km-modal-close" class="mck-box-close km-close-sidebox move-right" data-dismiss="mckbox" tabindex="0" aria-label="Close" role="button">' +
+                    '<svg focusable="false" aria-hidden="true" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">' +
+                    '<use xlink:href="#icon-10" href="#icon-10"></use>' +
+                    '</svg>' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="km-modal-body">' +
+                    '<div class="km-section-title">' +
+                    '<p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>' +
+                    '</div>' +
+                    '<p id="km-error-chat-login" class="km-modal-error n-vis"></p>' +
+                    '<div class="km-modal-form">' +
+                    '<form id="km-form-chat-login" class="km-vertical">' +
+                    '<div class="km-form-group km-form-group-container">' +
+                    '<label id="km-label-user-id" class="sr-only" for="km-userId">User ID</label>' +
+                    '<input class="km-form-control km-input-width n-vis" id="km-userId" name="km-userId" />' +
+                    '</div>' +
+                    '<div class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"></div>' +
+                    '<div class="km-form-group km-text-center">' +
+                    '<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color" tabindex="0" role="button" aria-label="Start conversation"></button>' +
+                    '</div>' +
+                    '</form>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                var modal = wrapper.firstElementChild;
+                if (!modal) {
+                    return null;
+                }
+                document.body.appendChild(modal);
+                return modal;
+            }
+
             function autoOpenPreChatLeadCollectionModal(launcher) {
                 if (!launcher || PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED) {
                     return;
@@ -2171,6 +2308,53 @@ const firstVisibleMsg = {
                 setTimeout(function () {
                     launcher.click();
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
+            }
+
+            function ensureAuthFailureFormFields() {
+                if (typeof document === 'undefined') {
+                    return;
+                }
+                if (isPreLeadCollectionEnabled()) {
+                    return;
+                }
+                var form = document.getElementById('km-form-chat-login');
+                if (!form) {
+                    return;
+                }
+                var askUserDetailsContainer = form.querySelector('.mck-askuserdetail-inputdiv');
+                if (!askUserDetailsContainer) {
+                    return;
+                }
+                var userIdInput = document.getElementById('km-userId');
+                if (userIdInput) {
+                    userIdInput.classList.remove('n-vis');
+                    userIdInput.setAttribute('type', 'text');
+                    userIdInput.setAttribute('required', 'true');
+                    var userIdLabel = MCK_LABELS['form.label.userId'] || 'User ID';
+                    userIdInput.setAttribute('placeholder', userIdLabel);
+                    userIdInput.setAttribute('aria-label', userIdLabel);
+                }
+                var submitBtn = document.getElementById('km-submit-chat-login');
+                if (submitBtn) {
+                    var submitLabel =
+                        (MCK_LABELS['lead.collection'] || {}).submit || 'Start Conversation';
+                    submitBtn.innerHTML = submitLabel;
+                    submitBtn.setAttribute('aria-label', submitLabel);
+                    submitBtn.classList.remove('n-vis');
+                    submitBtn.removeAttribute('disabled');
+                }
+                if (!document.getElementById('km-password')) {
+                    var passwordLabel =
+                        (MCK_LABELS['lead.collection'] || {}).password || 'Password';
+                    askUserDetailsContainer.appendChild(
+                        _this.createInputField({
+                            field: passwordLabel,
+                            type: 'password',
+                            placeholder: passwordLabel,
+                            required: true,
+                        })
+                    );
+                }
             }
 
             function openWidgetForAuthError() {
@@ -2189,20 +2373,52 @@ const firstVisibleMsg = {
                 if (KOMMUNICATE_VERSION === 'v2') {
                     typeof Kommunicate.setDefaultIframeConfigForOpenChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-                    typeof openWidgetIframe === 'function' && openWidgetIframe();
+                    try {
+                        typeof openWidgetIframe === 'function' && openWidgetIframe();
+                    } catch (error) {}
                 }
+                try {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.display = '';
+                        kommunicateIframe.classList.remove('km-iframe-closed');
+                    }
+                } catch (error) {}
+                var skipConversationOpen = isLivechatDemoContext();
                 if (
                     typeof mckMessageService !== 'undefined' &&
                     typeof mckMessageService.openChatbox === 'function'
                 ) {
                     mckMessageService.openChatbox();
                 }
-                if ($applozic?.fn?.applozic) {
+                if (!skipConversationOpen && $applozic?.fn?.applozic) {
                     var previousCreateUserOnWidgetOpen = CREATE_USER_ON_WIDGET_OPEN;
                     CREATE_USER_ON_WIDGET_OPEN = false;
                     $applozic.fn.applozic('mckLaunchSideboxChat');
                     CREATE_USER_ON_WIDGET_OPEN = previousCreateUserOnWidgetOpen;
                 }
+            }
+
+            function emitAuthFailurePostMessage(resultCode, payload) {
+                try {
+                    if (
+                        typeof window === 'undefined' ||
+                        !window.parent ||
+                        window.parent === window
+                    ) {
+                        return;
+                    }
+                    window.parent.postMessage(
+                        {
+                            event: 'KM_AUTH_FAILURE',
+                            code: resultCode,
+                            payload: payload || null,
+                        },
+                        '*'
+                    );
+                } catch (error) {}
             }
 
             function isPreLeadCollectionEnabled() {
@@ -2212,15 +2428,8 @@ const firstVisibleMsg = {
                 );
             }
 
-            function resolvePreLeadErrorMessage(result, fallbackKey) {
-                var leadLabels = MCK_LABELS['lead.collection'] || {};
-                var supportAgentEmailError =
-                    leadLabels.supportAgentEmailError ||
-                    'You are using your support agent email. Please use another email.';
-                var fallbackMessage =
-                    leadLabels[fallbackKey] || leadLabels.commonErrorMsg || leadLabels.errorText;
+            function getResultMessage(result) {
                 var rawMessage = '';
-
                 if (result && typeof result === 'object') {
                     rawMessage =
                         result.displayMessage ||
@@ -2243,6 +2452,17 @@ const firstVisibleMsg = {
                 } else if (typeof result === 'string') {
                     rawMessage = result;
                 }
+                return rawMessage || '';
+            }
+
+            function resolvePreLeadErrorMessage(result, fallbackKey) {
+                var leadLabels = MCK_LABELS['lead.collection'] || {};
+                var supportAgentEmailError =
+                    leadLabels.supportAgentEmailError ||
+                    'You are using your support agent email. Please use another email.';
+                var fallbackMessage =
+                    leadLabels[fallbackKey] || leadLabels.commonErrorMsg || leadLabels.errorText;
+                var rawMessage = getResultMessage(result);
 
                 if (rawMessage && /support|agent|admin/i.test(rawMessage)) {
                     return supportAgentEmailError;
@@ -2272,6 +2492,15 @@ const firstVisibleMsg = {
                     submitBtn.removeAttribute('disabled');
                 }
                 openWidgetForAuthError();
+            }
+
+            function resetPreChatLoginError() {
+                var loginErrorNode = document.getElementById('km-error-chat-login');
+                if (loginErrorNode) {
+                    loginErrorNode.textContent = '';
+                    loginErrorNode.classList.remove('vis', 'show');
+                    loginErrorNode.classList.add('n-vis', 'hide');
+                }
             }
 
             _this.getLauncherHtml = function (isAnonymousChat) {
@@ -2325,6 +2554,10 @@ const firstVisibleMsg = {
 
             _this.initializeApp = async function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
+                ensureChatLoginModalExists();
+                applyLivechatDemoClass();
+                resetPreChatLoginError();
+                AUTH_SUBMIT_TRIGGERED = false;
                 var userPxy = {
                     applicationId: optns.appId,
                     userId: MCK_USER_ID,
@@ -2395,6 +2628,17 @@ const firstVisibleMsg = {
                             ) &&
                             isUserIdForLeadCollectionFlag
                         ) {
+                            if (isLivechatDemoContext()) {
+                                return false;
+                            }
+                            if (
+                                LIVECHAT_AUTH_BLOCKED &&
+                                typeof window !== 'undefined' &&
+                                typeof window.isLivechatDemoContext === 'function' &&
+                                window.isLivechatDemoContext()
+                            ) {
+                                return false;
+                            }
                             var userId = kmLocalStorage.getLocalStorage(
                                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                             );
@@ -2407,7 +2651,7 @@ const firstVisibleMsg = {
                                 chatNotificationMailSent: true,
                             };
                             PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
-                            mckInit.initialize(options, loadChat);
+                            mckInit.initialize(options, mckMessageService.loadChat);
                             return false;
                         }
                         var kmAnonymousChatLauncher = document.getElementById(
@@ -2521,6 +2765,8 @@ const firstVisibleMsg = {
                         };
 
                         var showPreChatLeadModal = function () {
+                            AUTH_SUBMIT_TRIGGERED = false;
+                            resetPreChatLoginError();
                             syncLeadCollectionModalContainerMode(kmChatLoginModal);
                             if (kmChatLoginModal) {
                                 kommunicateCommons.setDialogVisibility(
@@ -2664,7 +2910,99 @@ const firstVisibleMsg = {
                         await KommunicateUtils.loadCryptoJS(normalizedResult);
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
-                        if (resultCode === 'INVALID_PASSWORD') {
+                        if (
+                            resultCode === 'INVALID_PASSWORD' ||
+                            resultCode === false ||
+                            resultCode === 'FALSE'
+                        ) {
+                            if (isLivechatDemoContext()) {
+                                LIVECHAT_AUTH_BLOCKED = true;
+                            } else {
+                                LIVECHAT_AUTH_BLOCKED = false;
+                            }
+                            emitAuthFailurePostMessage(resultCode, normalizedResult);
+                            var isPreLeadEnabled = isPreLeadCollectionEnabled();
+                            var leadLabels = MCK_LABELS['lead.collection'] || {};
+                            var livechatAuthMessage =
+                                leadLabels.invalidPasswordMessage ||
+                                leadLabels.invalidPassword ||
+                                leadLabels.errorText;
+                            var dashboardAuthMessage =
+                                leadLabels.dashboardCredentialError ||
+                                leadLabels.invalidPasswordMessage ||
+                                leadLabels.invalidPassword ||
+                                leadLabels.errorText;
+                            var loginErrorMessage = isPreLeadEnabled
+                                ? livechatAuthMessage
+                                : dashboardAuthMessage;
+                            if (!AUTH_SUBMIT_TRIGGERED) {
+                                resetPreChatLoginError();
+                                var kmChatLoginModal = document.getElementById(
+                                    'km-chat-login-modal'
+                                );
+                                if (!isPreLeadEnabled && isLivechatDemoContext()) {
+                                    ensureAuthFailureFormFields();
+                                }
+                                openWidgetForAuthError();
+                                kommunicateCommons.show('#km-chat-login-modal');
+                                kommunicateCommons.setDialogVisibility(
+                                    kmChatLoginModal,
+                                    true,
+                                    loginModalFocusFallbacks
+                                );
+                                if (!isPreLeadEnabled && !isLivechatDemoContext()) {
+                                    var loginErrorNode = document.getElementById(
+                                        'km-error-chat-login'
+                                    );
+                                    if (loginErrorNode) {
+                                        loginErrorNode.textContent = loginErrorMessage;
+                                        loginErrorNode.classList.remove('n-vis', 'hide');
+                                        loginErrorNode.classList.add('vis');
+                                    }
+                                    var userIdInput = document.getElementById('km-userId');
+                                    if (userIdInput) {
+                                        var userIdContainer =
+                                            typeof userIdInput.closest === 'function'
+                                                ? userIdInput.closest('.km-form-group')
+                                                : null;
+                                        if (userIdContainer) {
+                                            kommunicateCommons.hide(userIdContainer);
+                                        } else {
+                                            userIdInput.classList.add('n-vis');
+                                        }
+                                    }
+                                    var passwordInput = document.getElementById('km-password');
+                                    if (passwordInput) {
+                                        var passwordContainer =
+                                            typeof passwordInput.closest === 'function'
+                                                ? passwordInput.closest('.km-form-group')
+                                                : null;
+                                        if (passwordContainer) {
+                                            kommunicateCommons.hide(passwordContainer);
+                                        } else {
+                                            passwordInput.classList.add('n-vis');
+                                        }
+                                    }
+                                    var submitBtn = document.getElementById('km-submit-chat-login');
+                                    if (submitBtn) {
+                                        submitBtn.setAttribute('disabled', true);
+                                        submitBtn.classList.add('n-vis');
+                                    }
+                                }
+                                kmLocalStorage.deleteUserCookiesOnLogout();
+                                kmLocalStorage.deleteLocalStorage(
+                                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                                );
+                                kmLocalStorage.deleteLocalStorage(
+                                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                                );
+                                ALStorage.clearAppHeaders();
+                                MCK_ACCESS_TOKEN = null;
+                                window.Applozic.ALApiService.AUTH_TOKEN = null;
+                                LAZY_INIT_STARTED = false;
+                                LAZY_INIT_PENDING_OPEN = false;
+                                return;
+                            }
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                             openWidgetForAuthError();
                             kommunicateCommons.show('#km-chat-login-modal');
@@ -2673,32 +3011,112 @@ const firstVisibleMsg = {
                                 true,
                                 loginModalFocusFallbacks
                             );
-                            var loginErrorMessage =
-                                (MCK_LABELS['lead.collection'] || {}).invalidPasswordMessage ||
-                                (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
-                                (MCK_LABELS['lead.collection'] || {}).errorText;
+                            var shouldShowLivechatAuthForm =
+                                isLivechatDemoContext() && !isPreLeadEnabled;
+                            if (shouldShowLivechatAuthForm) {
+                                ensureAuthFailureFormFields();
+                            }
                             var invalidPasswordMessage =
-                                (MCK_LABELS['lead.collection'] || {}).invalidPassword ||
-                                (MCK_LABELS['lead.collection'] || {}).errorText;
-                            mckInit.addPasswordField({
-                                id: 'km-password',
-                                type: 'password',
-                                name: 'km-password',
-                                class: 'km-form-control km-input-width km-login-error',
-                                placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
-                                required: 'true',
-                                errorMessage: invalidPasswordMessage,
-                            });
+                                leadLabels.invalidPassword || leadLabels.errorText;
+                            if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
+                                var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
+                                    return (
+                                        item &&
+                                        typeof item.field === 'string' &&
+                                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
+                                    );
+                                });
+                                var hasPreLeadPassword = KM_PRELEAD_COLLECTION.some(function (
+                                    item
+                                ) {
+                                    return (
+                                        item &&
+                                        typeof item.field === 'string' &&
+                                        item.field.toLowerCase().replace(/\s+/g, '') === 'password'
+                                    );
+                                });
+                                var userIdInput = document.getElementById('km-userId');
+                                if (userIdInput && !hasPreLeadUserId) {
+                                    userIdInput.classList.add('n-vis');
+                                }
+                                var passwordInput = document.getElementById('km-password');
+                                if (passwordInput && !hasPreLeadPassword) {
+                                    var passwordContainer =
+                                        typeof passwordInput.closest === 'function'
+                                            ? passwordInput.closest('.km-form-group')
+                                            : null;
+                                    if (passwordContainer) {
+                                        kommunicateCommons.hide(passwordContainer);
+                                    } else {
+                                        passwordInput.classList.add('n-vis');
+                                    }
+                                }
+                            }
+                            if (
+                                !isPreLeadEnabled &&
+                                !shouldShowLivechatAuthForm &&
+                                !document.getElementById('km-password')
+                            ) {
+                                mckInit.addPasswordField({
+                                    id: 'km-password',
+                                    type: 'password',
+                                    name: 'km-password',
+                                    class: 'km-form-control km-input-width km-login-error',
+                                    placeholder: (
+                                        (MCK_LABELS['lead.collection'] || {}).password || ''
+                                    ).toLowerCase(),
+                                    required: 'true',
+                                    errorMessage: invalidPasswordMessage,
+                                });
+                            }
+                            var submitBtn = document.getElementById('km-submit-chat-login');
+                            if (submitBtn) {
+                                var submitLabel =
+                                    (MCK_LABELS['lead.collection'] || {}).submit ||
+                                    'Start Conversation';
+                                submitBtn.innerHTML = submitLabel;
+                                submitBtn.setAttribute('aria-label', submitLabel);
+                                if (shouldShowLivechatAuthForm || isPreLeadEnabled) {
+                                    submitBtn.classList.remove('n-vis');
+                                    submitBtn.removeAttribute('disabled');
+                                }
+                            }
                             var loginErrorNode = document.getElementById('km-error-chat-login');
                             if (loginErrorNode) {
                                 loginErrorNode.textContent = loginErrorMessage;
                                 loginErrorNode.classList.remove('n-vis', 'hide');
                                 loginErrorNode.classList.add('vis');
                             }
-                            var submitBtn = document.getElementById('km-submit-chat-login');
-                            if (submitBtn) {
-                                submitBtn.removeAttribute('disabled');
-                                submitBtn.classList.remove('n-vis');
+                            if (!isPreLeadEnabled && !isLivechatDemoContext()) {
+                                var userIdInput = document.getElementById('km-userId');
+                                if (userIdInput) {
+                                    var userIdContainer =
+                                        typeof userIdInput.closest === 'function'
+                                            ? userIdInput.closest('.km-form-group')
+                                            : null;
+                                    if (userIdContainer) {
+                                        kommunicateCommons.hide(userIdContainer);
+                                    } else {
+                                        userIdInput.classList.add('n-vis');
+                                    }
+                                }
+                                var passwordInput = document.getElementById('km-password');
+                                if (passwordInput) {
+                                    var passwordContainer =
+                                        typeof passwordInput.closest === 'function'
+                                            ? passwordInput.closest('.km-form-group')
+                                            : null;
+                                    if (passwordContainer) {
+                                        kommunicateCommons.hide(passwordContainer);
+                                    } else {
+                                        passwordInput.classList.add('n-vis');
+                                    }
+                                }
+                                var submitBtn = document.getElementById('km-submit-chat-login');
+                                if (submitBtn) {
+                                    submitBtn.setAttribute('disabled', true);
+                                    submitBtn.classList.add('n-vis');
+                                }
                             }
 
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
@@ -2709,6 +3127,15 @@ const firstVisibleMsg = {
                             }
                             // if password invalid then clear cookies
                             kmLocalStorage.deleteUserCookiesOnLogout();
+                            kmLocalStorage.deleteLocalStorage(
+                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+                            );
+                            kmLocalStorage.deleteLocalStorage(
+                                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+                            );
+                            ALStorage.clearAppHeaders();
+                            MCK_ACCESS_TOKEN = null;
+                            window.Applozic.ALApiService.AUTH_TOKEN = null;
 
                             LAZY_INIT_STARTED = false;
                             LAZY_INIT_PENDING_OPEN = false;
@@ -2764,6 +3191,7 @@ const firstVisibleMsg = {
                             normalizedResult !== null &&
                             normalizedResult.token
                         ) {
+                            LIVECHAT_AUTH_BLOCKED = false;
                             normalizedResult.appId = userPxy.applicationId;
                             if (MCK_ACCESS_TOKEN) {
                                 normalizedResult.accessToken = MCK_ACCESS_TOKEN;
@@ -3679,7 +4107,7 @@ const firstVisibleMsg = {
                 if (submitBtn) {
                     submitBtn.removeAttribute('disabled');
                     submitBtn.classList.remove('n-vis');
-                    submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
+                    submitBtn.innerText = (MCK_LABELS['lead.collection'] || {}).submit || '';
                 }
             }),
                 (_this.createPreChatLabel = function (leadCollection, inputId) {
@@ -3706,7 +4134,14 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(' ', '-');
+                var rawField = (preLeadCollection.field || '').toString();
+                var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
+                var inputId =
+                    normalizedField === 'userid'
+                        ? 'km-userId'
+                        : normalizedField === 'password'
+                        ? 'km-password'
+                        : 'km-' + rawField.toLowerCase().replace(' ', '-');
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId);
 
@@ -3752,6 +4187,42 @@ const firstVisibleMsg = {
 
             _this.addLeadCollectionInputDiv = function () {
                 KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
+                if (
+                    typeof MCK_AUTHENTICATION_TYPE_ID !== 'undefined' &&
+                    MCK_AUTHENTICATION_TYPE_ID > 0
+                ) {
+                    var hasUserId = KM_PRELEAD_COLLECTION.some(function (item) {
+                        return (
+                            item &&
+                            typeof item.field === 'string' &&
+                            item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
+                        );
+                    });
+                    var hasPassword = KM_PRELEAD_COLLECTION.some(function (item) {
+                        return (
+                            item &&
+                            typeof item.field === 'string' &&
+                            item.field.toLowerCase().replace(/\s+/g, '') === 'password'
+                        );
+                    });
+                    var leadLabels = MCK_LABELS['lead.collection'] || {};
+                    if (!hasUserId) {
+                        KM_PRELEAD_COLLECTION.push({
+                            field: leadLabels.userId || 'User ID',
+                            type: 'text',
+                            placeholder: leadLabels.userId || 'User ID',
+                            required: true,
+                        });
+                    }
+                    if (!hasPassword) {
+                        KM_PRELEAD_COLLECTION.push({
+                            field: leadLabels.password || 'Password',
+                            type: 'password',
+                            placeholder: leadLabels.password || 'Password',
+                            required: true,
+                        });
+                    }
+                }
                 var enableCountryCode = false;
                 for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
                     var dataToCollect = KM_PRELEAD_COLLECTION[i];
@@ -3908,10 +4379,12 @@ const firstVisibleMsg = {
                     submitLogin.classList.remove('n-vis');
                     submitLogin.removeAttribute('disabled');
                 }
-                leadCollectionHeading.innerHTML = appOptions.headingFromWidget
-                    ? LEAD_COLLECTION_LABEL.heading
-                    : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
-                leadCollectionHeading.setAttribute('aria-label', LEAD_COLLECTION_LABEL.heading);
+                if (leadCollectionHeading) {
+                    leadCollectionHeading.innerHTML = appOptions.headingFromWidget
+                        ? LEAD_COLLECTION_LABEL.heading
+                        : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
+                    leadCollectionHeading.setAttribute('aria-label', LEAD_COLLECTION_LABEL.heading);
+                }
                 tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
                 tabTitle.setAttribute('aria-label', LEAD_COLLECTION_LABEL.title);
             };
@@ -4316,6 +4789,15 @@ const firstVisibleMsg = {
             };
 
             function loadChat() {
+                if (
+                    LIVECHAT_AUTH_BLOCKED &&
+                    typeof window !== 'undefined' &&
+                    typeof window.isLivechatDemoContext === 'function' &&
+                    window.isLivechatDemoContext()
+                ) {
+                    console.log('[PRE-LEAD] loadChat blocked due to auth error');
+                    return;
+                }
                 KommunicateUI.skipPopupChatTemplate = false;
                 if (window.applozic?.PRODUCT_ID === 'kommunicate') {
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
@@ -4333,6 +4815,7 @@ const firstVisibleMsg = {
                 }
                 console.log('[PRE-LEAD] loadChat completed, widget re-launched');
             }
+            _this.loadChat = loadChat;
             /*  To trigger welcome event of a bot.
                 defaultSettings: if there is any custome event is configured by the user
             */
@@ -4800,6 +5283,15 @@ const firstVisibleMsg = {
             };
 
             _this.loadConversationWithAgents = function (params, callback) {
+                if (
+                    LIVECHAT_AUTH_BLOCKED &&
+                    typeof window !== 'undefined' &&
+                    typeof window.isLivechatDemoContext === 'function' &&
+                    window.isLivechatDemoContext()
+                ) {
+                    console.log('[PRE-LEAD] loadConversationWithAgents blocked due to auth error');
+                    return;
+                }
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == 'kommunicate') {
                     kommunicateCommons.hide('#mck-btn-leave-group');
@@ -5667,6 +6159,7 @@ const firstVisibleMsg = {
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
                     const anonymousUserIdForPreChatLead = appOptions.anonymousUserIdForPreChatLead;
+                    var leadLabels = MCK_LABELS['lead.collection'] || {};
 
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
@@ -5703,12 +6196,20 @@ const firstVisibleMsg = {
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
-                    $error_chat_login.removeClass('show').addClass('hide');
+                    $error_chat_login.removeClass('show', 'vis').addClass('hide', 'n-vis');
                     $error_chat_login.html('');
+                    AUTH_SUBMIT_TRIGGERED = true;
+                    if (
+                        typeof window !== 'undefined' &&
+                        typeof window.isLivechatDemoContext === 'function' &&
+                        window.isLivechatDemoContext()
+                    ) {
+                        LIVECHAT_AUTH_BLOCKED = false;
+                    }
                     var options = {
                         userId: userId,
                         applicationId: MCK_APP_ID,
-                        onInit: loadChat,
+                        onInit: mckMessageService.loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
                         metadata: metadata,
@@ -5735,7 +6236,7 @@ const firstVisibleMsg = {
                     });
                     kommunicateCommons.show($mck_loading);
                     KommunicateUI.skipPopupChatTemplate = true;
-                    mckInit.initialize(options, loadChat);
+                    mckInit.initialize(options, mckMessageService.loadChat);
 
                     return false;
                 });

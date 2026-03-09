@@ -133,6 +133,8 @@
   "lead.collection.errorText": "कृपया अपना खाता पासवर्ड दर्ज करें",
   "lead.collection.errorEmail": "कृपया एक वैध ईमेल पता दर्ज करें",
   "lead.collection.commonErrorMsg": "आपके द्वारा प्रदान किया गया इनपुट अमान्य या गलत है।",
+  "lead.collection.invalidPasswordMessage": "We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.",
+  "lead.collection.dashboardCredentialError": "प्रमाणीकरण विफल रहा। कृपया अपनी क्रेडेंशियल्स जांचें और फिर से प्रयास करें।",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "बातचीत सुलझ गई और आपने इसे इस तरह रेट किया",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "आपने बातचीत को इस रूप में रेट किया",

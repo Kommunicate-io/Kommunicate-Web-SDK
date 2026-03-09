@@ -701,6 +701,13 @@
 
                 try {
                     globalSettings = parseJsonInput(globalSettingsTextarea) ?? {};
+                    if (
+                        !globalSettings ||
+                        typeof globalSettings !== 'object' ||
+                        Array.isArray(globalSettings)
+                    ) {
+                        throw new Error('Top-level settings JSON must be an object.');
+                    }
                 } catch (error) {
                     throw new Error('Top-level settings JSON is invalid. ' + error.message);
                 }
@@ -963,7 +970,8 @@
                                 key === pendingConfigKey ||
                                 normalizedKey.startsWith('kommunicate') ||
                                 normalizedKey.startsWith('applozic') ||
-                                normalizedKey.startsWith('km_')
+                                normalizedKey.startsWith('km_') ||
+                                normalizedKey === 'feedbackgroups'
                             ) {
                                 storage.removeItem(key);
                             }
