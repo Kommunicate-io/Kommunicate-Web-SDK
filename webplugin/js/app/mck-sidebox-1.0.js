@@ -9547,10 +9547,9 @@ const firstVisibleMsg = {
                 if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
                     var chatContext, submittedFormDetails, associatedFormKey;
                     if (msg.metadata['KM_CHAT_CONTEXT']) {
-                        chatContext =
-                            typeof msg.metadata['KM_CHAT_CONTEXT'] == 'string'
-                                ? JSON.parse(msg.metadata['KM_CHAT_CONTEXT'])
-                                : msg.metadata['KM_CHAT_CONTEXT'];
+                        chatContext = KommunicateUtils.parseChatContext(
+                            msg.metadata['KM_CHAT_CONTEXT']
+                        );
                         submittedFormDetails = chatContext.formData;
                         associatedFormKey = chatContext.formMsgKey;
                         SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
@@ -13109,7 +13108,11 @@ const firstVisibleMsg = {
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false;
                         CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = '';
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot = false;
+                        CURRENT_GROUP_DATA.answerFeedback = false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot = false;
                         _this.removeWarningsFromTextBox();
                     },
                 });

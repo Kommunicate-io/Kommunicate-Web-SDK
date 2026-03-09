@@ -15,7 +15,6 @@ class Voice {
     _SILENCE_MAX_ZCR_THRESHOLD = 0.42;
     _SILENCE_HIGH_ZCR_MAX_RMS = 1200;
     _VOICE_SOCKET_TIMEOUT_MS = 30000;
-    _VOICE_LANGUAGE_METADATA_KEY = 'voiceLanguageCode';
     _DEFAULT_VOICE_SESSION_KEY = '__default_voice_session__';
     _voiceSocketClient = null;
     _voiceSocketSubscription = null;
@@ -182,14 +181,31 @@ class Voice {
     getVoiceLanguageState(ucid) {
         const sessionKey = this.getVoiceSessionKey(ucid);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
+            const persistedLanguageCode =
+                this.getChatContextLanguageCode() || this.getVoiceLanguageCode();
             this._voiceLanguageStateBySessionKey[sessionKey] = {
-                languageCode: '',
+                languageCode: persistedLanguageCode,
             };
         }
         return {
             sessionKey,
             state: this._voiceLanguageStateBySessionKey[sessionKey],
         };
+    }
+
+    getGroupChatContext(groupId) {
+        if (!groupId || typeof MCK_GROUP_MAP === 'undefined' || !MCK_GROUP_MAP) {
+            return {};
+        }
+        const groupData = MCK_GROUP_MAP[groupId];
+        if (!groupData || !groupData.metadata) {
+            return {};
+        }
+        const groupChatContext = groupData.metadata.KM_CHAT_CONTEXT;
+        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
+            return KommunicateUtils.parseChatContext(groupChatContext);
+        }
+        return {};
     }
 
     getSessionVoiceLanguageCode(state) {
@@ -240,11 +256,16 @@ class Voice {
         if (!groupId || !normalizedLanguage) {
             return;
         }
+        const currentGroupChatContext = this.getGroupChatContext(groupId);
+        const updatedGroupChatContext = {
+            ...currentGroupChatContext,
+            kmUserLanguageCode: normalizedLanguage,
+        };
         try {
             const updateResponse = Kommunicate.updateConversationMetadata({
                 groupId,
                 metadata: {
-                    [this._VOICE_LANGUAGE_METADATA_KEY]: normalizedLanguage,
+                    KM_CHAT_CONTEXT: updatedGroupChatContext,
                 },
             });
             if (updateResponse && typeof updateResponse.then === 'function') {
@@ -252,9 +273,7 @@ class Voice {
             }
             if (typeof MCK_GROUP_MAP !== 'undefined' && MCK_GROUP_MAP && MCK_GROUP_MAP[groupId]) {
                 MCK_GROUP_MAP[groupId].metadata = MCK_GROUP_MAP[groupId].metadata || {};
-                MCK_GROUP_MAP[groupId].metadata[
-                    this._VOICE_LANGUAGE_METADATA_KEY
-                ] = normalizedLanguage;
+                MCK_GROUP_MAP[groupId].metadata.KM_CHAT_CONTEXT = updatedGroupChatContext;
             }
             console.debug('Voice language persisted', {
                 groupId,
@@ -290,14 +309,10 @@ class Voice {
             MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT
         ) {
             const groupChatContext = MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT;
-            let parsedContext = groupChatContext;
-            if (typeof groupChatContext === 'string') {
-                try {
-                    parsedContext = JSON.parse(groupChatContext || '{}');
-                } catch (error) {
-                    parsedContext = {};
-                }
-            }
+            let parsedContext =
+                typeof KommunicateUtils !== 'undefined' && KommunicateUtils
+                    ? KommunicateUtils.parseChatContext(groupChatContext)
+                    : {};
             if (parsedContext && parsedContext.kmUserLanguageCode) {
                 return this.normalizeLanguageCode(parsedContext.kmUserLanguageCode);
             }
