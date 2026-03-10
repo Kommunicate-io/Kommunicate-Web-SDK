@@ -154,17 +154,9 @@ class Voice {
         );
     }
 
-    getVoiceSessionKey(ucid) {
-        if (ucid !== undefined && ucid !== null && ucid !== '') {
-            return String(ucid);
-        }
-        const activeConversationId = this.getActiveConversationId();
-        if (
-            activeConversationId !== undefined &&
-            activeConversationId !== null &&
-            activeConversationId !== ''
-        ) {
-            return String(activeConversationId);
+    getVoiceLanguageSessionKey(groupId) {
+        if (groupId !== undefined && groupId !== null && groupId !== '') {
+            return String(groupId);
         }
         return this._DEFAULT_VOICE_SESSION_KEY;
     }
@@ -178,15 +170,11 @@ class Voice {
         );
     }
 
-    getVoiceLanguageState(ucid, groupId) {
-        const sessionKey = this.getVoiceSessionKey(ucid);
+    getVoiceLanguageState(groupId) {
+        const sessionKey = this.getVoiceLanguageSessionKey(groupId);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
-            const normalizedGroupId = groupId != null && groupId !== '' ? String(groupId) : null;
-            // Hydrate from chat context only when the session key maps to the same conversation.
-            const chatContextLanguageCode =
-                normalizedGroupId !== null && sessionKey === normalizedGroupId
-                    ? this.getChatContextUserLanguageCode(normalizedGroupId)
-                    : '';
+            const normalizedGroupId = groupId != null && groupId !== '' ? String(groupId) : '';
+            const chatContextLanguageCode = this.getChatContextUserLanguageCode(normalizedGroupId);
             this._voiceLanguageStateBySessionKey[sessionKey] = {
                 languageCode:
                     chatContextLanguageCode ||
@@ -942,12 +930,8 @@ class Voice {
     }
 
     async textToVoice(text = '') {
-        const resolvedUcid = this.resolveVoiceSessionUcid();
         const activeConversationId = this.getActiveConversationId();
-        const { sessionKey, state } = this.getVoiceLanguageState(
-            resolvedUcid,
-            activeConversationId
-        );
+        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationId);
         const languageCode = this.getSessionVoiceLanguageCode(state);
         console.debug('Voice language used for subsequent TTS', { sessionKey, languageCode });
         const payload = {
@@ -1030,10 +1014,7 @@ class Voice {
         }
         const activeConversationUcid = this.getActiveConversationId();
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
-        const { sessionKey, state } = this.getVoiceLanguageState(
-            resolvedUcid,
-            activeConversationUcid
-        );
+        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
         const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
 
