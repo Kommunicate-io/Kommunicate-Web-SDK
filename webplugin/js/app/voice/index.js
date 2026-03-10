@@ -183,12 +183,14 @@ class Voice {
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
             const normalizedGroupId = groupId != null && groupId !== '' ? String(groupId) : null;
             // Hydrate from chat context only when the session key maps to the same conversation.
-            const persistedLanguageCode =
+            const chatContextLanguageCode =
                 normalizedGroupId !== null && sessionKey === normalizedGroupId
                     ? this.getChatContextUserLanguageCode(normalizedGroupId)
                     : '';
             this._voiceLanguageStateBySessionKey[sessionKey] = {
-                languageCode: persistedLanguageCode,
+                languageCode:
+                    chatContextLanguageCode ||
+                    this.normalizeLanguageCode(this.voiceInputConfig.languageCode || ''),
             };
         }
         return {
