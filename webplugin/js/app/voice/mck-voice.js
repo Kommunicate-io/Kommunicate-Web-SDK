@@ -2,7 +2,7 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 350; // quicker turn-taking while still allowing short pauses
+    _SILENCE_DURATION = 900; // allow natural thinking pauses before ending capture
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
@@ -11,6 +11,7 @@ class MckVoice {
     _VOICE_START_THRESHOLD_RMS = 160;
     _VOICE_STOP_THRESHOLD_RMS = 120;
     _VOICE_PRE_ROLL_MS = 700;
+    _VOICE_POST_ROLL_MS = 500;
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 160;
     _VOICE_MAX_CHUNK_MS = 2800;
@@ -239,6 +240,7 @@ class MckVoice {
                 config.initialSpeechTimeoutMs ?? this._VOICE_INITIAL_SPEECH_TIMEOUT_MS,
             maxChunkMs: config.maxChunkMs ?? this._VOICE_MAX_CHUNK_MS,
             preRollMs: config.preRollMs ?? this._VOICE_PRE_ROLL_MS,
+            postRollMs: config.postRollMs ?? this._VOICE_POST_ROLL_MS,
             minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
             minChunkRms: config.minChunkRms ?? this._VOICE_MIN_CHUNK_RMS,
             maxAbsSilenceThreshold:
@@ -1252,6 +1254,7 @@ class MckVoice {
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
         const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
         const preRollMs = Number(this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS);
+        const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const maxChunkMs = Number(this.voiceInputSettings.maxChunkMs || this._VOICE_MAX_CHUNK_MS);
         const startThresholdRms = Number(this.voiceInputSettings.startThresholdRms);
         const stopThresholdRms = Number(this.voiceInputSettings.stopThresholdRms);
@@ -1261,6 +1264,7 @@ class MckVoice {
         );
         const frameSize = Math.max(1, Math.round((sampleRate * frameMs) / 1000));
         const preRollSamples = Math.max(0, Math.round((sampleRate * preRollMs) / 1000));
+        const postRollSamples = Math.max(0, Math.round((sampleRate * postRollMs) / 1000));
         const maxChunkSamples = Math.max(frameSize, Math.round((sampleRate * maxChunkMs) / 1000));
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
         const rawDurationMs = totalSamples > 0 ? Math.round((totalSamples / sampleRate) * 1000) : 0;
@@ -1403,7 +1407,10 @@ class MckVoice {
 
         const firstSpeechSample = firstSpeechFrameIndex * frameSize;
         const startSample = Math.max(0, firstSpeechSample - preRollSamples);
-        const endSample = Math.min(totalSamples, (lastSpeechFrameIndex + 1) * frameSize);
+        const endSample = Math.min(
+            totalSamples,
+            (lastSpeechFrameIndex + 1) * frameSize + postRollSamples
+        );
         const trimmedSamples = rawSamples.slice(startSample, endSample);
         const trimmedDurationMs = Math.round((trimmedSamples.length / sampleRate) * 1000);
         const trimStartMs = Math.round((startSample / sampleRate) * 1000);
@@ -1462,7 +1469,9 @@ class MckVoice {
         const minVoicedMs = Number(
             this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
         );
+        const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
+        const postRollSamples = Math.max(0, Math.round((sampleRate * postRollMs) / 1000));
         const maxMergedChunkMs = Number(
             this.voiceInputSettings.sttMergeMaxMs || this._VOICE_STT_MERGE_MAX_MS
         );
@@ -1680,7 +1689,10 @@ class MckVoice {
             }
 
             const trimmedStart = firstVoiceFrame * frameSize;
-            const trimmedEnd = Math.min(chunkSamples.length, (lastVoiceFrame + 1) * frameSize);
+            const trimmedEnd = Math.min(
+                chunkSamples.length,
+                (lastVoiceFrame + 1) * frameSize + postRollSamples
+            );
             const processedChunkSamples = chunkSamples.slice(trimmedStart, trimmedEnd);
             if (processedChunkSamples.length < minSamplesToSend) {
                 continue;
