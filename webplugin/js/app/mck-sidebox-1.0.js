@@ -9552,12 +9552,18 @@ const firstVisibleMsg = {
                         );
                         submittedFormDetails = chatContext.formData;
                         associatedFormKey = chatContext.formMsgKey;
-                        SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
-                        append &&
-                            mckMessageLayout.populateDataInForm(
-                                associatedFormKey,
-                                submittedFormDetails
-                            );
+                        const hasValidFormContext =
+                            associatedFormKey != null &&
+                            associatedFormKey !== '' &&
+                            submittedFormDetails != null;
+                        if (hasValidFormContext) {
+                            SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
+                            append &&
+                                mckMessageLayout.populateDataInForm(
+                                    associatedFormKey,
+                                    submittedFormDetails
+                                );
+                        }
                     } else if (
                         msg.metadata.templateId ==
                         KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM

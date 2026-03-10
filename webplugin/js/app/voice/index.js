@@ -178,10 +178,15 @@ class Voice {
         );
     }
 
-    getVoiceLanguageState(ucid) {
+    getVoiceLanguageState(ucid, groupId) {
         const sessionKey = this.getVoiceSessionKey(ucid);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
-            const persistedLanguageCode = this.getChatContextUserLanguageCode();
+            const normalizedGroupId = groupId != null && groupId !== '' ? String(groupId) : null;
+            // Hydrate from chat context only when the session key maps to the same conversation.
+            const persistedLanguageCode =
+                normalizedGroupId !== null && sessionKey === normalizedGroupId
+                    ? this.getChatContextUserLanguageCode(normalizedGroupId)
+                    : '';
             this._voiceLanguageStateBySessionKey[sessionKey] = {
                 languageCode: persistedLanguageCode,
             };
@@ -205,6 +210,18 @@ class Voice {
             return KommunicateUtils.parseChatContext(groupChatContext);
         }
         return {};
+    }
+
+    getLanguageCodeFromChatContext(chatContext, options = {}) {
+        const context = chatContext && typeof chatContext === 'object' ? chatContext : {};
+        const normalizedUserLanguage = this.normalizeLanguageCode(context.kmUserLanguageCode || '');
+        if (normalizedUserLanguage) {
+            return normalizedUserLanguage;
+        }
+        if (options.includeLocaleFallback) {
+            return this.normalizeLanguageCode(context.kmUserLocale || '');
+        }
+        return '';
     }
 
     getSessionVoiceLanguageCode(state) {
@@ -287,22 +304,18 @@ class Voice {
         }
     }
 
-    getChatContextUserLanguageCode() {
+    getChatContextUserLanguageCode(groupId) {
         let chatContext = null;
         if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
             chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
         }
-        chatContext = chatContext && typeof chatContext === 'object' ? chatContext : {};
-        if (chatContext.kmUserLanguageCode) {
-            return this.normalizeLanguageCode(chatContext.kmUserLanguageCode);
+        const groupUserLanguage = this.getLanguageCodeFromChatContext(
+            this.getGroupChatContext(groupId)
+        );
+        if (groupUserLanguage) {
+            return groupUserLanguage;
         }
-
-        const activeGroupId = this.getActiveConversationId();
-        const parsedContext = this.getGroupChatContext(activeGroupId);
-        if (parsedContext && parsedContext.kmUserLanguageCode) {
-            return this.normalizeLanguageCode(parsedContext.kmUserLanguageCode);
-        }
-        return '';
+        return this.getLanguageCodeFromChatContext(chatContext);
     }
 
     getChatContextLanguageCode() {
@@ -310,36 +323,17 @@ class Voice {
         if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
             chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
         }
-        chatContext = chatContext && typeof chatContext === 'object' ? chatContext : {};
-
-        const activeGroupId =
-            typeof CURRENT_GROUP_DATA !== 'undefined' &&
-            CURRENT_GROUP_DATA &&
-            CURRENT_GROUP_DATA.tabId;
-        if (
-            !chatContext.kmUserLanguageCode &&
-            activeGroupId &&
-            typeof MCK_GROUP_MAP !== 'undefined' &&
-            MCK_GROUP_MAP &&
-            MCK_GROUP_MAP[activeGroupId] &&
-            MCK_GROUP_MAP[activeGroupId].metadata &&
-            MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT
-        ) {
-            const groupChatContext = MCK_GROUP_MAP[activeGroupId].metadata.KM_CHAT_CONTEXT;
-            let parsedContext =
-                typeof KommunicateUtils !== 'undefined' && KommunicateUtils
-                    ? KommunicateUtils.parseChatContext(groupChatContext)
-                    : {};
-            if (parsedContext && parsedContext.kmUserLanguageCode) {
-                return this.normalizeLanguageCode(parsedContext.kmUserLanguageCode);
-            }
-            if (parsedContext && parsedContext.kmUserLocale) {
-                return this.normalizeLanguageCode(parsedContext.kmUserLocale);
-            }
+        const settingsLanguageCode = this.getLanguageCodeFromChatContext(chatContext, {
+            includeLocaleFallback: true,
+        });
+        if (settingsLanguageCode) {
+            return settingsLanguageCode;
         }
-
-        return this.normalizeLanguageCode(
-            chatContext.kmUserLanguageCode || chatContext.kmUserLocale || ''
+        return this.getLanguageCodeFromChatContext(
+            this.getGroupChatContext(this.getActiveConversationId()),
+            {
+                includeLocaleFallback: true,
+            }
         );
     }
 
@@ -947,7 +941,11 @@ class Voice {
 
     async textToVoice(text = '') {
         const resolvedUcid = this.resolveVoiceSessionUcid();
-        const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
+        const activeConversationId = this.getActiveConversationId();
+        const { sessionKey, state } = this.getVoiceLanguageState(
+            resolvedUcid,
+            activeConversationId
+        );
         const languageCode = this.getSessionVoiceLanguageCode(state);
         console.debug('Voice language used for subsequent TTS', { sessionKey, languageCode });
         const payload = {
@@ -1030,7 +1028,10 @@ class Voice {
         }
         const activeConversationUcid = this.getActiveConversationId();
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
-        const { sessionKey, state } = this.getVoiceLanguageState(resolvedUcid);
+        const { sessionKey, state } = this.getVoiceLanguageState(
+            resolvedUcid,
+            activeConversationUcid
+        );
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
         const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
 
