@@ -2,7 +2,7 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 350; // aggressive base pause threshold with continuation grace
+    _SILENCE_DURATION = 600; // avoid splitting on brief thinking pauses
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
@@ -10,8 +10,8 @@ class MckVoice {
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     _VOICE_START_THRESHOLD_RMS = 160;
     _VOICE_STOP_THRESHOLD_RMS = 120;
-    _VOICE_PRE_ROLL_MS = 700;
-    _VOICE_POST_ROLL_MS = 500;
+    _VOICE_PRE_ROLL_MS = 900;
+    _VOICE_POST_ROLL_MS = 800;
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 160;
     _VOICE_MAX_CHUNK_MS = 2800;
@@ -20,7 +20,8 @@ class MckVoice {
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
-    _VOICE_SEGMENT_FINAL_PAUSE_MS = 1200;
+    _VOICE_SEGMENT_FINAL_PAUSE_MS = 1800;
+    _VOICE_CONTINUATION_MIN_WAIT_MS = 750;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     // Threshold for frequency-domain visualizer (0..255 scale)
@@ -68,6 +69,10 @@ class MckVoice {
         this.pendingVoiceSegments = {};
         this.pendingVoiceSegmentSeq = 0;
         this.pendingVoiceSegmentInFlight = 0;
+        this.pendingContinuationStart = false;
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
         this.discardNextRecordingPayload = false;
         this.maxRecordingTimer = null;
         this.deferredRecordingHandler = null;
@@ -1065,10 +1070,18 @@ class MckVoice {
                 ? this.vadCaptureChunks.slice()
                 : [];
             const recordedVadCaptureSampleRate = this.vadCaptureSampleRate;
-            const shouldProcessRecording =
-                Boolean(this.isRecording) && !this.discardNextRecordingPayload;
             const stopReason = this.recordingStopReason || 'manual';
+            const hasRecordedPayload =
+                recordedChunks.length > 0 || recordedVadCaptureChunks.length > 0;
+            const shouldProcessRecording =
+                !this.discardNextRecordingPayload &&
+                (Boolean(this.isRecording) ||
+                    ((stopReason === 'segment_pause' || stopReason === 'continuation_idle') &&
+                        hasRecordedPayload));
             const shouldAggregateSegments =
+                this.activeRecognitionMode === 'omnichannel' &&
+                (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
+            const shouldRestartContinuationRecording =
                 this.activeRecognitionMode === 'omnichannel' && stopReason === 'segment_pause';
             const segmentSeq = shouldAggregateSegments
                 ? ++this.pendingVoiceSegmentSeq
@@ -1118,8 +1131,13 @@ class MckVoice {
             }
             this.clearInitialSpeechTimeout();
             try {
-                if (shouldAggregateSegments && recordingStream) {
-                    this.requestAudioRecordingWhenReady();
+                if (shouldRestartContinuationRecording && recordingStream) {
+                    this.beginContinuationDecisionWindow();
+                    this.pendingContinuationStart = true;
+                    Promise.resolve(this.requestAudioRecordingWhenReady()).finally(() => {
+                        this.pendingContinuationStart = false;
+                        this.maybeFinalizePendingVoiceMessageAfterSegment();
+                    });
                 }
                 // Create blob from recorded chunks
                 if (shouldProcessRecording) {
@@ -1150,6 +1168,9 @@ class MckVoice {
                     this.soundSamples = 0;
                     this.totalSamples = 0;
                     if (!chunks.length) {
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         console.debug('Recording was empty after silence trimming', {
                             rawDurationMs,
                             trimmedDurationMs,
@@ -1178,6 +1199,9 @@ class MckVoice {
                         data = await this.transcribePreparedVoiceChunks(chunks, sampleRate);
                     } catch (error) {
                         if (error && error.code === 'SILENT_AUDIO') {
+                            if (shouldAggregateSegments) {
+                                return;
+                            }
                             console.debug('Silent audio clip detected during voice mode', {
                                 sampleCount: error.sampleCount,
                                 nonZeroRatio: error.nonZeroRatio,
@@ -1201,6 +1225,9 @@ class MckVoice {
                         throw error;
                     }
                     if (!data) {
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         console.warn(
                             'Voice transcription failed: empty response from speechToText'
                         );
@@ -1221,6 +1248,9 @@ class MckVoice {
                     }
                     const rawText = typeof data.text === 'string' ? data.text : '';
                     if (!rawText.trim()) {
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         console.warn(
                             'Voice transcription failed: missing/empty text in speechToText response',
                             data
@@ -1260,9 +1290,10 @@ class MckVoice {
                         this.pendingVoiceSegmentInFlight - 1
                     );
                 }
-                if (shouldAggregateSegments) {
+                if (stopReason === 'segment_pause') {
                     this.maybeFinalizePendingVoiceMessageAfterSegment();
                 } else if (stopReason === 'continuation_idle') {
+                    this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
                 } else {
                     this.scheduleAutoListen();
@@ -1469,11 +1500,16 @@ class MckVoice {
         }
 
         const firstSpeechSample = firstSpeechFrameIndex * frameSize;
-        const startSample = Math.max(0, firstSpeechSample - preRollSamples);
-        const endSample = Math.min(
-            totalSamples,
-            (lastSpeechFrameIndex + 1) * frameSize + postRollSamples
-        );
+        const leadingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+        const trailingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+        const startSample =
+            firstSpeechFrameIndex <= leadingEdgeFrameWindow
+                ? 0
+                : Math.max(0, firstSpeechSample - preRollSamples);
+        const endSample =
+            lastSpeechFrameIndex >= frameCount - trailingEdgeFrameWindow
+                ? totalSamples
+                : Math.min(totalSamples, (lastSpeechFrameIndex + 1) * frameSize + postRollSamples);
         const trimmedSamples = rawSamples.slice(startSample, endSample);
         const trimmedDurationMs = Math.round((trimmedSamples.length / sampleRate) * 1000);
         const trimStartMs = Math.round((startSample / sampleRate) * 1000);
@@ -1756,11 +1792,17 @@ class MckVoice {
                 }
             }
 
-            const trimmedStart = firstVoiceFrame * frameSize;
-            const trimmedEnd = Math.min(
-                chunkSamples.length,
-                (lastVoiceFrame + 1) * frameSize + postRollSamples
-            );
+            const leadingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+            const trailingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+            const trimmedStart =
+                firstVoiceFrame <= leadingEdgeFrameWindow ? 0 : firstVoiceFrame * frameSize;
+            const trimmedEnd =
+                lastVoiceFrame >= frameCount - trailingEdgeFrameWindow
+                    ? chunkSamples.length
+                    : Math.min(
+                          chunkSamples.length,
+                          (lastVoiceFrame + 1) * frameSize + postRollSamples
+                      );
             const processedChunkSamples = chunkSamples.slice(trimmedStart, trimmedEnd);
             if (processedChunkSamples.length < minSamplesToSend) {
                 continue;
@@ -2478,7 +2520,25 @@ class MckVoice {
         this.pendingVoiceSegments = {};
         this.pendingVoiceSegmentSeq = 0;
         this.pendingVoiceSegmentInFlight = 0;
+        this.pendingContinuationStart = false;
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
         this.discardNextRecordingPayload = false;
+    }
+
+    beginContinuationDecisionWindow() {
+        this.continuationDecisionActive = true;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = Date.now();
+        this.clearPendingVoiceMessageTimer();
+    }
+
+    resolveContinuationDecisionWindow() {
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
+        this.clearPendingVoiceMessageTimer();
     }
 
     appendPendingVoiceSegment(segmentSeq, text) {
@@ -2518,26 +2578,53 @@ class MckVoice {
     }
 
     maybeFinalizePendingVoiceMessageAfterSegment() {
-        this.clearPendingVoiceMessageTimer();
-        if (this.pendingVoiceSegmentInFlight > 0) {
-            this.schedulePendingVoiceMessageFinalize(200);
-            return;
-        }
-        if (this.isRecording) {
-            if (this.speechDetected) {
-                return;
-            }
-            this.discardNextRecordingPayload = true;
-            this.stopRecording(false, 'continuation_idle');
-            return;
-        }
         this.finalizePendingVoiceMessage();
     }
 
     finalizePendingVoiceMessage() {
+        const continuationMinWaitMs = Number(
+            this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
+        );
+        if (this.continuationDecisionActive) {
+            if (this.continuationSpeechDetected) {
+                this.resolveContinuationDecisionWindow();
+                return;
+            }
+            if (this.pendingContinuationStart || this.pendingVoiceSegmentInFlight > 0) {
+                this.schedulePendingVoiceMessageFinalize(100);
+                return;
+            }
+            const continuationElapsed = this.continuationWindowStartedAt
+                ? Date.now() - this.continuationWindowStartedAt
+                : continuationMinWaitMs;
+            if (this.isRecording) {
+                if (this.speechDetected) {
+                    this.resolveContinuationDecisionWindow();
+                    return;
+                }
+                if (continuationElapsed < continuationMinWaitMs) {
+                    this.schedulePendingVoiceMessageFinalize(
+                        continuationMinWaitMs - continuationElapsed
+                    );
+                    return;
+                }
+                this.stopRecording(false, 'continuation_idle');
+                return;
+            }
+            if (continuationElapsed < continuationMinWaitMs) {
+                this.schedulePendingVoiceMessageFinalize(
+                    continuationMinWaitMs - continuationElapsed
+                );
+                return;
+            }
+            this.resolveContinuationDecisionWindow();
+        }
+        if (this.pendingContinuationStart) {
+            this.schedulePendingVoiceMessageFinalize(200);
+            return;
+        }
         if (this.isRecording) {
             if (!this.speechDetected && this.pendingVoiceSegmentInFlight === 0) {
-                this.discardNextRecordingPayload = true;
                 this.stopRecording(false, 'continuation_idle');
                 return;
             }
@@ -3025,6 +3112,10 @@ class MckVoice {
     }
 
     onVadSpeechStart() {
+        if (this.continuationDecisionActive) {
+            this.continuationSpeechDetected = true;
+            this.resolveContinuationDecisionWindow();
+        }
         this.speechDetected = true;
         this.isInSilence = false;
         this.clearInitialSpeechTimeout();
