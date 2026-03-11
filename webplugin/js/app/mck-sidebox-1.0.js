@@ -13114,8 +13114,6 @@ const firstVisibleMsg = {
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false;
-                        CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = '';
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = false;
                         CURRENT_GROUP_DATA.answerFeedback = false;
                         CURRENT_GROUP_DATA.isDialogflowCXBot = false;
