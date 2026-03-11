@@ -20,7 +20,6 @@ class MckVoice {
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
-    _VOICE_SEGMENT_FINAL_PAUSE_MS = 1800;
     _VOICE_CONTINUATION_MIN_WAIT_MS = 750;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
@@ -255,7 +254,8 @@ class MckVoice {
             maxChunkMs: config.maxChunkMs ?? this._VOICE_MAX_CHUNK_MS,
             preRollMs: config.preRollMs ?? this._VOICE_PRE_ROLL_MS,
             postRollMs: config.postRollMs ?? this._VOICE_POST_ROLL_MS,
-            finalPauseMs: config.finalPauseMs ?? this._VOICE_SEGMENT_FINAL_PAUSE_MS,
+            continuationMinWaitMs:
+                config.continuationMinWaitMs ?? this._VOICE_CONTINUATION_MIN_WAIT_MS,
             minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
             minChunkRms: config.minChunkRms ?? this._VOICE_MIN_CHUNK_RMS,
             maxAbsSilenceThreshold:
@@ -2564,9 +2564,9 @@ class MckVoice {
         return transcriptParts.join(' ').trim();
     }
 
-    schedulePendingVoiceMessageFinalize(delay = null) {
+    schedulePendingVoiceMessageFinalize(delay = 100) {
         this.clearPendingVoiceMessageTimer();
-        const finalizeDelay = Number(delay == null ? this.voiceInputSettings.finalPauseMs : delay);
+        const finalizeDelay = Number(delay);
         if (!(finalizeDelay > 0)) {
             this.finalizePendingVoiceMessage();
             return;
