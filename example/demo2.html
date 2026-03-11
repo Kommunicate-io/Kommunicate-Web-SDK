@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kommunicate Widget Configurator</title>
+        <script defer src="/plugin/sidebox/js/app/livechat-demo-hooks.js"></script>
         <style>
             :root {
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -747,6 +748,11 @@
                 try {
                     if (preChatEnabled) {
                         preChat = parseJsonInput(preChatTextarea);
+                        if (!Array.isArray(preChat) || !preChat.length) {
+                            preChat = Array.isArray(defaultState.preChat)
+                                ? defaultState.preChat
+                                : [];
+                        }
                     }
                 } catch (error) {
                     throw new Error('Pre-chat JSON is invalid. ' + error.message);
@@ -828,6 +834,12 @@
                         ? { ...config.globalSettings }
                         : {};
                 Object.assign(globalSettings, globalSettingsOverrides);
+                if (
+                    window.KMLivechatDemoHooks &&
+                    typeof window.KMLivechatDemoHooks.applySettings === 'function'
+                ) {
+                    window.KMLivechatDemoHooks.applySettings(globalSettings);
+                }
                 const existingOnInit =
                     globalSettings.onInit ||
                     (window.kommunicate &&

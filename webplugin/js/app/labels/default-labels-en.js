@@ -175,9 +175,10 @@
             option: 'Please select',
             password: 'Password',
             errorText: 'Please enter your account password',
-            invalidPassword: 'Invalid password',
+            invalidPassword:
+                'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
             invalidPasswordMessage:
-                'We couldn’t authenticate your request. Please check your credentials and try again. If you signed in using your dashboard login credentials, they cannot be used here. Please start the conversation with a different email address. If the problem persists, try resetting your password or contact support.',
+                'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
             supportAgentEmailError:
                 'You are using your support agent email. Please use another email to start this conversation.',
             dashboardCredentialError:
