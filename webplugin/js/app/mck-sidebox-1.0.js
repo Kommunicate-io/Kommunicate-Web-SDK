@@ -2321,7 +2321,9 @@ const firstVisibleMsg = {
             function reopenAuthModal() {
                 ensureWidgetIframeVisible();
                 typeof openWidgetIframe === 'function' && openWidgetIframe();
-                openWidgetForAuthError();
+                openWidgetForAuthError({
+                    skipConversationLaunch: true,
+                });
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                 kommunicateCommons.show('#km-chat-login-modal');
                 kommunicateCommons.setDialogVisibility(
@@ -2332,10 +2334,11 @@ const firstVisibleMsg = {
                 return kmChatLoginModal;
             }
 
-            function openWidgetForAuthError() {
+            function openWidgetForAuthError(options) {
                 if (typeof document === 'undefined') {
                     return;
                 }
+                options = options || {};
                 var sideboxEl = document.getElementById('mck-sidebox');
                 if (sideboxEl && sideboxEl.classList) {
                     sideboxEl.classList.remove('km-soft-hidden');
@@ -2367,7 +2370,7 @@ const firstVisibleMsg = {
                 ) {
                     mckMessageService.openChatbox();
                 }
-                if ($applozic?.fn?.applozic) {
+                if (!options.skipConversationLaunch && $applozic?.fn?.applozic) {
                     var previousCreateUserOnWidgetOpen = CREATE_USER_ON_WIDGET_OPEN;
                     CREATE_USER_ON_WIDGET_OPEN = false;
                     $applozic.fn.applozic('mckLaunchSideboxChat');
