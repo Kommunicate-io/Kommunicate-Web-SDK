@@ -157,7 +157,7 @@ var KMPreChat = (function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = resolvedMessage || '';
-                loginErrorNode.classList.remove('n-vis', 'hide');
+                loginErrorNode.classList.remove('n-vis');
                 loginErrorNode.classList.add('vis');
                 loginErrorNode.style.display = '';
             }
@@ -175,8 +175,8 @@ var KMPreChat = (function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = '';
-                loginErrorNode.classList.remove('vis', 'show');
-                loginErrorNode.classList.add('n-vis', 'hide');
+                loginErrorNode.classList.remove('vis');
+                loginErrorNode.classList.add('n-vis');
                 loginErrorNode.style.display = 'none';
             }
         };
