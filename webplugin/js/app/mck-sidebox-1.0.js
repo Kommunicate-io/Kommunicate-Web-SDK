@@ -2283,8 +2283,13 @@ const firstVisibleMsg = {
                                 userIdInput.classList.add('n-vis');
                             }
                             userIdLabelNode.classList.add('sr-only');
-                        } else if (userIdContainer) {
-                            kommunicateCommons.show(userIdContainer);
+                            userIdLabelNode.classList.remove('sr-only');
+                        } else {
+                            if (userIdContainer) {
+                                kommunicateCommons.show(userIdContainer);
+                            } else {
+                                userIdInput.classList.remove('n-vis');
+                            }
                             userIdLabelNode.classList.remove('sr-only');
                         }
                     }
