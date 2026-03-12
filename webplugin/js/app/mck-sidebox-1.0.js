@@ -2284,8 +2284,8 @@ const firstVisibleMsg = {
                 var loginErrorNode = document.getElementById('km-error-chat-login');
                 if (loginErrorNode) {
                     loginErrorNode.textContent = '';
-                    loginErrorNode.classList.remove('show');
-                    loginErrorNode.classList.add('hide');
+                    loginErrorNode.classList.remove('vis');
+                    loginErrorNode.classList.add('n-vis');
                     loginErrorNode.style.display = 'none';
                 }
                 var form = document.getElementById('km-form-chat-login');
@@ -2526,8 +2526,8 @@ const firstVisibleMsg = {
                 var loginErrorNode = document.getElementById('km-error-chat-login');
                 if (loginErrorNode) {
                     loginErrorNode.textContent = resolvedMessage || '';
-                    loginErrorNode.classList.remove('hide');
-                    loginErrorNode.classList.add('show');
+                    loginErrorNode.classList.remove('n-vis');
+                    loginErrorNode.classList.add('vis');
                     loginErrorNode.style.display = '';
                 }
                 var submitBtn = document.getElementById('km-submit-chat-login');
@@ -2542,8 +2542,8 @@ const firstVisibleMsg = {
                 var loginErrorNode = document.getElementById('km-error-chat-login');
                 if (loginErrorNode) {
                     loginErrorNode.textContent = '';
-                    loginErrorNode.classList.remove('show');
-                    loginErrorNode.classList.add('hide');
+                    loginErrorNode.classList.remove('vis');
+                    loginErrorNode.classList.add('n-vis');
                     loginErrorNode.style.display = 'none';
                 }
             }
@@ -2994,8 +2994,8 @@ const firstVisibleMsg = {
                                 var loginErrorNode = document.getElementById('km-error-chat-login');
                                 if (loginErrorNode) {
                                     loginErrorNode.textContent = '';
-                                    loginErrorNode.classList.remove('show');
-                                    loginErrorNode.classList.add('hide');
+                                    loginErrorNode.classList.remove('vis');
+                                    loginErrorNode.classList.add('n-vis');
                                 }
                                 kmLocalStorage.deleteUserCookiesOnLogout();
                                 kmLocalStorage.deleteLocalStorage(
@@ -3092,8 +3092,8 @@ const firstVisibleMsg = {
                             var loginErrorNode = document.getElementById('km-error-chat-login');
                             if (loginErrorNode) {
                                 loginErrorNode.textContent = loginErrorMessage;
-                                loginErrorNode.classList.remove('hide');
-                                loginErrorNode.classList.add('show');
+                                loginErrorNode.classList.remove('n-vis');
+                                loginErrorNode.classList.add('vis');
                                 loginErrorNode.style.display = '';
                             }
                             if (
@@ -5864,7 +5864,7 @@ const firstVisibleMsg = {
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
-                    $error_chat_login.removeClass('show').addClass('hide');
+                    $error_chat_login.removeClass('vis').addClass('n-vis');
                     $error_chat_login.html('');
                     AUTH_SUBMIT_TRIGGERED = true;
                     if (widgetModePolicy.shouldResetAuthBlockedOnSubmit()) {

@@ -380,21 +380,18 @@ var KMPreChat = (function () {
                 if (!kommunicateCommons || typeof kommunicateCommons.show !== 'function') {
                     errorNode.textContent = message || '';
                     if (message) {
-                        errorNode.classList.remove('hide');
-                        errorNode.classList.add('show');
+                        errorNode.classList.remove('n-vis');
+                        errorNode.classList.add('vis');
                     } else {
-                        errorNode.classList.remove('show');
-                        errorNode.classList.add('hide');
+                        errorNode.classList.remove('vis');
+                        errorNode.classList.add('n-vis');
                     }
                     return;
                 }
                 if (message) {
-                    errorNode.classList.remove('hide', 'show');
                     errorNode.textContent = message;
                     kommunicateCommons.show(errorNode);
                 } else {
-                    errorNode.classList.remove('show');
-                    errorNode.classList.add('hide');
                     errorNode.textContent = '';
                     kommunicateCommons.hide(errorNode);
                 }
