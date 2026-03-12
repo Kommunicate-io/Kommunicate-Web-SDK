@@ -2410,33 +2410,6 @@ const firstVisibleMsg = {
                 } catch (error) {}
             }
 
-            function notifyAuthFailure(resultCode, payload) {
-                try {
-                    var options =
-                        (typeof kommunicate !== 'undefined' && kommunicate._globals) ||
-                        appOptionSession.getSessionData('appOptions');
-                    if (!options || typeof options.onAuthFailure !== 'function') {
-                        return;
-                    }
-                    options.onAuthFailure({
-                        event: 'KM_AUTH_FAILURE',
-                        code: resultCode,
-                        payload: payload || null,
-                    });
-                } catch (error) {}
-            }
-
-            function shouldShowInvalidAuthErrorOnAutoLoginFailure() {
-                try {
-                    var options =
-                        (typeof kommunicate !== 'undefined' && kommunicate._globals) ||
-                        appOptionSession.getSessionData('appOptions') ||
-                        {};
-                    return Boolean(options.showInvalidAuthErrorOnAutoLoginFailure);
-                } catch (error) {}
-                return false;
-            }
-
             function isPreLeadCollectionEnabled() {
                 return (
                     (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !== 0) ||
@@ -2846,9 +2819,7 @@ const firstVisibleMsg = {
                             resultCode === false ||
                             resultCode === 'FALSE'
                         ) {
-                            notifyAuthFailure(resultCode, normalizedResult);
                             var isPreLeadEnabled = isPreLeadCollectionEnabled();
-                            var showInvalidAuthErrorOnAutoLoginFailure = shouldShowInvalidAuthErrorOnAutoLoginFailure();
                             var getLeadLabel = _this.getLeadCollectionLabel
                                 ? _this.getLeadCollectionLabel.bind(_this)
                                 : function (key, fallback) {
@@ -2866,9 +2837,7 @@ const firstVisibleMsg = {
                             );
                             var loginErrorMessage = invalidPasswordLabel;
                             ensureChatLoginModalExists();
-                            var useExplicitAutoLoginFailureAuthForm =
-                                !AUTH_SUBMIT_TRIGGERED && showInvalidAuthErrorOnAutoLoginFailure;
-                            if (!AUTH_SUBMIT_TRIGGERED && !showInvalidAuthErrorOnAutoLoginFailure) {
+                            if (!AUTH_SUBMIT_TRIGGERED) {
                                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
                                 ensureWidgetIframeVisible();
                                 typeof openWidgetIframe === 'function' && openWidgetIframe();
@@ -2915,23 +2884,13 @@ const firstVisibleMsg = {
                                 true,
                                 loginModalFocusFallbacks
                             );
-                            if (useExplicitAutoLoginFailureAuthForm) {
-                                ensureAuthFailureFormFields({
-                                    showUserIdField: true,
-                                    forceAuthForm: true,
-                                });
-                            }
                             if (!isPreLeadEnabled) {
                                 ensureAuthFailureFormFields({
-                                    showUserIdField: !useExplicitAutoLoginFailureAuthForm,
+                                    showUserIdField: false,
                                 });
                             }
                             var invalidPasswordMessage = invalidPasswordLabel;
-                            if (
-                                isPreLeadEnabled &&
-                                MCK_AUTHENTICATION_TYPE_ID <= 0 &&
-                                !useExplicitAutoLoginFailureAuthForm
-                            ) {
+                            if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
                                 var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
                                     return (
                                         item &&
