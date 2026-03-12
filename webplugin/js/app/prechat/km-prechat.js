@@ -82,6 +82,105 @@ var KMPreChat = (function () {
             return fallback || '';
         }
 
+        target.getLeadCollectionLabel = getLeadCollectionLabel;
+
+        target.getResultMessage = function (result) {
+            var rawMessage = '';
+            if (result && typeof result === 'object') {
+                rawMessage =
+                    result.displayMessage || result.message || result.error || result.code || '';
+                if (
+                    !rawMessage &&
+                    Array.isArray(result.errorResponse) &&
+                    result.errorResponse.length
+                ) {
+                    var firstError = result.errorResponse[0] || {};
+                    rawMessage =
+                        firstError.displayMessage ||
+                        firstError.message ||
+                        firstError.errorMessage ||
+                        '';
+                }
+            } else if (typeof result === 'string') {
+                rawMessage = result;
+            }
+            return rawMessage || '';
+        };
+
+        target.resolvePreLeadErrorMessage = function (result, fallbackKey) {
+            var supportAgentEmailError = getLeadCollectionLabel(
+                'supportAgentEmailError',
+                'You are using your support agent email. Please use another email.'
+            );
+            var fallbackMessage =
+                getLeadCollectionLabel(
+                    fallbackKey,
+                    getLeadCollectionLabel(
+                        'commonErrorMsg',
+                        getLeadCollectionLabel(
+                            'errorText',
+                            'The input you have provided is either invalid or incorrect.'
+                        )
+                    )
+                ) || '';
+            var rawMessage = target.getResultMessage(result);
+
+            if (rawMessage && /support|agent|admin/i.test(rawMessage)) {
+                return supportAgentEmailError;
+            }
+
+            return fallbackMessage;
+        };
+
+        target.showPreChatLoginError = function (message) {
+            var resolvedMessage =
+                message ||
+                getLeadCollectionLabel(
+                    'commonErrorMsg',
+                    getLeadCollectionLabel(
+                        'errorText',
+                        'The input you have provided is either invalid or incorrect.'
+                    )
+                );
+            var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+            if (
+                kmChatLoginModal &&
+                deps.kommunicateCommons &&
+                typeof deps.kommunicateCommons.setDialogVisibility === 'function'
+            ) {
+                deps.kommunicateCommons.setDialogVisibility(
+                    kmChatLoginModal,
+                    true,
+                    deps.loginModalFocusFallbacks || []
+                );
+            }
+            var loginErrorNode = document.getElementById('km-error-chat-login');
+            if (loginErrorNode) {
+                loginErrorNode.textContent = resolvedMessage || '';
+                loginErrorNode.classList.remove('n-vis', 'hide');
+                loginErrorNode.classList.add('vis');
+                loginErrorNode.style.display = '';
+            }
+            var submitBtn = document.getElementById('km-submit-chat-login');
+            if (submitBtn) {
+                submitBtn.classList.remove('n-vis');
+                submitBtn.removeAttribute('disabled');
+            }
+            if (typeof deps.openWidgetForAuthError === 'function') {
+                deps.openWidgetForAuthError();
+            }
+        };
+
+        target.resetPreChatLoginError = function () {
+            var loginErrorNode = document.getElementById('km-error-chat-login');
+            if (loginErrorNode) {
+                loginErrorNode.textContent = '';
+                loginErrorNode.classList.remove('vis', 'show');
+                loginErrorNode.classList.add('n-vis', 'hide');
+                loginErrorNode.style.display = 'none';
+            }
+        };
+
         var syncPreLeadCollectionFromOptions = function () {
             var options = deps.appOptions || {};
             var collectionSource =

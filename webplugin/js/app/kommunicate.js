@@ -459,7 +459,10 @@ $applozic.extend(true, Kommunicate, {
         kmLocalStorage.deleteUserCookiesOnLogout();
         appOptionSession.removeAppInstanceCount();
         window.Sentry && window.Sentry.close();
-        parent.window && parent.window.removeKommunicateScripts();
+        var removeScripts =
+            (typeof self !== 'undefined' && self.removeKommunicateScripts) ||
+            (typeof parent !== 'undefined' && parent && parent.removeKommunicateScripts);
+        typeof removeScripts === 'function' && removeScripts();
     },
     launchConversation: function () {
         activateConversationTabOnStartConversation();

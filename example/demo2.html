@@ -944,10 +944,6 @@
                 } catch (error) {
                     console.warn('Unable to clear storage', error);
                 }
-                const iframe = document.getElementById('kommunicate-widget-iframe');
-                if (iframe) {
-                    iframe.remove();
-                }
                 const injectedScript = document.getElementById('kommunicate-widget-script');
                 if (injectedScript) {
                     injectedScript.remove();
