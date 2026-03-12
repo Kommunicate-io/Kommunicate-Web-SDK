@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kommunicate Widget Configurator</title>
-        <script defer src="/plugin/sidebox/js/app/livechat-demo-hooks.js"></script>
         <style>
             :root {
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -834,12 +833,6 @@
                         ? { ...config.globalSettings }
                         : {};
                 Object.assign(globalSettings, globalSettingsOverrides);
-                if (
-                    window.KMLivechatDemoHooks &&
-                    typeof window.KMLivechatDemoHooks.applySettings === 'function'
-                ) {
-                    window.KMLivechatDemoHooks.applySettings(globalSettings);
-                }
                 const existingOnInit =
                     globalSettings.onInit ||
                     (window.kommunicate &&
