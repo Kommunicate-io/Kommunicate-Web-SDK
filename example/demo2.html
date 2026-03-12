@@ -896,80 +896,6 @@
                     m._globals = kommunicateSettings;
                 })(document, window.kommunicate || {}, globalSettings);
 
-                const attachLoginLogger = () => {
-                    if (!window.__kmDebug) {
-                        return true;
-                    }
-                    const frame = document.getElementById('kommunicate-widget-iframe');
-                    if (!frame || !frame.contentWindow) {
-                        return false;
-                    }
-                    const frameWindow = frame.contentWindow;
-                    if (frameWindow.__kmLoginLoggerAttached || !frameWindow.XMLHttpRequest) {
-                        return Boolean(frameWindow.__kmLoginLoggerAttached);
-                    }
-                    const shouldLogUrl = (url) =>
-                        typeof url === 'string' &&
-                        (url.includes('kommunicate') ||
-                            url.includes('applozic') ||
-                            url.includes('chat-test') ||
-                            url.includes('api-test'));
-                    const authPattern = new RegExp('login|auth|token|rest\\/ws\\/user', 'i');
-                    const shouldHighlight = (url, status) =>
-                        (typeof status === 'number' && status >= 400) ||
-                        (typeof url === 'string' && authPattern.test(url));
-
-                    const open = frameWindow.XMLHttpRequest.prototype.open;
-                    frameWindow.XMLHttpRequest.prototype.open = function (method, url) {
-                        this.__km_url = url;
-                        this.__km_method = method;
-                        return open.apply(this, arguments);
-                    };
-                    const send = frameWindow.XMLHttpRequest.prototype.send;
-                    frameWindow.XMLHttpRequest.prototype.send = function (body) {
-                        this.addEventListener('load', () => {
-                            if (shouldLogUrl(this.__km_url)) {
-                                const tag = shouldHighlight(this.__km_url, this.status)
-                                    ? 'KM Debug'
-                                    : 'KM Trace';
-                                console.log(
-                                    `[${tag}] XHR`,
-                                    this.__km_method,
-                                    this.__km_url,
-                                    this.status
-                                );
-                            }
-                        });
-                        return send.apply(this, arguments);
-                    };
-
-                    if (frameWindow.fetch) {
-                        const originalFetch = frameWindow.fetch.bind(frameWindow);
-                        frameWindow.fetch = async (...args) => {
-                            const url = typeof args[0] === 'string' ? args[0] : args[0]?.url;
-                            const response = await originalFetch(...args);
-                            if (shouldLogUrl(url)) {
-                                const tag = shouldHighlight(url, response.status)
-                                    ? 'KM Debug'
-                                    : 'KM Trace';
-                                console.log(`[${tag}] fetch`, url, response.status);
-                            }
-                            return response;
-                        };
-                    }
-                    frameWindow.__kmLoginLoggerAttached = true;
-                    console.log('[KM Debug] Login logger attached.');
-                    return true;
-                };
-
-                let attachAttempts = 0;
-                const attachTimer = setInterval(() => {
-                    attachAttempts += 1;
-                    if (attachLoginLogger() || attachAttempts > 30) {
-                        clearInterval(attachTimer);
-                    }
-                }, 200);
-
                 lastLaunchTimestamp = Date.now();
                 updatePreviewStatus(
                     config.containerMode === 'inside'
@@ -1013,26 +939,8 @@
                     console.warn('Unable to logout', error);
                 }
                 try {
-                    const clearKommunicateKeys = (storage) => {
-                        for (let i = storage.length - 1; i >= 0; i -= 1) {
-                            const key = storage.key(i);
-                            if (!key) {
-                                continue;
-                            }
-                            const normalizedKey = key.toLowerCase();
-                            if (
-                                key === pendingConfigKey ||
-                                normalizedKey.startsWith('kommunicate') ||
-                                normalizedKey.startsWith('applozic') ||
-                                normalizedKey.startsWith('km_') ||
-                                normalizedKey === 'feedbackgroups'
-                            ) {
-                                storage.removeItem(key);
-                            }
-                        }
-                    };
-                    clearKommunicateKeys(sessionStorage);
-                    clearKommunicateKeys(localStorage);
+                    sessionStorage.removeItem(pendingConfigKey);
+                    localStorage.removeItem(pendingConfigKey);
                 } catch (error) {
                     console.warn('Unable to clear storage', error);
                 }
