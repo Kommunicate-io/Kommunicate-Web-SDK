@@ -2876,17 +2876,6 @@ const firstVisibleMsg = {
                             }
                             var invalidPasswordMessage = invalidPasswordLabel;
                             if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
-                                mckInit.addPasswordField({
-                                    id: 'km-password',
-                                    type: 'password',
-                                    name: 'km-password',
-                                    class: 'km-form-control km-input-width km-login-error',
-                                    placeholder: (
-                                        (MCK_LABELS['lead.collection'] || {}).password || ''
-                                    ).toLowerCase(),
-                                    required: 'true',
-                                    errorMessage: invalidPasswordMessage,
-                                });
                                 var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
                                     return (
                                         item &&

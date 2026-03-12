@@ -494,28 +494,6 @@
         </main>
 
         <script>
-            window.KMLivechatDemoHooks = {
-                applySettings(settings) {
-                    if (!settings || typeof settings !== 'object') {
-                        return;
-                    }
-                    if (typeof settings.onAuthFailure !== 'function') {
-                        settings.onAuthFailure = function (payload) {
-                            try {
-                                if (
-                                    typeof window === 'undefined' ||
-                                    !window.parent ||
-                                    window.parent === window
-                                ) {
-                                    return;
-                                }
-                                window.parent.postMessage(payload, '*');
-                            } catch (error) {}
-                        };
-                    }
-                },
-            };
-
             const defaultState = {
                 appId: 'kommunicate-support',
                 agentId: '',
@@ -855,12 +833,6 @@
                         ? { ...config.globalSettings }
                         : {};
                 Object.assign(globalSettings, globalSettingsOverrides);
-                if (
-                    window.KMLivechatDemoHooks &&
-                    typeof window.KMLivechatDemoHooks.applySettings === 'function'
-                ) {
-                    window.KMLivechatDemoHooks.applySettings(globalSettings);
-                }
                 const existingOnInit =
                     globalSettings.onInit ||
                     (window.kommunicate &&
