@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kommunicate Widget Configurator</title>
-        <script defer src="/plugin/sidebox/js/app/livechat-demo-hooks.js"></script>
         <style>
             :root {
                 font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -495,6 +494,28 @@
         </main>
 
         <script>
+            window.KMLivechatDemoHooks = {
+                applySettings(settings) {
+                    if (!settings || typeof settings !== 'object') {
+                        return;
+                    }
+                    if (typeof settings.onAuthFailure !== 'function') {
+                        settings.onAuthFailure = function (payload) {
+                            try {
+                                if (
+                                    typeof window === 'undefined' ||
+                                    !window.parent ||
+                                    window.parent === window
+                                ) {
+                                    return;
+                                }
+                                window.parent.postMessage(payload, '*');
+                            } catch (error) {}
+                        };
+                    }
+                },
+            };
+
             const defaultState = {
                 appId: 'kommunicate-support',
                 agentId: '',
