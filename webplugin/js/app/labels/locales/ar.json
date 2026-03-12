@@ -136,7 +136,6 @@
   "lead.collection.errorEmail": "يرجى إدخال بريد إلكتروني صالح",
   "lead.collection.commonErrorMsg": "البيانات المقدمة غير صحيحة أو غير صالحة.",
   "lead.collection.invalidPasswordMessage": "فشلت المصادقة. يرجى التحقق من بيانات الاعتماد والمحاولة مرة أخرى. إذا استمرت المشكلة، فأعد تعيين كلمة المرور أو تواصل مع الدعم.",
-  "lead.collection.dashboardCredentialError": "فشلت المصادقة. يرجى التحقق من بيانات الاعتماد والمحاولة مرة أخرى.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "تم حل المحادثة وقمت بتقييمها كـ",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "قمت بتقييم المحادثة كـ",

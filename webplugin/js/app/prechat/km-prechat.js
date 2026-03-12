@@ -380,11 +380,11 @@ var KMPreChat = (function () {
                 if (!kommunicateCommons || typeof kommunicateCommons.show !== 'function') {
                     errorNode.textContent = message || '';
                     if (message) {
-                        errorNode.classList.remove('hide', 'n-vis');
-                        errorNode.classList.add('show', 'vis');
+                        errorNode.classList.remove('hide');
+                        errorNode.classList.add('show');
                     } else {
-                        errorNode.classList.remove('show', 'vis');
-                        errorNode.classList.add('hide', 'n-vis');
+                        errorNode.classList.remove('show');
+                        errorNode.classList.add('hide');
                     }
                     return;
                 }

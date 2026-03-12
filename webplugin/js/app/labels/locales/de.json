@@ -136,7 +136,6 @@
   "lead.collection.errorEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "lead.collection.commonErrorMsg": "Die Angaben sind entweder ungültig oder falsch.",
   "lead.collection.invalidPasswordMessage": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut. Wenn das Problem weiterhin besteht, setzen Sie Ihr Passwort zurück oder kontaktieren Sie den Support.",
-  "lead.collection.dashboardCredentialError": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "Unterhaltung wurde gelöst und Sie haben sie bewertet als",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "Sie haben die Unterhaltung bewertet als",

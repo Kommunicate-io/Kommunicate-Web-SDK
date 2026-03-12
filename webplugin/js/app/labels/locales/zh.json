@@ -136,7 +136,6 @@
   "lead.collection.errorEmail": "请输入有效的邮箱地址",
   "lead.collection.commonErrorMsg": "您输入的信息无效或不正确。",
   "lead.collection.invalidPasswordMessage": "身份验证失败。请检查您的凭据并重试。如果问题仍然存在，请重置密码或联系支持。",
-  "lead.collection.dashboardCredentialError": "身份验证失败。请检查您的凭据并重试。",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "会话已解决，您评价为",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "您将会话评价为",

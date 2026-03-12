@@ -179,8 +179,6 @@
                 'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
             invalidPasswordMessage:
                 'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
-            dashboardCredentialError:
-                'We couldn’t authenticate your request. Please check your credentials and try again. If the problem persists, try resetting your password or contact support.',
             errorEmail: 'Please enter a valid email address',
             commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
         },
