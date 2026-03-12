@@ -131,7 +131,6 @@
   "lead.collection.option": "Bitte auswählen",
   "lead.collection.password": "Passwort",
   "lead.collection.errorText": "Bitte geben Sie Ihr Account-Passwort ein",
-  "lead.collection.supportAgentEmailError": "Support agent email addresses cannot be used to start this conversation. Please use another email address.",
 
   "lead.collection.errorEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "lead.collection.commonErrorMsg": "Die Angaben sind entweder ungültig oder falsch.",

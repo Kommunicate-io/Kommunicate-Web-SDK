@@ -84,52 +84,8 @@ var KMPreChat = (function () {
 
         target.getLeadCollectionLabel = getLeadCollectionLabel;
 
-        target.getResultMessage = function (result) {
-            var rawMessage = '';
-            if (result && typeof result === 'object') {
-                rawMessage =
-                    result.displayMessage || result.message || result.error || result.code || '';
-                if (
-                    !rawMessage &&
-                    Array.isArray(result.errorResponse) &&
-                    result.errorResponse.length
-                ) {
-                    var firstError = result.errorResponse[0] || {};
-                    rawMessage =
-                        firstError.displayMessage ||
-                        firstError.message ||
-                        firstError.errorMessage ||
-                        '';
-                }
-            } else if (typeof result === 'string') {
-                rawMessage = result;
-            }
-            return rawMessage || '';
-        };
-
         target.resolvePreLeadErrorMessage = function (result, fallbackKey) {
-            var supportAgentEmailError = getLeadCollectionLabel(
-                'supportAgentEmailError',
-                'You are using your support agent email. Please use another email.'
-            );
-            var fallbackMessage =
-                getLeadCollectionLabel(
-                    fallbackKey,
-                    getLeadCollectionLabel(
-                        'commonErrorMsg',
-                        getLeadCollectionLabel(
-                            'errorText',
-                            'The input you have provided is either invalid or incorrect.'
-                        )
-                    )
-                ) || '';
-            var rawMessage = target.getResultMessage(result);
-
-            if (rawMessage && /support|agent|admin/i.test(rawMessage)) {
-                return supportAgentEmailError;
-            }
-
-            return fallbackMessage;
+            return getLeadCollectionLabel('invalidPasswordMessage', '');
         };
 
         target.showPreChatLoginError = function (message) {
@@ -143,12 +99,8 @@ var KMPreChat = (function () {
                     )
                 );
             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-            if (
-                kmChatLoginModal &&
-                deps.kommunicateCommons &&
-                typeof deps.kommunicateCommons.setDialogVisibility === 'function'
-            ) {
-                deps.kommunicateCommons.setDialogVisibility(
+            if (kmChatLoginModal) {
+                kommunicateCommons.setDialogVisibility(
                     kmChatLoginModal,
                     true,
                     deps.loginModalFocusFallbacks || []
@@ -177,7 +129,6 @@ var KMPreChat = (function () {
                 loginErrorNode.textContent = '';
                 loginErrorNode.classList.remove('vis');
                 loginErrorNode.classList.add('n-vis');
-                loginErrorNode.style.display = 'none';
             }
         };
 
@@ -476,17 +427,6 @@ var KMPreChat = (function () {
                 if (!errorNode) {
                     return;
                 }
-                if (!kommunicateCommons || typeof kommunicateCommons.show !== 'function') {
-                    errorNode.textContent = message || '';
-                    if (message) {
-                        errorNode.classList.remove('n-vis');
-                        errorNode.classList.add('vis');
-                    } else {
-                        errorNode.classList.remove('vis');
-                        errorNode.classList.add('n-vis');
-                    }
-                    return;
-                }
                 if (message) {
                     errorNode.textContent = message;
                     kommunicateCommons.show(errorNode);
@@ -498,15 +438,7 @@ var KMPreChat = (function () {
 
             if (emailField) {
                 var isValidEmail = function (value) {
-                    if (
-                        typeof KommunicateUI !== 'undefined' &&
-                        KommunicateUI &&
-                        typeof KommunicateUI.isValidEmail === 'function'
-                    ) {
-                        return KommunicateUI.isValidEmail(value);
-                    }
-                    var fallbackRegex = /^(([^<>()\\[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@(([^<>()[\\]\\\\.,;:\\s@\\\"]+\\.)+[^<>()[\\]\\\\.,;:\\s@\\\"]{2,})$/;
-                    return fallbackRegex.test(value || '');
+                    return KommunicateUI.isValidEmail(value);
                 };
                 var handleEmailValidation = function () {
                     var value = (emailField.value || '').toLowerCase();
@@ -541,7 +473,7 @@ var KMPreChat = (function () {
                     if (intlInstance) {
                         isValid = intlInstance.isValidNumber();
                     } else {
-                        var digitsOnly = value.replace(/\\D/g, '');
+                        var digitsOnly = value.replace(/\D/g, '');
                         isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
                     }
                     if (!isValid) {

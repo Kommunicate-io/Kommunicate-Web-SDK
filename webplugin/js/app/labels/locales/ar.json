@@ -131,7 +131,6 @@
   "lead.collection.option": "يرجى الاختيار",
   "lead.collection.password": "كلمة المرور",
   "lead.collection.errorText": "يرجى إدخال كلمة مرور الحساب",
-  "lead.collection.supportAgentEmailError": "Support agent email addresses cannot be used to start this conversation. Please use another email address.",
 
   "lead.collection.errorEmail": "يرجى إدخال بريد إلكتروني صالح",
   "lead.collection.commonErrorMsg": "البيانات المقدمة غير صحيحة أو غير صالحة.",

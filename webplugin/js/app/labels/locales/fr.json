@@ -131,7 +131,6 @@
   "lead.collection.option": "Veuillez choisir",
   "lead.collection.password": "Mot de passe",
   "lead.collection.errorText": "Veuillez saisir votre mot de passe",
-  "lead.collection.supportAgentEmailError": "Support agent email addresses cannot be used to start this conversation. Please use another email address.",
 
   "lead.collection.errorEmail": "Veuillez entrer une adresse e-mail valide",
   "lead.collection.commonErrorMsg": "Les informations saisies sont invalides ou incorrectes.",

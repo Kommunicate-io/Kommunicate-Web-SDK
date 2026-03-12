@@ -131,7 +131,6 @@
   "lead.collection.option": "Por favor escolha",
   "lead.collection.password": "Senha",
   "lead.collection.errorText": "Por favor, informe a senha da sua conta",
-  "lead.collection.supportAgentEmailError": "Support agent email addresses cannot be used to start this conversation. Please use another email address.",
 
   "lead.collection.errorEmail": "Por favor, informe um e-mail válido",
   "lead.collection.commonErrorMsg": "A informação fornecida é inválida ou incorreta.",

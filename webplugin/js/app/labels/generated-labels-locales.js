@@ -143,8 +143,6 @@
             'lead.collection.option': 'يرجى الاختيار',
             'lead.collection.password': 'كلمة المرور',
             'lead.collection.errorText': 'يرجى إدخال كلمة مرور الحساب',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'يرجى إدخال بريد إلكتروني صالح',
             'lead.collection.commonErrorMsg': 'البيانات المقدمة غير صحيحة أو غير صالحة.',
             'csat.rating.RESOLVED_CONVERSATION_RATED': 'تم حل المحادثة وقمت بتقييمها كـ',
@@ -353,8 +351,6 @@
             'lead.collection.option': 'Bitte auswählen',
             'lead.collection.password': 'Passwort',
             'lead.collection.errorText': 'Bitte geben Sie Ihr Account-Passwort ein',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
             'lead.collection.commonErrorMsg': 'Die Angaben sind entweder ungültig oder falsch.',
             'csat.rating.RESOLVED_CONVERSATION_RATED':
@@ -566,8 +562,6 @@
             'lead.collection.option': 'Selecciona una opción',
             'lead.collection.password': 'Contraseña',
             'lead.collection.errorText': 'Por favor ingresa tu contraseña',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Por favor ingresa un correo válido',
             'lead.collection.commonErrorMsg': 'La información ingresada no es válida o correcta.',
             'csat.rating.RESOLVED_CONVERSATION_RATED':
@@ -781,8 +775,6 @@
             'lead.collection.option': 'Veuillez choisir',
             'lead.collection.password': 'Mot de passe',
             'lead.collection.errorText': 'Veuillez saisir votre mot de passe',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Veuillez entrer une adresse e-mail valide',
             'lead.collection.commonErrorMsg':
                 'Les informations saisies sont invalides ou incorrectes.',
@@ -999,8 +991,6 @@
             'lead.collection.option': 'कृपया चुनें',
             'lead.collection.password': 'पासवर्ड',
             'lead.collection.errorText': 'कृपया अपना खाता पासवर्ड दर्ज करें',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'कृपया एक वैध ईमेल पता दर्ज करें',
             'lead.collection.commonErrorMsg': 'आपके द्वारा प्रदान किया गया इनपुट अमान्य या गलत है।',
             'csat.rating.RESOLVED_CONVERSATION_RATED': 'बातचीत सुलझ गई और आपने इसे इस तरह रेट किया',
@@ -1213,8 +1203,6 @@
             'lead.collection.option': 'Seleziona un’opzione',
             'lead.collection.password': 'Password',
             'lead.collection.errorText': 'Inserisci la password del tuo account',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Inserisci un indirizzo email valido',
             'lead.collection.commonErrorMsg': 'L’input fornito è invalido o errato.',
             'csat.rating.RESOLVED_CONVERSATION_RATED':
@@ -1427,8 +1415,6 @@
             'lead.collection.option': 'Por favor escolha',
             'lead.collection.password': 'Senha',
             'lead.collection.errorText': 'Por favor, informe a senha da sua conta',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Por favor, informe um e-mail válido',
             'lead.collection.commonErrorMsg': 'A informação fornecida é inválida ou incorreta.',
             'csat.rating.RESOLVED_CONVERSATION_RATED': 'Conversa resolvida e você avaliou como',
@@ -1639,8 +1625,6 @@
             'lead.collection.option': 'Välj ett alternativ',
             'lead.collection.password': 'Lösenord',
             'lead.collection.errorText': 'Ange ditt kontolösenord',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'Ange en giltig e-postadress',
             'lead.collection.commonErrorMsg': 'Inmatningen är ogiltig eller felaktig.',
             'csat.rating.RESOLVED_CONVERSATION_RATED': 'Samtal löst och du bedömde det som',
@@ -1850,8 +1834,6 @@
             'lead.collection.option': 'براہ کرم منتخب کریں',
             'lead.collection.password': 'پاس ورڈ',
             'lead.collection.errorText': 'براہ کرم اپنا اکاؤنٹ پاس ورڈ درج کریں',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': 'براہ کرم درست ای میل درج کریں',
             'lead.collection.commonErrorMsg': 'آپ کی فراہم کردہ معلومات غلط یا ناقابل قبول ہیں.',
             'csat.rating.RESOLVED_CONVERSATION_RATED':
@@ -2059,8 +2041,6 @@
             'lead.collection.option': '请选择',
             'lead.collection.password': '密码',
             'lead.collection.errorText': '请输入您的账户密码',
-            'lead.collection.supportAgentEmailError':
-                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             'lead.collection.errorEmail': '请输入有效的邮箱地址',
             'lead.collection.commonErrorMsg': '您输入的信息无效或不正确。',
             'csat.rating.RESOLVED_CONVERSATION_RATED': '会话已解决，您评价为',
