@@ -1286,9 +1286,9 @@ class MckVoice {
                         this.pendingVoiceSegmentInFlight - 1
                     );
                 }
-                if (stopReason === 'segment_pause') {
+                if (stopReason === 'segment_pause' && shouldAggregateSegments) {
                     this.maybeFinalizePendingVoiceMessageAfterSegment();
-                } else if (stopReason === 'continuation_idle') {
+                } else if (stopReason === 'continuation_idle' && shouldAggregateSegments) {
                     this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
                 } else {
