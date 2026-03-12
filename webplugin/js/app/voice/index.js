@@ -173,12 +173,10 @@ class Voice {
     getVoiceLanguageState(groupId) {
         const sessionKey = this.getVoiceLanguageSessionKey(groupId);
         if (!this._voiceLanguageStateBySessionKey[sessionKey]) {
-            const normalizedGroupId = groupId != null && groupId !== '' ? String(groupId) : '';
-            const chatContextLanguageCode = this.getChatContextUserLanguageCode(normalizedGroupId);
             this._voiceLanguageStateBySessionKey[sessionKey] = {
-                languageCode:
-                    chatContextLanguageCode ||
-                    this.normalizeLanguageCode(this.voiceInputConfig.languageCode || ''),
+                // First STT request should omit languageCode and rely on backend detection.
+                languageCode: '',
+                hasDetectedLanguageCode: false,
             };
         }
         return {
@@ -212,15 +210,22 @@ class Voice {
     }
 
     getSessionVoiceLanguageCode(state) {
-        return this.normalizeLanguageCode((state && state.languageCode) || '');
+        if (!state || !state.hasDetectedLanguageCode) {
+            return '';
+        }
+        return this.normalizeLanguageCode(state.languageCode || '');
     }
 
     setSessionVoiceLanguageCode(state, languageCode) {
         const normalizedLanguage = this.normalizeLanguageCode(languageCode);
-        if (!state || !normalizedLanguage || state.languageCode === normalizedLanguage) {
+        if (!state || !normalizedLanguage) {
+            return false;
+        }
+        if (state.hasDetectedLanguageCode && state.languageCode === normalizedLanguage) {
             return false;
         }
         state.languageCode = normalizedLanguage;
+        state.hasDetectedLanguageCode = true;
         return true;
     }
 
@@ -289,18 +294,6 @@ class Voice {
                 message: error && error.message ? error.message : '',
             });
         }
-    }
-
-    getChatContextUserLanguageCode(groupId) {
-        let chatContext = null;
-        chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
-        const groupUserLanguage = this.getLanguageCodeFromChatContext(
-            this.getGroupChatContext(groupId)
-        );
-        if (groupUserLanguage) {
-            return groupUserLanguage;
-        }
-        return this.getLanguageCodeFromChatContext(chatContext);
     }
 
     getChatContextLanguageCode() {
