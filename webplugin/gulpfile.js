@@ -50,6 +50,8 @@ PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.a
 PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 
 const BUILD_URL = MCK_STATIC_PATH + '/build';
+const BUNDLED_FONT_PATH = '../../css/app/fonts/';
+const VERSIONED_BUNDLED_FONT_PATH = '../css/app/fonts/';
 
 let env = config.getEnvId() !== 'development';
 const SENTRY_ENABLED = !!(sentryCfg && sentryCfg.enabled);
@@ -84,6 +86,9 @@ const minifyPluginContent = (code) => {
         return code;
     }
 };
+
+const rewriteBundledFontPaths = (cssContent) =>
+    cssContent.replaceAll(BUNDLED_FONT_PATH, VERSIONED_BUNDLED_FONT_PATH);
 
 const generateResourceFolder = () => {
     if (!fs.existsSync(releaseResourcesDir)) {
@@ -122,6 +127,15 @@ const generateCSSFiles = () => {
     return (
         gulp
             .src(PLUGIN_CSS_FILES)
+            .pipe(
+                tap((file) => {
+                    if (!file.isBuffer()) {
+                        return;
+                    }
+
+                    file.contents = Buffer.from(rewriteBundledFontPaths(file.contents.toString()));
+                })
+            )
             // .pipe(sourcemaps.init())
             .pipe(
                 cleanCss({

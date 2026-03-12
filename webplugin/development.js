@@ -41,6 +41,8 @@ Object.assign(PLUGIN_SETTING, {
 
 let PLUGIN_FILE_DATA = new Object();
 let BUILD_URL = MCK_STATIC_PATH + '/build';
+const BUNDLED_FONT_PATH = '../../css/app/fonts/';
+const VERSIONED_BUNDLED_FONT_PATH = '../css/app/fonts/';
 
 let pathToResource = `${BUILD_URL}/${version}/resources`;
 let resourceLocation = releaseResourcesDir;
@@ -58,6 +60,9 @@ const minifyPluginContent = (code) => {
         return code;
     }
 };
+
+const rewriteBundledFontPaths = (cssContent) =>
+    cssContent.replaceAll(BUNDLED_FONT_PATH, VERSIONED_BUNDLED_FONT_PATH);
 
 /**
  *
@@ -111,6 +116,20 @@ const generateFiles = ({ fileName, source, output }) => {
     });
 };
 
+const generateCSSBundle = ({ fileName, source, output }) => {
+    try {
+        const combinedCss = source
+            .map((filePath) => fs.readFileSync(filePath, 'utf8'))
+            .map(rewriteBundledFontPaths)
+            .join('\n');
+
+        fs.writeFileSync(output, combinedCss);
+        console.log(`${fileName}combined successfully`);
+    } catch (err) {
+        console.log(`err while minifying ${fileName}`, err);
+    }
+};
+
 const copyIndexWithBranch = (src, dest, branchValue, envValue) => {
     try {
         const templatePath = path.join(__dirname, src);
@@ -147,6 +166,11 @@ const generateMinFiles = () => {
     };
 
     Object.keys(FILES_INFO).forEach((file) => {
+        if (file.endsWith('.css')) {
+            generateCSSBundle({ fileName: file, ...FILES_INFO[file] });
+            return;
+        }
+
         generateFiles({ fileName: file, ...FILES_INFO[file] });
     });
 };
