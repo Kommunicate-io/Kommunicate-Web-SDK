@@ -27,6 +27,9 @@ export const WIDGET_LOCATORS = {
     kmMyLoc: '#mck-my-loc',
     kmQuickRepliesBtn: '#intent-option',
     kmQuickReplyOptions: '//li[text()="Book a Demo"]',
+    kmStartWithVoiceCta: '#km-start-with-voice-cta',
+    kmVoiceInlineStatus: '#km-voice-listening-status',
+    kmMsgError: '#mck-msg-error',
 };
 
 export const RICHMESSAGES_LOCATORS = {

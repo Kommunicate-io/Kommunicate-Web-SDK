@@ -207,6 +207,11 @@ Kommunicate.mediaService = {
             }
         }
     },
+    stopVoiceOutput: function () {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    },
     initRecorder: function () {
         const LIVE_OUTPUT = false; // a feature to live output the recording voice to the speaker
         const MAX_RECORD_TIME = 2 * 60 * 1000; // in milliseconds

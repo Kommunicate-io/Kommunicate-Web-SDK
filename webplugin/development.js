@@ -23,10 +23,11 @@ const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts')
 const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
+const { getThirdPartyIntegrationContext } = require('./third-party-integration');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
-const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const { MCK_THIRD_PARTY_INTEGRATION } = getThirdPartyIntegrationContext(config);
 
 const pluginVersions = ['v1', 'v2', 'v3'];
 
@@ -35,6 +36,7 @@ Object.assign(PLUGIN_SETTING, {
     botPlatformApi: PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi,
     applozicBaseUrl: PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl,
     dashboardUrl: PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl,
+    omnichannelBaseUrl: PLUGIN_SETTING.omnichannelBaseUrl || config.urls.omnichannelBaseUrl,
 });
 
 let PLUGIN_FILE_DATA = new Object();
@@ -211,6 +213,8 @@ const generateBuildFiles = () => {
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
     copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
+
+    copyFileToBuild('../example/demo3.html', `${buildDir}/demo3.html`);
 
     // legacy path for emoticon script redirect
     copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);

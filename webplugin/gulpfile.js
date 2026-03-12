@@ -35,11 +35,12 @@ const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts')
 const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
 const config = require('../server/config/config-env');
 const TERSER_CONFIG = require('./terser.config');
+const { getThirdPartyIntegrationContext } = require('./third-party-integration');
 
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
-const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const { MCK_THIRD_PARTY_INTEGRATION, sentryCfg } = getThirdPartyIntegrationContext(config);
 const pluginVersions = ['v1', 'v2', 'v3'];
 
 PLUGIN_SETTING.kommunicateApiUrl =
@@ -51,17 +52,19 @@ PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboa
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
-const SENTRY_ENABLED = MCK_THIRD_PARTY_INTEGRATION.sentry.enabled;
+const SENTRY_ENABLED = !!(sentryCfg && sentryCfg.enabled);
 
-const cli = new SentryCli(null, {
-    authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
-    org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
-    project: MCK_THIRD_PARTY_INTEGRATION.sentry.PROJECT,
-    sourcemaps: {
-        rewrite: true,
-        ignore_file: ['node_modules'],
-    },
-});
+const cli = SENTRY_ENABLED
+    ? new SentryCli(null, {
+          authToken: sentryCfg.AUTH_TOKEN,
+          org: sentryCfg.ORG,
+          project: sentryCfg.PROJECT,
+          sourcemaps: {
+              rewrite: true,
+              ignore_file: ['node_modules'],
+          },
+      })
+    : null;
 
 let pathToResource = !env
     ? `${BUILD_URL}/${version}/resources`
@@ -101,7 +104,7 @@ const generateResourceFolder = () => {
 };
 
 const generateThirdPartyJSFiles = () => {
-    console.log('sentry.enabled: ' + MCK_THIRD_PARTY_INTEGRATION.sentry.enabled);
+    console.log('sentry.enabled: ' + SENTRY_ENABLED);
 
     let inputScripts = THIRD_PARTY_SCRIPTS;
 
@@ -259,6 +262,8 @@ const generateBuildFiles = () => {
             'lib/js/mck-emojis.min.js',
             `${resourceLocation}/third-party-scripts/mck-emojis.min.js`
         );
+        // intl-tel-input utils for pre-chat phone validation
+        copyFileToBuild('lib/js/intl-tel-utils.js', `${legacyPluginLibDir}/intl-tel-utils.js`);
         // legacy path for existing redirects
         copyFileToBuild('lib/js/mck-emojis.min.js', `${legacyThirdPartyDir}/mck-emojis.min.js`);
         // legacy /plugin/lib/js path for CDN compatibility

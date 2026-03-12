@@ -6,6 +6,22 @@ var kommunicateCommons = new KommunicateCommons();
 var KM_GLOBAL = kommunicate._globals;
 var bottomTabsManagerRef = null;
 var topBarManagerRef = null;
+var KM_GREETING_AUTO_CLOSE_TIMER = null;
+var KM_GREETING_AUTO_CLOSE_DELAY = 45000;
+
+function clearGreetingAutoCloseTimer() {
+    if (KM_GREETING_AUTO_CLOSE_TIMER) {
+        clearTimeout(KM_GREETING_AUTO_CLOSE_TIMER);
+        KM_GREETING_AUTO_CLOSE_TIMER = null;
+    }
+}
+
+function scheduleGreetingAutoClose(popupTemplateKey) {
+    clearGreetingAutoCloseTimer();
+    KM_GREETING_AUTO_CLOSE_TIMER = setTimeout(function () {
+        KommunicateUI.togglePopupChatTemplate(popupTemplateKey, false);
+    }, KM_GREETING_AUTO_CLOSE_DELAY);
+}
 
 function getFaqClearButton() {
     if (typeof document === 'undefined') {
@@ -503,6 +519,14 @@ KommunicateUI = {
         $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
+            Kommunicate.mediaService.stopVoiceOutput();
+            if (
+                typeof mckVoice !== 'undefined' &&
+                mckVoice &&
+                typeof mckVoice.stopVoiceMode === 'function'
+            ) {
+                mckVoice.stopVoiceMode();
+            }
             KommunicateUI.awayMessageScroll = true;
             KommunicateUI.hideAwayMessage();
             KommunicateUI.hideLeadCollectionTemplate();
@@ -915,6 +939,9 @@ KommunicateUI = {
             keepConversationHeader && isModernLayout && KommunicateUI.isConversationListView;
         var shouldShowChatHeader = !shouldShowConversationListHeader;
         kommunicateCommons.setWidgetStateOpen(true);
+        // Ensure container mode is applied when showing chat
+        kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
+        clearGreetingAutoCloseTimer();
 
         // Check if conversations tab is active before setting conversation subsections
         var sideboxContent = document.getElementById('mck-sidebox-content');
@@ -1092,6 +1119,8 @@ KommunicateUI = {
     },
     updateWelcomeCtaLabel: function () {
         var sendCta = document.getElementById('km-empty-conversation-cta');
+        var voiceCta = document.getElementById('km-empty-conversation-voice-cta');
+        var ctaActions = document.getElementById('km-empty-conversation-actions');
         var continueCta = document.getElementById('km-empty-conversation-continue');
         if (!sendCta || !continueCta) {
             setTimeout(KommunicateUI.updateWelcomeCtaLabel, 50);
@@ -1102,12 +1131,43 @@ KommunicateUI = {
         if (!KommunicateUI.hasConversationHistory && hasContacts) {
             KommunicateUI.hasConversationHistory = true;
         }
-        sendCta.textContent = KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
+        var isVoiceChatEnabled = Boolean(
+            typeof kommunicate === 'object' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChat
+        );
+        var chatLabel = isVoiceChatEnabled
+            ? KommunicateUI.getLabel('start.chat', 'Chat')
+            : KommunicateUI.getLabel('mck.empty.welcome.cta', 'Send us a message');
+        var voiceLabel = KommunicateUI.getLabel('start.voice', 'Voice');
+        var sendLabelNode = sendCta.querySelector('span');
+        if (sendLabelNode) {
+            sendLabelNode.textContent = chatLabel;
+        } else {
+            sendCta.textContent = chatLabel;
+        }
+        sendCta.setAttribute('title', chatLabel);
+        sendCta.classList.toggle('km-legacy-cta', !isVoiceChatEnabled);
+        if (voiceCta) {
+            var voiceLabelNode = voiceCta.querySelector('span');
+            if (voiceLabelNode) {
+                voiceLabelNode.textContent = voiceLabel;
+            } else {
+                voiceCta.textContent = voiceLabel;
+            }
+            voiceCta.setAttribute('title', voiceLabel);
+        }
         continueCta.textContent = KommunicateUI.getLabel(
             'mck.empty.welcome.cta.continue',
             'View conversations'
         );
-        sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        if (ctaActions) {
+            ctaActions.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        } else {
+            sendCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+            voiceCta && voiceCta.classList.toggle('n-vis', KommunicateUI.hasConversationHistory);
+        }
         continueCta.classList.toggle('n-vis', !KommunicateUI.hasConversationHistory);
     },
     getLabel: function (key, fallback) {
@@ -1336,6 +1396,7 @@ KommunicateUI = {
                 });
             }
         }
+
         var ratingTitleElement = document.querySelector('.mck-csat-title');
         var messageText = MCK_LABELS['closed.conversation.message'];
         var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
@@ -1482,29 +1543,25 @@ KommunicateUI = {
         if (KommunicateUI.skipPopupChatTemplate) {
             return;
         }
-        console.log('displayPopupChatTemplate', {
-            hasContent: Boolean(popupChatContent && popupChatContent.length),
-            chatWidgetPopup: chatWidget && chatWidget.popup,
-        });
         var enableGreetingMessage =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.hasOwnProperty('enableGreetingMessageInMobile')
                 ? chatWidget.enableGreetingMessageInMobile
                 : true;
+        var popupSetting =
+            kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('popup')
+                ? chatWidget.popup === true || chatWidget.popup === 'true'
+                : true;
         var isPopupEnabled =
-            kommunicateCommons.isObject(chatWidget) &&
-            (chatWidget.popup === true || chatWidget.popup === 'true') &&
+            popupSetting &&
             (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
+
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey =
             (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
         if (isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function () {
-                console.log('calling togglePopupChatTemplate', {
-                    templateKey: popupTemplateKey,
-                    delay,
-                });
                 KommunicateUI.togglePopupChatTemplate(
                     popupTemplateKey,
                     true,
@@ -1523,10 +1580,20 @@ KommunicateUI = {
         mckChatPopupNotificationTone
     ) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        if (!kommunicateIframe) {
+            return;
+        }
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        if (showTemplate && kommunicateCommons.isWidgetOpen()) {
+        var isOpen = kommunicateCommons.isWidgetOpen();
+        console.log('togglePopupChatTemplate', {
+            showTemplate: showTemplate,
+            isWidgetOpen: isOpen,
+            willReturn: showTemplate && isOpen,
+        });
+        if (showTemplate && isOpen) {
+            console.log('Greeting popup blocked because widget is already open');
             return;
         }
         if (showTemplate) {
@@ -1579,8 +1646,14 @@ KommunicateUI = {
                     );
                 } else if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.VERTICAL) {
                     var wrapperRect = el.getBoundingClientRect();
+                    var textEl = el.querySelector('.chat-popup-widget-text');
+                    var width = textEl ? textEl.scrollWidth : el.scrollWidth;
                     window.parent.postMessage(
-                        { type: 'km_popup_resize', height: Math.ceil(wrapperRect.height + 35) },
+                        {
+                            type: 'km_popup_resize',
+                            height: Math.ceil(wrapperRect.height + 35),
+                            width: Math.ceil(Math.min(421, width + 90)),
+                        },
                         '*'
                     );
                 }
@@ -1611,6 +1684,7 @@ KommunicateUI = {
                     },
                     'align-left'
                 );
+            scheduleGreetingAutoClose(popupTemplateKey);
         } else {
             kommunicateCommons.modifyClassList(
                 { id: ['mck-sidebox-launcher', 'launcher-svg-container'] },
@@ -1629,7 +1703,15 @@ KommunicateUI = {
                 kommunicateIframe.style.height = '';
                 kommunicateIframe.style.width = '';
                 kommunicateIframe.style.minHeight = '';
+                if (
+                    kommunicateCommons &&
+                    typeof kommunicateCommons.isWidgetOpen === 'function' &&
+                    kommunicateCommons.isWidgetOpen()
+                ) {
+                    kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+                }
             }
+            clearGreetingAutoCloseTimer();
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
                 'n-vis',

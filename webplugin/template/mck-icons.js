@@ -450,9 +450,22 @@
     <symbol id="icon-65" viewBox="0 0 20 20">
         <path
             d="M7.167 15.416V4.583a.75.75 0 0 1 1.5 0v10.833a.75.75 0 0 1-1.5 0Zm4.166-2.5V7.083a.75.75 0 0 1 1.5 0v5.833a.75.75 0 0 1-1.5 0ZM3 11.25v-2.5a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Zm12.5 0v-2.5a.75.75 0 0 1 1.5 0v2.5a.75.75 0 0 1-1.5 0Z"
-            fill="#5F46F8"
+            fill="currentColor"
             class="icon"
         />
+    </symbol>
+    <symbol id="icon-66" viewBox="0 0 20 20">
+        <path
+            d="M3.5 5.25a2.75 2.75 0 0 1 2.75-2.75h7.5a2.75 2.75 0 0 1 2.75 2.75v4.25a2.75 2.75 0 0 1-2.75 2.75H9.9l-2.86 2.28a.75.75 0 0 1-1.22-.59v-1.69a2.75 2.75 0 0 1-2.32-2.7V5.25Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+        <circle cx="7.2" cy="7.9" r="0.8" fill="currentColor" />
+        <circle cx="10" cy="7.9" r="0.8" fill="currentColor" />
+        <circle cx="12.8" cy="7.9" r="0.8" fill="currentColor" />
     </symbol>
 </svg>
 `;

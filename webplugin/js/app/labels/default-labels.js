@@ -151,10 +151,53 @@ class KMLabel {
 
         [
             { selector: '#mck-conversation-title', path: 'conversations.title' },
-            { selector: '#mck-msg-new, #mck-sidebox-search .mck-box-title', path: 'start.new' },
+            { selector: '#mck-sidebox-search .mck-box-title', path: 'start.new' },
         ].forEach(function (binding) {
             setHtmlAndTitleForSelector(binding.selector, binding.path);
         });
+        var isVoiceChatEnabled = Boolean(
+            typeof kommunicate === 'object' &&
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.voiceChat
+        );
+        var setButtonLabel = function (selector, path) {
+            var label = resolveLabel(path);
+            if (!label) {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                var textNode = node.querySelector('span');
+                textNode ? (textNode.innerHTML = label) : (node.innerHTML = label);
+                node.setAttribute('title', label);
+            });
+        };
+        if (isVoiceChatEnabled) {
+            setButtonLabel(
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta',
+                'start.chat'
+            );
+            setButtonLabel(
+                '#km-start-with-voice-cta, #km-conversations-empty-voice-cta, #km-empty-conversation-voice-cta',
+                'start.voice'
+            );
+            getNodes(
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta'
+            ).forEach(function (node) {
+                node.classList.remove('km-legacy-cta');
+            });
+        } else {
+            setButtonLabel('#mck-msg-new', 'start.new');
+            setButtonLabel(
+                '#km-conversations-empty-cta, #km-empty-conversation-cta',
+                'mck.empty.welcome.cta'
+            );
+            getNodes(
+                '#mck-msg-new, #km-conversations-empty-cta, #km-empty-conversation-cta'
+            ).forEach(function (node) {
+                node.classList.add('km-legacy-cta');
+            });
+        }
         var resolvedTag = resolveLabel('filter.conversation.list.RESOLVED_TAG');
         if (resolvedTag) {
             getNodes('.mck-conversation-status-badge.vis').forEach(function (node) {
@@ -268,11 +311,9 @@ class KMLabel {
             'km-bottom-tab-empty-text': 'modern.nav.empty',
             'km-conversations-empty-title': 'empty.conversations',
             'km-conversations-empty-subtitle': 'mck.empty.welcome.subtitle',
-            'km-conversations-empty-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-eyebrow': 'mck.empty.welcome.eyebrow',
             'km-empty-conversation-title': 'mck.empty.welcome.title',
             'km-empty-conversation-subtitle': 'mck.empty.welcome.subtitle',
-            'km-empty-conversation-cta': 'mck.empty.welcome.cta',
             'km-empty-conversation-continue': 'mck.empty.welcome.cta.continue',
             'km-local-file-system-warning-description': 'local.file.warning.description',
             'km-local-file-system-warning-link': 'local.file.warning.learnMore',
@@ -308,8 +349,8 @@ class KMLabel {
         }
 
         var appendHtmlBindings = {
-            'mck-voice-speak-btn': 'voiceInterface.speak',
-            'mck-voice-chat-btn': 'voiceInterface.chat',
+            'mck-voice-speak-btn-label': 'voiceInterface.speak',
+            'mck-voice-chat-btn-label': 'voiceInterface.chat',
             'mck-voice-interface-back-btn': 'voiceInterface.back',
             'mck-voice-repeat-last-msg': 'voiceInterface.repeatLastMsg',
         };

@@ -12,7 +12,10 @@
 .mck-attach-icon {
     height: auto;
 }
-
+.layout-modern,
+.layout-classic {
+  height: 100% !important;
+}
 .mck-box {
     position: fixed;
     right: 0;
@@ -78,6 +81,131 @@
     text-rendering: optimizeLegibility;
     -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+/* Container mode: ensure html, body, and wrapper elements have full height */
+body.km-container-mode,
+body.km-container-mode.mck-box-open {
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+html:has(body.km-container-mode),
+body.km-container-mode .layout-modern {
+    height: 100% !important;
+}
+
+/* Container mode: when widget is embedded in a custom container */
+.mck-sidebox.km-container-mode,
+.mck-sidebox.km-container-mode.fade,
+.mck-sidebox.km-container-mode.fade.in,
+.mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+.layout-modern .mck-sidebox.km-container-mode,
+.layout-modern .mck-sidebox.km-container-mode.fade,
+.layout-modern .mck-sidebox.km-container-mode.fade.in,
+.layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Container mode: override inner element widths and heights */
+.mck-sidebox.km-container-mode .mck-box-sm,
+.mck-sidebox.km-container-mode .mck-box-md,
+.mck-sidebox.km-container-mode .mck-box-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+/* Ensure absolutely positioned elements in container mode get proper height */
+.mck-sidebox.km-container-mode .mck-right,
+.mck-sidebox.km-container-mode .mck-left,
+.mck-sidebox.km-container-mode .mck-top,
+.mck-sidebox.km-container-mode .mck-bottom {
+    top: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls #km-chat-widget-close-button,
+body.km-container-mode.km-container-mode--hide-controls .mck-minimize-icon {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-faq-and-close-btn-container,
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    pointer-events: none;
+}
+
+body.km-container-mode.km-container-mode--hide-controls #chat-popup-widget-container
+    .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
+body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom-tab--collapse {
+    display: none !important;
+}
+
+/* Ensure container mode works in all media queries */
+@media (min-width: 310px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in,
+    .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+    .layout-modern .mck-sidebox.km-container-mode,
+    .layout-modern .mck-sidebox.km-container-mode.fade.in,
+    .layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-right,
+    .mck-sidebox.km-container-mode .mck-left,
+    .mck-sidebox.km-container-mode .mck-top,
+    .mck-sidebox.km-container-mode .mck-bottom {
+        top: 0 !important;
+        bottom: 0 !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .mck-sidebox.km-container-mode,
+    .mck-sidebox.km-container-mode.fade.in,
+    .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in,
+    .layout-modern .mck-sidebox.km-container-mode,
+    .layout-modern .mck-sidebox.km-container-mode.fade.in,
+    .layout-modern .mck-sidebox.mck-box.fade.km-container-mode.km-iframe-sidebox-border-radius.popup-enabled.in {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-box-sm,
+    .mck-sidebox.km-container-mode .mck-box-md,
+    .mck-sidebox.km-container-mode .mck-box-dialog {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .mck-sidebox.km-container-mode .mck-right,
+    .mck-sidebox.km-container-mode .mck-left,
+    .mck-sidebox.km-container-mode .mck-top,
+    .mck-sidebox.km-container-mode .mck-bottom {
+        top: 0 !important;
+        bottom: 0 !important;
+        height: auto !important;
+    }
 }
 
 .mck-sidebox-launcher:focus {
@@ -3972,33 +4100,151 @@ ul.mck-intent-menu > li:hover {
 .emoji-menu div {
     /* width:100% !important; */
 }
+.km-start-conversation-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 26px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
+        0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+    background-color: var(--km-widget-bg, #fff);
+}
+#km-conversations-empty .km-start-conversation-actions,
+.km-empty-conversation-card__cta-wrap .km-start-conversation-actions {
+    width: 82%;
+    max-width: 300px;
+}
+#mck-msg-new,
+#km-start-with-voice-cta,
+#km-conversations-empty-cta,
+#km-conversations-empty-voice-cta,
+#km-empty-conversation-cta,
+#km-empty-conversation-voice-cta {
+    background-color: transparent !important;
+    color: var(--km-font-title-color, #1c2043);
+    height: 42px;
+    min-width: 110px;
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    padding: 0 14px;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    border: 0;
+    box-shadow: none;
+    transition: background-color 180ms ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
 #mck-msg-new {
-    background-color: white !important;
-    color: black;
+    border-radius: 26px;
+}
+.km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
+.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
+.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
+    border-right: 1px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.22);
+    border-radius: 26px 0 0 26px;
+}
+.km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
+.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
+.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
+    border-radius: 0 26px 26px 0;
+}
+#mck-msg-new:hover,
+#km-start-with-voice-cta:hover,
+#km-conversations-empty-cta:hover,
+#km-conversations-empty-voice-cta:hover,
+#km-empty-conversation-cta:hover,
+#km-empty-conversation-voice-cta:hover {
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08) !important;
+}
+#mck-msg-new:focus-visible,
+#km-start-with-voice-cta:focus-visible,
+#km-conversations-empty-cta:focus-visible,
+#km-conversations-empty-voice-cta:focus-visible,
+#km-empty-conversation-cta:focus-visible,
+#km-empty-conversation-voice-cta:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
+    outline-offset: 2px;
+}
+#mck-msg-new:focus,
+#km-start-with-voice-cta:focus,
+#km-conversations-empty-cta:focus,
+#km-conversations-empty-voice-cta:focus,
+#km-empty-conversation-cta:focus,
+#km-empty-conversation-voice-cta:focus {
+    outline: none;
+}
+#km-start-with-voice-cta {
+    margin-top: 0;
+}
+#km-start-with-voice-cta svg,
+#mck-msg-new svg,
+#km-conversations-empty-cta svg,
+#km-conversations-empty-voice-cta svg,
+#km-empty-conversation-cta svg,
+#km-empty-conversation-voice-cta svg {
+    flex: 0 0 auto;
+}
+.km-legacy-cta svg {
+    display: none !important;
+}
+.km-legacy-cta {
+    gap: 0 !important;
+}
+#km-start-conversation-actions:not(.km-voice-option-enabled) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+#km-start-conversation-actions:not(.km-voice-option-enabled) #mck-msg-new.km-legacy-cta {
+    min-width: 220px;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    padding: 0;
     border-radius: 26px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
-    height: 42px;
-    min-width: 220px;
-    padding: 0;
-    font-size: 14px;
-    letter-spacing: 0.4px;
     transition: transform 180ms ease, box-shadow 180ms ease;
 }
-#mck-msg-new:hover {
+#km-start-conversation-actions:not(.km-voice-option-enabled) #mck-msg-new.km-legacy-cta:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
         0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
-#mck-msg-new:focus-visible {
+#km-start-conversation-actions:not(.km-voice-option-enabled)
+    #mck-msg-new.km-legacy-cta:focus-visible {
     outline: 2px solid rgba(76, 102, 205, 0.6);
     outline-offset: 2px;
     transform: translateY(-1px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
         0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
-#mck-msg-new:focus {
-    outline: none;
+.layout-modern #km-start-conversation-actions:not(.km-voice-option-enabled) #mck-msg-new.km-legacy-cta {
+    background-color: white !important;
+    color: black;
+}
+.layout-classic .km-start-conversation-actions:not(.km-voice-option-enabled) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+.layout-classic #mck-msg-new.km-legacy-cta {
+    min-width: 220px;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    border-radius: 26px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
+        0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 .mck-msg-list-icon {
     /* filter:invert(1); */
@@ -4402,6 +4648,10 @@ ul.mck-intent-menu > li:hover {
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
+}
+.mck-title.vis,
+.mck-title.show {
+    display: flex;
 }
 .km-header-container {
     display: flex;
@@ -4954,14 +5204,14 @@ button {
 
 #mck-msg-preview-visual-indicator .mck-close-btn-container.align-left {
     left: auto;
-    right: -30%;
+    right: -15%;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container {
     position: absolute;
     display: none;
     transition: all 0.3s ease-in-out;
     width: 26px;
-    left: -73px;
+    left: -38px;
     padding: 23px;
 }
 .mck-msg-preview-visual-indicator-container.align-left {

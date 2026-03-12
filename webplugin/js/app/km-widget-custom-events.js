@@ -108,6 +108,13 @@ var eventMapping = {
     onCameraButtonClick: createWidgetEvent('km_widget_camera_icon_click', 'Camera Button Click'),
     onNotificationClick: createWidgetEvent('km_widget_notification_click', 'Notification'),
     onVoiceIconClick: createWidgetEvent('km_widget_voice_input', 'VoiceInput'),
+    onVoiceEntryClicked: createWidgetEvent('VOICE_ENTRY_CLICKED', 'VoiceEntry'),
+    onVoicePermissionGranted: createWidgetEvent(
+        'VOICE_PERMISSION_GRANTED',
+        'VoicePermissionGranted'
+    ),
+    onVoicePermissionDenied: createWidgetEvent('VOICE_PERMISSION_DENIED', 'VoicePermissionDenied'),
+    onVoiceSessionStarted: createWidgetEvent('VOICE_SESSION_STARTED', 'VoiceSessionStarted'),
     onMessageSent: createWidgetEvent('km_widget_message_sent', 'Message Sent'),
     onMessageReceived: createWidgetEvent('km_widget_message_received', 'Message Received'),
     onFeedbackClick: createWidgetEvent('km_widget_feedback_click', 'Feedback Clicked'),
