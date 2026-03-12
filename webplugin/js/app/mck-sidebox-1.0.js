@@ -1135,12 +1135,7 @@ const firstVisibleMsg = {
                 isIosDevice && hackForIosDevices();
             }
             function stopVoicePlaybackOnUnload() {
-                if (
-                    Kommunicate.mediaService &&
-                    typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
-                ) {
-                    Kommunicate.mediaService.stopVoiceOutput();
-                }
+                Kommunicate.mediaService.stopVoiceOutput();
                 if (
                     typeof mckVoice !== 'undefined' &&
                     mckVoice &&
@@ -3239,13 +3234,7 @@ const firstVisibleMsg = {
                     ) {
                         mckVoice.stopVoiceMode();
                     }
-                    if (
-                        typeof Kommunicate !== 'undefined' &&
-                        Kommunicate.mediaService &&
-                        typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
-                    ) {
-                        Kommunicate.mediaService.stopVoiceOutput();
-                    }
+                    Kommunicate.mediaService.stopVoiceOutput();
                 }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
