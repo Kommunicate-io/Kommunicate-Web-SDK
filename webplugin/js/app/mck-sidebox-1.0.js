@@ -2816,7 +2816,7 @@ const firstVisibleMsg = {
                             ensureChatLoginModalExists();
                             if (!AUTH_SUBMIT_TRIGGERED) {
                                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
-                                var kmChatLoginModal = reopenAuthModal();
+                                reopenAuthModal();
                                 if (!isPreLeadEnabled) {
                                     ensureAuthFailureFormFields();
                                 }
@@ -2883,11 +2883,11 @@ const firstVisibleMsg = {
                                 submitBtn.classList.remove('n-vis');
                                 submitBtn.removeAttribute('disabled');
                             }
-                            var loginErrorNode = document.getElementById('km-error-chat-login');
+                            loginErrorNode = document.getElementById('km-error-chat-login');
                             if (loginErrorNode) {
                                 loginErrorNode.textContent = loginErrorMessage;
-                                loginErrorNode.classList.remove('n-vis', 'hide');
-                                loginErrorNode.classList.add('vis', 'show');
+                                loginErrorNode.classList.remove('n-vis');
+                                loginErrorNode.classList.add('vis');
                                 loginErrorNode.style.display = '';
                             }
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
