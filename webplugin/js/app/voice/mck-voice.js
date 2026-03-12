@@ -61,8 +61,6 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
-        this.speechSegmentCount = 0;
-        this.lastSpeechEndTimestamp = 0;
         this.recordingStopReason = null;
         this.pendingVoiceMessageTimer = null;
         this.pendingVoiceSegments = {};
@@ -1042,8 +1040,6 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
-        this.speechSegmentCount = 0;
-        this.lastSpeechEndTimestamp = 0;
         this.recordingStopReason = null;
         this.maxRecordingTimer = null;
         this.lastRecordingEnd = 0;
@@ -2959,13 +2955,6 @@ class MckVoice {
         return Array.from(int16);
     }
 
-    extractPcmInt16FromVadCapture() {
-        return this.extractPcmInt16FromVadCaptureChunks(
-            this.vadCaptureChunks,
-            this.vadCaptureSampleRate
-        );
-    }
-
     initializeAdaptiveVad(sampleRate, fftSize) {
         const vadSettings = this.voiceInputSettings?.vad || {};
         const frameDurationMs = (fftSize / sampleRate) * 1000;
@@ -3121,7 +3110,6 @@ class MckVoice {
         this.clearInitialSpeechTimeout();
         this.clearSilenceTimeout();
         this.silenceStart = null;
-        this.speechSegmentCount++;
         const hearingLabel = this.getVoiceLabel('voiceInterface.hearingYou', 'Hearing you...');
         this.updateVoiceStatus(hearingLabel, true);
         this.showVoiceProgressMessage(hearingLabel, { state: 'listening' });
@@ -3136,11 +3124,10 @@ class MckVoice {
         }
         this.speechDetected = false;
         this.isInSilence = true;
-        this.lastSpeechEndTimestamp = Date.now();
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
-        this.silenceStart = this.lastSpeechEndTimestamp;
+        this.silenceStart = Date.now();
         this.startSilenceTimeout();
     }
 
@@ -3412,8 +3399,6 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
-        this.speechSegmentCount = 0;
-        this.lastSpeechEndTimestamp = 0;
         this.recordingStopReason = null;
         this.discardNextRecordingPayload = false;
         this.resetPendingVoiceSegments();
