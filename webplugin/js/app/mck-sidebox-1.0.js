@@ -2191,65 +2191,6 @@ const firstVisibleMsg = {
                 }
             }
 
-            function normalizeDashboardSourceValue(value) {
-                if (typeof value === 'undefined' || value === null) {
-                    return '';
-                }
-                return String(value).trim().toUpperCase();
-            }
-
-            function resolveDashboardMetadata(options) {
-                var metadata = options && options.metadata ? options.metadata : null;
-                if (typeof metadata === 'string' && metadata.trim()) {
-                    try {
-                        metadata = JSON.parse(metadata);
-                    } catch (error) {
-                        metadata = null;
-                    }
-                }
-                return metadata && typeof metadata === 'object' ? metadata : null;
-            }
-
-            function isDashboardWidget(options) {
-                var resolvedOptions = options || appOptions;
-                if (!resolvedOptions) {
-                    return false;
-                }
-                var metadata = resolveDashboardMetadata(resolvedOptions);
-                var sourceValue =
-                    (metadata &&
-                        (metadata.KM_SOURCE ||
-                            metadata.km_source ||
-                            metadata.kmSource ||
-                            metadata.source)) ||
-                    resolvedOptions.KM_SOURCE ||
-                    resolvedOptions.km_source ||
-                    resolvedOptions.source ||
-                    '';
-                if (!sourceValue && resolvedOptions.widgetSettings) {
-                    var widgetMetadata = resolveDashboardMetadata(resolvedOptions.widgetSettings);
-                    sourceValue =
-                        (widgetMetadata &&
-                            (widgetMetadata.KM_SOURCE ||
-                                widgetMetadata.km_source ||
-                                widgetMetadata.kmSource ||
-                                widgetMetadata.source)) ||
-                        sourceValue;
-                }
-                if (!sourceValue && resolvedOptions.appSettings) {
-                    var appSettingsMetadata = resolveDashboardMetadata(resolvedOptions.appSettings);
-                    sourceValue =
-                        (appSettingsMetadata &&
-                            (appSettingsMetadata.KM_SOURCE ||
-                                appSettingsMetadata.km_source ||
-                                appSettingsMetadata.kmSource ||
-                                appSettingsMetadata.source)) ||
-                        sourceValue;
-                }
-                var normalizedSource = normalizeDashboardSourceValue(sourceValue);
-                return normalizedSource.indexOf('DASHBOARD') !== -1;
-            }
-
             function ensureChatLoginModalExists() {
                 if (typeof document === 'undefined' || !document.body) {
                     return null;
@@ -2259,51 +2200,7 @@ const firstVisibleMsg = {
                     localizeChatLoginModal(existingModal);
                     return existingModal;
                 }
-                var wrapper = document.createElement('div');
-                wrapper.innerHTML =
-                    '<div id="km-chat-login-modal" class="km-sidemodal km-modal" role="dialog" aria-live="polite" aria-labelledby="km-tab-title" aria-hidden="true" style="visibility: hidden">' +
-                    '<div class="km-modal-dialog km-modal-sm">' +
-                    '<div class="km-modal-content">' +
-                    '<div class="km-sidemodal--modal-header km-custom-widget-background-color">' +
-                    '<div class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate">' +
-                    '<div id="km-tab-title" class="mck-tab-title mck-truncate mck-display-name"></div>' +
-                    '</div>' +
-                    '<div class="blk-lg-2 mck-close-btn">' +
-                    '<button type="button" id="km-modal-close" class="mck-box-close km-close-sidebox move-right" data-dismiss="mckbox" tabindex="0" aria-label="Close" role="button">' +
-                    '<svg focusable="false" aria-hidden="true" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">' +
-                    '<use xlink:href="#icon-10" href="#icon-10"></use>' +
-                    '</svg>' +
-                    '</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="km-modal-body">' +
-                    '<div class="km-section-title">' +
-                    '<p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>' +
-                    '</div>' +
-                    '<p id="km-error-chat-login" class="km-modal-error n-vis"></p>' +
-                    '<div class="km-modal-form">' +
-                    '<form id="km-form-chat-login" class="km-vertical">' +
-                    '<div class="km-form-group km-form-group-container">' +
-                    '<label id="km-label-user-id" class="sr-only" for="km-userId">User ID</label>' +
-                    '<input class="km-form-control km-input-width n-vis" id="km-userId" name="km-userId" />' +
-                    '</div>' +
-                    '<div class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"></div>' +
-                    '<div class="km-form-group km-text-center">' +
-                    '<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color" tabindex="0" role="button" aria-label="Start conversation"></button>' +
-                    '</div>' +
-                    '</form>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                var modal = wrapper.firstElementChild;
-                if (!modal) {
-                    return null;
-                }
-                document.body.appendChild(modal);
-                localizeChatLoginModal(modal);
-                return modal;
+                return null;
             }
 
             function localizeChatLoginModal(modal) {
@@ -3026,7 +2923,10 @@ const firstVisibleMsg = {
                             notifyAuthFailure(resultCode, normalizedResult);
                             var isPreLeadEnabled = isPreLeadCollectionEnabled();
                             var leadLabels = MCK_LABELS['lead.collection'] || {};
-                            var isDashboardAuth = isDashboardWidget(appOptions);
+                            var isDashboardAuth =
+                                typeof _this.isDashboardWidget === 'function'
+                                    ? _this.isDashboardWidget(appOptions)
+                                    : false;
                             var invalidPasswordLabel = getLeadCollectionLabel(
                                 'invalidPasswordMessage',
                                 getLeadCollectionLabel(
@@ -4122,6 +4022,11 @@ const firstVisibleMsg = {
                     getIntlTelInstance: function () {
                         return INTL_TEL_INSTANCE;
                     },
+                });
+            }
+            if (typeof KMDashboard !== 'undefined' && KMDashboard) {
+                KMDashboard.attach(_this, {
+                    appOptions: appOptions,
                 });
             }
 

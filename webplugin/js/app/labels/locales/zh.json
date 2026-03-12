@@ -131,6 +131,8 @@
   "lead.collection.option": "请选择",
   "lead.collection.password": "密码",
   "lead.collection.errorText": "请输入您的账户密码",
+  "lead.collection.supportAgentEmailError": "Support agent email addresses cannot be used to start this conversation. Please use another email address.",
+
   "lead.collection.errorEmail": "请输入有效的邮箱地址",
   "lead.collection.commonErrorMsg": "您输入的信息无效或不正确。",
   "lead.collection.invalidPasswordMessage": "身份验证失败。请检查您的凭据并重试。如果问题仍然存在，请重置密码或联系支持。",

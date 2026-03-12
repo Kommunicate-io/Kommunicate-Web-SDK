@@ -28,13 +28,13 @@ var KMPreChat = (function () {
         toggle.setAttribute('aria-label', showLabel);
         toggle.innerHTML =
             '<span class="km-eye-on" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" width="16" height="16" focusable="false">' +
-            '<path d="M12 5C6.5 5 2 12 2 12s4.5 7 10 7 10-7 10-7-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"></path>' +
+            '<svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true">' +
+            '<use xlink:href="#icon-67" href="#icon-67"></use>' +
             '</svg>' +
             '</span>' +
             '<span class="km-eye-off" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" width="16" height="16" focusable="false">' +
-            '<path d="M4.27 3L3 4.27l3.3 3.3C4.16 9.2 2 12 2 12s4.5 7 10 7c2.02 0 3.86-.6 5.45-1.55L19.73 20 21 18.73 4.27 3zM12 17c-3.3 0-6.2-3.1-7.45-5 0 0 1.48-2.07 3.8-3.55l1.46 1.46A4 4 0 0 0 12 16a3.96 3.96 0 0 0 2.09-.62l1.45 1.45A7.8 7.8 0 0 1 12 17zm0-10a3.96 3.96 0 0 1 3.54 2.2l-1.12 1.12A2.5 2.5 0 0 0 12 9.5c-.3 0-.6.05-.86.16L9.72 8.24A3.96 3.96 0 0 1 12 7z"></path>' +
+            '<svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true">' +
+            '<use xlink:href="#icon-68" href="#icon-68"></use>' +
             '</svg>' +
             '</span>';
 
@@ -144,7 +144,9 @@ var KMPreChat = (function () {
             kmLabelDiv.setAttribute('class', 'km-form-label-container');
             var fieldName = leadCollection.field;
             var requiredSVG =
-                '<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/></svg>';
+                '<svg width="6" height="6" viewBox="0 0 6 6" focusable="false" aria-hidden="true">' +
+                '<use xlink:href="#icon-69" href="#icon-69"></use>' +
+                '</svg>';
             var label =
                 "<label class='km-form-label km-tertiary-title' for='" +
                 inputId +
@@ -399,14 +401,24 @@ var KMPreChat = (function () {
             };
 
             if (emailField) {
-                var emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;
+                var isValidEmail = function (value) {
+                    if (
+                        typeof KommunicateUI !== 'undefined' &&
+                        KommunicateUI &&
+                        typeof KommunicateUI.isValidEmail === 'function'
+                    ) {
+                        return KommunicateUI.isValidEmail(value);
+                    }
+                    var fallbackRegex = /^(([^<>()\\[\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@(([^<>()[\\]\\\\.,;:\\s@\\\"]+\\.)+[^<>()[\\]\\\\.,;:\\s@\\\"]{2,})$/;
+                    return fallbackRegex.test(value || '');
+                };
                 var handleEmailValidation = function () {
                     var value = (emailField.value || '').toLowerCase();
                     if (!value) {
                         setError('');
                         return;
                     }
-                    if (!emailRegex.test(value)) {
+                    if (!isValidEmail(value)) {
                         setError(
                             getLeadCollectionLabel(
                                 'errorEmail',
@@ -530,8 +542,8 @@ var KMPreChat = (function () {
                     var errorDiv = document.createElement('div');
                     errorDiv.className = 'km-login-form-error km-error-container';
                     errorDiv.innerHTML =
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">' +
-                        '<path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>' +
+                        '<svg width="14" height="14" viewBox="0 0 12 12" focusable="false" aria-hidden="true">' +
+                        '<use xlink:href="#icon-27" href="#icon-27"></use>' +
                         '</svg>';
                     var errorText = document.createElement('p');
                     errorText.className = 'km-error-msg';

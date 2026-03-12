@@ -180,7 +180,7 @@
             invalidPasswordMessage:
                 'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
             supportAgentEmailError:
-                'You are using your support agent email. Please use another email to start this conversation.',
+                'Support agent email addresses cannot be used to start this conversation. Please use another email address.',
             dashboardCredentialError:
                 'We couldn’t authenticate your request. Please check your credentials and try again. If the problem persists, try resetting your password or contact support.',
             errorEmail: 'Please enter a valid email address',
