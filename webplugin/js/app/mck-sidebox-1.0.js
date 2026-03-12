@@ -2835,7 +2835,7 @@ const firstVisibleMsg = {
                             reopenAuthModal();
                             if (!isPreLeadEnabled) {
                                 ensureAuthFailureFormFields({
-                                    showUserIdField: false,
+                                    showUserIdField: true,
                                 });
                             }
                             var invalidPasswordMessage = invalidPasswordLabel;
