@@ -196,10 +196,7 @@ class Voice {
             return {};
         }
         const groupChatContext = groupData.metadata.KM_CHAT_CONTEXT;
-        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
-            return KommunicateUtils.parseChatContext(groupChatContext);
-        }
-        return {};
+        return KommunicateUtils.parseChatContext(groupChatContext);
     }
 
     getLanguageCodeFromChatContext(chatContext, options = {}) {
@@ -296,9 +293,7 @@ class Voice {
 
     getChatContextUserLanguageCode(groupId) {
         let chatContext = null;
-        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
-            chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
-        }
+        chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
         const groupUserLanguage = this.getLanguageCodeFromChatContext(
             this.getGroupChatContext(groupId)
         );
@@ -310,9 +305,7 @@ class Voice {
 
     getChatContextLanguageCode() {
         let chatContext = null;
-        if (typeof KommunicateUtils !== 'undefined' && KommunicateUtils) {
-            chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
-        }
+        chatContext = KommunicateUtils.getSettings('KM_CHAT_CONTEXT');
         const settingsLanguageCode = this.getLanguageCodeFromChatContext(chatContext, {
             includeLocaleFallback: true,
         });
