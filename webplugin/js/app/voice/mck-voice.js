@@ -868,7 +868,7 @@ class MckVoice {
             mckInit.toggleTTSCTA(override);
             return;
         }
-        if (KommunicateUI.toggleVoiceOutputOverride) {
+        if (typeof KommunicateUI !== 'undefined' && KommunicateUI.toggleVoiceOutputOverride) {
             KommunicateUI.toggleVoiceOutputOverride(state);
         }
     }
