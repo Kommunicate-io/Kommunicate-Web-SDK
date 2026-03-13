@@ -414,29 +414,17 @@
                     </details>
 
                     <details class="collapsible" open>
-                        <summary class="split-summary">
-                            <span>Top-level settings (JSON)</span>
-                            <label class="toggle-row" style="font-weight: 500; margin: 0">
-                                <input
-                                    type="checkbox"
-                                    id="globalSettingsEnabled"
-                                    name="globalSettingsEnabled"
-                                />
-                                <span>Enable overrides</span>
-                            </label>
-                        </summary>
-                        <div id="globalSettingsFields">
-                            <textarea
-                                id="globalSettings"
-                                name="globalSettings"
-                                spellcheck="false"
-                                placeholder='{"userId":"test-user-1","password":"ALLOW_TOKEN","authenticationTypeId":0}'
-                            ></textarea>
-                            <p class="hint" style="margin: 4px 0 0">
-                                Use this for top-level options like userId, password, or
-                                authenticationTypeId.
-                            </p>
-                        </div>
+                        <summary>Top-level settings (JSON)</summary>
+                        <textarea
+                            id="globalSettings"
+                            name="globalSettings"
+                            spellcheck="false"
+                            placeholder='{"userId":"test-user-1","password":"ALLOW_TOKEN","authenticationTypeId":0}'
+                        ></textarea>
+                        <p class="hint" style="margin: 4px 0 0">
+                            Use this for top-level options like userId, password, or
+                            authenticationTypeId.
+                        </p>
                     </details>
 
                     <details class="collapsible" open>
@@ -521,7 +509,6 @@
                     password: 'ALLOW_TOKEN',
                     authenticationTypeId: 0,
                 },
-                globalSettingsEnabled: true,
                 preChat: [
                     {
                         field: 'Name',
@@ -547,8 +534,6 @@
             const preview = document.getElementById('widget-preview');
             const widgetSettingsTextarea = document.getElementById('widgetSettings');
             const globalSettingsTextarea = document.getElementById('globalSettings');
-            const globalSettingsEnabledCheckbox = document.getElementById('globalSettingsEnabled');
-            const globalSettingsFields = document.getElementById('globalSettingsFields');
             const preChatTextarea = document.getElementById('preChat');
             const preChatEnabledCheckbox = document.getElementById('preChatEnabled');
             const preChatFields = document.getElementById('preChatFields');
@@ -594,11 +579,9 @@
                 globalSettingsTextarea.value = defaultState.globalSettings
                     ? formatJson(defaultState.globalSettings)
                     : '';
-                globalSettingsEnabledCheckbox.checked = defaultState.globalSettingsEnabled;
                 preChatTextarea.value = formatJson(defaultState.preChat);
                 preChatEnabledCheckbox.checked = defaultState.preChatEnabled;
                 containerModeHideControlsCheckbox.checked = defaultState.containerModeHideControls;
-                updateGlobalSettingsTextareaState();
                 updatePreChatTextareaState();
                 updateVoiceModeState();
                 updatePreviewStatus(
@@ -620,13 +603,6 @@
                 preChatTextarea.disabled = disabled;
                 preChatTextarea.style.opacity = disabled ? '0.5' : '1';
                 preChatFields.style.display = disabled ? 'none' : 'block';
-            }
-
-            function updateGlobalSettingsTextareaState() {
-                const disabled = !globalSettingsEnabledCheckbox.checked;
-                globalSettingsTextarea.disabled = disabled;
-                globalSettingsTextarea.style.opacity = disabled ? '0.5' : '1';
-                globalSettingsFields.style.display = disabled ? 'none' : 'block';
             }
 
             function handlePlacementChange() {
@@ -711,11 +687,6 @@
                 globalSettingsTextarea.value = config.globalSettings
                     ? formatJson(config.globalSettings)
                     : '';
-                if (typeof config.globalSettingsEnabled === 'boolean') {
-                    globalSettingsEnabledCheckbox.checked = config.globalSettingsEnabled;
-                } else {
-                    globalSettingsEnabledCheckbox.checked = defaultState.globalSettingsEnabled;
-                }
                 preChatTextarea.value = Array.isArray(config.preChat)
                     ? formatJson(config.preChat)
                     : '';
@@ -727,7 +698,6 @@
                 containerModeHideControlsCheckbox.checked = Boolean(
                     config.containerModeHideControls
                 );
-                updateGlobalSettingsTextareaState();
                 updatePreChatTextareaState();
                 updateVoiceModeState();
             }
@@ -761,21 +731,17 @@
                     throw new Error('Widget settings JSON is invalid. ' + error.message);
                 }
 
-                if (globalSettingsEnabledCheckbox.checked) {
-                    try {
-                        globalSettings = parseJsonInput(globalSettingsTextarea) ?? {};
-                        if (
-                            !globalSettings ||
-                            typeof globalSettings !== 'object' ||
-                            Array.isArray(globalSettings)
-                        ) {
-                            throw new Error('Top-level settings JSON must be an object.');
-                        }
-                    } catch (error) {
-                        throw new Error('Top-level settings JSON is invalid. ' + error.message);
+                try {
+                    globalSettings = parseJsonInput(globalSettingsTextarea) ?? {};
+                    if (
+                        !globalSettings ||
+                        typeof globalSettings !== 'object' ||
+                        Array.isArray(globalSettings)
+                    ) {
+                        throw new Error('Top-level settings JSON must be an object.');
                     }
-                } else {
-                    globalSettings = null;
+                } catch (error) {
+                    throw new Error('Top-level settings JSON is invalid. ' + error.message);
                 }
 
                 try {
@@ -802,7 +768,6 @@
                     containerId: defaultState.containerId,
                     widgetSettings,
                     globalSettings,
-                    globalSettingsEnabled: globalSettingsEnabledCheckbox.checked,
                     preChat,
                     preChatEnabled,
                     containerModeHideControls: containerModeHideControlsCheckbox.checked,
@@ -864,9 +829,7 @@
                 }
 
                 const globalSettingsOverrides =
-                    config.globalSettingsEnabled !== false &&
-                    config.globalSettings &&
-                    typeof config.globalSettings === 'object'
+                    config.globalSettings && typeof config.globalSettings === 'object'
                         ? { ...config.globalSettings }
                         : {};
                 Object.assign(globalSettings, globalSettingsOverrides);
@@ -984,10 +947,6 @@
                 );
             });
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
-            globalSettingsEnabledCheckbox.addEventListener(
-                'change',
-                updateGlobalSettingsTextareaState
-            );
             voiceModeEnabledCheckbox.addEventListener('change', updateVoiceModeState);
             placementRadios.forEach((radio) =>
                 radio.addEventListener('change', handlePlacementChange)

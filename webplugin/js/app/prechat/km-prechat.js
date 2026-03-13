@@ -649,15 +649,7 @@ var KMPreChat = (function () {
                     for (var key in data) {
                         passwordField.setAttribute(key, data[key]);
                     }
-                    target.loginInputKeyup(passwordField);
-                    passwordField.addEventListener('blur', function () {
-                        var isClassExist = passwordField.classList.contains('km-login-error');
-                        if (isClassExist) {
-                            passwordField.classList.remove('km-login-error');
-                            passwordField.nextElementSibling &&
-                                (passwordField.nextElementSibling.style.display = 'none');
-                        }
-                    });
+                    passwordField.onblur = target.loginInputKeyup(passwordField);
                     $applozic(kmChatInputDiv).append(kmLabelDiv, passwordField, errorDiv);
                     attachPasswordToggle(
                         kmChatInputDiv,
