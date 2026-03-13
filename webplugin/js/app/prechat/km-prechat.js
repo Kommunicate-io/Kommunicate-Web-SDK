@@ -107,29 +107,8 @@ var KMPreChat = (function () {
             return rawMessage || '';
         };
 
-        target.resolvePreLeadErrorMessage = function (result, fallbackKey) {
-            var supportAgentEmailError = getLeadCollectionLabel(
-                'supportAgentEmailError',
-                'You are using your support agent email. Please use another email.'
-            );
-            var fallbackMessage =
-                getLeadCollectionLabel(
-                    fallbackKey,
-                    getLeadCollectionLabel(
-                        'commonErrorMsg',
-                        getLeadCollectionLabel(
-                            'errorText',
-                            'The input you have provided is either invalid or incorrect.'
-                        )
-                    )
-                ) || '';
-            var rawMessage = target.getResultMessage(result);
-
-            if (rawMessage && /support|agent|admin/i.test(rawMessage)) {
-                return supportAgentEmailError;
-            }
-
-            return fallbackMessage;
+        target.resolvePreLeadErrorMessage = function () {
+            return getLeadCollectionLabel('invalidPasswordMessage', '');
         };
 
         target.showPreChatLoginError = function (message) {
