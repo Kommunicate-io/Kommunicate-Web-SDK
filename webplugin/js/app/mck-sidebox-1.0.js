@@ -2860,17 +2860,19 @@ const firstVisibleMsg = {
                                 }
                             }
                             if (!isPreLeadEnabled && !document.getElementById('km-password')) {
-                                mckInit.addPasswordField({
-                                    id: 'km-password',
-                                    type: 'password',
-                                    name: 'km-password',
-                                    class: 'km-form-control km-input-width km-login-error',
-                                    placeholder: (
-                                        (MCK_LABELS['lead.collection'] || {}).password || ''
-                                    ).toLowerCase(),
-                                    required: 'true',
-                                    errorMessage: invalidPasswordMessage,
-                                });
+                                if (mckInit.addPasswordField) {
+                                    mckInit.addPasswordField({
+                                        id: 'km-password',
+                                        type: 'password',
+                                        name: 'km-password',
+                                        class: 'km-form-control km-input-width km-login-error',
+                                        placeholder: (
+                                            (MCK_LABELS['lead.collection'] || {}).password || ''
+                                        ).toLowerCase(),
+                                        required: 'true',
+                                        errorMessage: invalidPasswordMessage,
+                                    });
+                                }
                             }
                             var submitBtn = document.getElementById('km-submit-chat-login');
                             if (submitBtn) {
