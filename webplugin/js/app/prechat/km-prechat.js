@@ -532,7 +532,10 @@ var KMPreChat = (function () {
             if (leadCollectionHeading) {
                 var headingText = deps.appOptions.headingFromWidget
                     ? getLeadCollectionLabel('heading', LEAD_COLLECTION_LABEL.heading)
-                    : deps.appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
+                    : (deps.appOptions.appSettings &&
+                          deps.appOptions.appSettings.chatWidget &&
+                          deps.appOptions.appSettings.chatWidget.preChatGreetingMsg) ||
+                      '';
                 leadCollectionHeading.innerHTML = headingText;
                 leadCollectionHeading.setAttribute('aria-label', headingText);
             }
