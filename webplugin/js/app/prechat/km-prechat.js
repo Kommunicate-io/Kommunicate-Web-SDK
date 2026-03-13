@@ -90,19 +90,33 @@ var KMPreChat = (function () {
 
         target.showPreChatLoginError = function (message) {
             var resolvedMessage = message || getLeadCollectionLabel('invalidPasswordMessage', '');
-            var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-            if (kmChatLoginModal) {
-                kommunicateCommons.setDialogVisibility(
-                    kmChatLoginModal,
-                    true,
-                    deps.loginModalFocusFallbacks || []
-                );
+            var kmChatLoginModal = null;
+            if (typeof target.reopenAuthModal === 'function') {
+                kmChatLoginModal = target.reopenAuthModal({
+                    skipConversationLaunch: false,
+                });
+            } else {
+                kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                if (kmChatLoginModal) {
+                    kommunicateCommons.setDialogVisibility(
+                        kmChatLoginModal,
+                        true,
+                        deps.loginModalFocusFallbacks || []
+                    );
+                }
+                if (typeof deps.openWidgetForAuthError === 'function') {
+                    deps.openWidgetForAuthError();
+                }
             }
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = resolvedMessage || '';
-                loginErrorNode.classList.remove('n-vis');
-                loginErrorNode.classList.add('vis');
+                if (kommunicateCommons && typeof kommunicateCommons.show === 'function') {
+                    kommunicateCommons.show(loginErrorNode);
+                } else {
+                    loginErrorNode.classList.remove('n-vis');
+                    loginErrorNode.classList.add('vis');
+                }
                 loginErrorNode.style.display = '';
             }
             var submitBtn = document.getElementById('km-submit-chat-login');
@@ -110,17 +124,18 @@ var KMPreChat = (function () {
                 submitBtn.classList.remove('n-vis');
                 submitBtn.removeAttribute('disabled');
             }
-            if (typeof deps.openWidgetForAuthError === 'function') {
-                deps.openWidgetForAuthError();
-            }
         };
 
         target.resetPreChatLoginError = function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = '';
-                loginErrorNode.classList.remove('vis');
-                loginErrorNode.classList.add('n-vis');
+                if (kommunicateCommons && typeof kommunicateCommons.hide === 'function') {
+                    kommunicateCommons.hide(loginErrorNode);
+                } else {
+                    loginErrorNode.classList.remove('vis');
+                    loginErrorNode.classList.add('n-vis');
+                }
             }
         };
 
@@ -279,12 +294,7 @@ var KMPreChat = (function () {
                     kmChatInput.setAttribute('title', '');
                     kmChatInput.setAttribute(
                         'oninvalid',
-                        "setCustomValidity('" +
-                            getLeadCollectionLabel(
-                                'errorEmail',
-                                'Please enter a valid email address'
-                            ) +
-                            "')"
+                        "setCustomValidity('" + getLeadCollectionLabel('errorEmail', '') + "')"
                     );
                     kmChatInput.setAttribute('oninput', "setCustomValidity('')");
                 }
@@ -421,10 +431,20 @@ var KMPreChat = (function () {
                 }
                 if (message) {
                     errorNode.textContent = message;
-                    kommunicateCommons.show(errorNode);
+                    if (kommunicateCommons && typeof kommunicateCommons.show === 'function') {
+                        kommunicateCommons.show(errorNode);
+                    } else {
+                        errorNode.classList.remove('n-vis');
+                        errorNode.classList.add('vis');
+                    }
                 } else {
                     errorNode.textContent = '';
-                    kommunicateCommons.hide(errorNode);
+                    if (kommunicateCommons && typeof kommunicateCommons.hide === 'function') {
+                        kommunicateCommons.hide(errorNode);
+                    } else {
+                        errorNode.classList.remove('vis');
+                        errorNode.classList.add('n-vis');
+                    }
                 }
             };
 
@@ -439,12 +459,7 @@ var KMPreChat = (function () {
                         return;
                     }
                     if (!isValidEmail(value)) {
-                        setError(
-                            getLeadCollectionLabel(
-                                'errorEmail',
-                                'Please enter a valid email address'
-                            )
-                        );
+                        setError(getLeadCollectionLabel('errorEmail', ''));
                     } else {
                         setError('');
                     }
@@ -469,12 +484,7 @@ var KMPreChat = (function () {
                         isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
                     }
                     if (!isValid) {
-                        setError(
-                            getLeadCollectionLabel(
-                                'commonErrorMsg',
-                                'Please enter a valid phone number'
-                            )
-                        );
+                        setError(getLeadCollectionLabel('commonErrorMsg', ''));
                     } else {
                         setError('');
                     }
@@ -549,7 +559,7 @@ var KMPreChat = (function () {
                 );
             var passwordLabel = getLeadCollectionLabel(
                 'password',
-                (deps.MCK_LABELS['lead.collection'] || {}).password || 'Password'
+                (deps.MCK_LABELS['lead.collection'] || {}).password
             );
             var labelAttribute = {
                 field: passwordLabel,

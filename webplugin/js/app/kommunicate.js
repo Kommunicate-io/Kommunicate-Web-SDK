@@ -3,9 +3,6 @@
  */
 
 function activateConversationTabOnStartConversation() {
-    if (typeof document === 'undefined') {
-        return;
-    }
     var conversationTabOptions = {
         skipFaqTrigger: true,
         skipConversationListView: true,

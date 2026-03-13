@@ -24,9 +24,6 @@ function scheduleGreetingAutoClose(popupTemplateKey) {
 }
 
 function getFaqClearButton() {
-    if (typeof document === 'undefined') {
-        return null;
-    }
     return (
         document.querySelector('.km-faqsearch-clear') ||
         document.querySelector('.km-faqsearch-icon__clear')

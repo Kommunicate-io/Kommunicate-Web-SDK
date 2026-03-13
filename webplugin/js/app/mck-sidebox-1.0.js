@@ -834,9 +834,6 @@ const firstVisibleMsg = {
         }
 
         _this.mckLaunchSideboxChat = function () {
-            if (typeof document === 'undefined') {
-                return;
-            }
             if (startLazyInitialization(true)) {
                 return;
             }
@@ -2169,9 +2166,6 @@ const firstVisibleMsg = {
             }
 
             function ensureChatLoginModalExists() {
-                if (typeof document === 'undefined' || !document.body) {
-                    return null;
-                }
                 var existingModal = document.getElementById('km-chat-login-modal');
                 if (existingModal) {
                     localizeChatLoginModal(existingModal);
@@ -2185,18 +2179,17 @@ const firstVisibleMsg = {
                     return;
                 }
                 var closeBtn = modal.querySelector('#km-modal-close');
-                var closeLabel = MCK_LABELS['close'] || 'Close';
+                var closeLabel = MCK_LABELS['close'];
                 if (closeBtn && closeLabel) {
                     closeBtn.setAttribute('aria-label', closeLabel);
                 }
                 var userIdLabel = modal.querySelector('#km-label-user-id');
-                var userIdText = MCK_LABELS['form.label.userId'] || 'User ID';
+                var userIdText = MCK_LABELS['form.label.userId'];
                 if (userIdLabel && userIdText) {
                     userIdLabel.textContent = userIdText;
                 }
                 var submitBtn = modal.querySelector('#km-submit-chat-login');
-                var submitText =
-                    (MCK_LABELS['lead.collection'] || {}).submit || 'Start Conversation';
+                var submitText = (MCK_LABELS['lead.collection'] || {}).submit || '';
                 if (submitBtn && submitText) {
                     if (!submitBtn.textContent) {
                         submitBtn.textContent = submitText;
@@ -2231,7 +2224,6 @@ const firstVisibleMsg = {
                     loginErrorNode.textContent = '';
                     loginErrorNode.classList.remove('vis');
                     loginErrorNode.classList.add('n-vis');
-                    loginErrorNode.style.display = 'none';
                 }
                 var form = document.getElementById('km-form-chat-login');
                 if (!form) {
@@ -2250,7 +2242,7 @@ const firstVisibleMsg = {
                     } else {
                         userIdInput.removeAttribute('required');
                     }
-                    var userIdLabel = MCK_LABELS['form.label.userId'] || 'User ID';
+                    var userIdLabel = MCK_LABELS['form.label.userId'];
                     userIdInput.setAttribute('placeholder', userIdLabel);
                     userIdInput.setAttribute('aria-label', userIdLabel);
                     var userIdLabelNode = document.getElementById('km-label-user-id');
@@ -2302,9 +2294,7 @@ const firstVisibleMsg = {
                 var submitBtn = document.getElementById('km-submit-chat-login');
                 if (submitBtn) {
                     var submitLabel =
-                        (_this.getLeadCollectionLabel &&
-                            _this.getLeadCollectionLabel('submit', '')) ||
-                        'Start Conversation';
+                        _this.getLeadCollectionLabel && _this.getLeadCollectionLabel('submit', '');
                     submitBtn.innerHTML = submitLabel;
                     submitBtn.setAttribute('aria-label', submitLabel);
                     submitBtn.classList.remove('n-vis');
@@ -2312,9 +2302,8 @@ const firstVisibleMsg = {
                 }
                 if (!document.getElementById('km-password')) {
                     var passwordLabel =
-                        (_this.getLeadCollectionLabel &&
-                            _this.getLeadCollectionLabel('password', '')) ||
-                        'Password';
+                        _this.getLeadCollectionLabel &&
+                        _this.getLeadCollectionLabel('password', '');
                     askUserDetailsContainer.appendChild(
                         _this.createInputField({
                             field: passwordLabel,
@@ -2328,12 +2317,10 @@ const firstVisibleMsg = {
                 }
             }
 
-            function reopenAuthModal() {
+            function reopenAuthModal(options) {
+                options = options || { skipConversationLaunch: true };
                 ensureWidgetIframeVisible();
-                typeof openWidgetIframe === 'function' && openWidgetIframe();
-                openWidgetForAuthError({
-                    skipConversationLaunch: true,
-                });
+                openWidgetForAuthError(options);
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                 kommunicateCommons.show('#km-chat-login-modal');
                 kommunicateCommons.setDialogVisibility(
@@ -2345,9 +2332,6 @@ const firstVisibleMsg = {
             }
 
             function openWidgetForAuthError(options) {
-                if (typeof document === 'undefined') {
-                    return;
-                }
                 options = options || {};
                 var sideboxEl = document.getElementById('mck-sidebox');
                 if (sideboxEl && sideboxEl.classList) {
@@ -2399,6 +2383,10 @@ const firstVisibleMsg = {
                     }
                 } catch (error) {}
             }
+
+            _this.ensureAuthFailureFormFields = ensureAuthFailureFormFields;
+            _this.reopenAuthModal = reopenAuthModal;
+            _this.openWidgetForAuthError = openWidgetForAuthError;
 
             function isPreLeadCollectionEnabled() {
                 return (
@@ -2801,8 +2789,6 @@ const firstVisibleMsg = {
                                 : function (key, fallback) {
                                       return fallback || '';
                                   };
-                            var invalidPasswordLabel = getLeadLabel('invalidPasswordMessage', '');
-                            var loginErrorMessage = invalidPasswordLabel;
                             ensureChatLoginModalExists();
                             if (!AUTH_SUBMIT_TRIGGERED) {
                                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
@@ -2836,7 +2822,6 @@ const firstVisibleMsg = {
                                     showUserIdField: true,
                                 });
                             }
-                            var invalidPasswordMessage = invalidPasswordLabel;
                             if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
                                 var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
                                     return (
@@ -2861,15 +2846,13 @@ const firstVisibleMsg = {
                                             (MCK_LABELS['lead.collection'] || {}).password || ''
                                         ).toLowerCase(),
                                         required: 'true',
-                                        errorMessage: invalidPasswordMessage,
+                                        errorMessage: getLeadLabel('invalidPasswordMessage', ''),
                                     });
                                 }
                             }
                             var submitBtn = document.getElementById('km-submit-chat-login');
                             if (submitBtn) {
-                                var submitLabel =
-                                    (MCK_LABELS['lead.collection'] || {}).submit ||
-                                    'Start Conversation';
+                                var submitLabel = (MCK_LABELS['lead.collection'] || {}).submit;
                                 submitBtn.innerHTML = submitLabel;
                                 submitBtn.setAttribute('aria-label', submitLabel);
                                 submitBtn.classList.remove('n-vis');
@@ -2877,7 +2860,10 @@ const firstVisibleMsg = {
                             }
                             loginErrorNode = document.getElementById('km-error-chat-login');
                             if (loginErrorNode) {
-                                loginErrorNode.textContent = loginErrorMessage;
+                                loginErrorNode.textContent = getLeadLabel(
+                                    'invalidPasswordMessage',
+                                    ''
+                                );
                                 loginErrorNode.classList.remove('n-vis');
                                 loginErrorNode.classList.add('vis');
                                 loginErrorNode.style.display = '';
@@ -2885,7 +2871,7 @@ const firstVisibleMsg = {
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
-                                    errorMessage: invalidPasswordLabel,
+                                    errorMessage: getLeadLabel('invalidPasswordMessage', ''),
                                 });
                             }
                             // if password invalid then clear cookies
@@ -6207,9 +6193,6 @@ const firstVisibleMsg = {
                 }
             };
             _this.softHideSidebox = function () {
-                if (typeof document === 'undefined') {
-                    return;
-                }
                 var sidebox = document.getElementById('mck-sidebox');
                 if (!sidebox) {
                     _this.closeSideBox();
@@ -7588,9 +7571,6 @@ const firstVisibleMsg = {
                 typeof callback == 'function' && callback(data);
             };
             _this.isFaqTabOpen = function () {
-                if (typeof document === 'undefined') {
-                    return false;
-                }
                 var faqTab = document.querySelector('#km-faqdiv');
                 var categoryList = document.querySelector('.km-faq-category-list-container');
                 var contactSearch = document.querySelector('#km-contact-search-input-box');
