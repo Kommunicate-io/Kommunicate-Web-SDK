@@ -2220,9 +2220,6 @@ const firstVisibleMsg = {
             }
 
             function ensureAuthFailureFormFields(config) {
-                if (typeof document === 'undefined') {
-                    return;
-                }
                 config = config || {};
                 var showUserIdField = config.showUserIdField !== false;
                 if (isPreLeadCollectionEnabled()) {
