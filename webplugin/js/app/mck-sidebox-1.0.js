@@ -2346,7 +2346,7 @@ const firstVisibleMsg = {
                     typeof Kommunicate.setDefaultIframeConfigForOpenChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
                     try {
-                        typeof openWidgetIframe === 'function' && openWidgetIframe();
+                        openWidgetIframe();
                     } catch (error) {}
                 }
                 try {
@@ -2756,7 +2756,7 @@ const firstVisibleMsg = {
                     success: async function (result) {
                         var resultCode = result;
                         if (result && typeof result === 'object') {
-                            resultCode = result.status || result.error || result.result || result;
+                            resultCode = result.status || result.error;
                         }
                         if (typeof resultCode === 'string') {
                             resultCode = resultCode
@@ -2897,6 +2897,7 @@ const firstVisibleMsg = {
                             var preLeadErrorMessage = _this.resolvePreLeadErrorMessage
                                 ? _this.resolvePreLeadErrorMessage(result, 'commonErrorMsg')
                                 : '';
+                            AUTH_SUBMIT_TRIGGERED = false;
                             if (_this.showPreChatLoginError) {
                                 _this.showPreChatLoginError(preLeadErrorMessage);
                             }
