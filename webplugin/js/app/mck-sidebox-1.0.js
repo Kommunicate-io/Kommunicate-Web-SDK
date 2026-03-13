@@ -3788,7 +3788,9 @@ const firstVisibleMsg = {
                     MCK_LABELS: MCK_LABELS,
                     KM_PRELEAD_COLLECTION: KM_PRELEAD_COLLECTION,
                     KM_ASK_USER_DETAILS: KM_ASK_USER_DETAILS,
-                    MCK_AUTHENTICATION_TYPE_ID: MCK_AUTHENTICATION_TYPE_ID,
+                    getAuthenticationTypeId: function () {
+                        return MCK_AUTHENTICATION_TYPE_ID;
+                    },
                     appOptions: appOptions,
                     openWidgetForAuthError: openWidgetForAuthError,
                     loginModalFocusFallbacks: loginModalFocusFallbacks,

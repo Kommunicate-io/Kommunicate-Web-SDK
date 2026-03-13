@@ -321,10 +321,11 @@ var KMPreChat = (function () {
                 syncPreLeadCollectionFromOptions();
             }
             deps.KM_ASK_USER_DETAILS.length && target.getPreLeadDataForAskUserDetail();
-            if (
-                typeof deps.MCK_AUTHENTICATION_TYPE_ID !== 'undefined' &&
-                deps.MCK_AUTHENTICATION_TYPE_ID > 0
-            ) {
+            var authTypeId =
+                typeof deps.getAuthenticationTypeId === 'function'
+                    ? deps.getAuthenticationTypeId()
+                    : deps.MCK_AUTHENTICATION_TYPE_ID;
+            if (typeof authTypeId !== 'undefined' && authTypeId > 0) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
                         item &&
