@@ -8735,8 +8735,7 @@ const firstVisibleMsg = {
                     }
 
                     KommunicateUI.isConversationListView = false;
-                    typeof KommunicateUI !== 'undefined' &&
-                        typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
+                    typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
                         KommunicateUI.toggleModernFaqBackButton(true);
                     typeof setActiveSubsectionState === 'function' &&
                         setActiveSubsectionState('conversation-individual');
