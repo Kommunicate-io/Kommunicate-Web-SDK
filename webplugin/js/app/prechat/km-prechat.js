@@ -366,7 +366,8 @@ var KMPreChat = (function () {
             var enableCountryCode = false;
             for (var i = 0; i < deps.KM_PRELEAD_COLLECTION.length; i++) {
                 var dataToCollect = deps.KM_PRELEAD_COLLECTION[i];
-                if (dataToCollect.field.toLowerCase() === 'phone') {
+                var fieldName = ((dataToCollect && dataToCollect.field) || '').toString();
+                if (fieldName.toLowerCase() === 'phone') {
                     enableCountryCode = dataToCollect.enableCountryCode;
                 }
                 var kmInputField = target.createInputField(dataToCollect);
