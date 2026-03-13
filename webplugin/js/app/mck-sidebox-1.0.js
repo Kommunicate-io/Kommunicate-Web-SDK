@@ -368,7 +368,6 @@ const firstVisibleMsg = {
         var PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
         var PRE_CHAT_LEAD_COLLECTION_MODAL_DISPLAY_DELAY = 220;
         var AUTH_SUBMIT_TRIGGERED = false;
-        var LIVECHAT_AUTH_BLOCKED = false;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
@@ -883,10 +882,6 @@ const firstVisibleMsg = {
                 PRE_CHAT_LEAD_COLLECTION_POPUP_ON: PRE_CHAT_LEAD_COLLECTION_POPUP_ON,
                 shouldSkipLeadCollectionConversation: shouldSkipLeadCollectionConversation,
             });
-
-            if (widgetModePolicy.shouldSkipLeadCollectionConversation(LIVECHAT_AUTH_BLOCKED)) {
-                shouldSkipLeadCollectionConversation = true;
-            }
 
             openWidgetIframe();
 
@@ -2803,7 +2798,6 @@ const firstVisibleMsg = {
                             resultCode === false ||
                             resultCode === 'FALSE'
                         ) {
-                            LIVECHAT_AUTH_BLOCKED = true;
                             var isPreLeadEnabled = isPreLeadCollectionEnabled();
                             var getLeadLabel = _this.getLeadCollectionLabel
                                 ? _this.getLeadCollectionLabel.bind(_this)
@@ -2959,7 +2953,6 @@ const firstVisibleMsg = {
                             throw new Error('APPMODULE_NOT_FOUND');
                         }
                         if (typeof result === 'object' && result !== null && result.token) {
-                            LIVECHAT_AUTH_BLOCKED = false;
                             result.appId = userPxy.applicationId;
                             if (MCK_ACCESS_TOKEN) {
                                 result.accessToken = MCK_ACCESS_TOKEN;
