@@ -84,20 +84,12 @@ var KMPreChat = (function () {
 
         target.getLeadCollectionLabel = getLeadCollectionLabel;
 
-        target.resolvePreLeadErrorMessage = function (result, fallbackKey) {
+        target.resolvePreLeadErrorMessage = function () {
             return getLeadCollectionLabel('invalidPasswordMessage', '');
         };
 
         target.showPreChatLoginError = function (message) {
-            var resolvedMessage =
-                message ||
-                getLeadCollectionLabel(
-                    'commonErrorMsg',
-                    getLeadCollectionLabel(
-                        'errorText',
-                        'The input you have provided is either invalid or incorrect.'
-                    )
-                );
+            var resolvedMessage = message || getLeadCollectionLabel('invalidPasswordMessage', '');
             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
             if (kmChatLoginModal) {
                 kommunicateCommons.setDialogVisibility(
