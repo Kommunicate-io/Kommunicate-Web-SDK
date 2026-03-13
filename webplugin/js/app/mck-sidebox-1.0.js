@@ -834,6 +834,9 @@ const firstVisibleMsg = {
         }
 
         _this.mckLaunchSideboxChat = function () {
+            if (typeof document === 'undefined') {
+                return;
+            }
             if (startLazyInitialization(true)) {
                 return;
             }
@@ -4120,13 +4123,13 @@ const firstVisibleMsg = {
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
                 KommunicateUI.togglePopupChatTemplate();
+                console.log('[PRE-LEAD] cleared popup timers and toggled popup template');
             };
 
             $applozic(d).on('click', '.chat-popup-widget-close-btn-container', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 KommunicateUI.togglePopupChatTemplate();
-                console.log('[PRE-LEAD] cleared popup timers and toggled popup template');
             });
         }
 
@@ -4218,8 +4221,8 @@ const firstVisibleMsg = {
                 kommunicateIframe && (kommunicateIframe.style.minHeight = '');
                 if ($applozic?.fn?.applozic) {
                     $applozic.fn.applozic('mckLaunchSideboxChat');
-                    console.log('[PRE-LEAD] loadChat completed, widget re-launched');
                 }
+                console.log('[PRE-LEAD] loadChat completed, widget re-launched');
             }
             if (typeof mckInit !== 'undefined' && typeof mckInit.loadChatCallback !== 'function') {
                 mckInit.loadChatCallback = loadChat;
@@ -6196,6 +6199,9 @@ const firstVisibleMsg = {
                 }
             };
             _this.softHideSidebox = function () {
+                if (typeof document === 'undefined') {
+                    return;
+                }
                 var sidebox = document.getElementById('mck-sidebox');
                 if (!sidebox) {
                     _this.closeSideBox();
@@ -7574,6 +7580,9 @@ const firstVisibleMsg = {
                 typeof callback == 'function' && callback(data);
             };
             _this.isFaqTabOpen = function () {
+                if (typeof document === 'undefined') {
+                    return false;
+                }
                 var faqTab = document.querySelector('#km-faqdiv');
                 var categoryList = document.querySelector('.km-faq-category-list-container');
                 var contactSearch = document.querySelector('#km-contact-search-input-box');

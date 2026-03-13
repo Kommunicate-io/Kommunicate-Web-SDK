@@ -56,6 +56,9 @@ class KMLabel {
     }
 
     setLabels(MCK_LABELS = {}) {
+        if (typeof document === 'undefined') {
+            return;
+        }
         var getNodes = function (selector) {
             return Array.prototype.slice.call(document.querySelectorAll(selector));
         };
