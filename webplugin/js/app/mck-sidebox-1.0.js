@@ -2271,19 +2271,12 @@ const firstVisibleMsg = {
                             typeof userIdInput.closest === 'function'
                                 ? userIdInput.closest('.km-form-group')
                                 : null;
+                        var userIdTarget = userIdContainer;
                         if (!showUserIdField) {
-                            if (userIdContainer) {
-                                kommunicateCommons.hide(userIdContainer);
-                            } else {
-                                userIdInput.classList.add('n-vis');
-                            }
+                            kommunicateCommons.hide(userIdTarget);
                             userIdLabelNode.classList.add('sr-only');
                         } else {
-                            if (userIdContainer) {
-                                kommunicateCommons.show(userIdContainer);
-                            } else {
-                                userIdInput.classList.remove('n-vis');
-                            }
+                            kommunicateCommons.show(userIdTarget);
                             userIdLabelNode.classList.remove('sr-only');
                         }
                     }
@@ -2299,8 +2292,11 @@ const firstVisibleMsg = {
                 }
                 if (!document.getElementById('km-password')) {
                     var passwordLabel =
-                        _this.getLeadCollectionLabel &&
-                        _this.getLeadCollectionLabel('password', '');
+                        (_this.getLeadCollectionLabel &&
+                            _this.getLeadCollectionLabel('password', '')) ||
+                        (MCK_LABELS['lead.collection'] || {}).password ||
+                        (MCK_LABELS && MCK_LABELS['lead.collection.password']) ||
+                        'Password';
                     askUserDetailsContainer.appendChild(
                         _this.createInputField({
                             field: passwordLabel,
@@ -2360,12 +2356,6 @@ const firstVisibleMsg = {
                     typeof mckMessageService.openChatbox === 'function'
                 ) {
                     mckMessageService.openChatbox();
-                }
-                if (!options.skipConversationLaunch && $applozic?.fn?.applozic) {
-                    var previousCreateUserOnWidgetOpen = CREATE_USER_ON_WIDGET_OPEN;
-                    CREATE_USER_ON_WIDGET_OPEN = false;
-                    $applozic.fn.applozic('mckLaunchSideboxChat');
-                    CREATE_USER_ON_WIDGET_OPEN = previousCreateUserOnWidgetOpen;
                 }
             }
 
@@ -2750,17 +2740,6 @@ const firstVisibleMsg = {
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
                     success: async function (result) {
-                        var resultCode = result;
-                        if (result && typeof result === 'object') {
-                            resultCode = result.status || result.error;
-                        }
-                        if (typeof resultCode === 'string') {
-                            resultCode = resultCode
-                                .trim()
-                                .replace(/^\"|\"$/g, '')
-                                .toUpperCase();
-                        }
-
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             kommunicateCommons.hide('#km-chat-login-modal');
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
@@ -2773,11 +2752,7 @@ const firstVisibleMsg = {
                         await KommunicateUtils.loadCryptoJS(result);
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
-                        if (
-                            resultCode === 'INVALID_PASSWORD' ||
-                            resultCode === false ||
-                            resultCode === 'FALSE'
-                        ) {
+                        if (result === 'INVALID_PASSWORD') {
                             var isPreLeadEnabled = isPreLeadCollectionEnabled();
                             var getLeadLabel = _this.getLeadCollectionLabel
                                 ? _this.getLeadCollectionLabel.bind(_this)
@@ -2794,8 +2769,7 @@ const firstVisibleMsg = {
                                 var loginErrorNode = document.getElementById('km-error-chat-login');
                                 if (loginErrorNode) {
                                     loginErrorNode.textContent = '';
-                                    loginErrorNode.classList.remove('vis');
-                                    loginErrorNode.classList.add('n-vis');
+                                    kommunicateCommons.hide(loginErrorNode);
                                 }
                                 kmLocalStorage.deleteUserCookiesOnLogout();
                                 kmLocalStorage.deleteLocalStorage(
@@ -2827,22 +2801,7 @@ const firstVisibleMsg = {
                                 });
                                 var userIdInput = document.getElementById('km-userId');
                                 if (userIdInput && !hasPreLeadUserId) {
-                                    userIdInput.classList.add('n-vis');
-                                }
-                            }
-                            if (!isPreLeadEnabled && !document.getElementById('km-password')) {
-                                if (mckInit.addPasswordField) {
-                                    mckInit.addPasswordField({
-                                        id: 'km-password',
-                                        type: 'password',
-                                        name: 'km-password',
-                                        class: 'km-form-control km-input-width km-login-error',
-                                        placeholder: (
-                                            (MCK_LABELS['lead.collection'] || {}).password || ''
-                                        ).toLowerCase(),
-                                        required: 'true',
-                                        errorMessage: getLeadLabel('invalidPasswordMessage', ''),
-                                    });
+                                    kommunicateCommons.hide(userIdInput);
                                 }
                             }
                             var submitBtn = document.getElementById('km-submit-chat-login');
@@ -2886,7 +2845,7 @@ const firstVisibleMsg = {
                             return;
                         } else if (
                             isPreLeadCollectionEnabled() &&
-                            (resultCode === 'ERROR' || resultCode === 'USER_NOT_FOUND')
+                            (result === 'error' || result === 'USER_NOT_FOUND')
                         ) {
                             var preLeadErrorMessage = _this.resolvePreLeadErrorMessage
                                 ? _this.resolvePreLeadErrorMessage(result, 'commonErrorMsg')
@@ -2898,13 +2857,13 @@ const firstVisibleMsg = {
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
-                                    errorMessage: resultCode,
+                                    errorMessage: result,
                                 });
                             }
                             LAZY_INIT_STARTED = false;
                             LAZY_INIT_PENDING_OPEN = false;
                             return;
-                        } else if (resultCode === 'INVALID_APPID') {
+                        } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2913,7 +2872,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             throw new Error('INVALID APPLICATION ID');
-                        } else if (resultCode === 'ERROR' || resultCode === 'USER_NOT_FOUND') {
+                        } else if (result === 'error' || result === 'USER_NOT_FOUND') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
@@ -2922,7 +2881,7 @@ const firstVisibleMsg = {
                                 });
                             }
                             throw new Error('USER_NOT_FOUND');
-                        } else if (resultCode === 'APPMODULE_NOT_FOUND') {
+                        } else if (result === 'APPMODULE_NOT_FOUND') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({

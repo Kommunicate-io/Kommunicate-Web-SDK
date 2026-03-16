@@ -116,7 +116,7 @@ var KMPreChat = (function () {
             }
             var submitBtn = document.getElementById('km-submit-chat-login');
             if (submitBtn) {
-                submitBtn.classList.remove('n-vis');
+                kommunicateCommons.show(submitBtn);
                 submitBtn.removeAttribute('disabled');
             }
         };
@@ -172,18 +172,6 @@ var KMPreChat = (function () {
                     deps.KM_PRELEAD_COLLECTION.push(obj);
                 }
             }
-        };
-
-        target.loginInputKeyup = function (input) {
-            input.addEventListener('keyup', function (event) {
-                var targetEl = event.target;
-                var isClassExist = targetEl.classList.contains('km-login-error');
-                if (isClassExist) {
-                    input.classList.remove('km-login-error');
-                    targetEl.nextElementSibling &&
-                        (targetEl.nextElementSibling.style.display = 'none');
-                }
-            });
         };
 
         target.createPreChatLabel = function (leadCollection, inputId) {
@@ -507,7 +495,7 @@ var KMPreChat = (function () {
                 var submitLabel = getLeadCollectionLabel('submit', LEAD_COLLECTION_LABEL.submit);
                 submitLogin.innerHTML = submitLabel;
                 submitLogin.setAttribute('aria-label', submitLabel);
-                submitLogin.classList.remove('n-vis');
+                kommunicateCommons.show(submitLogin);
                 submitLogin.removeAttribute('disabled');
             }
             if (leadCollectionHeading) {
@@ -524,83 +512,6 @@ var KMPreChat = (function () {
                 var titleLabel = getLeadCollectionLabel('title', LEAD_COLLECTION_LABEL.title);
                 tabTitle.innerHTML = titleLabel;
                 tabTitle.setAttribute('aria-label', titleLabel);
-            }
-        };
-
-        target.addPasswordField = function (data) {
-            var inputId = 'km-password';
-            var kmChatInputDiv = target.createInputContainer(inputId);
-            var emailContainer = document.getElementById('km-email-container');
-            var isPassField = document.getElementById('km-password');
-            var submitBtn = document.getElementById('km-submit-chat-login');
-            var errorContainer = document.querySelector(
-                '#km-password-container .km-login-form-error'
-            );
-            var errorMessage =
-                (data && data.errorMessage) ||
-                getLeadCollectionLabel(
-                    'errorText',
-                    (deps.MCK_LABELS['lead.collection'] || {}).errorText || ''
-                );
-            var passwordLabel = getLeadCollectionLabel(
-                'password',
-                (deps.MCK_LABELS['lead.collection'] || {}).password
-            );
-            var labelAttribute = {
-                field: passwordLabel,
-                required: data.required,
-            };
-            var kmLabelDiv = target.createPreChatLabel(labelAttribute, inputId);
-            if (emailContainer) {
-                if (isPassField == null) {
-                    var passwordField = document.createElement('input');
-                    var errorDiv = document.createElement('div');
-                    errorDiv.className = 'km-login-form-error km-error-container';
-                    errorDiv.innerHTML =
-                        '<svg width="14" height="14" viewBox="0 0 12 12" focusable="false" aria-hidden="true">' +
-                        '<use xlink:href="#icon-27" href="#icon-27"></use>' +
-                        '</svg>';
-                    var errorText = document.createElement('p');
-                    errorText.className = 'km-error-msg';
-                    errorText.textContent = errorMessage;
-                    errorDiv.appendChild(errorText);
-
-                    for (var key in data) {
-                        passwordField.setAttribute(key, data[key]);
-                    }
-                    target.loginInputKeyup(passwordField);
-                    passwordField.addEventListener('blur', function () {
-                        var isClassExist = passwordField.classList.contains('km-login-error');
-                        if (isClassExist) {
-                            passwordField.classList.remove('km-login-error');
-                            passwordField.nextElementSibling &&
-                                (passwordField.nextElementSibling.style.display = 'none');
-                        }
-                    });
-                    $applozic(kmChatInputDiv).append(kmLabelDiv, passwordField, errorDiv);
-                    attachPasswordToggle(
-                        kmChatInputDiv,
-                        passwordField,
-                        deps.MCK_LABELS['lead.collection'] || {}
-                    );
-                    $applozic(kmChatInputDiv).insertAfter(emailContainer);
-                } else if (isPassField) {
-                    if (errorContainer) {
-                        errorContainer.style.display = 'flex';
-                        isPassField.classList.add('km-login-error');
-                        var errorLabel = errorContainer.querySelector('.km-error-msg');
-                        errorLabel && (errorLabel.textContent = errorMessage);
-                    }
-                }
-            }
-            if (submitBtn) {
-                submitBtn.removeAttribute('disabled');
-                submitBtn.classList.remove('n-vis');
-                submitBtn.innerText =
-                    getLeadCollectionLabel(
-                        'submit',
-                        (deps.MCK_LABELS['lead.collection'] || {}).submit || ''
-                    ) || '';
             }
         };
     }
