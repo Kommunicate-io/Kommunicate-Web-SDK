@@ -30,6 +30,7 @@ const buildDir = path.resolve(__dirname, 'build');
 const releaseDir = path.resolve(__dirname, 'build', String(version));
 const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
+const releaseResourcesFontDir = path.join(releaseResourcesDir, 'app', 'fonts');
 const legacyResourcesDir = path.join(buildDir, 'resources');
 const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
 const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
@@ -313,6 +314,7 @@ const generateBuildFiles = () => {
         path.join(__dirname, 'css/app/fonts'),
         path.join(releaseDir, 'css/app/fonts')
     );
+    copyDirectoryRecursive(path.join(__dirname, 'css/app/fonts'), releaseResourcesFontDir);
     copyDirectoryRecursive(
         path.join(__dirname, 'css/app/fonts'),
         path.join(buildDir, 'css/app/fonts')
