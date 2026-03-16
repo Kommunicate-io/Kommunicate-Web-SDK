@@ -2222,12 +2222,6 @@ const firstVisibleMsg = {
                     return;
                 }
                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
-                var loginErrorNode = document.getElementById('km-error-chat-login');
-                if (loginErrorNode) {
-                    loginErrorNode.textContent = '';
-                    loginErrorNode.classList.remove('vis');
-                    loginErrorNode.classList.add('n-vis');
-                }
                 var form = document.getElementById('km-form-chat-login');
                 if (!form) {
                     return;
@@ -2238,7 +2232,7 @@ const firstVisibleMsg = {
                 }
                 var userIdInput = document.getElementById('km-userId');
                 if (userIdInput) {
-                    userIdInput.classList.remove('n-vis');
+                    kommunicateCommons.show(userIdInput);
                     userIdInput.setAttribute('type', 'text');
                     if (showUserIdField) {
                         userIdInput.setAttribute('required', 'true');
@@ -2300,7 +2294,7 @@ const firstVisibleMsg = {
                         _this.getLeadCollectionLabel && _this.getLeadCollectionLabel('submit', '');
                     submitBtn.innerHTML = submitLabel;
                     submitBtn.setAttribute('aria-label', submitLabel);
-                    submitBtn.classList.remove('n-vis');
+                    kommunicateCommons.show(submitBtn);
                     submitBtn.removeAttribute('disabled');
                 }
                 if (!document.getElementById('km-password')) {
@@ -2513,7 +2507,6 @@ const firstVisibleMsg = {
                     if (!isPreLeadCollectionEnabled() && MCK_AUTHENTICATION_TYPE_ID > 0) {
                         ensureChatLoginModalExists();
                         ensureAuthFailureFormFields();
-                        _this.resetPreChatLoginError && _this.resetPreChatLoginError();
                         reopenAuthModal();
                         return false;
                     }
@@ -2649,7 +2642,7 @@ const firstVisibleMsg = {
                             if (!submitBtn) {
                                 return;
                             }
-                            submitBtn.classList.remove('n-vis');
+                            kommunicateCommons.show(submitBtn);
                             submitBtn.removeAttribute('disabled');
                         };
 
@@ -2769,7 +2762,6 @@ const firstVisibleMsg = {
                         }
 
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
-                            //kommunicateCommons.hide("#km-chat-login-modal");
                             kommunicateCommons.hide('#km-chat-login-modal');
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                             kommunicateCommons.setDialogVisibility(
@@ -2858,7 +2850,7 @@ const firstVisibleMsg = {
                                 var submitLabel = (MCK_LABELS['lead.collection'] || {}).submit;
                                 submitBtn.innerHTML = submitLabel;
                                 submitBtn.setAttribute('aria-label', submitLabel);
-                                submitBtn.classList.remove('n-vis');
+                                kommunicateCommons.show(submitBtn);
                                 submitBtn.removeAttribute('disabled');
                             }
                             loginErrorNode = document.getElementById('km-error-chat-login');
@@ -2867,8 +2859,7 @@ const firstVisibleMsg = {
                                     'invalidPasswordMessage',
                                     ''
                                 );
-                                loginErrorNode.classList.remove('n-vis');
-                                loginErrorNode.classList.add('vis');
+                                kommunicateCommons.show(loginErrorNode);
                                 loginErrorNode.style.display = '';
                             }
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
@@ -3195,8 +3186,7 @@ const firstVisibleMsg = {
                 }
 
                 // Check if modern layout is enabled
-                var isModernLayout =
-                    kommunicateCommons && kommunicateCommons.isModernLayoutEnabled();
+                var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
 
                 // Check if a non-conversation tab (like whats-new, faqs) was previously active
                 var lastBottomTab =

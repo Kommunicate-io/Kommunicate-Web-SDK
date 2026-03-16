@@ -111,12 +111,7 @@ var KMPreChat = (function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = resolvedMessage || '';
-                if (kommunicateCommons && typeof kommunicateCommons.show === 'function') {
-                    kommunicateCommons.show(loginErrorNode);
-                } else {
-                    loginErrorNode.classList.remove('n-vis');
-                    loginErrorNode.classList.add('vis');
-                }
+                kommunicateCommons.show(loginErrorNode);
                 loginErrorNode.style.display = '';
             }
             var submitBtn = document.getElementById('km-submit-chat-login');
@@ -130,12 +125,8 @@ var KMPreChat = (function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = '';
-                if (kommunicateCommons && typeof kommunicateCommons.hide === 'function') {
-                    kommunicateCommons.hide(loginErrorNode);
-                } else {
-                    loginErrorNode.classList.remove('vis');
-                    loginErrorNode.classList.add('n-vis');
-                }
+                loginErrorNode.classList.remove('vis');
+                loginErrorNode.classList.add('n-vis');
             }
         };
 
@@ -433,20 +424,12 @@ var KMPreChat = (function () {
                 }
                 if (message) {
                     errorNode.textContent = message;
-                    if (kommunicateCommons && typeof kommunicateCommons.show === 'function') {
-                        kommunicateCommons.show(errorNode);
-                    } else {
-                        errorNode.classList.remove('n-vis');
-                        errorNode.classList.add('vis');
-                    }
+                    errorNode.classList.remove('n-vis');
+                    errorNode.classList.add('vis');
                 } else {
                     errorNode.textContent = '';
-                    if (kommunicateCommons && typeof kommunicateCommons.hide === 'function') {
-                        kommunicateCommons.hide(errorNode);
-                    } else {
-                        errorNode.classList.remove('vis');
-                        errorNode.classList.add('n-vis');
-                    }
+                    errorNode.classList.remove('vis');
+                    errorNode.classList.add('n-vis');
                 }
             };
 
