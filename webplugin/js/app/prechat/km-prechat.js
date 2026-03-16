@@ -125,8 +125,7 @@ var KMPreChat = (function () {
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = '';
-                loginErrorNode.classList.remove('vis');
-                loginErrorNode.classList.add('n-vis');
+                kommunicateCommons.hide(loginErrorNode);
             }
         };
 
@@ -424,12 +423,10 @@ var KMPreChat = (function () {
                 }
                 if (message) {
                     errorNode.textContent = message;
-                    errorNode.classList.remove('n-vis');
-                    errorNode.classList.add('vis');
+                    kommunicateCommons.show(errorNode);
                 } else {
                     errorNode.textContent = '';
-                    errorNode.classList.remove('vis');
-                    errorNode.classList.add('n-vis');
+                    kommunicateCommons.hide(errorNode);
                 }
             };
 
