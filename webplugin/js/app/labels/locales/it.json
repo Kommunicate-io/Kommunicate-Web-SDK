@@ -131,7 +131,6 @@
   "lead.collection.option": "Seleziona un’opzione",
   "lead.collection.password": "Password",
   "lead.collection.errorText": "Inserisci la password del tuo account",
-
   "lead.collection.errorEmail": "Inserisci un indirizzo email valido",
   "lead.collection.commonErrorMsg": "L’input fornito è invalido o errato.",
   "lead.collection.invalidPasswordMessage": "Autenticazione non riuscita. Verifica le tue credenziali e riprova. Se il problema persiste, reimposta la password o contatta l'assistenza.",

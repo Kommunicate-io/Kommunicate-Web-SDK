@@ -131,7 +131,6 @@
   "lead.collection.option": "Por favor escolha",
   "lead.collection.password": "Senha",
   "lead.collection.errorText": "Por favor, informe a senha da sua conta",
-
   "lead.collection.errorEmail": "Por favor, informe um e-mail válido",
   "lead.collection.commonErrorMsg": "A informação fornecida é inválida ou incorreta.",
   "lead.collection.invalidPasswordMessage": "Falha na autenticação. Verifique suas credenciais e tente novamente. Se o problema persistir, redefina sua senha ou entre em contato com o suporte.",

@@ -131,7 +131,6 @@
   "lead.collection.option": "Välj ett alternativ",
   "lead.collection.password": "Lösenord",
   "lead.collection.errorText": "Ange ditt kontolösenord",
-
   "lead.collection.errorEmail": "Ange en giltig e-postadress",
   "lead.collection.commonErrorMsg": "Inmatningen är ogiltig eller felaktig.",
   "lead.collection.invalidPasswordMessage": "Autentisering misslyckades. Kontrollera dina inloggningsuppgifter och försök igen. Om problemet kvarstår, återställ ditt lösenord eller kontakta supporten.",

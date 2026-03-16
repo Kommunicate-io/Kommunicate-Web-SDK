@@ -131,7 +131,6 @@
   "lead.collection.option": "कृपया चुनें",
   "lead.collection.password": "पासवर्ड",
   "lead.collection.errorText": "कृपया अपना खाता पासवर्ड दर्ज करें",
-
   "lead.collection.errorEmail": "कृपया एक वैध ईमेल पता दर्ज करें",
   "lead.collection.commonErrorMsg": "आपके द्वारा प्रदान किया गया इनपुट अमान्य या गलत है।",
   "lead.collection.invalidPasswordMessage": "प्रमाणीकरण विफल हुआ। कृपया अपनी क्रेडेंशियल्स जांचें और फिर से प्रयास करें। यदि समस्या बनी रहती है, तो अपना पासवर्ड रीसेट करें या सहायता से संपर्क करें।",

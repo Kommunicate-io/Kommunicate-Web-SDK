@@ -131,7 +131,6 @@
   "lead.collection.option": "Bitte auswählen",
   "lead.collection.password": "Passwort",
   "lead.collection.errorText": "Bitte geben Sie Ihr Account-Passwort ein",
-
   "lead.collection.errorEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "lead.collection.commonErrorMsg": "Die Angaben sind entweder ungültig oder falsch.",
   "lead.collection.invalidPasswordMessage": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten und versuchen Sie es erneut. Wenn das Problem weiterhin besteht, setzen Sie Ihr Passwort zurück oder kontaktieren Sie den Support.",

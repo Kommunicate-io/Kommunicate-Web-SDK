@@ -131,7 +131,6 @@
   "lead.collection.option": "Selecciona una opción",
   "lead.collection.password": "Contraseña",
   "lead.collection.errorText": "Por favor ingresa tu contraseña",
-
   "lead.collection.errorEmail": "Por favor ingresa un correo válido",
   "lead.collection.commonErrorMsg": "La información ingresada no es válida o correcta.",
   "lead.collection.invalidPasswordMessage": "La autenticación falló. Verifica tus credenciales e inténtalo de nuevo. Si el problema persiste, restablece tu contraseña o contacta con soporte.",

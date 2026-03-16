@@ -131,7 +131,6 @@
   "lead.collection.option": "يرجى الاختيار",
   "lead.collection.password": "كلمة المرور",
   "lead.collection.errorText": "يرجى إدخال كلمة مرور الحساب",
-
   "lead.collection.errorEmail": "يرجى إدخال بريد إلكتروني صالح",
   "lead.collection.commonErrorMsg": "البيانات المقدمة غير صحيحة أو غير صالحة.",
   "lead.collection.invalidPasswordMessage": "فشلت المصادقة. يرجى التحقق من بيانات الاعتماد والمحاولة مرة أخرى. إذا استمرت المشكلة، فأعد تعيين كلمة المرور أو تواصل مع الدعم.",
