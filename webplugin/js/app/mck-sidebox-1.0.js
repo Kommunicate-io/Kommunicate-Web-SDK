@@ -2442,8 +2442,6 @@ const firstVisibleMsg = {
                         $applozic('#km-anonymous-chat-launcher').append(
                             mckInit.getLauncherHtml(true)
                         );
-                        _this.addLeadCollectionInputDiv();
-                        _this.setLeadCollectionLabels();
                         if (kmChatLoginModal) {
                             kommunicateCommons.setDialogVisibility(
                                 kmChatLoginModal,
@@ -2457,6 +2455,8 @@ const firstVisibleMsg = {
                             WIDGET_SETTINGS,
                             true
                         );
+                        _this.addLeadCollectionInputDiv();
+                        _this.setLeadCollectionLabels();
                         var adjustIframeForPrelead = function () {
                             var kommunicateIframe =
                                 parent.document &&

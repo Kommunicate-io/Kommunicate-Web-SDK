@@ -555,6 +555,8 @@ var KMPreChat = (function () {
             var errorNode = document.getElementById('km-error-chat-login');
             var emailField = document.getElementById('km-email');
             var phoneField = document.getElementById('km-phone');
+            var submitBtn = document.getElementById('km-submit-chat-login');
+            var formSubmitted = false;
 
             var setError = function (message) {
                 if (!errorNode) {
@@ -574,6 +576,9 @@ var KMPreChat = (function () {
                     return KommunicateUI.isValidEmail(value);
                 };
                 var handleEmailValidation = function () {
+                    if (!formSubmitted) {
+                        return;
+                    }
                     var value = (emailField.value || '').toLowerCase();
                     if (!value) {
                         setError('');
@@ -585,12 +590,19 @@ var KMPreChat = (function () {
                         setError('');
                     }
                 };
-                emailField.addEventListener('input', handleEmailValidation);
-                emailField.addEventListener('blur', handleEmailValidation);
+                emailField.addEventListener('input', function () {
+                    handleEmailValidation();
+                });
+                emailField.addEventListener('blur', function () {
+                    handleEmailValidation();
+                });
             }
 
             if (phoneField) {
                 var handlePhoneValidation = function () {
+                    if (!formSubmitted) {
+                        return;
+                    }
                     var value = phoneField.value || '';
                     if (!value) {
                         setError('');
@@ -610,8 +622,20 @@ var KMPreChat = (function () {
                         setError('');
                     }
                 };
-                phoneField.addEventListener('input', handlePhoneValidation);
-                phoneField.addEventListener('blur', handlePhoneValidation);
+                phoneField.addEventListener('input', function () {
+                    handlePhoneValidation();
+                });
+                phoneField.addEventListener('blur', function () {
+                    handlePhoneValidation();
+                });
+            }
+
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function () {
+                    formSubmitted = true;
+                    handleEmailValidation && handleEmailValidation();
+                    handlePhoneValidation && handlePhoneValidation();
+                });
             }
         };
 
