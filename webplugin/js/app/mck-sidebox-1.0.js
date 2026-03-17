@@ -4221,6 +4221,7 @@ const firstVisibleMsg = {
                 });
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(eventMapping.onRestartConversationClick);
+                KommunicateUI.clearClosedConversationBannerTimeout();
                 if (
                     event.currentTarget.id == 'km-restart-conversation' &&
                     appOptions.restartConversationByUser
@@ -15515,9 +15516,10 @@ const firstVisibleMsg = {
                                     mckMessageLayout.isMessageSentByBot(resp.message, contact) &&
                                     !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                 ) {
-                                    setTimeout(function () {
-                                        KommunicateUI.showClosedConversationBanner(true);
-                                    }, MCK_BOT_MESSAGE_DELAY);
+                                    KommunicateUI.scheduleClosedConversationBanner(
+                                        MCK_BOT_MESSAGE_DELAY,
+                                        CURRENT_GROUP_DATA.tabId
+                                    );
                                 } else {
                                     KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
                                     KommunicateUI.showClosedConversationBanner(true);
