@@ -711,7 +711,7 @@ const firstVisibleMsg = {
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
-        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
+        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
@@ -1501,8 +1501,24 @@ const firstVisibleMsg = {
                 typeof optns.launchOnUnreadMessage === 'boolean'
                     ? optns.launchOnUnreadMessage
                     : false;
-            KM_ASK_USER_DETAILS = appOptions.askUserDetails;
+            if (!Array.isArray(KM_ASK_USER_DETAILS)) {
+                KM_ASK_USER_DETAILS = [];
+            }
+            KM_ASK_USER_DETAILS.length = 0;
+            if (Array.isArray(appOptions.askUserDetails)) {
+                Array.prototype.push.apply(KM_ASK_USER_DETAILS, appOptions.askUserDetails);
+            }
         };
+
+        function clearPersistedAuthState() {
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+            );
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+            );
+        }
+
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 kmLocalStorage.removeItemFromLocalStorage('feedbackGroups');
@@ -1512,12 +1528,7 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                kmLocalStorage.deleteLocalStorage(
-                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                );
-                kmLocalStorage.deleteLocalStorage(
-                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                );
+                clearPersistedAuthState();
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -2168,39 +2179,6 @@ const firstVisibleMsg = {
                 }
             }
 
-            function ensureChatLoginModalExists() {
-                var existingModal = document.getElementById('km-chat-login-modal');
-                if (existingModal) {
-                    localizeChatLoginModal(existingModal);
-                    return existingModal;
-                }
-                return null;
-            }
-
-            function localizeChatLoginModal(modal) {
-                if (!modal || typeof MCK_LABELS === 'undefined') {
-                    return;
-                }
-                var closeBtn = modal.querySelector('#km-modal-close');
-                var closeLabel = MCK_LABELS['close'];
-                if (closeBtn && closeLabel) {
-                    closeBtn.setAttribute('aria-label', closeLabel);
-                }
-                var userIdLabel = modal.querySelector('#km-label-user-id');
-                var userIdText = MCK_LABELS['form.label.userId'];
-                if (userIdLabel && userIdText) {
-                    userIdLabel.textContent = userIdText;
-                }
-                var submitBtn = modal.querySelector('#km-submit-chat-login');
-                var submitText = (MCK_LABELS['lead.collection'] || {}).submit || '';
-                if (submitBtn && submitText) {
-                    if (!submitBtn.textContent) {
-                        submitBtn.textContent = submitText;
-                    }
-                    submitBtn.setAttribute('aria-label', submitText);
-                }
-            }
-
             function autoOpenPreChatLeadCollectionModal(launcher) {
                 if (!launcher || PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED) {
                     return;
@@ -2215,113 +2193,16 @@ const firstVisibleMsg = {
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
 
-            function ensureAuthFailureFormFields(config) {
-                config = config || {};
-                var showUserIdField = config.showUserIdField !== false;
-                if (isPreLeadCollectionEnabled()) {
-                    return;
-                }
+            function clearAuthErrorState() {
                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
-                var form = document.getElementById('km-form-chat-login');
-                if (!form) {
-                    return;
-                }
-                var askUserDetailsContainer = form.querySelector('.mck-askuserdetail-inputdiv');
-                if (!askUserDetailsContainer) {
-                    return;
-                }
-                var userIdInput = document.getElementById('km-userId');
-                if (userIdInput) {
-                    kommunicateCommons.show(userIdInput);
-                    userIdInput.setAttribute('type', 'text');
-                    if (showUserIdField) {
-                        userIdInput.setAttribute('required', 'true');
-                    } else {
-                        userIdInput.removeAttribute('required');
-                    }
-                    var userIdLabel = MCK_LABELS['form.label.userId'];
-                    userIdInput.setAttribute('placeholder', userIdLabel);
-                    userIdInput.setAttribute('aria-label', userIdLabel);
-                    var userIdLabelNode = document.getElementById('km-label-user-id');
-                    if (userIdLabelNode) {
-                        var requiredSvg =
-                            '<svg width="6" height="6" viewBox="0 0 6 6" focusable="false" aria-hidden="true">' +
-                            '<use xlink:href="#icon-69" href="#icon-69"></use>' +
-                            '</svg>';
-                        userIdLabelNode.textContent = userIdLabel;
-                        userIdLabelNode.classList.remove('sr-only');
-                        userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
-                        if (userIdInput.hasAttribute('required')) {
-                            userIdLabelNode.innerHTML = userIdLabel + ' ' + requiredSvg;
-                        }
-                        if (
-                            !userIdLabelNode.parentElement.classList.contains(
-                                'km-form-label-container'
-                            )
-                        ) {
-                            var labelContainer = document.createElement('div');
-                            labelContainer.className = 'km-form-label-container';
-                            userIdLabelNode.parentElement.insertBefore(
-                                labelContainer,
-                                userIdLabelNode
-                            );
-                            labelContainer.appendChild(userIdLabelNode);
-                        }
-                        var userIdContainer =
-                            typeof userIdInput.closest === 'function'
-                                ? userIdInput.closest('.km-form-group')
-                                : null;
-                        var userIdTarget = userIdContainer;
-                        if (!showUserIdField) {
-                            kommunicateCommons.hide(userIdTarget);
-                            userIdLabelNode.classList.add('sr-only');
-                        } else {
-                            kommunicateCommons.show(userIdTarget);
-                            userIdLabelNode.classList.remove('sr-only');
-                        }
-                    }
-                }
-                var submitBtn = document.getElementById('km-submit-chat-login');
-                if (submitBtn) {
-                    var submitLabel =
-                        _this.getLeadCollectionLabel && _this.getLeadCollectionLabel('submit', '');
-                    submitBtn.innerHTML = submitLabel;
-                    submitBtn.setAttribute('aria-label', submitLabel);
-                    kommunicateCommons.show(submitBtn);
-                    submitBtn.removeAttribute('disabled');
-                }
-                if (!document.getElementById('km-password')) {
-                    var passwordLabel =
-                        (_this.getLeadCollectionLabel &&
-                            _this.getLeadCollectionLabel('password', '')) ||
-                        (MCK_LABELS['lead.collection'] || {}).password ||
-                        (MCK_LABELS && MCK_LABELS['lead.collection.password']) ||
-                        'Password';
-                    askUserDetailsContainer.appendChild(
-                        _this.createInputField({
-                            field: passwordLabel,
-                            type: 'password',
-                            placeholder: passwordLabel,
-                            required: true,
-                            id: 'km-password',
-                            name: 'km-password',
-                        })
-                    );
-                }
             }
 
-            function reopenAuthModal(options) {
-                options = options || { skipConversationLaunch: true };
-                ensureWidgetIframeVisible();
-                openWidgetForAuthError(options);
-                var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                kommunicateCommons.show('#km-chat-login-modal');
-                kommunicateCommons.setDialogVisibility(
-                    kmChatLoginModal,
-                    true,
-                    loginModalFocusFallbacks
-                );
-                return kmChatLoginModal;
+            function resetLazyInitState(resetAuthSubmitTriggered) {
+                LAZY_INIT_STARTED = false;
+                LAZY_INIT_PENDING_OPEN = false;
+                if (resetAuthSubmitTriggered) {
+                    AUTH_SUBMIT_TRIGGERED = false;
+                }
             }
 
             function openWidgetForAuthError(options) {
@@ -2351,12 +2232,7 @@ const firstVisibleMsg = {
                         kommunicateIframe.classList.remove('km-iframe-closed');
                     }
                 } catch (error) {}
-                if (
-                    typeof mckMessageService !== 'undefined' &&
-                    typeof mckMessageService.openChatbox === 'function'
-                ) {
-                    mckMessageService.openChatbox();
-                }
+                mckMessageService.openChatbox();
             }
 
             function ensureWidgetIframeVisible() {
@@ -2371,16 +2247,7 @@ const firstVisibleMsg = {
                 } catch (error) {}
             }
 
-            _this.ensureAuthFailureFormFields = ensureAuthFailureFormFields;
-            _this.reopenAuthModal = reopenAuthModal;
             _this.openWidgetForAuthError = openWidgetForAuthError;
-
-            function isPreLeadCollectionEnabled() {
-                return (
-                    (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !== 0) ||
-                    (Array.isArray(KM_PRELEAD_COLLECTION) && KM_PRELEAD_COLLECTION.length !== 0)
-                );
-            }
 
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
@@ -2433,7 +2300,7 @@ const firstVisibleMsg = {
 
             _this.initializeApp = async function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
-                ensureChatLoginModalExists();
+                _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
                 var userPxy = {
                     applicationId: optns.appId,
@@ -2494,10 +2361,10 @@ const firstVisibleMsg = {
                 }
                 var isValidated = await _this.validateAppSession(userPxy);
                 if (!isValidated) {
-                    if (!isPreLeadCollectionEnabled() && MCK_AUTHENTICATION_TYPE_ID > 0) {
-                        ensureChatLoginModalExists();
-                        ensureAuthFailureFormFields();
-                        reopenAuthModal();
+                    if (!_this.isPreLeadCollectionEnabled() && MCK_AUTHENTICATION_TYPE_ID > 0) {
+                        _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
+                        _this.ensureAuthFailureFormFields && _this.ensureAuthFailureFormFields();
+                        _this.reopenAuthModal && _this.reopenAuthModal();
                         return false;
                     }
                     if (
@@ -2753,43 +2620,31 @@ const firstVisibleMsg = {
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
-                            var isPreLeadEnabled = isPreLeadCollectionEnabled();
+                            var isPreLeadEnabled = _this.isPreLeadCollectionEnabled();
                             var getLeadLabel = _this.getLeadCollectionLabel
                                 ? _this.getLeadCollectionLabel.bind(_this)
                                 : function (key, fallback) {
                                       return fallback || '';
                                   };
-                            ensureChatLoginModalExists();
+                            _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
                             if (!AUTH_SUBMIT_TRIGGERED) {
                                 _this.resetPreChatLoginError && _this.resetPreChatLoginError();
-                                reopenAuthModal();
+                                _this.reopenAuthModal && _this.reopenAuthModal();
                                 if (!isPreLeadEnabled) {
-                                    ensureAuthFailureFormFields();
+                                    _this.ensureAuthFailureFormFields &&
+                                        _this.ensureAuthFailureFormFields();
                                 }
-                                var loginErrorNode = document.getElementById('km-error-chat-login');
-                                if (loginErrorNode) {
-                                    loginErrorNode.textContent = '';
-                                    kommunicateCommons.hide(loginErrorNode);
-                                }
-                                kmLocalStorage.deleteUserCookiesOnLogout();
-                                kmLocalStorage.deleteLocalStorage(
-                                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                                );
-                                kmLocalStorage.deleteLocalStorage(
-                                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                                );
-                                ALStorage.clearAppHeaders();
-                                MCK_ACCESS_TOKEN = null;
-                                window.Applozic.ALApiService.AUTH_TOKEN = null;
-                                LAZY_INIT_STARTED = false;
-                                LAZY_INIT_PENDING_OPEN = false;
+                                clearAuthErrorState();
+                                _this.clearAuthSessionState && _this.clearAuthSessionState();
+                                resetLazyInitState(false);
                                 return;
                             }
-                            reopenAuthModal();
+                            _this.reopenAuthModal && _this.reopenAuthModal();
                             if (!isPreLeadEnabled) {
-                                ensureAuthFailureFormFields({
-                                    showUserIdField: true,
-                                });
+                                _this.ensureAuthFailureFormFields &&
+                                    _this.ensureAuthFailureFormFields({
+                                        showUserIdField: true,
+                                    });
                             }
                             if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
                                 var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
@@ -2804,15 +2659,11 @@ const firstVisibleMsg = {
                                     kommunicateCommons.hide(userIdInput);
                                 }
                             }
-                            var submitBtn = document.getElementById('km-submit-chat-login');
-                            if (submitBtn) {
-                                var submitLabel = (MCK_LABELS['lead.collection'] || {}).submit;
-                                submitBtn.innerHTML = submitLabel;
-                                submitBtn.setAttribute('aria-label', submitLabel);
-                                kommunicateCommons.show(submitBtn);
-                                submitBtn.removeAttribute('disabled');
-                            }
-                            loginErrorNode = document.getElementById('km-error-chat-login');
+                            _this.updateAuthSubmitButton &&
+                                _this.updateAuthSubmitButton(
+                                    (MCK_LABELS['lead.collection'] || {}).submit
+                                );
+                            var loginErrorNode = document.getElementById('km-error-chat-login');
                             if (loginErrorNode) {
                                 loginErrorNode.textContent = getLeadLabel(
                                     'invalidPasswordMessage',
@@ -2827,24 +2678,11 @@ const firstVisibleMsg = {
                                     errorMessage: getLeadLabel('invalidPasswordMessage', ''),
                                 });
                             }
-                            // if password invalid then clear cookies
-                            kmLocalStorage.deleteUserCookiesOnLogout();
-                            kmLocalStorage.deleteLocalStorage(
-                                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                            );
-                            kmLocalStorage.deleteLocalStorage(
-                                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                            );
-                            ALStorage.clearAppHeaders();
-                            MCK_ACCESS_TOKEN = null;
-                            window.Applozic.ALApiService.AUTH_TOKEN = null;
-
-                            LAZY_INIT_STARTED = false;
-                            LAZY_INIT_PENDING_OPEN = false;
-                            AUTH_SUBMIT_TRIGGERED = false;
+                            _this.clearAuthSessionState && _this.clearAuthSessionState();
+                            resetLazyInitState(true);
                             return;
                         } else if (
-                            isPreLeadCollectionEnabled() &&
+                            _this.isPreLeadCollectionEnabled() &&
                             (result === 'error' || result === 'USER_NOT_FOUND')
                         ) {
                             var preLeadErrorMessage = _this.resolvePreLeadErrorMessage
@@ -2860,8 +2698,7 @@ const firstVisibleMsg = {
                                     errorMessage: result,
                                 });
                             }
-                            LAZY_INIT_STARTED = false;
-                            LAZY_INIT_PENDING_OPEN = false;
+                            resetLazyInitState(false);
                             return;
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
@@ -3744,8 +3581,19 @@ const firstVisibleMsg = {
                         return MCK_AUTHENTICATION_TYPE_ID;
                     },
                     appOptions: appOptions,
+                    ensureWidgetIframeVisible: ensureWidgetIframeVisible,
                     openWidgetForAuthError: openWidgetForAuthError,
                     loginModalFocusFallbacks: loginModalFocusFallbacks,
+                    kmLocalStorage: kmLocalStorage,
+                    KommunicateConstants: KommunicateConstants,
+                    clearPersistedAuthState: clearPersistedAuthState,
+                    clearAppHeaders: function () {
+                        ALStorage.clearAppHeaders();
+                    },
+                    clearAuthTokens: function () {
+                        MCK_ACCESS_TOKEN = null;
+                        window.Applozic.ALApiService.AUTH_TOKEN = null;
+                    },
                     setIntlTelInstance: function (instance) {
                         INTL_TEL_INSTANCE = instance;
                     },
