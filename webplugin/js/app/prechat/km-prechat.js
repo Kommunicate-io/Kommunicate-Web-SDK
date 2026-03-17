@@ -203,7 +203,7 @@ var KMPreChat = (function () {
         target.createInputField = function (preLeadCollection) {
             var rawField = (preLeadCollection.field || '').toString();
             var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
-            var localizedUserId = (deps.MCK_LABELS['form.label.userId'] || '')
+            var localizedUserId = ((deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) || '')
                 .toString()
                 .toLowerCase()
                 .replace(/\s+/g, '');
