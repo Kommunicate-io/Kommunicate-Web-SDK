@@ -233,12 +233,7 @@ var KMPreChat = (function () {
 
         target.clearStoredAuthState = function (options) {
             options = options || {};
-            deps.kmLocalStorage.deleteLocalStorage(
-                deps.KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            );
-            deps.kmLocalStorage.deleteLocalStorage(
-                deps.KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-            );
+            deps.clearPersistedAuthState();
             if (options.deleteCookies) {
                 deps.kmLocalStorage.deleteUserCookiesOnLogout();
             }

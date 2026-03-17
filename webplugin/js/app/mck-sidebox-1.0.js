@@ -711,7 +711,7 @@ const firstVisibleMsg = {
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
-        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
+        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
@@ -1501,11 +1501,24 @@ const firstVisibleMsg = {
                 typeof optns.launchOnUnreadMessage === 'boolean'
                     ? optns.launchOnUnreadMessage
                     : false;
+            if (!Array.isArray(KM_ASK_USER_DETAILS)) {
+                KM_ASK_USER_DETAILS = [];
+            }
             KM_ASK_USER_DETAILS.length = 0;
             if (Array.isArray(appOptions.askUserDetails)) {
                 Array.prototype.push.apply(KM_ASK_USER_DETAILS, appOptions.askUserDetails);
             }
         };
+
+        function clearPersistedAuthState() {
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+            );
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+            );
+        }
+
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 kmLocalStorage.removeItemFromLocalStorage('feedbackGroups');
@@ -1515,7 +1528,7 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                _this.clearStoredAuthState();
+                clearPersistedAuthState();
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -3573,6 +3586,7 @@ const firstVisibleMsg = {
                     loginModalFocusFallbacks: loginModalFocusFallbacks,
                     kmLocalStorage: kmLocalStorage,
                     KommunicateConstants: KommunicateConstants,
+                    clearPersistedAuthState: clearPersistedAuthState,
                     clearAppHeaders: function () {
                         ALStorage.clearAppHeaders();
                     },
