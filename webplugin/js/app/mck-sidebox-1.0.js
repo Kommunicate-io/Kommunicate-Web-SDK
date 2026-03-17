@@ -1501,7 +1501,10 @@ const firstVisibleMsg = {
                 typeof optns.launchOnUnreadMessage === 'boolean'
                     ? optns.launchOnUnreadMessage
                     : false;
-            KM_ASK_USER_DETAILS = appOptions.askUserDetails;
+            KM_ASK_USER_DETAILS.length = 0;
+            if (Array.isArray(appOptions.askUserDetails)) {
+                Array.prototype.push.apply(KM_ASK_USER_DETAILS, appOptions.askUserDetails);
+            }
         };
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
