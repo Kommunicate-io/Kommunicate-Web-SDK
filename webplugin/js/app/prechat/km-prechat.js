@@ -119,11 +119,12 @@ var KMPreChat = (function () {
                 userIdLabel.textContent = userIdText;
             }
             var submitBtn = modal.querySelector('#km-submit-chat-login');
-            var submitText = (deps.MCK_LABELS['lead.collection'] || {}).submit || '';
+            var submitText = getLeadCollectionLabel(
+                'submit',
+                (deps.MCK_LABELS['lead.collection'] || {}).submit || ''
+            );
             if (submitBtn && submitText) {
-                if (!submitBtn.textContent) {
-                    submitBtn.textContent = submitText;
-                }
+                submitBtn.textContent = submitText;
                 submitBtn.setAttribute('aria-label', submitText);
             }
         }
