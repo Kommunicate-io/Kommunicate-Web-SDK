@@ -219,11 +219,8 @@ var KMPreChat = (function () {
 
         target.reopenAuthModal = function (options) {
             options = options || { skipConversationLaunch: true };
-            typeof deps.ensureWidgetIframeVisible === 'function' &&
-                deps.ensureWidgetIframeVisible();
-            if (typeof deps.openWidgetForAuthError === 'function') {
-                deps.openWidgetForAuthError(options);
-            }
+            deps.ensureWidgetIframeVisible();
+            deps.openWidgetForAuthError(options);
             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
             kommunicateCommons.show('#km-chat-login-modal');
             kommunicateCommons.setDialogVisibility(
@@ -245,10 +242,10 @@ var KMPreChat = (function () {
             if (options.deleteCookies) {
                 deps.kmLocalStorage.deleteUserCookiesOnLogout();
             }
-            if (options.clearHeaders && typeof deps.clearAppHeaders === 'function') {
+            if (options.clearHeaders) {
                 deps.clearAppHeaders();
             }
-            if (options.clearTokens && typeof deps.clearAuthTokens === 'function') {
+            if (options.clearTokens) {
                 deps.clearAuthTokens();
             }
         };
@@ -267,35 +264,18 @@ var KMPreChat = (function () {
 
         target.showPreChatLoginError = function (message) {
             var resolvedMessage = message || getLeadCollectionLabel('invalidPasswordMessage', '');
-            var kmChatLoginModal = null;
-            if (typeof target.reopenAuthModal === 'function') {
-                kmChatLoginModal = target.reopenAuthModal({
-                    skipConversationLaunch: false,
-                });
-            } else {
-                kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                if (kmChatLoginModal) {
-                    kommunicateCommons.setDialogVisibility(
-                        kmChatLoginModal,
-                        true,
-                        deps.loginModalFocusFallbacks || []
-                    );
-                }
-                if (typeof deps.openWidgetForAuthError === 'function') {
-                    deps.openWidgetForAuthError();
-                }
-            }
+            target.reopenAuthModal({
+                skipConversationLaunch: false,
+            });
             var loginErrorNode = document.getElementById('km-error-chat-login');
             if (loginErrorNode) {
                 loginErrorNode.textContent = resolvedMessage || '';
                 kommunicateCommons.show(loginErrorNode);
                 loginErrorNode.style.display = '';
             }
-            var submitBtn = document.getElementById('km-submit-chat-login');
-            if (submitBtn) {
-                kommunicateCommons.show(submitBtn);
-                submitBtn.removeAttribute('disabled');
-            }
+            target.updateAuthSubmitButton(
+                getLeadCollectionLabel('submit', (deps.MCK_LABELS['lead.collection'] || {}).submit)
+            );
         };
 
         target.resetPreChatLoginError = function () {
@@ -466,12 +446,6 @@ var KMPreChat = (function () {
         };
 
         target.addLeadCollectionInputDiv = function () {
-            if (!Array.isArray(deps.KM_PRELEAD_COLLECTION)) {
-                deps.KM_PRELEAD_COLLECTION = [];
-            }
-            if (!Array.isArray(deps.KM_ASK_USER_DETAILS)) {
-                deps.KM_ASK_USER_DETAILS = [];
-            }
             if (!deps.KM_PRELEAD_COLLECTION.length) {
                 syncPreLeadCollectionFromOptions();
             }
@@ -480,7 +454,7 @@ var KMPreChat = (function () {
                 typeof deps.getAuthenticationTypeId === 'function'
                     ? deps.getAuthenticationTypeId()
                     : deps.MCK_AUTHENTICATION_TYPE_ID;
-            if (typeof authTypeId !== 'undefined' && authTypeId > 0) {
+            if (authTypeId > 0) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
                         item &&
@@ -669,11 +643,9 @@ var KMPreChat = (function () {
             var leadCollectionHeading = document.getElementById('km-lead-collection-heading');
             var tabTitle = document.getElementById('km-tab-title');
             if (submitLogin) {
-                var submitLabel = getLeadCollectionLabel('submit', LEAD_COLLECTION_LABEL.submit);
-                submitLogin.innerHTML = submitLabel;
-                submitLogin.setAttribute('aria-label', submitLabel);
-                kommunicateCommons.show(submitLogin);
-                submitLogin.removeAttribute('disabled');
+                target.updateAuthSubmitButton(
+                    getLeadCollectionLabel('submit', LEAD_COLLECTION_LABEL.submit)
+                );
             }
             if (leadCollectionHeading) {
                 var headingText = deps.appOptions.headingFromWidget
