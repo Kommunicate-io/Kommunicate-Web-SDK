@@ -5694,6 +5694,11 @@ div[name='message']:last-child {
     right: 35px !important;
 }
 
+.mck-sidebox.km-iframe-sidebox-bottom-reset {
+    bottom: 0 !important;
+}
+
+
 /* Dialogflow HTML Headers Fix */
 
 .mck-sidebox .mck-msg-text h1 {
