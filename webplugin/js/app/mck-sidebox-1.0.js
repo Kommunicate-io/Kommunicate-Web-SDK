@@ -3348,15 +3348,16 @@ const firstVisibleMsg = {
                 });
 
                 var iframeMedia = parent.window.matchMedia('(max-width: 600px)');
+                var sidebox = document.getElementById('mck-sidebox');
                 var updateIframeBorderRadiusForViewport = function () {
+                    if (!sidebox) {
+                        return;
+                    }
+                    sidebox.classList.add('km-iframe-sidebox-border-radius');
                     if (iframeMedia.matches) {
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.remove('km-iframe-sidebox-border-radius');
+                        sidebox.classList.add('km-iframe-sidebox-bottom-reset');
                     } else {
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.add('km-iframe-sidebox-border-radius');
+                        sidebox.classList.remove('km-iframe-sidebox-bottom-reset');
                     }
                 };
                 updateIframeBorderRadiusForViewport();
