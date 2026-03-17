@@ -4221,7 +4221,9 @@ const firstVisibleMsg = {
                 });
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(eventMapping.onRestartConversationClick);
-                KommunicateUI.clearClosedConversationBannerTimeout();
+                if (KommunicateUI.closedConversationBannerTabId === CURRENT_GROUP_DATA.tabId) {
+                    KommunicateUI.clearClosedConversationBannerTimeout();
+                }
                 if (
                     event.currentTarget.id == 'km-restart-conversation' &&
                     appOptions.restartConversationByUser
