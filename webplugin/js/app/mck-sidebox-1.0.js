@@ -15518,6 +15518,7 @@ const firstVisibleMsg = {
                                     mckMessageLayout.isMessageSentByBot(resp.message, contact) &&
                                     !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                 ) {
+                                    KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
                                     KommunicateUI.scheduleClosedConversationBanner(
                                         MCK_BOT_MESSAGE_DELAY,
                                         CURRENT_GROUP_DATA.tabId
