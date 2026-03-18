@@ -317,6 +317,7 @@ class MckVoice {
             spokenText,
             ttsPromise: null,
             ttsBlob: null,
+            ttsError: null,
         };
 
         if (
@@ -328,11 +329,13 @@ class MckVoice {
                 .textToVoice(spokenText)
                 .then((data) => {
                     queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    queueItem.ttsError = null;
                     return queueItem.ttsBlob;
                 })
                 .catch((error) => {
                     queueItem.ttsPromise = null;
-                    throw error;
+                    queueItem.ttsError = error;
+                    return null;
                 });
         }
 
@@ -368,11 +371,24 @@ class MckVoice {
             }
 
             if (this.activeRecognitionMode === 'omnichannel') {
+                if (queueItem.ttsError && !queueItem.ttsBlob && !queueItem.ttsPromise) {
+                    const prefetchError = queueItem.ttsError;
+                    queueItem.ttsError = null;
+                    throw prefetchError;
+                }
                 if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
-                    queueItem.ttsPromise = kmVoice.textToVoice(spokenText).then((data) => {
-                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
-                        return queueItem.ttsBlob;
-                    });
+                    queueItem.ttsPromise = kmVoice
+                        .textToVoice(spokenText)
+                        .then((data) => {
+                            queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                            queueItem.ttsError = null;
+                            return queueItem.ttsBlob;
+                        })
+                        .catch((error) => {
+                            queueItem.ttsPromise = null;
+                            queueItem.ttsError = error;
+                            throw error;
+                        });
                 }
                 const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
                 this.playAudioBlobWithQueue(wavBlob);
