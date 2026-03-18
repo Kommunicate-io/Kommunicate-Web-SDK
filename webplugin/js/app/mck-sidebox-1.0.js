@@ -15513,7 +15513,7 @@ const firstVisibleMsg = {
                                 resp.message.metadata.KM_STATUS ===
                                     KommunicateConstants.CONVERSATION_RESOLVED_STATUS
                             ) {
-                                KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
+                                KommunicateUI.isConvJustResolved = true;
                                 if (
                                     MCK_BOT_MESSAGE_DELAY !== 0 &&
                                     mckMessageLayout.isMessageSentByBot(resp.message, contact) &&
