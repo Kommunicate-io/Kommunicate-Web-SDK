@@ -2,7 +2,7 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 600; // avoid splitting on brief thinking pauses
+    _SILENCE_DURATION = 600; // generic silence fallback for non-omnichannel capture
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
@@ -20,7 +20,9 @@ class MckVoice {
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
-    _VOICE_CONTINUATION_MIN_WAIT_MS = 750;
+    _VOICE_OMNICHANNEL_SEGMENT_SILENCE_MS = 400;
+    _VOICE_CONTINUATION_MIN_WAIT_MS = 600;
+    _VOICE_CONTINUATION_MAX_SILENCE_MS = 3000;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     // Threshold for frequency-domain visualizer (0..255 scale)
@@ -124,16 +126,7 @@ class MckVoice {
     }
 
     resetVoicePlaybackQueue(reason = 'manual_reset') {
-        const pendingCount = this.messagesQueue.length;
         this.messagesQueue = [];
-        if (pendingCount > 0) {
-            console.debug('Voice playback queue reset', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                reason,
-                clearedCount: pendingCount,
-            });
-        }
     }
 
     async startVoiceMode(
@@ -231,8 +224,12 @@ class MckVoice {
             config.language ||
             (typeof navigator !== 'undefined' && navigator.language) ||
             'en-US';
+        const defaultSilenceStopMs =
+            requestedMode === 'omnichannel'
+                ? this._VOICE_OMNICHANNEL_SEGMENT_SILENCE_MS
+                : this._SILENCE_DURATION;
         const rawSilenceStopMs =
-            config.silenceStopMs ?? config.silenceDuration ?? this._SILENCE_DURATION;
+            config.silenceStopMs ?? config.silenceDuration ?? defaultSilenceStopMs;
         const normalizedSilenceStopMs =
             Number(rawSilenceStopMs) > 0 ? Number(rawSilenceStopMs) : this._SILENCE_DURATION;
         // Guardrail: avoid very large silence windows that delay first STT call.
@@ -254,6 +251,8 @@ class MckVoice {
             postRollMs: config.postRollMs ?? this._VOICE_POST_ROLL_MS,
             continuationMinWaitMs:
                 config.continuationMinWaitMs ?? this._VOICE_CONTINUATION_MIN_WAIT_MS,
+            continuationMaxSilenceMs:
+                config.continuationMaxSilenceMs ?? this._VOICE_CONTINUATION_MAX_SILENCE_MS,
             minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
             minChunkRms: config.minChunkRms ?? this._VOICE_MIN_CHUNK_RMS,
             maxAbsSilenceThreshold:
@@ -281,10 +280,6 @@ class MckVoice {
             // If bot response audio is about to play, stop any active recording capture.
             // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
             if (this.isRecording) {
-                console.debug('Stopping active recording before bot audio playback queueing', {
-                    ts: Date.now(),
-                    iso: new Date().toISOString(),
-                });
                 this.stopRecording(true);
             }
             this.clearVoiceProgressMessage();
@@ -447,8 +442,6 @@ class MckVoice {
                 const ring1 = document.querySelector('.voice-ring-1');
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
-
-                console.debug('Playback ended, starting recede animation');
 
                 // Wait for animation to complete before removing all classes
                 this.audioElement = null;
@@ -659,7 +652,6 @@ class MckVoice {
 
     async repeatLastMsgAudio(blobUrl) {
         if (!blobUrl) {
-            console.debug('repeatLastMsgAudio: no audio stored yet');
             return;
         }
         try {
@@ -682,9 +674,7 @@ class MckVoice {
 
             await audio.play().catch(console.error);
 
-            audio.onplay = () => {
-                console.debug('Playback started');
-            };
+            audio.onplay = () => {};
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
                 this.audioElement = null;
@@ -705,8 +695,6 @@ class MckVoice {
                 const ring1 = document.querySelector('.voice-ring-1');
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
-
-                console.debug('Playback ended, starting recede animation');
 
                 // Remove ring-recede class after animation completes
                 this.audioElement = null;
@@ -939,18 +927,6 @@ class MckVoice {
         try {
             const constraints = this.getAudioCaptureConstraints();
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            try {
-                const audioTrack = stream && stream.getAudioTracks && stream.getAudioTracks()[0];
-                const audioSettings =
-                    audioTrack &&
-                    typeof audioTrack.getSettings === 'function' &&
-                    audioTrack.getSettings();
-                console.debug('Voice capture constraints applied', {
-                    constraints,
-                    settings: audioSettings || null,
-                    isSafari: this.isSafariBrowser(),
-                });
-            } catch (_) {}
             this.voiceInputSettings = this.getVoiceInputSettings();
             this.startRecording(stream);
             if (trackPermission) {
@@ -1100,13 +1076,6 @@ class MckVoice {
                 clearTimeout(this.maxRecordingTimer);
                 this.maxRecordingTimer = null;
             }
-            console.debug('Voice recording onstop fired', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                chunkCount: recordedChunks.length,
-                wasRecording: shouldProcessRecording,
-                stopReason,
-            });
             // Clean up the finished recorder before any follow-up recording starts,
             // otherwise the old onstop path can clear timers/state owned by the next session.
             recordingStream && recordingStream.getTracks().forEach((track) => track.stop());
@@ -1145,20 +1114,12 @@ class MckVoice {
                             recordedVadCaptureChunks,
                             recordedVadCaptureSampleRate
                         );
-                        console.debug('Using VAD PCM capture for Safari STT', {
-                            sampleCount: rawSamples.length,
-                            captureSampleRate: recordedVadCaptureSampleRate || null,
-                        });
                     }
                     if (!rawSamples.length) {
                         rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
-                        console.debug('Using MediaRecorder blob decode for STT', {
-                            sampleCount: rawSamples.length,
-                            isSafari: this.isSafariBrowser(),
-                        });
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
-                    const { chunks, rawDurationMs, trimmedDurationMs } = preparedAudio;
+                    const { chunks } = preparedAudio;
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
@@ -1167,10 +1128,6 @@ class MckVoice {
                         if (shouldAggregateSegments) {
                             return;
                         }
-                        console.debug('Recording was empty after silence trimming', {
-                            rawDurationMs,
-                            trimmedDurationMs,
-                        });
                         this.removeAllAnimation();
                         this.clearVoiceStatus();
                         this.updateLiveTranscript(
@@ -1198,12 +1155,6 @@ class MckVoice {
                             if (shouldAggregateSegments) {
                                 return;
                             }
-                            console.debug('Silent audio clip detected during voice mode', {
-                                sampleCount: error.sampleCount,
-                                nonZeroRatio: error.nonZeroRatio,
-                                rms: error.rms,
-                                peakAbs: error.peakAbs,
-                            });
                             this.removeAllAnimation();
                             this.clearVoiceStatus();
                             this.updateLiveTranscript(
@@ -1310,7 +1261,6 @@ class MckVoice {
 
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
-                console.debug('Max recording duration reached, stopping');
                 this.addThinkingAnimation();
                 this.stopRecording(false, 'segment_pause');
             }
@@ -1325,9 +1275,6 @@ class MckVoice {
                 if (!this.isRecording || this.speechDetected) {
                     return;
                 }
-                console.debug('No speech detected within initial window, stopping recording', {
-                    initialSpeechTimeoutMs,
-                });
                 this.addThinkingAnimation();
                 this.stopRecording(false, 'segment_pause');
             }, initialSpeechTimeoutMs);
@@ -1360,13 +1307,6 @@ class MckVoice {
         const rawDurationMs = totalSamples > 0 ? Math.round((totalSamples / sampleRate) * 1000) : 0;
 
         if (!totalSamples) {
-            console.debug('Voice VAD trim stats', {
-                rawDurationMs,
-                trimmedDurationMs: 0,
-                trimStartMs: 0,
-                trimEndMs: 0,
-                finalSamplesCount: 0,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1440,13 +1380,6 @@ class MckVoice {
                     firstStopSpeechFrameIndex - relaxedMinVoicedFrames + 1
                 );
             }
-            console.debug('Voice VAD fallback start detection applied', {
-                relaxedStartThreshold,
-                relaxedMinVoicedFrames,
-                firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                lastSpeechFrameIndex,
-            });
         }
 
         // Guardrail: if start is detected after the first stop-threshold hit, anchor start earlier.
@@ -1454,12 +1387,6 @@ class MckVoice {
         if (firstStopSpeechFrameIndex !== -1 && firstSpeechFrameIndex > firstStopSpeechFrameIndex) {
             const anchorFrames = Math.max(1, Math.round(minVoicedFrames / 2));
             const anchoredStartIndex = Math.max(0, firstStopSpeechFrameIndex - anchorFrames + 1);
-            console.debug('Voice VAD start index anchored to earliest speech boundary', {
-                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                anchoredStartIndex,
-                anchorFrames,
-            });
             firstSpeechFrameIndex = anchoredStartIndex;
         }
 
@@ -1470,22 +1397,10 @@ class MckVoice {
             firstStopSpeechFrameIndex <= Math.max(minVoicedFrames * 3, 6) &&
             firstSpeechFrameIndex > 0
         ) {
-            console.debug('Voice VAD start preserved from beginning for early speech', {
-                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                minVoicedFrames,
-            });
             firstSpeechFrameIndex = 0;
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
-            console.debug('Voice VAD trim stats', {
-                rawDurationMs,
-                trimmedDurationMs: 0,
-                trimStartMs: rawDurationMs,
-                trimEndMs: 0,
-                finalSamplesCount: 0,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1517,15 +1432,6 @@ class MckVoice {
                 trimmedSamples.slice(i, Math.min(i + maxChunkSamples, trimmedSamples.length))
             );
         }
-
-        console.debug('Voice VAD trim stats', {
-            rawDurationMs,
-            trimmedDurationMs,
-            trimStartMs,
-            trimEndMs,
-            finalSamplesCount: trimmedSamples.length,
-            chunkCount: chunks.length,
-        });
 
         return {
             chunks,
@@ -1597,11 +1503,6 @@ class MckVoice {
                     const amplified = Math.round(samples[i] * gain);
                     normalized[i] = Math.max(-32768, Math.min(32767, amplified));
                 }
-                console.debug('Voice STT input normalized for low amplitude', {
-                    originalPeak: peak,
-                    gain,
-                    sampleCount: samples.length,
-                });
                 return normalized;
             }
             return samples;
@@ -1647,11 +1548,6 @@ class MckVoice {
                 this.consecutiveEmptySttResponses++;
                 this.lastEmptySttResponseAt = Date.now();
             }
-            console.debug('Empty STT response received for chunk', {
-                label,
-                consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                sampleCount: preparedSamples.length,
-            });
             return response || null;
         };
 
@@ -1772,18 +1668,7 @@ class MckVoice {
                 }
                 if (relaxedFirstVoiceFrame !== -1) {
                     firstVoiceFrame = relaxedFirstVoiceFrame;
-                    console.debug('Relaxed chunk voiced-run gate accepted', {
-                        index: i,
-                        relaxedStartThreshold,
-                        relaxedMinVoicedFrames,
-                    });
                 } else if (firstVoiceFrame === -1) {
-                    console.debug('Dropping chunk due to insufficient voiced run', {
-                        index: i,
-                        maxConsecutiveStartFrames,
-                        minVoicedFrames,
-                        chunkSamplesLength: chunkSamples.length,
-                    });
                     continue;
                 }
             }
@@ -1827,13 +1712,6 @@ class MckVoice {
                 (chunkRms >= minChunkRms * 1.6 && stopVoiceRatio >= 0.2) ||
                 (maxAbs >= maxAbsSilenceThreshold * 3 && stopVoiceRatio >= 0.25);
             if (inEmptySuppressWindow && !isHighConfidenceChunk) {
-                console.debug('Skipping low-confidence chunk after repeated empty STT responses', {
-                    index: i,
-                    chunkRms,
-                    maxAbs,
-                    stopVoiceRatio,
-                    consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                });
                 continue;
             }
             acceptedChunkSamples.push(Int16Array.from(processedChunkSamples));
@@ -1863,27 +1741,12 @@ class MckVoice {
                     Math.round(maxAbsSilenceThreshold * 0.35)
                 );
                 if (maxAbs >= fallbackPeakThreshold && nonZeroRatio >= 0.01) {
-                    console.debug(
-                        'Voice fallback accepting merged chunk after strict gate reject',
-                        {
-                            sampleCount: mergedSamples.length,
-                            maxAbs,
-                            nonZeroRatio,
-                            fallbackPeakThreshold,
-                        }
-                    );
                     acceptedChunkSamples.push(mergedSamples);
                 }
             }
         }
 
         if (!acceptedChunkSamples.length) {
-            console.debug('Voice final samples count sent', {
-                finalSamplesCount: 0,
-                chunkCount: chunks.length,
-                acceptedChunkCount: 0,
-                sttRequestCount: 0,
-            });
             return null;
         }
 
@@ -1898,13 +1761,6 @@ class MckVoice {
                 await sendSamplesForStt(acceptedChunkSamples[i], `chunk-${i}`);
             }
         }
-
-        console.debug('Voice final samples count sent', {
-            finalSamplesCount: sentSamplesCount,
-            chunkCount: chunks.length,
-            acceptedChunkCount: acceptedChunkSamples.length,
-            sttRequestCount,
-        });
 
         if (!transcriptParts.length) {
             return null;
@@ -1989,11 +1845,6 @@ class MckVoice {
             return;
         }
         if (this.awaitingBotResponsePlayback) {
-            console.debug('Recovering listening after playback cleanup', {
-                reason,
-                awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
-                queuedMessages: this.messagesQueue.length,
-            });
             this.setAwaitingBotResponsePlayback(false);
         }
         this.resumeListeningAfterPlayback();
@@ -2027,15 +1878,12 @@ class MckVoice {
             const bufferLength = analyzer.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
 
-            console.debug('Audio visualizer created, ready to animate ring');
-
             // Keep track of previous scale for smooth transitions
             let lastScale = this._MIN_SPEAK_ANIMATION_SCALE; // Initialize with minimum scale (matching minScale)
 
             // Animation function with improved response to sound
             const visualize = () => {
                 if (!ring || !audioElement || audioElement.paused) {
-                    console.debug('Animation stopped: ring or audio not available');
                     return;
                 }
 
@@ -2101,11 +1949,9 @@ class MckVoice {
 
             // Start the animation loop with a single request
             this.animationFrame = requestAnimationFrame(visualize);
-            console.debug('Audio visualization started');
 
             // Return cleanup function
             return () => {
-                console.debug('Cleaning up audio visualizer');
                 if (this.animationFrame) {
                     cancelAnimationFrame(this.animationFrame);
                     this.animationFrame = null;
@@ -2581,12 +2427,16 @@ class MckVoice {
         const continuationMinWaitMs = Number(
             this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
         );
+        const continuationMaxSilenceMs = Number(
+            this.voiceInputSettings.continuationMaxSilenceMs ||
+                this._VOICE_CONTINUATION_MAX_SILENCE_MS
+        );
         if (this.continuationDecisionActive) {
             if (this.continuationSpeechDetected) {
                 this.resolveContinuationDecisionWindow();
                 return;
             }
-            if (this.pendingContinuationStart || this.pendingVoiceSegmentInFlight > 0) {
+            if (this.pendingContinuationStart) {
                 this.schedulePendingVoiceMessageFinalize(100);
                 return;
             }
@@ -2594,23 +2444,46 @@ class MckVoice {
                 ? Date.now() - this.continuationWindowStartedAt
                 : continuationMinWaitMs;
             if (this.isRecording) {
-                if (this.speechDetected) {
+                if (this.speechDetected || this.firstSpeechTimestamp) {
                     this.resolveContinuationDecisionWindow();
                     return;
                 }
-                if (continuationElapsed < continuationMinWaitMs) {
-                    this.schedulePendingVoiceMessageFinalize(
-                        continuationMinWaitMs - continuationElapsed
-                    );
+                if (
+                    continuationElapsed >= continuationMinWaitMs &&
+                    this.pendingVoiceSegmentInFlight === 0
+                ) {
+                    this.stopRecording(false, 'continuation_idle');
                     return;
                 }
-                this.stopRecording(false, 'continuation_idle');
+                if (continuationElapsed >= continuationMaxSilenceMs) {
+                    console.debug('Voice continuation long silence reached, stopping cycle', {
+                        continuationElapsed,
+                        continuationMaxSilenceMs,
+                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
+                    });
+                    this.stopRecording(false, 'continuation_idle');
+                    return;
+                }
+                const waitForMinWindow = Math.max(continuationMinWaitMs - continuationElapsed, 0);
+                const waitForMaxWindow = Math.max(
+                    continuationMaxSilenceMs - continuationElapsed,
+                    0
+                );
+                const nextDelay = this.pendingVoiceSegmentInFlight > 0 ? 100 : waitForMinWindow;
+                if (nextDelay > 0) {
+                    this.schedulePendingVoiceMessageFinalize(Math.min(nextDelay, waitForMaxWindow));
+                    return;
+                }
+                this.schedulePendingVoiceMessageFinalize(Math.min(100, waitForMaxWindow || 100));
                 return;
             }
-            if (continuationElapsed < continuationMinWaitMs) {
-                this.schedulePendingVoiceMessageFinalize(
-                    continuationMinWaitMs - continuationElapsed
-                );
+            if (
+                continuationElapsed < continuationMinWaitMs ||
+                this.pendingVoiceSegmentInFlight > 0
+            ) {
+                const waitForMinWindow = Math.max(continuationMinWaitMs - continuationElapsed, 0);
+                const nextDelay = this.pendingVoiceSegmentInFlight > 0 ? 100 : waitForMinWindow;
+                this.schedulePendingVoiceMessageFinalize(nextDelay || 100);
                 return;
             }
             this.resolveContinuationDecisionWindow();
@@ -2620,7 +2493,34 @@ class MckVoice {
             return;
         }
         if (this.isRecording) {
-            if (!this.speechDetected && this.pendingVoiceSegmentInFlight === 0) {
+            const silenceElapsed = this.silenceStart ? Date.now() - this.silenceStart : 0;
+            const continuationMinWaitMs = Number(
+                this.voiceInputSettings.continuationMinWaitMs ||
+                    this._VOICE_CONTINUATION_MIN_WAIT_MS
+            );
+            const continuationMaxSilenceMs = Number(
+                this.voiceInputSettings.continuationMaxSilenceMs ||
+                    this._VOICE_CONTINUATION_MAX_SILENCE_MS
+            );
+            if (
+                !this.speechDetected &&
+                this.pendingVoiceSegmentInFlight === 0 &&
+                this.isInSilence &&
+                silenceElapsed >= continuationMinWaitMs
+            ) {
+                this.stopRecording(false, 'continuation_idle');
+                return;
+            }
+            if (
+                !this.speechDetected &&
+                this.pendingVoiceSegmentInFlight === 0 &&
+                this.isInSilence &&
+                silenceElapsed >= continuationMaxSilenceMs
+            ) {
+                console.debug('Voice continuation long silence reached, stopping cycle', {
+                    silenceElapsedMs: silenceElapsed,
+                    continuationMaxSilenceMs,
+                });
                 this.stopRecording(false, 'continuation_idle');
                 return;
             }
@@ -2673,6 +2573,17 @@ class MckVoice {
             this.startSilenceTimeout();
             return;
         }
+        console.debug('Voice silence threshold reached', {
+            silenceDurationMs: silenceDuration,
+            silenceThresholdMs: this.voiceInputSettings.silenceDuration,
+            continuationMinWaitMs:
+                this.voiceInputSettings.continuationMinWaitMs ||
+                this._VOICE_CONTINUATION_MIN_WAIT_MS,
+            continuationMaxSilenceMs:
+                this.voiceInputSettings.continuationMaxSilenceMs ||
+                this._VOICE_CONTINUATION_MAX_SILENCE_MS,
+            activeRecognitionMode: this.activeRecognitionMode,
+        });
         console.debug('User silent for a few moments, stopping recording segment');
         this.addThinkingAnimation();
         this.updateLiveTranscript(
@@ -3326,18 +3237,24 @@ class MckVoice {
             return;
         }
         if (this.mediaRecorder && this.isRecording) {
+            const silenceElapsedMs = this.silenceStart ? Date.now() - this.silenceStart : 0;
             this.recordingStopReason = stopReason;
             console.debug('Voice recording stop requested', {
                 ts: Date.now(),
                 iso: new Date().toISOString(),
                 forceStop: Boolean(forceStop),
                 stopReason,
+                silenceElapsedMs,
+                isInSilence: this.isInSilence,
+                speechDetected: this.speechDetected,
             });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
             console.debug('Voice recording stop invoked', {
                 ts: Date.now(),
                 iso: new Date().toISOString(),
+                stopReason,
+                silenceElapsedMs,
             });
 
             if (this.maxRecordingTimer) {

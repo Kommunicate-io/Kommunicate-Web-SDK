@@ -283,10 +283,6 @@ class Voice {
                 MCK_GROUP_MAP[groupId].metadata = MCK_GROUP_MAP[groupId].metadata || {};
                 MCK_GROUP_MAP[groupId].metadata.KM_CHAT_CONTEXT = updatedGroupChatContext;
             }
-            console.debug('Voice language persisted', {
-                groupId,
-                languageCode: normalizedLanguage,
-            });
         } catch (error) {
             console.warn('Voice language metadata persist failed', {
                 groupId,
@@ -782,11 +778,9 @@ class Voice {
         if (typeof sampleCount === 'number') {
             metadata.sampleCount = sampleCount;
         }
-        const logLabel =
-            operation === 'voiceToText'
-                ? `Voice STT request send (${transport})`
-                : 'Voice request send';
-        console.debug(logLabel, metadata);
+        if (operation === 'voiceToText') {
+            console.debug(`Voice STT request send (${transport})`, metadata);
+        }
     }
 
     handleOmnichannelVoiceError(error, { transport, silentMessage, defaultMessage }) {
@@ -917,9 +911,8 @@ class Voice {
 
     async textToVoice(text = '') {
         const activeConversationId = this.getActiveConversationId();
-        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationId);
+        const { state } = this.getVoiceLanguageState(activeConversationId);
         const languageCode = this.getSessionVoiceLanguageCode(state);
-        console.debug('Voice language used for subsequent TTS', { sessionKey, languageCode });
         const payload = {
             text,
             source: this.getOmnichannelSource(this.voiceChatConfig.source),
@@ -970,13 +963,6 @@ class Voice {
             headers: headers,
         };
 
-        console.debug('Voice STT request send (elevenlabs)', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            url: apiUrl,
-            provider: 'elevenlabs',
-        });
-
         return fetch(apiUrl, requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -1025,22 +1011,11 @@ class Voice {
         //         payload.alternativeLanguageCodes = firstRequestAlternatives;
         //     }
         // }
-        if (shouldSendAlternativeLanguageCodes) {
-            console.debug('Voice STT request without resolved language code', {
-                sessionKey,
-                languageCode: sttLanguageCode || '',
-                alternativeLanguageCodes: payload.alternativeLanguageCodes || [],
-            });
-        } else {
-            console.debug('Voice language used for subsequent STT', {
-                sessionKey,
-                languageCode: sttLanguageCode || '',
-            });
-        }
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
         const socketConfig = this.getVoiceSocketConfig('stt');
+        const sttRequestStartedAt = Date.now();
         const response = await this.requestOmnichannelVoiceTransport({
             payload,
             socketConfig,
@@ -1052,12 +1027,21 @@ class Voice {
             enableSilentAudioLogging: true,
             preferSocket: false,
         });
+        console.debug('Voice STT response completed', {
+            ts: Date.now(),
+            iso: new Date().toISOString(),
+            provider: 'omnichannel',
+            operation: 'voiceToText',
+            durationMs: Date.now() - sttRequestStartedAt,
+            sampleCount: samples.length,
+            sttMode: payload.sttMode,
+            textLength:
+                response && typeof response.text === 'string' ? response.text.trim().length : 0,
+            languageCode:
+                response && typeof response.languageCode === 'string' ? response.languageCode : '',
+        });
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
-            console.debug('Voice language detected from server', {
-                sessionKey,
-                languageCode: detectedLanguageCode,
-            });
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
             if (didUpdateLanguage) {
                 this.syncVoiceLanguageWithChatContext(detectedLanguageCode);
@@ -1211,12 +1195,6 @@ class Voice {
             for (let i = 0; i < processed.length; i++) {
                 processed[i] = Math.max(-0.98, Math.min(0.98, processed[i] * gain));
             }
-            console.debug('STT float audio normalized for low amplitude', {
-                originalPeak: Number(peakAbs.toFixed(6)),
-                originalRms: Number(rms.toFixed(6)),
-                gain: Number(gain.toFixed(3)),
-                sampleCount: processed.length,
-            });
         }
 
         return processed;
