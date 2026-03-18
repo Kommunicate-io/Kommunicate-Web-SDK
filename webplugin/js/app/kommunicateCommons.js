@@ -119,17 +119,16 @@ function KommunicateCommons() {
         return MCK_LABELS[labelKey] || fallback || null;
     };
 
-    var DEFAULT_BOTTOM_NAV_HEIGHT = 44;
-    var MODERN_NAV_HEIGHT_EXTRA = 22;
-    var NAV_HEIGHT_OFFSET = 16;
+    var DEFAULT_BOTTOM_NAV_HEIGHT = 90;
+    var NAV_HEIGHT_ADJUSTMENT = 36;
+    var MIN_TOP_CTA_GAP = 75;
+    var IFRAME_BOTTOM_OFFSET = 15;
     var cachedBottomNavHeight = null;
 
     _this.adjustIframeHeightForLayout = function (iframeElement) {
         if (
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
-            !_this.isModernLayoutEnabled ||
-            !_this.isModernLayoutEnabled() ||
             (iframeElement.classList &&
                 (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
@@ -157,8 +156,22 @@ function KommunicateCommons() {
         if (isNaN(navHeight) || navHeight <= 0) {
             navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        var reducedHeight = baseHeight - navHeight;
-        iframeElement.style.height = (reducedHeight > 0 ? reducedHeight : baseHeight) + 'px';
+        var navAdjustedIframeHeight = baseHeight - navHeight;
+        var finalIframeHeight = navAdjustedIframeHeight > 0 ? navAdjustedIframeHeight : baseHeight;
+        var shouldEnforceTopGap =
+            iframeElement.classList &&
+            iframeElement.classList.contains('km-iframe-dimension-with-popup');
+        if (shouldEnforceTopGap) {
+            var viewportHeight =
+                heightSourceWindow && heightSourceWindow.innerHeight
+                    ? heightSourceWindow.innerHeight
+                    : window.innerHeight;
+            var maxIframeHeightWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - IFRAME_BOTTOM_OFFSET;
+            if (!isNaN(maxIframeHeightWithTopGap) && maxIframeHeightWithTopGap > 0) {
+                finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeightWithTopGap);
+            }
+        }
+        iframeElement.style.height = finalIframeHeight + 'px';
 
         if (heightSourceWindow && typeof heightSourceWindow.addEventListener === 'function') {
             var existingHandler = iframeResizeListeners
@@ -268,10 +281,7 @@ function KommunicateCommons() {
         if (!height || height < 0) {
             height = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
-        if (_this.isModernLayoutEnabled()) {
-            height -= MODERN_NAV_HEIGHT_EXTRA;
-        }
-        height -= NAV_HEIGHT_OFFSET;
+        height -= NAV_HEIGHT_ADJUSTMENT;
         cachedBottomNavHeight = height;
         return cachedBottomNavHeight;
     }

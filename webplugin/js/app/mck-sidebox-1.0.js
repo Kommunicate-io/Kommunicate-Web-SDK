@@ -3348,18 +3348,20 @@ const firstVisibleMsg = {
                 });
 
                 var iframeMedia = parent.window.matchMedia('(max-width: 600px)');
-                iframeMedia.addListener(function () {
-                    if (iframeMedia.matches) {
-                        // If media query matches
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.remove('km-iframe-sidebox-border-radius');
-                    } else {
-                        document
-                            .getElementById('mck-sidebox')
-                            .classList.add('km-iframe-sidebox-border-radius');
+                var sidebox = document.getElementById('mck-sidebox');
+                var updateIframeBorderRadiusForViewport = function () {
+                    if (!sidebox) {
+                        return;
                     }
-                });
+                    sidebox.classList.add('km-iframe-sidebox-border-radius');
+                    if (iframeMedia.matches) {
+                        sidebox.classList.add('km-iframe-sidebox-bottom-reset');
+                    } else {
+                        sidebox.classList.remove('km-iframe-sidebox-bottom-reset');
+                    }
+                };
+                updateIframeBorderRadiusForViewport();
+                iframeMedia.addListener(updateIframeBorderRadiusForViewport);
             };
 
             _this.restrictScrollOnHandHeldDevices = function () {

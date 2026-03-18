@@ -23,7 +23,7 @@ var kmCustomElements = {
 // iframe class
 var kmCustomIframe =
     '.kommunicate-custom-iframe { ' +
-    '   max-height: calc(100% - 30px)!important;' +
+    '   max-height: 800px !important;' +
     '   border: none;' +
     '   position: fixed;' +
     '   z-index: 2243000;' +
@@ -58,8 +58,10 @@ var kmCustomIframe =
     '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3)' +
     '} \n ' +
     '.km-iframe-dimension-with-popup{ ' +
-    '    height: 700px; ' +
-    '    width: 442px; ' +
+    '    height: 85vh; ' +
+    '    max-height: 800px; ' +
+    '    width: 27vw; ' +
+    '    min-width: 390px; ' +
     '} \n ' +
     '.km-iframe-closed{ ' +
     '    height: 75px; ' +

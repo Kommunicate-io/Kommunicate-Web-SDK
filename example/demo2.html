@@ -516,6 +516,7 @@
             const preChatFields = document.getElementById('preChatFields');
             const legacyIframe = document.getElementById('legacy-iframe');
             const placementRadios = document.querySelectorAll('input[name="containerMode"]');
+            const layoutRadios = document.querySelectorAll('input[name="layout"]');
             const widgetPositionRadios = document.querySelectorAll('input[name="widgetPosition"]');
             const resetButton = document.getElementById('reset-form');
             const containerModeHideControlsCheckbox = document.getElementById(
@@ -584,7 +585,11 @@
                 if (selected === 'iframe') {
                     legacyIframe.style.display = 'block';
                     const currentAppId = (appIdInput.value || defaultState.appId).trim();
-                    legacyIframe.src = `/chat?appId=${encodeURIComponent(currentAppId)}`;
+                    const currentLayout = document.querySelector('input[name="layout"]:checked')
+                        .value;
+                    legacyIframe.src = `/chat?appId=${encodeURIComponent(
+                        currentAppId
+                    )}&layout=${encodeURIComponent(currentLayout)}`;
                     preview.dataset.modeInfo = 'legacy iframe preview';
                 } else {
                     legacyIframe.style.display = 'none';
@@ -871,6 +876,9 @@
             preChatEnabledCheckbox.addEventListener('change', updatePreChatTextareaState);
             voiceModeEnabledCheckbox.addEventListener('change', updateVoiceModeState);
             placementRadios.forEach((radio) =>
+                radio.addEventListener('change', handlePlacementChange)
+            );
+            layoutRadios.forEach((radio) =>
                 radio.addEventListener('change', handlePlacementChange)
             );
 

@@ -20,6 +20,7 @@
             }
             let params = new URLSearchParams(window.location.search);
             let appId = params.get('appId');
+            let layout = params.get('layout');
             let noFocus = params.get('noFocus');
             let botIds = splitByComma(params.get('botIds'));
             let agentIds = splitByComma(params.get('agentIds'));
@@ -27,6 +28,7 @@
             let teamId = params.get('teamId');
             let skipRouting = params.get('skipRouting');
             let referer = window.document.referrer;
+            let selectedLayout = layout === 'modern' ? 'modern' : 'classic';
 
             if (!appId) {
                 document.getElementById('error-msg').innerText = 'no app id';
@@ -52,6 +54,7 @@
                     var kommunicateSettings = {
                         noFocus: noFocus === 'true', // params will be string and we need noFocus value as boolean
                         appId: appId, // replace this with your application id
+                        layout: selectedLayout,
                         onInit: function () {
                             if (JSON.stringify(defaultSettings) != '{}') {
                                 Kommunicate.updateSettings(defaultSettings);
@@ -67,12 +70,15 @@
                             var launcherIconStyle =
                                 'html, body { height: 100% !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }' +
                                 'body.mck-box-open { height: 100% !important; }' +
-                                '.layout-modern { height: 100% !important; }' +
+                                '.layout-modern, .layout-classic { height: 100% !important; }' +
                                 '.mck-sidebox, .mck-sidebox.fade, .mck-sidebox.fade.in, ' +
                                 '.mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in, ' +
                                 '.layout-modern .mck-sidebox, .layout-modern .mck-sidebox.fade, ' +
                                 '.layout-modern .mck-sidebox.fade.in, ' +
-                                '.layout-modern .mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in ' +
+                                '.layout-modern .mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in, ' +
+                                '.layout-classic .mck-sidebox, .layout-classic .mck-sidebox.fade, ' +
+                                '.layout-classic .mck-sidebox.fade.in, ' +
+                                '.layout-classic .mck-sidebox.mck-box.fade.km-iframe-sidebox-border-radius.popup-enabled.in ' +
                                 '{ position: absolute !important; inset: 0 !important; width: 100% !important; ' +
                                 'height: 100% !important; max-height: 100% !important; max-width: 100% !important; ' +
                                 'min-width: 0 !important; margin: 0 !important; border-radius: 0 !important; ' +
