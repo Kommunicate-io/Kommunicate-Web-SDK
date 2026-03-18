@@ -283,31 +283,75 @@ class MckVoice {
                 this.stopRecording(true);
             }
             this.clearVoiceProgressMessage();
-            this.messagesQueue.push({ msg, displayName });
+            const queueItem = this.createQueuedVoiceMessage(msg, displayName);
+            this.messagesQueue.push(queueItem);
             if (this.messagesQueue.length === 1) {
-                this.processNextMessage(msg, displayName);
+                this.processNextMessage(queueItem);
             }
         } catch (err) {
             console.error(err);
             this.messagesQueue.shift();
             if (this.messagesQueue.length > 0) {
                 const nextMsg = this.messagesQueue[0];
-                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                this.processNextMessage(nextMsg);
             }
         }
     }
 
-    async processNextMessage(msg, displayName) {
-        try {
-            const messageWithoutSource = msg.message.replace(
-                /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
-                ''
-            );
-            const spokenText = messageWithoutSource.trim();
+    createQueuedVoiceMessage(msg, displayName) {
+        const originalMessage =
+            msg && typeof msg.message === 'string'
+                ? msg.message
+                : msg && typeof msg.message === 'number'
+                ? String(msg.message)
+                : '';
+        const messageWithoutSource = originalMessage.replace(
+            /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
+            ''
+        );
+        const spokenText = messageWithoutSource.trim();
+        const queueItem = {
+            msg,
+            displayName,
+            messageWithoutSource,
+            spokenText,
+            ttsPromise: null,
+            ttsBlob: null,
+        };
 
-            this.agentOrBotName = displayName;
-            const responseText = displayName
-                ? `${displayName}: ${messageWithoutSource}`
+        if (
+            spokenText &&
+            !this.shouldUseNativeSpeechSynthesis() &&
+            this.activeRecognitionMode === 'omnichannel'
+        ) {
+            queueItem.ttsPromise = kmVoice
+                .textToVoice(spokenText)
+                .then((data) => {
+                    queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    return queueItem.ttsBlob;
+                })
+                .catch((error) => {
+                    queueItem.ttsPromise = null;
+                    throw error;
+                });
+        }
+
+        return queueItem;
+    }
+
+    async processNextMessage(queueItemOrMsg, displayName) {
+        try {
+            const queueItem =
+                queueItemOrMsg &&
+                typeof queueItemOrMsg === 'object' &&
+                Object.prototype.hasOwnProperty.call(queueItemOrMsg, 'messageWithoutSource')
+                    ? queueItemOrMsg
+                    : this.createQueuedVoiceMessage(queueItemOrMsg, displayName);
+            const { messageWithoutSource, spokenText, displayName: queuedDisplayName } = queueItem;
+
+            this.agentOrBotName = queuedDisplayName;
+            const responseText = queuedDisplayName
+                ? `${queuedDisplayName}: ${messageWithoutSource}`
                 : messageWithoutSource;
             this.updateResponseText(responseText, { autoHide: 0 });
             this.agentOrBotLastMsg = messageWithoutSource;
@@ -324,8 +368,13 @@ class MckVoice {
             }
 
             if (this.activeRecognitionMode === 'omnichannel') {
-                const data = await kmVoice.textToVoice(spokenText);
-                const wavBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
+                    queueItem.ttsPromise = kmVoice.textToVoice(spokenText).then((data) => {
+                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        return queueItem.ttsBlob;
+                    });
+                }
+                const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
                 this.playAudioBlobWithQueue(wavBlob);
                 return;
             }
@@ -414,7 +463,7 @@ class MckVoice {
                         this.visualizerCleanup = null;
                     }
 
-                    this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                    this.processNextMessage(nextMsg);
                     return;
                 }
 
@@ -491,7 +540,7 @@ class MckVoice {
                     } catch (e) {}
                 }
                 const nextMsg = this.shiftToNextQueuedMessage();
-                nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                nextMsg && this.processNextMessage(nextMsg);
             });
         } catch (err) {
             console.error(err);
@@ -526,7 +575,7 @@ class MckVoice {
             URL.revokeObjectURL(blobUrl);
             this.audioElement = null;
             const nextMsg = this.shiftToNextQueuedMessage();
-            nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            nextMsg && this.processNextMessage(nextMsg);
         };
 
         audio.addEventListener(
@@ -548,7 +597,7 @@ class MckVoice {
                     this.visualizerCleanup = null;
                 }
                 this.audioElement = null;
-                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                this.processNextMessage(nextMsg);
                 return;
             }
 
@@ -634,7 +683,7 @@ class MckVoice {
     advanceQueueAfterPlayback() {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
-            this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            this.processNextMessage(nextMsg);
             return;
         }
         this.setAwaitingBotResponsePlayback(false);
