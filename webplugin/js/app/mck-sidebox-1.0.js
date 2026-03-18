@@ -15513,18 +15513,17 @@ const firstVisibleMsg = {
                                 resp.message.metadata.KM_STATUS ===
                                     KommunicateConstants.CONVERSATION_RESOLVED_STATUS
                             ) {
+                                KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
                                 if (
                                     MCK_BOT_MESSAGE_DELAY !== 0 &&
                                     mckMessageLayout.isMessageSentByBot(resp.message, contact) &&
                                     !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                 ) {
-                                    KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
                                     KommunicateUI.scheduleClosedConversationBanner(
                                         MCK_BOT_MESSAGE_DELAY,
                                         CURRENT_GROUP_DATA.tabId
                                     );
                                 } else {
-                                    KommunicateUI.isConvJustResolved = !!!KommunicateUI.isConvJustResolved;
                                     KommunicateUI.showClosedConversationBanner(true);
                                 }
                             } else if (
