@@ -1082,6 +1082,10 @@ const firstVisibleMsg = {
                     typeof Kommunicate.setDefaultIframeConfigForClosedChat === 'function' &&
                         Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
+                // In lazy init mode, schedule the greeting popup immediately after
+                // the launcher and popup markup are added, so it can appear even
+                // before the first explicit widget open.
+                showPopupChatTemplateOnce();
             } else {
                 mckInit.initializeApp(appOptions, false);
                 mckNotificationService.init();
