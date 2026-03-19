@@ -946,6 +946,7 @@ class MckVoice {
         onPermissionDenied = null,
         suppressPermissionAlert = false,
         trackPermission = false,
+        existingStream = null,
     } = {}) {
         if (this.awaitingBotResponsePlayback || this.messagesQueue.length > 0) {
             return false;
@@ -965,6 +966,12 @@ class MckVoice {
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
             }
+            return true;
+        }
+
+        if (existingStream) {
+            this.voiceInputSettings = this.getVoiceInputSettings();
+            this.startRecording(existingStream);
             return true;
         }
 
@@ -1120,6 +1127,11 @@ class MckVoice {
                 (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
             const shouldRestartContinuationRecording =
                 this.activeRecognitionMode === 'omnichannel' && stopReason === 'segment_pause';
+            const shouldReuseContinuationStream =
+                shouldRestartContinuationRecording &&
+                recordingStream &&
+                recordingStream.active &&
+                recordingStream.getAudioTracks().some((track) => track.readyState === 'live');
             const segmentSeq = shouldAggregateSegments
                 ? ++this.pendingVoiceSegmentSeq
                 : this.pendingVoiceSegmentSeq;
@@ -1143,7 +1155,9 @@ class MckVoice {
             }
             // Clean up the finished recorder before any follow-up recording starts,
             // otherwise the old onstop path can clear timers/state owned by the next session.
-            recordingStream && recordingStream.getTracks().forEach((track) => track.stop());
+            if (!shouldReuseContinuationStream && recordingStream) {
+                recordingStream.getTracks().forEach((track) => track.stop());
+            }
             if (this.stream === recordingStream) {
                 this.stream = null;
             }
@@ -1164,10 +1178,22 @@ class MckVoice {
                 if (shouldRestartContinuationRecording && recordingStream) {
                     this.beginContinuationDecisionWindow();
                     this.pendingContinuationStart = true;
-                    Promise.resolve(this.requestAudioRecordingWhenReady()).finally(() => {
-                        this.pendingContinuationStart = false;
-                        this.maybeFinalizePendingVoiceMessageAfterSegment();
-                    });
+                    Promise.resolve(
+                        this.requestAudioRecordingWhenReady({
+                            existingStream: shouldReuseContinuationStream ? recordingStream : null,
+                        })
+                    )
+                        .catch((error) => {
+                            console.error('Voice continuation restart failed', error);
+                            if (shouldReuseContinuationStream && recordingStream) {
+                                recordingStream.getTracks().forEach((track) => track.stop());
+                            }
+                            return false;
+                        })
+                        .finally(() => {
+                            this.pendingContinuationStart = false;
+                            this.maybeFinalizePendingVoiceMessageAfterSegment();
+                        });
                 }
                 // Create blob from recorded chunks
                 if (shouldProcessRecording) {
