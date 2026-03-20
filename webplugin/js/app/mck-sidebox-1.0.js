@@ -4291,12 +4291,13 @@ const firstVisibleMsg = {
             };
             _this.toggleMediaOptions = function (el) {
                 var text = '';
+                var hasAttachments = FILE_META.length > 0 || $applozic('.mck-file-box').length > 0;
                 if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
                     text = el.value;
                 } else {
                     text = el.textContent;
                 }
-                if (text == '' || !text.replace(/\s/g, '').length) {
+                if ((text == '' || !text.replace(/\s/g, '').length) && !hasAttachments) {
                     _this.hideSendButton();
                     Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                     appOptions.voiceChat && kommunicateCommons.show('#mck-voice-web');
@@ -14014,6 +14015,7 @@ const firstVisibleMsg = {
                         null,
                         MCK_CUSTOM_UPLOAD_SETTINGS
                     );
+                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
                 });
 
                 $applozic(d).on('click', '.mck-remove-file', function () {
@@ -14036,6 +14038,7 @@ const firstVisibleMsg = {
                             }
                         });
                     }
+                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
                 });
 
                 $mck_autosuggest_search_input.on('input', function (e) {
@@ -14204,6 +14207,9 @@ const firstVisibleMsg = {
                             );
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
+                            mckMessageService.toggleMediaOptions(
+                                document.getElementById('mck-text-box')
+                            );
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
                             if (params.callback) {
@@ -14377,6 +14383,9 @@ const firstVisibleMsg = {
                             );
                             $mck_text_box.removeAttr('required');
                             FILE_META.push(file_meta);
+                            mckMessageService.toggleMediaOptions(
+                                document.getElementById('mck-text-box')
+                            );
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
                             if (params.callback) {
@@ -14508,6 +14517,7 @@ const firstVisibleMsg = {
                     $file_remove.attr('disabled', false);
                     kommunicateCommons.hide('.mck-file-box.' + fileboxId + ' .km-progress');
                     FILE_META.push(file.fileMeta);
+                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
                 } else {
                     $mck_msg_sbmt.attr('disabled', true);
                     $file_remove.attr('disabled', true);
