@@ -1779,6 +1779,7 @@ mck-sidebox .mck-group-member-list li a:hover {
     background-color: #fff;
     text-align: left;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
@@ -2009,15 +2010,21 @@ ul.mck-intent-menu > li:hover {
     margin-top: 2px !important;
 }
 
+#mck-file-box {
+    order: -1;
+    flex: 0 0 100%;
+    margin-bottom: 1px;
+}
+
 .mck-file-box .mck-file-expr {
-    background-color: lavender;
-    color: #5ea9dd;
+    background-color: #efeff5;
+    color: #5F46F8;
     padding: 2px 3px !important;
     font-size: 12px !important;
     font-weight: bold;
     overflow: hidden;
     max-height: 30px;
-    border-radius: 4px;
+    border-radius: 14px;
     width: 99%;
 }
 
@@ -2031,6 +2038,7 @@ ul.mck-intent-menu > li:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
+    margin-left: 10px;
     white-space: nowrap;
     max-width: 70%;
 }
@@ -2039,6 +2047,12 @@ ul.mck-intent-menu > li:hover {
     color: #777;
     display: inline-block;
     vertical-align: middle;
+}
+
+.mck-file-expr button.mck-remove-file.mck-box-close {
+    width: 24px;
+    height: 24px;
+    line-height: 1;
 }
 
 .mck-file-expr .km-progress {
@@ -2051,7 +2065,7 @@ ul.mck-intent-menu > li:hover {
 .mck-file-expr .km-progress .km-bar {
     height: 20px;
     background: green;
-    border-radius: 4px;
+    border-radius: 14px;
     width: 0%;
 }
 
