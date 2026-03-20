@@ -60,8 +60,7 @@ var kmCustomIframe =
     '.km-iframe-dimension-with-popup{ ' +
     '    height: 85vh; ' +
     '    max-height: 800px; ' +
-    '    width: 27vw; ' +
-    '    min-width: 390px; ' +
+    '    width: 420px; ' +
     '} \n ' +
     '.km-iframe-closed{ ' +
     '    height: 75px; ' +
