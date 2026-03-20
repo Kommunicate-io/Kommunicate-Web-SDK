@@ -6419,8 +6419,8 @@ const firstVisibleMsg = {
                     .removeClass('mck-sent-icon')
                     .addClass('mck-pending-icon');
                 mckMessageLayout.addTooltip(randomId);
-                mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
+                mckMessageLayout.clearMessageField(true);
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
             };
             _this.sendForwardMessage = function (forwardMessageKey) {
@@ -14015,7 +14015,11 @@ const firstVisibleMsg = {
                         null,
                         MCK_CUSTOM_UPLOAD_SETTINGS
                     );
-                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
+                    setTimeout(function () {
+                        mckMessageService.toggleMediaOptions(
+                            document.getElementById('mck-text-box')
+                        );
+                    }, 0);
                 });
 
                 $applozic(d).on('click', '.mck-remove-file', function () {
@@ -14038,7 +14042,11 @@ const firstVisibleMsg = {
                             }
                         });
                     }
-                    mckMessageService.toggleMediaOptions(document.getElementById('mck-text-box'));
+                    setTimeout(function () {
+                        mckMessageService.toggleMediaOptions(
+                            document.getElementById('mck-text-box')
+                        );
+                    }, 0);
                 });
 
                 $mck_autosuggest_search_input.on('input', function (e) {
