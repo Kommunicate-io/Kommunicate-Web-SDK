@@ -1139,12 +1139,7 @@ const firstVisibleMsg = {
                 isIosDevice && hackForIosDevices();
             }
             function stopVoicePlaybackOnUnload() {
-                if (
-                    Kommunicate.mediaService &&
-                    typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
-                ) {
-                    Kommunicate.mediaService.stopVoiceOutput();
-                }
+                Kommunicate.mediaService.stopVoiceOutput();
                 if (
                     typeof mckVoice !== 'undefined' &&
                     mckVoice &&
@@ -3243,13 +3238,7 @@ const firstVisibleMsg = {
                     ) {
                         mckVoice.stopVoiceMode();
                     }
-                    if (
-                        typeof Kommunicate !== 'undefined' &&
-                        Kommunicate.mediaService &&
-                        typeof Kommunicate.mediaService.stopVoiceOutput === 'function'
-                    ) {
-                        Kommunicate.mediaService.stopVoiceOutput();
-                    }
+                    Kommunicate.mediaService.stopVoiceOutput();
                 }
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
@@ -9553,18 +9542,23 @@ const firstVisibleMsg = {
                 if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
                     var chatContext, submittedFormDetails, associatedFormKey;
                     if (msg.metadata['KM_CHAT_CONTEXT']) {
-                        chatContext =
-                            typeof msg.metadata['KM_CHAT_CONTEXT'] == 'string'
-                                ? JSON.parse(msg.metadata['KM_CHAT_CONTEXT'])
-                                : msg.metadata['KM_CHAT_CONTEXT'];
+                        chatContext = KommunicateUtils.parseChatContext(
+                            msg.metadata['KM_CHAT_CONTEXT']
+                        );
                         submittedFormDetails = chatContext.formData;
                         associatedFormKey = chatContext.formMsgKey;
-                        SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
-                        append &&
-                            mckMessageLayout.populateDataInForm(
-                                associatedFormKey,
-                                submittedFormDetails
-                            );
+                        const hasValidFormContext =
+                            associatedFormKey != null &&
+                            associatedFormKey !== '' &&
+                            submittedFormDetails != null;
+                        if (hasValidFormContext) {
+                            SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
+                            append &&
+                                mckMessageLayout.populateDataInForm(
+                                    associatedFormKey,
+                                    submittedFormDetails
+                                );
+                        }
                     } else if (
                         msg.metadata.templateId ==
                         KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM
@@ -13108,12 +13102,16 @@ const firstVisibleMsg = {
                         !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
+                        CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = res?.languageCode || '';
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
                         CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot = false;
+                        CURRENT_GROUP_DATA.answerFeedback = false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot = false;
                         _this.removeWarningsFromTextBox();
                     },
                 });

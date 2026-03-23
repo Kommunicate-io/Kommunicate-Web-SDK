@@ -380,6 +380,22 @@ KommunicateUtils = {
         settings = settings ? settings : null;
         return key && settings ? settings[key] : settings ? settings : '';
     },
+    parseChatContext: function (chatContext) {
+        if (!chatContext) {
+            return {};
+        }
+        if (typeof chatContext == 'object') {
+            return chatContext;
+        }
+        if (typeof chatContext == 'string') {
+            try {
+                return JSON.parse(chatContext || '{}');
+            } catch (error) {
+                return {};
+            }
+        }
+        return {};
+    },
 
     getSubDomain: function () {
         if (!MCK_COOKIE_DOMAIN) {

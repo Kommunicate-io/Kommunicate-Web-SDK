@@ -30,6 +30,7 @@ const buildDir = path.resolve(__dirname, 'build');
 const releaseDir = path.resolve(__dirname, 'build', String(version));
 const releaseResourcesDir = path.join(releaseDir, 'resources');
 const releaseThirdPartyDir = path.join(releaseResourcesDir, 'third-party-scripts');
+const releaseResourcesFontDir = path.join(releaseResourcesDir, 'app', 'fonts');
 const legacyResourcesDir = path.join(buildDir, 'resources');
 const legacyThirdPartyDir = path.join(legacyResourcesDir, 'third-party-scripts');
 const legacyPluginLibDir = path.join(buildDir, 'plugin', 'lib', 'js');
@@ -50,6 +51,8 @@ PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.a
 PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 
 const BUILD_URL = MCK_STATIC_PATH + '/build';
+const BUNDLED_FONT_PATH = '../../css/app/fonts/';
+const VERSIONED_BUNDLED_FONT_PATH = '../css/app/fonts/';
 
 let env = config.getEnvId() !== 'development';
 const SENTRY_ENABLED = !!(sentryCfg && sentryCfg.enabled);
@@ -84,6 +87,9 @@ const minifyPluginContent = (code) => {
         return code;
     }
 };
+
+const rewriteBundledFontPaths = (cssContent) =>
+    cssContent.replaceAll(BUNDLED_FONT_PATH, VERSIONED_BUNDLED_FONT_PATH);
 
 const generateResourceFolder = () => {
     if (!fs.existsSync(releaseResourcesDir)) {
@@ -122,6 +128,15 @@ const generateCSSFiles = () => {
     return (
         gulp
             .src(PLUGIN_CSS_FILES)
+            .pipe(
+                tap((file) => {
+                    if (!file.isBuffer()) {
+                        return;
+                    }
+
+                    file.contents = Buffer.from(rewriteBundledFontPaths(file.contents.toString()));
+                })
+            )
             // .pipe(sourcemaps.init())
             .pipe(
                 cleanCss({
@@ -299,6 +314,7 @@ const generateBuildFiles = () => {
         path.join(__dirname, 'css/app/fonts'),
         path.join(releaseDir, 'css/app/fonts')
     );
+    copyDirectoryRecursive(path.join(__dirname, 'css/app/fonts'), releaseResourcesFontDir);
     copyDirectoryRecursive(
         path.join(__dirname, 'css/app/fonts'),
         path.join(buildDir, 'css/app/fonts')

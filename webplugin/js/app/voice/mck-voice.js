@@ -2,7 +2,7 @@ class MckVoice {
     // Using underscore prefix instead of # for compatibility with build tools
     _RMS_THRESHOLD = 0.018;
     _ZERO_CROSSING_THRESHOLD = 0.03;
-    _SILENCE_DURATION = 350; // quicker turn-taking while still allowing short pauses
+    _SILENCE_DURATION = 600; // generic silence fallback for non-omnichannel capture
     _MIN_SPEECH_DURATION = 120; // require at least 120ms of speech before silencing
     _MAX_RECORDING_DURATION = 30000; // fail-safe to avoid endless recording
     _VOICE_MODE_SESSION_TIMEOUT = 300000; // close voice mode after 5 minutes without switching to chat
@@ -10,7 +10,8 @@ class MckVoice {
     _AUTO_LISTEN_COOLDOWN = 1000; // wait before auto-listen restarts after a forced stop
     _VOICE_START_THRESHOLD_RMS = 160;
     _VOICE_STOP_THRESHOLD_RMS = 120;
-    _VOICE_PRE_ROLL_MS = 700;
+    _VOICE_PRE_ROLL_MS = 900;
+    _VOICE_POST_ROLL_MS = 800;
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 160;
     _VOICE_MAX_CHUNK_MS = 2800;
@@ -19,6 +20,9 @@ class MckVoice {
     _VOICE_MIN_SAMPLES_TO_SEND = 3200;
     _VOICE_MIN_CHUNK_RMS = 120;
     _VOICE_MAX_ABS_SILENCE_THRESHOLD = 80;
+    _VOICE_OMNICHANNEL_SEGMENT_SILENCE_MS = 400;
+    _VOICE_CONTINUATION_MIN_WAIT_MS = 600;
+    _VOICE_CONTINUATION_MAX_SILENCE_MS = 3000;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     // Threshold for frequency-domain visualizer (0..255 scale)
@@ -59,6 +63,16 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        this.recordingStopReason = null;
+        this.pendingVoiceMessageTimer = null;
+        this.pendingVoiceSegments = {};
+        this.pendingVoiceSegmentSeq = 0;
+        this.pendingVoiceSegmentInFlight = 0;
+        this.pendingContinuationStart = false;
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
+        this.discardNextRecordingPayload = false;
         this.maxRecordingTimer = null;
         this.deferredRecordingHandler = null;
         this.silenceDetectionContext = null;
@@ -112,16 +126,7 @@ class MckVoice {
     }
 
     resetVoicePlaybackQueue(reason = 'manual_reset') {
-        const pendingCount = this.messagesQueue.length;
         this.messagesQueue = [];
-        if (pendingCount > 0) {
-            console.debug('Voice playback queue reset', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                reason,
-                clearedCount: pendingCount,
-            });
-        }
     }
 
     async startVoiceMode(
@@ -219,8 +224,12 @@ class MckVoice {
             config.language ||
             (typeof navigator !== 'undefined' && navigator.language) ||
             'en-US';
+        const defaultSilenceStopMs =
+            requestedMode === 'omnichannel'
+                ? this._VOICE_OMNICHANNEL_SEGMENT_SILENCE_MS
+                : this._SILENCE_DURATION;
         const rawSilenceStopMs =
-            config.silenceStopMs ?? config.silenceDuration ?? this._SILENCE_DURATION;
+            config.silenceStopMs ?? config.silenceDuration ?? defaultSilenceStopMs;
         const normalizedSilenceStopMs =
             Number(rawSilenceStopMs) > 0 ? Number(rawSilenceStopMs) : this._SILENCE_DURATION;
         // Guardrail: avoid very large silence windows that delay first STT call.
@@ -239,6 +248,11 @@ class MckVoice {
                 config.initialSpeechTimeoutMs ?? this._VOICE_INITIAL_SPEECH_TIMEOUT_MS,
             maxChunkMs: config.maxChunkMs ?? this._VOICE_MAX_CHUNK_MS,
             preRollMs: config.preRollMs ?? this._VOICE_PRE_ROLL_MS,
+            postRollMs: config.postRollMs ?? this._VOICE_POST_ROLL_MS,
+            continuationMinWaitMs:
+                config.continuationMinWaitMs ?? this._VOICE_CONTINUATION_MIN_WAIT_MS,
+            continuationMaxSilenceMs:
+                config.continuationMaxSilenceMs ?? this._VOICE_CONTINUATION_MAX_SILENCE_MS,
             minSamplesToSend: config.minSamplesToSend ?? this._VOICE_MIN_SAMPLES_TO_SEND,
             minChunkRms: config.minChunkRms ?? this._VOICE_MIN_CHUNK_RMS,
             maxAbsSilenceThreshold:
@@ -266,38 +280,81 @@ class MckVoice {
             // If bot response audio is about to play, stop any active recording capture.
             // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
             if (this.isRecording) {
-                console.debug('Stopping active recording before bot audio playback queueing', {
-                    ts: Date.now(),
-                    iso: new Date().toISOString(),
-                });
                 this.stopRecording(true);
             }
             this.clearVoiceProgressMessage();
-            this.messagesQueue.push({ msg, displayName });
+            const queueItem = this.createQueuedVoiceMessage(msg, displayName);
+            this.messagesQueue.push(queueItem);
             if (this.messagesQueue.length === 1) {
-                this.processNextMessage(msg, displayName);
+                this.processNextMessage(queueItem);
             }
         } catch (err) {
             console.error(err);
             this.messagesQueue.shift();
             if (this.messagesQueue.length > 0) {
                 const nextMsg = this.messagesQueue[0];
-                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                this.processNextMessage(nextMsg);
             }
         }
     }
 
-    async processNextMessage(msg, displayName) {
-        try {
-            const messageWithoutSource = msg.message.replace(
-                /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
-                ''
-            );
-            const spokenText = messageWithoutSource.trim();
+    createQueuedVoiceMessage(msg, displayName) {
+        const originalMessage =
+            msg && typeof msg.message === 'string'
+                ? msg.message
+                : msg && typeof msg.message === 'number'
+                ? String(msg.message)
+                : '';
+        const messageWithoutSource = originalMessage.replace(
+            /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
+            ''
+        );
+        const spokenText = messageWithoutSource.trim();
+        const queueItem = {
+            msg,
+            displayName,
+            messageWithoutSource,
+            spokenText,
+            ttsPromise: null,
+            ttsBlob: null,
+            ttsError: null,
+        };
 
-            this.agentOrBotName = displayName;
-            const responseText = displayName
-                ? `${displayName}: ${messageWithoutSource}`
+        if (
+            spokenText &&
+            !this.shouldUseNativeSpeechSynthesis() &&
+            this.activeRecognitionMode === 'omnichannel'
+        ) {
+            queueItem.ttsPromise = kmVoice
+                .textToVoice(spokenText)
+                .then((data) => {
+                    queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    queueItem.ttsError = null;
+                    return queueItem.ttsBlob;
+                })
+                .catch((error) => {
+                    queueItem.ttsPromise = null;
+                    queueItem.ttsError = error;
+                    return null;
+                });
+        }
+
+        return queueItem;
+    }
+
+    async processNextMessage(queueItemOrMsg, displayName) {
+        try {
+            const queueItem =
+                queueItemOrMsg &&
+                typeof queueItemOrMsg === 'object' &&
+                Object.prototype.hasOwnProperty.call(queueItemOrMsg, 'messageWithoutSource')
+                    ? queueItemOrMsg
+                    : this.createQueuedVoiceMessage(queueItemOrMsg, displayName);
+            const { messageWithoutSource, spokenText, displayName: queuedDisplayName } = queueItem;
+
+            this.agentOrBotName = queuedDisplayName;
+            const responseText = queuedDisplayName
+                ? `${queuedDisplayName}: ${messageWithoutSource}`
                 : messageWithoutSource;
             this.updateResponseText(responseText, { autoHide: 0 });
             this.agentOrBotLastMsg = messageWithoutSource;
@@ -314,8 +371,26 @@ class MckVoice {
             }
 
             if (this.activeRecognitionMode === 'omnichannel') {
-                const data = await kmVoice.textToVoice(spokenText);
-                const wavBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                if (queueItem.ttsError && !queueItem.ttsBlob && !queueItem.ttsPromise) {
+                    const prefetchError = queueItem.ttsError;
+                    queueItem.ttsError = null;
+                    throw prefetchError;
+                }
+                if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
+                    queueItem.ttsPromise = kmVoice
+                        .textToVoice(spokenText)
+                        .then((data) => {
+                            queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                            queueItem.ttsError = null;
+                            return queueItem.ttsBlob;
+                        })
+                        .catch((error) => {
+                            queueItem.ttsPromise = null;
+                            queueItem.ttsError = error;
+                            throw error;
+                        });
+                }
+                const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
                 this.playAudioBlobWithQueue(wavBlob);
                 return;
             }
@@ -404,7 +479,7 @@ class MckVoice {
                         this.visualizerCleanup = null;
                     }
 
-                    this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                    this.processNextMessage(nextMsg);
                     return;
                 }
 
@@ -432,8 +507,6 @@ class MckVoice {
                 const ring1 = document.querySelector('.voice-ring-1');
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
-
-                console.debug('Playback ended, starting recede animation');
 
                 // Wait for animation to complete before removing all classes
                 this.audioElement = null;
@@ -483,7 +556,7 @@ class MckVoice {
                     } catch (e) {}
                 }
                 const nextMsg = this.shiftToNextQueuedMessage();
-                nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                nextMsg && this.processNextMessage(nextMsg);
             });
         } catch (err) {
             console.error(err);
@@ -518,7 +591,7 @@ class MckVoice {
             URL.revokeObjectURL(blobUrl);
             this.audioElement = null;
             const nextMsg = this.shiftToNextQueuedMessage();
-            nextMsg && this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            nextMsg && this.processNextMessage(nextMsg);
         };
 
         audio.addEventListener(
@@ -540,7 +613,7 @@ class MckVoice {
                     this.visualizerCleanup = null;
                 }
                 this.audioElement = null;
-                this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                this.processNextMessage(nextMsg);
                 return;
             }
 
@@ -626,7 +699,7 @@ class MckVoice {
     advanceQueueAfterPlayback() {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
-            this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+            this.processNextMessage(nextMsg);
             return;
         }
         this.setAwaitingBotResponsePlayback(false);
@@ -644,7 +717,6 @@ class MckVoice {
 
     async repeatLastMsgAudio(blobUrl) {
         if (!blobUrl) {
-            console.debug('repeatLastMsgAudio: no audio stored yet');
             return;
         }
         try {
@@ -667,9 +739,7 @@ class MckVoice {
 
             await audio.play().catch(console.error);
 
-            audio.onplay = () => {
-                console.debug('Playback started');
-            };
+            audio.onplay = () => {};
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
                 this.audioElement = null;
@@ -690,8 +760,6 @@ class MckVoice {
                 const ring1 = document.querySelector('.voice-ring-1');
                 ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
                 ring1.classList.add('ring-recede');
-
-                console.debug('Playback ended, starting recede animation');
 
                 // Remove ring-recede class after animation completes
                 this.audioElement = null;
@@ -878,6 +946,7 @@ class MckVoice {
         onPermissionDenied = null,
         suppressPermissionAlert = false,
         trackPermission = false,
+        existingStream = null,
     } = {}) {
         if (this.awaitingBotResponsePlayback || this.messagesQueue.length > 0) {
             return false;
@@ -897,6 +966,12 @@ class MckVoice {
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
             }
+            return true;
+        }
+
+        if (existingStream) {
+            this.voiceInputSettings = this.getVoiceInputSettings();
+            this.startRecording(existingStream);
             return true;
         }
 
@@ -924,18 +999,6 @@ class MckVoice {
         try {
             const constraints = this.getAudioCaptureConstraints();
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            try {
-                const audioTrack = stream && stream.getAudioTracks && stream.getAudioTracks()[0];
-                const audioSettings =
-                    audioTrack &&
-                    typeof audioTrack.getSettings === 'function' &&
-                    audioTrack.getSettings();
-                console.debug('Voice capture constraints applied', {
-                    constraints,
-                    settings: audioSettings || null,
-                    isSafari: this.isSafariBrowser(),
-                });
-            } catch (_) {}
             this.voiceInputSettings = this.getVoiceInputSettings();
             this.startRecording(stream);
             if (trackPermission) {
@@ -1007,9 +1070,11 @@ class MckVoice {
     }
 
     startRecording(stream) {
+        this.clearPendingVoiceMessageTimer();
         this.addListeningAnimation();
         this.setTextboxVoiceActive(true);
         this.stream = stream;
+        this.discardNextRecordingPayload = false;
         this.audioChunks = [];
         this.isRecording = true;
         this.silenceTimer = null;
@@ -1023,6 +1088,7 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        this.recordingStopReason = null;
         this.maxRecordingTimer = null;
         this.lastRecordingEnd = 0;
         this.silenceNoiseStart = null;
@@ -1042,10 +1108,41 @@ class MckVoice {
 
         // Handle recording stop event
         this.mediaRecorder.onstop = async () => {
-            const shouldProcessRecording = Boolean(this.isRecording);
+            const recordingStream = this.stream;
+            const recordedChunks = Array.isArray(this.audioChunks) ? this.audioChunks.slice() : [];
+            const recordedVadCaptureChunks = Array.isArray(this.vadCaptureChunks)
+                ? this.vadCaptureChunks.slice()
+                : [];
+            const recordedVadCaptureSampleRate = this.vadCaptureSampleRate;
+            const stopReason = this.recordingStopReason || 'manual';
+            const hasRecordedPayload =
+                recordedChunks.length > 0 || recordedVadCaptureChunks.length > 0;
+            const shouldProcessRecording =
+                !this.discardNextRecordingPayload &&
+                (Boolean(this.isRecording) ||
+                    ((stopReason === 'segment_pause' || stopReason === 'continuation_idle') &&
+                        hasRecordedPayload));
+            const shouldAggregateSegments =
+                this.activeRecognitionMode === 'omnichannel' &&
+                (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
+            const shouldRestartContinuationRecording =
+                this.activeRecognitionMode === 'omnichannel' && stopReason === 'segment_pause';
+            const shouldReuseContinuationStream =
+                shouldRestartContinuationRecording &&
+                recordingStream &&
+                recordingStream.active &&
+                recordingStream.getAudioTracks().some((track) => track.readyState === 'live');
+            const segmentSeq = shouldAggregateSegments
+                ? ++this.pendingVoiceSegmentSeq
+                : this.pendingVoiceSegmentSeq;
+            if (shouldAggregateSegments) {
+                this.pendingVoiceSegmentInFlight++;
+            }
             // Mark recording as ended immediately so stale VAD/silence loops
             // cannot keep firing while STT work is still running.
             this.isRecording = false;
+            this.recordingStopReason = null;
+            this.discardNextRecordingPayload = false;
             this.clearInitialSpeechTimeout();
             this.clearSilenceTimeout();
             if (this.silenceTimer) {
@@ -1056,43 +1153,72 @@ class MckVoice {
                 clearTimeout(this.maxRecordingTimer);
                 this.maxRecordingTimer = null;
             }
-            console.debug('Voice recording onstop fired', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                chunkCount: this.audioChunks.length,
-                wasRecording: shouldProcessRecording,
-            });
+            // Clean up the finished recorder before any follow-up recording starts,
+            // otherwise the old onstop path can clear timers/state owned by the next session.
+            if (!shouldReuseContinuationStream && recordingStream) {
+                recordingStream.getTracks().forEach((track) => track.stop());
+            }
+            if (this.stream === recordingStream) {
+                this.stream = null;
+            }
+            this.vadCaptureChunks = [];
+            this.vadCaptureSampleRate = 0;
+            this.lastRecordingEnd = Date.now();
+            if (this.silenceTimer) {
+                clearInterval(this.silenceTimer);
+                this.silenceTimer = null;
+            }
+            this.clearSilenceTimeout();
+            if (this.maxRecordingTimer) {
+                clearTimeout(this.maxRecordingTimer);
+                this.maxRecordingTimer = null;
+            }
+            this.clearInitialSpeechTimeout();
             try {
+                if (shouldRestartContinuationRecording && recordingStream) {
+                    this.beginContinuationDecisionWindow();
+                    this.pendingContinuationStart = true;
+                    Promise.resolve(
+                        this.requestAudioRecordingWhenReady({
+                            existingStream: shouldReuseContinuationStream ? recordingStream : null,
+                        })
+                    )
+                        .catch((error) => {
+                            console.error('Voice continuation restart failed', error);
+                            if (shouldReuseContinuationStream && recordingStream) {
+                                recordingStream.getTracks().forEach((track) => track.stop());
+                            }
+                            return false;
+                        })
+                        .finally(() => {
+                            this.pendingContinuationStart = false;
+                            this.maybeFinalizePendingVoiceMessageAfterSegment();
+                        });
+                }
                 // Create blob from recorded chunks
                 if (shouldProcessRecording) {
-                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                    const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
                     const sampleRate = kmVoice.getVoiceToTextSampleRate();
                     let rawSamples = [];
                     if (this.isSafariBrowser()) {
-                        rawSamples = this.extractPcmInt16FromVadCapture();
-                        console.debug('Using VAD PCM capture for Safari STT', {
-                            sampleCount: rawSamples.length,
-                            captureSampleRate: this.vadCaptureSampleRate || null,
-                        });
+                        rawSamples = this.extractPcmInt16FromVadCaptureChunks(
+                            recordedVadCaptureChunks,
+                            recordedVadCaptureSampleRate
+                        );
                     }
                     if (!rawSamples.length) {
                         rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
-                        console.debug('Using MediaRecorder blob decode for STT', {
-                            sampleCount: rawSamples.length,
-                            isSafari: this.isSafariBrowser(),
-                        });
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
-                    const { chunks, rawDurationMs, trimmedDurationMs } = preparedAudio;
+                    const { chunks } = preparedAudio;
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
                     this.totalSamples = 0;
                     if (!chunks.length) {
-                        console.debug('Recording was empty after silence trimming', {
-                            rawDurationMs,
-                            trimmedDurationMs,
-                        });
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         this.removeAllAnimation();
                         this.clearVoiceStatus();
                         this.updateLiveTranscript(
@@ -1117,12 +1243,9 @@ class MckVoice {
                         data = await this.transcribePreparedVoiceChunks(chunks, sampleRate);
                     } catch (error) {
                         if (error && error.code === 'SILENT_AUDIO') {
-                            console.debug('Silent audio clip detected during voice mode', {
-                                sampleCount: error.sampleCount,
-                                nonZeroRatio: error.nonZeroRatio,
-                                rms: error.rms,
-                                peakAbs: error.peakAbs,
-                            });
+                            if (shouldAggregateSegments) {
+                                return;
+                            }
                             this.removeAllAnimation();
                             this.clearVoiceStatus();
                             this.updateLiveTranscript(
@@ -1140,6 +1263,9 @@ class MckVoice {
                         throw error;
                     }
                     if (!data) {
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         console.warn(
                             'Voice transcription failed: empty response from speechToText'
                         );
@@ -1160,6 +1286,9 @@ class MckVoice {
                     }
                     const rawText = typeof data.text === 'string' ? data.text : '';
                     if (!rawText.trim()) {
+                        if (shouldAggregateSegments) {
+                            return;
+                        }
                         console.warn(
                             'Voice transcription failed: missing/empty text in speechToText response',
                             data
@@ -1167,6 +1296,16 @@ class MckVoice {
                         return;
                     }
                     const userMsg = rawText.trim();
+                    if (shouldAggregateSegments) {
+                        this.appendPendingVoiceSegment(segmentSeq, userMsg);
+                        const listeningLabel = this.getVoiceLabel(
+                            'voiceInterface.listening',
+                            'Listening...'
+                        );
+                        this.updateVoiceStatus(listeningLabel, true);
+                        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+                        return;
+                    }
                     if (!this.handleVoiceQuery(userMsg)) {
                         return;
                     }
@@ -1183,25 +1322,20 @@ class MckVoice {
                     { autoHide: 6000 }
                 );
             } finally {
-                // Clean up the stream tracks
-                this.stream && this.stream.getTracks().forEach((track) => track.stop());
-                this.stream = null;
-                this.vadCaptureChunks = [];
-                this.vadCaptureSampleRate = 0;
-                this.lastRecordingEnd = Date.now();
-
-                // Clear any silence detection timers
-                if (this.silenceTimer) {
-                    clearInterval(this.silenceTimer);
-                    this.silenceTimer = null;
+                if (shouldAggregateSegments) {
+                    this.pendingVoiceSegmentInFlight = Math.max(
+                        0,
+                        this.pendingVoiceSegmentInFlight - 1
+                    );
                 }
-                this.clearSilenceTimeout();
-                if (this.maxRecordingTimer) {
-                    clearTimeout(this.maxRecordingTimer);
-                    this.maxRecordingTimer = null;
+                if (stopReason === 'segment_pause' && shouldAggregateSegments) {
+                    this.maybeFinalizePendingVoiceMessageAfterSegment();
+                } else if (stopReason === 'continuation_idle' && shouldAggregateSegments) {
+                    this.resolveContinuationDecisionWindow();
+                    this.finalizePendingVoiceMessage();
+                } else {
+                    this.scheduleAutoListen();
                 }
-                this.clearInitialSpeechTimeout();
-                this.scheduleAutoListen();
             }
         };
 
@@ -1218,9 +1352,8 @@ class MckVoice {
 
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
-                console.debug('Max recording duration reached, stopping');
                 this.addThinkingAnimation();
-                this.stopRecording();
+                this.stopRecording(false, 'segment_pause');
             }
         }, this._MAX_RECORDING_DURATION);
 
@@ -1233,11 +1366,8 @@ class MckVoice {
                 if (!this.isRecording || this.speechDetected) {
                     return;
                 }
-                console.debug('No speech detected within initial window, stopping recording', {
-                    initialSpeechTimeoutMs,
-                });
                 this.addThinkingAnimation();
-                this.stopRecording();
+                this.stopRecording(false, 'segment_pause');
             }, initialSpeechTimeoutMs);
         }
 
@@ -1252,6 +1382,7 @@ class MckVoice {
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
         const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
         const preRollMs = Number(this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS);
+        const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const maxChunkMs = Number(this.voiceInputSettings.maxChunkMs || this._VOICE_MAX_CHUNK_MS);
         const startThresholdRms = Number(this.voiceInputSettings.startThresholdRms);
         const stopThresholdRms = Number(this.voiceInputSettings.stopThresholdRms);
@@ -1261,18 +1392,12 @@ class MckVoice {
         );
         const frameSize = Math.max(1, Math.round((sampleRate * frameMs) / 1000));
         const preRollSamples = Math.max(0, Math.round((sampleRate * preRollMs) / 1000));
+        const postRollSamples = Math.max(0, Math.round((sampleRate * postRollMs) / 1000));
         const maxChunkSamples = Math.max(frameSize, Math.round((sampleRate * maxChunkMs) / 1000));
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
         const rawDurationMs = totalSamples > 0 ? Math.round((totalSamples / sampleRate) * 1000) : 0;
 
         if (!totalSamples) {
-            console.debug('Voice VAD trim stats', {
-                rawDurationMs,
-                trimmedDurationMs: 0,
-                trimStartMs: 0,
-                trimEndMs: 0,
-                finalSamplesCount: 0,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1346,13 +1471,6 @@ class MckVoice {
                     firstStopSpeechFrameIndex - relaxedMinVoicedFrames + 1
                 );
             }
-            console.debug('Voice VAD fallback start detection applied', {
-                relaxedStartThreshold,
-                relaxedMinVoicedFrames,
-                firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                lastSpeechFrameIndex,
-            });
         }
 
         // Guardrail: if start is detected after the first stop-threshold hit, anchor start earlier.
@@ -1360,12 +1478,6 @@ class MckVoice {
         if (firstStopSpeechFrameIndex !== -1 && firstSpeechFrameIndex > firstStopSpeechFrameIndex) {
             const anchorFrames = Math.max(1, Math.round(minVoicedFrames / 2));
             const anchoredStartIndex = Math.max(0, firstStopSpeechFrameIndex - anchorFrames + 1);
-            console.debug('Voice VAD start index anchored to earliest speech boundary', {
-                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                anchoredStartIndex,
-                anchorFrames,
-            });
             firstSpeechFrameIndex = anchoredStartIndex;
         }
 
@@ -1376,22 +1488,10 @@ class MckVoice {
             firstStopSpeechFrameIndex <= Math.max(minVoicedFrames * 3, 6) &&
             firstSpeechFrameIndex > 0
         ) {
-            console.debug('Voice VAD start preserved from beginning for early speech', {
-                previousFirstSpeechFrameIndex: firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                minVoicedFrames,
-            });
             firstSpeechFrameIndex = 0;
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
-            console.debug('Voice VAD trim stats', {
-                rawDurationMs,
-                trimmedDurationMs: 0,
-                trimStartMs: rawDurationMs,
-                trimEndMs: 0,
-                finalSamplesCount: 0,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1402,8 +1502,16 @@ class MckVoice {
         }
 
         const firstSpeechSample = firstSpeechFrameIndex * frameSize;
-        const startSample = Math.max(0, firstSpeechSample - preRollSamples);
-        const endSample = Math.min(totalSamples, (lastSpeechFrameIndex + 1) * frameSize);
+        const leadingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+        const trailingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+        const startSample =
+            firstSpeechFrameIndex <= leadingEdgeFrameWindow
+                ? 0
+                : Math.max(0, firstSpeechSample - preRollSamples);
+        const endSample =
+            lastSpeechFrameIndex >= frameCount - trailingEdgeFrameWindow
+                ? totalSamples
+                : Math.min(totalSamples, (lastSpeechFrameIndex + 1) * frameSize + postRollSamples);
         const trimmedSamples = rawSamples.slice(startSample, endSample);
         const trimmedDurationMs = Math.round((trimmedSamples.length / sampleRate) * 1000);
         const trimStartMs = Math.round((startSample / sampleRate) * 1000);
@@ -1416,15 +1524,6 @@ class MckVoice {
             );
         }
 
-        console.debug('Voice VAD trim stats', {
-            rawDurationMs,
-            trimmedDurationMs,
-            trimStartMs,
-            trimEndMs,
-            finalSamplesCount: trimmedSamples.length,
-            chunkCount: chunks.length,
-        });
-
         return {
             chunks,
             rawDurationMs,
@@ -1434,10 +1533,11 @@ class MckVoice {
         };
     }
 
-    async transcribePreparedVoiceChunks(chunks = [], sampleRate = 16000) {
+    async transcribePreparedVoiceChunks(chunks = [], sampleRate = 16000, options = {}) {
         if (!Array.isArray(chunks) || !chunks.length) {
             return null;
         }
+        const isProbe = Boolean(options && options.isProbe);
         const transcriptParts = [];
         const acceptedChunkSamples = [];
         let sentSamplesCount = 0;
@@ -1462,7 +1562,9 @@ class MckVoice {
         const minVoicedMs = Number(
             this.voiceInputSettings.minVoicedMs || this._VOICE_MIN_VOICED_MS
         );
+        const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
+        const postRollSamples = Math.max(0, Math.round((sampleRate * postRollMs) / 1000));
         const maxMergedChunkMs = Number(
             this.voiceInputSettings.sttMergeMaxMs || this._VOICE_STT_MERGE_MAX_MS
         );
@@ -1492,11 +1594,6 @@ class MckVoice {
                     const amplified = Math.round(samples[i] * gain);
                     normalized[i] = Math.max(-32768, Math.min(32767, amplified));
                 }
-                console.debug('Voice STT input normalized for low amplitude', {
-                    originalPeak: peak,
-                    gain,
-                    sampleCount: samples.length,
-                });
                 return normalized;
             }
             return samples;
@@ -1532,17 +1629,16 @@ class MckVoice {
             }
             if (response && typeof response.text === 'string' && response.text.trim()) {
                 transcriptParts.push(response.text.trim());
-                this.consecutiveEmptySttResponses = 0;
-                this.lastEmptySttResponseAt = 0;
+                if (!isProbe) {
+                    this.consecutiveEmptySttResponses = 0;
+                    this.lastEmptySttResponseAt = 0;
+                }
                 return response;
             }
-            this.consecutiveEmptySttResponses++;
-            this.lastEmptySttResponseAt = Date.now();
-            console.debug('Empty STT response received for chunk', {
-                label,
-                consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                sampleCount: preparedSamples.length,
-            });
+            if (!isProbe) {
+                this.consecutiveEmptySttResponses++;
+                this.lastEmptySttResponseAt = Date.now();
+            }
             return response || null;
         };
 
@@ -1663,24 +1759,22 @@ class MckVoice {
                 }
                 if (relaxedFirstVoiceFrame !== -1) {
                     firstVoiceFrame = relaxedFirstVoiceFrame;
-                    console.debug('Relaxed chunk voiced-run gate accepted', {
-                        index: i,
-                        relaxedStartThreshold,
-                        relaxedMinVoicedFrames,
-                    });
                 } else if (firstVoiceFrame === -1) {
-                    console.debug('Dropping chunk due to insufficient voiced run', {
-                        index: i,
-                        maxConsecutiveStartFrames,
-                        minVoicedFrames,
-                        chunkSamplesLength: chunkSamples.length,
-                    });
                     continue;
                 }
             }
 
-            const trimmedStart = firstVoiceFrame * frameSize;
-            const trimmedEnd = Math.min(chunkSamples.length, (lastVoiceFrame + 1) * frameSize);
+            const leadingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+            const trailingEdgeFrameWindow = Math.max(minVoicedFrames * 2, 4);
+            const trimmedStart =
+                firstVoiceFrame <= leadingEdgeFrameWindow ? 0 : firstVoiceFrame * frameSize;
+            const trimmedEnd =
+                lastVoiceFrame >= frameCount - trailingEdgeFrameWindow
+                    ? chunkSamples.length
+                    : Math.min(
+                          chunkSamples.length,
+                          (lastVoiceFrame + 1) * frameSize + postRollSamples
+                      );
             const processedChunkSamples = chunkSamples.slice(trimmedStart, trimmedEnd);
             if (processedChunkSamples.length < minSamplesToSend) {
                 continue;
@@ -1709,13 +1803,6 @@ class MckVoice {
                 (chunkRms >= minChunkRms * 1.6 && stopVoiceRatio >= 0.2) ||
                 (maxAbs >= maxAbsSilenceThreshold * 3 && stopVoiceRatio >= 0.25);
             if (inEmptySuppressWindow && !isHighConfidenceChunk) {
-                console.debug('Skipping low-confidence chunk after repeated empty STT responses', {
-                    index: i,
-                    chunkRms,
-                    maxAbs,
-                    stopVoiceRatio,
-                    consecutiveEmptySttResponses: this.consecutiveEmptySttResponses,
-                });
                 continue;
             }
             acceptedChunkSamples.push(Int16Array.from(processedChunkSamples));
@@ -1745,27 +1832,12 @@ class MckVoice {
                     Math.round(maxAbsSilenceThreshold * 0.35)
                 );
                 if (maxAbs >= fallbackPeakThreshold && nonZeroRatio >= 0.01) {
-                    console.debug(
-                        'Voice fallback accepting merged chunk after strict gate reject',
-                        {
-                            sampleCount: mergedSamples.length,
-                            maxAbs,
-                            nonZeroRatio,
-                            fallbackPeakThreshold,
-                        }
-                    );
                     acceptedChunkSamples.push(mergedSamples);
                 }
             }
         }
 
         if (!acceptedChunkSamples.length) {
-            console.debug('Voice final samples count sent', {
-                finalSamplesCount: 0,
-                chunkCount: chunks.length,
-                acceptedChunkCount: 0,
-                sttRequestCount: 0,
-            });
             return null;
         }
 
@@ -1780,13 +1852,6 @@ class MckVoice {
                 await sendSamplesForStt(acceptedChunkSamples[i], `chunk-${i}`);
             }
         }
-
-        console.debug('Voice final samples count sent', {
-            finalSamplesCount: sentSamplesCount,
-            chunkCount: chunks.length,
-            acceptedChunkCount: acceptedChunkSamples.length,
-            sttRequestCount,
-        });
 
         if (!transcriptParts.length) {
             return null;
@@ -1871,11 +1936,6 @@ class MckVoice {
             return;
         }
         if (this.awaitingBotResponsePlayback) {
-            console.debug('Recovering listening after playback cleanup', {
-                reason,
-                awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
-                queuedMessages: this.messagesQueue.length,
-            });
             this.setAwaitingBotResponsePlayback(false);
         }
         this.resumeListeningAfterPlayback();
@@ -1909,15 +1969,12 @@ class MckVoice {
             const bufferLength = analyzer.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
 
-            console.debug('Audio visualizer created, ready to animate ring');
-
             // Keep track of previous scale for smooth transitions
             let lastScale = this._MIN_SPEAK_ANIMATION_SCALE; // Initialize with minimum scale (matching minScale)
 
             // Animation function with improved response to sound
             const visualize = () => {
                 if (!ring || !audioElement || audioElement.paused) {
-                    console.debug('Animation stopped: ring or audio not available');
                     return;
                 }
 
@@ -1983,11 +2040,9 @@ class MckVoice {
 
             // Start the animation loop with a single request
             this.animationFrame = requestAnimationFrame(visualize);
-            console.debug('Audio visualization started');
 
             // Return cleanup function
             return () => {
-                console.debug('Cleaning up audio visualizer');
                 if (this.animationFrame) {
                     cancelAnimationFrame(this.animationFrame);
                     this.animationFrame = null;
@@ -2386,6 +2441,205 @@ class MckVoice {
         }
     }
 
+    clearPendingVoiceMessageTimer() {
+        if (this.pendingVoiceMessageTimer) {
+            clearTimeout(this.pendingVoiceMessageTimer);
+            this.pendingVoiceMessageTimer = null;
+        }
+    }
+
+    resetPendingVoiceSegments() {
+        this.clearPendingVoiceMessageTimer();
+        this.pendingVoiceSegments = {};
+        this.pendingVoiceSegmentSeq = 0;
+        this.pendingVoiceSegmentInFlight = 0;
+        this.pendingContinuationStart = false;
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
+        this.discardNextRecordingPayload = false;
+    }
+
+    beginContinuationDecisionWindow() {
+        this.continuationDecisionActive = true;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = Date.now();
+        this.clearPendingVoiceMessageTimer();
+    }
+
+    resolveContinuationDecisionWindow() {
+        this.continuationDecisionActive = false;
+        this.continuationSpeechDetected = false;
+        this.continuationWindowStartedAt = 0;
+        this.clearPendingVoiceMessageTimer();
+    }
+
+    appendPendingVoiceSegment(segmentSeq, text) {
+        const trimmedText = typeof text === 'string' ? text.trim() : '';
+        if (!trimmedText) {
+            return;
+        }
+        this.pendingVoiceSegments[segmentSeq] = trimmedText;
+    }
+
+    buildPendingVoiceMessageText() {
+        const segmentIds = Object.keys(this.pendingVoiceSegments)
+            .map((value) => Number(value))
+            .filter((value) => !Number.isNaN(value))
+            .sort((a, b) => a - b);
+        const transcriptParts = [];
+        for (let i = 0; i < segmentIds.length; i++) {
+            const part = this.pendingVoiceSegments[segmentIds[i]];
+            if (part) {
+                transcriptParts.push(part);
+            }
+        }
+        return transcriptParts.join(' ').trim();
+    }
+
+    schedulePendingVoiceMessageFinalize(delay = 100) {
+        this.clearPendingVoiceMessageTimer();
+        const finalizeDelay = Number(delay);
+        if (!(finalizeDelay > 0)) {
+            this.finalizePendingVoiceMessage();
+            return;
+        }
+        this.pendingVoiceMessageTimer = setTimeout(() => {
+            this.pendingVoiceMessageTimer = null;
+            this.finalizePendingVoiceMessage();
+        }, finalizeDelay);
+    }
+
+    maybeFinalizePendingVoiceMessageAfterSegment() {
+        this.finalizePendingVoiceMessage();
+    }
+
+    finalizePendingVoiceMessage() {
+        const continuationMinWaitMs = Number(
+            this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
+        );
+        const continuationMaxSilenceMs = Number(
+            this.voiceInputSettings.continuationMaxSilenceMs ||
+                this._VOICE_CONTINUATION_MAX_SILENCE_MS
+        );
+        if (this.continuationDecisionActive) {
+            if (this.continuationSpeechDetected) {
+                this.resolveContinuationDecisionWindow();
+                return;
+            }
+            if (this.pendingContinuationStart) {
+                this.schedulePendingVoiceMessageFinalize(100);
+                return;
+            }
+            const continuationElapsed = this.continuationWindowStartedAt
+                ? Date.now() - this.continuationWindowStartedAt
+                : continuationMinWaitMs;
+            if (this.isRecording) {
+                if (this.speechDetected || this.firstSpeechTimestamp) {
+                    this.resolveContinuationDecisionWindow();
+                    return;
+                }
+                if (
+                    continuationElapsed >= continuationMinWaitMs &&
+                    this.pendingVoiceSegmentInFlight === 0
+                ) {
+                    this.stopRecording(false, 'continuation_idle');
+                    return;
+                }
+                if (continuationElapsed >= continuationMaxSilenceMs) {
+                    console.debug('Voice continuation long silence reached, stopping cycle', {
+                        continuationElapsed,
+                        continuationMaxSilenceMs,
+                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
+                    });
+                    this.stopRecording(false, 'continuation_idle');
+                    return;
+                }
+                const waitForMinWindow = Math.max(continuationMinWaitMs - continuationElapsed, 0);
+                const waitForMaxWindow = Math.max(
+                    continuationMaxSilenceMs - continuationElapsed,
+                    0
+                );
+                const nextDelay = this.pendingVoiceSegmentInFlight > 0 ? 100 : waitForMinWindow;
+                if (nextDelay > 0) {
+                    this.schedulePendingVoiceMessageFinalize(Math.min(nextDelay, waitForMaxWindow));
+                    return;
+                }
+                this.schedulePendingVoiceMessageFinalize(Math.min(100, waitForMaxWindow || 100));
+                return;
+            }
+            if (
+                continuationElapsed < continuationMinWaitMs ||
+                this.pendingVoiceSegmentInFlight > 0
+            ) {
+                const waitForMinWindow = Math.max(continuationMinWaitMs - continuationElapsed, 0);
+                const nextDelay = this.pendingVoiceSegmentInFlight > 0 ? 100 : waitForMinWindow;
+                this.schedulePendingVoiceMessageFinalize(nextDelay || 100);
+                return;
+            }
+            this.resolveContinuationDecisionWindow();
+        }
+        if (this.pendingContinuationStart) {
+            this.schedulePendingVoiceMessageFinalize(200);
+            return;
+        }
+        if (this.isRecording) {
+            const silenceElapsed = this.silenceStart ? Date.now() - this.silenceStart : 0;
+            const continuationMinWaitMs = Number(
+                this.voiceInputSettings.continuationMinWaitMs ||
+                    this._VOICE_CONTINUATION_MIN_WAIT_MS
+            );
+            const continuationMaxSilenceMs = Number(
+                this.voiceInputSettings.continuationMaxSilenceMs ||
+                    this._VOICE_CONTINUATION_MAX_SILENCE_MS
+            );
+            if (
+                !this.speechDetected &&
+                this.pendingVoiceSegmentInFlight === 0 &&
+                this.isInSilence &&
+                silenceElapsed >= continuationMinWaitMs
+            ) {
+                this.stopRecording(false, 'continuation_idle');
+                return;
+            }
+            if (
+                !this.speechDetected &&
+                this.pendingVoiceSegmentInFlight === 0 &&
+                this.isInSilence &&
+                silenceElapsed >= continuationMaxSilenceMs
+            ) {
+                console.debug('Voice continuation long silence reached, stopping cycle', {
+                    silenceElapsedMs: silenceElapsed,
+                    continuationMaxSilenceMs,
+                });
+                this.stopRecording(false, 'continuation_idle');
+                return;
+            }
+            this.schedulePendingVoiceMessageFinalize(200);
+            return;
+        }
+        if (this.pendingVoiceSegmentInFlight > 0) {
+            this.schedulePendingVoiceMessageFinalize(200);
+            return;
+        }
+        const userMsg = this.buildPendingVoiceMessageText();
+        this.resetPendingVoiceSegments();
+        if (!userMsg) {
+            this.removeAllAnimation();
+            this.clearVoiceStatus();
+            this.updateLiveTranscript(
+                this.getVoiceLabel(
+                    'voiceInterface.didNotCatchThat',
+                    "Didn't catch that. Please try again."
+                ),
+                { autoHide: 2500 }
+            );
+            this.scheduleAutoListen(2600);
+            return;
+        }
+        this.handleVoiceQuery(userMsg);
+    }
+
     startSilenceTimeout() {
         this.clearSilenceTimeout();
         if (!this.silenceStart) {
@@ -2400,7 +2654,7 @@ class MckVoice {
         this.silenceTimeout = setTimeout(() => this.handleSilenceTimeout(), delay);
     }
 
-    handleSilenceTimeout() {
+    async handleSilenceTimeout() {
         this.silenceTimeout = null;
         if (!this.isRecording || !this.isInSilence) {
             return;
@@ -2410,7 +2664,18 @@ class MckVoice {
             this.startSilenceTimeout();
             return;
         }
-        console.debug('User silent for a few moments, stopping recording');
+        console.debug('Voice silence threshold reached', {
+            silenceDurationMs: silenceDuration,
+            silenceThresholdMs: this.voiceInputSettings.silenceDuration,
+            continuationMinWaitMs:
+                this.voiceInputSettings.continuationMinWaitMs ||
+                this._VOICE_CONTINUATION_MIN_WAIT_MS,
+            continuationMaxSilenceMs:
+                this.voiceInputSettings.continuationMaxSilenceMs ||
+                this._VOICE_CONTINUATION_MAX_SILENCE_MS,
+            activeRecognitionMode: this.activeRecognitionMode,
+        });
+        console.debug('User silent for a few moments, stopping recording segment');
         this.addThinkingAnimation();
         this.updateLiveTranscript(
             this.getVoiceLabel(
@@ -2419,8 +2684,7 @@ class MckVoice {
             ),
             { autoHide: 2000 }
         );
-        this.stopRecording();
-        return;
+        this.stopRecording(false, 'segment_pause');
     }
 
     enableAutoListening() {
@@ -2664,25 +2928,25 @@ class MckVoice {
         };
     }
 
-    extractPcmInt16FromVadCapture() {
-        if (!Array.isArray(this.vadCaptureChunks) || !this.vadCaptureChunks.length) {
+    extractPcmInt16FromVadCaptureChunks(vadCaptureChunks = [], vadCaptureSampleRate = 16000) {
+        if (!Array.isArray(vadCaptureChunks) || !vadCaptureChunks.length) {
             return [];
         }
         let totalLength = 0;
-        for (let i = 0; i < this.vadCaptureChunks.length; i++) {
-            totalLength += this.vadCaptureChunks[i].length;
+        for (let i = 0; i < vadCaptureChunks.length; i++) {
+            totalLength += vadCaptureChunks[i].length;
         }
         if (!totalLength) {
             return [];
         }
         const merged = new Float32Array(totalLength);
         let offset = 0;
-        for (let i = 0; i < this.vadCaptureChunks.length; i++) {
-            const chunk = this.vadCaptureChunks[i];
+        for (let i = 0; i < vadCaptureChunks.length; i++) {
+            const chunk = vadCaptureChunks[i];
             merged.set(chunk, offset);
             offset += chunk.length;
         }
-        const sourceRate = this.vadCaptureSampleRate || 16000;
+        const sourceRate = vadCaptureSampleRate || 16000;
         const targetRate = kmVoice.getVoiceToTextSampleRate();
         const preprocessed =
             typeof kmVoice.preprocessSttFloat32Samples === 'function'
@@ -2839,6 +3103,10 @@ class MckVoice {
     }
 
     onVadSpeechStart() {
+        if (this.continuationDecisionActive) {
+            this.continuationSpeechDetected = true;
+            this.resolveContinuationDecisionWindow();
+        }
         this.speechDetected = true;
         this.isInSilence = false;
         this.clearInitialSpeechTimeout();
@@ -3045,7 +3313,7 @@ class MckVoice {
         }
     }
 
-    stopRecording(forceStop = false) {
+    stopRecording(forceStop = false, stopReason = 'manual') {
         this.clearInitialSpeechTimeout();
         this.clearSilenceTimeout();
         if (this.activeRecognitionMode === 'native') {
@@ -3060,16 +3328,24 @@ class MckVoice {
             return;
         }
         if (this.mediaRecorder && this.isRecording) {
+            const silenceElapsedMs = this.silenceStart ? Date.now() - this.silenceStart : 0;
+            this.recordingStopReason = stopReason;
             console.debug('Voice recording stop requested', {
                 ts: Date.now(),
                 iso: new Date().toISOString(),
                 forceStop: Boolean(forceStop),
+                stopReason,
+                silenceElapsedMs,
+                isInSilence: this.isInSilence,
+                speechDetected: this.speechDetected,
             });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
             console.debug('Voice recording stop invoked', {
                 ts: Date.now(),
                 iso: new Date().toISOString(),
+                stopReason,
+                silenceElapsedMs,
             });
 
             if (this.maxRecordingTimer) {
@@ -3131,6 +3407,9 @@ class MckVoice {
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
+        this.recordingStopReason = null;
+        this.discardNextRecordingPayload = false;
+        this.resetPendingVoiceSegments();
         if (
             typeof KommunicateUI === 'object' &&
             KommunicateUI &&
