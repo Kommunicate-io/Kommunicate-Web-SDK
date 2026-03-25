@@ -133,6 +133,7 @@
   "lead.collection.errorText": "Inserisci la password del tuo account",
   "lead.collection.errorEmail": "Inserisci un indirizzo email valido",
   "lead.collection.commonErrorMsg": "L’input fornito è invalido o errato.",
+  "lead.collection.invalidPasswordMessage": "Autenticazione non riuscita. Verifica le tue credenziali e riprova. Se il problema persiste, reimposta la password o contatta l'assistenza.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "La conversazione è stata risolta e hai lasciato una valutazione",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "Hai valutato la conversazione come",

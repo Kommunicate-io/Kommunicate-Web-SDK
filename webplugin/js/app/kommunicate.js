@@ -431,6 +431,30 @@ $applozic.extend(true, Kommunicate, {
         ) {
             window.$applozic.fn.applozic('logout');
         }
+        var clearWidgetStorage = function (storage) {
+            if (!storage || typeof storage.length !== 'number') {
+                return;
+            }
+            for (var i = storage.length - 1; i >= 0; i -= 1) {
+                var key = storage.key(i);
+                if (!key) {
+                    continue;
+                }
+                var normalizedKey = String(key).toLowerCase();
+                if (
+                    normalizedKey.indexOf('kommunicate') === 0 ||
+                    normalizedKey.indexOf('applozic') === 0 ||
+                    normalizedKey.indexOf('km_') === 0 ||
+                    normalizedKey === 'feedbackgroups'
+                ) {
+                    storage.removeItem(key);
+                }
+            }
+        };
+        try {
+            clearWidgetStorage(window.sessionStorage);
+            clearWidgetStorage(window.localStorage);
+        } catch (error) {}
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmLocalStorage.deleteUserCookiesOnLogout();
         appOptionSession.removeAppInstanceCount();

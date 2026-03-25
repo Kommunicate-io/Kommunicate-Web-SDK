@@ -367,6 +367,7 @@ const firstVisibleMsg = {
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var PRE_CHAT_LEAD_COLLECTION_MODAL_AUTO_OPENED = false;
         var PRE_CHAT_LEAD_COLLECTION_MODAL_DISPLAY_DELAY = 220;
+        var AUTH_SUBMIT_TRIGGERED = false;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
@@ -571,13 +572,13 @@ const firstVisibleMsg = {
         var MCK_UNREAD_COUNT_MAP = new Array();
         var MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
         var MCK_TAB_CONVERSATION_MAP = new Array();
+        var kommunicateCommons = new KommunicateCommons();
         var mckInit = new MckInit();
         var mckUtils = new MckUtils();
         var mckUserUtils = new MckUserUtils();
         var mckGroupService = new MckGroupService();
         var mckGroupUtils = new MckGroupUtils();
         var mckGroupLayout = new MckGroupLayout();
-        var kommunicateCommons = new KommunicateCommons();
         var mckFileService = new MckFileService();
         var mckMessageLayout = new MckMessageLayout();
         var mckMessageService = new MckMessageService();
@@ -710,7 +711,7 @@ const firstVisibleMsg = {
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
-        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
+        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
@@ -1495,8 +1496,24 @@ const firstVisibleMsg = {
                 typeof optns.launchOnUnreadMessage === 'boolean'
                     ? optns.launchOnUnreadMessage
                     : false;
-            KM_ASK_USER_DETAILS = appOptions.askUserDetails;
+            if (!Array.isArray(KM_ASK_USER_DETAILS)) {
+                KM_ASK_USER_DETAILS = [];
+            }
+            KM_ASK_USER_DETAILS.length = 0;
+            if (Array.isArray(appOptions.askUserDetails)) {
+                Array.prototype.push.apply(KM_ASK_USER_DETAILS, appOptions.askUserDetails);
+            }
         };
+
+        function clearPersistedAuthState() {
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+            );
+            kmLocalStorage.deleteLocalStorage(
+                KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
+            );
+        }
+
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 kmLocalStorage.removeItemFromLocalStorage('feedbackGroups');
@@ -1506,12 +1523,7 @@ const firstVisibleMsg = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                kmLocalStorage.deleteLocalStorage(
-                    KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-                );
-                kmLocalStorage.deleteLocalStorage(
-                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION
-                );
+                clearPersistedAuthState();
                 kommunicateCommons.hide('#mck-sidebox', '#mck-sidebox-launcher');
                 parent.document.getElementById('kommunicate-widget-iframe') &&
                     (parent.document.getElementById('kommunicate-widget-iframe').style.display =
@@ -2176,6 +2188,62 @@ const firstVisibleMsg = {
                 }, PRE_CHAT_LEAD_COLLECTION_AUTO_CLICK_DELAY);
             }
 
+            function clearAuthErrorState() {
+                _this.resetPreChatLoginError && _this.resetPreChatLoginError();
+            }
+
+            function resetLazyInitState(resetAuthSubmitTriggered) {
+                LAZY_INIT_STARTED = false;
+                LAZY_INIT_PENDING_OPEN = false;
+                if (resetAuthSubmitTriggered) {
+                    AUTH_SUBMIT_TRIGGERED = false;
+                }
+            }
+
+            function openWidgetForAuthError(options) {
+                options = options || {};
+                var sideboxEl = document.getElementById('mck-sidebox');
+                if (sideboxEl && sideboxEl.classList) {
+                    sideboxEl.classList.remove('km-soft-hidden');
+                }
+                var previousConnectOnClick = CONNECT_SOCKET_ON_WIDGET_CLICK;
+                CONNECT_SOCKET_ON_WIDGET_CLICK = false;
+                kommunicateCommons.setWidgetStateOpen(true);
+                CONNECT_SOCKET_ON_WIDGET_CLICK = previousConnectOnClick;
+                !POPUP_WIDGET && kommunicateCommons.hide('#mck-sidebox-launcher');
+                if (KOMMUNICATE_VERSION === 'v2') {
+                    typeof Kommunicate.setDefaultIframeConfigForOpenChat === 'function' &&
+                        Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
+                    try {
+                        openWidgetIframe();
+                    } catch (error) {}
+                }
+                try {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.display = '';
+                        kommunicateIframe.classList.remove('km-iframe-closed');
+                    }
+                } catch (error) {}
+                mckMessageService.openChatbox();
+            }
+
+            function ensureWidgetIframeVisible() {
+                try {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.display = 'block';
+                        kommunicateIframe.classList.remove('km-iframe-closed');
+                    }
+                } catch (error) {}
+            }
+
+            _this.openWidgetForAuthError = openWidgetForAuthError;
+
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon =
@@ -2205,7 +2273,7 @@ const firstVisibleMsg = {
                         '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' +
                         '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' +
                         '<div class="mck-close-btn-container">' +
-                        '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.6667 4.27337L11.7267 3.33337L8.00001 7.06004L4.27334 3.33337L3.33334 4.27337L7.06001 8.00004L3.33334 11.7267L4.27334 12.6667L8.00001 8.94004L11.7267 12.6667L12.6667 11.7267L8.94001 8.00004L12.6667 4.27337Z" fill="#1C1C1C"></path></svg></span><span class="mck-close-text">Close</span></div></div>' +
+                        '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg width="16" height="16" viewBox="0 0 16 16" focusable="false" aria-hidden="true"><use xlink:href="#icon-26" href="#icon-26"></use></svg></span><span class="mck-close-text">Close</span></div></div>' +
                         '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' +
                         Kommunicate.popupChatTemplate.getPopupChatTemplate(
                             MCK_POPUP_WIDGET_CONTENT,
@@ -2227,6 +2295,8 @@ const firstVisibleMsg = {
 
             _this.initializeApp = async function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
+                _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
+                _this.resetPreChatLoginError && _this.resetPreChatLoginError();
                 var userPxy = {
                     applicationId: optns.appId,
                     userId: MCK_USER_ID,
@@ -2286,6 +2356,12 @@ const firstVisibleMsg = {
                 }
                 var isValidated = await _this.validateAppSession(userPxy);
                 if (!isValidated) {
+                    if (!_this.isPreLeadCollectionEnabled() && MCK_AUTHENTICATION_TYPE_ID > 0) {
+                        _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
+                        _this.ensureAuthFailureFormFields && _this.ensureAuthFailureFormFields();
+                        _this.reopenAuthModal && _this.reopenAuthModal();
+                        return false;
+                    }
                     if (
                         (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !== 0) ||
                         KM_PRELEAD_COLLECTION.length !== 0
@@ -2377,8 +2453,6 @@ const firstVisibleMsg = {
                         $applozic('#km-anonymous-chat-launcher').append(
                             mckInit.getLauncherHtml(true)
                         );
-                        _this.addLeadCollectionInputDiv();
-                        _this.setLeadCollectionLabels();
                         if (kmChatLoginModal) {
                             kommunicateCommons.setDialogVisibility(
                                 kmChatLoginModal,
@@ -2392,6 +2466,8 @@ const firstVisibleMsg = {
                             WIDGET_SETTINGS,
                             true
                         );
+                        _this.addLeadCollectionInputDiv();
+                        _this.setLeadCollectionLabels();
                         var adjustIframeForPrelead = function () {
                             var kommunicateIframe =
                                 parent.document &&
@@ -2413,7 +2489,18 @@ const firstVisibleMsg = {
                             }
                         };
 
+                        var ensureLeadCollectionSubmitVisible = function () {
+                            var submitBtn = document.getElementById('km-submit-chat-login');
+                            if (!submitBtn) {
+                                return;
+                            }
+                            kommunicateCommons.show(submitBtn);
+                            submitBtn.removeAttribute('disabled');
+                        };
+
                         var showPreChatLeadModal = function () {
+                            AUTH_SUBMIT_TRIGGERED = false;
+                            _this.resetPreChatLoginError && _this.resetPreChatLoginError();
                             syncLeadCollectionModalContainerMode(kmChatLoginModal);
                             if (kmChatLoginModal) {
                                 kommunicateCommons.setDialogVisibility(
@@ -2422,6 +2509,7 @@ const firstVisibleMsg = {
                                     loginModalFocusFallbacks
                                 );
                             }
+                            ensureLeadCollectionSubmitVisible();
                             adjustIframeForPrelead();
                         };
 
@@ -2447,14 +2535,13 @@ const firstVisibleMsg = {
                             kmAnonymousChatLauncherClass[i].addEventListener(
                                 'click',
                                 function (event) {
-                                    event.preventDefault();
-
                                     console.log(
                                         '[PRE-LEAD] anonymous launcher click, widgetOpen:',
                                         kommunicateCommons.isWidgetOpen(),
                                         'popupOn:',
                                         PRE_CHAT_LEAD_COLLECTION_POPUP_ON
                                     );
+                                    event.preventDefault();
 
                                     if (!kommunicateCommons.isWidgetOpen()) {
                                         $applozic.fn.applozic('mckLaunchSideboxChat');
@@ -2509,13 +2596,13 @@ const firstVisibleMsg = {
                         _this.initialize(userPxy);
                     }
                 }
+                AUTH_SUBMIT_TRIGGERED = false;
             };
             _this.initialize = function (userPxy, onInitCallback) {
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
                     success: async function (result) {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
-                            //kommunicateCommons.hide("#km-chat-login-modal");
                             kommunicateCommons.hide('#km-chat-login-modal');
                             var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                             kommunicateCommons.setDialogVisibility(
@@ -2528,31 +2615,86 @@ const firstVisibleMsg = {
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
-                            var kmChatLoginModal = document.getElementById('km-chat-login-modal');
-                            kommunicateCommons.setDialogVisibility(
-                                kmChatLoginModal,
-                                true,
-                                loginModalFocusFallbacks
-                            );
-                            mckInit.addPasswordField({
-                                id: 'km-password',
-                                type: 'password',
-                                name: 'km-password',
-                                class: 'km-form-control km-input-width km-login-error',
-                                placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
-                                required: 'true',
-                            });
-
+                            var isPreLeadEnabled = _this.isPreLeadCollectionEnabled();
+                            var getLeadLabel = _this.getLeadCollectionLabel
+                                ? _this.getLeadCollectionLabel.bind(_this)
+                                : function (key, fallback) {
+                                      return fallback || '';
+                                  };
+                            _this.ensureChatLoginModalExists && _this.ensureChatLoginModalExists();
+                            if (!AUTH_SUBMIT_TRIGGERED) {
+                                _this.resetPreChatLoginError && _this.resetPreChatLoginError();
+                                _this.reopenAuthModal && _this.reopenAuthModal();
+                                if (!isPreLeadEnabled) {
+                                    _this.ensureAuthFailureFormFields &&
+                                        _this.ensureAuthFailureFormFields();
+                                }
+                                clearAuthErrorState();
+                                _this.clearAuthSessionState && _this.clearAuthSessionState();
+                                resetLazyInitState(false);
+                                return;
+                            }
+                            _this.reopenAuthModal && _this.reopenAuthModal();
+                            if (!isPreLeadEnabled) {
+                                _this.ensureAuthFailureFormFields &&
+                                    _this.ensureAuthFailureFormFields({
+                                        showUserIdField: true,
+                                    });
+                            }
+                            if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
+                                var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
+                                    return (
+                                        item &&
+                                        typeof item.field === 'string' &&
+                                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
+                                    );
+                                });
+                                var userIdInput = document.getElementById('km-userId');
+                                if (userIdInput && !hasPreLeadUserId) {
+                                    kommunicateCommons.hide(userIdInput);
+                                }
+                            }
+                            _this.updateAuthSubmitButton &&
+                                _this.updateAuthSubmitButton(
+                                    (MCK_LABELS['lead.collection'] || {}).submit
+                                );
+                            var loginErrorNode = document.getElementById('km-error-chat-login');
+                            if (loginErrorNode) {
+                                loginErrorNode.textContent = getLeadLabel(
+                                    'invalidPasswordMessage',
+                                    ''
+                                );
+                                kommunicateCommons.show(loginErrorNode);
+                                loginErrorNode.style.display = '';
+                            }
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
-                                    errorMessage: 'INVALID PASSWORD',
+                                    errorMessage: getLeadLabel('invalidPasswordMessage', ''),
                                 });
                             }
-                            // if password invalid then clear cookies
-                            kmLocalStorage.deleteUserCookiesOnLogout();
-
-                            throw new Error('INVALID_PASSWORD');
+                            _this.clearAuthSessionState && _this.clearAuthSessionState();
+                            resetLazyInitState(true);
+                            return;
+                        } else if (
+                            _this.isPreLeadCollectionEnabled() &&
+                            (result === 'error' || result === 'USER_NOT_FOUND')
+                        ) {
+                            var preLeadErrorMessage = _this.resolvePreLeadErrorMessage
+                                ? _this.resolvePreLeadErrorMessage(result, 'commonErrorMsg')
+                                : '';
+                            AUTH_SUBMIT_TRIGGERED = false;
+                            if (_this.showPreChatLoginError) {
+                                _this.showPreChatLoginError(preLeadErrorMessage);
+                            }
+                            if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                                MCK_ON_PLUGIN_INIT({
+                                    status: 'error',
+                                    errorMessage: result,
+                                });
+                            }
+                            resetLazyInitState(false);
+                            return;
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
@@ -2835,8 +2977,7 @@ const firstVisibleMsg = {
                 }
 
                 // Check if modern layout is enabled
-                var isModernLayout =
-                    kommunicateCommons && kommunicateCommons.isModernLayoutEnabled();
+                var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
 
                 // Check if a non-conversation tab (like whats-new, faqs) was previously active
                 var lastBottomTab =
@@ -3418,296 +3559,41 @@ const firstVisibleMsg = {
                     },
                 });
             };
-            _this.getPreLeadDataForAskUserDetail = function () {
-                var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
-                var KM_USER_DETAIL_TYPE_MAP = {
-                    email: 'email',
-                    phone: 'number',
-                };
-                var preLeadCollection = KM_PRELEAD_COLLECTION;
-                if (KM_ASK_USER_DETAILS && preLeadCollection.length === 0) {
-                    for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
-                        var obj = {};
-                        obj['field'] = KM_ASK_USER_DETAILS[i];
-                        obj['type'] = KM_USER_DETAIL_TYPE_MAP[KM_ASK_USER_DETAILS[i]] || 'text';
-                        obj['placeholder'] = LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]] || '';
-                        obj['required'] = true;
-                        KM_PRELEAD_COLLECTION.push(obj);
-                    }
-                }
-            };
-            _this.loginInputKeyup = function (input) {
-                input.addEventListener('keyup', function (event) {
-                    var target = event.target;
-                    var isClassExist = target.classList.contains('km-login-error');
-
-                    if (isClassExist) {
-                        input.classList.remove('km-login-error');
-                        // hide the error messge.
-                        target.nextElementSibling &&
-                            (target.nextElementSibling.style.display = 'none');
-                    }
-                });
-            };
-            (_this.addPasswordField = function (data) {
-                var inputId = 'km-password';
-                var kmChatInputDiv = _this.createInputContainer(inputId);
-                var emailContainer = document.getElementById('km-email-container');
-                var isPassField = document.getElementById('km-password');
-                var submitBtn = document.getElementById('km-submit-chat-login');
-                var errorContainer = document.querySelector(
-                    '#km-password-container .km-login-form-error'
-                );
-
-                var labelAttribute = {
-                    field: 'Password',
-                    required: data.required,
-                };
-                var kmLabelDiv = _this.createPreChatLabel(labelAttribute, inputId);
-                if (emailContainer) {
-                    if (isPassField == null) {
-                        var passwordField = document.createElement('input');
-                        var errorDiv = document.createElement('div');
-                        errorDiv.className += 'km-login-form-error km-error-container';
-
-                        errorDiv.innerHTML += `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-                        <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
-                        </svg>
-                        <p class='km-error-msg'>${MCK_LABELS['lead.collection'].errorText}</p>`;
-
-                        for (var key in data) {
-                            passwordField.setAttribute(key, data[key]);
-                        }
-                        passwordField.onblur = _this.loginInputKeyup(passwordField);
-                        $applozic(kmChatInputDiv).append(kmLabelDiv, passwordField, errorDiv);
-                        $applozic(kmChatInputDiv).insertAfter(emailContainer);
-                    } else if (isPassField) {
-                        errorContainer.style.display = 'flex';
-                        isPassField.classList.add('km-login-error');
-                    }
-                }
-                submitBtn.removeAttribute('disabled');
-                submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
-            }),
-                (_this.createPreChatLabel = function (leadCollection, inputId) {
-                    var kmLabelDiv = document.createElement('div');
-                    kmLabelDiv.setAttribute('class', 'km-form-label-container');
-                    var fieldName = leadCollection.field;
-                    var requiredSVG = `<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/>
-               </svg>`;
-
-                    // replace requiredName and requiredSVG
-                    var label = `<label class='km-form-label km-tertiary-title' for='${inputId}'>${fieldName}${
-                        leadCollection.required ? ' ' + requiredSVG : ''
-                    }</label>`;
-
-                    kmLabelDiv.innerHTML = label;
-                    return kmLabelDiv;
-                }),
-                (_this.createInputContainer = function (id) {
-                    var kmChatInputDiv = document.createElement('div');
-
-                    kmChatInputDiv.setAttribute('id', `${id}-container`);
-                    kmChatInputDiv.setAttribute('class', 'km-form-group km-form-group-container');
-                    return kmChatInputDiv;
-                });
-            _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(' ', '-');
-                var kmChatInputDiv = _this.createInputContainer(inputId);
-                var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId);
-
-                var kmChatInput = document.createElement(preLeadCollection.element || 'input');
-                var preLeadCollectionClass =
-                    'km-form-control ' +
-                    (preLeadCollection.element === 'textarea'
-                        ? 'mck-preleadcollection-textarea'
-                        : 'km-input-width');
-                kmChatInput.setAttribute('class', preLeadCollectionClass);
-
-                kmChatInput.setAttribute('id', inputId);
-                kmChatInput.setAttribute('name', inputId);
-                if (preLeadCollection.required) {
-                    kmChatInput.setAttribute('required', preLeadCollection.required);
-                }
-                if (
-                    preLeadCollection.element == 'select' &&
-                    preLeadCollection.options &&
-                    mckMessageService.checkArray(preLeadCollection.options)
-                ) {
-                    kmChatInput = _this.createSelectFieldDropdown(
-                        preLeadCollection.options,
-                        kmChatInput
-                    );
-                } else {
-                    kmChatInput.setAttribute('type', preLeadCollection.type || 'text');
-                    kmChatInput.setAttribute('placeholder', preLeadCollection.placeholder || '');
-                    kmChatInput.setAttribute('aria-label', preLeadCollection.field);
-                    if (preLeadCollection.type == 'email') {
-                        kmChatInput.setAttribute('pattern', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$');
-                        kmChatInput.setAttribute('title', '');
-                        kmChatInput.setAttribute(
-                            'oninvalid',
-                            "setCustomValidity('" + MCK_LABELS['lead.collection'].errorEmail + "')"
-                        );
-                        kmChatInput.setAttribute('oninput', "setCustomValidity('')");
-                    }
-                }
-                $applozic(kmChatInputDiv).append(kmLabelDiv, kmChatInput);
-                return kmChatInputDiv;
-            };
-
-            _this.addLeadCollectionInputDiv = function () {
-                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
-                var enableCountryCode = false;
-                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
-                    var dataToCollect = KM_PRELEAD_COLLECTION[i];
-                    if (dataToCollect.field.toLowerCase() == 'phone') {
-                        enableCountryCode = dataToCollect.enableCountryCode;
-                    }
-                    var kmInputField = _this.createInputField(dataToCollect);
-                    $applozic('.km-last-child').append(kmInputField);
-                }
-                _this.addPhoneNumberValidation(enableCountryCode);
-                _this.addPreChatInlineValidation();
-            };
-
-            _this.addPhoneNumberValidation = function (enableCountryCode) {
-                var phoneField = document.getElementById('km-phone');
-                if (phoneField !== null) {
-                    if (enableCountryCode) {
-                        phoneField.type = 'tel';
-                        phoneField.classList.add('phone-with-code');
-                        INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
-                            containerClass: 'km-intl-container  km-input-width',
-                            separateDialCode: true,
-                            initialCountry: 'auto',
-                            geoIpLookup: _this.geoIpLookupFunction,
-                            loadUtils: function () {
-                                return import(window.MCK_STATICPATH + '/lib/js/intl-tel-utils.js');
-                            },
-                            formatAsYouType: false,
-                            strictMode: false,
-                            useFullscreenPopup: false,
-                            dropdownContainer:
-                                phoneField.closest('.km-form-group') || document.body,
-                        });
-
-                        phoneField.addEventListener('keydown', _this.phoneNumberValidation);
-                    }
-                }
-            };
-
-            _this.geoIpLookupFunction = function (callback) {
-                mckUtils.ajax({
-                    url: 'https://ipapi.co/json',
-                    success: function (data) {
-                        callback(data.country_code);
+            if (typeof KMPreChat !== 'undefined' && KMPreChat) {
+                KMPreChat.attach(_this, {
+                    $applozic: $applozic,
+                    kommunicateCommons: kommunicateCommons,
+                    mckMessageService: mckMessageService,
+                    mckUtils: mckUtils,
+                    MCK_LABELS: MCK_LABELS,
+                    KM_PRELEAD_COLLECTION: KM_PRELEAD_COLLECTION,
+                    KM_ASK_USER_DETAILS: KM_ASK_USER_DETAILS,
+                    getAuthenticationTypeId: function () {
+                        return MCK_AUTHENTICATION_TYPE_ID;
                     },
-                    error: function () {
-                        callback('us');
+                    appOptions: appOptions,
+                    ensureWidgetIframeVisible: ensureWidgetIframeVisible,
+                    openWidgetForAuthError: openWidgetForAuthError,
+                    loginModalFocusFallbacks: loginModalFocusFallbacks,
+                    kmLocalStorage: kmLocalStorage,
+                    KommunicateConstants: KommunicateConstants,
+                    clearPersistedAuthState: clearPersistedAuthState,
+                    clearAppHeaders: function () {
+                        ALStorage.clearAppHeaders();
+                    },
+                    clearAuthTokens: function () {
+                        MCK_ACCESS_TOKEN = null;
+                        window.Applozic.ALApiService.AUTH_TOKEN = null;
+                    },
+                    setIntlTelInstance: function (instance) {
+                        INTL_TEL_INSTANCE = instance;
+                    },
+                    getIntlTelInstance: function () {
+                        return INTL_TEL_INSTANCE;
                     },
                 });
-            };
+            }
 
-            _this.phoneNumberValidation = function (e) {
-                e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
-            };
-
-            _this.addPreChatInlineValidation = function () {
-                var $error = $applozic('#km-error-chat-login');
-                var emailField = document.getElementById('km-email');
-                var phoneField = document.getElementById('km-phone');
-
-                if (emailField) {
-                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-                    var handleEmailValidation = function () {
-                        var value = (emailField.value || '').toLowerCase();
-                        if (!value) {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
-                            return;
-                        }
-                        if (!emailRegex.test(value)) {
-                            $error.removeClass('hide').addClass('show');
-                            $error.html(MCK_LABELS['lead.collection'].errorEmail);
-                        } else {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
-                        }
-                    };
-                    emailField.addEventListener('input', handleEmailValidation);
-                    emailField.addEventListener('blur', handleEmailValidation);
-                }
-
-                if (phoneField) {
-                    var handlePhoneValidation = function () {
-                        var value = phoneField.value || '';
-                        if (!value) {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
-                            return;
-                        }
-                        var isValid = true;
-                        if (typeof INTL_TEL_INSTANCE !== 'undefined' && INTL_TEL_INSTANCE) {
-                            isValid = INTL_TEL_INSTANCE.isValidNumber();
-                        } else {
-                            var digitsOnly = value.replace(/\D/g, '');
-                            isValid = digitsOnly.length >= 7 && digitsOnly.length <= 15;
-                        }
-                        if (!isValid) {
-                            $error.removeClass('hide').addClass('show');
-                            $error.html(
-                                MCK_LABELS['lead.collection'].commonErrorMsg ||
-                                    'Please enter a valid phone number'
-                            );
-                        } else {
-                            $error.removeClass('show').addClass('hide');
-                            $error.html('');
-                        }
-                    };
-                    phoneField.addEventListener('input', handlePhoneValidation);
-                    phoneField.addEventListener('blur', handlePhoneValidation);
-                }
-            };
-
-            _this.createSelectFieldDropdown = function (options, selectElement) {
-                var dropDownOption = document.createElement('option');
-                dropDownOption.setAttribute('value', '');
-                dropDownOption.textContent =
-                    MCK_LABELS['lead.collection'].option +
-                    ' ' +
-                    selectElement.getAttribute('name').toLowerCase().split('-')[1];
-                selectElement.appendChild(dropDownOption);
-                options.forEach(function (element) {
-                    if (kommunicateCommons.isObject(element)) {
-                        dropDownOption = document.createElement('option');
-                        dropDownOption.setAttribute('value', element.value);
-                        dropDownOption.textContent =
-                            element.value.charAt(0).toUpperCase() + element.value.slice(1);
-                        selectElement.appendChild(dropDownOption);
-                    } else {
-                        console.error(
-                            'Expected object inside options array but got ' + typeof element
-                        );
-                    }
-                });
-                return selectElement;
-            };
-            _this.setLeadCollectionLabels = function () {
-                var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
-                var submitLogin = document.getElementById('km-submit-chat-login');
-                var leadCollectionHeading = document.getElementById('km-lead-collection-heading');
-                var tabTitle = document.getElementById('km-tab-title');
-                submitLogin.innerHTML = LEAD_COLLECTION_LABEL.submit;
-                submitLogin.setAttribute('aria-label', LEAD_COLLECTION_LABEL.submit);
-                leadCollectionHeading.innerHTML = appOptions.headingFromWidget
-                    ? LEAD_COLLECTION_LABEL.heading
-                    : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
-                leadCollectionHeading.setAttribute('aria-label', LEAD_COLLECTION_LABEL.heading);
-                tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
-                tabTitle.setAttribute('aria-label', LEAD_COLLECTION_LABEL.title);
-            };
             _this.setEmojiHoverText = function () {
                 var ratingList = document.getElementsByClassName('mck-rating-box');
                 var ratingListLength = ratingList && ratingList.length;
@@ -5500,8 +5386,9 @@ const firstVisibleMsg = {
                         });
                     }
                     var metadata = mckMessageService.getUserMetadata();
-                    $error_chat_login.removeClass('show').addClass('hide');
+                    $error_chat_login.removeClass('vis').addClass('n-vis');
                     $error_chat_login.html('');
+                    AUTH_SUBMIT_TRIGGERED = true;
                     var options = {
                         userId: userId,
                         applicationId: MCK_APP_ID,
@@ -8070,8 +7957,8 @@ const firstVisibleMsg = {
                 '</div>' +
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
-                '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true" ><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
+                '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true"><use xlink:href="#icon-71" href="#icon-71"></use></svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
                 '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
@@ -8086,7 +7973,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '</div>';
             var resolvedBadgeIcon =
-                '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+                '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
                 '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
@@ -8629,8 +8516,7 @@ const firstVisibleMsg = {
                     }
 
                     KommunicateUI.isConversationListView = false;
-                    typeof KommunicateUI !== 'undefined' &&
-                        typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
+                    typeof KommunicateUI.toggleModernFaqBackButton === 'function' &&
                         KommunicateUI.toggleModernFaqBackButton(true);
                     typeof setActiveSubsectionState === 'function' &&
                         setActiveSubsectionState('conversation-individual');
@@ -10028,7 +9914,7 @@ const firstVisibleMsg = {
                         if (table) {
                             const downloadBtn = document.createElement('div');
                             downloadBtn.style.cssText = `position:relative; width:fit-content; top:0px; left:calc(100% - 16px); padding:5px; text-align:right; cursor:pointer`;
-                            downloadBtn.innerHTML = `<svg width="14" height="17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.59 6H10V1c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v5H2.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71ZM0 16c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H1c-.55 0-1 .45-1 1Z" fill="#bebaba"></path></svg>`;
+                            downloadBtn.innerHTML = `<svg width="14" height="17" viewBox="0 0 14 17" focusable="false" aria-hidden="true"><use xlink:href="#icon-73" href="#icon-73"></use></svg>`;
                             downloadBtn.addEventListener('click', (e) => {
                                 console.debug('clicked');
                                 e.preventDefault();
@@ -11760,7 +11646,7 @@ const firstVisibleMsg = {
                             KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                         ) {
                             emoji_template =
-                                '<span class="mck-icon--location"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg></span><span>Location</span>';
+                                '<span class="mck-icon--location"><svg width="17" height="17" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><use xlink:href="#icon-74" href="#icon-74"></use></svg></span><span>Location</span>';
                         } else if (
                             message.contentType ===
                                 KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
@@ -11772,7 +11658,7 @@ const firstVisibleMsg = {
                             });
 
                             var emailSvg =
-                                '<span class="mck-icon--email"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-6.54 4.09c-.65.41-1.47.41-2.12 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z" fill="rgba(38,50,56,.52)"/></svg>';
+                                '<span class="mck-icon--email"><svg width="17" height="17" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><use xlink:href="#icon-75" href="#icon-75"></use></svg>';
 
                             emoji_template = result
                                 ? emailSvg + result[0]
@@ -11780,7 +11666,7 @@ const firstVisibleMsg = {
                         } else {
                             var msg = message.message;
                             if (mckUtils.startsWith(msg, '<img')) {
-                                return '<span class="mck-icon--camera"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="rgba(38,50,56,.52)"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg></span><span>image</span>';
+                                return '<span class="mck-icon--camera"><svg width="17" height="17" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><use xlink:href="#icon-76" href="#icon-76"></use></svg></span><span>image</span>';
                             } else {
                                 if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                                     emoji_template = w.emoji.replace_unified(msg);

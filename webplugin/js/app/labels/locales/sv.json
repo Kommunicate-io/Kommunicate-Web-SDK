@@ -133,6 +133,7 @@
   "lead.collection.errorText": "Ange ditt kontolösenord",
   "lead.collection.errorEmail": "Ange en giltig e-postadress",
   "lead.collection.commonErrorMsg": "Inmatningen är ogiltig eller felaktig.",
+  "lead.collection.invalidPasswordMessage": "Autentisering misslyckades. Kontrollera dina inloggningsuppgifter och försök igen. Om problemet kvarstår, återställ ditt lösenord eller kontakta supporten.",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "Samtal löst och du bedömde det som",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "Du bedömde samtalet som",

@@ -133,6 +133,7 @@
   "lead.collection.errorText": "براہ کرم اپنا اکاؤنٹ پاس ورڈ درج کریں",
   "lead.collection.errorEmail": "براہ کرم درست ای میل درج کریں",
   "lead.collection.commonErrorMsg": "آپ کی فراہم کردہ معلومات غلط یا ناقابل قبول ہیں.",
+  "lead.collection.invalidPasswordMessage": "تصدیق ناکام ہو گئی۔ براہ کرم اپنی اسناد کی تصدیق کریں اور دوبارہ کوشش کریں۔ اگر مسئلہ برقرار رہے تو اپنا پاس ورڈ ری سیٹ کریں یا سپورٹ سے رابطہ کریں۔",
   "csat.rating.RESOLVED_CONVERSATION_RATED": "گفتگو حل ہو گئی اور آپ نے اس کی درجہ بندی کی",
   "csat.rating.NEW_RATING_EMPTY_LABEL": "",
   "csat.rating.CONVERSATION_RATED": "آپ نے گفتگو کو اس طرح درجہ دیا",

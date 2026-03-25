@@ -403,9 +403,12 @@ KommunicateUI = {
         kommunicateCommons.show('#mck-btn-attach-box');
         $applozic('#mck-text-box').attr('data-text', MCK_LABELS['input.message']);
     },
-    validateEmail: function (sendMsg) {
+    isValidEmail: function (value) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-        if (sendMsg.match(mailformat)) {
+        return mailformat.test(value || '');
+    },
+    validateEmail: function (sendMsg) {
+        if (this.isValidEmail(sendMsg)) {
             kommunicateCommons.hide('#mck-email-error-alert-box');
             this.hideLeadCollectionTemplate();
             window.$applozic.fn.applozic('updateUser', {

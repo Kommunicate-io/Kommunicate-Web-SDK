@@ -175,6 +175,8 @@
             option: 'Please select',
             password: 'Password',
             errorText: 'Please enter your account password',
+            invalidPasswordMessage:
+                'Authentication failed. Please verify your credentials and try again. If the issue persists, reset your password or contact support.',
             errorEmail: 'Please enter a valid email address',
             commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
         },

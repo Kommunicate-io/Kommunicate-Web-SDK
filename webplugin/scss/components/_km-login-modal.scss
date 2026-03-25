@@ -158,6 +158,53 @@
     }
 }
 
+.km-password-field {
+    position: relative;
+    width: 100%;
+}
+
+.km-password-input {
+    position: relative;
+    width: 100%;
+}
+
+.km-password-field .km-form-control {
+    padding-right: 44px;
+}
+
+.km-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    color: var(--km-font-subtitle-color, #6b6b6f);
+}
+
+.km-password-toggle svg {
+    fill: currentColor;
+}
+
+.km-password-toggle .km-eye-off {
+    display: none;
+}
+
+.km-password-field.is-visible .km-eye-off {
+    display: inline-flex;
+}
+
+.km-password-field.is-visible .km-eye-on {
+    display: none;
+}
+
 .km-start-conversation {
     width: 100%;
     height: 40px;
@@ -216,6 +263,10 @@
     margin: 15px;
     padding-bottom: 35px;
 }
+#km-form-chat-login .km-form-group.km-text-center {
+    margin-top: 18px;
+}
+
 .km-modal-span {
     width: 100%;
     // height: 57px;
@@ -251,15 +302,16 @@
     display: block;
     margin-bottom: 10px;
     width: 100%;
-    height: 34px;
-    padding: 6px;
+    height: 40px;
+    padding: 8px 12px;
+    box-sizing: border-box;
     font-size: $heading-secondary;
     line-height: 1.42857143;
     color: $text-primary-color;
     background-color: $disable-input-color;
     background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid var(--km-modal-input-border);
+    border-radius: 8px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
@@ -284,6 +336,8 @@
 
 .iti__flag-container {
     height: 100% !important;
+    display: flex;
+    align-items: center;
 }
 
 .iti:has(#km-phone:focus:not(:placeholder-shown)) {
@@ -294,14 +348,17 @@
     display: block;
     margin-bottom: 10px;
     width: 100%;
-
-    padding: 6px;
+    height: 40px;
+    padding: 0;
+    box-sizing: border-box;
     font-size: $heading-secondary;
     line-height: 1.42857143;
     color: $text-primary-color;
     background-color: $disable-input-color;
     background-image: none;
-    border: 2px solid var(--km-modal-input-border);
+    border: 1px solid var(--km-modal-input-border);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 
     &::placeholder {
         color: $placeholder-color;
@@ -311,6 +368,19 @@
         background-color: #ffffff;
     }
     border-radius: 8px;
+}
+
+.iti--allow-dropdown input[type='tel'],
+.iti--allow-dropdown input[type='text'],
+.iti--allow-dropdown .iti__tel-input {
+    height: 100%;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    color: $text-primary-color;
+    font-size: $heading-secondary;
 }
 
 .iti__search-input,
@@ -340,7 +410,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .km-input-width {
-    width: 96%;
+    width: 100%;
 }
 
 @media (max-width: 600px) {
