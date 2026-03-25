@@ -110,18 +110,9 @@ Kommunicate.client = {
             chatContext = $applozic.extend(chatContext, currentLanguage);
 
             CURRENT_GROUP_DATA.isWaitingQueue = false; // for showing the loader in screen
+
             var groupMetadata = {
-                CREATE_GROUP_MESSAGE: '',
-                REMOVE_MEMBER_MESSAGE: '',
-                ADD_MEMBER_MESSAGE: '',
-                JOIN_MEMBER_MESSAGE: '',
-                GROUP_NAME_CHANGE_MESSAGE: '',
-                GROUP_ICON_CHANGE_MESSAGE: '',
-                GROUP_LEFT_MESSAGE: '',
                 CONVERSATION_STATUS: -1,
-                DELETED_GROUP_MESSAGE: '',
-                GROUP_USER_ROLE_UPDATED_MESSAGE: '',
-                GROUP_META_DATA_UPDATED_MESSAGE: '',
                 KM_CONVERSATION_TITLE: conversationDetail.groupName,
                 //ALERT: "false",
                 HIDE: 'true',
