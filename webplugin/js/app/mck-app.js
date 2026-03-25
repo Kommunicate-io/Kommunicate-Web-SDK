@@ -428,10 +428,11 @@ function ApplozicSidebox() {
             var hostname = '';
             try {
                 while (
-                    contextWindow &&
-                    contextWindow !== contextWindow.parent &&
-                    contextWindow.location &&
-                    String(contextWindow.location.href).indexOf('about:srcdoc') === 0
+                    (contextWindow &&
+                        contextWindow !== contextWindow.parent &&
+                        contextWindow.location &&
+                        String(contextWindow.location.href).indexOf('about:srcdoc') === 0) ||
+                    String(contextWindow.location.href) === 'about:blank'
                 ) {
                     contextWindow = contextWindow.parent;
                 }
