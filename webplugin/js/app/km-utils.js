@@ -219,8 +219,6 @@ KommunicateConstants = {
     },
     KOMMUNICATE_DOMAINS: [
         'kommunicate.io',
-        'dashboard.kommunicate.io',
-        'dashboard-test.kommunicate.io',
         //use when testing locally
         // 'localhost',
         // '127.0.0.1',
