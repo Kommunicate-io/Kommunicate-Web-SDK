@@ -426,7 +426,7 @@ function ApplozicSidebox() {
             var allowedDomains = widgetSettings.allowedDomains;
             var currentHref = parent.window.location.href || '';
             var hostname = parent.window.location.hostname.toLowerCase();
-            var isSrcdoc = currentHref.indexOf('about:srcdoc') === 0;
+            var isSrcdoc = window.location.href.indexOf('about:srcdoc') === 0;
 
             // check if the current hostname is equal to or a subdomain
             // e.g. www.google.com is a subdomain of google.com
