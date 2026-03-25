@@ -219,9 +219,8 @@ KommunicateConstants = {
     },
     KOMMUNICATE_DOMAINS: [
         'kommunicate.io',
+        'dashboard.kommunicate.io',
         'dashboard-test.kommunicate.io',
-        'localhost',
-        '127.0.0.1',
     ],
     AWS_IMAGE_URL_EXPIRY_TIME: 15 * 60 * 1000,
     IMAGE_PLACEHOLDER_URL: 'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
