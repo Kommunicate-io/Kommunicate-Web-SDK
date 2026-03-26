@@ -771,20 +771,6 @@
                 ) {
                     globalSettings.widgetSettings = {};
                 }
-                // for demo when domain restriction is enabled
-                const previewHost = window.location.hostname;
-                if (previewHost === 'localhost' || previewHost === '127.0.0.1') {
-                    const existingAllowed = Array.isArray(
-                        globalSettings.widgetSettings.allowedDomains
-                    )
-                        ? globalSettings.widgetSettings.allowedDomains
-                        : [];
-                    if (!existingAllowed.includes(previewHost)) {
-                        globalSettings.widgetSettings.allowedDomains = existingAllowed.concat(
-                            previewHost
-                        );
-                    }
-                }
                 globalSettings.widgetSettings.position = config.widgetPosition;
 
                 if (config.voiceModeEnabled) {
