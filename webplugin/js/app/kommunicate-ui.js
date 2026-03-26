@@ -1440,22 +1440,30 @@ KommunicateUI = {
             !isCSATtriggeredByUser &&
             !isConvJustResolved
         ) {
-            kommunicateCommons.getFeedback(CURRENT_GROUP_DATA.tabId, feedbackResponseCallback);
+            var activeTabIdForFeedback = CURRENT_GROUP_DATA.tabId;
+            kommunicateCommons.hide('.mck-box-form-container');
+            kommunicateCommons.show('.mck-csat-text-1');
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'mck-restart-conv-banner'
+            );
+            kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#km-widget-options');
+            KommunicateUI.updateScroll(messageBody);
+            kommunicateCommons.getFeedback(activeTabIdForFeedback, feedbackResponseCallback);
             function feedbackResponseCallback(data) {
+                if (
+                    !CURRENT_GROUP_DATA ||
+                    String(CURRENT_GROUP_DATA.tabId) !== String(activeTabIdForFeedback)
+                ) {
+                    return;
+                }
                 var feedback = data.data;
                 KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = feedback
                     ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
                     : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
                 CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
-                kommunicateCommons.hide('.mck-box-form-container');
-                kommunicateCommons.show('.mck-csat-text-1');
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: ['mck-sidebox-ft'],
-                    },
-                    'mck-restart-conv-banner'
-                );
-                kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#km-widget-options');
                 /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
