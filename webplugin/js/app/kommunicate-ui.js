@@ -110,9 +110,15 @@ KommunicateUI = {
         KommunicateUI.pendingClosedConversationBanner = true;
         KommunicateUI.closedConversationBannerTabId = tabId;
         KommunicateUI.closedConversationBannerTimeoutId = setTimeout(function () {
+            var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
+            var activeTabId =
+                messageBody && typeof messageBody.getAttribute === 'function'
+                    ? messageBody.getAttribute('data-mck-id')
+                    : null;
             if (
                 !KommunicateUI.pendingClosedConversationBanner ||
-                KommunicateUI.closedConversationBannerTabId !== CURRENT_GROUP_DATA.tabId
+                (activeTabId &&
+                    String(KommunicateUI.closedConversationBannerTabId) !== String(activeTabId))
             ) {
                 return;
             }
@@ -1405,6 +1411,9 @@ KommunicateUI = {
     },
     showClosedConversationBanner: function (isConversationClosed) {
         if (!isConversationClosed) {
+            if (CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.feedbackSubmitted) {
+                return;
+            }
             KommunicateUI.clearClosedConversationBannerTimeout();
         }
         var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
@@ -1440,6 +1449,18 @@ KommunicateUI = {
             : kommunicate._globals.collectFeedback;
         var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         isConversationClosed && kommunicateCommons.hide('.mck-box-form-container');
+        if (CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.feedbackSubmitted) {
+            kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#km-widget-options');
+            kommunicateCommons.show('.mck-csat-text-1');
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'mck-restart-conv-banner'
+            );
+            KommunicateUI.updateScroll(messageBody);
+            return;
+        }
         if (KommunicateUI.isConversationResolvedFromZendesk) {
             isCSATenabled && KommunicateUI.triggerCSAT();
             document.getElementById('mck-submit-comment').onclick = function (e) {

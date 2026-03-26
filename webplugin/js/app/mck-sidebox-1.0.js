@@ -3776,6 +3776,7 @@ const firstVisibleMsg = {
                         userId: MCK_USER_ID,
                         email: LOGGED_IN_USER.email,
                     };
+                    CURRENT_GROUP_DATA.feedbackSubmitted = true;
                     kommunicateCommons.hide(
                         '#csat-1',
                         '#csat-2',
@@ -3790,13 +3791,6 @@ const firstVisibleMsg = {
                         },
                         'mck-restart-conv-banner'
                     );
-                    setTimeout(function () {
-                        KommunicateUI.showClosedConversationBanner(true);
-                        var messageBody = document.querySelector(
-                            '.mck-message-inner.mck-group-inner'
-                        );
-                        messageBody && KommunicateUI.updateScroll(messageBody);
-                    }, 0);
                     _this.sendFeedback(feedbackObject);
                 });
                 function updateStarFillFromValue(val) {
@@ -9606,6 +9600,7 @@ const firstVisibleMsg = {
                 }
                 if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
+                        CURRENT_GROUP_DATA.feedbackSubmitted = true;
                         var userFeedback = JSON.parse(msg.metadata.feedback);
                         var ratingSmileSVG = kommunicateCommons.getRatingSmilies(
                             userFeedback.rating
@@ -9646,6 +9641,20 @@ const firstVisibleMsg = {
                             },
                         ];
                         _this.getAssineeAndCsatTemplate(replyId, 'csatModule', ratingData);
+                        kommunicateCommons.hide(
+                            '#csat-1',
+                            '#csat-2',
+                            '#csat-3',
+                            '#km-widget-options',
+                            '.mck-box-form-container'
+                        );
+                        kommunicateCommons.show('.mck-csat-text-1');
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['mck-sidebox-ft'],
+                            },
+                            'mck-restart-conv-banner'
+                        );
                     } else if (msg.metadata && msg.metadata.KM_ASSIGN) {
                         var moduleData = {
                             assignee: msg.metadata.LOCALIZATION_VALUE || msg.metadata.KM_ASSIGN,
