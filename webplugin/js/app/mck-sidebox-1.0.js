@@ -4038,6 +4038,7 @@ const firstVisibleMsg = {
                                     KM_CHAT_CONTEXT: JSON.stringify({
                                         kmUserLocale: kommunicate._globals.userLocale,
                                     }),
+                                    hide: 'true',
                                 },
                                 source: 1,
                             },
