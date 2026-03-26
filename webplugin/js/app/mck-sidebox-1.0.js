@@ -3776,13 +3776,6 @@ const firstVisibleMsg = {
                         userId: MCK_USER_ID,
                         email: LOGGED_IN_USER.email,
                     };
-                    kommunicateCommons.hide(
-                        '#csat-1',
-                        '#csat-2',
-                        '#csat-3',
-                        '#km-widget-options',
-                        '.mck-box-form-container'
-                    );
                     kommunicateCommons.show('.mck-csat-text-1');
                     kommunicateCommons.modifyClassList(
                         {
@@ -4237,15 +4230,6 @@ const firstVisibleMsg = {
                 });
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(eventMapping.onRestartConversationClick);
-                kommunicateCommons.hide('.mck-csat-text-1');
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: ['mck-sidebox-ft'],
-                    },
-                    '',
-                    'mck-restart-conv-banner'
-                );
-                !KM_GLOBAL.disableTextArea && kommunicateCommons.show('.mck-box-form-container');
                 if (
                     event.currentTarget.id == 'km-restart-conversation' &&
                     appOptions.restartConversationByUser
@@ -4254,6 +4238,13 @@ const firstVisibleMsg = {
                 } else {
                     appOptions.restartConversationByUser &&
                         kommunicateCommons.show('#km-widget-options');
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['mck-sidebox-ft'],
+                        },
+                        '',
+                        'mck-restart-conv-banner'
+                    );
                     if (CURRENT_GROUP_DATA) {
                         CURRENT_GROUP_DATA.currentGroupFeedback = null;
                     }
