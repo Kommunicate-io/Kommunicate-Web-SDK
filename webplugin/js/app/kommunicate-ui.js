@@ -1379,9 +1379,6 @@ KommunicateUI = {
         KommunicateUI.triggerCSAT(triggeredByBot);
     },
     showClosedConversationBanner: function (isConversationClosed) {
-        if (!isConversationClosed) {
-            // keep block for readability; no scheduler cleanup needed
-        }
         var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
             if (isConvRated && CURRENT_GROUP_DATA.tabId) {
