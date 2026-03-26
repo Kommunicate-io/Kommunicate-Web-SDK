@@ -7958,7 +7958,9 @@ const firstVisibleMsg = {
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true"><use xlink:href="#icon-71" href="#icon-71"></use></svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                KM_MESSAGE_STATUS_ICON_SVG_PATHS +
+                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
                 '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
