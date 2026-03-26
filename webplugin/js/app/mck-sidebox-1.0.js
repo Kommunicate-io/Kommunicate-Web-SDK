@@ -15522,7 +15522,7 @@ const firstVisibleMsg = {
                                     KommunicateConstants.CONVERSATION_RESOLVED_STATUS
                             ) {
                                 KommunicateUI.isConvJustResolved = true;
-                                // banner is now shown immediately on submit; avoid delayed re-show
+                                KommunicateUI.showClosedConversationBanner(true);
                             } else if (
                                 resp.message.metadata.KM_STATUS ===
                                 KommunicateConstants.CONVERSATION_OPEN_STATUS
