@@ -6911,6 +6911,23 @@ const firstVisibleMsg = {
                             data.message[0] && data.message[0].contactIds;
                         CURRENT_GROUP_DATA.teamId =
                             data && data.groupFeeds[0] && data.groupFeeds[0].metadata.KM_TEAM_ID;
+                        // Ensure resolved/closed banner shows immediately on chat open.
+                        if (
+                            !params.startTime &&
+                            params.tabId &&
+                            params.isGroup &&
+                            typeof CURRENT_GROUP_DATA.conversationStatus !== 'undefined'
+                        ) {
+                            var isClosedConversation =
+                                CURRENT_GROUP_DATA.conversationStatus ==
+                                Kommunicate.conversationHelper.status.CLOSED;
+                            if (isClosedConversation) {
+                                KommunicateUI.isConvJustResolved = true;
+                                KommunicateUI.showClosedConversationBanner(true);
+                            } else {
+                                KommunicateUI.showClosedConversationBanner(false);
+                            }
+                        }
                         params.isWaitingQueue && KommunicateUI.handleWaitingQueueMessage();
 
                         const assignee =
