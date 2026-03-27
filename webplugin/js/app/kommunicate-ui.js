@@ -85,6 +85,7 @@ KommunicateUI = {
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
     isConversationResolvedFromZendesk: false,
+    restartBannerForced: false,
     faqEventsInitialized: false,
     faqCategoriesReady: false,
     faqCategoryRequestPending: false,
@@ -1441,16 +1442,18 @@ KommunicateUI = {
             !isConvJustResolved
         ) {
             var activeTabIdForFeedback = CURRENT_GROUP_DATA.tabId;
-            kommunicateCommons.hide('.mck-box-form-container');
-            kommunicateCommons.show('.mck-csat-text-1');
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['mck-sidebox-ft'],
-                },
-                'mck-restart-conv-banner'
-            );
+            if (!KommunicateUI.restartBannerForced) {
+                kommunicateCommons.hide('.mck-box-form-container');
+                kommunicateCommons.show('.mck-csat-text-1');
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-sidebox-ft'],
+                    },
+                    'mck-restart-conv-banner'
+                );
+                KommunicateUI.updateScroll(messageBody);
+            }
             kommunicateCommons.hide('#csat-1', '#csat-2', '#csat-3', '#km-widget-options');
-            KommunicateUI.updateScroll(messageBody);
             kommunicateCommons.getFeedback(activeTabIdForFeedback, feedbackResponseCallback);
             function feedbackResponseCallback(data) {
                 if (
@@ -1524,6 +1527,7 @@ KommunicateUI = {
             kommunicateCommons.hide('#mck-conversation-status-box');
             !KM_GLOBAL.disableTextArea && kommunicateCommons.show('.mck-box-form-container');
             kommunicateCommons.hide('.mck-csat-text-1');
+            KommunicateUI.restartBannerForced = false;
         }
     },
     handleAttachmentIconVisibility: function (enableAttachment, msg, groupReloaded) {

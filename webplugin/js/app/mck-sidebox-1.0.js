@@ -3401,11 +3401,9 @@ const firstVisibleMsg = {
                             }
 
                             CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data;
-                            KommunicateUI.showClosedConversationBanner(false);
+                            KommunicateUI.restartBannerForced = true;
+                            KommunicateUI.showClosedConversationBanner(true);
                             document.getElementById('mck-feedback-comment').value = '';
-                            $applozic('#mck-sidebox-ft').removeClass(
-                                'mck-restart-conv-banner km-mid-conv-csat'
-                            );
                             if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                                 ratingService.resetStarsColor();
                             }
