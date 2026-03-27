@@ -3403,6 +3403,8 @@ const firstVisibleMsg = {
                             CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data;
                             KommunicateUI.restartBannerForced = true;
                             KommunicateUI.showClosedConversationBanner(true);
+                            var submitBtn = document.getElementById('mck-submit-comment');
+                            submitBtn && submitBtn.removeAttribute('disabled');
                             document.getElementById('mck-feedback-comment').value = '';
                             if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                                 ratingService.resetStarsColor();
@@ -3421,6 +3423,8 @@ const firstVisibleMsg = {
                         }
                     },
                     error: function () {
+                        var submitBtn = document.getElementById('mck-submit-comment');
+                        submitBtn && submitBtn.removeAttribute('disabled');
                         console.log('Error submitting feedback');
                     },
                 });
