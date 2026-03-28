@@ -15,6 +15,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 // Keep attachments in the compose area instead of the direct-send V2 flow.
+var KM_FORCE_COMPOSE_ATTACHMENT_FLOW = true;
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = [];
 var FILE_ERROR_LABEL_KEYS = {
     INVALID_FILE: 'file.error.invalid',
