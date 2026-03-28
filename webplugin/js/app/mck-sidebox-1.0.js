@@ -11265,7 +11265,7 @@ const firstVisibleMsg = {
                                     typeof tabId !== 'undefined' &&
                                     tabId == contact.contactId &&
                                     isGroupTab === contact.isGroup &&
-                                    !$mck_group_info_tab.hasClass('vis')
+                                    !$applozic('#mck-group-info-tab').hasClass('vis')
                                 ) {
                                     var validated = true;
                                     if (isGroupTab && contact.type === 6) {
@@ -13385,7 +13385,7 @@ const firstVisibleMsg = {
                 if (
                     currTabId === contact.contactId &&
                     isGroupTab === contact.isGroup &&
-                    !$mck_group_info_tab.hasClass('vis') &&
+                    !$applozic('#mck-group-info-tab').hasClass('vis') &&
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT
                 ) {
                     if (message.conversationId && (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX)) {
