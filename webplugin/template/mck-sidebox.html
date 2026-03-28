@@ -708,15 +708,6 @@
                             </div>
                         </div>
                     </div>
-                    <div id="mck-no-messages" class="mck-no-data-text mck-text-muted n-vis">
-                        <h3>No messages yet!</h3>
-                    </div>
-                    <div id="mck-no-more-conversations" class="mck-show-more-icon n-vis">
-                        <h3>No more conversations!</h3>
-                    </div>
-                    <div id="mck-no-more-messages" class="mck-show-more-icon n-vis">
-                        <h3>No more messages!</h3>
-                    </div>
                 </div>
             </div>
             <div id="mck-offline-message-box" class="mck-offline-message-box n-vis">
@@ -820,7 +811,7 @@
                                     id="star2"
                                     name="rating"
                                     value="2"
-                                    class="mck-rating-box mck-rating-box-poor"
+                                    class="mck-rating-box"
                                     data-rating="2"
                                 />
                                 <label for="star2">
@@ -864,7 +855,7 @@
                                     id="star4"
                                     name="rating"
                                     value="4"
-                                    class="mck-rating-box mck-rating-box-good"
+                                    class="mck-rating-box"
                                     data-rating="4"
                                 />
                                 <label for="star4">
@@ -1027,7 +1018,7 @@
                                     <button
                                         type="button"
                                         id="close"
-                                        class="mck-box-close mck-close-panel move-right"
+                                        class="mck-box-close move-right"
                                     >
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -1065,7 +1056,7 @@
                                             <button
                                                 id="mck-btn-loc"
                                                 type="button"
-                                                class="mck-btn mck-btn-location"
+                                                class="mck-btn"
                                                 title="Share Location"
                                                 aria-label="Share Location"
                                                 tabindex="0"
@@ -1109,7 +1100,7 @@
                                             <button
                                                 id="mck-img-file-up"
                                                 type="button"
-                                                class="mck-btn mck-img-upload"
+                                                class="mck-btn"
                                                 title="Upload Image"
                                                 aria-label="Upload Image"
                                                 tabindex="0"
@@ -1131,7 +1122,7 @@
                                             <button
                                                 id="mck-vid-file-up"
                                                 type="button"
-                                                class="mck-btn mck-vid-upload"
+                                                class="mck-btn"
                                                 title="Upload Video"
                                                 aria-label="Upload Video"
                                                 tabindex="0"
@@ -1290,7 +1281,7 @@
                                                 <button
                                                     type="submit"
                                                     id="mck-msg-sbmt"
-                                                    class="mck-btn mck-btn-text-panel mck-btn-text-panel--send"
+                                                    class="mck-btn mck-btn-text-panel"
                                                     title="Send Message"
                                                     aria-disabled="false"
                                                     aria-label="Send Message"
@@ -1470,7 +1461,7 @@
                                                     00:00
                                                 </div>
                                             </div>
-                                            <div id="audiodiv" class="mck-mic-timer n-vis">
+                                            <div id="audiodiv" class="n-vis">
                                                 <audio
                                                     controls
                                                     id="recorder-audio"
@@ -1655,7 +1646,7 @@
                 id="mck-voice-interface"
                 class="n-vis mck-voice-interface km-custom-widget-background-color"
             >
-                <div class="mck-voice-interface-header">
+                <div>
                     <button
                         id="mck-voice-interface-back-btn"
                         class="mck-voice-interface-back-btn"
@@ -1673,31 +1664,18 @@
                         </svg>
                     </button>
                 </div>
-                <div class="mck-voice-interface-body">
+                <div>
                     <div class="mck-voice-image-container">
                         <div class="voice-ring voice-ring-1"></div>
                         <div class="voice-ring voice-ring-2"></div>
                         <div class="voice-ring voice-ring-3"></div>
                         <img class="mck-voice-image" src="" />
                     </div>
-                    <div
-                        class="mck-voice-interface-status"
-                        role="status"
-                        aria-live="polite"
-                        aria-atomic="true"
-                    >
-                        <span class="mck-voice-status-text n-vis"></span>
+                    <div role="status" aria-live="polite" aria-atomic="true">
+                        <span class="n-vis"></span>
                     </div>
-                    <div
-                        id="mck-voice-live-transcript"
-                        class="mck-voice-interface-transcript mck-hidden"
-                        aria-live="polite"
-                    ></div>
-                    <div
-                        id="mck-voice-response"
-                        class="mck-voice-interface-response mck-hidden"
-                        aria-live="polite"
-                    >
+                    <div id="mck-voice-live-transcript" class="mck-hidden" aria-live="polite"></div>
+                    <div id="mck-voice-response" class="mck-hidden" aria-live="polite">
                         <p id="mck-voice-response-text"></p>
                     </div>
                     <div
@@ -1716,9 +1694,9 @@
                         </svg>
                     </div>
                 </div>
-                <div class="mck-voice-interface-footer">
+                <div>
                     <p class="mck-voice-listening-note" aria-live="polite"></p>
-                    <div class="mck-voice-interface-footer-buttons">
+                    <div>
                         <button
                             id="mck-voice-speak-btn"
                             class="mck-voice-speak-btn km-custom-widget-text-color"
@@ -1843,7 +1821,7 @@
                     <button
                         id="mck-btn-close-loc-box"
                         type="button"
-                        class="mck-btn mck-btn-default move-right"
+                        class="mck-btn move-right"
                         data-dismiss="mckbox"
                         aria-disabled="false"
                         aria-label="Close"
@@ -1866,7 +1844,7 @@
         aria-hidden="true"
         style="visibility: hidden"
     >
-        <div class="km-modal-dialog km-modal-sm">
+        <div class="km-modal-dialog">
             <div class="km-modal-content">
                 <div class="km-sidemodal--modal-header km-custom-widget-background-color">
                     <div
@@ -1905,8 +1883,8 @@
                         <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
                     </div>
                     <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
-                    <div class="km-modal-form">
-                        <form id="km-form-chat-login" class="km-vertical">
+                    <div>
+                        <form id="km-form-chat-login">
                             <div class="km-form-group km-form-group-container">
                                 <label id="km-label-user-id" class="sr-only" for="km-userId"
                                     >User ID</label

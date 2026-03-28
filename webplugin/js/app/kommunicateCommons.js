@@ -601,10 +601,6 @@ function KommunicateCommons() {
         return KommunicateConstants.RATINGS_SVG[rating];
     };
 
-    _this.getDefaultAvatarImageSvg = function () {
-        return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
-    };
-
     _this.getFeedback = function (tabId, onSuccessCallback) {
         mckUtils.ajax({
             headers: {

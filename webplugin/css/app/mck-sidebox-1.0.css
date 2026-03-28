@@ -40,8 +40,7 @@
     background-color: #0073b7;
 }
 
-.mck-msgto,
-.mck-msglist-msgto {
+.mck-msgto {
     color: chartreuse;
     padding: 3px;
     text-align: left;
@@ -292,14 +291,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     border-radius: 4px;
 }
 
-.mck-message-sent {
-    background-color: white;
-}
-
-.mck-message-delivered {
-    background-color: green;
-}
-
 .minimize-icon {
     margin-right: 12px;
 }
@@ -307,21 +298,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-bg-white,
 .mck-box .mck-nav > li > a:hover {
     background-color: #fff;
-}
-
-.mck-show-more-icon {
-    position: absolute;
-    display: table-row;
-    top: 50%;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    overflow: auto;
-}
-
-.mck-sidebox .mck-show-more-icon h3 {
-    font-weight: 500 !important;
-    font-size: 15px;
 }
 
 .mck-no-b {
