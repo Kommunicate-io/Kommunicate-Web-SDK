@@ -800,13 +800,6 @@ class MckVoice {
                 element.dataset[flagName] = 'true';
             }
         };
-        const responseLabelElement = document.getElementById('mck-voice-response-label');
-        if (responseLabelElement) {
-            responseLabelElement.textContent = this.getVoiceLabel(
-                'voiceInterface.responseLabel',
-                'Response:'
-            );
-        }
         this.updateMuteButton();
         this.updateChatButtonText();
         bindOnce(
@@ -2100,25 +2093,6 @@ class MckVoice {
             return;
         }
         btn.dataset.voiceState = state;
-        const label = btn.querySelector('.mck-voice-state-label');
-        const stateTextMap = {
-            idle: this.getVoiceLabel('voiceInterface.speak', 'Voice'),
-            listening: this.getVoiceLabel('voiceInterface.listening', 'Listening...'),
-            processing: this.getVoiceLabel('voiceInterface.processing', 'Processing'),
-        };
-        if (label) {
-            label.textContent = stateTextMap[state] || label.textContent;
-        }
-    }
-
-    showVoiceStopButton() {
-        const stopBtn = document.getElementById('mck-voice-stop-btn');
-        stopBtn && kommunicateCommons.show(stopBtn);
-    }
-
-    hideVoiceStopButton() {
-        const stopBtn = document.getElementById('mck-voice-stop-btn');
-        stopBtn && kommunicateCommons.hide(stopBtn);
     }
 
     setTextboxVoiceActive(isActive) {
@@ -3399,7 +3373,6 @@ class MckVoice {
         this.pendingVoiceSessionSource = null;
         this.setTextboxVoiceActive(false);
         this.setVoiceButtonState('idle');
-        this.hideVoiceStopButton();
         this.restoreNativeVoiceOutputAfterVoiceMode();
         kommunicateCommons.show('#mck-voice-web');
         const inlineStatus = document.getElementById('km-voice-listening-status');
