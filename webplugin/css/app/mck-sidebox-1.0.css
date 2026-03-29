@@ -1995,10 +1995,6 @@ ul.mck-intent-menu > li:hover {
     background-color: green;
 }
 
-.mck-ol-status.vis {
-    display: inline-block !important;
-}
-
 .mck-msg-text {
     word-wrap: break-word;
     position: relative;
@@ -2757,7 +2753,6 @@ ul.mck-intent-menu > li:hover {
     height: 50px;
 }
 
-.mck-sidebox .mck-tab-title-w-status,
 .mck-sidebox .mck-tab-title-w-typing {
     line-height: 40px;
     height: 30px;
@@ -2768,12 +2763,6 @@ ul.mck-intent-menu > li:hover {
         --km-on-primary-link,
         var(--km-on-primary, #ffffff)
     );
-}
-
-.mck-sidebox .mck-tab-status {
-    line-height: 15px;
-    font-size: 12px;
-    opacity: 0.6;
 }
 
 .mck-sidebox .mck-nav > li {
@@ -2862,10 +2851,6 @@ ul.mck-intent-menu > li:hover {
     font-size: 12px;
     color: #a8a8ac;
     letter-spacing: 0.3px;
-}
-
-.mck-user-ol-status.vis {
-    display: inline-block !important;
 }
 
 .pac-container.pac-logo {
@@ -3319,11 +3304,6 @@ ul.mck-intent-menu > li:hover {
     }
     .mck-msg-preview .blk-lg-9 {
         width: 230px;
-    }
-    .mck-search-list .mck-cont-name {
-        width: 100%;
-        font-size: 15px;
-        line-height: 1.5;
     }
     .mck-sidebox .mck-nav-tabs.mck-nav-justified > li {
         display: table-cell;
@@ -4000,7 +3980,6 @@ textarea::placeholder {
 	justify-content: flex-start; */
     padding-left: 17px;
 }
-.mck-name-status-container .mck-tab-title-w-status,
 .mck-name-status-container .mck-tab-title-w-typing {
     line-height: 22px;
     height: auto;
@@ -4021,17 +4000,6 @@ textarea::placeholder {
     width: 155px;
 }
 
-#mck-tab-title.mck-tab-title-w-status {
-    font-size: 18px;
-    font-weight: 400;
-    font-style: normal;
-    font-stretch: normal;
-    letter-spacing: 0.7px;
-    color: var(
-        --km-on-primary,
-        var(--km-on-primary, #ffffff)
-    );
-}
 div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
