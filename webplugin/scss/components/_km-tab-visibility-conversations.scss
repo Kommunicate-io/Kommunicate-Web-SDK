@@ -7,8 +7,7 @@
     .mck-agent-image-container,
     .mck-agent-status-indicator,
     #mck-agent-status-text,
-    .mck-typing-box,
-    #mck-tab-status {
+    .mck-typing-box {
         @extend %km-hidden;
     }
 

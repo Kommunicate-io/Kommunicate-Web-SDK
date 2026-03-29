@@ -10901,8 +10901,7 @@ const firstVisibleMsg = {
                                 if (
                                     typeof tabId !== 'undefined' &&
                                     tabId == contact.contactId &&
-                                    isGroupTab === contact.isGroup &&
-                                    !$applozic('#mck-group-info-tab').hasClass('vis')
+                                    isGroupTab === contact.isGroup
                                 ) {
                                     var validated = true;
                                     if (isGroupTab && contact.type === 6) {
@@ -12823,7 +12822,6 @@ const firstVisibleMsg = {
                 if (
                     currTabId === contact.contactId &&
                     isGroupTab === contact.isGroup &&
-                    !$applozic('#mck-group-info-tab').hasClass('vis') &&
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT
                 ) {
                     return;
