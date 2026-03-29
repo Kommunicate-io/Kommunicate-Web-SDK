@@ -185,10 +185,6 @@
     margin-bottom: -3px;
     fill: #000;
 }
-.card-message-footer {
-    width: 100%;
-    height: 34px;
-}
 .km-card-message-footer-button {
     width: 100%;
     outline: none;
@@ -574,13 +570,6 @@
 /******** Generic list template*************/
 /* FAQ List */
 
-.km-dialog-box {
-    /*width:96%;*/
-}
-
-.km-faq-list--container {
-}
-
 /********  dialog box template *************/
 /* FAQ Answer */
 .km-message.km-received.km-faq-answer {
@@ -682,22 +671,14 @@
 }
 
 .mck-msg-box-rich-text-container .email-message-indicator span:first-child,
-.email-conversation-indicator span:first-child,
 .km-msg-box .email-message-indicator span:first-child {
     margin-right: 10px;
 }
-.mck-msg-box-rich-text-container
-    .email-message-indicator
-    span:first-child
-    svg
-    .email-conversation-indicator
-    span:first-child
-    svg,
+.mck-msg-box-rich-text-container .email-message-indicator span:first-child svg,
 .km-msg-box .email-message-indicator span:first-child svg {
     vertical-align: middle;
 }
 .mck-msg-box-rich-text-container .email-message-indicator span:last-child,
-.email-conversation-indicator span:last-child,
 .km-msg-box .email-message-indicator span:last-child {
     font-size: 14px;
     font-weight: 300;
