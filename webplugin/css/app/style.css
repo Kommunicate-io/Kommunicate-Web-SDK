@@ -3589,7 +3589,6 @@ div#mck-rated:before {
   align-items: center;
 }
 
-.mck-box .mck-contact-list .mck-conversation-topic,
 .mck-box .mck-contact-list .mck-cont-name,
 .mck-box .mck-contact-list .mck-cont-msg-wrapper {
   flex: 1 1 auto;

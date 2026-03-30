@@ -3819,34 +3819,6 @@ const firstVisibleMsg = {
                 }
                 refreshIntervalId = '';
             };
-            _this.manageOfflineMessageTime = function (userId) {
-                if (
-                    typeof MCK_OFFLINE_MESSAGE_DETAIL === 'object' &&
-                    !isNaN(MCK_OFFLINE_MESSAGE_DETAIL.timeout)
-                ) {
-                    if (MCK_OFFLINE_MESSAGE_DETAIL.type === 1) {
-                        if (
-                            !MCK_OFFLINE_MESSAGE_DETAIL.userIds ||
-                            MCK_OFFLINE_MESSAGE_DETAIL.userIds.length === 0
-                        ) {
-                            w.console.log('Offline message userIds required.');
-                            return;
-                        } else if (MCK_OFFLINE_MESSAGE_DETAIL.userIds.indexOf(userId) === -1) {
-                            return;
-                        }
-                    }
-                    if (offlineIntervalId) {
-                        clearInterval(offlineIntervalId);
-                    }
-                    offlineIntervalId = setTimeout(function () {
-                        clearInterval(offlineIntervalId);
-                        offlineIntervalId = '';
-                        mckMessageLayout.showOfflineMessage();
-                    }, parseInt(MCK_OFFLINE_MESSAGE_DETAIL.timeout) * 5000);
-                } else {
-                    w.console.log('Offline message timeout required.');
-                }
-            };
             _this.stopOfflineMessageCounter = function () {
                 if (offlineIntervalId) {
                     clearInterval(offlineIntervalId);
@@ -3901,8 +3873,6 @@ const firstVisibleMsg = {
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
             var MESSAGE_ADD_INBOX_URL = '/rest/ws/message/add/inbox';
             var CHANGE_BOT = '/rest/ws/group/assignee/change';
-            var offlineblk =
-                '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
             var $minutesLabel = $applozic('#mck-minutes');
             var $secondsLabel = $applozic('#mck-seconds');
@@ -4525,7 +4495,6 @@ const firstVisibleMsg = {
                     document.execCommand('insertText', false, text);
                 });
 
-                $applozic.template('oflTemplate', offlineblk);
                 ALStorage.clearMckMessageArray();
                 $applozic(d).on('click', '.' + MCK_LAUNCHER, function () {
                     if ($applozic(this).hasClass('mck-msg-preview')) {
@@ -5431,21 +5400,6 @@ const firstVisibleMsg = {
                     $mck_price_text_box.removeClass('mck-text-req');
                     kommunicateCommons.hide('.mck-text-req-error');
                 });
-                $applozic(d).on('click', '.mck-show-more', function (e) {
-                    e.preventDefault();
-                    var $this = $applozic(this);
-                    var tabId = $this.data('tabId');
-                    var isGroup = $mck_msg_inner.data('isgroup');
-                    var conversationId = $mck_msg_inner.data('mck-conversationid');
-                    conversationId = conversationId ? conversationId.toString() : '';
-                    var startTime = $this.data('datetime');
-                    mckMessageService.loadMessageList({
-                        tabId: tabId,
-                        isGroup: isGroup,
-                        conversationId: conversationId,
-                        startTime: startTime,
-                    });
-                });
                 $applozic(d).on('click', '.mck-accept', function (e) {
                     var conversationId = $applozic(this).data('mck-conversationid');
                     var priceText = $applozic(this).data('mck-topic-price');
@@ -5657,11 +5611,6 @@ const firstVisibleMsg = {
                         }
                     }
                     kommunicateCommons.hide('.mcktypeahead.mck-dropdown-menu');
-                });
-
-                $applozic('.mck-tabview-item').click(function () {
-                    $applozic('.mck-tabview-item').removeClass('active');
-                    $applozic(this).addClass('active');
                 });
             };
 
@@ -7382,7 +7331,6 @@ const firstVisibleMsg = {
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_box_form = $applozic('.mck-box-form');
             var $mck_msg_error = $applozic('#mck-msg-error');
-            var $mck_show_more = $applozic('#mck-show-more');
             var $mck_tab_title = $applozic('#mck-tab-title');
 
             const $mck_business_hours_box = $applozic('#km-business-hour-box');
@@ -7415,10 +7363,10 @@ const firstVisibleMsg = {
                 '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>' +
                 '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">' +
                 '<div class="move-right mck-msg-text"></div>' +
-                '<div class="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">' +
+                '<div class="mck-msg-reply mck-vertical-line ${msgReplyToVisibleExpr}">' +
                 '<div class="mck-msgto">${msgReplyTo} </div>' +
                 '</div>' +
-                '<div class="mck-msg-reply mck-verticalLine ${msgReplyDivExpr}">' +
+                '<div class="mck-msg-reply mck-vertical-line ${msgReplyDivExpr}">' +
                 '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
                 '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
                 '</div>' +
@@ -10431,26 +10379,6 @@ const firstVisibleMsg = {
                 mckInit.stopOfflineMessageCounter();
                 kommunicateCommons.hide('#mck-offline-message-box');
             };
-            _this.removeConversationThread = function (tabId, isGroup) {
-                ALStorage.clearMckMessageArray();
-                var contact = isGroup
-                    ? mckGroupUtils.getGroup(tabId)
-                    : mckMessageLayout.getContact(tabId);
-                var currentTabId = $mck_msg_inner.data('mck-id');
-                var isCurrGroupTab = $mck_msg_inner.data('isgroup');
-                if (typeof currentTabId === 'undefined' || currentTabId === '') {
-                    var htmlId =
-                        typeof contact !== 'undefined'
-                            ? contact.htmlId
-                            : mckContactUtils.formatContactId(tabId);
-                    var contactIdExpr = isGroup ? 'group-' + htmlId : 'user-' + htmlId;
-                    $applozic('#li-' + contactIdExpr).remove();
-                } else if (currentTabId === tabId && isCurrGroupTab === isGroup) {
-                    $mck_tab_option_panel.data('datetime', '');
-                    kommunicateCommons.show('#mck-message-cell');
-                    kommunicateCommons.hide('.mck-tab-message-option');
-                }
-            };
             _this.removedDeletedMessage = function (key, tabId, isGroup) {
                 ALStorage.clearMckMessageArray();
                 var $divMessage = $applozic('.' + key);
@@ -11222,24 +11150,6 @@ const firstVisibleMsg = {
             var _this = this;
             var USER_DISPLAY_NAME_UPDATE = '/rest/ws/user/name';
             var USER_IDENTITY_UPDATE_URL = '/rest/ws/user/change/identifier';
-            _this.getContactDisplayName = function (userIdArray) {
-                var mckContactNameArray = [];
-                window.Applozic.ALApiService.getContactDisplayName({
-                    data: { userIdArray: userIdArray },
-                    success: function (data) {
-                        for (var userId in data) {
-                            if (data.hasOwnProperty(userId)) {
-                                mckContactNameArray.push([userId, data[userId]]);
-                                MCK_CONTACT_NAME_MAP[userId] = data[userId];
-                                var contact = mckMessageLayout.fetchContact(userId);
-                                contact.displayName = data[userId];
-                            }
-                        }
-                        ALStorage.updateMckContactNameArray(mckContactNameArray);
-                    },
-                    error: function () {},
-                });
-            };
             _this.getUsersDetail = function (userIdArray, params) {
                 if (typeof userIdArray === 'undefined' || userIdArray.length < 1) {
                     return;
@@ -12552,7 +12462,6 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_preview_visual_indicator_text;
             var $mck_msg_inner;
-            var $mck_group_info_tab;
             function openConversationFromNotification($target) {
                 if (!$target || !$target.length) {
                     return;
