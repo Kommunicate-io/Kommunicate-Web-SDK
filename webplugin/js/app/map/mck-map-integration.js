@@ -61,11 +61,29 @@
         const $mckMapContent = $applozic('#mck-map-content');
         const $mckLocAddress = $applozic('#mck-loc-address');
 
+        const ensureGeocoder = (googleMaps) => {
+            if (geocoder) {
+                return geocoder;
+            }
+            const GeocoderCtor = googleMaps?.maps?.Geocoder;
+            if (typeof GeocoderCtor !== 'function') {
+                logger('Google Maps Geocoder is unavailable.');
+                return null;
+            }
+            try {
+                geocoder = new GeocoderCtor();
+            } catch (error) {
+                logger('Google Maps Geocoder init error', error);
+                geocoder = null;
+            }
+            return geocoder;
+        };
+
         layout.init = () => {
             const config = getMapConfig();
             const googleMaps = window.google;
             if (config.isLocShare && googleMaps && typeof googleMaps.maps === 'object') {
-                geocoder = geocoder || new googleMaps.maps.Geocoder();
+                ensureGeocoder(googleMaps);
                 $mckBtnAttach.on('click', layout.fileMenuToggle);
                 $mckBtnLoc.on('click', (event) => {
                     event.preventDefault();
@@ -165,7 +183,7 @@
                 $mckLocBox.mckModal();
                 return;
             }
-            geocoder = geocoder || new googleMaps.maps.Geocoder();
+            ensureGeocoder(googleMaps);
             AdvancedMarkerElement =
                 AdvancedMarkerElement || googleMaps.maps.marker?.AdvancedMarkerElement || null;
 
@@ -568,11 +586,6 @@
                     contentType: 2,
                     message: windowRef.JSON.stringify(mckMapUtils.getSelectedLocation()),
                 };
-
-                const conversationId = $mckMsgInner.data('mck-conversationid');
-                if (conversationId) {
-                    messagePxy.conversationId = conversationId;
-                }
 
                 if (typeof kommunicateCommons.setMessagePxyRecipient === 'function') {
                     kommunicateCommons.setMessagePxyRecipient(messagePxy);

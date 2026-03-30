@@ -5122,14 +5122,11 @@ const firstVisibleMsg = {
                             return;
                         }
                         var isGroup = $mck_msg_inner.data('isgroup');
-                        var conversationId = $mck_msg_inner.data('mck-conversationid');
-                        conversationId = conversationId ? conversationId.toString() : '';
                         var startTime = $mck_tab_option_panel.data('datetime');
                         if (startTime > 0 && !CONTACT_SYNCING) {
                             mckMessageService.loadMessageList({
                                 tabId: tabId,
                                 isGroup: isGroup,
-                                conversationId: conversationId,
                                 startTime: startTime,
                             });
                         }
@@ -5227,10 +5224,6 @@ const firstVisibleMsg = {
                             contentType: 0,
                             message: message,
                         };
-                        var conversationId = $mck_msg_inner.data('mck-conversationid');
-                        if (conversationId) {
-                            messagePxy.conversationId = conversationId;
-                        }
                         var autosuggestMetadata = $mck_autosuggest_metadata.val();
                         if (autosuggestMetadata && autosuggestMetadata != '') {
                             messagePxy.metadata = {
@@ -5325,10 +5318,8 @@ const firstVisibleMsg = {
                 launcherAgentImg && launcherAgentImg.classList.contains('vis')
                     ? kommunicateCommons.hide(launcherSvgSelector)
                     : kommunicateCommons.show(launcherSvgSelector);
-                var conversationId = $mck_msg_inner.data('mck-conversationid');
                 $mck_msg_inner.data('mck-id', '');
                 $mck_msg_inner.data('mck-name', '');
-                $mck_msg_inner.data('mck-conversationid', '');
                 if (typeof MCK_ON_PLUGIN_CLOSE === 'function') {
                     MCK_ON_PLUGIN_CLOSE(MCK_USER_ID);
                 }
@@ -5350,11 +5341,6 @@ const firstVisibleMsg = {
                 userName =
                     typeof userName !== 'undefined' && userName !== '' ? userName.toString() : '';
                 var isGroup = $this.data('isgroup') === true;
-                var conversationId = $this.data('mck-conversationid');
-                conversationId =
-                    typeof conversationId !== 'undefined' && conversationId !== ''
-                        ? conversationId.toString()
-                        : '';
                 KommunicateUI.checkSingleThreadedConversationSettings(
                     Object.keys(MCK_GROUP_MAP).length > 1
                 );
@@ -5364,7 +5350,6 @@ const firstVisibleMsg = {
                         tabId: tabId,
                         isGroup: isGroup,
                         userName: userName,
-                        conversationId: conversationId,
                         isConversationInWaitingQueue: isConversationInWaitingQueue,
                     },
                     callback
@@ -5429,14 +5414,6 @@ const firstVisibleMsg = {
                     }
                 }
 
-                if (messagePxy.conversationId) {
-                    var conversationPxy = MCK_CONVERSATION_MAP[messagePxy.conversationId];
-                    if (conversationPxy !== 'undefined' && conversationPxy.closed) {
-                        mckMessageLayout.closeConversation();
-                        $mck_msg_sbmt.attr('disabled', false);
-                        return;
-                    }
-                }
                 var contact = '';
                 if (messagePxy.groupId) {
                     contact = mckGroupUtils.getGroup(messagePxy.groupId);
@@ -5620,10 +5597,6 @@ const firstVisibleMsg = {
                     }
                     messagePxy.metadata = forwardMessage.metadata;
                 }
-                var conversationId = $mck_msg_inner.data('mck-conversationid');
-                if (conversationId) {
-                    messagePxy.conversationId = conversationId;
-                }
                 kommunicateCommons.setMessagePxyRecipient(messagePxy);
                 _this.sendMessage(messagePxy);
             };
@@ -5765,8 +5738,6 @@ const firstVisibleMsg = {
                             );
                             var messageKey = data.messageKey;
                             if (currentTabId && currentTabId.toString() === optns.tabId) {
-                                var conversationId = data.conversationId;
-                                $mck_msg_inner.data('mck-conversationid', conversationId);
                                 $mck_msg_div.removeClass(randomId).addClass(messageKey);
                                 $mck_msg_div.data('msgkey', messageKey);
                                 $applozic('.' + messageKey + ' .mck-message-status')
@@ -5794,10 +5765,6 @@ const firstVisibleMsg = {
                                 if (KommunicateUtils.isCurrentAssigneeBot()) {
                                     typingService.showTypingIndicator();
                                 }
-                            }
-                            if (messagePxy.conversationPxy) {
-                                var conversationPxy = messagePxy.conversationPxy;
-                                MCK_CONVERSATION_MAP[conversationId] = conversationPxy;
                             }
                         } else if (data === 'CONVERSATION_CLOSED' || data === 'BUSY_WITH_OTHER') {
                             $mck_msg_sbmt.attr('disabled', false);
@@ -5932,16 +5899,12 @@ const firstVisibleMsg = {
             _this.deleteConversation = function () {
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
-                var conversationId = $mck_msg_inner.data('mck-conversationid');
                 if (typeof tabId !== 'undefined') {
                     var data = {};
                     if (isGroup) {
                         data.groupId = tabId;
                     } else {
                         data.userId = tabId;
-                    }
-                    if (conversationId) {
-                        data.conversationId = conversationId;
                     }
                     CONTACT_SYNCING = true;
                     window.Applozic.ALApiService.deleteConversation({
@@ -6872,7 +6835,7 @@ const firstVisibleMsg = {
                 '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
                 '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
-                '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
+                '<a class="${mckLauncherExpr}" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}' +
                 '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' +
@@ -7320,7 +7283,6 @@ const firstVisibleMsg = {
                     }
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
-                    $mck_msg_inner.data('mck-conversationid', params.conversationId);
                     $mck_tab_option_panel.data('tabId', params.tabId);
                     kommunicateCommons.show('#mck-tab-option-panel');
                     kommunicateCommons.hide('#mck-contacts-content');
@@ -7388,7 +7350,6 @@ const firstVisibleMsg = {
                     }
                     kommunicateCommons.show('#mck-search-tabview-box');
                     $mck_msg_inner.data('mck-id', '');
-                    $mck_msg_inner.data('mck-conversationid', '');
                     kommunicateCommons.hide('#mck-tab-option-panel', '#mck-btn-clear-messages');
                     $mck_msg_to.val('');
 
@@ -8516,11 +8477,6 @@ const firstVisibleMsg = {
                         emoji_template = msg_text;
                     }
                 }
-                if (msg.conversationId) {
-                    if (append) {
-                        $mck_msg_inner.data('mck-conversationid', msg.conversationId);
-                    }
-                }
                 if (msg.contentType === 4) {
                     emoji_template = 'Final agreed price: ' + emoji_template;
                 }
@@ -9561,13 +9517,6 @@ const firstVisibleMsg = {
                     typeof emoji_template === 'object'
                         ? $messageText.append(emoji_template)
                         : $messageText.html(emoji_template);
-                    if (message.conversationId) {
-                        var conversationId = message.conversationId;
-                        $applozic('#li-' + contHtmlExpr + ' a').data(
-                            'mck-conversationid',
-                            conversationId
-                        );
-                    }
                     if (unreadCount > 0) {
                         $applozic('#li-' + contHtmlExpr + ' .mck-unread-count-text').html(
                             unreadCount
@@ -9596,13 +9545,8 @@ const firstVisibleMsg = {
             _this.addContact = function (contact, $listId, message) {
                 var emoji_template = _this.getMessageTextForContactPreview(message, contact);
                 var groupUserCount = contact.userCount;
-                var conversationId = '';
                 var isGroupTab = false;
                 if (typeof message !== 'undefined') {
-                    if (message.conversationId) {
-                        conversationId = message.conversationId;
-                        var conversationPxy = MCK_CONVERSATION_MAP[conversationId];
-                    }
                     if (message.groupId) {
                         isGroupTab = true;
                     }
@@ -9668,7 +9612,6 @@ const firstVisibleMsg = {
                         contUnreadExpr: unreadCountStatus,
                         contUnreadCount: unreadCount,
                         contNameExpr: displayName,
-                        conversationExpr: conversationId,
                         groupUserCountExpr: isGroupTab ? contact.userCount : '',
                         displayGroupUserCountExpr: displayCount ? 'vis' : 'n-vis',
                         msgCreatedDateExpr: message
@@ -10211,7 +10154,6 @@ const firstVisibleMsg = {
                             mckMessageLayout.loadTab({
                                 tabId: contact.contactId,
                                 isGroup: contact.isGroup,
-                                conversationId: message.conversationId,
                             });
                             return;
                         }
@@ -10315,7 +10257,6 @@ const firstVisibleMsg = {
                                         mckMessageLayout.loadTab({
                                             tabId: contact.contactId,
                                             isGroup: contact.isGroup,
-                                            conversationId: message.conversationId,
                                         });
                                         return;
                                     }
@@ -11128,12 +11069,6 @@ const firstVisibleMsg = {
                 if (message) {
                     params.groupId = message.groupId;
                     params.isMessage = true;
-                    if (message.conversationId) {
-                        var conversationPxy = MCK_CONVERSATION_MAP[message.conversationId];
-                        if (typeof conversationPxy !== 'object') {
-                            params.conversationId = message.conversationId;
-                        }
-                    }
                     params.apzCallback = mckGroupLayout.onGroupFeed;
                     mckGroupService.getGroupFeed(params);
                 }
@@ -11894,7 +11829,6 @@ const firstVisibleMsg = {
                 if (!tabId) {
                     return;
                 }
-                var conversationId = $target.data('mck-conversationid');
                 var isGroup = Boolean($target.data('isgroup'));
                 kommunicateCommons.setWidgetStateOpen(true);
                 if (typeof activateConversationTabOnStartConversation === 'function') {
@@ -11905,9 +11839,6 @@ const firstVisibleMsg = {
                     tabId: tabId,
                     isGroup: isGroup,
                 };
-                if (conversationId) {
-                    params.conversationId = conversationId;
-                }
                 mckMessageLayout.loadTab(params);
             }
             _this.init = function () {
@@ -12160,10 +12091,6 @@ const firstVisibleMsg = {
                     return;
                 }
                 $mck_msg_preview_visual_indicator_text.data('isgroup', contact.isGroup);
-                // $mck_msg_preview.data('isgroup', contact.isGroup);
-                var conversationId = message.conversationId ? message.conversationId : '';
-                $mck_msg_preview_visual_indicator_text.data('mck-conversationid', conversationId);
-                // $mck_msg_preview.data('mck-conversationid', conversationId);
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName, message);
 
                 _this.showMessagePreview(message);
@@ -12232,7 +12159,6 @@ const firstVisibleMsg = {
                     var currTabId = $mck_message_inner.data('mck-id');
                     if (currTabId) {
                         var isGroup = $mck_message_inner.data('isgroup');
-                        var conversationId = $mck_message_inner.data('mck-conversationid');
                         //adding 1msec with latestMessageReceivedTime so API wont return the last message
                         var latestMessageReceivedTime =
                             $mck_msg_inner.data('last-message-received-time') + 1;
@@ -12240,7 +12166,6 @@ const firstVisibleMsg = {
                         mckMessageService.loadMessageList({
                             tabId: currTabId,
                             isGroup: isGroup,
-                            conversationId: conversationId,
                             latestMessageReceivedTime: latestMessageReceivedTime,
                             allowReload: true,
                         });
