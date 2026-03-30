@@ -2880,30 +2880,6 @@ ul.mck-intent-menu > li:hover {
     height: 18px;
 }
 
-.delivered16x16 {
-    background-position: -10px -718px;
-    width: 16px;
-    height: 16px;
-}
-
-.icon-read16x16 {
-    background-position: -10px -744px;
-    width: 16px;
-    height: 16px;
-}
-
-.icon-sent16x16 {
-    background-position: -10px -770px;
-    width: 16px;
-    height: 16px;
-}
-
-.icon-time16x16 {
-    background-position: -10px -796px;
-    width: 16px;
-    height: 16px;
-}
-
 @media (max-height: 768px) {
     .mck-sidebox {
         height: 580px;
@@ -3922,23 +3898,6 @@ button {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
 }
 
-.mck-badge-count {
-    min-width: 25px;
-    height: 25px;
-    border-radius: 50px;
-    background-color: #ec3838;
-    border: 3px solid #fff;
-    text-align: center;
-    color: white;
-    position: absolute;
-    top: -7px;
-    line-height: 20px;
-    font-size: 12px;
-    padding: 0px 4px;
-    z-index: 2243001;
-    right: 0;
-    pointer-events: none;
-}
 .mck-msg-preview-visual-indicator-container {
     background-color: #fff;
     border-radius: 24px;
@@ -3974,6 +3933,24 @@ button {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+}
+
+.mck-badge-count {
+    min-width: 25px;
+    height: 25px;
+    border-radius: 50px;
+    background-color: #ec3838;
+    border: 3px solid #fff;
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: -7px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0px 4px;
+    z-index: 2243001;
+    right: 0;
+    pointer-events: none;
 }
 
 #mck-msg-preview-visual-indicator .mck-close-btn-container.align-left {
