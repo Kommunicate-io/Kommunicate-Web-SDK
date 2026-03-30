@@ -1350,10 +1350,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     background-color: #f5f5f5 !important;
 }
 
-.mck-box .mck-contact-list li:last-child a {
-    /* border-bottom: 0 !important; */
-}
-
 .mck-box .mck-contact-list li a:hover {
     text-decoration: none;
 }
