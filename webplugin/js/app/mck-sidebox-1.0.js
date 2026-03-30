@@ -397,7 +397,6 @@ const firstVisibleMsg = {
         var IS_MCK_LOCSHARE = appOptions.locShare;
         var IS_CAPTURE_PHOTO = appOptions.capturePhoto;
         var IS_CAPTURE_VIDEO = appOptions.captureVideo;
-        var IS_CALL_ENABLED = appOptions.video;
         var MCK_FILE_URL = appOptions.fileBaseUrl;
         var MCK_ON_PLUGIN_INIT = appOptions.onInit;
         var AUTHENTICATION_TYPE_ID_MAP = [0, 1, 2];
@@ -432,9 +431,7 @@ const firstVisibleMsg = {
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
         var MCK_GETUSERNAME = appOptions.contactDisplayName;
         var MCK_MSG_VALIDATION = appOptions.validateMessage;
-        var MCK_PRICE_DETAIL = appOptions.finalPriceResponse;
         var MCK_GETUSERIMAGE = appOptions.contactDisplayImage;
-        var MCK_PRICE_WIDGET_ENABLED = appOptions.priceWidget;
         var MCK_OPEN_GROUP_SETTINGS = appOptions.openGroupSettings;
         var MCK_OFFLINE_MESSAGE_DETAIL = appOptions.offlineMessageDetail;
         var MCK_INIT_AUTO_SUGGESTION = appOptions.initAutoSuggestions;
@@ -1327,7 +1324,6 @@ const firstVisibleMsg = {
             IS_MCK_LOCSHARE = optns.locShare;
             IS_CAPTURE_PHOTO = optns.capturePhoto;
             IS_CAPTURE_VIDEO = optns.captureVideo;
-            IS_CALL_ENABLED = appOptions.video;
             MCK_ON_PLUGIN_INIT = optns.onInit;
             MCK_CONTACT_NAME_MAP = new Array();
             MCK_UNREAD_COUNT_MAP = new Array();
@@ -1346,9 +1342,7 @@ const firstVisibleMsg = {
             MCK_MSG_VALIDATION = optns.validateMessage;
             MCK_GETUSERNAME = optns.contactDisplayName;
             MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
-            MCK_PRICE_DETAIL = optns.finalPriceResponse;
             MCK_GETUSERIMAGE = optns.contactDisplayImage;
-            MCK_PRICE_WIDGET_ENABLED = optns.priceWidget;
             MCK_OPEN_GROUP_SETTINGS = appOptions.openGroupSettings;
             MCK_OFFLINE_MESSAGE_DETAIL = optns.offlineMessageDetail;
             MCK_INIT_AUTO_SUGGESTION = optns.initAutoSuggestions;
@@ -2108,7 +2102,7 @@ const firstVisibleMsg = {
                         '<div class="mck-row mck-preview-content">' +
                         '<div class="mck-preview-msg-content"></div>' +
                         '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' +
-                        '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>'
+                        '</div></div></div></div>'
                     );
                 }
             };
@@ -3716,7 +3710,6 @@ const firstVisibleMsg = {
             var $mck_form_field = $applozic('#mck-msg-form #mck-file-input');
             var $mck_response_text = $applozic('#mck_response_text');
             var $mck_contact_search = $applozic('.mck-contact-search');
-            var $mck_price_text_box = $applozic('#mck-price-text-box');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
             var $mck_autosuggest_search_input = $applozic('#mck-autosuggest-search-input');
@@ -5088,15 +5081,6 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     _this.closeSideBox();
                 });
-                $applozic(d).on('click', '.mck-price-submit', function (e) {
-                    e.preventDefault();
-                    _this.sendPriceMessage();
-                });
-                $mck_price_text_box.keydown(function (event) {
-                    if (event.keyCode === 13) {
-                        _this.sendPriceMessage();
-                    }
-                });
                 var MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function (
                     mutationsList,
                     observer
@@ -5153,28 +5137,6 @@ const firstVisibleMsg = {
                         var encryptedElements = document.querySelectorAll('.file-enc');
                         if (encryptedElements && encryptedElements.length) {
                             mckFileService.handleEncryptedElements(encryptedElements);
-                        }
-                    }
-                });
-                $mck_price_text_box.on('click', function (e) {
-                    e.preventDefault();
-                    $mck_price_text_box.removeClass('mck-text-req');
-                    kommunicateCommons.hide('.mck-text-req-error');
-                });
-                $applozic(d).on('click', '.mck-accept', function (e) {
-                    var conversationId = $applozic(this).data('mck-conversationid');
-                    var priceText = $applozic(this).data('mck-topic-price');
-                    if (typeof MCK_PRICE_DETAIL === 'function' && priceText && conversationId) {
-                        var conversationPxy = MCK_CONVERSATION_MAP[conversationId];
-                        var groupId = $mck_msg_to.val();
-                        var supplierId = mckGroupService.getGroupDisplayName(groupId);
-                        if (typeof conversationPxy === 'object') {
-                            MCK_PRICE_DETAIL({
-                                custId: MCK_USER_ID,
-                                suppId: supplierId,
-                                price: priceText,
-                            });
-                            alMessageService.sendConversationCloseUpdate(conversationId);
                         }
                     }
                 });
@@ -6661,45 +6623,6 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.sendPriceMessage = function () {
-                var priceText = $mck_price_text_box.val();
-                if (priceText === '') {
-                    $mck_price_text_box.addClass('mck-text-req');
-                    kommunicateCommons.show('.mck-text-req-error');
-                    return;
-                }
-                priceText = $applozic.trim(priceText);
-                var tabId = $mck_msg_to.val();
-                var conversationId = $mck_msg_inner.data('mck-conversationid', conversationId);
-                var messagePxy = {
-                    type: 5,
-                    contentType: 4,
-                    message: priceText,
-                };
-                if ($mck_msg_inner.data('isgroup') === true) {
-                    messagePxy.groupId = tabId;
-                } else {
-                    messagePxy.to = tabId;
-                }
-                if ($mck_msg_inner.data('mck-conversationid')) {
-                    var conversationId = $mck_msg_inner.data('mck-conversationid');
-                    messagePxy.conversationId = conversationId;
-                    var conversationPxy = MCK_CONVERSATION_MAP[conversationId];
-                    if (
-                        typeof conversationPxy === 'object' &&
-                        typeof MCK_PRICE_DETAIL === 'function'
-                    ) {
-                        MCK_PRICE_DETAIL({
-                            custId: MCK_USER_ID,
-                            suppId: tabId,
-                            price: priceText,
-                        });
-                    }
-                    $mck_price_text_box.val('');
-                }
-                _this.sendMessage(messagePxy);
-            };
-
             _this.getGroup = function (params) {
                 var usersArray = [];
 
@@ -7421,10 +7344,6 @@ const firstVisibleMsg = {
                         MCK_ATTACHMENT && kommunicateCommons.show('#mck-attachfile-box');
                     }
 
-                    //Todo: temporarily removing.
-                    /*if(IS_CALL_ENABLED) {
-                        $applozic("#li-mck-video-call").removeClass("n-vis").addClass("vis");
-                    }*/
                     if (_this.isGroupDeleted(params.tabId, params.isGroup)) {
                         $mck_msg_error.html(MCK_LABELS['group.deleted']);
                         kommunicateCommons.show('#mck-msg-error');
@@ -7440,10 +7359,6 @@ const firstVisibleMsg = {
 
                     if (MCK_MODE === 'support') {
                         kommunicateCommons.hide('.mck-tab-link');
-                    }
-                    if (MCK_PRICE_WIDGET_ENABLED) {
-                        kommunicateCommons.show('#mck-price-widget');
-                        $mck_msg_inner.addClass('mck-msg-w-panel');
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
                     window.Applozic.ALSocket.subscibeToTypingChannel(subscribeId);
@@ -7474,8 +7389,6 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('#mck-search-tabview-box');
                     $mck_msg_inner.data('mck-id', '');
                     $mck_msg_inner.data('mck-conversationid', '');
-                    kommunicateCommons.hide('#mck-price-widget');
-                    $mck_msg_inner.removeClass('mck-msg-w-panel');
                     kommunicateCommons.hide('#mck-tab-option-panel', '#mck-btn-clear-messages');
                     $mck_msg_to.val('');
 
@@ -8609,15 +8522,7 @@ const firstVisibleMsg = {
                     }
                 }
                 if (msg.contentType === 4) {
-                    var priceText = emoji_template;
                     emoji_template = 'Final agreed price: ' + emoji_template;
-                    if (!MCK_PRICE_WIDGET_ENABLED)
-                        emoji_template +=
-                            '<br/><button class="mck-accept" data-mck-topic-price="' +
-                            priceText +
-                            '" data-mck-conversationid="' +
-                            msg.conversationId +
-                            '">Accept</button>';
                 }
                 var $textMessage = $applozic('.' + replyId + ' .mck-msg-content');
                 var $mckBox = $applozic('.' + replyId + ' ' + '.mck-msg-box');

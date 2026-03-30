@@ -1013,29 +1013,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     font-size: 13px !important;
 }
 
-.mck-price-widget {
-    background-color: #fff;
-    margin: 0px !important;
-    padding: 4px 0;
-    height: 32px !important;
-}
-
-.mck-price-widget .mck-btn {
-    margin-left: 5px;
-    font-size: 13px !important;
-}
-
-.mck-price-widget .mck-widget-panel {
-    padding: 0 5px;
-}
-
-.mck-price-widget input {
-    height: 30px;
-    padding: 0 5px;
-    width: 200px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
     outline: none;
     background-color: #f5f5f5;
     background-image: none;
@@ -1443,11 +1420,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-sidebox .mck-box-top .blk-lg-2.mck-close-btn {
     width: auto;
     height: auto;
-}
-
-.mck-box-body .mck-msg-w-panel {
-    top: 40px !important;
-    overflow: auto;
 }
 
 .mck-message-inner .blk-lg-12 {
