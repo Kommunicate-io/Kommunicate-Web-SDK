@@ -160,9 +160,6 @@ const firstVisibleMsg = {
                     case 'loadChat':
                         oInstance.loadChat(params);
                         break;
-                    case 'loadContextualTab':
-                        return oInstance.loadTabWithTopic(params);
-                        break;
                     case 'audioAttach':
                         oInstance.audioAttach(params);
                         break;
@@ -240,9 +237,6 @@ const firstVisibleMsg = {
                         break;
                     case 'messageList':
                         return oInstance.getMessageList(params);
-                        break;
-                    case 'getMessageListByTopicId':
-                        return oInstance.getMessageListByTopicId(params);
                         break;
                     case 'getTotalUnreadCount':
                         return oInstance.getTotalUnreadCount();
@@ -377,7 +371,6 @@ const firstVisibleMsg = {
         var CONTACT_SYNCING = false;
         var MCK_IDLE_TIME_LIMIT = 90;
         var MCK_USER_DETAIL_MAP = [];
-        var MCK_TOPIC_DETAIL_MAP = [];
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
@@ -402,7 +395,6 @@ const firstVisibleMsg = {
         var MCK_CONNECTED_CLIENT_COUNT = 0;
         var GROUP_ROLE_MAP = [0, 1, 2, 3];
         var GROUP_TYPE_MAP = [10];
-        var MCK_TOPIC_CONVERSATION_MAP = [];
         var MCK_LAUNCHER = appOptions.launcher;
         var IS_MCK_VISITOR = appOptions.visitor;
         var MCK_USER_NAME = appOptions.userName;
@@ -442,7 +434,6 @@ const firstVisibleMsg = {
         var MCK_MSG_FILEMAXSIZE =
             appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
-        var MCK_GETTOPICDETAIL = appOptions.getTopicDetail;
         var MCK_GETUSERNAME = appOptions.contactDisplayName;
         var MCK_MSG_VALIDATION = appOptions.validateMessage;
         var MCK_PRICE_DETAIL = appOptions.finalPriceResponse;
@@ -635,9 +626,6 @@ const firstVisibleMsg = {
             kommunicateCommons: kommunicateCommons,
             mckMapUtils: w.mckMapUtils,
             mckMessageService: mckMessageService,
-            getTopicDetailMap: function () {
-                return MCK_TOPIC_DETAIL_MAP;
-            },
         });
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
@@ -1296,58 +1284,6 @@ const firstVisibleMsg = {
                 });
             }
         };
-        _this.loadTabWithTopic = function (optns) {
-            if (typeof optns === 'object' && (optns.userId || optns.groupId) && optns.topicId) {
-                var params = {
-                    tabId: optns.userId,
-                    topicId: optns.topicId,
-                };
-                if (optns.userName) {
-                    params.userName = optns.userName;
-                }
-                if (optns.topicStatus) {
-                    params.topicStatus =
-                        CONVERSATION_STATUS_MAP.indexOf(optns.topicStatus) === -1
-                            ? CONVERSATION_STATUS_MAP[0]
-                            : optns.topicStatus.toString();
-                } else {
-                    params.topicStatus = CONVERSATION_STATUS_MAP[0];
-                }
-                if (typeof MCK_GETTOPICDETAIL === 'function' || optns.topicDetail) {
-                    var topicDetail = optns.topicDetail
-                        ? optns.topicDetail
-                        : MCK_GETTOPICDETAIL(optns.topicId);
-                    if (typeof topicDetail === 'object' && topicDetail.title !== 'undefined') {
-                        MCK_TOPIC_DETAIL_MAP[optns.topicId] = topicDetail;
-                    }
-                }
-                if (optns.message) {
-                    var messagePxy = {
-                        type: 5,
-                        contentType: 0,
-                        message: message,
-                    };
-                    params.messagePxy = messagePxy;
-                    params.isMessage = true;
-                } else {
-                    params.isMessage = false;
-                }
-                if (optns.supportId) {
-                    params.isGroup = true;
-                    params.supportId = supportId;
-                } else {
-                    params.isGroup = false;
-                    params.userId = optns.userId;
-                }
-                mckMessageService.getConversationId(params);
-            } else {
-                if (!optns.userId || !optns.groupId) {
-                    return 'UserId required';
-                } else if (!optns.topicId) {
-                    return 'TopicId required';
-                }
-            }
-        };
         _this.loadContacts = function (contacts) {
             mckMessageLayout.loadContacts(contacts);
         };
@@ -1375,7 +1311,6 @@ const firstVisibleMsg = {
             MCK_IDLE_TIME_LIMIT = 90;
             MCK_APP_ID = optns.appId;
             MCK_CONVERSATION_MAP = [];
-            MCK_TOPIC_DETAIL_MAP = [];
             MCK_CLIENT_GROUP_MAP = [];
             IS_MCK_TAB_FOCUSED = true;
             MCK_LABELS = optns.labels;
@@ -1392,7 +1327,6 @@ const firstVisibleMsg = {
             LAZY_INIT_PENDING_OPEN = false;
             MCK_USER_NAME = optns.userName;
             IS_MCK_VISITOR = optns.visitor;
-            MCK_TOPIC_CONVERSATION_MAP = [];
             MCK_CONTACT_ARRAY = new Array();
             TAB_MESSAGE_DRAFT = new Object();
             MCK_FILE_URL = optns.fileBaseUrl;
@@ -1412,7 +1346,6 @@ const firstVisibleMsg = {
             MCK_ON_TAB_CLICKED = optns.onTabClicked;
             MCK_CONTACT_NUMBER = optns.contactNumber;
             MCK_APP_MODULE_NAME = optns.appModuleName;
-            MCK_GETTOPICDETAIL = optns.getTopicDetail;
             MCK_FILEMAXSIZE = optns.maxAttachmentSize;
             MCK_MSG_FILEMAXSIZE =
                 appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
@@ -1699,60 +1632,6 @@ const firstVisibleMsg = {
                 return 'success';
             } else {
                 return 'Callback function required';
-            }
-        };
-        _this.getMessageListByTopicId = function (params) {
-            if (typeof params !== 'object') {
-                return 'Unsupported format. Please check format';
-            }
-            if (typeof params.callback === 'function') {
-                if (
-                    (typeof params.id === 'undefined' || params.id === '') &&
-                    (typeof params.clientGroupId === 'undefined' || params.clientGroupId === '')
-                ) {
-                    params.callback({
-                        status: 'error',
-                        errorMessage: 'Id or clientGroupId required',
-                    });
-                    return;
-                }
-                if (params.id && typeof params.isGroup !== 'boolean') {
-                    params.callback({
-                        status: 'error',
-                        errorMessage: 'IsGroup parameter required',
-                    });
-                    return;
-                }
-                if (!params.topicId) {
-                    params.callback('TopicId required');
-                    return;
-                }
-                if (params.id) {
-                    params.tabId = params.id;
-                }
-                params.topicStatus = CONVERSATION_STATUS_MAP[0];
-                var conversationId = MCK_TOPIC_CONVERSATION_MAP[params.topicId];
-                if (conversationId && typeof MCK_CONVERSATION_MAP[conversationId] === 'object') {
-                    params.conversationId = conversationId;
-                    alMessageService.getMessageList(params, function (message) {
-                        if (
-                            typeof message.to !== 'undefined' ||
-                            typeof message.groupId !== 'undefined'
-                        ) {
-                            var messageFeed = mckMessageLayout.getMessageFeed(message);
-                            messageFeeds.push(messageFeed);
-                        }
-                    });
-                } else {
-                    params.isExtMessageList = true;
-                    params.pageSize = 1;
-                    alMessageService.fetchConversationByTopicId(params, function (params) {
-                        mckMessageService.getMessageList(params);
-                    });
-                }
-                return 'success';
-            } else {
-                return 'Callback function required.';
             }
         };
         _this.sendMessage = function (params) {
@@ -4986,12 +4865,6 @@ const firstVisibleMsg = {
                     var msgText = $applozic(this).data('mck-msg');
                     msgText =
                         typeof msgText !== 'undefined' && msgText !== '' ? msgText.toString() : '';
-                    if (typeof MCK_GETTOPICDETAIL === 'function' && topicId) {
-                        var topicDetail = MCK_GETTOPICDETAIL(topicId);
-                        if (typeof topicDetail === 'object' && topicDetail.title !== 'undefined') {
-                            MCK_TOPIC_DETAIL_MAP[topicId] = topicDetail;
-                        }
-                    }
                     var params = {
                         topicId: topicId,
                         tabId: tabId,
@@ -5034,12 +4907,6 @@ const firstVisibleMsg = {
                     } else {
                         topicStatus = CONVERSATION_STATUS_MAP[0];
                     }
-                    if (typeof MCK_GETTOPICDETAIL === 'function') {
-                        var topicDetail = MCK_GETTOPICDETAIL(topicId);
-                        if (typeof topicDetail === 'object' && topicDetail.title !== 'undefined') {
-                            MCK_TOPIC_DETAIL_MAP[topicId] = topicDetail;
-                        }
-                    }
                     mckMessageService.getConversationId({
                         tabId: tabId,
                         isGroup: false,
@@ -5081,13 +4948,6 @@ const firstVisibleMsg = {
                     if (typeof MCK_GETCONVERSATIONDETAIL === 'function') {
                         var conversationDetail = MCK_GETCONVERSATIONDETAIL(topicId);
                         if (typeof conversationDetail === 'object') {
-                            if (
-                                conversationDetail.topicDetail &&
-                                typeof conversationDetail.topicDetail === 'object' &&
-                                conversationDetail.topicDetail.title !== 'undefined'
-                            ) {
-                                MCK_TOPIC_DETAIL_MAP[topicId] = conversationDetail.topicDetail;
-                            }
                             if (
                                 conversationDetail.fallBackTemplatesList &&
                                 conversationDetail.fallBackTemplatesList.length > 0
@@ -5528,10 +5388,6 @@ const firstVisibleMsg = {
                             var conversationPxy = {
                                 topicId: topicId,
                             };
-                            var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
-                            if (typeof topicDetail === 'object') {
-                                conversationPxy.topicDetail = w.JSON.stringify(topicDetail);
-                            }
                             messagePxy.conversationPxy = conversationPxy;
                         }
                         var autosuggestMetadata = $mck_autosuggest_metadata.val();
@@ -5962,10 +5818,6 @@ const firstVisibleMsg = {
                     var conversationPxy = {
                         topicId: topicId,
                     };
-                    var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
-                    if (typeof topicDetail === 'object') {
-                        conversationPxy.topicDetail = w.JSON.stringify(topicDetail);
-                    }
                     messagePxy.conversationPxy = conversationPxy;
                 }
                 kommunicateCommons.setMessagePxyRecipient(messagePxy);
@@ -6141,11 +5993,6 @@ const firstVisibleMsg = {
                             }
                             if (messagePxy.conversationPxy) {
                                 var conversationPxy = messagePxy.conversationPxy;
-                                if (messagePxy.topicId) {
-                                    MCK_TOPIC_CONVERSATION_MAP[messagePxy.topicId] = [
-                                        conversationId,
-                                    ];
-                                }
                                 MCK_CONVERSATION_MAP[conversationId] = conversationPxy;
                             }
                         } else if (data === 'CONVERSATION_CLOSED' || data === 'BUSY_WITH_OTHER') {
@@ -6494,20 +6341,6 @@ const firstVisibleMsg = {
                                                     MCK_CONVERSATION_MAP[
                                                         conversationPxy.id
                                                     ] = conversationPxy;
-                                                    MCK_TOPIC_CONVERSATION_MAP[
-                                                        conversationPxy.topicId
-                                                    ] = [conversationPxy.id];
-                                                    if (conversationPxy.topicDetail) {
-                                                        try {
-                                                            MCK_TOPIC_DETAIL_MAP[
-                                                                conversationPxy.topicId
-                                                            ] = $applozic.parseJSON(
-                                                                conversationPxy.topicDetail
-                                                            );
-                                                        } catch (ex) {
-                                                            w.console.log('Incorect Topic Detail!');
-                                                        }
-                                                    }
                                                 }
                                             }
                                         );
@@ -6647,20 +6480,6 @@ const firstVisibleMsg = {
                                                 MCK_CONVERSATION_MAP[
                                                     conversationPxy.id
                                                 ] = conversationPxy;
-                                                MCK_TOPIC_CONVERSATION_MAP[
-                                                    conversationPxy.topicId
-                                                ] = [conversationPxy.id];
-                                                if (conversationPxy.topicDetail) {
-                                                    try {
-                                                        MCK_TOPIC_DETAIL_MAP[
-                                                            conversationPxy.topicId
-                                                        ] = $applozic.parseJSON(
-                                                            conversationPxy.topicDetail
-                                                        );
-                                                    } catch (ex) {
-                                                        w.console.log('Incorect Topic Detail!');
-                                                    }
-                                                }
                                             }
                                         );
                                     }
@@ -7001,27 +6820,6 @@ const firstVisibleMsg = {
             };
 
             _this.getConversationId = function (params) {
-                if (
-                    !params.isGroup &&
-                    !params.isMessage &&
-                    params.topicStatus !== CONVERSATION_STATUS_MAP[1]
-                ) {
-                    var conversationId = MCK_TOPIC_CONVERSATION_MAP[params.topicId];
-                    if (conversationId) {
-                        conversationPxy = MCK_CONVERSATION_MAP[conversationId];
-                        if (typeof conversationPxy === 'object') {
-                            $mck_msg_inner.data('mck-conversationid', conversationPxy.id);
-                            params.conversationId = conversationPxy.id;
-                            if (typeof MCK_TAB_CONVERSATION_MAP[params.tabId] !== 'undefined') {
-                                var tabConvArray = MCK_TAB_CONVERSATION_MAP[params.tabId];
-                                tabConvArray.push(conversationPxy);
-                                MCK_TAB_CONVERSATION_MAP[params.tabId] = tabConvArray;
-                            }
-                            mckMessageLayout.loadTab(params);
-                            return;
-                        }
-                    }
-                }
                 if (params.topicId) {
                     var conversationPxy = {
                         topicId: params.topicId,
@@ -7034,10 +6832,6 @@ const firstVisibleMsg = {
                         // conversationPxy.supportIds.push(params.supportId);
                     } else {
                         conversationPxy.userId = params.tabId;
-                    }
-                    var topicDetail = MCK_TOPIC_DETAIL_MAP[params.topicId];
-                    if (typeof topicDetail === 'object') {
-                        conversationPxy.topicDetail = w.JSON.stringify(topicDetail);
                     }
                     if (params.fallBackTemplatesList && params.fallBackTemplatesList.length > 0) {
                         conversationPxy.fallBackTemplatesList = params.fallBackTemplatesList;
@@ -7053,18 +6847,6 @@ const firstVisibleMsg = {
                                 ) {
                                     var conversationPxy = groupPxy.conversationPxy;
                                     MCK_CONVERSATION_MAP[conversationPxy.id] = conversationPxy;
-                                    MCK_TOPIC_CONVERSATION_MAP[conversationPxy.topicId] = [
-                                        conversationPxy.id,
-                                    ];
-                                    if (conversationPxy.topicDetail) {
-                                        try {
-                                            MCK_TOPIC_DETAIL_MAP[
-                                                conversationPxy.topicId
-                                            ] = $applozic.parseJSON(conversationPxy.topicDetail);
-                                        } catch (ex) {
-                                            w.console.log('Incorect Topic Detail!');
-                                        }
-                                    }
                                     $mck_msg_inner.data('mck-conversationid', conversationPxy.id);
                                     params.conversationId = conversationPxy.id;
                                     if (
@@ -11606,12 +11388,6 @@ const firstVisibleMsg = {
                     var tabConvArray = new Array();
                     if (typeof conversationPxy === 'object') {
                         MCK_CONVERSATION_MAP[conversationPxy.id] = conversationPxy;
-                        MCK_TOPIC_CONVERSATION_MAP[conversationPxy.topicId] = [conversationPxy.id];
-                        if (conversationPxy.topicDetail) {
-                            MCK_TOPIC_DETAIL_MAP[conversationPxy.topicId] = $applozic.parseJSON(
-                                conversationPxy.topicDetail
-                            );
-                        }
                         tabConvArray.push(conversationPxy);
                     }
                     if (tabConvArray.length > 0) {
@@ -11703,10 +11479,7 @@ const firstVisibleMsg = {
                     params.isMessage = true;
                     if (message.conversationId) {
                         var conversationPxy = MCK_CONVERSATION_MAP[message.conversationId];
-                        if (
-                            typeof conversationPxy !== 'object' ||
-                            typeof MCK_TOPIC_DETAIL_MAP[conversationPxy.topicId] !== 'object'
-                        ) {
+                        if (typeof conversationPxy !== 'object') {
                             params.conversationId = message.conversationId;
                         }
                     }
