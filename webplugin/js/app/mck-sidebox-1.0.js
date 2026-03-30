@@ -142,9 +142,6 @@ const firstVisibleMsg = {
                     case 'reInitialize':
                         return oInstance.reInit(params);
                         break;
-                    case 'loadConvTab':
-                        oInstance.loadConvTab(params);
-                        break;
                     case 'loadTab':
                         oInstance.loadTab(params, callback);
                         break;
@@ -1178,9 +1175,6 @@ const firstVisibleMsg = {
             if (optns.displayName) {
                 params.userName = optns.displayName;
             }
-            if (optns.convId) {
-                params.conversationId = optns.convId;
-            }
             if (optns.groupId || optns.clientGroupId) {
                 params.isGroup = true;
                 if (optns.clientGroupId) {
@@ -1262,15 +1256,6 @@ const firstVisibleMsg = {
                     clientGroupId: params.clientGroupId,
                     apzCallback: mckGroupLayout.onGroupFeed,
                     callback: mckGroupLayout.loadGroupTab,
-                });
-            }
-        };
-        _this.loadConvTab = function (optns) {
-            if (typeof optns === 'object' && optns.userId && optns.convId) {
-                mckMessageLayout.loadTab({
-                    tabId: optns.userId,
-                    conversationId: optns.convId,
-                    isGroup: false,
                 });
             }
         };
