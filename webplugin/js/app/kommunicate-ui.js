@@ -355,6 +355,9 @@ KommunicateUI = {
         }
     },
     isAttachmentV2: function (mediaType) {
+        if (KM_FORCE_COMPOSE_ATTACHMENT_FLOW) {
+            return false;
+        }
         if (!mediaType) {
             return true;
             // if attachment has no file type or media type considering as v2 attachment. for example java file doesn't have media type.
