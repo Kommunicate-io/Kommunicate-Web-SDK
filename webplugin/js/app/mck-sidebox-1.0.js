@@ -368,7 +368,6 @@ const firstVisibleMsg = {
         var CONTACT_SYNCING = false;
         var MCK_IDLE_TIME_LIMIT = 90;
         var MCK_USER_DETAIL_MAP = [];
-        var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
         let BUSINESS_HOUR_SETTING;
@@ -542,7 +541,6 @@ const firstVisibleMsg = {
         var MCK_CONTACT_NAME_MAP = new Array();
         var MCK_UNREAD_COUNT_MAP = new Array();
         var MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
-        var MCK_TAB_CONVERSATION_MAP = new Array();
         var kommunicateCommons = new KommunicateCommons();
         var mckInit = new MckInit();
         var mckUtils = new MckUtils();
@@ -1302,7 +1300,6 @@ const firstVisibleMsg = {
             CONTACT_SYNCING = false;
             MCK_IDLE_TIME_LIMIT = 90;
             MCK_APP_ID = optns.appId;
-            MCK_CONVERSATION_MAP = [];
             MCK_CLIENT_GROUP_MAP = [];
             IS_MCK_TAB_FOCUSED = true;
             MCK_LABELS = optns.labels;
@@ -1332,7 +1329,6 @@ const firstVisibleMsg = {
             MCK_DISPLAY_TEXT = optns.displayText;
             MCK_CALLBACK = optns.readConversation;
             MCK_GROUPMAXSIZE = optns.maxGroupSize;
-            MCK_TAB_CONVERSATION_MAP = new Array();
             MCK_ON_TAB_CLICKED = optns.onTabClicked;
             MCK_CONTACT_NUMBER = optns.contactNumber;
             MCK_APP_MODULE_NAME = optns.appModuleName;
@@ -6098,33 +6094,6 @@ const firstVisibleMsg = {
                                             }
                                         });
                                     }
-                                    if (data.conversationPxys.length > 0) {
-                                        var tabConvArray = new Array();
-                                        $applozic.each(
-                                            data.conversationPxys,
-                                            function (i, conversationPxy) {
-                                                if (typeof conversationPxy === 'object') {
-                                                    tabConvArray.push(conversationPxy);
-                                                    MCK_CONVERSATION_MAP[
-                                                        conversationPxy.id
-                                                    ] = conversationPxy;
-                                                }
-                                            }
-                                        );
-                                        if (isConvReq) {
-                                            MCK_TAB_CONVERSATION_MAP[params.tabId] = tabConvArray;
-                                        }
-                                    }
-                                    if (params.conversationId) {
-                                        var conversationPxy =
-                                            MCK_CONVERSATION_MAP[params.conversationId];
-                                        if (
-                                            typeof conversationPxy === 'object' &&
-                                            conversationPxy.closed
-                                        ) {
-                                            mckMessageLayout.closeConversation();
-                                        }
-                                    }
                                     if (!params.startTime) {
                                         if (params.isGroup) {
                                             mckGroupLayout.addGroupStatus(
@@ -6239,16 +6208,6 @@ const firstVisibleMsg = {
                                             );
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
-                                    }
-                                    if (data.conversationPxys.length > 0) {
-                                        $applozic.each(
-                                            data.conversationPxys,
-                                            function (i, conversationPxy) {
-                                                MCK_CONVERSATION_MAP[
-                                                    conversationPxy.id
-                                                ] = conversationPxy;
-                                            }
-                                        );
                                     }
                                     if (isMessages) {
                                         if (!params.startTime) {
@@ -10969,7 +10928,6 @@ const firstVisibleMsg = {
                 kommunicateCommons.hide('#mck-contact-loading');
                 if (response.status === 'success') {
                     var groupFeed = response.data;
-                    var conversationPxy = groupFeed.conversationPxy;
                     var group = mckGroupUtils.getGroup(groupFeed.id);
                     if (groupFeed.deletedAtTime) {
                         $mck_msg_error.html(MCK_LABELS['group.deleted']);
@@ -10977,15 +10935,6 @@ const firstVisibleMsg = {
                         document.querySelector('#mck-msg-error').classList.add('mck-no-mb');
                         kommunicateCommons.hide('#mck-msg-form');
                     }
-                    var tabConvArray = new Array();
-                    if (typeof conversationPxy === 'object') {
-                        MCK_CONVERSATION_MAP[conversationPxy.id] = conversationPxy;
-                        tabConvArray.push(conversationPxy);
-                    }
-                    if (tabConvArray.length > 0) {
-                        MCK_TAB_CONVERSATION_MAP[params.groupId] = tabConvArray;
-                    }
-
                     alUserService.loadUserProfiles(
                         groupFeed.membersId,
                         function (userIds, userIdArray) {
