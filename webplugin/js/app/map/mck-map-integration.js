@@ -543,7 +543,6 @@
         kommunicateCommons = {},
         mckMapUtils,
         mckMessageService,
-        getTopicDetailMap = () => ({}),
     } = {}) => {
         if (typeof $applozic !== 'function') {
             return {};
@@ -571,19 +570,8 @@
                 };
 
                 const conversationId = $mckMsgInner.data('mck-conversationid');
-                const topicId = $mckMsgInner.data('mck-topicid');
-
                 if (conversationId) {
                     messagePxy.conversationId = conversationId;
-                } else if (topicId) {
-                    const topicDetail = getTopicDetailMap()[topicId];
-                    const conversationPxy = {
-                        topicId,
-                    };
-                    if (typeof topicDetail === 'object') {
-                        conversationPxy.topicDetail = windowRef.JSON.stringify(topicDetail);
-                    }
-                    messagePxy.conversationPxy = conversationPxy;
                 }
 
                 if (typeof kommunicateCommons.setMessagePxyRecipient === 'function') {

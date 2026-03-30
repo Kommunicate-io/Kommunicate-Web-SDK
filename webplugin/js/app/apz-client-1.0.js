@@ -11,8 +11,8 @@ window['APPLOZIC'] ||
         }
         // DEFAULT INITIALIZE OPTION
         var default_options = {
-            baseUrl: 'https://apps.applozic.com',
-            fileUrl: 'https://applozic.appspot.com',
+            baseUrl: 'https://chat.kommunicate.io',
+            fileUrl: 'https://chat.kommunicate.io',
             userId: null,
             appId: null,
             userName: null,
