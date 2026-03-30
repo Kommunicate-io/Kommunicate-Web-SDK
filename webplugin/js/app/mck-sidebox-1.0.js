@@ -6194,6 +6194,32 @@ const firstVisibleMsg = {
                                             mckGroupUtils.addGroup(groupFeed);
                                         });
                                     }
+                                    if (params.isLaunch) {
+                                        var unreadGroupFeed = data.groupFeeds.find(function (
+                                            groupFeed
+                                        ) {
+                                            return groupFeed && Number(groupFeed.unreadCount) > 0;
+                                        });
+                                        var unreadUserDetail = data.userDetails.find(function (
+                                            userDetail
+                                        ) {
+                                            return userDetail && Number(userDetail.unreadCount) > 0;
+                                        });
+                                        if (unreadGroupFeed) {
+                                            mckMessageLayout.loadTab({
+                                                tabId: unreadGroupFeed.id,
+                                                isGroup: true,
+                                            });
+                                            return;
+                                        }
+                                        if (unreadUserDetail) {
+                                            mckMessageLayout.loadTab({
+                                                tabId: unreadUserDetail.userId,
+                                                isGroup: false,
+                                            });
+                                            return;
+                                        }
+                                    }
                                     if (isMessages) {
                                         if (!params.startTime) {
                                             params.isReload = true;
