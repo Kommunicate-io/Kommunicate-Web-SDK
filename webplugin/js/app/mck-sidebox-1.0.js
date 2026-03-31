@@ -13689,6 +13689,8 @@ const firstVisibleMsg = {
             var $mck_group_create_icon = $applozic('#mck-group-create-icon-box .mck-group-icon');
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
             var $mck_msg_error = $applozic('#mck-msg-error');
+            var HANDHELD_FILE_UPLOAD_ACCEPT =
+                '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png,.gif,.webp,.mp4,.mov,.m4v,.avi,.mkv,.webm,.3gp';
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
@@ -13861,6 +13863,12 @@ const firstVisibleMsg = {
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
                     kmWidgetEvents.eventTracking(eventMapping.onAttachmentClick);
+                    if (kommunicateCommons.checkIfDeviceIsHandheld()) {
+                        $mck_file_input.attr('accept', HANDHELD_FILE_UPLOAD_ACCEPT);
+                    } else {
+                        $mck_file_input.removeAttr('accept');
+                    }
+                    $mck_file_input.removeAttr('capture');
                     $mck_file_input.trigger('click');
                 });
                 $mck_img_upload.on('click', function (e) {
