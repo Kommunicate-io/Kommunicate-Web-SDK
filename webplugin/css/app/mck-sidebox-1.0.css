@@ -84,20 +84,22 @@
 }
 
 /* Ensure iframe sidebox fills available height when open on large viewports */
-body.mck-box-open .mck-sidebox,
-body.mck-box-open .mck-sidebox.mck-box,
-body.mck-box-open .mck-sidebox.mck-box.fade.in {
-    height: 100% !important;
-    max-height: 100% !important;
-}
-body.mck-box-open .mck-sidebox .mck-box-dialog,
-body.mck-box-open .mck-sidebox .mck-box-sm,
-body.mck-box-open .mck-sidebox .mck-box-md {
-    height: 100% !important;
-    max-height: 100% !important;
-}
-body.mck-box-open .mck-sidebox .mck-right {
-    bottom: 0 !important;
+@media (min-height: 1000px) {
+    body.mck-box-open .mck-sidebox,
+    body.mck-box-open .mck-sidebox.mck-box,
+    body.mck-box-open .mck-sidebox.mck-box.fade.in {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+    body.mck-box-open .mck-sidebox .mck-box-dialog,
+    body.mck-box-open .mck-sidebox .mck-box-sm,
+    body.mck-box-open .mck-sidebox .mck-box-md {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+    body.mck-box-open .mck-sidebox .mck-right {
+        bottom: 0 !important;
+    }
 }
 
 /* Container mode: ensure html, body, and wrapper elements have full height */
