@@ -88,8 +88,8 @@
     body.mck-box-open .mck-sidebox,
     body.mck-box-open .mck-sidebox.mck-box,
     body.mck-box-open .mck-sidebox.mck-box.fade.in {
-        height: 100% !important;
-        max-height: 100% !important;
+        height: calc(100% - 38px) !important;
+        max-height: calc(100% - 38px) !important;
     }
     body.mck-box-open .mck-sidebox .mck-box-dialog,
     body.mck-box-open .mck-sidebox .mck-box-sm,
