@@ -4504,9 +4504,7 @@ const firstVisibleMsg = {
                             '#mck-message-cell .mck-message-inner'
                         );
                         var activeConversationId =
-                            messageInner &&
-                            (messageInner.getAttribute('data-mck-id') ||
-                                (messageInner.dataset && messageInner.dataset.mckId));
+                            messageInner && messageInner.getAttribute('data-mck-id');
                         var sideboxContent = document.getElementById('mck-sidebox-content');
                         var isConversationIndividualActive =
                             sideboxContent &&
