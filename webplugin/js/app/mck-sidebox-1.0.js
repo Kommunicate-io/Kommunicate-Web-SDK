@@ -955,7 +955,13 @@ const firstVisibleMsg = {
                 }
                 // Voice socket topic lifecycle on connect (safe lookup, no scoped jquery dependency).
                 var messageInner = document.querySelector('#mck-message-cell .mck-message-inner');
-                var currentTabId = messageInner ? messageInner.getAttribute('data-mck-id') : null;
+                var currentTabId = null;
+                if (messageInner) {
+                    currentTabId =
+                        messageInner.getAttribute('data-mck-id') ||
+                        (messageInner.dataset && messageInner.dataset.mckId) ||
+                        $applozic(messageInner).data('mck-id');
+                }
                 var isCurrentGroup = messageInner
                     ? messageInner.getAttribute('data-isgroup') === 'true'
                     : false;
@@ -4506,7 +4512,8 @@ const firstVisibleMsg = {
                         var activeConversationId =
                             messageInner &&
                             (messageInner.getAttribute('data-mck-id') ||
-                                (messageInner.dataset && messageInner.dataset.mckId));
+                                (messageInner.dataset && messageInner.dataset.mckId) ||
+                                $applozic(messageInner).data('mck-id'));
                         var sideboxContent =
                             typeof document !== 'undefined' &&
                             document.getElementById('mck-sidebox-content');

@@ -724,6 +724,7 @@ $applozic.extend(true, Kommunicate, {
     setDefaultIframeConfigForClosedChat: function () {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         if (kommunicateIframe) {
+            kommunicateCommons.cleanupIframeResizeListener(kommunicateIframe);
             kommunicateIframe.style.height = '';
             kommunicateIframe.classList.add('km-iframe-closed');
             kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
