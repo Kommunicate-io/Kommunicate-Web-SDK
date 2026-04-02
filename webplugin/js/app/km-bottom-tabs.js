@@ -312,21 +312,10 @@
         function getActiveConversationId() {
             var messageInner =
                 documentRef && documentRef.querySelector('#mck-message-cell .mck-message-inner');
-            var messageInnerDataId = null;
-            var jq =
-                (typeof w !== 'undefined' && (w.$applozic || w.jQuery)) ||
-                (typeof $applozic !== 'undefined' && $applozic) ||
-                (typeof jQuery !== 'undefined' && jQuery);
-            if (messageInner && typeof jq === 'function') {
-                try {
-                    messageInnerDataId = jq(messageInner).data('mck-id');
-                } catch (e) {}
-            }
             return (
                 messageInner &&
                 (messageInner.getAttribute('data-mck-id') ||
-                    (messageInner.dataset && messageInner.dataset.mckId) ||
-                    messageInnerDataId)
+                    (messageInner.dataset && messageInner.dataset.mckId))
             );
         }
 
@@ -464,21 +453,10 @@
                         var latestMessageInner =
                             documentRef &&
                             documentRef.querySelector('#mck-message-cell .mck-message-inner');
-                        var latestMessageInnerDataId = null;
-                        var jq =
-                            (typeof w !== 'undefined' && (w.$applozic || w.jQuery)) ||
-                            (typeof $applozic !== 'undefined' && $applozic) ||
-                            (typeof jQuery !== 'undefined' && jQuery);
-                        if (latestMessageInner && typeof jq === 'function') {
-                            try {
-                                latestMessageInnerDataId = jq(latestMessageInner).data('mck-id');
-                            } catch (e) {}
-                        }
                         var lastTabId =
                             latestMessageInner &&
                             (latestMessageInner.getAttribute('data-mck-id') ||
-                                (latestMessageInner.dataset && latestMessageInner.dataset.mckId) ||
-                                latestMessageInnerDataId);
+                                (latestMessageInner.dataset && latestMessageInner.dataset.mckId));
                         if (lastTabId) {
                             kommunicateCommons.show('#mck-tab-individual');
                             kommunicateCommons.hide('#mck-tab-conversation');
