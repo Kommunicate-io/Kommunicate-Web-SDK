@@ -4500,9 +4500,33 @@ const firstVisibleMsg = {
                             typeof kommunicateCommons !== 'undefined' &&
                             typeof kommunicateCommons.isModernLayoutEnabled === 'function' &&
                             kommunicateCommons.isModernLayoutEnabled();
+                        var messageInner =
+                            typeof document !== 'undefined' &&
+                            document.querySelector('#mck-message-cell .mck-message-inner');
+                        var activeConversationId =
+                            messageInner &&
+                            (messageInner.getAttribute('data-mck-id') ||
+                                (messageInner.dataset && messageInner.dataset.mckId));
+                        var sideboxContent =
+                            typeof document !== 'undefined' &&
+                            document.getElementById('mck-sidebox-content');
+                        var isConversationIndividualActive =
+                            sideboxContent &&
+                            sideboxContent.classList &&
+                            sideboxContent.classList.contains('active-tab-conversations') &&
+                            sideboxContent.classList.contains(
+                                'active-subsection-conversation-individual'
+                            );
+                        var shouldKeepConversationState =
+                            Boolean(activeConversationId) ||
+                            Boolean(isConversationIndividualActive);
 
                         if (isModernLayout) {
-                            bottomTabManager.showEmptyStateTab();
+                            if (shouldKeepConversationState) {
+                                bottomTabManager.hideEmptyStateTab();
+                            } else {
+                                bottomTabManager.showEmptyStateTab();
+                            }
                         } else {
                             console.log('No conversation found, creating a new one.');
                             var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
