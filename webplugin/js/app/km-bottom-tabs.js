@@ -312,11 +312,7 @@
         function getActiveConversationId() {
             var messageInner =
                 documentRef && documentRef.querySelector('#mck-message-cell .mck-message-inner');
-            return (
-                messageInner &&
-                (messageInner.getAttribute('data-mck-id') ||
-                    (messageInner.dataset && messageInner.dataset.mckId))
-            );
+            return messageInner && messageInner.getAttribute('data-mck-id');
         }
 
         function isConversationTabActive() {
@@ -454,9 +450,7 @@
                             documentRef &&
                             documentRef.querySelector('#mck-message-cell .mck-message-inner');
                         var lastTabId =
-                            latestMessageInner &&
-                            (latestMessageInner.getAttribute('data-mck-id') ||
-                                (latestMessageInner.dataset && latestMessageInner.dataset.mckId));
+                            latestMessageInner && latestMessageInner.getAttribute('data-mck-id');
                         if (lastTabId) {
                             kommunicateCommons.show('#mck-tab-individual');
                             kommunicateCommons.hide('#mck-tab-conversation');
