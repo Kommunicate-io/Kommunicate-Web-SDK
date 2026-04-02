@@ -4500,16 +4500,14 @@ const firstVisibleMsg = {
                             typeof kommunicateCommons !== 'undefined' &&
                             typeof kommunicateCommons.isModernLayoutEnabled === 'function' &&
                             kommunicateCommons.isModernLayoutEnabled();
-                        var messageInner =
-                            typeof document !== 'undefined' &&
-                            document.querySelector('#mck-message-cell .mck-message-inner');
+                        var messageInner = document.querySelector(
+                            '#mck-message-cell .mck-message-inner'
+                        );
                         var activeConversationId =
                             messageInner &&
                             (messageInner.getAttribute('data-mck-id') ||
                                 (messageInner.dataset && messageInner.dataset.mckId));
-                        var sideboxContent =
-                            typeof document !== 'undefined' &&
-                            document.getElementById('mck-sidebox-content');
+                        var sideboxContent = document.getElementById('mck-sidebox-content');
                         var isConversationIndividualActive =
                             sideboxContent &&
                             sideboxContent.classList &&
