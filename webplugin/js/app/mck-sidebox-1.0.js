@@ -957,10 +957,14 @@ const firstVisibleMsg = {
                 var messageInner = document.querySelector('#mck-message-cell .mck-message-inner');
                 var currentTabId = null;
                 if (messageInner) {
+                    var messageInnerDataId =
+                        typeof $applozic === 'function'
+                            ? $applozic(messageInner).data('mck-id')
+                            : null;
                     currentTabId =
                         messageInner.getAttribute('data-mck-id') ||
                         (messageInner.dataset && messageInner.dataset.mckId) ||
-                        $applozic(messageInner).data('mck-id');
+                        messageInnerDataId;
                 }
                 var isCurrentGroup = messageInner
                     ? messageInner.getAttribute('data-isgroup') === 'true'
@@ -4509,11 +4513,15 @@ const firstVisibleMsg = {
                         var messageInner =
                             typeof document !== 'undefined' &&
                             document.querySelector('#mck-message-cell .mck-message-inner');
+                        var activeConversationDataId =
+                            messageInner && typeof $applozic === 'function'
+                                ? $applozic(messageInner).data('mck-id')
+                                : null;
                         var activeConversationId =
                             messageInner &&
                             (messageInner.getAttribute('data-mck-id') ||
                                 (messageInner.dataset && messageInner.dataset.mckId) ||
-                                $applozic(messageInner).data('mck-id'));
+                                activeConversationDataId);
                         var sideboxContent =
                             typeof document !== 'undefined' &&
                             document.getElementById('mck-sidebox-content');
