@@ -83,6 +83,25 @@
     box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.3);
 }
 
+/* Ensure iframe sidebox fills available height when open on large viewports */
+@media (min-height: 1000px) {
+    body.mck-box-open .mck-sidebox,
+    body.mck-box-open .mck-sidebox.mck-box,
+    body.mck-box-open .mck-sidebox.mck-box.fade.in {
+        height: calc(100% - 38px) !important;
+        max-height: calc(100% - 38px) !important;
+    }
+    body.mck-box-open .mck-sidebox .mck-box-dialog,
+    body.mck-box-open .mck-sidebox .mck-box-sm,
+    body.mck-box-open .mck-sidebox .mck-box-md {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+    body.mck-box-open .mck-sidebox .mck-right {
+        bottom: 0 !important;
+    }
+}
+
 /* Container mode: ensure html, body, and wrapper elements have full height */
 body.km-container-mode,
 body.km-container-mode.mck-box-open {
