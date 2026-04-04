@@ -2384,6 +2384,7 @@ const firstVisibleMsg = {
                         );
                         _this.addLeadCollectionInputDiv();
                         _this.setLeadCollectionLabels();
+                        _this.configureLoginUserIdInput();
                         if (kmChatLoginModal) {
                             kommunicateCommons.setDialogVisibility(
                                 kmChatLoginModal,
@@ -3680,6 +3681,50 @@ const firstVisibleMsg = {
                     phoneField.addEventListener('input', handlePhoneValidation);
                     phoneField.addEventListener('blur', handlePhoneValidation);
                 }
+            };
+            _this.shouldShowLoginUserIdInput = function () {
+                if (!MCK_AUTHENTICATION_TYPE_ID || MCK_AUTHENTICATION_TYPE_ID === 0) {
+                    return false;
+                }
+                if (!KM_PRELEAD_COLLECTION || KM_PRELEAD_COLLECTION.length === 0) {
+                    return true;
+                }
+                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
+                    var field = KM_PRELEAD_COLLECTION[i] && KM_PRELEAD_COLLECTION[i].field;
+                    if (!field) {
+                        continue;
+                    }
+                    var normalized = field
+                        .toString()
+                        .toLowerCase()
+                        .replace(/[\s-_]/g, '');
+                    if (normalized === 'userid') {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            _this.configureLoginUserIdInput = function () {
+                if (!_this.shouldShowLoginUserIdInput()) {
+                    return;
+                }
+                var userIdInput = document.getElementById('km-userId');
+                if (!userIdInput) {
+                    return;
+                }
+                kommunicateCommons.modifyClassList({ id: ['km-userId'] }, 'n-vis', '');
+                userIdInput.setAttribute('type', 'text');
+                userIdInput.setAttribute('required', true);
+                if (!userIdInput.getAttribute('placeholder')) {
+                    userIdInput.setAttribute(
+                        'placeholder',
+                        (MCK_LABELS && MCK_LABELS['form.label.userId']) || 'User ID'
+                    );
+                }
+                userIdInput.setAttribute(
+                    'aria-label',
+                    (MCK_LABELS && MCK_LABELS['form.label.userId']) || 'User ID'
+                );
             };
 
             _this.createSelectFieldDropdown = function (options, selectElement) {
