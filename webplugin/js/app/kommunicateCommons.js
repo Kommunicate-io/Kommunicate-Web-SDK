@@ -130,7 +130,8 @@ function KommunicateCommons() {
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
             (iframeElement.classList &&
-                (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
+                (iframeElement.classList.contains('km-iframe-closed') ||
+                    iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
                     iframeElement.classList.contains('chat-popup-widget-actionable')))
         ) {
