@@ -2774,6 +2774,7 @@ const firstVisibleMsg = {
                     kommunicateIframe.style.boxShadow = 'none';
                     POPUP_WIDGET && (popUpcloseButton.style.display = 'none');
                     Kommunicate.setDefaultIframeConfigForClosedChat();
+                    Kommunicate.displayKommunicateWidget(false);
                 }
                 if (kmChatLoginModal) {
                     kommunicateCommons.setDialogVisibility(

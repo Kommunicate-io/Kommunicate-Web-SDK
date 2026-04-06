@@ -298,13 +298,16 @@ textarea {
   color: white;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
+.km-start-conversation.km-custom-widget-background-color {
+  color: #ffffff !important;
+}
 @media (prefers-reduced-motion: no-preference) {
   .km-start-conversation {
     transition: transform 200ms ease, box-shadow 200ms ease;
   }
 }
 .km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited {
-  color: #fbfbfb;
+  color: #ffffff;
   text-decoration: none;
   transform: translateY(-1px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);

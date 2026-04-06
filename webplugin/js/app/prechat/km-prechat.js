@@ -450,6 +450,33 @@ var KMPreChat = (function () {
                 typeof deps.getAuthenticationTypeId === 'function'
                     ? deps.getAuthenticationTypeId()
                     : deps.MCK_AUTHENTICATION_TYPE_ID;
+            var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
+            var useTemplateUserId = false;
+            if (authTypeId > 0) {
+                var userIdInput = document.getElementById('km-userId');
+                if (userIdInput) {
+                    var labelText =
+                        (deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) || 'User ID';
+                    var userIdContainer =
+                        typeof userIdInput.closest === 'function'
+                            ? userIdInput.closest('.km-form-group')
+                            : null;
+                    kommunicateCommons.show(userIdInput);
+                    userIdInput.classList.remove('n-vis');
+                    userIdInput.setAttribute('type', 'text');
+                    userIdInput.setAttribute('required', 'true');
+                    userIdInput.setAttribute('placeholder', labelText);
+                    userIdInput.setAttribute('aria-label', labelText);
+                    var userIdLabelNode = document.getElementById('km-label-user-id');
+                    if (userIdLabelNode) {
+                        userIdLabelNode.textContent = labelText;
+                        userIdLabelNode.classList.remove('sr-only');
+                        userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
+                    }
+                    userIdContainer && kommunicateCommons.show(userIdContainer);
+                    useTemplateUserId = true;
+                }
+            }
             if (authTypeId > 0) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
@@ -465,8 +492,7 @@ var KMPreChat = (function () {
                         item.field.toLowerCase().replace(/\s+/g, '') === 'password'
                     );
                 });
-                var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
-                if (!hasUserId) {
+                if (!hasUserId && !useTemplateUserId) {
                     deps.KM_PRELEAD_COLLECTION.push({
                         id: 'km-userId',
                         name: 'km-userId',
@@ -495,6 +521,13 @@ var KMPreChat = (function () {
                 var fieldName = ((dataToCollect && dataToCollect.field) || '').toString();
                 if (fieldName.toLowerCase() === 'phone') {
                     enableCountryCode = dataToCollect.enableCountryCode;
+                }
+                if (
+                    authTypeId > 0 &&
+                    useTemplateUserId &&
+                    fieldName.toLowerCase().replace(/\s+/g, '') === 'userid'
+                ) {
+                    continue;
                 }
                 var kmInputField = target.createInputField(dataToCollect);
                 $applozic('.km-last-child').append(kmInputField);

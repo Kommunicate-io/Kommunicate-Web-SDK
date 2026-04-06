@@ -214,6 +214,10 @@
     color: white;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+
+    &.km-custom-widget-background-color {
+        color: #ffffff !important;
+    }
     @media (prefers-reduced-motion: no-preference) {
         transition: transform 200ms ease, box-shadow 200ms ease;
     }
@@ -223,7 +227,7 @@
     &:hover,
     &:active,
     &:visited {
-        color: #fbfbfb;
+        color: #ffffff;
         text-decoration: none;
         transform: translateY(-1px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12),
