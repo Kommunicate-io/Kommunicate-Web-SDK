@@ -217,7 +217,12 @@ KommunicateConstants = {
         LEFT: 'left',
         RIGHT: 'right',
     },
-    KOMMUNICATE_DOMAINS: ['kommunicate.io'],
+    KOMMUNICATE_DOMAINS: [
+        'kommunicate.io',
+        //use when testing locally
+        // 'localhost',
+        // '127.0.0.1',
+    ],
     AWS_IMAGE_URL_EXPIRY_TIME: 15 * 60 * 1000,
     IMAGE_PLACEHOLDER_URL: 'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
     MAX_UPLOAD_SIZE: 25000000,
