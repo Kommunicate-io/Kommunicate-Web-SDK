@@ -370,33 +370,27 @@ class MckVoice {
                 return;
             }
 
-            if (this.activeRecognitionMode === 'omnichannel') {
-                if (queueItem.ttsError && !queueItem.ttsBlob && !queueItem.ttsPromise) {
-                    const prefetchError = queueItem.ttsError;
-                    queueItem.ttsError = null;
-                    throw prefetchError;
-                }
-                if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
-                    queueItem.ttsPromise = kmVoice
-                        .textToVoice(spokenText)
-                        .then((data) => {
-                            queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
-                            queueItem.ttsError = null;
-                            return queueItem.ttsBlob;
-                        })
-                        .catch((error) => {
-                            queueItem.ttsPromise = null;
-                            queueItem.ttsError = error;
-                            throw error;
-                        });
-                }
-                const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
-                this.playAudioBlobWithQueue(wavBlob);
-                return;
+            if (queueItem.ttsError && !queueItem.ttsBlob && !queueItem.ttsPromise) {
+                const prefetchError = queueItem.ttsError;
+                queueItem.ttsError = null;
+                throw prefetchError;
             }
-
-            const response = await kmVoice.textToSpeechStream(spokenText);
-            this.playAudioWithMediaSource(response);
+            if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
+                queueItem.ttsPromise = kmVoice
+                    .textToVoice(spokenText)
+                    .then((data) => {
+                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        queueItem.ttsError = null;
+                        return queueItem.ttsBlob;
+                    })
+                    .catch((error) => {
+                        queueItem.ttsPromise = null;
+                        queueItem.ttsError = error;
+                        throw error;
+                    });
+            }
+            const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
+            this.playAudioBlobWithQueue(wavBlob);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -1614,13 +1608,10 @@ class MckVoice {
             sttRequestCount++;
             let response;
             try {
-                response =
-                    this.activeRecognitionMode === 'omnichannel'
-                        ? await kmVoice.voiceToText(chunkBlob, {
-                              ucid: this.voiceInputSettings.ucid,
-                              sttMode: 'recognize',
-                          })
-                        : await kmVoice.speechToText(chunkBlob);
+                response = await kmVoice.voiceToText(chunkBlob, {
+                    ucid: this.voiceInputSettings.ucid,
+                    sttMode: 'recognize',
+                });
             } catch (error) {
                 if (error && error.code === 'SILENT_AUDIO') {
                     return null;
@@ -3142,17 +3133,13 @@ class MckVoice {
         const requested = (this.voiceInputSettings?.recognitionMode || 'omnichannel')
             .toString()
             .toLowerCase();
-        if (requested === 'omnichannel') {
+        if (requested === 'native') {
+            if (!this.nativeRecognitionFailed && this.isNativeSpeechRecognitionAvailable()) {
+                return 'native';
+            }
             return 'omnichannel';
         }
-        if (
-            requested === 'native' &&
-            !this.nativeRecognitionFailed &&
-            this.isNativeSpeechRecognitionAvailable()
-        ) {
-            return 'native';
-        }
-        return 'elevenlabs';
+        return 'omnichannel';
     }
 
     isNativeSpeechRecognitionAvailable() {
@@ -3226,7 +3213,7 @@ class MckVoice {
         }
         const recognition = this.initializeNativeRecognition();
         if (!recognition) {
-            this.activeRecognitionMode = 'elevenlabs';
+            this.activeRecognitionMode = 'omnichannel';
             this.nativeRecognitionFailed = true;
             this.requestAudioRecording();
             return;
@@ -3251,7 +3238,7 @@ class MckVoice {
             this.nativeRecognitionActive = false;
             this.isRecording = false;
             this.refreshRecognitionMode();
-            this.activeRecognitionMode = 'elevenlabs';
+            this.activeRecognitionMode = 'omnichannel';
             this.requestAudioRecording();
         }
     }
