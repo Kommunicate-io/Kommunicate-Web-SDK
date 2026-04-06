@@ -390,6 +390,9 @@ class MckVoice {
                     });
             }
             const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
+            if (!wavBlob) {
+                throw new Error('Omnichannel TTS failed to return audio');
+            }
             this.playAudioBlobWithQueue(wavBlob);
         } catch (err) {
             this.handlePlaybackFailure(err);
