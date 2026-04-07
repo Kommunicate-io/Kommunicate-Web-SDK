@@ -457,15 +457,41 @@ var KMPreChat = (function () {
                 if (userIdInput) {
                     var labelText =
                         (deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) || 'User ID';
+                    var userIdConfig = null;
+                    for (var idx = 0; idx < deps.KM_PRELEAD_COLLECTION.length; idx++) {
+                        var candidate = deps.KM_PRELEAD_COLLECTION[idx];
+                        var candidateField = ((candidate && candidate.field) || '')
+                            .toString()
+                            .toLowerCase()
+                            .replace(/\s+/g, '');
+                        if (candidateField === 'userid') {
+                            userIdConfig = candidate;
+                            break;
+                        }
+                    }
+                    if (userIdConfig) {
+                        labelText = userIdConfig.field || labelText;
+                    }
                     var userIdContainer =
                         typeof userIdInput.closest === 'function'
                             ? userIdInput.closest('.km-form-group')
                             : null;
                     kommunicateCommons.show(userIdInput);
                     userIdInput.classList.remove('n-vis');
-                    userIdInput.setAttribute('type', 'text');
-                    userIdInput.setAttribute('required', 'true');
-                    userIdInput.setAttribute('placeholder', labelText);
+                    userIdInput.setAttribute('type', (userIdConfig && userIdConfig.type) || 'text');
+                    if (
+                        userIdConfig &&
+                        typeof userIdConfig.required !== 'undefined' &&
+                        !userIdConfig.required
+                    ) {
+                        userIdInput.removeAttribute('required');
+                    } else {
+                        userIdInput.setAttribute('required', 'true');
+                    }
+                    userIdInput.setAttribute(
+                        'placeholder',
+                        (userIdConfig && userIdConfig.placeholder) || labelText
+                    );
                     userIdInput.setAttribute('aria-label', labelText);
                     var userIdLabelNode = document.getElementById('km-label-user-id');
                     if (userIdLabelNode) {
