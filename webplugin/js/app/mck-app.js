@@ -191,8 +191,6 @@ function ApplozicSidebox() {
                 mckSidebox.style.visibility = 'visible';
                 var mckLocBox = document.getElementById('mck-loc-box');
                 mckLocBox.style.visibility = 'visible';
-                var mckGmSearchBox = document.getElementById('mck-gm-search-box');
-                mckGmSearchBox.style.visibility = 'visible';
             }
             if (
                 navigator.userAgent.indexOf('MSIE') !== -1 ||

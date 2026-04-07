@@ -149,10 +149,9 @@ class KMLabel {
             });
         };
 
-        [
-            { selector: '#mck-conversation-title', path: 'conversations.title' },
-            { selector: '#mck-sidebox-search .mck-box-title', path: 'start.new' },
-        ].forEach(function (binding) {
+        [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
+            binding
+        ) {
             setHtmlAndTitleForSelector(binding.selector, binding.path);
         });
         var isVoiceChatEnabled = Boolean(
@@ -206,28 +205,12 @@ class KMLabel {
             });
         }
         [
-            { selector: '#mck-contact-search-tab strong', path: 'search.contacts' },
-            { selector: '#mck-group-search-tab strong', path: 'search.groups' },
             {
-                selector:
-                    '#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create',
-                path: 'create.group.title',
+                selector: '#mck-btn-clear-messages',
+                path: 'clear.messages',
             },
             {
-                selector: '#mck-group-info-btn, #mck-group-info-tab .mck-box-title',
-                path: 'group.info.title',
-            },
-            { selector: '#mck-group-member-title', path: 'members.title' },
-            {
-                selector: '#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title',
-                path: 'add.members.title',
-            },
-            { selector: '#mck-btn-group-update', path: 'group.info.update' },
-            { selector: '#mck-btn-leave-group, #mck-btn-group-exit', path: 'exit.group' },
-            { selector: '#mck-btn-clear-messages', path: 'clear.messages' },
-            { selector: '#mck-block-button', path: 'block.user' },
-            {
-                selector: '#mck-loc-box .mck-box-title, #mck-share-loc-label',
+                selector: '#mck-loc-box .mck-box-title',
                 path: 'location.share.title',
             },
             { selector: '#mck-my-loc', path: 'my.location' },
@@ -238,14 +221,8 @@ class KMLabel {
         });
 
         [
-            { selector: '#mck-gc-overlay-label', path: 'add.group.icon' },
             { selector: '#mck-msg-error', path: 'group.deleted' },
-            { selector: '#mck-gc-title-label', path: 'group.title' },
-            { selector: '#mck-gc-type-label', path: 'group.type' },
             { selector: '#mck-typing-label', path: 'typing' },
-            { selector: '#mck-no-search-contacts', path: 'empty.contacts' },
-            { selector: '#mck-no-search-groups', path: 'empty.groups' },
-            { selector: '#mck-file-up-label', path: 'file.attachment' },
         ].forEach(function (binding) {
             setHtmlOnlyForSelector(binding.selector, binding.path);
         });
@@ -256,17 +233,10 @@ class KMLabel {
             { selector: '.mck-file-attach-label', path: 'file.attach.title' },
             { selector: '#mck-msg-sbmt', path: 'send.message' },
             { selector: '#mck-btn-smiley', path: 'smiley' },
-            { selector: '#mck-group-name-save', path: 'save' },
-            { selector: '#mck-btn-group-icon-save', path: 'save' },
-            { selector: '#mck-group-name-edit', path: 'edit' },
         ].forEach(function (binding) {
             setTitleOnlyForSelector(binding.selector, binding.path);
         });
 
-        setPlaceholderForSelector(
-            '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search',
-            'search.placeholder'
-        );
         setPlaceholderForSelector('#mck-loc-address', 'location.placeholder');
         setPlaceholderAndAriaLabelForSelector(
             '#mck-feedback-comment',
@@ -323,7 +293,6 @@ class KMLabel {
             'km-no-results-found': 'faq.search.noResults',
             'km-whats-new-empty-text': 'whatsnew.empty',
             'km-csat-feedback-heading': 'csat.rating.FEEDBACK_HEADING',
-            'mck-group-title': 'group.title',
             'km-label-to': 'form.label.to',
             'km-label-user-id': 'form.label.userId',
             'km-loc-lat-label': 'location.coordinates.lat',
