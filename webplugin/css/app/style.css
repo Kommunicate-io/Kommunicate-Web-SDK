@@ -327,16 +327,6 @@ textarea {
   }
 }
 
-.km-start-conversation.km-custom-widget-background-color {
-  color: var(--km-custom-widget-contrast-color, var(--km-on-primary, #ffffff)) !important;
-}
-
-.km-start-conversation.km-custom-widget-background-color:hover,
-.km-start-conversation.km-custom-widget-background-color:focus,
-.km-start-conversation.km-custom-widget-background-color:active {
-  color: var(--km-custom-widget-contrast-color, var(--km-on-primary, #ffffff)) !important;
-}
-
 #km-form-chat-login {
   margin: 15px;
   padding-bottom: 35px;
