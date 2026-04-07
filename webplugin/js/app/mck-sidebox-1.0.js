@@ -5430,6 +5430,20 @@ const firstVisibleMsg = {
                         loginModalFocusFallbacks
                     );
                 });
+                $applozic(d).on('click', '#km-modal-close', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (mckInit && typeof mckInit.closeLeadCollectionWindow === 'function') {
+                        mckInit.closeLeadCollectionWindow();
+                        return;
+                    }
+                    var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                    kommunicateCommons.setDialogVisibility(
+                        kmChatLoginModal,
+                        false,
+                        loginModalFocusFallbacks
+                    );
+                });
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
