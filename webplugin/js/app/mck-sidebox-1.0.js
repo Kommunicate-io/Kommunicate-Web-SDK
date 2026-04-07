@@ -2771,7 +2771,9 @@ const firstVisibleMsg = {
                         'kommunicate-widget-iframe'
                     );
                     var popUpcloseButton = document.getElementById('km-popup-close-button');
-                    kommunicateIframe.style.boxShadow = 'none';
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.boxShadow = 'none';
+                    }
                     POPUP_WIDGET && (popUpcloseButton.style.display = 'none');
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
