@@ -5435,7 +5435,7 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#km-modal-close', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (mckInit && typeof mckInit.closeLeadCollectionWindow === 'function') {
+                    if (mckInit) {
                         mckInit.closeLeadCollectionWindow();
                         return;
                     }
