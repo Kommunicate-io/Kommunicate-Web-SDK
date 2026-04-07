@@ -304,7 +304,7 @@ textarea {
   }
 }
 .km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited {
-  color: var(--km-on-primary, #ffffff);
+  color: #fbfbfb;
   text-decoration: none;
   transform: translateY(-1px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 16px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
