@@ -2124,10 +2124,6 @@ class MckVoice {
         const container = this.getInlineStatusContainer();
         if (container) {
             kommunicateCommons.hide(container);
-            if (!container.classList.contains('n-vis')) {
-                container.classList.remove('vis');
-                container.classList.add('n-vis');
-            }
             this.hideInlineMicButton();
         }
     }
@@ -3380,13 +3376,7 @@ class MckVoice {
         this.restoreNativeVoiceOutputAfterVoiceMode();
         kommunicateCommons.show('#mck-voice-web');
         const inlineStatus = document.getElementById('km-voice-listening-status');
-        if (inlineStatus) {
-            kommunicateCommons.hide(inlineStatus);
-            if (!inlineStatus.classList.contains('n-vis')) {
-                inlineStatus.classList.remove('vis');
-                inlineStatus.classList.add('n-vis');
-            }
-        }
+        inlineStatus && kommunicateCommons.hide(inlineStatus);
         this.speechDetected = false;
         this.isInSilence = false;
         this.firstSpeechTimestamp = 0;
