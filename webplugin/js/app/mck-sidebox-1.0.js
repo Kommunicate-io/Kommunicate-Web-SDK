@@ -776,6 +776,9 @@ const firstVisibleMsg = {
             if (!kommunicateIframe) {
                 return;
             }
+            kommunicateIframe.style.boxShadow = '';
+            kommunicateIframe.classList.add('km-iframe-loading');
+            kommunicateIframe.classList.remove('km-iframe-shadow-ready');
             kommunicateIframe.classList.remove('km-iframe-closed');
             kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
             kommunicateCommons.hide('#applozic-badge-count');
@@ -2566,7 +2569,6 @@ const firstVisibleMsg = {
                         'kommunicate-widget-iframe'
                     );
                     var popUpcloseButton = document.getElementById('km-popup-close-button');
-                    kommunicateIframe.style.boxShadow = 'none';
                     POPUP_WIDGET && (popUpcloseButton.style.display = 'none');
                     Kommunicate.setDefaultIframeConfigForClosedChat();
                 }
