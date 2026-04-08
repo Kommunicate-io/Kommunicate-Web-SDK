@@ -155,13 +155,9 @@ var KMPreChat = (function () {
             }
             var userIdInput = document.getElementById('km-userId');
             if (userIdInput) {
-                kommunicateCommons.show(userIdInput);
+                toggleField(userIdInput, true);
                 userIdInput.setAttribute('type', 'text');
-                if (showUserIdField) {
-                    userIdInput.setAttribute('required', 'true');
-                } else {
-                    userIdInput.removeAttribute('required');
-                }
+                userIdInput.required = Boolean(showUserIdField);
                 var userIdLabel = deps.MCK_LABELS['form.label.userId'];
                 userIdInput.setAttribute('placeholder', userIdLabel);
                 userIdInput.setAttribute('aria-label', userIdLabel);
@@ -185,15 +181,11 @@ var KMPreChat = (function () {
                         userIdLabelNode.parentElement.insertBefore(labelContainer, userIdLabelNode);
                         labelContainer.appendChild(userIdLabelNode);
                     }
-                    var userIdContainer =
-                        typeof userIdInput.closest === 'function'
-                            ? userIdInput.closest('.km-form-group')
-                            : null;
                     if (!showUserIdField) {
-                        kommunicateCommons.hide(userIdContainer);
+                        toggleField(userIdInput, false);
                         userIdLabelNode.classList.add('sr-only');
                     } else {
-                        kommunicateCommons.show(userIdContainer);
+                        toggleField(userIdInput, true);
                         userIdLabelNode.classList.remove('sr-only');
                     }
                 }
@@ -353,6 +345,20 @@ var KMPreChat = (function () {
             return kmChatInputDiv;
         };
 
+        function toggleField(input, show) {
+            if (!input) {
+                return;
+            }
+            var container = input.closest('.km-form-group');
+            if (show) {
+                kommunicateCommons.show(input);
+                container && kommunicateCommons.show(container);
+            } else {
+                kommunicateCommons.hide(input);
+                container && kommunicateCommons.hide(container);
+            }
+        }
+
         target.createInputField = function (preLeadCollection) {
             var rawField = (preLeadCollection.field || '').toString();
             var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
@@ -472,22 +478,14 @@ var KMPreChat = (function () {
                     if (userIdConfig) {
                         labelText = userIdConfig.field || labelText;
                     }
-                    var userIdContainer =
-                        typeof userIdInput.closest === 'function'
-                            ? userIdInput.closest('.km-form-group')
-                            : null;
-                    kommunicateCommons.show(userIdInput);
+                    toggleField(userIdInput, true);
                     userIdInput.classList.remove('n-vis');
                     userIdInput.setAttribute('type', (userIdConfig && userIdConfig.type) || 'text');
-                    if (
+                    userIdInput.required = !(
                         userIdConfig &&
                         typeof userIdConfig.required !== 'undefined' &&
                         !userIdConfig.required
-                    ) {
-                        userIdInput.removeAttribute('required');
-                    } else {
-                        userIdInput.setAttribute('required', 'true');
-                    }
+                    );
                     userIdInput.setAttribute(
                         'placeholder',
                         (userIdConfig && userIdConfig.placeholder) || labelText
@@ -499,20 +497,17 @@ var KMPreChat = (function () {
                         userIdLabelNode.classList.remove('sr-only');
                         userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
                     }
-                    userIdContainer && kommunicateCommons.show(userIdContainer);
                     useTemplateUserId = true;
                 }
             } else if (target.isPreLeadCollectionEnabled()) {
                 var fallbackUserIdInput = document.getElementById('km-userId');
                 if (fallbackUserIdInput) {
-                    var fallbackContainer = fallbackUserIdInput.closest('.km-form-group');
-                    kommunicateCommons.hide(fallbackUserIdInput);
+                    toggleField(fallbackUserIdInput, false);
                     fallbackUserIdInput.removeAttribute('required');
                     var fallbackLabel = document.getElementById('km-label-user-id');
                     if (fallbackLabel) {
                         fallbackLabel.classList.add('sr-only');
                     }
-                    fallbackContainer && kommunicateCommons.hide(fallbackContainer);
                 }
             }
             if (authTypeId > 0) {
