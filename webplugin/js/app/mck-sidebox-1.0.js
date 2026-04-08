@@ -2277,6 +2277,8 @@ const firstVisibleMsg = {
                             }
                             if (kommunicateIframe) {
                                 kommunicateIframe.style.minHeight = '600px';
+                                kommunicateIframe.classList.remove('km-iframe-loading');
+                                kommunicateIframe.classList.add('km-iframe-shadow-ready');
                             }
                         };
 
