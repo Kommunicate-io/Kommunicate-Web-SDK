@@ -2515,12 +2515,6 @@ const firstVisibleMsg = {
                             adjustIframeForPrelead();
                         };
 
-                        document
-                            .getElementById('km-modal-close')
-                            .addEventListener('click', function () {
-                                resetIframeAfterPrelead();
-                                _this.closeLeadCollectionWindow();
-                            });
                         var popUpCloseButton = document.getElementById('km-popup-close-button');
                         popUpCloseButton.addEventListener('click', function (event) {
                             event.preventDefault();
@@ -2765,6 +2759,14 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                if (WIDGET_SETTINGS && WIDGET_SETTINGS.popup) {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.minHeight = '';
+                    }
+                }
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -5432,6 +5434,7 @@ const firstVisibleMsg = {
                         loginModalFocusFallbacks
                     );
                 });
+                $applozic(d).off('click', '#km-modal-close');
                 $applozic(d).on('click', '#km-modal-close', function (e) {
                     e.preventDefault();
                     e.stopPropagation();

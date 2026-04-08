@@ -509,6 +509,16 @@ var KMPreChat = (function () {
                         fallbackLabel.classList.add('sr-only');
                     }
                 }
+            } else {
+                var defaultUserIdInput = document.getElementById('km-userId');
+                if (defaultUserIdInput) {
+                    toggleField(defaultUserIdInput, false);
+                    defaultUserIdInput.removeAttribute('required');
+                    var defaultLabel = document.getElementById('km-label-user-id');
+                    if (defaultLabel) {
+                        defaultLabel.classList.add('sr-only');
+                    }
+                }
             }
             if (authTypeId > 0) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
