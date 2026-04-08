@@ -457,8 +457,39 @@ var KMPreChat = (function () {
                     ? deps.getAuthenticationTypeId()
                     : deps.MCK_AUTHENTICATION_TYPE_ID;
             var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
+            var isPreLeadEnabled = target.isPreLeadCollectionEnabled();
+            var normalizedUserIdLabel = (
+                (deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) ||
+                ''
+            )
+                .toString()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+            var normalizedLeadUserIdLabel = (leadLabels.userId || '')
+                .toString()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+            var isUserIdField = function (item) {
+                if (!item) {
+                    return false;
+                }
+                var fieldName = (item.field || '').toString().toLowerCase().replace(/\s+/g, '');
+                return (
+                    item.id === 'km-userId' ||
+                    item.name === 'km-userId' ||
+                    fieldName === 'userid' ||
+                    (normalizedUserIdLabel && fieldName === normalizedUserIdLabel) ||
+                    (normalizedLeadUserIdLabel && fieldName === normalizedLeadUserIdLabel)
+                );
+            };
+            var allowTemplateUserId = authTypeId > 0 && !isPreLeadEnabled;
+            var allowUserIdInPreLead =
+                isPreLeadEnabled &&
+                deps.KM_PRELEAD_COLLECTION.some(function (item) {
+                    return isUserIdField(item);
+                });
             var useTemplateUserId = false;
-            if (authTypeId > 0) {
+            if (allowTemplateUserId) {
                 var userIdInput = document.getElementById('km-userId');
                 if (userIdInput) {
                     var labelText =
@@ -499,7 +530,7 @@ var KMPreChat = (function () {
                     }
                     useTemplateUserId = true;
                 }
-            } else if (target.isPreLeadCollectionEnabled()) {
+            } else {
                 var fallbackUserIdInput = document.getElementById('km-userId');
                 if (fallbackUserIdInput) {
                     toggleField(fallbackUserIdInput, false);
@@ -509,24 +540,10 @@ var KMPreChat = (function () {
                         fallbackLabel.classList.add('sr-only');
                     }
                 }
-            } else {
-                var defaultUserIdInput = document.getElementById('km-userId');
-                if (defaultUserIdInput) {
-                    toggleField(defaultUserIdInput, false);
-                    defaultUserIdInput.removeAttribute('required');
-                    var defaultLabel = document.getElementById('km-label-user-id');
-                    if (defaultLabel) {
-                        defaultLabel.classList.add('sr-only');
-                    }
-                }
             }
-            if (authTypeId > 0) {
+            if (allowTemplateUserId) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
-                    return (
-                        item &&
-                        typeof item.field === 'string' &&
-                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
-                    );
+                    return isUserIdField(item);
                 });
                 var hasPassword = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
@@ -565,11 +582,10 @@ var KMPreChat = (function () {
                 if (fieldName.toLowerCase() === 'phone') {
                     enableCountryCode = dataToCollect.enableCountryCode;
                 }
-                if (
-                    authTypeId > 0 &&
-                    useTemplateUserId &&
-                    fieldName.toLowerCase().replace(/\s+/g, '') === 'userid'
-                ) {
+                if (isUserIdField(dataToCollect) && !allowUserIdInPreLead) {
+                    continue;
+                }
+                if (useTemplateUserId && isUserIdField(dataToCollect)) {
                     continue;
                 }
                 var kmInputField = target.createInputField(dataToCollect);
