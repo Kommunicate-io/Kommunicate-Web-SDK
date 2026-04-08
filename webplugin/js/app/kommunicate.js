@@ -755,6 +755,10 @@ $applozic.extend(true, Kommunicate, {
     setDefaultIframeConfigForClosedChat: function () {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         if (kommunicateIframe) {
+            if (kommunicateIframe.__kmShadowObserver) {
+                kommunicateIframe.__kmShadowObserver.disconnect();
+                kommunicateIframe.__kmShadowObserver = null;
+            }
             kommunicateIframe.style.height = '';
             kommunicateIframe.classList.add('km-iframe-closed');
             kommunicateIframe.classList.remove('km-iframe-shadow-ready');
