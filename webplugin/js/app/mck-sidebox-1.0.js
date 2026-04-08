@@ -2651,7 +2651,7 @@ const firstVisibleMsg = {
                                     fieldName === 'userid'
                                 );
                             });
-                            var shouldShowUserId = true;
+                            var shouldShowUserId = !isPreLeadEnabled || hasPreLeadUserId;
                             var userIdInput = document.getElementById('km-userId');
                             var userIdLabel = document.getElementById('km-label-user-id');
                             if (shouldShowUserId) {
