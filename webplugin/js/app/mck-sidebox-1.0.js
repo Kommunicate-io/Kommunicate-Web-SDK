@@ -5434,7 +5434,6 @@ const firstVisibleMsg = {
                         loginModalFocusFallbacks
                     );
                 });
-                $applozic(d).off('click', '#km-modal-close');
                 $applozic(d).on('click', '#km-modal-close', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
