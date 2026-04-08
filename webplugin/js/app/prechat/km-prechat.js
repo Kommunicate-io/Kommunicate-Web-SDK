@@ -502,13 +502,10 @@ var KMPreChat = (function () {
                     userIdContainer && kommunicateCommons.show(userIdContainer);
                     useTemplateUserId = true;
                 }
-            } else if (target.isPreLeadCollectionEnabled && target.isPreLeadCollectionEnabled()) {
+            } else if (target.isPreLeadCollectionEnabled()) {
                 var fallbackUserIdInput = document.getElementById('km-userId');
                 if (fallbackUserIdInput) {
-                    var fallbackContainer =
-                        typeof fallbackUserIdInput.closest === 'function'
-                            ? fallbackUserIdInput.closest('.km-form-group')
-                            : null;
+                    var fallbackContainer = fallbackUserIdInput.closest('.km-form-group');
                     kommunicateCommons.hide(fallbackUserIdInput);
                     fallbackUserIdInput.removeAttribute('required');
                     var fallbackLabel = document.getElementById('km-label-user-id');
