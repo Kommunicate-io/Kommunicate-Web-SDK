@@ -502,6 +502,21 @@ var KMPreChat = (function () {
                     userIdContainer && kommunicateCommons.show(userIdContainer);
                     useTemplateUserId = true;
                 }
+            } else if (target.isPreLeadCollectionEnabled && target.isPreLeadCollectionEnabled()) {
+                var fallbackUserIdInput = document.getElementById('km-userId');
+                if (fallbackUserIdInput) {
+                    var fallbackContainer =
+                        typeof fallbackUserIdInput.closest === 'function'
+                            ? fallbackUserIdInput.closest('.km-form-group')
+                            : null;
+                    kommunicateCommons.hide(fallbackUserIdInput);
+                    fallbackUserIdInput.removeAttribute('required');
+                    var fallbackLabel = document.getElementById('km-label-user-id');
+                    if (fallbackLabel) {
+                        fallbackLabel.classList.add('sr-only');
+                    }
+                    fallbackContainer && kommunicateCommons.hide(fallbackContainer);
+                }
             }
             if (authTypeId > 0) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
