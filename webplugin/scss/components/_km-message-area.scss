@@ -477,6 +477,33 @@
         }
     }
 
+    &__search-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 12px;
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 14px 30px rgba($primary-color, 0.4);
+    }
+
+    &__search-submit-icon {
+        display: block;
+    }
+
+    &__search-clear {
+        background: none;
+        border: none;
+        padding: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: $text-tertiary-color;
+    }
+
     &__body {
         padding: 14px 16px 18px;
         background: #ffffff;
@@ -520,6 +547,81 @@
 
     @at-root .mck-sidebox .km-empty-conversation-card__info {
         margin: 24px 0 4px !important;
+    }
+
+    &__previews {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &__preview {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid $card-border-color;
+        background: #ffffff;
+        box-shadow: 0 12px 30px rgba(25, 33, 63, 0.08);
+    }
+
+    &__avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 700;
+        background: linear-gradient(135deg, $primary-color, #7e7af8);
+        box-shadow: 0 10px 16px rgba(40, 57, 145, 0.28);
+    }
+
+    &__avatar--secondary {
+        background: linear-gradient(135deg, #ffd9a0, #ff9f7b);
+        color: #5a3000;
+        box-shadow: 0 10px 16px rgba(204, 111, 14, 0.25);
+    }
+
+    &__avatar-initial {
+        font-size: 16px;
+    }
+
+    &__preview-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    &__preview-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    &__preview-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: $text-primary-color;
+    }
+
+    &__preview-meta {
+        font-size: 12px;
+        color: $text-tertiary-color;
+    }
+
+    &__preview-message {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.45;
+        color: $text-secondary-color;
     }
 
     &__cta-wrap {
