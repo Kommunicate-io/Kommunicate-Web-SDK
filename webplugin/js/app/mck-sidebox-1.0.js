@@ -9181,17 +9181,22 @@ const firstVisibleMsg = {
 
             var listObservers = {};
             function observeListChildren(listId) {
-                if (listObservers[listId]) {
-                    return;
-                }
                 var list = document.getElementById(listId);
                 if (!list || typeof MutationObserver === 'undefined') {
                     return;
                 }
-                listObservers[listId] = new MutationObserver(function () {
+                var existing = listObservers[listId];
+                if (existing && existing.list === list) {
+                    return;
+                }
+                if (existing && existing.observer) {
+                    existing.observer.disconnect();
+                }
+                var observer = new MutationObserver(function () {
                     ensureListChildrenAreLi(listId);
                 });
-                listObservers[listId].observe(list, { childList: true });
+                observer.observe(list, { childList: true });
+                listObservers[listId] = { list: list, observer: observer };
             }
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
