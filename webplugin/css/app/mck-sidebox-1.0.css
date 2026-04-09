@@ -2044,7 +2044,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-file-box .mck-file-sz {
-    color: #777;
+    color: #6b6b6b;
     display: inline-block;
     vertical-align: middle;
 }
@@ -3148,7 +3148,7 @@ ul.mck-intent-menu > li:hover {
 .mck-conversation-name {
     margin-left: 65px;
     font-size: 12px;
-    color: #a8a8ac;
+    color: #737374;
     letter-spacing: 0.3px;
 }
 
@@ -6036,6 +6036,18 @@ div#mck-waiting-queue {
     justify-content: flex-end;
     gap: 6px;
     white-space: nowrap;
+    color: #737374;
+}
+
+.mck-conversation-status-time {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    color: #737374;
+}
+
+.mck-cont-msg-date .mck-conversation-status-time {
+    color: #737374 !important;
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */

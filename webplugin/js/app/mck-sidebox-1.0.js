@@ -8001,7 +8001,7 @@ const firstVisibleMsg = {
             var resolvedBadgeIcon =
                 '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' +
@@ -10529,6 +10529,23 @@ const firstVisibleMsg = {
                     return 'mck-text-user';
                 }
             };
+
+            function ensureListChildrenAreLi(listId) {
+                var list = document.getElementById(listId);
+                if (!list) {
+                    return;
+                }
+                var children = Array.prototype.slice.call(list.children);
+                children.forEach(function (child) {
+                    var tag = child && child.tagName ? child.tagName.toUpperCase() : '';
+                    if (tag === 'LI' || tag === 'SCRIPT' || tag === 'TEMPLATE') {
+                        return;
+                    }
+                    var wrapper = document.createElement('li');
+                    wrapper.appendChild(child);
+                    list.appendChild(wrapper);
+                });
+            }
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
                 // kommunicateCommons.hide('#mck-no-messages');
@@ -10604,6 +10621,7 @@ const firstVisibleMsg = {
                             );
                         }
                     }
+                    ensureListChildrenAreLi('mck-contact-list');
                 }
             };
             _this.addGroupFromMessageList = function (data, isReloaded) {
@@ -10637,6 +10655,7 @@ const firstVisibleMsg = {
                         });
                     }
                 }
+                ensureListChildrenAreLi('mck-group-list');
             };
             _this.createContact = function (contactId) {
                 var displayName = _this.getContactDisplayName(contactId);
@@ -12840,7 +12859,7 @@ const firstVisibleMsg = {
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div>' +
                 '<div class="blk-lg-4 mck-group-admin-options move-right ${enableAdminMenuExpr}">' +
-                '<div class="mck-menu-box n-vis"><div class="mck-dropdown-toggle mck-group-admin-menu-toggle mck-text-center" data-toggle="mckdropdown" aria-expanded="true">' +
+                '<div class="mck-menu-box n-vis"><div class="mck-dropdown-toggle mck-group-admin-menu-toggle mck-text-center" data-toggle="mckdropdown" aria-expanded="true" role="button" tabindex="0">' +
                 '<span class="mck-caret"></span></div>' +
                 '<ul id="mck-group-admin-menu" class="mck-dropdown-menu mck-group-admin-menu mck-tab-menu-box menu-right" role="menu">' +
                 '<li>' +
