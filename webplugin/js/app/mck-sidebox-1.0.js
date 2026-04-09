@@ -6835,7 +6835,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:#737374;"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:var(--km-font-meta-contrast-color);"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
@@ -9162,42 +9162,6 @@ const firstVisibleMsg = {
                 }
             };
 
-            function ensureListChildrenAreLi(listId) {
-                var list = document.getElementById(listId);
-                if (!list) {
-                    return;
-                }
-                var children = Array.prototype.slice.call(list.children);
-                children.forEach(function (child) {
-                    var tag = child && child.tagName ? child.tagName.toUpperCase() : '';
-                    if (tag === 'LI' || tag === 'SCRIPT' || tag === 'TEMPLATE') {
-                        return;
-                    }
-                    var wrapper = document.createElement('li');
-                    list.insertBefore(wrapper, child);
-                    wrapper.appendChild(child);
-                });
-            }
-
-            var listObservers = {};
-            function observeListChildren(listId) {
-                var list = document.getElementById(listId);
-                if (!list || typeof MutationObserver === 'undefined') {
-                    return;
-                }
-                var existing = listObservers[listId];
-                if (existing && existing.list === list) {
-                    return;
-                }
-                if (existing && existing.observer) {
-                    existing.observer.disconnect();
-                }
-                var observer = new MutationObserver(function () {
-                    ensureListChildrenAreLi(listId);
-                });
-                observer.observe(list, { childList: true });
-                listObservers[listId] = { list: list, observer: observer };
-            }
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
                 if (data + '' === 'null') {
@@ -9270,8 +9234,6 @@ const firstVisibleMsg = {
                             );
                         }
                     }
-                    observeListChildren('mck-contact-list');
-                    ensureListChildrenAreLi('mck-contact-list');
                 }
             };
             _this.createContact = function (contactId) {

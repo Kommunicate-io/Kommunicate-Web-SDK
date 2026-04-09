@@ -48,6 +48,8 @@ $rich-msg-width: 264px;
 // CARD IMAGE HEIGHT
 $card-img-height: 160px;
 
+$km-font-meta-contrast-color: #737373;
+
 /* CSS custom properties for theming. These map SCSS color tokens into runtime CSS variables
      so templates can be themed via JS or by overriding the variables in a site stylesheet. */
 :root {
@@ -61,6 +63,7 @@ $card-img-height: 160px;
     --km-font-title-color: #1c2043;
     --km-font-meta-size: 12px;
     --km-font-meta-color: #8d94b5;
+    --km-font-meta-contrast-color: #{$km-font-meta-contrast-color};
     --km-font-body-color: #6e6e6e;
     --km-font-body-size: 14px;
     --km-accent-rgb: 95, 70, 248;

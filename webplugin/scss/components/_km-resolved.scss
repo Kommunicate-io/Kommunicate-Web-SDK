@@ -184,7 +184,7 @@
 }
 
 .mck-contact-list .mck-cont-msg-date {
-    color: #737374;
+    color: var(--km-font-meta-contrast-color);
 }
 
 .mck-contact-list .mck-cont-msg-date {
@@ -227,9 +227,9 @@
     display: inline-flex;
     align-items: center;
     line-height: 1;
-    color: #737374;
+    color: var(--km-font-meta-contrast-color);
 }
 
 .mck-cont-msg-date .mck-conversation-status-time {
-    color: #737374 !important;
+    color: var(--km-font-meta-contrast-color) !important;
 }
