@@ -3451,6 +3451,10 @@ div#mck-rated:before {
 }
 
 .mck-contact-list .mck-cont-msg-date {
+  color: #737374;
+}
+
+.mck-contact-list .mck-cont-msg-date {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -3499,6 +3503,11 @@ div#mck-rated:before {
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  color: #737374;
+}
+
+.mck-cont-msg-date .mck-conversation-status-time {
+  color: #737374 !important;
 }
 
 .mck-running-on {

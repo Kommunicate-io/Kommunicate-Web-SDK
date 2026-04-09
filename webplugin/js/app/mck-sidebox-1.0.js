@@ -9139,6 +9139,23 @@ const firstVisibleMsg = {
                     return 'mck-text-user';
                 }
             };
+
+            function ensureListChildrenAreLi(listId) {
+                var list = document.getElementById(listId);
+                if (!list) {
+                    return;
+                }
+                var children = Array.prototype.slice.call(list.children);
+                children.forEach(function (child) {
+                    var tag = child && child.tagName ? child.tagName.toUpperCase() : '';
+                    if (tag === 'LI' || tag === 'SCRIPT' || tag === 'TEMPLATE') {
+                        return;
+                    }
+                    var wrapper = document.createElement('li');
+                    wrapper.appendChild(child);
+                    list.appendChild(wrapper);
+                });
+            }
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
                 if (data + '' === 'null') {
@@ -9211,6 +9228,7 @@ const firstVisibleMsg = {
                             );
                         }
                     }
+                    ensureListChildrenAreLi('mck-contact-list');
                 }
             };
             _this.createContact = function (contactId) {
@@ -10687,7 +10705,6 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             _this.init = function () {};
-
             _this.createGroupDefaultSettings = function () {
                 var defaultSettings = appOptionSession.getPropertyDataFromSession('settings');
                 var conversationDetail = {

@@ -242,6 +242,7 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
+        ensureAccessibleOnPrimary(mergedVars);
 
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
@@ -323,6 +324,39 @@ function KmCustomTheme() {
             return '#000000';
         }
         return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
+    }
+
+    function ensureAccessibleOnPrimary(vars) {
+        var primaryColor = vars['--km-accent'] || DEFAULT_BACKGROUND_COLOR;
+        var onPrimary = vars['--km-on-primary'] || vars['--km-custom-widget-contrast-color'];
+        if (!onPrimary) {
+            return;
+        }
+        if (!isContrastCompliant(onPrimary, primaryColor, 4.5)) {
+            var accessible = getAccessibleTextColor(primaryColor);
+            vars['--km-on-primary'] = accessible;
+            vars['--km-on-primary-link'] = accessible;
+            vars['--km-custom-widget-contrast-color'] = accessible;
+        }
+    }
+
+    function isContrastCompliant(foreground, background, minRatio) {
+        var foregroundRgb = normalizeColorToRgb(foreground);
+        var backgroundRgb = normalizeColorToRgb(background);
+        if (!foregroundRgb || !backgroundRgb) {
+            return false;
+        }
+        var foregroundLum = calculateLuminance(
+            foregroundRgb[0],
+            foregroundRgb[1],
+            foregroundRgb[2]
+        );
+        var backgroundLum = calculateLuminance(
+            backgroundRgb[0],
+            backgroundRgb[1],
+            backgroundRgb[2]
+        );
+        return calculateContrastRatio(backgroundLum, foregroundLum) >= (minRatio || 4.5);
     }
 
     function calculateContrastRatio(lumA, lumB) {
