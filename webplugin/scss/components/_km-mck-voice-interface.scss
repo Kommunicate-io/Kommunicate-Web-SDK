@@ -347,7 +347,7 @@ $voice-progress-transcribing-text: #9a3412;
 .km-voice-inline-mic-icon {
     width: 20px;
     height: 20px;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='white' stroke-width='2' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2.5a3.5 3.5 0 0 1 3.5 3.5v3a3.5 3.5 0 0 1-7 0v-3A3.5 3.5 0 0 1 10 2.5Z'/><path d='M6.5 11.5a4.5 4.5 0 0 0 9 0'/><path d='M10 15.5v3'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5 10a7 7 0 0 0 14 0'/><path d='M12 17v4'/><path d='M9 21h6'/></svg>");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
