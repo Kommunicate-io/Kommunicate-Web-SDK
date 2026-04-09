@@ -6827,7 +6827,7 @@ const firstVisibleMsg = {
             var resolvedBadgeIcon =
                 '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}' +
@@ -6835,7 +6835,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:#737373;"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
@@ -9156,6 +9156,21 @@ const firstVisibleMsg = {
                     list.appendChild(wrapper);
                 });
             }
+
+            var listObservers = {};
+            function observeListChildren(listId) {
+                if (listObservers[listId]) {
+                    return;
+                }
+                var list = document.getElementById(listId);
+                if (!list || typeof MutationObserver === 'undefined') {
+                    return;
+                }
+                listObservers[listId] = new MutationObserver(function () {
+                    ensureListChildrenAreLi(listId);
+                });
+                listObservers[listId].observe(list, { childList: true });
+            }
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
                 if (data + '' === 'null') {
@@ -9228,6 +9243,7 @@ const firstVisibleMsg = {
                             );
                         }
                     }
+                    observeListChildren('mck-contact-list');
                     ensureListChildrenAreLi('mck-contact-list');
                 }
             };
