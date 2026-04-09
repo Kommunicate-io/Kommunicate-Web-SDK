@@ -2637,30 +2637,8 @@ const firstVisibleMsg = {
                                         showUserIdField: true,
                                     });
                             }
-                            var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
-                                if (!item) {
-                                    return false;
-                                }
-                                var fieldName = (item.field || '')
-                                    .toString()
-                                    .toLowerCase()
-                                    .replace(/\s+/g, '');
-                                return (
-                                    item.id === 'km-userId' ||
-                                    item.name === 'km-userId' ||
-                                    fieldName === 'userid'
-                                );
-                            });
-                            var shouldShowUserId = !isPreLeadEnabled || hasPreLeadUserId;
-                            var userIdInput = document.getElementById('km-userId');
-                            var userIdLabel = document.getElementById('km-label-user-id');
-                            if (shouldShowUserId) {
-                                userIdInput && kommunicateCommons.show(userIdInput);
-                                userIdLabel && userIdLabel.classList.remove('sr-only');
-                            } else {
-                                userIdInput && kommunicateCommons.hide(userIdInput);
-                                userIdLabel && userIdLabel.classList.add('sr-only');
-                            }
+                            _this.applyUserIdVisibility &&
+                                _this.applyUserIdVisibility({ context: 'invalid-password' });
                             _this.updateAuthSubmitButton &&
                                 _this.updateAuthSubmitButton(
                                     (MCK_LABELS['lead.collection'] || {}).submit

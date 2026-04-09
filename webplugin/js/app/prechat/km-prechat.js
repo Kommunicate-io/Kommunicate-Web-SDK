@@ -155,7 +155,6 @@ var KMPreChat = (function () {
             }
             var userIdInput = document.getElementById('km-userId');
             if (userIdInput) {
-                toggleField(userIdInput, true);
                 userIdInput.setAttribute('type', 'text');
                 userIdInput.required = Boolean(showUserIdField);
                 var userIdLabel = deps.MCK_LABELS['form.label.userId'];
@@ -168,7 +167,6 @@ var KMPreChat = (function () {
                         '<use xlink:href="#icon-69" href="#icon-69"></use>' +
                         '</svg>';
                     userIdLabelNode.textContent = userIdLabel;
-                    userIdLabelNode.classList.remove('sr-only');
                     userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
                     if (userIdInput.hasAttribute('required')) {
                         userIdLabelNode.innerHTML = userIdLabel + ' ' + requiredSvg;
@@ -182,14 +180,12 @@ var KMPreChat = (function () {
                         labelContainer.appendChild(userIdLabelNode);
                     }
                     if (!showUserIdField) {
-                        toggleField(userIdInput, false);
                         userIdLabelNode.classList.add('sr-only');
-                    } else {
-                        toggleField(userIdInput, true);
-                        userIdLabelNode.classList.remove('sr-only');
                     }
                 }
             }
+            target.applyUserIdVisibility &&
+                target.applyUserIdVisibility({ context: 'auth-failure' });
             target.updateAuthSubmitButton(target.getLeadCollectionLabel('submit', ''));
             if (!document.getElementById('km-password')) {
                 var passwordLabel =
@@ -447,11 +443,8 @@ var KMPreChat = (function () {
             return kmChatInputDiv;
         };
 
-        target.addLeadCollectionInputDiv = function () {
-            if (!deps.KM_PRELEAD_COLLECTION.length) {
-                syncPreLeadCollectionFromOptions();
-            }
-            deps.KM_ASK_USER_DETAILS.length && target.getPreLeadDataForAskUserDetail();
+        target.applyUserIdVisibility = function (options) {
+            options = options || {};
             var authTypeId =
                 typeof deps.getAuthenticationTypeId === 'function'
                     ? deps.getAuthenticationTypeId()
@@ -482,12 +475,52 @@ var KMPreChat = (function () {
                     (normalizedLeadUserIdLabel && fieldName === normalizedLeadUserIdLabel)
                 );
             };
+            var hasPreLeadUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
+                return isUserIdField(item);
+            });
             var allowTemplateUserId = authTypeId > 0 && !isPreLeadEnabled;
-            var allowUserIdInPreLead =
-                isPreLeadEnabled &&
-                deps.KM_PRELEAD_COLLECTION.some(function (item) {
-                    return isUserIdField(item);
-                });
+            var allowUserIdInPreLead = isPreLeadEnabled && hasPreLeadUserId;
+            var shouldShowTemplateUserId = allowTemplateUserId || allowUserIdInPreLead;
+
+            var userIdInput = document.getElementById('km-userId');
+            if (userIdInput) {
+                if (shouldShowTemplateUserId) {
+                    toggleField(userIdInput, true);
+                } else {
+                    toggleField(userIdInput, false);
+                    userIdInput.removeAttribute('required');
+                }
+            }
+            var userIdLabelNode = document.getElementById('km-label-user-id');
+            if (userIdLabelNode) {
+                if (shouldShowTemplateUserId) {
+                    userIdLabelNode.classList.remove('sr-only');
+                } else {
+                    userIdLabelNode.classList.add('sr-only');
+                }
+            }
+
+            return {
+                isPreLeadEnabled: isPreLeadEnabled,
+                allowTemplateUserId: allowTemplateUserId,
+                allowUserIdInPreLead: allowUserIdInPreLead,
+                hasPreLeadUserId: hasPreLeadUserId,
+                shouldShowTemplateUserId: shouldShowTemplateUserId,
+                isUserIdField: isUserIdField,
+            };
+        };
+
+        target.addLeadCollectionInputDiv = function () {
+            if (!deps.KM_PRELEAD_COLLECTION.length) {
+                syncPreLeadCollectionFromOptions();
+            }
+            deps.KM_ASK_USER_DETAILS.length && target.getPreLeadDataForAskUserDetail();
+            var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
+            var userIdState = target.applyUserIdVisibility({
+                context: 'prelead-render',
+            });
+            var allowTemplateUserId = userIdState.allowTemplateUserId;
+            var allowUserIdInPreLead = userIdState.allowUserIdInPreLead;
             var useTemplateUserId = false;
             if (allowTemplateUserId) {
                 var userIdInput = document.getElementById('km-userId');
@@ -509,8 +542,6 @@ var KMPreChat = (function () {
                     if (userIdConfig) {
                         labelText = userIdConfig.field || labelText;
                     }
-                    toggleField(userIdInput, true);
-                    userIdInput.classList.remove('n-vis');
                     userIdInput.setAttribute('type', (userIdConfig && userIdConfig.type) || 'text');
                     userIdInput.required = !(
                         userIdConfig &&
@@ -525,25 +556,14 @@ var KMPreChat = (function () {
                     var userIdLabelNode = document.getElementById('km-label-user-id');
                     if (userIdLabelNode) {
                         userIdLabelNode.textContent = labelText;
-                        userIdLabelNode.classList.remove('sr-only');
                         userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
                     }
                     useTemplateUserId = true;
                 }
-            } else {
-                var fallbackUserIdInput = document.getElementById('km-userId');
-                if (fallbackUserIdInput) {
-                    toggleField(fallbackUserIdInput, false);
-                    fallbackUserIdInput.removeAttribute('required');
-                    var fallbackLabel = document.getElementById('km-label-user-id');
-                    if (fallbackLabel) {
-                        fallbackLabel.classList.add('sr-only');
-                    }
-                }
             }
             if (allowTemplateUserId) {
                 var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
-                    return isUserIdField(item);
+                    return userIdState.isUserIdField(item);
                 });
                 var hasPassword = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
@@ -582,10 +602,10 @@ var KMPreChat = (function () {
                 if (fieldName.toLowerCase() === 'phone') {
                     enableCountryCode = dataToCollect.enableCountryCode;
                 }
-                if (isUserIdField(dataToCollect) && !allowUserIdInPreLead) {
+                if (userIdState.isUserIdField(dataToCollect) && !allowUserIdInPreLead) {
                     continue;
                 }
-                if (useTemplateUserId && isUserIdField(dataToCollect)) {
+                if (useTemplateUserId && userIdState.isUserIdField(dataToCollect)) {
                     continue;
                 }
                 var kmInputField = target.createInputField(dataToCollect);
