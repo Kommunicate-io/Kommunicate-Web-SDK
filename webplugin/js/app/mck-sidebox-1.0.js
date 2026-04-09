@@ -6919,6 +6919,27 @@ const firstVisibleMsg = {
                     button: button,
                 };
             }
+            function bindDropdownKeyboardActivation() {
+                $applozic(d)
+                    .off('keydown.mckDropdown')
+                    .on(
+                        'keydown.mckDropdown',
+                        '[data-toggle="mckdropdown"][role="button"]',
+                        function (event) {
+                            var key = event.key || event.keyCode;
+                            if (
+                                key === 'Enter' ||
+                                key === ' ' ||
+                                key === 'Spacebar' ||
+                                key === 13 ||
+                                key === 32
+                            ) {
+                                event.preventDefault();
+                                this.click();
+                            }
+                        }
+                    );
+            }
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('messageTemplate', markup);
@@ -6926,6 +6947,7 @@ const firstVisibleMsg = {
                 $applozic.template('csatModule', csatModule);
                 $applozic.template('staticMessageTemplate', staticMessageModule);
                 $applozic.template('assigneeModule', assigneeModule);
+                bindDropdownKeyboardActivation();
             };
             _this.removeStaticMessage = function () {
                 var staticMessageContainer = document.getElementById('km-static-message');
@@ -9152,8 +9174,8 @@ const firstVisibleMsg = {
                         return;
                     }
                     var wrapper = document.createElement('li');
+                    list.insertBefore(wrapper, child);
                     wrapper.appendChild(child);
-                    list.appendChild(wrapper);
                 });
             }
 

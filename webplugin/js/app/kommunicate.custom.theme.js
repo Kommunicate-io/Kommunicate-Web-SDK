@@ -328,14 +328,17 @@ function KmCustomTheme() {
 
     function ensureAccessibleOnPrimary(vars) {
         var primaryColor = vars['--km-accent'] || DEFAULT_BACKGROUND_COLOR;
-        var onPrimary = vars['--km-on-primary'] || vars['--km-custom-widget-contrast-color'];
-        if (!onPrimary) {
-            return;
-        }
-        if (!isContrastCompliant(onPrimary, primaryColor, 4.5)) {
-            var accessible = getAccessibleTextColor(primaryColor);
+        var accessible = getAccessibleTextColor(primaryColor);
+        var onPrimary = vars['--km-on-primary'];
+        var onPrimaryLink = vars['--km-on-primary-link'];
+        var widgetContrast = vars['--km-custom-widget-contrast-color'];
+        if (!onPrimary || !isContrastCompliant(onPrimary, primaryColor, 4.5)) {
             vars['--km-on-primary'] = accessible;
+        }
+        if (!onPrimaryLink || !isContrastCompliant(onPrimaryLink, primaryColor, 4.5)) {
             vars['--km-on-primary-link'] = accessible;
+        }
+        if (!widgetContrast || !isContrastCompliant(widgetContrast, primaryColor, 4.5)) {
             vars['--km-custom-widget-contrast-color'] = accessible;
         }
     }
