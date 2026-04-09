@@ -328,7 +328,7 @@ class MckVoice {
             queueItem.ttsPromise = kmVoice
                 .textToVoice(spokenText)
                 .then((data) => {
-                    queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(data);
                     queueItem.ttsError = null;
                     return queueItem.ttsBlob;
                 })
@@ -379,7 +379,7 @@ class MckVoice {
                 queueItem.ttsPromise = kmVoice
                     .textToVoice(spokenText)
                     .then((data) => {
-                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(data);
                         queueItem.ttsError = null;
                         return queueItem.ttsBlob;
                     })
@@ -389,11 +389,11 @@ class MckVoice {
                         throw error;
                     });
             }
-            const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
-            if (!wavBlob) {
+            const audioBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
+            if (!audioBlob) {
                 throw new Error('Omnichannel TTS failed to return audio');
             }
-            this.playAudioBlobWithQueue(wavBlob);
+            this.playAudioBlobWithQueue(audioBlob);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -1589,24 +1589,23 @@ class MckVoice {
             return samples;
         };
 
-        const sendSamplesForStt = async (samples, label = '') => {
+        const sendSamplesForStt = async (samples) => {
             if (!samples || !samples.length) {
                 return null;
             }
             const preparedSamples = normalizeSamplesForStt(samples);
             sentSamplesCount += preparedSamples.length;
-            const chunkBlob = kmVoice.createWavBlobFromPcmData(
-                Int16Array.from(preparedSamples),
-                sampleRate,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
-            );
+            const pcmSamples =
+                preparedSamples instanceof Int16Array
+                    ? preparedSamples
+                    : Int16Array.from(preparedSamples);
             sttRequestCount++;
             let response;
             try {
-                response = await kmVoice.voiceToText(chunkBlob, {
+                response = await kmVoice.voiceToText(pcmSamples, {
                     ucid: this.voiceInputSettings.ucid,
                     sttMode: 'recognize',
+                    sampleRate,
                 });
             } catch (error) {
                 if (error && error.code === 'SILENT_AUDIO') {

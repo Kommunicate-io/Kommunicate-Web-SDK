@@ -65,11 +65,18 @@ class Voice {
         return `${this.getOmnichannelBaseUrl()}${this._OMNICHANNEL_API_PREFIX}${path}`;
     }
 
-    getOmnichannelHeaders() {
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        };
+    getOmnichannelHeaders(options = {}) {
+        const headers = {};
+        const hasCustomAccept = Object.prototype.hasOwnProperty.call(options, 'accept');
+        const hasCustomContentType = Object.prototype.hasOwnProperty.call(options, 'contentType');
+        const acceptHeader = hasCustomAccept ? options.accept : 'application/json';
+        const contentTypeHeader = hasCustomContentType ? options.contentType : 'application/json';
+        if (acceptHeader) {
+            headers.Accept = acceptHeader;
+        }
+        if (contentTypeHeader) {
+            headers['Content-Type'] = contentTypeHeader;
+        }
         const config = this.omnichannelConfig || {};
         const authHeaderName = config.authHeaderName || 'Authorization';
         const rawAuthToken = config.authToken ?? config.token ?? null;
@@ -83,6 +90,19 @@ class Voice {
                 : `Bearer ${authToken}`;
         }
         return headers;
+    }
+
+    isMimeType(contentType, expectedType) {
+        const normalizedContentType = String(contentType || '')
+            .split(';')[0]
+            .trim()
+            .toLowerCase();
+        return (
+            normalizedContentType ===
+            String(expectedType || '')
+                .trim()
+                .toLowerCase()
+        );
     }
 
     normalizeLanguageCode(languageCode) {
@@ -731,6 +751,7 @@ class Voice {
         sampleRate,
         sampleCount,
         operation,
+        requestMode,
     }) {
         const metadata = {
             ts: Date.now(),
@@ -753,6 +774,9 @@ class Voice {
         }
         if (typeof sampleCount === 'number') {
             metadata.sampleCount = sampleCount;
+        }
+        if (requestMode) {
+            metadata.requestMode = requestMode;
         }
         if (operation === 'voiceToText') {
             console.debug(`Voice STT request send (${transport})`, metadata);
@@ -786,6 +810,7 @@ class Voice {
         operation,
         enableSilentAudioLogging = false,
         preferSocket = true,
+        requestMode,
     }) {
         const resolvedSocketConfig = socketConfig || this.getVoiceSocketConfig('tts');
         const sampleCount = Array.isArray(payload && payload.samples)
@@ -799,6 +824,7 @@ class Voice {
                 sampleRate: payload && payload.sampleRate,
                 sampleCount,
                 operation,
+                requestMode,
             });
             try {
                 const data = await this.requestVoiceSocket(socketAction, payload, {
@@ -822,6 +848,7 @@ class Voice {
             sampleRate: payload && payload.sampleRate,
             sampleCount,
             operation,
+            requestMode,
         });
         try {
             const response = await fetch(httpUrl, {
@@ -847,13 +874,83 @@ class Voice {
         }
     }
 
+    async requestBinaryTextToVoice(payload) {
+        const httpUrl = this.getOmnichannelApiUrl('/text-to-voice');
+        this.logOmnichannelVoiceRequest({
+            transport: 'http',
+            url: httpUrl,
+            sampleRate: payload && payload.sampleRate,
+            operation: 'textToVoice',
+        });
+        try {
+            const response = await fetch(httpUrl, {
+                method: 'POST',
+                headers: this.getOmnichannelHeaders({
+                    accept: 'audio/mpeg, application/json;q=0.9, */*;q=0.8',
+                }),
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+                throw await this.buildHttpError(response, 'text-to-voice');
+            }
+
+            const contentType = response.headers.get('Content-Type') || '';
+            if (!this.isMimeType(contentType, 'audio/mpeg')) {
+                throw new Error(
+                    `text-to-voice failed to return audio/mpeg. Received ${
+                        contentType || 'unknown content type'
+                    }`
+                );
+            }
+
+            const audioBytes = await response.arrayBuffer();
+            if (!audioBytes || !audioBytes.byteLength) {
+                throw new Error('text-to-voice returned an empty audio response');
+            }
+
+            return new Blob([audioBytes], { type: 'audio/mpeg' });
+        } catch (error) {
+            this.handleOmnichannelVoiceError(error, {
+                transport: 'http',
+                defaultMessage: 'There was a problem with the text-to-voice fetch operation:',
+            });
+            throw error;
+        }
+    }
+
+    async requestLegacyTextToVoice(payload, socketConfig) {
+        const fallbackPayload = Object.assign({}, payload);
+        delete fallbackPayload.responseFormat;
+        return this.requestOmnichannelVoiceTransport({
+            payload: fallbackPayload,
+            socketConfig,
+            socketAction: socketConfig.textToVoiceAction || 'text_to_voice',
+            socketNormalizePayload: this.normalizeTextToVoiceSocketPayload,
+            httpPath: '/text-to-voice',
+            operation: 'textToVoice',
+            preferSocket: false,
+        });
+    }
+
+    createPlaybackBlobFromTextToVoiceResponse(responsePayload) {
+        if (responsePayload instanceof Blob) {
+            return responsePayload;
+        }
+        const normalizedPayload = this.normalizeTextToVoiceSocketPayload(responsePayload);
+        if (normalizedPayload && Array.isArray(normalizedPayload.frames)) {
+            return this.createWavBlobFromOmnichannelFrames(normalizedPayload);
+        }
+        throw new Error('Omnichannel TTS failed to return playable audio');
+    }
+
     async textToVoice(text = '') {
         const activeConversationId = this.getActiveConversationId();
         const { state } = this.getVoiceLanguageState(activeConversationId);
         const languageCode = this.getSessionVoiceLanguageCode(state);
         const payload = {
             text,
-            source: this.getOmnichannelSource(this.voiceChatConfig.source),
+            source: 'web',
+            responseFormat: 'binary',
             sampleRate: this.getTextToVoiceSampleRate(),
         };
         if (languageCode) {
@@ -870,21 +967,125 @@ class Voice {
             payload.effectsProfileId = config.effectsProfileId;
         }
         const socketConfig = this.getVoiceSocketConfig();
-
-        return this.requestOmnichannelVoiceTransport({
-            payload,
-            socketConfig,
-            socketAction: socketConfig.textToVoiceAction || 'text_to_voice',
-            socketNormalizePayload: this.normalizeTextToVoiceSocketPayload,
-            httpPath: '/text-to-voice',
-            operation: 'textToVoice',
-            preferSocket: true,
-        });
+        try {
+            return await this.requestBinaryTextToVoice(payload);
+        } catch (binaryError) {
+            console.warn('Binary text-to-voice request failed. Falling back to legacy PCM JSON.', {
+                message: binaryError && binaryError.message ? binaryError.message : binaryError,
+            });
+            try {
+                return await this.requestLegacyTextToVoice(payload, socketConfig);
+            } catch (fallbackError) {
+                fallbackError.binaryRequestError = binaryError;
+                if (!fallbackError.cause) {
+                    fallbackError.cause = binaryError;
+                }
+                throw fallbackError;
+            }
+        }
     }
 
-    async voiceToText(audioBlob, { ucid, sttMode } = {}) {
-        const sampleRate = this.getVoiceToTextSampleRate();
-        const samples = await this.extractPcmInt16Samples(audioBlob);
+    normalizePcmInt16Samples(input) {
+        if (input instanceof Int16Array) {
+            return input;
+        }
+        if (Array.isArray(input)) {
+            return Int16Array.from(input);
+        }
+        return null;
+    }
+
+    async resolveVoiceToTextSamples(audioInput) {
+        const normalizedPcmSamples = this.normalizePcmInt16Samples(audioInput);
+        if (normalizedPcmSamples) {
+            return normalizedPcmSamples;
+        }
+        const extractedSamples = await this.extractPcmInt16Samples(audioInput);
+        return Int16Array.from(extractedSamples);
+    }
+
+    getBinaryVoiceToTextHeaders({
+        sampleRate,
+        channelCount,
+        bitsPerSample,
+        source,
+        ucid,
+        languageCode,
+        alternativeLanguageCodes,
+        sttMode,
+    }) {
+        const headers = this.getOmnichannelHeaders({
+            accept: 'application/json',
+            contentType: 'application/octet-stream',
+        });
+        headers['X-Audio-Sample-Rate'] = String(sampleRate);
+        headers['X-Audio-Channel-Count'] = String(channelCount);
+        headers['X-Audio-Bits-Per-Sample'] = String(bitsPerSample);
+        headers['X-Voice-Source'] = String(source || 'web');
+        if (ucid !== undefined && ucid !== null && ucid !== '') {
+            headers['X-Voice-Ucid'] = String(ucid);
+        }
+        if (languageCode) {
+            headers['X-Language-Code'] = String(languageCode);
+        }
+        if (Array.isArray(alternativeLanguageCodes) && alternativeLanguageCodes.length) {
+            headers['X-Alternative-Language-Codes'] = alternativeLanguageCodes.join(',');
+        }
+        if (sttMode) {
+            headers['X-Stt-Mode'] = String(sttMode);
+        }
+        return headers;
+    }
+
+    async parseVoiceToTextHttpResponse(response, operation) {
+        const contentType = response.headers.get('Content-Type') || '';
+        try {
+            if (!contentType || this.isMimeType(contentType, 'application/json')) {
+                return await response.json();
+            }
+            const responseText = await response.text();
+            return JSON.parse(responseText);
+        } catch (error) {
+            throw new Error(`${operation} returned an unsupported response payload`);
+        }
+    }
+
+    async requestBinaryVoiceToText({ samples, payload }) {
+        const httpUrl = this.getOmnichannelApiUrl('/voice-to-text');
+        this.logOmnichannelVoiceRequest({
+            transport: 'http',
+            url: httpUrl,
+            sttMode: payload && payload.sttMode,
+            sampleRate: payload && payload.sampleRate,
+            sampleCount: samples ? samples.length : 0,
+            operation: 'voiceToText',
+            requestMode: 'binary',
+        });
+        const requestBody = new Uint8Array(samples.buffer, samples.byteOffset, samples.byteLength);
+        try {
+            const response = await fetch(httpUrl, {
+                method: 'POST',
+                headers: this.getBinaryVoiceToTextHeaders(payload),
+                body: requestBody,
+            });
+            if (!response.ok) {
+                throw await this.buildHttpError(response, 'voice-to-text');
+            }
+            return await this.parseVoiceToTextHttpResponse(response, 'voice-to-text');
+        } catch (error) {
+            this.handleOmnichannelVoiceError(error, {
+                transport: 'http',
+                silentMessage: 'Silent audio blocked before voice-to-text API call',
+                defaultMessage:
+                    'There was a problem with the binary voice-to-text fetch operation:',
+            });
+            throw error;
+        }
+    }
+
+    async voiceToText(audioInput, { ucid, sttMode, sampleRate: sampleRateOverride } = {}) {
+        const sampleRate = Number(sampleRateOverride) || this.getVoiceToTextSampleRate();
+        const samples = await this.resolveVoiceToTextSamples(audioInput);
         const audioMetrics = this.evaluatePcmInt16Quality(samples);
         if (audioMetrics.isSilent) {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
@@ -892,12 +1093,11 @@ class Voice {
         }
         const activeConversationUcid = this.getActiveConversationId();
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
-        const { sessionKey, state } = this.getVoiceLanguageState(activeConversationUcid);
+        const { state } = this.getVoiceLanguageState(activeConversationUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
         const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
 
         const payload = {
-            samples,
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
@@ -907,32 +1107,20 @@ class Voice {
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
         }
-        // Temporarily disabled: do not send alternativeLanguageCodes to STT.
-        // if (shouldSendAlternativeLanguageCodes) {
-        //     const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
-        //         sttLanguageCode,
-        //         activeConversationUcid
-        //     );
-        //     if (firstRequestAlternatives.length) {
-        //         payload.alternativeLanguageCodes = firstRequestAlternatives;
-        //     }
-        // }
+        if (shouldSendAlternativeLanguageCodes) {
+            const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
+                sttLanguageCode,
+                activeConversationUcid
+            );
+            if (firstRequestAlternatives.length) {
+                payload.alternativeLanguageCodes = firstRequestAlternatives;
+            }
+        }
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
-        const socketConfig = this.getVoiceSocketConfig('stt');
         const sttRequestStartedAt = Date.now();
-        const response = await this.requestOmnichannelVoiceTransport({
-            payload,
-            socketConfig,
-            socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
-            socketNormalizePayload: this.normalizeVoiceToTextSocketPayload,
-            httpPath: '/voice-to-text',
-            httpErrorOperation: 'voice-to-text',
-            operation: 'voiceToText',
-            enableSilentAudioLogging: true,
-            preferSocket: false,
-        });
+        const response = await this.requestBinaryVoiceToText({ samples, payload });
         console.debug('Voice STT response completed', {
             ts: Date.now(),
             iso: new Date().toISOString(),
