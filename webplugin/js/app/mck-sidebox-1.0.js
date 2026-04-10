@@ -8778,6 +8778,7 @@ const firstVisibleMsg = {
                         fileName = fileName.replace('AWS-ENCRYPTED-', '');
                         addfileEncClass = true;
                     }
+                    var altText = kommunicateCommons.formatHtmlTag(fileName);
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
                             let URL = addfileEncClass ? '' : alFileService.getFileurl(msg);
@@ -8789,16 +8790,20 @@ const firstVisibleMsg = {
                                     : msg.fileMeta.thumbnailUrl;
                             }
 
-                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="${
+                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ${altText}" data-type="${
                                 msg.fileMeta.contentType
                             }" data-url="${URL}" data-name="${kommunicateCommons.formatHtmlTag(
                                 msg.fileMeta.name
-                            )}"><img class="${addfileEncClass ? 'file-enc' : ''}" src="${URL}" 
-                            area-hidden="true" data-thumbnailBlobKey="${msg.fileMeta.blobKey}"
-                            ></img></a>`;
+                            )}"><img class="${
+                                addfileEncClass ? 'file-enc' : ''
+                            }" src="${URL}" alt="${altText}" data-thumbnailBlobKey="${
+                                msg.fileMeta.blobKey
+                            }"></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
-                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                altText +
+                                '" data-type="' +
                                 msg.fileMeta.contentType +
                                 '" data-url="' +
                                 msg.fileMeta.blobKey +
@@ -8806,7 +8811,9 @@ const firstVisibleMsg = {
                                 kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                 '"><img src="' +
                                 msg.fileMeta.blobKey +
-                                '" area-hidden="true"></img></a>'
+                                '" alt="' +
+                                altText +
+                                '"></img></a>'
                             );
                         } else {
                             if (msg.fileMeta.hasOwnProperty('url')) {
@@ -8819,7 +8826,9 @@ const firstVisibleMsg = {
                                         }
                                     );
                                     return (
-                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                        altText +
+                                        '" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="" data-blobKey="' +
                                         msg.fileMeta.blobKey +
@@ -8827,7 +8836,9 @@ const firstVisibleMsg = {
                                         kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                         '"><img src="' +
                                         thumbnailUrl +
-                                        '" area-hidden="true" ></img></a>'
+                                        '" alt="' +
+                                        altText +
+                                        '"></img></a>'
                                     );
                                 } else {
                                     var url = addfileEncClass ? '' : alFileService.getFileurl(msg);
@@ -8836,7 +8847,9 @@ const firstVisibleMsg = {
                                         : msg.fileMeta.thumbnailUrl;
 
                                     return (
-                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                        altText +
+                                        '" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="' +
                                         url +
@@ -8846,7 +8859,9 @@ const firstVisibleMsg = {
                                         (addfileEncClass ? ' class="file-enc"' : '') +
                                         ' src="' +
                                         thumbnailUrl +
-                                        '" area-hidden="true" data-blobKey="' +
+                                        '" alt="' +
+                                        altText +
+                                        '" data-blobKey="' +
                                         msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="' +
                                         msg.fileMeta.thumbnailBlobKey +
@@ -8858,7 +8873,9 @@ const firstVisibleMsg = {
                                 'thumbnail_' + msg.fileMeta.name
                             ) {
                                 return (
-                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                    altText +
+                                    '" data-type="' +
                                     msg.fileMeta.contentType +
                                     '" data-url="' +
                                     alFileService.getFileurl(msg) +
@@ -8868,11 +8885,15 @@ const firstVisibleMsg = {
                                     MCK_STORAGE_URL +
                                     '/files/thumbnail_' +
                                     msg.fileMeta.name +
-                                    '" area-hidden="true" ></img></a>'
+                                    '" alt="' +
+                                    altText +
+                                    '"></img></a>'
                                 );
                             } else {
                                 return (
-                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                    altText +
+                                    '" data-type="' +
                                     msg.fileMeta.contentType +
                                     '" data-url="' +
                                     alFileService.getFileurl(msg) +
@@ -8880,7 +8901,9 @@ const firstVisibleMsg = {
                                     kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                     '"><img src="' +
                                     msg.fileMeta.thumbnailUrl +
-                                    '" area-hidden="true" ></img></a>'
+                                    '" alt="' +
+                                    altText +
+                                    '"></img></a>'
                                 );
                             }
                         }
@@ -8912,7 +8935,11 @@ const firstVisibleMsg = {
                             '<p class="mck-file-tag"></p></a>'
                         );
                     } else {
-                        return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
+                        return (
+                            '<a href="#" role="link" class="file-preview-link" target="_blank" aria-label="Open attachment ' +
+                            altText +
+                            '"></a>'
+                        );
                     }
                 }
                 return '';
