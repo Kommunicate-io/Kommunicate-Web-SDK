@@ -414,6 +414,106 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-sidebox a:focus {
     outline: none !important;
 }
+.mck-sidebox :focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+    border-radius: 8px;
+}
+.mck-sidebox button:focus-visible,
+.mck-sidebox [role='button']:focus-visible,
+.mck-sidebox a:focus-visible,
+.mck-sidebox input:focus-visible,
+.mck-sidebox select:focus-visible,
+.mck-sidebox textarea:focus-visible,
+.mck-sidebox summary:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+}
+
+/* Conversation list focus */
+.mck-contact-list a:focus-visible,
+.mck-contact-list li:focus-visible,
+.mck-contact-list li:focus-within {
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    border-radius: 12px;
+}
+.mck-contact-list a {
+    display: block;
+}
+.mck-contact-list a:focus-visible {
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08);
+    border-radius: 12px;
+}
+
+/* Header close/back/options focus */
+.mck-box-close:focus-visible,
+.mck-box-close:focus-visible svg,
+.mck-close-sidebox:focus-visible,
+.mck-close-sidebox:focus-visible svg,
+.mck-minimize-icon:focus-visible,
+.mck-minimize-icon:focus-visible svg,
+.mck-dropdown-toggle:focus-visible,
+.mck-dropdown-toggle:focus-visible svg,
+.mck-conversation-tab-link:focus-visible,
+.mck-back-btn-container :focus-visible,
+#mck-conversation-back-btn:focus-visible,
+.km-faq-back-btn:focus-visible,
+.km-option-talk-to-human:focus-visible,
+#km-talk-to-human:focus-visible,
+.km-option-faq:focus-visible,
+#km-faq-option:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+/* Classic header FAQ button */
+#km-faq:focus-visible,
+.km-faq:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
+    border-radius: 10px;
+}
+
+/* CSAT trigger focus */
+#km-csat-trigger:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
+    border-radius: 10px;
+}
+
+/* Bottom tabs focus (clean) */
+.km-bottom-tab:focus-visible,
+.km-bottom-tab--collapse:focus-visible {
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.7) !important;
+    border-radius: 14px;
+}
+
+/* FAQ + News cards/buttons focus */
+.km-faq-list-item:focus-visible,
+.km-faq-list-item a:focus-visible,
+.km-faq-display:focus-visible,
+.km-faqdisplay:focus-visible,
+.km-faq-list:focus-visible,
+.km-faq-list a:focus-visible,
+.km-faq-category-card:focus-visible,
+.km-whats-new-card:focus-visible,
+.km-whats-new-card a:focus-visible,
+.km-news-card:focus-visible,
+.km-news-card a:focus-visible {
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    border-radius: 12px;
+}
+.km-faq-category-card:focus-visible,
+.km-faq-list:focus-visible {
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.06);
+}
 
 .mck-form-group {
     margin-bottom: 10px;
@@ -1413,6 +1513,21 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 }
 .mck-box-body .mck-message-inner:focus {
     outline: none;
+}
+#mck-message-cell div[name="message"]:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
+    outline-offset: 2px;
+    border-radius: 16px;
+}
+#mck-message-cell div[name="message"]:focus-visible .mck-msg-box {
+    box-shadow: 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+}
+.mck-sidebox .km-quick-replies:focus-visible,
+.mck-sidebox .mck-msg-box a:focus-visible,
+.mck-sidebox .mck-msg-box button:focus-visible,
+.mck-sidebox .mck-msg-box [role="button"]:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
+    outline-offset: 2px;
 }
 #mck-contacts-content {
     position: absolute;
@@ -3005,6 +3120,7 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
     background-color: var(--km-widget-bg, #fff);
+    position: relative;
 }
 #km-conversations-empty .km-start-conversation-actions,
 .km-empty-conversation-card__cta-wrap .km-start-conversation-actions {
@@ -3041,13 +3157,24 @@ ul.mck-intent-menu > li:hover {
 .km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
 .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
-    border-right: 1px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.22);
+    border-right: none;
     border-radius: 26px 0 0 26px;
 }
 .km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
     border-radius: 0 26px 26px 0;
+}
+.km-start-conversation-actions.km-voice-option-enabled::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    left: 50%;
+    transform: translateX(-0.5px);
+    background: rgba(var(--km-accent-rgb, 95, 70, 248), 0.22);
+    pointer-events: none;
 }
 #mck-msg-new:hover,
 #km-start-with-voice-cta:hover,
@@ -3063,8 +3190,9 @@ ul.mck-intent-menu > li:hover {
 #km-conversations-empty-voice-cta:focus-visible,
 #km-empty-conversation-cta:focus-visible,
 #km-empty-conversation-voice-cta:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
-    outline-offset: 2px;
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.06) !important;
 }
 #mck-msg-new:focus,
 #km-start-with-voice-cta:focus,

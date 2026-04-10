@@ -73,6 +73,24 @@
     min-height: 20px;
     border: 0px solid $input-border-color;
 }
+
+#mck-message-cell div[name='message']:focus-visible {
+    outline: 2px solid rgba($primary-color, 0.45);
+    outline-offset: 2px;
+    border-radius: 16px;
+}
+
+#mck-message-cell div[name='message']:focus-visible .mck-msg-box {
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.35);
+}
+
+.mck-sidebox .km-quick-replies:focus-visible,
+.mck-sidebox .mck-msg-box a:focus-visible,
+.mck-sidebox .mck-msg-box button:focus-visible,
+.mck-sidebox .mck-msg-box [role='button']:focus-visible {
+    outline: 2px solid rgba($primary-color, 0.45);
+    outline-offset: 2px;
+}
 .km-answer-feedback-button {
     cursor: pointer;
     width: 14px;

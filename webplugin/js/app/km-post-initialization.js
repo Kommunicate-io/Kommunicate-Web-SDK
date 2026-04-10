@@ -98,7 +98,9 @@ Kommunicate.getFaqCategories = function (data) {
                     categoryName
                 );
                 $applozic('.km-faq-category-list-container').append(
-                    '<div class="km-faq-category-card" data-category-name="' +
+                    '<div class="km-faq-category-card" role="button" tabindex="0" aria-label="' +
+                        safeCategoryName +
+                        '" data-category-name="' +
                         safeCategoryNameAttr +
                         '">' +
                         '<div class="km-faq-category-card-content">' +

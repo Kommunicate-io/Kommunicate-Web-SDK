@@ -3502,6 +3502,19 @@ const firstVisibleMsg = {
                             }
                         }
                     });
+                    ratingStars[i].addEventListener('keydown', function (e) {
+                        var key = e.key || e.keyCode;
+                        if (
+                            key === 'Enter' ||
+                            key === ' ' ||
+                            key === 'Spacebar' ||
+                            key === 13 ||
+                            key === 32
+                        ) {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
                 }
                 if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                     ratingService.setStarsEffect(feedbackObject.rating);
@@ -4891,6 +4904,19 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#km-csat-trigger', function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
+                });
+                $applozic(d).on('keydown', '#km-csat-trigger', function (e) {
+                    var key = e.key || e.keyCode;
+                    if (
+                        key === 'Enter' ||
+                        key === ' ' ||
+                        key === 'Spacebar' ||
+                        key === 13 ||
+                        key === 32
+                    ) {
+                        e.preventDefault();
+                        this.click();
+                    }
                 });
 
                 document.getElementById('km-csat-close-button').onclick = function (e) {
@@ -6785,7 +6811,7 @@ const firstVisibleMsg = {
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
-                '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
+                '<div tabindex="0" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
                 '<div class="mck-clear">' +
                 '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name">${msgNameExpr}</div>' +
@@ -8166,6 +8192,8 @@ const firstVisibleMsg = {
                               .tmpl('messageTemplate', msgList)
                               .prependTo('#mck-message-cell .mck-message-inner');
                 }
+                var $messageRow = $applozic('#mck-message-cell .' + msg.key + '[name="message"]');
+                $messageRow.length && $messageRow.attr('tabindex', '0');
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 

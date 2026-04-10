@@ -1212,6 +1212,24 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0px solid #dcdcdc;
 }
 
+#mck-message-cell div[name=message]:focus-visible {
+  outline: 2px solid rgba(95, 70, 248, 0.45);
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+
+#mck-message-cell div[name=message]:focus-visible .mck-msg-box {
+  box-shadow: 0 0 0 2px rgba(95, 70, 248, 0.35);
+}
+
+.mck-sidebox .km-quick-replies:focus-visible,
+.mck-sidebox .mck-msg-box a:focus-visible,
+.mck-sidebox .mck-msg-box button:focus-visible,
+.mck-sidebox .mck-msg-box [role=button]:focus-visible {
+  outline: 2px solid rgba(95, 70, 248, 0.45);
+  outline-offset: 2px;
+}
+
 .km-answer-feedback-button {
   cursor: pointer;
   width: 14px;
@@ -3892,6 +3910,10 @@ div#mck-rated:before {
   padding: 6px 16px;
   border-radius: 4px;
 }
+.mck-rating-box:focus-visible {
+  outline: 2px solid rgba(108, 92, 231, 0.75);
+  outline-offset: 2px;
+}
 .mck-rating-box:hover, .mck-rating-box.selected {
   transform: scale(1.2);
 }
@@ -4458,8 +4480,9 @@ div#mck-rated:before {
   transition: all 0.1s ease;
 }
 #km-voice-inline-action-btn:focus-visible {
-  outline: 2px solid rgba(108, 92, 231, 0.5);
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(108, 92, 231, 0.85);
+  border-radius: 999px;
 }
 
 .km-voice-inline-controls {
