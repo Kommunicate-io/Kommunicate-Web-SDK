@@ -4534,6 +4534,13 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     bottomTabManager.handleChange('faqs');
                 });
+                $applozic(d).on('keydown', '#km-faq-option, #km-talk-to-human', function (e) {
+                    var key = e.key || e.keyCode;
+                    if (key === 'Enter' || key === ' ' || key === 13 || key === 32) {
+                        e.preventDefault();
+                        $applozic(this).trigger('click');
+                    }
+                });
 
                 mck_text_box.addEventListener('input', function () {
                     _this.toggleMediaOptions(this);
