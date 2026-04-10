@@ -711,21 +711,58 @@ $applozic.extend(true, Kommunicate, {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
         var popUpCloseButton = kommunicateIframeDocument.getElementById('km-popup-close-button');
+        var clearShadowObserver = function () {
+            if (kommunicateIframe.__kmShadowObserver) {
+                kommunicateIframe.__kmShadowObserver.disconnect();
+                kommunicateIframe.__kmShadowObserver = null;
+            }
+        };
+        clearShadowObserver();
         kommunicateIframe.style.width = '';
         kommunicateIframe.classList.remove('km-iframe-notification');
         kommunicateIframe.classList.remove('km-iframe-closed');
+        kommunicateIframe.classList.remove('km-iframe-shadow-ready');
+        kommunicateIframe.classList.add('km-iframe-loading');
         isPopupEnabled
             ? (kommunicateIframe.classList.add('km-iframe-dimension-with-popup'),
               popUpCloseButton && (popUpCloseButton.style.display = 'flex'))
             : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
         kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+
+        var tryEnableShadow = function () {
+            var sidebox = kommunicateIframeDocument.getElementById('mck-sidebox');
+            if (!sidebox || window.getComputedStyle(sidebox).display === 'none') {
+                return false;
+            }
+            kommunicateIframe.classList.remove('km-iframe-loading');
+            kommunicateIframe.classList.add('km-iframe-shadow-ready');
+            clearShadowObserver();
+            return true;
+        };
+        if (!tryEnableShadow()) {
+            kommunicateIframe.__kmShadowObserver = new MutationObserver(function () {
+                tryEnableShadow();
+            });
+            kommunicateIframe.__kmShadowObserver.observe(kommunicateIframeDocument.body, {
+                subtree: true,
+                childList: true,
+                attributes: true,
+                attributeFilter: ['class', 'style'],
+            });
+        }
     },
     setDefaultIframeConfigForClosedChat: function () {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         if (kommunicateIframe) {
+            if (kommunicateIframe.__kmShadowObserver) {
+                kommunicateIframe.__kmShadowObserver.disconnect();
+                kommunicateIframe.__kmShadowObserver = null;
+            }
             kommunicateIframe.style.height = '';
             kommunicateIframe.classList.add('km-iframe-closed');
+            kommunicateIframe.classList.remove('km-iframe-shadow-ready');
+            kommunicateIframe.classList.remove('km-iframe-loading');
             kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
             kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
             kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');

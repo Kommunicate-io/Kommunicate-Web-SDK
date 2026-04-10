@@ -55,14 +55,20 @@ var kmCustomIframe =
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
     '    width: 390px; ' +
-    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3)' +
     '} \n ' +
     '.km-iframe-dimension-with-popup{ ' +
     '    height: 85vh; ' +
     '    max-height: 800px; ' +
     '    width: 27vw; ' +
     '    min-width: 390px; ' +
-    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);' +
+    '    max-width: 460px; ' +
+    '} \n ' +
+    '.kommunicate-custom-iframe.km-iframe-dimension-with-popup.km-iframe-shadow-ready, ' +
+    '.kommunicate-custom-iframe.km-iframe-dimension-no-popup.km-iframe-shadow-ready{ ' +
+    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3) !important;' +
+    '} \n ' +
+    '.kommunicate-custom-iframe.km-iframe-loading{' +
+    '    box-shadow: none !important;' +
     '} \n ' +
     '@media only screen and (max-width:600px) { ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-with-popup, ' +

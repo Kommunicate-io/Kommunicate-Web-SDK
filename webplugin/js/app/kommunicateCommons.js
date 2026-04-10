@@ -130,7 +130,8 @@ function KommunicateCommons() {
             !iframeElement ||
             _this.checkIfDeviceIsHandheld() ||
             (iframeElement.classList &&
-                (iframeElement.classList.contains('chat-popup-widget-horizontal') ||
+                (iframeElement.classList.contains('km-iframe-closed') ||
+                    iframeElement.classList.contains('chat-popup-widget-horizontal') ||
                     iframeElement.classList.contains('chat-popup-widget-vertical') ||
                     iframeElement.classList.contains('chat-popup-widget-actionable')))
         ) {
@@ -601,10 +602,6 @@ function KommunicateCommons() {
 
     _this.getRatingSmilies = function (rating) {
         return KommunicateConstants.RATINGS_SVG[rating];
-    };
-
-    _this.getDefaultAvatarImageSvg = function () {
-        return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
     };
 
     _this.getFeedback = function (tabId, onSuccessCallback) {

@@ -10,10 +10,6 @@
             id="mck-sidebox-content"
             class="mck-sidebox-content mck-box-content active-tab-conversations"
         >
-            <div
-                id="mck-conversation-header"
-                class="mck-conversation-header mck-truncate n-vis"
-            ></div>
             <div class="mck-box-top mck-title">
                 <div class="km-header-container">
                     <div class="km-conversation-header-title-container">
@@ -82,10 +78,6 @@
                                         Conversations
                                     </div>
                                     <div
-                                        id="mck-tab-status"
-                                        class="mck-tab-status mck-truncate n-vis force-n-vis"
-                                    ></div>
-                                    <div
                                         id="mck-agent-status-text"
                                         class="mck-agent-status-text n-vis"
                                     ></div>
@@ -134,7 +126,7 @@
                                     width="16"
                                     height="16"
                                     fill="currentColor"
-                                    class="bi bi-three-dots-vertical"
+                                    class="bi"
                                     viewBox="0 0 16 16"
                                     aria-hidden="true"
                                     focusable="false"
@@ -241,22 +233,6 @@
                                         <span id="km-option-talk-to-human-text">Talk to human</span>
                                     </div>
                                 </li>
-                                <!-- <li>
-                                    <div class="menu-item km-option-faq n-vis" id="km-faq">
-                                        <svg
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 16 16"
-                                            fill="none"
-                                            aria-hidden="true"
-                                            focusable="false"
-                                        >
-                                            <use xlink:href="#icon-9" href="#icon-9"></use>
-                                        </svg>
-
-                                        <span id="km-option-faq-text">FAQ</span>
-                                    </div>
-                                </li> -->
                             </ul>
                         </div>
                         <div class="blk-lg-2 mck-close-btn">
@@ -307,52 +283,6 @@
                     </a>
                 </div>
             </div>
-            <div id="mck-product-group" class="mck-tab-panel mck-btn-group mck-product-group">
-                <div
-                    id="mck-product-box"
-                    class="mck-product-box n-vis mck-dropdown-toggle"
-                    data-toggle="mckdropdown"
-                    aria-expanded="true"
-                >
-                    <div class="mck-row">
-                        <div class="blk-lg-10">
-                            <div class="mck-row">
-                                <div class="blk-lg-3 mck-product-icon"></div>
-                                <div class="blk-lg-9">
-                                    <div class="mck-row">
-                                        <div class="blk-lg-8 mck-product-title mck-truncate"></div>
-                                        <div
-                                            class="move-right mck-product-rt-up mck-truncate blk-lg-4"
-                                        >
-                                            <strong class="mck-product-key"></strong>
-                                            <span class="mck-product-value"></span>
-                                        </div>
-                                    </div>
-                                    <div class="mck-row">
-                                        <div
-                                            class="blk-lg-8 mck-truncate mck-product-subtitle"
-                                        ></div>
-                                        <div
-                                            class="move-right mck-product-rt-down mck-truncate blk-lg-4"
-                                        >
-                                            <strong class="mck-product-key"></strong>
-                                            <span class="mck-product-value"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="blk-lg-2">
-                            <span class="mck-caret n-vis"></span>
-                        </div>
-                    </div>
-                </div>
-                <ul
-                    id="mck-conversation-list"
-                    class="mck-dropdown-menu menu-right mck-conversation-list n-vis"
-                    role="menu"
-                ></ul>
-            </div>
             <div
                 id="mck-tab-option-panel"
                 class="mck-tab-panel mck-top-btn-panel"
@@ -377,11 +307,7 @@
                                     <use xlink:href="#icon-11" href="#icon-11"></use>
                                 </svg>
                             </div>
-                            <ul
-                                id="mck-tab-menu-list"
-                                class="mck-dropdown-menu mck-tab-menu-box menu-right"
-                                role="menu"
-                            >
+                            <ul class="mck-dropdown-menu mck-tab-menu-box menu-right" role="menu">
                                 <li class="mck-tab-message-option">
                                     <a
                                         href="#"
@@ -392,36 +318,6 @@
                                         Clear Messages
                                     </a>
                                 </li>
-                                <li id="li-mck-block-user">
-                                    <a
-                                        href="#"
-                                        id="mck-block-button"
-                                        class="menu-item"
-                                        title="Block User"
-                                    >
-                                        Block User
-                                    </a>
-                                </li>
-                                <li id="li-mck-group-info" class="mck-group-menu-options">
-                                    <a
-                                        href="#"
-                                        id="mck-group-info-btn"
-                                        class="menu-item"
-                                        title="Group Info"
-                                    >
-                                        Group Info
-                                    </a>
-                                </li>
-                                <li id="li-mck-leave-group" class="mck-group-menu-options">
-                                    <a
-                                        href="#"
-                                        id="mck-btn-leave-group"
-                                        class="menu-item"
-                                        title="Exit Group"
-                                    >
-                                        Exit Group
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -429,26 +325,6 @@
             </div>
             <div class="mck-box-body">
                 <div id="mck-message-cell" class="mck-tab-cell mck-message-cell">
-                    <div
-                        id="mck-price-widget"
-                        class="mck-row mck-price-widget mck-top-widget n-vis"
-                    >
-                        <div class="mck-widget-panel">
-                            <input
-                                type="text"
-                                id="mck-price-text-box"
-                                placeholder="Enter final agreed price"
-                            />
-                            <button
-                                type="button"
-                                id="mck-price-submit"
-                                class="mck-btn mck-btn-green mck-price-submit"
-                                title="Submit"
-                            >
-                                <span>Submit</span>
-                            </button>
-                        </div>
-                    </div>
                     <div class="mck-conversation" tabindex="-1" role="presentation">
                         <div
                             class="mck-message-inner"
@@ -639,7 +515,7 @@
                     </div>
                     <div
                         id="mck-no-conversations"
-                        class="mck-empty-conversation-container mck-no-data-text n-vis"
+                        class="mck-no-data-text n-vis"
                         role="region"
                         aria-live="polite"
                     >
@@ -761,15 +637,6 @@
                             </div>
                         </div>
                     </div>
-                    <div id="mck-no-messages" class="mck-no-data-text mck-text-muted n-vis">
-                        <h3>No messages yet!</h3>
-                    </div>
-                    <div id="mck-no-more-conversations" class="mck-show-more-icon n-vis">
-                        <h3>No more conversations!</h3>
-                    </div>
-                    <div id="mck-no-more-messages" class="mck-show-more-icon n-vis">
-                        <h3>No more messages!</h3>
-                    </div>
                 </div>
             </div>
             <div id="mck-offline-message-box" class="mck-offline-message-box n-vis">
@@ -873,7 +740,7 @@
                                     id="star2"
                                     name="rating"
                                     value="2"
-                                    class="mck-rating-box mck-rating-box-poor"
+                                    class="mck-rating-box"
                                     data-rating="2"
                                 />
                                 <label for="star2">
@@ -898,7 +765,7 @@
                                     class="mck-rating-box mck-rating-box-average"
                                     data-rating="3"
                                 />
-                                <label for="star3" id="star-3">
+                                <label for="star3">
                                     <svg
                                         width="26"
                                         height="25"
@@ -917,7 +784,7 @@
                                     id="star4"
                                     name="rating"
                                     value="4"
-                                    class="mck-rating-box mck-rating-box-good"
+                                    class="mck-rating-box"
                                     data-rating="4"
                                 />
                                 <label for="star4">
@@ -1057,14 +924,14 @@
                             <p id="mck-msg-error" class="mck-sidebox-error n-vis"></p>
                         </div>
                         <div id="mck-msg-response" class="blk-lg-12 mck-box-response n-vis">
-                            <div id="mck-response-text" class="response-text"></div>
+                            <div class="response-text"></div>
                         </div>
                         <div class="blk-lg-12">
                             <form id="mck-msg-form" class="vertical mck-msg-form">
                                 <div class="mck-form-group n-vis">
                                     <label
                                         id="km-label-to"
-                                        class="sr-only placeholder-text control-label"
+                                        class="sr-only control-label"
                                         for="mck-msg-to"
                                         >To:</label
                                     >
@@ -1080,7 +947,7 @@
                                     <button
                                         type="button"
                                         id="close"
-                                        class="mck-box-close mck-close-panel move-right"
+                                        class="mck-box-close move-right"
                                     >
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -1118,7 +985,7 @@
                                             <button
                                                 id="mck-btn-loc"
                                                 type="button"
-                                                class="mck-btn mck-btn-location"
+                                                class="mck-btn"
                                                 title="Share Location"
                                                 aria-label="Share Location"
                                                 tabindex="0"
@@ -1162,7 +1029,7 @@
                                             <button
                                                 id="mck-img-file-up"
                                                 type="button"
-                                                class="mck-btn mck-img-upload"
+                                                class="mck-btn"
                                                 title="Upload Image"
                                                 aria-label="Upload Image"
                                                 tabindex="0"
@@ -1184,7 +1051,7 @@
                                             <button
                                                 id="mck-vid-file-up"
                                                 type="button"
-                                                class="mck-btn mck-vid-upload"
+                                                class="mck-btn"
                                                 title="Upload Video"
                                                 aria-label="Upload Video"
                                                 tabindex="0"
@@ -1296,7 +1163,6 @@
                                             <svg
                                                 focusable="false"
                                                 aria-hidden="true"
-                                                id="mck-mic-btn-voice-web"
                                                 width="24"
                                                 height="24"
                                                 viewBox="0 0 20 20"
@@ -1344,7 +1210,7 @@
                                                 <button
                                                     type="submit"
                                                     id="mck-msg-sbmt"
-                                                    class="mck-btn mck-btn-text-panel mck-btn-text-panel--send"
+                                                    class="mck-btn mck-btn-text-panel"
                                                     title="Send Message"
                                                     aria-disabled="false"
                                                     aria-label="Send Message"
@@ -1421,7 +1287,7 @@
                                         />
                                         <div
                                             id="km-voice-listening-status"
-                                            class="km-voice-inline-status n-vis"
+                                            class="n-vis"
                                             aria-live="polite"
                                         >
                                             <div class="km-voice-inline-left">
@@ -1453,7 +1319,7 @@
                                         </div>
                                     </div>
                                     <div id="km-voice-recorder" class="n-vis">
-                                        <div id="recorder-left-btns">
+                                        <div>
                                             <div
                                                 id="delete-recording"
                                                 class="recorder-control delete-btn"
@@ -1524,7 +1390,7 @@
                                                     00:00
                                                 </div>
                                             </div>
-                                            <div id="audiodiv" class="mck-mic-timer n-vis">
+                                            <div id="audiodiv" class="n-vis">
                                                 <audio
                                                     controls
                                                     id="recorder-audio"
@@ -1709,7 +1575,7 @@
                 id="mck-voice-interface"
                 class="n-vis mck-voice-interface km-custom-widget-background-color"
             >
-                <div class="mck-voice-interface-header">
+                <div>
                     <button
                         id="mck-voice-interface-back-btn"
                         class="mck-voice-interface-back-btn"
@@ -1727,31 +1593,18 @@
                         </svg>
                     </button>
                 </div>
-                <div class="mck-voice-interface-body">
+                <div>
                     <div class="mck-voice-image-container">
                         <div class="voice-ring voice-ring-1"></div>
                         <div class="voice-ring voice-ring-2"></div>
                         <div class="voice-ring voice-ring-3"></div>
-                        <img class="mck-voice-image" src="" />
+                        <img class="mck-voice-image" alt="" />
                     </div>
-                    <div
-                        class="mck-voice-interface-status"
-                        role="status"
-                        aria-live="polite"
-                        aria-atomic="true"
-                    >
-                        <span id="mck-voice-status-text" class="mck-voice-status-text n-vis"></span>
+                    <div role="status" aria-live="polite" aria-atomic="true">
+                        <span class="n-vis"></span>
                     </div>
-                    <div
-                        id="mck-voice-live-transcript"
-                        class="mck-voice-interface-transcript mck-hidden"
-                        aria-live="polite"
-                    ></div>
-                    <div
-                        id="mck-voice-response"
-                        class="mck-voice-interface-response mck-hidden"
-                        aria-live="polite"
-                    >
+                    <div id="mck-voice-live-transcript" class="mck-hidden" aria-live="polite"></div>
+                    <div id="mck-voice-response" class="mck-hidden" aria-live="polite">
                         <p id="mck-voice-response-text"></p>
                     </div>
                     <div
@@ -1770,10 +1623,9 @@
                         </svg>
                     </div>
                 </div>
-                <div class="mck-voice-interface-footer">
-                    <div class="last-message-text mck-hidden"></div>
+                <div>
                     <p class="mck-voice-listening-note" aria-live="polite"></p>
-                    <div class="mck-voice-interface-footer-buttons">
+                    <div>
                         <button
                             id="mck-voice-speak-btn"
                             class="mck-voice-speak-btn km-custom-widget-text-color"
@@ -1817,328 +1669,9 @@
             </div>
             <div class="mck-running-on n-vis notranslate">
                 AI Agent powered by
-                <!-- <svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="15" style="vertical-align: middle;"><path fill="#513DD8" fill-rule="nonzero" d="M7.69879975.54941587L5.81596948 6.3447902l3.87961917.47635733c.13377998.01642612.19891133.17720919.10092463.28401145l-7.24573967 7.4456573c-.05838132.06073652-.1713319.01291556-.14228864-.0853757l1.54838036-5.83643965-3.71239422-.45582469C.11069114 8.15675014.0455598 7.99596707.1435465 7.8891648L7.55445767.48076424c.06043478-.07746063.17133188-.01291553.14434208.06865163z"/></svg> by -->
-                <a class="mck-powered-by" href="https://www.kommunicate.io" target="_blank">
+                <a href="https://www.kommunicate.io" target="_blank">
                     <span class="n-vis">Kommunicate AI Agent</span> Kommunicate
                 </a>
-            </div>
-        </div>
-        <div
-            id="mck-sidebox-search"
-            class="mck-sidebox-search mck-sidebox-content mck-box-content n-vis"
-        >
-            <div class="mck-box-top">
-                <div class="mck-tab-link blk-lg-4">
-                    <a href="#" target="_self" role="link" class="mck-conversation-tab-link">
-                        <span class="mck-icon-backward"></span>
-                    </a>
-                </div>
-                <div class="blk-lg-5">
-                    <div class="mck-box-title mck-truncate" title="Start New">
-                        Start New Conversation
-                    </div>
-                </div>
-                <div class="blk-lg-3 move-right mck-start-new-menu-item mck-tab-menu-box n-vis">
-                    <div class="mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="#fff"
-                        >
-                            <use xlink:href="#icon-11" href="#icon-11"></use>
-                        </svg>
-                    </div>
-                    <ul
-                        id="mck-start-new-menu-list"
-                        class="mck-dropdown-menu menu-right"
-                        role="menu"
-                    >
-                        <li>
-                            <a
-                                href="#"
-                                id="mck-new-group"
-                                class="mck-new-group-button menu-item"
-                                title="Create Group"
-                                >Create Group
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="mck-search-tab-box" class="mck-search-tab-box mck-row">
-                <div class="blk-lg-12 n-vis">
-                    <ul class="mck-nav mck-nav-panel">
-                        <li class="mck-nav-item mck-nav-divider">
-                            <a
-                                id="mck-contact-search-tab"
-                                class="mck-nav-link mck-contact-search active"
-                                href="#"
-                            >
-                                <strong>Contacts</strong>
-                            </a>
-                        </li>
-                        <li class="mck-nav-item">
-                            <a
-                                id="mck-group-search-tab"
-                                class="mck-nav-link mck-group-search"
-                                href="#"
-                            >
-                                <strong>Groups</strong>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mck-box-top mck-search-box-top">
-                <div id="mck-contact-search-input-box" class="mck-input-group blk-lg-12">
-                    <input
-                        id="mck-contact-search-input"
-                        type="text"
-                        data-provide="typeahead"
-                        placeholder="Search..."
-                    />
-                    <span class="mck-search-icon">
-                        <a href="#" role="link" class="mck-contact-search-link">
-                            <span class="mck-icon-search"></span>
-                        </a>
-                    </span>
-                </div>
-                <div id="mck-group-search-input-box" class="mck-input-group blk-lg-12 n-vis">
-                    <input
-                        id="mck-group-search-input"
-                        type="text"
-                        data-provide="typeahead"
-                        placeholder="Search..."
-                    />
-                    <span class="mck-search-icon">
-                        <a href="#" role="link" class="mck-group-search-link">
-                            <span class="mck-icon-search"></span>
-                        </a>
-                    </span>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div id="mck-search-cell" class="mck-tab-cell">
-                    <div class="mck-message-inner">
-                        <ul
-                            id="mck-contact-search-list"
-                            class="mck-contact-search-list mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked"
-                        ></ul>
-                        <ul
-                            id="mck-group-search-list"
-                            class="mck-contact-list mck-group-search-list mck-nav mck-nav-tabs mck-nav-stacked n-vis"
-                        ></ul>
-                        <div
-                            id="mck-no-search-groups"
-                            class="mck-no-data-text mck-text-muted n-vis"
-                        >
-                            No groups yet!
-                        </div>
-                        <div
-                            id="mck-no-search-contacts"
-                            class="mck-no-data-text mck-text-mutedn n-vis"
-                        >
-                            No contacts yet!
-                        </div>
-                        <div id="mck-search-loading" class="mck-loading n-vis">
-                            <svg
-                                focusable="false"
-                                aria-hidden="true"
-                                class="mck-circular-spinner"
-                                viewBox="25 25 50 50"
-                                width="50"
-                                height="50"
-                            >
-                                <use xlink:href="#icon-53" href="#icon-53"></use>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="mck-group-info-tab" class="mck-group-info-tab mck-sidebox-content mck-box-content">
-            <div class="mck-box-top">
-                <div class="mck-tab-link blk-lg-4">
-                    <a
-                        id="mck-group-back-link"
-                        href="#"
-                        role="link"
-                        target="_self"
-                        class="mck-group-back-link"
-                    >
-                        <span class="mck-icon-backward"></span>
-                    </a>
-                </div>
-                <div class="blk-lg-8">
-                    <div class="mck-box-title mck-truncate" title="Group Info">Group Info</div>
-                </div>
-            </div>
-            <div id="mck-group-info-panel" class="mck-tab-panel mck-group-info-panel">
-                <div class="mck-group-icon-sec">
-                    <div
-                        id="mck-group-info-icon-box"
-                        class="mck-group-icon-box mck-group-info-icon-box mck-hover-on"
-                    >
-                        <div class="mck-group-icon"></div>
-                        <span class="mck-overlay-box n-vis">
-                            <div class="mck-overlay">
-                                <span class="mck-camera-icon"></span>
-                                <span id="mck-gi-overlay-label" class="mck-overlay-label"
-                                    >Change Group Icon</span
-                                >
-                            </div>
-                            <div id="mck-group-info-icon-loading" class="mck-loading vis">
-                                <svg
-                                    focusable="false"
-                                    aria-hidden="true"
-                                    class="mck-circular-spinner"
-                                    viewBox="25 25 50 50"
-                                    width="50"
-                                    height="50"
-                                >
-                                    <use xlink:href="#icon-54" href="#icon-54"></use>
-                                </svg>
-                            </div>
-                            <input
-                                id="mck-group-icon-change"
-                                class="mck-group-icon-change n-vis"
-                                type="file"
-                                name="file[]"
-                            />
-                        </span>
-                    </div>
-                    <div class="mck-text-center">
-                        <a
-                            id="mck-btn-group-icon-save"
-                            href="#"
-                            role="link"
-                            class="mck-btn-group-icon-save n-vis"
-                            title="Save"
-                        >
-                            <svg
-                                focusable="false"
-                                aria-hidden="true"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                            >
-                                <use xlink:href="#icon-55" href="#icon-55"></use>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div id="mck-group-name-sec" class="mck-group-name-sec">
-                    <div id="mck-group-name-box" class="mck-row mck-group-name-box">
-                        <div class="blk-lg-9">
-                            <div
-                                id="mck-group-title"
-                                class="mck-group-title"
-                                contenteditable="false"
-                            >
-                                Group title
-                            </div>
-                        </div>
-                        <div class="blk-lg-3 mck-group-name-edit-icon">
-                            <a
-                                id="mck-group-name-edit"
-                                href="#"
-                                role="link"
-                                class="mck-group-name-edit vis"
-                                title="Edit"
-                            >
-                                <svg
-                                    focusable="false"
-                                    aria-hidden="true"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <use xlink:href="#icon-56" href="#icon-56"></use>
-                                </svg>
-                            </a>
-                            <a
-                                id="mck-group-name-save"
-                                href="#"
-                                role="link"
-                                class="mck-group-name-save n-vis"
-                                title="Save"
-                            >
-                                <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                    focusable="false"
-                                >
-                                    <use xlink:href="#icon-55" href="#icon-55"></use>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="mck-group-member-panel" class="mck-tab-panel mck-group-member-panel vis">
-                <div class="mck-group-md-sec">
-                    <div id="mck-group-member-title" class="mck-row mck-group-member-text">
-                        Members
-                    </div>
-                    <div
-                        id="mck-group-add-member-box"
-                        class="mck-row mck-group-admin-options mck-group-add-member-box n-vis"
-                    >
-                        <a id="mck-group-add-member" class="mck-group-add-member" href="#">
-                            <div class="blk-lg-3">
-                                <svg
-                                    focusable="false"
-                                    aria-hidden="true"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <use xlink:href="#icon-58" href="#icon-58"></use>
-                                </svg>
-                            </div>
-                            <div class="blk-lg-9">Add Member</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="mck-box-body">
-                <div class="mck-tab-cell">
-                    <div class="mck-group-member-inner">
-                        <ul
-                            id="mck-group-member-list"
-                            class="mck-group-member-list mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked"
-                        ></ul>
-                    </div>
-                </div>
-            </div>
-            <div id="mck-group-update-panel" class="mck-tab-panel mck-group-update-panel n-vis">
-                <div class="mck-group-bottom-sec">
-                    <div class="mck-row mck-group-update-sec">
-                        <button
-                            type="button"
-                            id="mck-btn-group-update"
-                            class="mck-btn mck-btn-green mck-btn-group-update"
-                            title="Update"
-                        >
-                            Update
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div id="mck-group-info-ft" class="mck-group-info-ft">
-                <button
-                    type="button"
-                    id="mck-btn-group-exit"
-                    class="mck-btn mck-btn-blue mck-btn-group-exit"
-                    title="Exit Group"
-                >
-                    Exit Group
-                </button>
             </div>
         </div>
     </div>
@@ -2160,7 +1693,6 @@
                             class="mck-box-close"
                             data-dismiss="mckbox"
                             aria-label="Close"
-                            data-testid="mck-loc-top-close"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -2217,95 +1749,15 @@
                     <button
                         id="mck-btn-close-loc-box"
                         type="button"
-                        class="mck-btn mck-btn-default move-right"
+                        class="mck-btn move-right"
                         data-dismiss="mckbox"
                         aria-disabled="false"
                         aria-label="Close"
                         tabindex="0"
                         role="button"
-                        data-testid="mck-loc-bottom-close"
                     >
                         Close
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div
-        id="mck-gm-search-box"
-        class="mck-box mck-gm-search-box fade"
-        aria-hidden="true"
-        style="visibility: hidden"
-        role="dialog"
-        aria-labelledby="mck-gm-search-title"
-    >
-        <div class="mck-box-dialog mck-box-sm">
-            <div class="mck-box-content">
-                <div class="mck-box-top mck-row">
-                    <div class="blk-lg-3">
-                        <svg
-                            focusable="false"
-                            aria-hidden="true"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                        >
-                            <use xlink:href="#icon-58" href="#icon-58"></use>
-                        </svg>
-                    </div>
-                    <div class="blk-lg-7">
-                        <h4 class="mck-box-title" id="mck-gm-search-title">Add Member</h4>
-                    </div>
-                    <div class="blk-lg-2">
-                        <button
-                            type="button"
-                            class="mck-box-close"
-                            data-dismiss="mckbox"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="mck-box-body">
-                    <div class="mck-form-group">
-                        <div class="mck-input-group blk-lg-12">
-                            <input
-                                id="mck-group-member-search"
-                                type="text"
-                                data-provide="typeahead"
-                                placeholder="Search..."
-                            />
-                            <span class="mck-search-icon">
-                                <a href="#" role="link" class="mck-group-member-search-link">
-                                    <span class="mck-icon-search"></span>
-                                </a>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="mck-tab-cell">
-                        <div class="mck-message-inner">
-                            <ul
-                                id="mck-group-member-search-list"
-                                class="mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"
-                            ></ul>
-                            <div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">
-                                No contacts yet!
-                            </div>
-                        </div>
-                        <div id="mck-gms-loading" class="mck-loading n-vis">
-                            <svg
-                                focusable="false"
-                                aria-hidden="true"
-                                class="mck-circular-spinner"
-                                viewBox="25 25 50 50"
-                                width="50"
-                                height="50"
-                            >
-                                <use xlink:href="#icon-53" href="#icon-53"></use>
-                            </svg>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -2319,7 +1771,7 @@
         aria-hidden="true"
         style="visibility: hidden"
     >
-        <div class="km-modal-dialog km-modal-sm">
+        <div class="km-modal-dialog">
             <div class="km-modal-content">
                 <div class="km-sidemodal--modal-header km-custom-widget-background-color">
                     <div
@@ -2358,8 +1810,8 @@
                         <p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
                     </div>
                     <p id="km-error-chat-login" class="km-modal-error n-vis"></p>
-                    <div class="km-modal-form">
-                        <form id="km-form-chat-login" class="km-vertical">
+                    <div>
+                        <form id="km-form-chat-login">
                             <div class="km-form-group km-form-group-container">
                                 <label id="km-label-user-id" class="sr-only" for="km-userId"
                                     >User ID</label
@@ -2377,7 +1829,7 @@
                                 <button
                                     type="submit"
                                     id="km-submit-chat-login"
-                                    class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"
+                                    class="mck-btn km-start-conversation km-custom-widget-background-color"
                                     tabindex="0"
                                     role="button"
                                     aria-label="Start conversation"
