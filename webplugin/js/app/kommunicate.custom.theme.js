@@ -242,8 +242,6 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
-        ensureAccessibleOnPrimary(mergedVars);
-
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {
@@ -324,42 +322,6 @@ function KmCustomTheme() {
             return '#000000';
         }
         return contrastWhite >= contrastBlack ? '#ffffff' : '#000000';
-    }
-
-    function ensureAccessibleOnPrimary(vars) {
-        var primaryColor = vars['--km-accent'] || DEFAULT_BACKGROUND_COLOR;
-        var accessible = getAccessibleTextColor(primaryColor);
-        var onPrimary = vars['--km-on-primary'];
-        var onPrimaryLink = vars['--km-on-primary-link'];
-        var widgetContrast = vars['--km-custom-widget-contrast-color'];
-        if (!onPrimary || !isContrastCompliant(onPrimary, primaryColor, 4.5)) {
-            vars['--km-on-primary'] = accessible;
-        }
-        if (!onPrimaryLink || !isContrastCompliant(onPrimaryLink, primaryColor, 4.5)) {
-            vars['--km-on-primary-link'] = accessible;
-        }
-        if (!widgetContrast || !isContrastCompliant(widgetContrast, primaryColor, 4.5)) {
-            vars['--km-custom-widget-contrast-color'] = accessible;
-        }
-    }
-
-    function isContrastCompliant(foreground, background, minRatio) {
-        var foregroundRgb = normalizeColorToRgb(foreground);
-        var backgroundRgb = normalizeColorToRgb(background);
-        if (!foregroundRgb || !backgroundRgb) {
-            return false;
-        }
-        var foregroundLum = calculateLuminance(
-            foregroundRgb[0],
-            foregroundRgb[1],
-            foregroundRgb[2]
-        );
-        var backgroundLum = calculateLuminance(
-            backgroundRgb[0],
-            backgroundRgb[1],
-            backgroundRgb[2]
-        );
-        return calculateContrastRatio(backgroundLum, foregroundLum) >= (minRatio || 4.5);
     }
 
     function calculateContrastRatio(lumA, lumB) {
