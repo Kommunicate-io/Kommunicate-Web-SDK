@@ -1149,7 +1149,7 @@ class Voice {
     }
 
     evaluatePcmInt16Quality(samples = []) {
-        const sampleCount = Array.isArray(samples) ? samples.length : 0;
+        const sampleCount = samples && typeof samples.length === 'number' ? samples.length : 0;
         if (!sampleCount) {
             return {
                 isSilent: true,
