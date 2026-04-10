@@ -449,24 +449,10 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 }
 
 /* Header close/back/options focus */
-.mck-box-close:focus-visible,
-.mck-box-close:focus-visible svg,
-.mck-close-sidebox:focus-visible,
-.mck-close-sidebox:focus-visible svg,
-.mck-minimize-icon:focus-visible,
-.mck-minimize-icon:focus-visible svg,
-.mck-dropdown-toggle:focus-visible,
-.mck-dropdown-toggle:focus-visible svg,
-.mck-conversation-tab-link:focus-visible,
-.mck-back-btn-container :focus-visible,
-#mck-conversation-back-btn:focus-visible,
-.km-faq-back-btn:focus-visible,
-.km-option-talk-to-human:focus-visible,
-#km-talk-to-human:focus-visible,
-.km-option-faq:focus-visible,
-#km-faq-option:focus-visible {
+.mck-sidebox .km-focus-ring--header.km-focus-ring--header:focus-visible,
+.mck-sidebox .km-focus-ring--header.km-focus-ring--header:focus-within {
     outline: none !important;
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
+    box-shadow: 0 0 0 2px currentColor !important;
     border-radius: 10px;
     background-color: transparent;
 }
