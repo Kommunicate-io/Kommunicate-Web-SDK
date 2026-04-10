@@ -8778,7 +8778,10 @@ const firstVisibleMsg = {
                         fileName = fileName.replace('AWS-ENCRYPTED-', '');
                         addfileEncClass = true;
                     }
-                    var altText = kommunicateCommons.formatHtmlTag(fileName);
+                    var altText =
+                        typeof kommunicateCommons.escapeAttributeValue === 'function'
+                            ? kommunicateCommons.escapeAttributeValue(fileName)
+                            : kommunicateCommons.formatHtmlTag(fileName);
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
                             let URL = addfileEncClass ? '' : alFileService.getFileurl(msg);
