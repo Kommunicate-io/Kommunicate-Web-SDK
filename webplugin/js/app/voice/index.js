@@ -331,12 +331,6 @@ class Voice {
         );
     }
 
-    getOmnichannelSource(source) {
-        const sourceValue =
-            source || this.omnichannelConfig.source || this.voiceInputConfig.source || 'web';
-        return sourceValue === 'call' ? 'call' : 'web';
-    }
-
     getAlternativeLanguageCodes() {
         const fromInputConfig = this.voiceInputConfig.alternativeLanguageCodes;
         const fromChatConfig = this.voiceChatConfig.alternativeLanguageCodes;
@@ -1008,7 +1002,6 @@ class Voice {
         sampleRate,
         channelCount,
         bitsPerSample,
-        source,
         ucid,
         languageCode,
         alternativeLanguageCodes,
@@ -1021,7 +1014,7 @@ class Voice {
         headers['X-Audio-Sample-Rate'] = String(sampleRate);
         headers['X-Audio-Channel-Count'] = String(channelCount);
         headers['X-Audio-Bits-Per-Sample'] = String(bitsPerSample);
-        headers['X-Voice-Source'] = String(source || 'web');
+        headers['X-Voice-Source'] = 'web';
         if (ucid !== undefined && ucid !== null && ucid !== '') {
             headers['X-Voice-Ucid'] = String(ucid);
         }
@@ -1101,7 +1094,7 @@ class Voice {
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
             sampleRate,
             channelCount: this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
-            source: this.getOmnichannelSource(this.voiceInputConfig.source),
+            source: 'web',
             sttMode: sttMode || 'recognize',
         };
         if (sttLanguageCode) {
