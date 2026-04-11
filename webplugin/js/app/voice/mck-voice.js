@@ -1197,7 +1197,7 @@ class MckVoice {
                         );
                     }
                     if (!rawSamples.length) {
-                        rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
+                        rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob, sampleRate);
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
                     const { chunks } = preparedAudio;

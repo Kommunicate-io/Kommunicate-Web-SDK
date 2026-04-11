@@ -995,12 +995,12 @@ class Voice {
         return null;
     }
 
-    async resolveVoiceToTextSamples(audioInput) {
+    async resolveVoiceToTextSamples(audioInput, sampleRate) {
         const normalizedPcmSamples = this.normalizePcmInt16Samples(audioInput);
         if (normalizedPcmSamples) {
             return normalizedPcmSamples;
         }
-        const extractedSamples = await this.extractPcmInt16Samples(audioInput);
+        const extractedSamples = await this.extractPcmInt16Samples(audioInput, sampleRate);
         return Int16Array.from(extractedSamples);
     }
 
@@ -1085,7 +1085,7 @@ class Voice {
 
     async voiceToText(audioInput, { ucid, sttMode, sampleRate: sampleRateOverride } = {}) {
         const sampleRate = Number(sampleRateOverride) || this.getVoiceToTextSampleRate();
-        const samples = await this.resolveVoiceToTextSamples(audioInput);
+        const samples = await this.resolveVoiceToTextSamples(audioInput, sampleRate);
         const audioMetrics = this.evaluatePcmInt16Quality(samples);
         if (audioMetrics.isSilent) {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
@@ -1226,15 +1226,16 @@ class Voice {
         return error;
     }
 
-    async extractPcmInt16Samples(audioBlob) {
-        const targetSampleRate = this.getVoiceToTextSampleRate();
+    async extractPcmInt16Samples(audioBlob, targetSampleRate) {
+        const resolvedTargetSampleRate =
+            Number(targetSampleRate) || this.getVoiceToTextSampleRate();
         const audioBuffer = await this.decodeAudioBlob(audioBlob);
         const mono = this.getMonoChannelData(audioBuffer);
         const preprocessed = this.preprocessSttFloat32Samples(mono, audioBuffer.sampleRate);
         const downsampled = this.resampleToTargetRate(
             preprocessed,
             audioBuffer.sampleRate,
-            targetSampleRate
+            resolvedTargetSampleRate
         );
         const int16Samples = this.float32ToInt16(downsampled);
         return Array.from(int16Samples);
