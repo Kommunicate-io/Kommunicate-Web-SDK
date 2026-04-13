@@ -2043,7 +2043,7 @@ ul.mck-intent-menu > li:hover {
 
 .mck-text-muted {
     color: inherit;
-    opacity: 0.4;
+    opacity: 1;
 }
 
 .mck-msg-left-muted {
@@ -3755,6 +3755,15 @@ textarea::placeholder {
 div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
+}
+#mck-tab-title {
+    color: #eae3ff !important;
+}
+#mck-agent-status-text {
+    color: #eae3ff !important;
+}
+#mck-conversation-title {
+    color: #eae3ff !important;
 }
 #mck-conversation-back-btn,
 .mck-conversation-tab-link,

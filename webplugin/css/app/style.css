@@ -3910,10 +3910,6 @@ div#mck-rated:before {
   padding: 6px 16px;
   border-radius: 4px;
 }
-.mck-rating-box:focus-visible {
-  outline: 2px solid rgba(108, 92, 231, 0.75);
-  outline-offset: 2px;
-}
 .mck-rating-box:hover, .mck-rating-box.selected {
   transform: scale(1.2);
 }
@@ -4480,9 +4476,8 @@ div#mck-rated:before {
   transition: all 0.1s ease;
 }
 #km-voice-inline-action-btn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(108, 92, 231, 0.85);
-  border-radius: 999px;
+  outline: 2px solid rgba(108, 92, 231, 0.5);
+  outline-offset: 3px;
 }
 
 .km-voice-inline-controls {
