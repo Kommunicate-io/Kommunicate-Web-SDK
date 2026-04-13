@@ -400,9 +400,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 
 .mck-sidebox a {
     color: var(--km-primary-color, #5f46f8);
-}
-
-.mck-sidebox a {
     background-color: transparent;
 }
 
@@ -419,17 +416,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     outline-offset: 2px !important;
     box-shadow: none !important;
     border-radius: 8px;
-}
-.mck-sidebox button:focus-visible,
-.mck-sidebox [role='button']:focus-visible,
-.mck-sidebox a:focus-visible,
-.mck-sidebox input:focus-visible,
-.mck-sidebox select:focus-visible,
-.mck-sidebox textarea:focus-visible,
-.mck-sidebox summary:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    outline-offset: 2px !important;
-    box-shadow: none !important;
 }
 
 /* Conversation list focus */
