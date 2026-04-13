@@ -8180,7 +8180,6 @@ const firstVisibleMsg = {
                               .tmpl('messageTemplate', msgList)
                               .prependTo('#mck-message-cell .mck-message-inner');
                 }
-                var $messageRow = $applozic('#mck-message-cell .' + msg.key + '[name="message"]');
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 
