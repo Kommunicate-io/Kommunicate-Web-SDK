@@ -3757,13 +3757,13 @@ div#mck-tab-title.mck-tab-title {
     max-width: 140px;
 }
 #mck-tab-title {
-    color: #eae3ff !important;
+    color: var(--km-primary-title-color, #eae3ff) !important;
 }
 #mck-agent-status-text {
-    color: #eae3ff !important;
+    color: var(--km-primary-title-color, #eae3ff) !important;
 }
 #mck-conversation-title {
-    color: #eae3ff !important;
+    color: var(--km-primary-title-color, #eae3ff) !important;
 }
 #mck-conversation-back-btn,
 .mck-conversation-tab-link,
