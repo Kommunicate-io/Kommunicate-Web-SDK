@@ -3503,17 +3503,7 @@ const firstVisibleMsg = {
                         }
                     });
                     ratingStars[i].addEventListener('keydown', function (e) {
-                        var key = e.key || e.keyCode;
-                        if (
-                            key === 'Enter' ||
-                            key === ' ' ||
-                            key === 'Spacebar' ||
-                            key === 13 ||
-                            key === 32
-                        ) {
-                            e.preventDefault();
-                            this.click();
-                        }
+                        handleActivationKey(e, this.click.bind(this));
                     });
                 }
                 if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
@@ -4535,11 +4525,10 @@ const firstVisibleMsg = {
                     bottomTabManager.handleChange('faqs');
                 });
                 $applozic(d).on('keydown', '#km-faq-option, #km-talk-to-human', function (e) {
-                    var key = e.key || e.keyCode;
-                    if (key === 'Enter' || key === ' ' || key === 13 || key === 32) {
-                        e.preventDefault();
-                        $applozic(this).trigger('click');
-                    }
+                    var self = this;
+                    handleActivationKey(e, function () {
+                        $applozic(self).trigger('click');
+                    });
                 });
 
                 mck_text_box.addEventListener('input', function () {
@@ -4913,17 +4902,7 @@ const firstVisibleMsg = {
                     KommunicateUI.triggerCSAT();
                 });
                 $applozic(d).on('keydown', '#km-csat-trigger', function (e) {
-                    var key = e.key || e.keyCode;
-                    if (
-                        key === 'Enter' ||
-                        key === ' ' ||
-                        key === 'Spacebar' ||
-                        key === 13 ||
-                        key === 32
-                    ) {
-                        e.preventDefault();
-                        this.click();
-                    }
+                    handleActivationKey(e, this.click.bind(this));
                 });
 
                 document.getElementById('km-csat-close-button').onclick = function (e) {
@@ -6952,6 +6931,18 @@ const firstVisibleMsg = {
                     button: button,
                 };
             }
+            function isActivationKey(key) {
+                return (
+                    key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 13 || key === 32
+                );
+            }
+            function handleActivationKey(e, handler) {
+                var key = e.key || e.keyCode;
+                if (isActivationKey(key)) {
+                    e.preventDefault();
+                    handler();
+                }
+            }
             function bindDropdownKeyboardActivation() {
                 $applozic(d)
                     .off('keydown.mckDropdown')
@@ -6959,17 +6950,7 @@ const firstVisibleMsg = {
                         'keydown.mckDropdown',
                         '[data-toggle="mckdropdown"][role="button"]',
                         function (event) {
-                            var key = event.key || event.keyCode;
-                            if (
-                                key === 'Enter' ||
-                                key === ' ' ||
-                                key === 'Spacebar' ||
-                                key === 13 ||
-                                key === 32
-                            ) {
-                                event.preventDefault();
-                                this.click();
-                            }
+                            handleActivationKey(event, this.click.bind(this));
                         }
                     );
             }
@@ -8812,10 +8793,7 @@ const firstVisibleMsg = {
                         fileName = fileName.replace('AWS-ENCRYPTED-', '');
                         addfileEncClass = true;
                     }
-                    var altText =
-                        typeof kommunicateCommons.escapeAttributeValue === 'function'
-                            ? kommunicateCommons.escapeAttributeValue(fileName)
-                            : kommunicateCommons.formatHtmlTag(fileName);
+                    var altText = kommunicateCommons.escapeAttributeValue(fileName);
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
                             let URL = addfileEncClass ? '' : alFileService.getFileurl(msg);

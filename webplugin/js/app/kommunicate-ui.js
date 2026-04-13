@@ -857,9 +857,9 @@ KommunicateUI = {
             var title = faq.name || faq.title;
             title = title && kommunicateCommons.formatHtmlTag(title);
             faqList.innerHTML +=
-                '<li class="km-faq-list"  data-articleId="' +
+                '<li class="km-faq-list km-focus-ring--card km-focus-ring--card--tint"  data-articleId="' +
                 id +
-                '"><a class="km-faqdisplay"> <div class="km-faqimage">' +
+                '"><a class="km-faqdisplay km-focus-ring--card km-focus-ring--card--tint"> <div class="km-faqimage">' +
                 KommunicateUI.faqSVGImage +
                 '</div><div class="km-faqanchor">' +
                 title +

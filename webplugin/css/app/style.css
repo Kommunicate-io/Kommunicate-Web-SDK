@@ -1213,13 +1213,13 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0px solid #dcdcdc;
 }
 
-#mck-message-cell div[name=message]:focus-visible {
+#mck-message-cell .mck-m-b:focus-visible {
   outline: 2px solid rgba(95, 70, 248, 0.45);
   outline-offset: 2px;
   border-radius: 16px;
 }
 
-#mck-message-cell div[name=message]:focus-visible .mck-msg-box {
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
   box-shadow: 0 0 0 2px rgba(95, 70, 248, 0.35);
 }
 
@@ -1654,7 +1654,6 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
   font-size: 14px;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--km-font-meta-contrast-color, #1c1c1c);
   font-weight: 700;
 }

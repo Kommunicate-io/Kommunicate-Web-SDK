@@ -76,13 +76,14 @@
                     var linkText = item.linkText
                         ? kommunicateCommons.formatHtmlTag(item.linkText)
                         : learnMoreLabel;
-                    var card = '<li class="km-whats-new-card">';
+                    var card =
+                        '<li class="km-whats-new-card km-focus-ring--card km-focus-ring--card--tint">';
                     title && (card += '<h4>' + title + '</h4>');
                     meta && (card += '<span class="km-whats-new-meta">' + meta + '</span>');
                     description && (card += '<p>' + description + '</p>');
                     if (link) {
                         card +=
-                            '<a class="km-whats-new-link" href="' +
+                            '<a class="km-whats-new-link km-focus-ring--card km-focus-ring--card--tint" href="' +
                             link +
                             '" target="_blank" rel="noopener noreferrer">' +
                             linkText +

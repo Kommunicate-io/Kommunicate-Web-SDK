@@ -457,15 +457,9 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     background-color: transparent;
 }
 
-/* Classic header FAQ button */
+/* Classic header FAQ button + CSAT trigger focus */
 #km-faq:focus-visible,
-.km-faq:focus-visible {
-    outline: none !important;
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
-    border-radius: 10px;
-}
-
-/* CSAT trigger focus */
+.km-faq:focus-visible,
 #km-csat-trigger:focus-visible {
     outline: none !important;
     box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
@@ -481,23 +475,12 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 }
 
 /* FAQ + News cards/buttons focus */
-.km-faq-list-item:focus-visible,
-.km-faq-list-item a:focus-visible,
-.km-faq-display:focus-visible,
-.km-faqdisplay:focus-visible,
-.km-faq-list:focus-visible,
-.km-faq-list a:focus-visible,
-.km-faq-category-card:focus-visible,
-.km-whats-new-card:focus-visible,
-.km-whats-new-card a:focus-visible,
-.km-news-card:focus-visible,
-.km-news-card a:focus-visible {
+.km-focus-ring--card:focus-visible {
     outline: none !important;
     box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
     border-radius: 12px;
 }
-.km-faq-category-card:focus-visible,
-.km-faq-list:focus-visible {
+.km-focus-ring--card.km-focus-ring--card--tint:focus-visible {
     background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.06);
 }
 
@@ -1500,12 +1483,12 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-box-body .mck-message-inner:focus {
     outline: none;
 }
-#mck-message-cell div[name="message"]:focus-visible {
+#mck-message-cell .mck-m-b:focus-visible {
     outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
     outline-offset: 2px;
     border-radius: 16px;
 }
-#mck-message-cell div[name="message"]:focus-visible .mck-msg-box {
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
     box-shadow: 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 .mck-sidebox .km-quick-replies:focus-visible,
@@ -3756,12 +3739,8 @@ div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
 }
-#mck-tab-title {
-    color: var(--km-primary-title-color, #eae3ff) !important;
-}
-#mck-agent-status-text {
-    color: var(--km-primary-title-color, #eae3ff) !important;
-}
+#mck-tab-title,
+#mck-agent-status-text,
 #mck-conversation-title {
     color: var(--km-primary-title-color, #eae3ff) !important;
 }
