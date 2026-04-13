@@ -12341,6 +12341,13 @@ const firstVisibleMsg = {
                     ) !== -1
                 ) {
                     var resp = JSON.parse(obj.body);
+                    var activeTabId = $mck_message_inner.data('mck-id');
+                    if (
+                        typeof kmVoiceMessageHandler !== 'undefined' &&
+                        kmVoiceMessageHandler.handleSocketVoiceStream(resp, activeTabId, appOptions)
+                    ) {
+                        return;
+                    }
                     var messageType = resp.type;
                     var message = resp.message;
                     // var userIdArray =
@@ -12402,6 +12409,13 @@ const firstVisibleMsg = {
 
             _this.onMessage = function (resp) {
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
+                var activeTabId = $mck_message_inner.data('mck-id');
+                if (
+                    typeof kmVoiceMessageHandler !== 'undefined' &&
+                    kmVoiceMessageHandler.handleSocketVoiceStream(resp, activeTabId, appOptions)
+                ) {
+                    return;
+                }
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                 var messageType = resp.type;

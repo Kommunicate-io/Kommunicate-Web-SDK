@@ -592,6 +592,29 @@ class Voice {
         }
         const requestId = message.requestId || message.correlationId || message.id;
         if (!requestId) {
+            const unsolicitedPayload =
+                message.payload !== undefined
+                    ? message.payload
+                    : message.data !== undefined
+                    ? message.data
+                    : message;
+            if (
+                unsolicitedPayload &&
+                (unsolicitedPayload.type === 'voice_stream' ||
+                    unsolicitedPayload.type === 'voice_stream_error') &&
+                typeof mckVoice !== 'undefined' &&
+                mckVoice &&
+                ((unsolicitedPayload.type === 'voice_stream' &&
+                    typeof mckVoice.processVoiceStreamMessage === 'function') ||
+                    (unsolicitedPayload.type === 'voice_stream_error' &&
+                        typeof mckVoice.handleVoiceStreamError === 'function'))
+            ) {
+                if (unsolicitedPayload.type === 'voice_stream_error') {
+                    mckVoice.handleVoiceStreamError(unsolicitedPayload);
+                } else {
+                    mckVoice.processVoiceStreamMessage(unsolicitedPayload);
+                }
+            }
             return;
         }
         const pending = this._voiceSocketPendingRequests[requestId];
