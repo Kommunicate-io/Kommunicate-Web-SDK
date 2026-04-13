@@ -74,13 +74,13 @@
     border: 0px solid $input-border-color;
 }
 
-#mck-message-cell div[name='message']:focus-visible {
+#mck-message-cell .mck-m-b:focus-visible {
     outline: 2px solid rgba($primary-color, 0.45);
     outline-offset: 2px;
     border-radius: 16px;
 }
 
-#mck-message-cell div[name='message']:focus-visible .mck-msg-box {
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
     box-shadow: 0 0 0 2px rgba($primary-color, 0.35);
 }
 
