@@ -602,7 +602,6 @@ class Voice {
                 unsolicitedPayload &&
                 (unsolicitedPayload.type === 'voice_stream' ||
                     unsolicitedPayload.type === 'voice_stream_error') &&
-                typeof mckVoice !== 'undefined' &&
                 mckVoice &&
                 ((unsolicitedPayload.type === 'voice_stream' &&
                     typeof mckVoice.processVoiceStreamMessage === 'function') ||

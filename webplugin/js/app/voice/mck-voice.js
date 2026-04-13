@@ -58,6 +58,7 @@ class MckVoice {
         this.activeVoiceStreamItem = null;
         this.voiceStreamSourceWaitTimeout = null;
         this.voiceStreamFallbackQueue = [];
+        this.pendingLegacyFallbacks = [];
         this.voiceStreamFallbackTimeout = null;
         this.textboxVoiceActiveClass = 'km-voice-active';
 
@@ -216,6 +217,7 @@ class MckVoice {
         this.clearVoiceStreamFallbackTimeout();
         this.voiceStreamQueue = [];
         this.voiceStreamFallbackQueue = [];
+        this.pendingLegacyFallbacks = [];
         this.activeVoiceStreamItem = null;
     }
 
@@ -231,6 +233,30 @@ class MckVoice {
             clearTimeout(this.voiceStreamFallbackTimeout);
             this.voiceStreamFallbackTimeout = null;
         }
+    }
+
+    isAudioPlaybackActive() {
+        return Boolean(this.audioElement && !this.audioElement.paused && !this.audioElement.ended);
+    }
+
+    deferLegacyFallback(queueItem) {
+        if (!queueItem) {
+            return false;
+        }
+        this.pendingLegacyFallbacks.push(queueItem);
+        return true;
+    }
+
+    flushPendingLegacyFallbacks() {
+        if (!this.pendingLegacyFallbacks.length) {
+            return false;
+        }
+        const fallbackQueueItem = this.pendingLegacyFallbacks.shift();
+        if (!fallbackQueueItem) {
+            return false;
+        }
+        this.enqueueLegacyVoiceQueueItem(fallbackQueueItem);
+        return true;
     }
 
     hasPlayableVoiceStreamSource(payload) {
@@ -617,7 +643,9 @@ class MckVoice {
     }
 
     queueVoiceStreamFallbackMessage(msg, displayName) {
-        const queueItem = this.createQueuedVoiceMessage(msg, displayName);
+        const queueItem = this.createQueuedVoiceMessage(msg, displayName, {
+            prefetchTts: false,
+        });
         if (!queueItem || !queueItem.spokenText) {
             return false;
         }
@@ -714,6 +742,10 @@ class MckVoice {
         }
         const removedQueueItem = this.removeVoiceStreamQueueItem(message.streamId);
         if (removedQueueItem && removedQueueItem.fallbackQueueItem) {
+            if (this.isAudioPlaybackActive()) {
+                this.deferLegacyFallback(removedQueueItem.fallbackQueueItem);
+                return true;
+            }
             this.enqueueLegacyVoiceQueueItem(removedQueueItem.fallbackQueueItem);
         }
         return true;
@@ -1351,6 +1383,9 @@ class MckVoice {
             this.enqueueLegacyVoiceQueueItem(fallbackQueueItem);
             return;
         }
+        if (this.flushPendingLegacyFallbacks()) {
+            return;
+        }
         if (this.voiceStreamQueue.length > 0) {
             this.processNextVoiceStreamMessage();
             return;
@@ -1483,8 +1518,15 @@ class MckVoice {
         return '';
     }
 
-    createQueuedVoiceMessage(msg, displayName) {
-        const originalMessage = this.extractVoiceMessageTextFromValue(msg && msg.message);
+    createQueuedVoiceMessage(msg, displayName, options = {}) {
+        const shouldPrefetchTts = options.prefetchTts !== false;
+        const originalMessage =
+            msg && typeof msg.message === 'string'
+                ? msg.message
+                : msg && typeof msg.message === 'number'
+                ? String(msg.message)
+                : '';
+
         const messageWithoutSource = originalMessage.replace(
             /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
             ''
@@ -1503,6 +1545,7 @@ class MckVoice {
 
         if (
             spokenText &&
+            shouldPrefetchTts &&
             !this.shouldUseNativeSpeechSynthesis() &&
             this.activeRecognitionMode === 'omnichannel'
         ) {
@@ -2275,6 +2318,9 @@ class MckVoice {
         }
         if (rememberPlayback) {
             this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
+        }
+        if (this.flushPendingLegacyFallbacks()) {
+            return;
         }
         if (this.voiceStreamQueue.length > 0) {
             this.processNextVoiceStreamMessage();
