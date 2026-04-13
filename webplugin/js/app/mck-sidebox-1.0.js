@@ -14979,8 +14979,11 @@ const firstVisibleMsg = {
                     var resp = JSON.parse(obj.body);
                     var activeTabId = $mck_message_inner.data('mck-id');
                     if (
-                        typeof kmVoiceMessageHandler !== 'undefined' &&
-                        kmVoiceMessageHandler.handleSocketVoiceStream(resp, activeTabId, appOptions)
+                        kmVoiceMessageHandler?.handleSocketVoiceStream(
+                            resp,
+                            activeTabId,
+                            appOptions
+                        )
                     ) {
                         return;
                     }

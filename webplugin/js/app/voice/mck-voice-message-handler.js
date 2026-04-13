@@ -1,20 +1,10 @@
 var kmVoiceMessageHandler = {
     isVoiceStreamingEnabled: function () {
-        return (
-            typeof mckVoice !== 'undefined' &&
-            mckVoice &&
-            typeof mckVoice.shouldUseVoiceStreamPlayback === 'function' &&
-            mckVoice.shouldUseVoiceStreamPlayback()
-        );
+        return mckVoice?.shouldUseVoiceStreamPlayback();
     },
 
     isVoiceInterfaceActive: function () {
-        return (
-            typeof mckVoice !== 'undefined' &&
-            mckVoice &&
-            typeof mckVoice.isVoiceModeActive === 'function' &&
-            mckVoice.isVoiceModeActive()
-        );
+        return mckVoice?.isVoiceModeActive();
     },
 
     isIncomingBotMessage: function (message) {
@@ -79,25 +69,12 @@ var kmVoiceMessageHandler = {
         );
     },
 
-    isVoiceStreamForCurrentConversation: function (message, tabId) {
-        var metadata = message && message.messageMetadata;
-        if (!metadata || tabId === undefined || tabId === null) {
-            return false;
-        }
-        return String(metadata.groupId) === String(tabId);
-    },
-
     isIncomingBotVoiceStream: function (message) {
         var metadata = message && message.messageMetadata;
         if (!metadata) {
             return false;
         }
-        if (
-            typeof KommunicateUtils !== 'undefined' &&
-            KommunicateUtils &&
-            typeof KommunicateUtils.isCurrentAssigneeBot === 'function' &&
-            KommunicateUtils.isCurrentAssigneeBot()
-        ) {
+        if (KommunicateUtils?.isCurrentAssigneeBot()) {
             return true;
         }
         if (
@@ -118,7 +95,6 @@ var kmVoiceMessageHandler = {
             appOptions &&
             appOptions.voiceChat &&
             this.isVoiceStreamErrorMessage(message) &&
-            typeof mckVoice !== 'undefined' &&
             mckVoice &&
             typeof mckVoice.handleVoiceStreamError === 'function'
         ) {
@@ -130,7 +106,13 @@ var kmVoiceMessageHandler = {
             !appOptions.voiceChat ||
             !this.isVoiceStreamMessage(message) ||
             !this.isVoiceStreamingEnabled() ||
-            !this.isVoiceStreamForCurrentConversation(message, tabId) ||
+            !this.isCurrentConversationMessage(
+                {
+                    groupId: message?.messageMetadata?.groupId,
+                    to: message?.messageMetadata?.groupId,
+                },
+                tabId
+            ) ||
             !this.isIncomingBotVoiceStream(message)
         ) {
             return false;
@@ -140,11 +122,8 @@ var kmVoiceMessageHandler = {
     },
 
     canQueueVoiceMessage: function (message, appOptions, msgThroughListAPI) {
-        var shouldBypassVoiceStream =
-            this.isVoiceStreamingEnabled() && this.isWelcomeVoiceMessage(message);
         return (
             this.isVoiceInterfaceActive() &&
-            (!this.isVoiceStreamingEnabled() || shouldBypassVoiceStream) &&
             this.isIncomingBotMessage(message) &&
             this.isEligibleForUIRendering(message, msgThroughListAPI) &&
             message &&
