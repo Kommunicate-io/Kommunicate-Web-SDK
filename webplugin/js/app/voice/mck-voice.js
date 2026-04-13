@@ -25,6 +25,8 @@ class MckVoice {
     _VOICE_CONTINUATION_MAX_SILENCE_MS = 3000;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
+    _VOICE_STREAM_FALLBACK_TIMEOUT_MS = 4000;
+
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -42,6 +44,11 @@ class MckVoice {
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
         this.messagesQueue = [];
+        this.voiceStreamQueue = [];
+        this.activeVoiceStreamItem = null;
+        this.voiceStreamSourceWaitTimeout = null;
+        this.voiceStreamFallbackQueue = [];
+        this.voiceStreamFallbackTimeout = null;
         this.textboxVoiceActiveClass = 'km-voice-active';
 
         // to check if audio is empty before sending to server
@@ -127,6 +134,71 @@ class MckVoice {
 
     resetVoicePlaybackQueue(reason = 'manual_reset') {
         this.messagesQueue = [];
+        this.clearVoiceStreamSourceWaitTimeout();
+        this.clearVoiceStreamFallbackTimeout();
+        this.voiceStreamQueue = [];
+        this.voiceStreamFallbackQueue = [];
+        this.activeVoiceStreamItem = null;
+    }
+
+    clearVoiceStreamSourceWaitTimeout() {
+        if (this.voiceStreamSourceWaitTimeout) {
+            clearTimeout(this.voiceStreamSourceWaitTimeout);
+            this.voiceStreamSourceWaitTimeout = null;
+        }
+    }
+
+    clearVoiceStreamFallbackTimeout() {
+        if (this.voiceStreamFallbackTimeout) {
+            clearTimeout(this.voiceStreamFallbackTimeout);
+            this.voiceStreamFallbackTimeout = null;
+        }
+    }
+
+    hasPlayableVoiceStreamSource(payload) {
+        if (!payload || typeof payload !== 'object') {
+            return false;
+        }
+        const base64Audio = payload.audioBase64 || payload.base64Audio || payload.audioData;
+        return Boolean(
+            payload.audioBlob instanceof Blob ||
+                payload.blob instanceof Blob ||
+                payload.file instanceof Blob ||
+                (typeof payload.audioChunk === 'string' && payload.audioChunk) ||
+                (Array.isArray(payload.frames) && payload.frames.length) ||
+                payload.audioUrl ||
+                payload.streamUrl ||
+                payload.url ||
+                (payload.fileMeta && (payload.fileMeta.url || payload.fileMeta.blobKey)) ||
+                (typeof base64Audio === 'string' && base64Audio) ||
+                (typeof payload.streamId === 'string' &&
+                    /^(blob:|data:|https?:)/i.test(payload.streamId))
+        );
+    }
+
+    shouldUseVoiceStreamPlayback(groupId) {
+        return (
+            this.isVoiceModeActive() ||
+            this.awaitingBotResponsePlayback ||
+            Boolean(this.activeVoiceStreamItem) ||
+            this.voiceStreamQueue.length > 0
+        );
+    }
+
+    getConversationIdFromMessage(message) {
+        if (!message || typeof message !== 'object') {
+            return null;
+        }
+        if (message.groupId !== undefined && message.groupId !== null) {
+            return message.groupId;
+        }
+        if (message.to !== undefined && message.to !== null) {
+            return message.to;
+        }
+        if (message.messageMetadata && message.messageMetadata.groupId !== undefined) {
+            return message.messageMetadata.groupId;
+        }
+        return null;
     }
 
     async startVoiceMode(
@@ -271,23 +343,15 @@ class MckVoice {
     }
 
     async processMessagesAsAudio(msg, displayName) {
+        if (
+            this.shouldUseVoiceStreamPlayback(this.getConversationIdFromMessage(msg)) &&
+            !this.isWelcomeVoiceMessage(msg)
+        ) {
+            return this.queueVoiceStreamFallbackMessage(msg, displayName);
+        }
         try {
-            // Block any pending auto-listen immediately when a bot reply is queued.
-            // This prevents recording from starting in the short async gap before
-            // TTS audio element is created/played.
-            this.clearAutoListenTimeout();
-            this.setAwaitingBotResponsePlayback(true);
-            // If bot response audio is about to play, stop any active recording capture.
-            // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
-            if (this.isRecording) {
-                this.stopRecording(true);
-            }
-            this.clearVoiceProgressMessage();
             const queueItem = this.createQueuedVoiceMessage(msg, displayName);
-            this.messagesQueue.push(queueItem);
-            if (this.messagesQueue.length === 1) {
-                this.processNextMessage(queueItem);
-            }
+            this.enqueueLegacyVoiceQueueItem(queueItem);
         } catch (err) {
             console.error(err);
             this.messagesQueue.shift();
@@ -296,6 +360,783 @@ class MckVoice {
                 this.processNextMessage(nextMsg);
             }
         }
+        return true;
+    }
+
+    isWelcomeVoiceMessage(msg) {
+        const metadata = msg && msg.metadata ? msg.metadata : {};
+        return Boolean(
+            metadata &&
+                (metadata.WELCOME_EVENT === true ||
+                    metadata.WELCOME_EVENT === 'true' ||
+                    metadata.KM_TRIGGER_EVENT === 'WELCOME')
+        );
+    }
+
+    enqueueLegacyVoiceQueueItem(queueItem) {
+        if (!queueItem) {
+            return false;
+        }
+        // Block any pending auto-listen immediately when a bot reply is queued.
+        // This prevents recording from starting in the short async gap before
+        // TTS audio element is created/played.
+        this.clearAutoListenTimeout();
+        this.setAwaitingBotResponsePlayback(true);
+        // If bot response audio is about to play, stop any active recording capture.
+        // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
+        if (this.isRecording) {
+            this.stopRecording(true);
+        }
+        this.clearVoiceProgressMessage();
+        this.messagesQueue.push(queueItem);
+        if (this.messagesQueue.length === 1) {
+            this.processNextMessage(queueItem);
+        }
+        return true;
+    }
+
+    queueVoiceStreamFallbackMessage(msg, displayName) {
+        const queueItem = this.createQueuedVoiceMessage(msg, displayName);
+        if (!queueItem || !queueItem.spokenText) {
+            return false;
+        }
+        if (this.activeVoiceStreamItem && !this.activeVoiceStreamItem.fallbackQueueItem) {
+            this.activeVoiceStreamItem.fallbackQueueItem = queueItem;
+            return true;
+        }
+        this.voiceStreamFallbackQueue.push(queueItem);
+        this.scheduleVoiceStreamFallbackPlayback();
+        return true;
+    }
+
+    consumeVoiceStreamFallbackQueueItem() {
+        if (!this.voiceStreamFallbackQueue.length) {
+            return null;
+        }
+        const queueItem = this.voiceStreamFallbackQueue.shift();
+        this.clearVoiceStreamFallbackTimeout();
+        this.scheduleVoiceStreamFallbackPlayback();
+        return queueItem;
+    }
+
+    scheduleVoiceStreamFallbackPlayback() {
+        if (
+            this.voiceStreamFallbackTimeout ||
+            !this.voiceStreamFallbackQueue.length ||
+            this.activeVoiceStreamItem ||
+            this.voiceStreamQueue.length > 0 ||
+            this.messagesQueue.length > 0
+        ) {
+            return;
+        }
+        this.voiceStreamFallbackTimeout = setTimeout(() => {
+            this.voiceStreamFallbackTimeout = null;
+            if (
+                this.voiceStreamFallbackQueue.length &&
+                !this.activeVoiceStreamItem &&
+                this.voiceStreamQueue.length === 0
+            ) {
+                const fallbackQueueItem = this.voiceStreamFallbackQueue.shift();
+                fallbackQueueItem && this.enqueueLegacyVoiceQueueItem(fallbackQueueItem);
+            }
+        }, this._VOICE_STREAM_FALLBACK_TIMEOUT_MS);
+    }
+
+    processVoiceStreamMessage(message) {
+        if (!message || !message.streamId) {
+            return false;
+        }
+        try {
+            this.clearAutoListenTimeout();
+            this.setAwaitingBotResponsePlayback(true);
+            if (this.isRecording) {
+                this.stopRecording(true);
+            }
+            this.clearVoiceProgressMessage();
+            const queueItem = this.upsertVoiceStreamQueueItem(message);
+            if (
+                !this.activeVoiceStreamItem ||
+                this.activeVoiceStreamItem.streamId === queueItem.streamId
+            ) {
+                this.processNextVoiceStreamMessage();
+            }
+        } catch (err) {
+            this.handleVoiceStreamPlaybackFailure(err);
+        }
+        return true;
+    }
+
+    handleVoiceStreamError(message) {
+        if (!message || !message.streamId) {
+            return false;
+        }
+        const activeStreamId =
+            this.activeVoiceStreamItem && this.activeVoiceStreamItem.streamId
+                ? this.activeVoiceStreamItem.streamId
+                : '';
+        if (activeStreamId === message.streamId) {
+            this.handleVoiceStreamPlaybackFailure(
+                new Error(
+                    message.errorMessage ||
+                        message.message ||
+                        `Voice stream ${message.streamId} failed`
+                )
+            );
+            this.updateResponseText(
+                this.getVoiceLabel(
+                    'voiceInterface.processingFailed',
+                    'Unable to play voice response'
+                ),
+                { autoHide: 5000 }
+            );
+            return true;
+        }
+        const removedQueueItem = this.removeVoiceStreamQueueItem(message.streamId);
+        if (removedQueueItem && removedQueueItem.fallbackQueueItem) {
+            this.enqueueLegacyVoiceQueueItem(removedQueueItem.fallbackQueueItem);
+        }
+        return true;
+    }
+
+    mergeVoiceStreamPayload(existingPayload, nextPayload) {
+        const mergedPayload = Object.assign({}, existingPayload || {}, nextPayload || {});
+        const existingMetadata =
+            existingPayload && existingPayload.messageMetadata
+                ? existingPayload.messageMetadata
+                : {};
+        const nextMetadata =
+            nextPayload && nextPayload.messageMetadata ? nextPayload.messageMetadata : {};
+        mergedPayload.messageMetadata = Object.assign({}, existingMetadata, nextMetadata);
+        if (nextPayload && nextPayload.fileMeta) {
+            mergedPayload.fileMeta = Object.assign(
+                {},
+                existingPayload && existingPayload.fileMeta ? existingPayload.fileMeta : {},
+                nextPayload.fileMeta
+            );
+        }
+        if (
+            (!nextPayload || !nextPayload.isFinal) &&
+            existingPayload &&
+            existingPayload.isFinal === true
+        ) {
+            mergedPayload.isFinal = true;
+        }
+        return mergedPayload;
+    }
+
+    isChunkedVoiceStreamPayload(message) {
+        return Boolean(
+            message &&
+                message.streamId &&
+                (typeof message.audioChunk === 'string' || message.chunkIndex !== undefined)
+        );
+    }
+
+    decodeVoiceStreamChunk(base64Value) {
+        const normalized = String(base64Value || '').replace(/^data:audio\/[^;]+;base64,/, '');
+        const binary = atob(normalized);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return bytes;
+    }
+
+    addVoiceStreamChunk(queueItem, message) {
+        if (
+            !queueItem ||
+            !message ||
+            typeof message.audioChunk !== 'string' ||
+            message.audioChunk.length === 0
+        ) {
+            return;
+        }
+        const normalizedChunkIndex = Number(message.chunkIndex);
+        const chunkIndex = Number.isFinite(normalizedChunkIndex)
+            ? normalizedChunkIndex
+            : queueItem.nextChunkIndexToAppend;
+        if (queueItem.receivedChunkIndexes[chunkIndex]) {
+            return;
+        }
+        queueItem.receivedChunkIndexes[chunkIndex] = true;
+        queueItem.chunkBuffersByIndex[chunkIndex] = this.decodeVoiceStreamChunk(message.audioChunk);
+        if (message.isFinal === true && Number.isFinite(chunkIndex)) {
+            queueItem.finalChunkIndex = Math.max(queueItem.finalChunkIndex, chunkIndex);
+        }
+    }
+
+    upsertVoiceStreamQueueItem(message) {
+        const existingItem = this.findVoiceStreamQueueItem(message.streamId);
+        if (existingItem) {
+            existingItem.payload = this.mergeVoiceStreamPayload(existingItem.payload, message);
+            existingItem.isFinal = existingItem.payload.isFinal === true;
+            existingItem.mimeType = message.format || existingItem.mimeType;
+            existingItem.usesChunkedAudio =
+                existingItem.usesChunkedAudio || this.isChunkedVoiceStreamPayload(message);
+            if (
+                existingItem.payload.messageMetadata &&
+                typeof existingItem.payload.messageMetadata.senderName === 'string'
+            ) {
+                existingItem.displayName = existingItem.payload.messageMetadata.senderName;
+            }
+            this.addVoiceStreamChunk(existingItem, message);
+            return existingItem;
+        }
+        const queueItem = this.createQueuedVoiceStreamItem(message);
+        queueItem.fallbackQueueItem = this.consumeVoiceStreamFallbackQueueItem();
+        this.voiceStreamQueue.push(queueItem);
+        return queueItem;
+    }
+
+    findVoiceStreamQueueItem(streamId) {
+        if (!streamId) {
+            return null;
+        }
+        for (let i = 0; i < this.voiceStreamQueue.length; i++) {
+            if (this.voiceStreamQueue[i] && this.voiceStreamQueue[i].streamId === streamId) {
+                return this.voiceStreamQueue[i];
+            }
+        }
+        return null;
+    }
+
+    removeVoiceStreamQueueItem(streamId) {
+        if (!streamId) {
+            return null;
+        }
+        for (let i = 0; i < this.voiceStreamQueue.length; i++) {
+            if (this.voiceStreamQueue[i] && this.voiceStreamQueue[i].streamId === streamId) {
+                return this.voiceStreamQueue.splice(i, 1)[0] || null;
+            }
+        }
+        return null;
+    }
+
+    createQueuedVoiceStreamItem(message) {
+        const queueItem = {
+            type: 'voice_stream',
+            streamId: message.streamId,
+            isFinal: message.isFinal === true,
+            displayName:
+                message &&
+                message.messageMetadata &&
+                typeof message.messageMetadata.senderName === 'string'
+                    ? message.messageMetadata.senderName
+                    : '',
+            payload: message,
+            mimeType: message.format || 'audio/mpeg',
+            usesChunkedAudio: this.isChunkedVoiceStreamPayload(message),
+            isPlaying: false,
+            isResolvingSource: false,
+            chunkBuffersByIndex: {},
+            receivedChunkIndexes: {},
+            nextChunkIndexToAppend: 0,
+            finalChunkIndex: Number.isFinite(Number(message.chunkIndex))
+                ? Number(message.chunkIndex)
+                : -1,
+            blobChunks: [],
+            mediaSource: null,
+            sourceBuffer: null,
+            sourceBufferQueue: [],
+            mediaSourceUrl: '',
+            mediaSourceOpen: false,
+            mediaSourceEnded: false,
+            mediaSourceInitPromise: null,
+            fallbackQueueItem: null,
+        };
+        this.addVoiceStreamChunk(queueItem, message);
+        return queueItem;
+    }
+
+    async processNextVoiceStreamMessage() {
+        if (!this.voiceStreamQueue.length) {
+            return;
+        }
+        const queueItem = this.activeVoiceStreamItem || this.voiceStreamQueue[0];
+        this.activeVoiceStreamItem = queueItem;
+        if (queueItem.isResolvingSource || (queueItem.isPlaying && !queueItem.usesChunkedAudio)) {
+            return;
+        }
+        queueItem.isResolvingSource = true;
+        try {
+            if (queueItem.usesChunkedAudio) {
+                await this.processChunkedVoiceStreamQueueItem(queueItem);
+                queueItem.isResolvingSource = false;
+                return;
+            }
+            const playbackSource = await this.resolveVoiceStreamPlaybackSource(queueItem.payload);
+            queueItem.isResolvingSource = false;
+            if (!playbackSource) {
+                if (queueItem.payload && queueItem.payload.isFinal === true) {
+                    this.skipVoiceStreamPlayback(queueItem);
+                    return;
+                }
+                this.scheduleVoiceStreamSourceWait(queueItem);
+                return;
+            }
+            this.clearVoiceStreamSourceWaitTimeout();
+            this.playVoiceStreamSource(playbackSource, queueItem);
+        } catch (error) {
+            queueItem.isResolvingSource = false;
+            this.handleVoiceStreamPlaybackFailure(error);
+        }
+    }
+
+    async processChunkedVoiceStreamQueueItem(queueItem) {
+        if (!queueItem) {
+            return;
+        }
+        if (this.canUseMediaSourceForVoiceStream(queueItem)) {
+            await this.initializeVoiceStreamMediaPlayback(queueItem);
+            this.flushVoiceStreamChunks(queueItem);
+            return;
+        }
+        if (!queueItem.isFinal) {
+            return;
+        }
+        const fallbackChunks = this.consumeAppendableVoiceStreamChunks(queueItem, true);
+        if (!fallbackChunks.length) {
+            this.skipVoiceStreamPlayback(queueItem);
+            return;
+        }
+        const fallbackBlob = new Blob(fallbackChunks, {
+            type: queueItem.mimeType || 'audio/mpeg',
+        });
+        this.playVoiceStreamSource({ kind: 'blob', value: fallbackBlob }, queueItem);
+    }
+
+    scheduleVoiceStreamSourceWait(queueItem) {
+        if (
+            !queueItem ||
+            !this.activeVoiceStreamItem ||
+            this.activeVoiceStreamItem.streamId !== queueItem.streamId ||
+            this.voiceStreamSourceWaitTimeout
+        ) {
+            return;
+        }
+        this.voiceStreamSourceWaitTimeout = setTimeout(() => {
+            this.voiceStreamSourceWaitTimeout = null;
+            if (
+                this.activeVoiceStreamItem &&
+                this.activeVoiceStreamItem.streamId === queueItem.streamId &&
+                !queueItem.isPlaying
+            ) {
+                this.skipVoiceStreamPlayback(queueItem);
+            }
+        }, 15000);
+    }
+
+    skipVoiceStreamPlayback(queueItem) {
+        if (
+            !queueItem ||
+            !this.activeVoiceStreamItem ||
+            this.activeVoiceStreamItem.streamId !== queueItem.streamId
+        ) {
+            return;
+        }
+        this.clearVoiceStreamSourceWaitTimeout();
+        queueItem.isPlaying = false;
+        queueItem.isResolvingSource = false;
+        this.audioElement = null;
+        this.advanceVoiceStreamQueueAfterPlayback(queueItem.fallbackQueueItem);
+    }
+
+    async resolveVoiceStreamPlaybackSource(payload) {
+        if (!payload || typeof payload !== 'object') {
+            throw new Error('Invalid voice stream payload');
+        }
+        if (!this.hasPlayableVoiceStreamSource(payload)) {
+            return null;
+        }
+        if (payload.audioBlob instanceof Blob) {
+            return { kind: 'blob', value: payload.audioBlob };
+        }
+        if (payload.blob instanceof Blob) {
+            return { kind: 'blob', value: payload.blob };
+        }
+        if (payload.file instanceof Blob) {
+            return { kind: 'blob', value: payload.file };
+        }
+        if (Array.isArray(payload.frames) && payload.frames.length) {
+            return {
+                kind: 'blob',
+                value: kmVoice.createWavBlobFromOmnichannelFrames(payload),
+            };
+        }
+        const directUrl =
+            payload.audioUrl ||
+            payload.streamUrl ||
+            payload.url ||
+            (payload.fileMeta && payload.fileMeta.url);
+        if (directUrl) {
+            return { kind: 'url', value: directUrl };
+        }
+        if (payload.fileMeta && payload.fileMeta.blobKey) {
+            return {
+                kind: 'url',
+                value: await this.resolveVoiceStreamBlobUrl(payload.fileMeta.blobKey),
+            };
+        }
+        const base64Audio = payload.audioBase64 || payload.base64Audio || payload.audioData;
+        if (typeof base64Audio === 'string' && base64Audio) {
+            return {
+                kind: 'blob',
+                value: this.createAudioBlobFromBase64(base64Audio, payload.mimeType),
+            };
+        }
+        if (
+            typeof payload.streamId === 'string' &&
+            /^(blob:|data:|https?:)/i.test(payload.streamId)
+        ) {
+            return { kind: 'url', value: payload.streamId };
+        }
+        return null;
+    }
+
+    canUseMediaSourceForVoiceStream(queueItem) {
+        return Boolean(
+            queueItem &&
+                typeof MediaSource !== 'undefined' &&
+                typeof MediaSource.isTypeSupported === 'function' &&
+                MediaSource.isTypeSupported(queueItem.mimeType || 'audio/mpeg')
+        );
+    }
+
+    async initializeVoiceStreamMediaPlayback(queueItem) {
+        if (!queueItem) {
+            return;
+        }
+        if (queueItem.mediaSourceInitPromise) {
+            await queueItem.mediaSourceInitPromise;
+            return;
+        }
+        queueItem.mediaSourceInitPromise = new Promise((resolve, reject) => {
+            try {
+                this.clearDeferredRecordingHandler(this.audioElement);
+                if (this.visualizerCleanup) {
+                    this.visualizerCleanup();
+                    this.visualizerCleanup = null;
+                }
+                if (this.audioElement) {
+                    this.audioElement.pause();
+                    this.audioElement.currentTime = 0;
+                }
+
+                const audio = new Audio();
+                const mediaSource = new MediaSource();
+                const mediaSourceUrl = URL.createObjectURL(mediaSource);
+                queueItem.mediaSource = mediaSource;
+                queueItem.mediaSourceUrl = mediaSourceUrl;
+                this.audioElement = audio;
+                queueItem.isPlaying = true;
+                this.agentOrBotName = queueItem.displayName || this.agentOrBotName;
+                this.agentOrBotLastMsg = '';
+                this.addSpeakingAnimation();
+                audio.src = mediaSourceUrl;
+                audio.onerror = (error) => {
+                    reject(error);
+                    this.handleVoiceStreamPlaybackFailure(error);
+                };
+                audio.addEventListener(
+                    'canplay',
+                    () => {
+                        audio.play().catch((error) => {
+                            reject(error);
+                            this.handleVoiceStreamPlaybackFailure(error);
+                        });
+                        this.visualizerCleanup = this.createAudioVisualizer(audio);
+                    },
+                    { once: true }
+                );
+                audio.addEventListener('ended', () => {
+                    this.handleVoiceStreamPlaybackEnded(queueItem);
+                });
+                mediaSource.addEventListener(
+                    'sourceopen',
+                    () => {
+                        try {
+                            queueItem.sourceBuffer = mediaSource.addSourceBuffer(
+                                queueItem.mimeType || 'audio/mpeg'
+                            );
+                            queueItem.sourceBuffer.mode = 'sequence';
+                            queueItem.mediaSourceOpen = true;
+                            queueItem.sourceBuffer.addEventListener('updateend', () => {
+                                this.flushQueuedSourceBufferChunks(queueItem);
+                            });
+                            resolve();
+                        } catch (error) {
+                            reject(error);
+                        }
+                    },
+                    { once: true }
+                );
+            } catch (error) {
+                reject(error);
+            }
+        });
+        await queueItem.mediaSourceInitPromise;
+    }
+
+    consumeAppendableVoiceStreamChunks(queueItem, flushAll = false) {
+        if (!queueItem) {
+            return [];
+        }
+        const appendableIndexes = [];
+        if (flushAll || queueItem.isFinal) {
+            const allIndexes = Object.keys(queueItem.chunkBuffersByIndex)
+                .map(Number)
+                .sort((a, b) => a - b);
+            for (let i = 0; i < allIndexes.length; i++) {
+                appendableIndexes.push(allIndexes[i]);
+            }
+        } else {
+            while (
+                Object.prototype.hasOwnProperty.call(
+                    queueItem.chunkBuffersByIndex,
+                    queueItem.nextChunkIndexToAppend
+                )
+            ) {
+                appendableIndexes.push(queueItem.nextChunkIndexToAppend);
+                queueItem.nextChunkIndexToAppend += 1;
+            }
+        }
+        const chunks = [];
+        for (let i = 0; i < appendableIndexes.length; i++) {
+            const chunkIndex = appendableIndexes[i];
+            const chunk = queueItem.chunkBuffersByIndex[chunkIndex];
+            delete queueItem.chunkBuffersByIndex[chunkIndex];
+            chunks.push(chunk);
+        }
+        return chunks;
+    }
+
+    appendBytesToSourceBufferQueue(queueItem, chunkBytes) {
+        if (!queueItem || !chunkBytes) {
+            return;
+        }
+        queueItem.sourceBufferQueue.push(chunkBytes);
+    }
+
+    flushQueuedSourceBufferChunks(queueItem) {
+        if (!queueItem || !queueItem.sourceBuffer || queueItem.sourceBuffer.updating) {
+            return;
+        }
+        if (queueItem.sourceBufferQueue.length > 0) {
+            const nextChunk = queueItem.sourceBufferQueue.shift();
+            try {
+                const chunkBuffer = nextChunk.buffer.slice(
+                    nextChunk.byteOffset,
+                    nextChunk.byteOffset + nextChunk.byteLength
+                );
+                queueItem.sourceBuffer.appendBuffer(chunkBuffer);
+            } catch (error) {
+                this.handleVoiceStreamPlaybackFailure(error);
+            }
+            return;
+        }
+        if (
+            queueItem.isFinal &&
+            queueItem.mediaSource &&
+            queueItem.mediaSource.readyState === 'open' &&
+            Object.keys(queueItem.chunkBuffersByIndex).length === 0 &&
+            queueItem.sourceBufferQueue.length === 0 &&
+            !queueItem.mediaSourceEnded
+        ) {
+            queueItem.mediaSourceEnded = true;
+            try {
+                queueItem.mediaSource.endOfStream();
+            } catch (error) {
+                this.handleVoiceStreamPlaybackFailure(error);
+            }
+        }
+    }
+
+    flushVoiceStreamChunks(queueItem) {
+        if (!queueItem) {
+            return;
+        }
+        const chunks = this.consumeAppendableVoiceStreamChunks(queueItem);
+        for (let i = 0; i < chunks.length; i++) {
+            queueItem.blobChunks.push(chunks[i]);
+            this.appendBytesToSourceBufferQueue(queueItem, chunks[i]);
+        }
+        this.flushQueuedSourceBufferChunks(queueItem);
+    }
+
+    handleVoiceStreamPlaybackEnded(queueItem) {
+        if (queueItem) {
+            queueItem.isPlaying = false;
+        }
+        if (this.agentOrBotLastMsgAudio) {
+            URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+            this.agentOrBotLastMsgAudio = null;
+        }
+        if (queueItem && queueItem.blobChunks.length) {
+            const repeatBlob = new Blob(queueItem.blobChunks, {
+                type: queueItem.mimeType || 'audio/mpeg',
+            });
+            this.agentOrBotLastMsgAudio = URL.createObjectURL(repeatBlob);
+        }
+        const repeatMessageBtn = document.getElementById('mck-voice-repeat-last-msg');
+        if (repeatMessageBtn && this.agentOrBotLastMsgAudio) {
+            repeatMessageBtn.classList.remove('mck-hidden');
+        }
+        if (queueItem && queueItem.mediaSourceUrl) {
+            URL.revokeObjectURL(queueItem.mediaSourceUrl);
+            queueItem.mediaSourceUrl = '';
+        }
+        this.finishVoicePlaybackUi();
+        this.advanceVoiceStreamQueueAfterPlayback();
+    }
+
+    resolveVoiceStreamBlobUrl(blobKey) {
+        return new Promise((resolve, reject) => {
+            if (
+                typeof KommunicateUI === 'object' &&
+                KommunicateUI &&
+                typeof KommunicateUI.getUrlFromBlobKey === 'function'
+            ) {
+                KommunicateUI.getUrlFromBlobKey(blobKey, function (err, url) {
+                    if (err || !url) {
+                        reject(err || new Error('Unable to resolve blob URL for voice stream'));
+                        return;
+                    }
+                    resolve(url);
+                });
+                return;
+            }
+            reject(new Error('Blob URL resolver is not available for voice stream playback'));
+        });
+    }
+
+    createAudioBlobFromBase64(base64Value, mimeType = 'audio/mpeg') {
+        const normalized = base64Value.replace(/^data:audio\/[^;]+;base64,/, '');
+        const binary = atob(normalized);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: mimeType || 'audio/mpeg' });
+    }
+
+    playVoiceStreamSource(playbackSource, queueItem) {
+        this.clearDeferredRecordingHandler(this.audioElement);
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        if (this.audioElement) {
+            this.audioElement.pause();
+            this.audioElement.currentTime = 0;
+        }
+
+        const shouldRevokeUrl = playbackSource.kind === 'blob';
+        const playbackUrl =
+            playbackSource.kind === 'blob'
+                ? URL.createObjectURL(playbackSource.value)
+                : playbackSource.value;
+        const audio = new Audio(playbackUrl);
+        this.audioElement = audio;
+        queueItem.isPlaying = true;
+        this.agentOrBotName = queueItem.displayName || this.agentOrBotName;
+        this.agentOrBotLastMsg = '';
+        this.addSpeakingAnimation();
+
+        audio.onerror = (error) => {
+            if (shouldRevokeUrl) {
+                URL.revokeObjectURL(playbackUrl);
+            }
+            this.handleVoiceStreamPlaybackFailure(error);
+        };
+
+        audio.addEventListener(
+            'canplay',
+            () => {
+                audio.play().catch((error) => {
+                    if (shouldRevokeUrl) {
+                        URL.revokeObjectURL(playbackUrl);
+                    }
+                    this.handleVoiceStreamPlaybackFailure(error);
+                });
+                this.visualizerCleanup = this.createAudioVisualizer(audio);
+            },
+            { once: true }
+        );
+
+        audio.addEventListener('ended', () => {
+            queueItem.isPlaying = false;
+            const hasNextStream = this.voiceStreamQueue.length > 1;
+
+            if (this.agentOrBotLastMsgAudio) {
+                URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+                this.agentOrBotLastMsgAudio = null;
+            }
+            if (hasNextStream && shouldRevokeUrl) {
+                URL.revokeObjectURL(playbackUrl);
+            } else {
+                this.agentOrBotLastMsgAudio = playbackUrl;
+            }
+
+            const repeatMessageBtn = document.getElementById('mck-voice-repeat-last-msg');
+            if (repeatMessageBtn && this.agentOrBotLastMsgAudio) {
+                repeatMessageBtn.classList.remove('mck-hidden');
+            }
+
+            if (hasNextStream) {
+                if (this.visualizerCleanup) {
+                    this.visualizerCleanup();
+                    this.visualizerCleanup = null;
+                }
+                this.audioElement = null;
+                this.advanceVoiceStreamQueueAfterPlayback();
+                return;
+            }
+
+            this.finishVoicePlaybackUi();
+            this.advanceVoiceStreamQueueAfterPlayback();
+        });
+    }
+
+    finishVoicePlaybackUi() {
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
+        const ring1 = document.querySelector('.voice-ring-1');
+        if (ring1) {
+            ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+            ring1.classList.add('ring-recede');
+        }
+        this.audioElement = null;
+        setTimeout(() => {
+            if (ring1) {
+                ring1.classList.remove('ring-recede');
+            }
+            if (!this.isRecording) {
+                this.removeAllAnimation();
+                this.clearVoiceStatus();
+            }
+        }, this._RING_RECEDE_DURATION);
+    }
+
+    advanceVoiceStreamQueueAfterPlayback(fallbackQueueItem = null) {
+        this.clearVoiceStreamSourceWaitTimeout();
+        if (this.voiceStreamQueue.length) {
+            this.voiceStreamQueue.shift();
+        }
+        this.activeVoiceStreamItem = null;
+        if (fallbackQueueItem) {
+            this.enqueueLegacyVoiceQueueItem(fallbackQueueItem);
+            return;
+        }
+        if (this.voiceStreamQueue.length > 0) {
+            this.processNextVoiceStreamMessage();
+            return;
+        }
+        this.scheduleVoiceStreamFallbackPlayback();
+        this.setAwaitingBotResponsePlayback(false);
+        this.resumeListeningAfterPlayback();
     }
 
     createQueuedVoiceMessage(msg, displayName) {
@@ -702,6 +1543,11 @@ class MckVoice {
             this.processNextMessage(nextMsg);
             return;
         }
+        if (this.voiceStreamQueue.length > 0) {
+            this.processNextVoiceStreamMessage();
+            return;
+        }
+        this.scheduleVoiceStreamFallbackPlayback();
         this.setAwaitingBotResponsePlayback(false);
         this.resumeListeningAfterPlayback();
     }
@@ -713,6 +1559,33 @@ class MckVoice {
         this.audioElement = null;
         this.nativeSpeechUtterance = null;
         this.advanceQueueAfterPlayback();
+    }
+
+    handleVoiceStreamPlaybackFailure(error) {
+        error && console.error(error);
+        this.removeAllAnimation();
+        this.clearVoiceStatus();
+        const fallbackQueueItem =
+            this.activeVoiceStreamItem && this.activeVoiceStreamItem.fallbackQueueItem
+                ? this.activeVoiceStreamItem.fallbackQueueItem
+                : null;
+        if (this.activeVoiceStreamItem) {
+            this.activeVoiceStreamItem.isPlaying = false;
+            this.activeVoiceStreamItem.isResolvingSource = false;
+            if (this.activeVoiceStreamItem.mediaSourceUrl) {
+                URL.revokeObjectURL(this.activeVoiceStreamItem.mediaSourceUrl);
+                this.activeVoiceStreamItem.mediaSourceUrl = '';
+            }
+        }
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        if (this.audioElement) {
+            this.audioElement.pause();
+        }
+        this.audioElement = null;
+        this.advanceVoiceStreamQueueAfterPlayback(fallbackQueueItem);
     }
 
     async repeatLastMsgAudio(blobUrl) {

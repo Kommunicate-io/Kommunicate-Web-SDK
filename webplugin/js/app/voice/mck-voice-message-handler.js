@@ -1,4 +1,13 @@
 var kmVoiceMessageHandler = {
+    isVoiceStreamingEnabled: function () {
+        return (
+            typeof mckVoice !== 'undefined' &&
+            mckVoice &&
+            typeof mckVoice.shouldUseVoiceStreamPlayback === 'function' &&
+            mckVoice.shouldUseVoiceStreamPlayback()
+        );
+    },
+
     isVoiceInterfaceActive: function () {
         return (
             typeof mckVoice !== 'undefined' &&
@@ -52,9 +61,90 @@ var kmVoiceMessageHandler = {
         return true;
     },
 
+    isVoiceStreamMessage: function (message) {
+        return Boolean(message && message.type === 'voice_stream');
+    },
+
+    isVoiceStreamErrorMessage: function (message) {
+        return Boolean(message && message.type === 'voice_stream_error');
+    },
+
+    isWelcomeVoiceMessage: function (message) {
+        var metadata = message && message.metadata ? message.metadata : {};
+        return Boolean(
+            metadata &&
+                (metadata.WELCOME_EVENT === true ||
+                    metadata.WELCOME_EVENT === 'true' ||
+                    metadata.KM_TRIGGER_EVENT === 'WELCOME')
+        );
+    },
+
+    isVoiceStreamForCurrentConversation: function (message, tabId) {
+        var metadata = message && message.messageMetadata;
+        if (!metadata || tabId === undefined || tabId === null) {
+            return false;
+        }
+        return String(metadata.groupId) === String(tabId);
+    },
+
+    isIncomingBotVoiceStream: function (message) {
+        var metadata = message && message.messageMetadata;
+        if (!metadata) {
+            return false;
+        }
+        if (
+            typeof KommunicateUtils !== 'undefined' &&
+            KommunicateUtils &&
+            typeof KommunicateUtils.isCurrentAssigneeBot === 'function' &&
+            KommunicateUtils.isCurrentAssigneeBot()
+        ) {
+            return true;
+        }
+        if (
+            typeof KommunicateConstants !== 'undefined' &&
+            KommunicateConstants &&
+            KommunicateConstants.MESSAGE_SOURCE &&
+            metadata.source === KommunicateConstants.MESSAGE_SOURCE.PLATFORM
+        ) {
+            return true;
+        }
+        var senderName =
+            typeof metadata.senderName === 'string' ? metadata.senderName.toLowerCase() : '';
+        return senderName === 'bot';
+    },
+
+    handleSocketVoiceStream: function (message, tabId, appOptions) {
+        if (
+            appOptions &&
+            appOptions.voiceChat &&
+            this.isVoiceStreamErrorMessage(message) &&
+            typeof mckVoice !== 'undefined' &&
+            mckVoice &&
+            typeof mckVoice.handleVoiceStreamError === 'function'
+        ) {
+            mckVoice.handleVoiceStreamError(message);
+            return true;
+        }
+        if (
+            !appOptions ||
+            !appOptions.voiceChat ||
+            !this.isVoiceStreamMessage(message) ||
+            !this.isVoiceStreamingEnabled() ||
+            !this.isVoiceStreamForCurrentConversation(message, tabId) ||
+            !this.isIncomingBotVoiceStream(message)
+        ) {
+            return false;
+        }
+        mckVoice.processVoiceStreamMessage(message);
+        return true;
+    },
+
     canQueueVoiceMessage: function (message, appOptions, msgThroughListAPI) {
+        var shouldBypassVoiceStream =
+            this.isVoiceStreamingEnabled() && this.isWelcomeVoiceMessage(message);
         return (
             this.isVoiceInterfaceActive() &&
+            (!this.isVoiceStreamingEnabled() || shouldBypassVoiceStream) &&
             this.isIncomingBotMessage(message) &&
             this.isEligibleForUIRendering(message, msgThroughListAPI) &&
             message &&
