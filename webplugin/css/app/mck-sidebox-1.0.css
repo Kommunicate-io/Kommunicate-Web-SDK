@@ -408,54 +408,43 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     text-decoration: underline;
 }
 
-#mck-sidebox a:focus,
-#mck-sidebox a:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    outline-offset: 2px !important;
-    border-radius: 6px;
+/* Global focus ring (keyboard only) */
+#mck-sidebox :is(a, button, [role='button'], input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    outline-offset: 2px;
+    box-shadow: none;
+    border-radius: 0;
 }
-#mck-sidebox button:focus-visible,
-#mck-sidebox :focus-visible:not(button) {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    outline-offset: 2px !important;
-    box-shadow: none !important;
-    border-radius: 8px;
-}
-#mck-sidebox :focus:not(:focus-visible),
-#mck-sidebox input:focus-visible,
-#mck-sidebox textarea:focus-visible,
-#mck-sidebox [contenteditable='true']:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-/* Conversation list focus */
-.mck-contact-list a:focus-visible,
-.mck-contact-list li:focus-visible,
-.mck-contact-list li:focus-within {
-    outline: none !important;
-    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    border-radius: 12px;
-}
-.mck-contact-list a {
-    display: block;
-}
-.mck-contact-list a:focus-visible {
+#mck-sidebox .mck-contact-list :is(li, a):focus-visible,
+#mck-sidebox .mck-contact-list li:focus-within {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    border-radius: 0;
     background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08);
-    border-radius: 12px;
+}
+#mck-sidebox :focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+/* Inputs: no outline on click or keyboard */
+#mck-sidebox :is(input, textarea, [contenteditable='true']):focus,
+#mck-sidebox :is(input, textarea, [contenteditable='true']):focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+/* Header buttons: avoid clipped ring in header bar */
+#mck-sidebox .km-header-container :is(button, [role='button']):focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #ffffff, inset 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9);
+    border-radius: 0;
 }
 
-/* Header buttons + FAQ + CSAT focus (visible on purple header) */
-#mck-sidebox .km-header-container button:focus-visible,
-#mck-sidebox .km-header-container [role='button']:focus-visible,
-#mck-sidebox .km-header-container button:focus,
-#mck-sidebox .km-header-container [role='button']:focus,
-#km-faq:focus-visible,
-.km-faq:focus-visible,
-#km-csat-trigger:focus-visible {
-    outline: none !important;
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9) !important;
-    border-radius: 10px;
+/* Header icons (attachment/emoji/etc.) focus */
+#mck-sidebox .mck-icons-wrapper button:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    outline-offset: 2px;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 /* Bottom tabs focus (clean) */
@@ -3104,26 +3093,17 @@ ul.mck-intent-menu > li:hover {
 #mck-msg-new {
     border-radius: 26px;
 }
-.km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
-.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
+.km-start-conversation-actions.km-voice-option-enabled > :first-child {
     border-inline-end: none;
     border-radius: 26px 0 0 26px;
 }
-.km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
+.km-start-conversation-actions.km-voice-option-enabled > :last-child {
     border-radius: 0 26px 26px 0;
 }
-
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled > :first-child {
     border-radius: 0 26px 26px 0;
 }
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
-[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled > :last-child {
     border-radius: 26px 0 0 26px;
 }
 .km-start-conversation-actions.km-voice-option-enabled::after {

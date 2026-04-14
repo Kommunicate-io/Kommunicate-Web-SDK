@@ -8936,7 +8936,7 @@ const firstVisibleMsg = {
                         );
                     } else if (msg.fileMeta.contentType.indexOf('audio') !== -1) {
                         return (
-                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player' +
+                            '<audio controls class="mck-audio-player' +
                             (addfileEncClass
                                 ? ' file-enc" data-blobkey="' + msg.fileMeta.blobKey + '">'
                                 : '">') +
@@ -8946,7 +8946,7 @@ const firstVisibleMsg = {
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/mpeg"></audio>' +
-                            '<p class="mck-file-tag"></p></a>'
+                            '<p class="mck-file-tag"></p>'
                         );
                     } else {
                         return (
