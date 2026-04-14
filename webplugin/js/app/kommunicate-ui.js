@@ -490,6 +490,13 @@ KommunicateUI = {
             setActiveSubsectionState('faq-list');
             Kommunicate.getFaqList(data, categoryName);
         });
+        $applozic(d).on('keydown', '.km-faq-category-card', function (e) {
+            var key = e.key || e.keyCode;
+            if (key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 13 || key === 32) {
+                e.preventDefault();
+                $applozic(this).trigger('click');
+            }
+        });
 
         $applozic(d).on('click', '.km-faq-back-btn', function (event) {
             var isModernLayout = kommunicateCommons.isModernLayoutEnabled();
