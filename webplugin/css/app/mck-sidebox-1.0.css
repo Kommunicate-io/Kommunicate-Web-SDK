@@ -4107,6 +4107,11 @@ button {
 }
 .mck-delivered-icon .mck-delivery-report--delivered-read {
     display: block;
+    fill: #6b6b6b;
+    stroke: #4f4f4f;
+    stroke-width: 0.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 .mck-pending-icon .mck-delivery-report--delivered-read,
 .mck-pending-icon .mck-delivery-report--sent {
