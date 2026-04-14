@@ -591,7 +591,7 @@ class MckVoice {
     async processMessagesAsAudio(msg, displayName) {
         if (
             this.shouldUseVoiceStreamPlayback(this.getConversationIdFromMessage(msg)) &&
-            !this.isWelcomeVoiceMessage(msg)
+            !kmIsWelcomeVoiceMessage(msg)
         ) {
             return this.queueVoiceStreamFallbackMessage(msg, displayName);
         }
@@ -608,16 +608,6 @@ class MckVoice {
             return false;
         }
         return true;
-    }
-
-    isWelcomeVoiceMessage(msg) {
-        const metadata = msg && msg.metadata ? msg.metadata : {};
-        return Boolean(
-            metadata &&
-                (metadata.WELCOME_EVENT === true ||
-                    metadata.WELCOME_EVENT === 'true' ||
-                    metadata.KM_TRIGGER_EVENT === 'WELCOME')
-        );
     }
 
     enqueueLegacyVoiceQueueItem(queueItem) {
