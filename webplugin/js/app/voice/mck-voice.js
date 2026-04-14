@@ -817,10 +817,7 @@ class MckVoice {
 
     canUseMediaSourceForVoiceStream(queueItem) {
         return Boolean(
-            queueItem &&
-                typeof MediaSource !== 'undefined' &&
-                typeof MediaSource.isTypeSupported === 'function' &&
-                MediaSource.isTypeSupported(queueItem.mimeType || 'audio/mpeg')
+            queueItem && MediaSource.isTypeSupported(queueItem.mimeType || 'audio/mpeg')
         );
     }
 
@@ -1013,21 +1010,14 @@ class MckVoice {
 
     resolveVoiceStreamBlobUrl(blobKey) {
         return new Promise((resolve, reject) => {
-            if (
-                typeof KommunicateUI === 'object' &&
-                KommunicateUI &&
-                typeof KommunicateUI.getUrlFromBlobKey === 'function'
-            ) {
-                KommunicateUI.getUrlFromBlobKey(blobKey, function (err, url) {
-                    if (err || !url) {
-                        reject(err || new Error('Unable to resolve blob URL for voice stream'));
-                        return;
-                    }
-                    resolve(url);
-                });
-                return;
-            }
-            reject(new Error('Blob URL resolver is not available for voice stream playback'));
+            KommunicateUI?.getUrlFromBlobKey(blobKey, function (err, url) {
+                if (err || !url) {
+                    reject(err || new Error('Unable to resolve blob URL for voice stream'));
+                    return;
+                }
+                resolve(url);
+            });
+            return;
         });
     }
 
