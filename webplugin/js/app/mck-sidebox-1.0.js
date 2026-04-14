@@ -12413,10 +12413,7 @@ const firstVisibleMsg = {
             _this.onMessage = function (resp) {
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 var activeTabId = $mck_message_inner.data('mck-id');
-                if (
-                    typeof kmVoiceMessageHandler !== 'undefined' &&
-                    kmVoiceMessageHandler.handleSocketVoiceStream(resp, activeTabId, appOptions)
-                ) {
+                if (kmVoiceMessageHandler.handleSocketVoiceStream(resp, activeTabId, appOptions)) {
                     return;
                 }
                 typeof resp.message == 'object' &&
