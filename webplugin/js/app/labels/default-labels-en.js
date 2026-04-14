@@ -45,7 +45,7 @@
         'file.error.default': 'File upload failed.',
         'message.sent.status': 'Message sent',
         'message.received.status': 'New message received',
-        'voice.response.received.status': 'Agent response received',
+        'voice.response.received.status': 'Response received',
         'empty.groups': 'No groups yet!',
         'empty.contacts': 'No contacts yet!',
         'empty.messages': 'No messages yet!',
