@@ -408,10 +408,19 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     text-decoration: underline;
 }
 
-.mck-sidebox a:focus {
-    outline: none !important;
+.mck-sidebox a:focus,
+.mck-sidebox a:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    outline-offset: 2px !important;
+    border-radius: 6px;
 }
-.mck-sidebox :focus-visible {
+.mck-sidebox button:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+    border-radius: 8px;
+}
+.mck-sidebox :focus-visible:not(button) {
     outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
     outline-offset: 2px !important;
     box-shadow: none !important;
@@ -434,16 +443,9 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     border-radius: 12px;
 }
 
-/* Header close/back/options focus */
-.mck-sidebox .km-focus-ring--header.km-focus-ring--header:focus-visible,
-.mck-sidebox .km-focus-ring--header.km-focus-ring--header:focus-within {
-    outline: none !important;
-    box-shadow: 0 0 0 2px currentColor !important;
-    border-radius: 10px;
-    background-color: transparent;
-}
-
-/* Classic header FAQ button + CSAT trigger focus */
+/* Header buttons + FAQ + CSAT focus (visible on purple header) */
+.km-header-container button:focus-visible,
+.km-header-container [role='button']:focus-visible,
 #km-faq:focus-visible,
 .km-faq:focus-visible,
 #km-csat-trigger:focus-visible {
@@ -458,16 +460,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     outline: none !important;
     box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.7) !important;
     border-radius: 14px;
-}
-
-/* FAQ + News cards/buttons focus */
-.km-focus-ring--card:focus-visible {
-    outline: none !important;
-    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    border-radius: 12px;
-}
-.km-focus-ring--card.km-focus-ring--card--tint:focus-visible {
-    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.06);
 }
 
 .mck-form-group {
@@ -1469,20 +1461,19 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-box-body .mck-message-inner:focus {
     outline: none;
 }
-#mck-message-cell .mck-m-b:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
-    outline-offset: 2px;
-    border-radius: 16px;
-}
-#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
-    box-shadow: 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
-}
+#mck-message-cell .mck-m-b:focus-visible,
 .mck-sidebox .km-quick-replies:focus-visible,
 .mck-sidebox .mck-msg-box a:focus-visible,
 .mck-sidebox .mck-msg-box button:focus-visible,
 .mck-sidebox .mck-msg-box [role="button"]:focus-visible {
     outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
     outline-offset: 2px;
+}
+#mck-message-cell .mck-m-b:focus-visible {
+    border-radius: 16px;
+}
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
+    box-shadow: 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 #mck-contacts-content {
     position: absolute;
@@ -3112,13 +3103,24 @@ ul.mck-intent-menu > li:hover {
 .km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
 .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
-    border-right: none;
+    border-inline-end: none;
     border-radius: 26px 0 0 26px;
 }
 .km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
 .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
     border-radius: 0 26px 26px 0;
+}
+
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
+    border-radius: 0 26px 26px 0;
+}
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
+    border-radius: 26px 0 0 26px;
 }
 .km-start-conversation-actions.km-voice-option-enabled::after {
     content: '';
@@ -4855,9 +4857,6 @@ div#mck-waiting-queue {
     color: var(--km-font-meta-contrast-color);
 }
 
-.mck-cont-msg-date .mck-conversation-status-time {
-    color: var(--km-font-meta-contrast-color) !important;
-}
 
 /* -----------------Support for hiding form post form submission------------- */
 .mck-msg-left [data-hidepostformsubmit='true'] {

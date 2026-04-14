@@ -46,11 +46,11 @@ Kommunicate.getFaqList = function (data, categoryName) {
                 ? $applozic.each(response.data, function (i, faq) {
                       var title = faq && faq.title && kommunicateCommons.formatHtmlTag(faq.title);
                       $applozic('#km-faq-list-container').append(
-                          '<li class="km-faq-list km-focus-ring--card km-focus-ring--card--tint" aria-disabled="false" role="button" tabindex="0" data-source="' +
+                          '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
                               faq.source +
                               '" data-articleId="' +
                               faq.articleId +
-                              '"><a class="km-faqdisplay km-focus-ring--card km-focus-ring--card--tint"><div class="km-faqimage">' +
+                              '"><a class="km-faqdisplay"><div class="km-faqimage">' +
                               KommunicateUI.faqSVGImage +
                               '</div> <div class="km-faqanchor">' +
                               title +
@@ -99,7 +99,7 @@ Kommunicate.getFaqCategories = function (data) {
                 );
                 var safeCategoryNameForAria = kommunicateCommons.escapeAttributeValue(categoryName);
                 $applozic('.km-faq-category-list-container').append(
-                    '<div class="km-faq-category-card km-focus-ring--card km-focus-ring--card--tint" role="button" tabindex="0" aria-label="' +
+                    '<div class="km-faq-category-card" role="button" tabindex="0" aria-label="' +
                         safeCategoryNameForAria +
                         '" data-category-name="' +
                         safeCategoryNameAttr +
