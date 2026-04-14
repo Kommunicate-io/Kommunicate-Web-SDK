@@ -778,9 +778,6 @@ class Voice {
         if (typeof sampleCount === 'number') {
             metadata.sampleCount = sampleCount;
         }
-        if (operation === 'voiceToText') {
-            console.debug(`Voice STT request send (${transport})`, metadata);
-        }
     }
 
     handleOmnichannelVoiceError(error, { transport, silentMessage, defaultMessage }) {
@@ -1015,7 +1012,6 @@ class Voice {
             payload.ucid = String(resolvedUcid);
         }
         const socketConfig = this.getVoiceSocketConfig('stt');
-        const sttRequestStartedAt = Date.now();
         const response = await this.requestOmnichannelVoiceTransport({
             payload,
             socketConfig,
@@ -1026,19 +1022,6 @@ class Voice {
             operation: 'voiceToText',
             enableSilentAudioLogging: true,
             preferSocket: false,
-        });
-        console.debug('Voice STT response completed', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            operation: 'voiceToText',
-            durationMs: Date.now() - sttRequestStartedAt,
-            sampleCount: samples.length,
-            sttMode: payload.sttMode,
-            textLength:
-                response && typeof response.text === 'string' ? response.text.trim().length : 0,
-            languageCode:
-                response && typeof response.languageCode === 'string' ? response.languageCode : '',
         });
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {

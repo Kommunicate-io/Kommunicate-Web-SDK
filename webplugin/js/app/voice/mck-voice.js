@@ -2248,10 +2248,6 @@ class MckVoice {
             this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
             this.pendingVoiceSessionSource = null;
         }
-        console.debug('Voice recording started', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-        });
 
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
@@ -3450,11 +3446,6 @@ class MckVoice {
                     return;
                 }
                 if (continuationElapsed >= continuationMaxSilenceMs) {
-                    console.debug('Voice continuation long silence reached, stopping cycle', {
-                        continuationElapsed,
-                        continuationMaxSilenceMs,
-                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                    });
                     this.stopRecording(false, 'continuation_idle');
                     return;
                 }
@@ -3511,10 +3502,6 @@ class MckVoice {
                 this.isInSilence &&
                 silenceElapsed >= continuationMaxSilenceMs
             ) {
-                console.debug('Voice continuation long silence reached, stopping cycle', {
-                    silenceElapsedMs: silenceElapsed,
-                    continuationMaxSilenceMs,
-                });
                 this.stopRecording(false, 'continuation_idle');
                 return;
             }
@@ -3567,18 +3554,6 @@ class MckVoice {
             this.startSilenceTimeout();
             return;
         }
-        console.debug('Voice silence threshold reached', {
-            silenceDurationMs: silenceDuration,
-            silenceThresholdMs: this.voiceInputSettings.silenceDuration,
-            continuationMinWaitMs:
-                this.voiceInputSettings.continuationMinWaitMs ||
-                this._VOICE_CONTINUATION_MIN_WAIT_MS,
-            continuationMaxSilenceMs:
-                this.voiceInputSettings.continuationMaxSilenceMs ||
-                this._VOICE_CONTINUATION_MAX_SILENCE_MS,
-            activeRecognitionMode: this.activeRecognitionMode,
-        });
-        console.debug('User silent for a few moments, stopping recording segment');
         this.addThinkingAnimation();
         this.updateLiveTranscript(
             this.getVoiceLabel(
@@ -4231,25 +4206,9 @@ class MckVoice {
             return;
         }
         if (this.mediaRecorder && this.isRecording) {
-            const silenceElapsedMs = this.silenceStart ? Date.now() - this.silenceStart : 0;
             this.recordingStopReason = stopReason;
-            console.debug('Voice recording stop requested', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                forceStop: Boolean(forceStop),
-                stopReason,
-                silenceElapsedMs,
-                isInSilence: this.isInSilence,
-                speechDetected: this.speechDetected,
-            });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
-            console.debug('Voice recording stop invoked', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                stopReason,
-                silenceElapsedMs,
-            });
 
             if (this.maxRecordingTimer) {
                 clearTimeout(this.maxRecordingTimer);

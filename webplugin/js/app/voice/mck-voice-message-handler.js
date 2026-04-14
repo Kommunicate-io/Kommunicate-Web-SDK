@@ -9,14 +9,6 @@ var kmIsWelcomeVoiceMessage = function (message) {
 };
 
 var kmVoiceMessageHandler = {
-    isVoiceStreamingEnabled: function () {
-        return mckVoice?.shouldUseVoiceStreamPlayback();
-    },
-
-    isVoiceInterfaceActive: function () {
-        return mckVoice?.isVoiceModeActive();
-    },
-
     isIncomingBotMessage: function (message) {
         return message && (message.type === 0 || message.type === 4 || message.type === 6);
     },
@@ -38,13 +30,7 @@ var kmVoiceMessageHandler = {
             message.metadata.lastToken === 'true' &&
             !message.tokenMessage &&
             Boolean(message.message);
-        if (
-            typeof Kommunicate !== 'undefined' &&
-            Kommunicate &&
-            typeof Kommunicate.visibleMessage === 'function' &&
-            !Kommunicate.visibleMessage(message, msgThroughListAPI) &&
-            !isFinalStreamingMessage
-        ) {
+        if (!Kommunicate.visibleMessage(message, msgThroughListAPI) && !isFinalStreamingMessage) {
             return false;
         }
         if (
@@ -76,30 +62,18 @@ var kmVoiceMessageHandler = {
         if (!metadata) {
             return false;
         }
-        if (KommunicateUtils?.isCurrentAssigneeBot()) {
+        if (KommunicateUtils.isCurrentAssigneeBot()) {
             return true;
         }
-        if (
-            typeof KommunicateConstants !== 'undefined' &&
-            KommunicateConstants &&
-            KommunicateConstants.MESSAGE_SOURCE &&
-            metadata.source === KommunicateConstants.MESSAGE_SOURCE.PLATFORM
-        ) {
+        if (metadata.source === KommunicateConstants.MESSAGE_SOURCE.PLATFORM) {
             return true;
         }
-        var senderName =
-            typeof metadata.senderName === 'string' ? metadata.senderName.toLowerCase() : '';
+        var senderName = metadata.senderName ? metadata.senderName.toLowerCase() : '';
         return senderName === 'bot';
     },
 
     handleSocketVoiceStream: function (message, tabId, appOptions) {
-        if (
-            appOptions &&
-            appOptions.voiceChat &&
-            this.isVoiceStreamErrorMessage(message) &&
-            mckVoice &&
-            typeof mckVoice.handleVoiceStreamError === 'function'
-        ) {
+        if (appOptions && appOptions.voiceChat && this.isVoiceStreamErrorMessage(message)) {
             mckVoice.handleVoiceStreamError(message);
             return true;
         }
@@ -107,7 +81,7 @@ var kmVoiceMessageHandler = {
             !appOptions ||
             !appOptions.voiceChat ||
             !this.isVoiceStreamMessage(message) ||
-            !this.isVoiceStreamingEnabled() ||
+            !mckVoice.shouldUseVoiceStreamPlayback() ||
             !this.isCurrentConversationMessage(
                 {
                     groupId: message?.messageMetadata?.groupId,
@@ -125,7 +99,7 @@ var kmVoiceMessageHandler = {
 
     canQueueVoiceMessage: function (message, appOptions, msgThroughListAPI) {
         return (
-            this.isVoiceInterfaceActive() &&
+            mckVoice.isVoiceModeActive() &&
             this.isIncomingBotMessage(message) &&
             this.isEligibleForUIRendering(message, msgThroughListAPI) &&
             message &&
@@ -156,12 +130,7 @@ var kmVoiceMessageHandler = {
         ) {
             return false;
         }
-        var displayName =
-            typeof mckMessageLayout !== 'undefined' &&
-            mckMessageLayout &&
-            typeof mckMessageLayout.getTabDisplayName === 'function'
-                ? mckMessageLayout.getTabDisplayName(message.to, false)
-                : '';
+        var displayName = mckMessageLayout.getTabDisplayName(message.to, false);
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
         return true;
