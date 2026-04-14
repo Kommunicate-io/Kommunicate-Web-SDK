@@ -3728,7 +3728,7 @@ div#mck-tab-title.mck-tab-title {
 #mck-tab-title,
 #mck-agent-status-text,
 #mck-conversation-title {
-    color: var(--km-primary-title-color, #eae3ff) !important;
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff)) !important;
 }
 #mck-conversation-back-btn,
 .mck-conversation-tab-link,
