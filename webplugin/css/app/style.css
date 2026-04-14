@@ -1667,9 +1667,6 @@ input[type=number]::-webkit-outer-spin-button {
   color: #1c1c1c;
   text-align: center;
 }
-.mck-sidebox .km-empty-conversation-card__info {
-  margin: 24px 0 4px !important;
-}
 
 .km-empty-conversation-card__previews {
   list-style: none;
@@ -3587,14 +3584,11 @@ div#mck-rated:before {
 }
 
 .mck-contact-list .mck-cont-msg-date {
-  color: var(--km-font-meta-contrast-color);
-}
-
-.mck-contact-list .mck-cont-msg-date {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   white-space: nowrap;
+  color: var(--km-font-meta-contrast-color);
 }
 @supports (gap: 6px) {
   .mck-contact-list .mck-cont-msg-date {
@@ -3642,9 +3636,6 @@ div#mck-rated:before {
   color: var(--km-font-meta-contrast-color);
 }
 
-.mck-cont-msg-date .mck-conversation-status-time {
-  color: var(--km-font-meta-contrast-color) !important;
-}
 
 .mck-running-on {
   text-align: center;
