@@ -5759,6 +5759,7 @@ const firstVisibleMsg = {
                                     .addClass('mck-sent-icon')
                                     .attr('title', 'sent');
                                 mckMessageLayout.addTooltip(messageKey);
+                                mckMessageLayout.announceStatus(MCK_LABELS['message.sent.status']);
                                 if (optns.isTopPanelAdded) {
                                     $mck_tab_option_panel.data('datetime', data.createdAt);
                                 }
@@ -6794,10 +6795,34 @@ const firstVisibleMsg = {
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var inlineTemplateIdCounter = 0;
 
+            _this.announceStatus = function (text) {
+                if (!text) {
+                    return;
+                }
+                var statusEl = document.getElementById('mck-status-live');
+                if (!statusEl) {
+                    return;
+                }
+                statusEl.textContent = '';
+                window.setTimeout(function () {
+                    statusEl.textContent = text;
+                }, 50);
+            };
+
+            _this.getAccessibleMessageText = function (msg) {
+                if (!msg || typeof msg.message === 'undefined' || msg.message === null) {
+                    return '';
+                }
+                if (typeof msg.message !== 'string') {
+                    return '';
+                }
+                return msg.message.replace(/<[^>]*>/g, '').trim();
+            };
+
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
-                '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
+                '<div tabindex="0" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
                 '<div class="mck-clear">' +
                 '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name">${msgNameExpr}</div>' +
@@ -8179,6 +8204,10 @@ const firstVisibleMsg = {
                         : $applozic
                               .tmpl('messageTemplate', msgList)
                               .prependTo('#mck-message-cell .mck-message-inner');
+                }
+                if (!isUserMsg && !msgThroughListAPI) {
+                    var receivedText = _this.getAccessibleMessageText(msg);
+                    _this.announceStatus(receivedText || MCK_LABELS['message.received.status']);
                 }
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;

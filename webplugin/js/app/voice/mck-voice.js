@@ -2323,6 +2323,15 @@ class MckVoice {
         }
         element.textContent = text;
         container.classList.remove('mck-hidden');
+        if (text) {
+            const statusEl = document.getElementById('mck-status-live');
+            if (statusEl) {
+                statusEl.textContent = '';
+                setTimeout(() => {
+                    statusEl.textContent = window.MCK_LABELS['voice.response.received.status'];
+                }, 50);
+            }
+        }
         if (autoHide > 0) {
             this.responseTimeout = setTimeout(() => {
                 this.responseTimeout = null;

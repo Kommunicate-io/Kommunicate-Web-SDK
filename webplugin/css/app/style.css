@@ -1223,10 +1223,7 @@ input[type=number]::-webkit-outer-spin-button {
   box-shadow: 0 0 0 2px rgba(95, 70, 248, 0.35);
 }
 
-.mck-sidebox .km-quick-replies:focus-visible,
-.mck-sidebox .mck-msg-box a:focus-visible,
-.mck-sidebox .mck-msg-box button:focus-visible,
-.mck-sidebox .mck-msg-box [role=button]:focus-visible {
+.mck-sidebox .mck-msg-box :is(a, button, [role=button]):focus-visible {
   outline: 2px solid rgba(95, 70, 248, 0.45);
   outline-offset: 2px;
 }
