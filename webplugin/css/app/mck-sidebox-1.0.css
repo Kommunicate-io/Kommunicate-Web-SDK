@@ -408,23 +408,25 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     text-decoration: underline;
 }
 
-.mck-sidebox a:focus,
-.mck-sidebox a:focus-visible {
+#mck-sidebox a:focus,
+#mck-sidebox a:focus-visible {
     outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
     outline-offset: 2px !important;
     border-radius: 6px;
 }
-.mck-sidebox button:focus-visible {
+#mck-sidebox button:focus-visible,
+#mck-sidebox :focus-visible:not(button) {
     outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
     outline-offset: 2px !important;
     box-shadow: none !important;
     border-radius: 8px;
 }
-.mck-sidebox :focus-visible:not(button) {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
-    outline-offset: 2px !important;
+#mck-sidebox :focus:not(:focus-visible),
+#mck-sidebox input:focus-visible,
+#mck-sidebox textarea:focus-visible,
+#mck-sidebox [contenteditable='true']:focus-visible {
+    outline: none !important;
     box-shadow: none !important;
-    border-radius: 8px;
 }
 
 /* Conversation list focus */
@@ -444,8 +446,10 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 }
 
 /* Header buttons + FAQ + CSAT focus (visible on purple header) */
-.km-header-container button:focus-visible,
-.km-header-container [role='button']:focus-visible,
+#mck-sidebox .km-header-container button:focus-visible,
+#mck-sidebox .km-header-container [role='button']:focus-visible,
+#mck-sidebox .km-header-container button:focus,
+#mck-sidebox .km-header-container [role='button']:focus,
 #km-faq:focus-visible,
 .km-faq:focus-visible,
 #km-csat-trigger:focus-visible {
