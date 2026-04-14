@@ -51,6 +51,16 @@ const firstVisibleMsg = {
 
 (function ($applozic, w, d) {
     'use strict';
+    function isActivationKey(key) {
+        return key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 13 || key === 32;
+    }
+    function handleActivationKey(e, handler) {
+        var key = e.key || e.keyCode;
+        if (isActivationKey(key)) {
+            e.preventDefault();
+            handler();
+        }
+    }
     if (!w.applozic) {
         w.applozic = w.applozic ? w.applozic : {};
         $applozic.extend(true, w.applozic, {
@@ -6955,18 +6965,6 @@ const firstVisibleMsg = {
                     input: input,
                     button: button,
                 };
-            }
-            function isActivationKey(key) {
-                return (
-                    key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 13 || key === 32
-                );
-            }
-            function handleActivationKey(e, handler) {
-                var key = e.key || e.keyCode;
-                if (isActivationKey(key)) {
-                    e.preventDefault();
-                    handler();
-                }
             }
             function bindDropdownKeyboardActivation() {
                 $applozic(d)
