@@ -76,6 +76,12 @@ Keep this file updated as you learn more nuances so future automation agents can
 -   If creating new logic, confirm no existing implementation can be reused.
 -   Briefly state why reuse is not possible when new code is necessary.
 
+5. Fix Root Cause (NOT Symptoms)
+
+-   Do NOT apply quick patches or surface-level fixes
+-   Identify and fix the underlying cause of the issue
+-   Avoid band-aids, workarounds, or redundant guards
+
 ## Final Checklist (REQUIRED)
 
 -   No duplicate logic or functions.
@@ -83,3 +89,4 @@ Keep this file updated as you learn more nuances so future automation agents can
 -   No redundant runtime checks.
 -   New code is necessary and justified.
 -   If any condition fails, fix it before responding.
+-   Root cause identified and fixed (not just symptoms)
