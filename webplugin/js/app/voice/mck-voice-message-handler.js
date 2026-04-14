@@ -1,3 +1,13 @@
+var kmIsWelcomeVoiceMessage = function (message) {
+    var metadata = message && message.metadata ? message.metadata : {};
+    return Boolean(
+        metadata &&
+            (metadata.WELCOME_EVENT === true ||
+                metadata.WELCOME_EVENT === 'true' ||
+                metadata.KM_TRIGGER_EVENT === 'WELCOME')
+    );
+};
+
 var kmVoiceMessageHandler = {
     isVoiceStreamingEnabled: function () {
         return mckVoice?.shouldUseVoiceStreamPlayback();
@@ -59,15 +69,7 @@ var kmVoiceMessageHandler = {
         return Boolean(message && message.type === 'voice_stream_error');
     },
 
-    isWelcomeVoiceMessage: function (message) {
-        var metadata = message && message.metadata ? message.metadata : {};
-        return Boolean(
-            metadata &&
-                (metadata.WELCOME_EVENT === true ||
-                    metadata.WELCOME_EVENT === 'true' ||
-                    metadata.KM_TRIGGER_EVENT === 'WELCOME')
-        );
-    },
+    isWelcomeVoiceMessage: kmIsWelcomeVoiceMessage,
 
     isIncomingBotVoiceStream: function (message) {
         var metadata = message && message.messageMetadata;

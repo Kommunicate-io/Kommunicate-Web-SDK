@@ -49,3 +49,37 @@ This document captures conventions and project knowledge that help automation to
 -   Remember this widget runs inside customer sites—avoid global selectors that might bleed outside `#mck-sidebox`.
 
 Keep this file updated as you learn more nuances so future automation agents can operate safely and efficiently.
+
+## Code Quality Rules (MANDATORY)
+
+1. No Duplicate Code
+
+-   Do NOT create duplicate functions, utilities, or logic.
+-   Reuse existing modules whenever possible.
+-   If similar logic exists, extend or refactor it instead of rewriting it.
+
+2. Mandatory Deduplication Pass
+
+-   Before final output, check the entire diff for repeated logic or functions.
+-   Consolidate duplicates into a single implementation.
+-   Ensure the same logic does not exist twice in the same file.
+
+3. No Redundant Defensive Checks
+
+-   Do NOT add checks such as `typeof x === "object"`, `typeof x.func === "function"`, or `if (x && x.func)` unless they are critical.
+-   Assume internal code paths are valid if the code is already in use and no dynamic add/remove of that JavaScript is done.
+-   Assume types are enforced by TypeScript or validated inputs where applicable.
+-   Add validation only at external boundaries such as APIs or user input.
+
+4. Justify New Code
+
+-   If creating new logic, confirm no existing implementation can be reused.
+-   Briefly state why reuse is not possible when new code is necessary.
+
+## Final Checklist (REQUIRED)
+
+-   No duplicate logic or functions.
+-   Existing code reused where possible.
+-   No redundant runtime checks.
+-   New code is necessary and justified.
+-   If any condition fails, fix it before responding.
