@@ -1746,9 +1746,17 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-btn-text-panel:hover,
-.mck-btn-text-panel:focus {
+.mck-btn-text-panel:focus:not(:focus-visible) {
     background-color: rgba(53, 112, 255, 0.1) !important;
     color: #2f3747;
+}
+#mck-msg-sbmt:focus-visible,
+#send-button-wrapper:focus-visible #mck-msg-sbmt {
+    outline: none;
+    box-shadow: none;
+    border: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    box-sizing: border-box;
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.12) !important;
 }
 
 #send-button-wrapper {
