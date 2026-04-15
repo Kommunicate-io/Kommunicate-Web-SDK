@@ -4987,6 +4987,9 @@ const firstVisibleMsg = {
                 $applozic('#km-form-chat-login').submit(function (e) {
                     var $submit_chat_login = $applozic('#km-submit-chat-login');
                     var $error_chat_login = $applozic('#km-error-chat-login');
+                    if (_this.validatePreChatForm && !_this.validatePreChatForm()) {
+                        return false;
+                    }
                     var userId = $applozic('#km-userId').val();
                     var email = $applozic('#km-email').val();
                     var userName = $applozic('#km-name').val();
