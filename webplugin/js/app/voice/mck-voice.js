@@ -190,7 +190,7 @@ class MckVoice {
             payload.audioBlob instanceof Blob ||
                 payload.blob instanceof Blob ||
                 payload.file instanceof Blob ||
-                (typeof payload.audioChunk === 'string' && payload.audioChunk) ||
+                payload.audioChunk ||
                 (Array.isArray(payload.frames) && payload.frames.length) ||
                 payload.audioUrl ||
                 payload.streamUrl ||
@@ -546,11 +546,7 @@ class MckVoice {
     }
 
     isChunkedVoiceStreamPayload(message) {
-        return Boolean(
-            message &&
-                message.streamId &&
-                (typeof message.audioChunk === 'string' || message.chunkIndex !== undefined)
-        );
+        return Boolean(message && message.streamId && (message.audioChunk || message.chunkIndex));
     }
 
     decodeVoiceStreamChunk(base64Value) {
