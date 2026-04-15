@@ -274,9 +274,8 @@ class MckVoice {
                 payload.streamUrl ||
                 payload.url ||
                 (payload.fileMeta && (payload.fileMeta.url || payload.fileMeta.blobKey)) ||
-                (typeof base64Audio === 'string' && base64Audio) ||
-                (typeof payload.streamId === 'string' &&
-                    /^(blob:|data:|https?:)/i.test(payload.streamId))
+                base64Audio ||
+                /^(blob:|data:|https?:)/i.test(payload.streamId)
         );
     }
 
@@ -816,10 +815,7 @@ class MckVoice {
             existingItem.mimeType = message.format || existingItem.mimeType;
             existingItem.usesChunkedAudio =
                 existingItem.usesChunkedAudio || this.isChunkedVoiceStreamPayload(message);
-            if (
-                existingItem.payload.messageMetadata &&
-                typeof existingItem.payload.messageMetadata.senderName === 'string'
-            ) {
+            if (existingItem.payload?.messageMetadata?.senderName) {
                 existingItem.displayName = existingItem.payload.messageMetadata.senderName;
             }
             this.addVoiceStreamChunk(existingItem, message);
@@ -860,12 +856,9 @@ class MckVoice {
             type: 'voice_stream',
             streamId: message.streamId,
             isFinal: message.isFinal === true,
-            displayName:
-                message &&
-                message.messageMetadata &&
-                typeof message.messageMetadata.senderName === 'string'
-                    ? message.messageMetadata.senderName
-                    : '',
+            displayName: message?.messageMetadata?.senderName
+                ? message.messageMetadata.senderName
+                : '',
             payload: message,
             mimeType: message.format || 'audio/mpeg',
             usesChunkedAudio: this.isChunkedVoiceStreamPayload(message),
@@ -1021,16 +1014,13 @@ class MckVoice {
             };
         }
         const base64Audio = payload.audioBase64 || payload.base64Audio || payload.audioData;
-        if (typeof base64Audio === 'string' && base64Audio) {
+        if (base64Audio) {
             return {
                 kind: 'blob',
                 value: this.createAudioBlobFromBase64(base64Audio, payload.mimeType),
             };
         }
-        if (
-            typeof payload.streamId === 'string' &&
-            /^(blob:|data:|https?:)/i.test(payload.streamId)
-        ) {
+        if (payload?.streamId && /^(blob:|data:|https?:)/i.test(payload.streamId)) {
             return { kind: 'url', value: payload.streamId };
         }
         return null;
