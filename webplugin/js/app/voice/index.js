@@ -1024,7 +1024,7 @@ class Voice {
     }
 
     evaluatePcmInt16Quality(samples = []) {
-        const sampleCount = samples && typeof samples.length === 'number' ? samples.length : 0;
+        const sampleCount = samples.length;
         if (!sampleCount) {
             return {
                 isSilent: true,
@@ -1041,7 +1041,7 @@ class Voice {
         let zeroCrossings = 0;
         let previousSign = null;
         for (let i = 0; i < sampleCount; i++) {
-            const value = Number(samples[i]) || 0;
+            const value = samples[i];
             const absValue = Math.abs(value);
             if (value !== 0) {
                 nonZeroCount++;
@@ -1102,15 +1102,13 @@ class Voice {
     }
 
     async extractPcmInt16Samples(audioBlob, targetSampleRate) {
-        const resolvedTargetSampleRate =
-            Number(targetSampleRate) || this.getVoiceToTextSampleRate();
         const audioBuffer = await this.decodeAudioBlob(audioBlob);
         const mono = this.getMonoChannelData(audioBuffer);
         const preprocessed = this.preprocessSttFloat32Samples(mono, audioBuffer.sampleRate);
         const downsampled = this.resampleToTargetRate(
             preprocessed,
             audioBuffer.sampleRate,
-            resolvedTargetSampleRate
+            targetSampleRate
         );
         const int16Samples = this.float32ToInt16(downsampled);
         return Array.from(int16Samples);

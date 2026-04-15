@@ -1370,7 +1370,7 @@ class MckVoice {
     }
 
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
-        const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
+        const totalSamples = rawSamples.length;
         const preRollMs = Number(this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS);
         const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const maxChunkMs = Number(this.voiceInputSettings.maxChunkMs || this._VOICE_MAX_CHUNK_MS);
@@ -1409,7 +1409,7 @@ class MckVoice {
             let sumSquares = 0;
             let frameLength = 0;
             for (let i = start; i < end; i++) {
-                const sample = Number(rawSamples[i]) || 0;
+                const sample = rawSamples[i];
                 sumSquares += sample * sample;
                 frameLength++;
             }
@@ -1684,7 +1684,7 @@ class MckVoice {
                 let frameSumSquares = 0;
                 let frameLength = 0;
                 for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
-                    const sample = Number(chunkSamples[sampleIndex]) || 0;
+                    const sample = chunkSamples[sampleIndex];
                     frameSumSquares += sample * sample;
                     frameLength++;
                 }
@@ -1720,7 +1720,7 @@ class MckVoice {
                     let frameSumSquares = 0;
                     let frameLength = 0;
                     for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
-                        const sample = Number(chunkSamples[sampleIndex]) || 0;
+                        const sample = chunkSamples[sampleIndex];
                         frameSumSquares += sample * sample;
                         frameLength++;
                     }
@@ -1769,7 +1769,7 @@ class MckVoice {
             let sumSquares = 0;
             let maxAbs = 0;
             for (let j = 0; j < processedChunkSamples.length; j++) {
-                const value = Number(processedChunkSamples[j]) || 0;
+                const value = processedChunkSamples[j];
                 const absValue = Math.abs(value);
                 sumSquares += value * value;
                 if (absValue > maxAbs) {
@@ -2915,10 +2915,7 @@ class MckVoice {
         }
         const sourceRate = vadCaptureSampleRate || 16000;
         const targetRate = kmVoice.getVoiceToTextSampleRate();
-        const preprocessed =
-            typeof kmVoice.preprocessSttFloat32Samples === 'function'
-                ? kmVoice.preprocessSttFloat32Samples(merged, sourceRate)
-                : merged;
+        const preprocessed = kmVoice.preprocessSttFloat32Samples(merged, sourceRate);
         const resampled = kmVoice.resampleToTargetRate(preprocessed, sourceRate, targetRate);
         const int16 = kmVoice.float32ToInt16(resampled);
         return Array.from(int16);
