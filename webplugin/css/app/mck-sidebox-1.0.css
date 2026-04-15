@@ -432,8 +432,9 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     outline: none;
     box-shadow: none;
 }
-/* Header buttons: avoid clipped ring in header bar */
-#mck-sidebox .km-header-container :is(button, [role='button']):focus-visible {
+/* Header buttons + CSAT close: avoid clipped ring */
+#mck-sidebox .km-header-container :is(button, [role='button']):focus-visible,
+#mck-sidebox .mck-csat-wrapper :is(button, [role='button']):focus-visible {
     outline: none;
     box-shadow: inset 0 0 0 2px #ffffff, inset 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9);
     border-radius: 0;
@@ -441,11 +442,11 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 
 /* Header icons (attachment/emoji/etc.) focus */
 #mck-sidebox .mck-icons-wrapper button:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
-    outline-offset: 2px;
-    box-shadow: none;
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
     border-radius: 0;
 }
+
 
 /* Bottom tabs focus (clean) */
 .km-bottom-tab:focus-visible,
@@ -3060,6 +3061,20 @@ ul.mck-intent-menu > li:hover {
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
     background-color: var(--km-widget-bg, #fff);
     position: relative;
+}
+.km-start-conversation-actions :is(button, [role='button']):focus-visible {
+    outline: none;
+    background-color: transparent;
+    box-shadow: none;
+    position: relative;
+}
+.km-start-conversation-actions :is(button, [role='button']):focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    border-radius: 999px;
+    pointer-events: none;
 }
 #km-conversations-empty .km-start-conversation-actions,
 .km-empty-conversation-card__cta-wrap .km-start-conversation-actions {
