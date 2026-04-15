@@ -4513,6 +4513,15 @@ const firstVisibleMsg = {
                         kommunicateCommons.show('#launcher-svg-container');
                     }
                 });
+                $applozic(d).on(
+                    'keydown',
+                    '#mck-sidebox-launcher .applozic-launcher',
+                    function (e) {
+                        handleActivationKey(e, function () {
+                            $applozic('#mck-sidebox-launcher .applozic-launcher').trigger('click');
+                        });
+                    }
+                );
                 $applozic(d).on('click', '#talk-to-human-link', function (event) {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
                     kommunicateCommons.hide('#km-faq');
