@@ -414,7 +414,7 @@ function createKommunicateIframe() {
     var userAgent = navigator.userAgent || '';
     var isSafari =
         /Safari/i.test(userAgent) &&
-        !/Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
+        !/Chrome|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
         !/Android/i.test(userAgent);
     var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
     if (iframeSupportsSrcdoc) {
