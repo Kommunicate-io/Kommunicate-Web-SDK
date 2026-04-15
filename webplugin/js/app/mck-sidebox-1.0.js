@@ -8783,7 +8783,7 @@ const firstVisibleMsg = {
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
@@ -8801,7 +8801,7 @@ const firstVisibleMsg = {
                             return (
                                 '<a href="https://maps.google.com/maps?z=17&t=m&q=loc:' +
                                 msg.message +
-                                '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                                 msg.message +
                                 '&maptype=roadmap&markers=color:red|' +
                                 msg.message +
@@ -9040,7 +9040,7 @@ const firstVisibleMsg = {
                     var geoLoc = $applozic.parseJSON(message.message);
                     var coords = geoLoc.lat + ',' + geoLoc.lon;
                     return (
-                        '<span>location</span><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '<span>location</span><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                         coords +
                         '&maptype=roadmap&markers=color:red|' +
                         coords +
@@ -9089,7 +9089,7 @@ const firstVisibleMsg = {
                     return (
                         '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
                         displayName +
-                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                         geoLoc.lat +
                         ',' +
                         geoLoc.lon +

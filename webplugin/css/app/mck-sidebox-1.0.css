@@ -3251,6 +3251,11 @@ ul.mck-intent-menu > li:hover {
     margin: 0;
     z-index: 10;
 }
+#mck-sidebox .km-faq-list:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08);
+}
 .km-faq-category-list-container {
     display: flex;
     flex-wrap: wrap;
