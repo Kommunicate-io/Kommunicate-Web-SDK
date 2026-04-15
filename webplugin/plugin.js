@@ -514,7 +514,8 @@ function addKommunicatePluginToIframe() {
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
 
-    var options = addableWindow.applozic._globals;
+    var options = addableWindow.applozic._globals || {};
+    addableWindow.applozic._globals = options;
     options.__KM_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
     options.KM_VER = MCK_PLUGIN_VERSION === 'v3' ? 'v2' : MCK_PLUGIN_VERSION;
     if (typeof options !== 'undefined') {
