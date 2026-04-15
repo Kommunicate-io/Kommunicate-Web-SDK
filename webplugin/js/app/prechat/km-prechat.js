@@ -406,6 +406,7 @@ var KMPreChat = (function () {
             kmChatInput.setAttribute('name', inputName);
             if (preLeadCollection.required) {
                 kmChatInput.setAttribute('required', preLeadCollection.required);
+                kmChatInput.setAttribute('aria-required', 'true');
             }
             if (
                 preLeadCollection.element === 'select' &&

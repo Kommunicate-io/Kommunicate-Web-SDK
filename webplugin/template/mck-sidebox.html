@@ -121,6 +121,9 @@
                                 id="options"
                                 data-toggle="mckdropdown"
                                 aria-expanded="false"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Options"
                             >
                                 <svg
                                     width="16"
@@ -139,7 +142,13 @@
                                 aria-labelledby="options"
                             >
                                 <li>
-                                    <div class="menu-item n-vis" id="km-csat-trigger">
+                                    <div
+                                        class="menu-item n-vis"
+                                        id="km-csat-trigger"
+                                        role="button"
+                                        tabindex="0"
+                                        aria-label="Rate this conversation"
+                                    >
                                         <svg
                                             width="16"
                                             height="16"
@@ -201,7 +210,12 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="menu-item km-option-faq n-vis" id="km-faq-option">
+                                    <div
+                                        class="menu-item km-option-faq n-vis"
+                                        id="km-faq-option"
+                                        role="button"
+                                        tabindex="0"
+                                    >
                                         <svg
                                             width="16"
                                             height="16"
@@ -219,6 +233,8 @@
                                     <div
                                         class="menu-item km-option-talk-to-human n-vis"
                                         id="km-talk-to-human"
+                                        role="button"
+                                        tabindex="0"
                                     >
                                         <svg
                                             width="16"
@@ -295,6 +311,9 @@
                                 class="mck-dropdown-toggle"
                                 data-toggle="mckdropdown"
                                 aria-expanded="true"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Conversation options"
                             >
                                 <svg
                                     focusable="false"
@@ -491,7 +510,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="km-faqdiv">
+                        <div id="km-faqdiv" tabindex="0" role="region" aria-label="FAQs">
                             <div class="km-faq-category-list-container"></div>
                             <ul id="km-faq-list-container" class="km-faq-list-container"></ul>
                         </div>
@@ -674,7 +693,13 @@
                     </div>
                     <div class="mck-ratings-smilies">
                         <div class="mck-smilies-inner vis">
-                            <div class="mck-rating-box mck-rating-box-bad" data-rating="1">
+                            <div
+                                class="mck-rating-box mck-rating-box-bad"
+                                data-rating="1"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Poor"
+                            >
                                 <svg
                                     width="20"
                                     height="21"
@@ -686,7 +711,13 @@
                                     <use xlink:href="#icon-18" href="#icon-18"></use>
                                 </svg>
                             </div>
-                            <div class="mck-rating-box mck-rating-box-average" data-rating="5">
+                            <div
+                                class="mck-rating-box mck-rating-box-average"
+                                data-rating="5"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Average"
+                            >
                                 <svg
                                     width="20"
                                     height="21"
@@ -698,7 +729,13 @@
                                     <use xlink:href="#icon-19" href="#icon-19"></use>
                                 </svg>
                             </div>
-                            <div class="mck-rating-box mck-rating-box-great" data-rating="10">
+                            <div
+                                class="mck-rating-box mck-rating-box-great"
+                                data-rating="10"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Great"
+                            >
                                 <svg
                                     width="20"
                                     height="20"
@@ -913,6 +950,13 @@
                     >
                 </div>
                 <div id="mck-conversation-status-box" class="n-vis mck-row"></div>
+                <div
+                    id="mck-status-live"
+                    class="sr-only"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                ></div>
                 <div id="mck-char-warning" class="km-custom-widget-background-color n-vis">
                     <div>
                         <p id="mck-char-warning-text"></p>
@@ -1072,10 +1116,8 @@
                                         <div
                                             id="mck-mic-animation-container"
                                             class="mck-mic-animation-container n-vis mck-btn-text-panel"
-                                            aria-disabled="false"
                                             title="Voice Input"
                                             aria-label="Voice Input"
-                                            tabindex="0"
                                         >
                                             <div
                                                 id="mck-animation-outer"
@@ -1087,6 +1129,9 @@
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
                                                 class="mck-btn-text-panel"
+                                                role="button"
+                                                tabindex="0"
+                                                aria-label="Voice input options"
                                             >
                                                 <svg
                                                     focusable="false"
@@ -1180,6 +1225,9 @@
                                                 data-toggle="mckdropdown"
                                                 aria-expanded="false"
                                                 title="Quick replies"
+                                                role="button"
+                                                tabindex="0"
+                                                aria-label="Quick replies"
                                             >
                                                 <svg
                                                     width="24"
@@ -1260,6 +1308,8 @@
                                             class="mck-blk-8 mck-text-box mck-text required notranslate"
                                             data-text="Type your message..."
                                             aria-label="Type your message..."
+                                            role="textbox"
+                                            aria-multiline="true"
                                             tabindex="0"
                                         ></div>
 

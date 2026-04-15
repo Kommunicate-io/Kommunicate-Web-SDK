@@ -400,9 +400,6 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 
 .mck-sidebox a {
     color: var(--km-primary-color, #5f46f8);
-}
-
-.mck-sidebox a {
     background-color: transparent;
 }
 
@@ -411,8 +408,52 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
     text-decoration: underline;
 }
 
-.mck-sidebox a:focus {
+/* Global focus ring (keyboard only) */
+#mck-sidebox :is(a, button, [role='button'], input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    outline-offset: 2px;
+    box-shadow: none;
+    border-radius: 0;
+}
+#mck-sidebox .mck-contact-list :is(li, a):focus-visible,
+#mck-sidebox .mck-contact-list li:focus-within {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    border-radius: 0;
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08);
+}
+#mck-sidebox :focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+/* Inputs: no outline on click or keyboard */
+#mck-sidebox :is(input, textarea, [contenteditable='true']):focus,
+#mck-sidebox :is(input, textarea, [contenteditable='true']):focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+/* Header buttons + CSAT close: avoid clipped ring */
+#mck-sidebox .km-header-container :is(button, [role='button']):focus-visible,
+#mck-sidebox .mck-csat-wrapper :is(button, [role='button']):focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px #ffffff, inset 0 0 0 4px rgba(var(--km-accent-rgb, 95, 70, 248), 0.9);
+    border-radius: 0;
+}
+
+/* Header icons (attachment/emoji/etc.) focus */
+#mck-sidebox .mck-icons-wrapper button:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    border-radius: 0;
+}
+
+
+/* Bottom tabs focus (clean) */
+.km-bottom-tab:focus-visible,
+.km-bottom-tab--collapse:focus-visible {
     outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.7) !important;
+    border-radius: 14px;
 }
 
 .mck-form-group {
@@ -1414,6 +1455,20 @@ body.km-container-mode.km-container-mode--hide-controls .km-bottom-tab.km-bottom
 .mck-box-body .mck-message-inner:focus {
     outline: none;
 }
+#mck-message-cell .mck-m-b:focus-visible,
+.mck-sidebox .km-quick-replies:focus-visible,
+.mck-sidebox .mck-msg-box a:focus-visible,
+.mck-sidebox .mck-msg-box button:focus-visible,
+.mck-sidebox .mck-msg-box [role="button"]:focus-visible {
+    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
+    outline-offset: 2px;
+}
+#mck-message-cell .mck-m-b:focus-visible {
+    border-radius: 16px;
+}
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
+    box-shadow: 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
+}
 #mck-contacts-content {
     position: absolute;
     bottom: 15px;
@@ -1691,9 +1746,17 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-btn-text-panel:hover,
-.mck-btn-text-panel:focus {
+.mck-btn-text-panel:focus:not(:focus-visible) {
     background-color: rgba(53, 112, 255, 0.1) !important;
     color: #2f3747;
+}
+#mck-msg-sbmt:focus-visible,
+#send-button-wrapper:focus-visible #mck-msg-sbmt {
+    outline: none;
+    box-shadow: none;
+    border: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75) !important;
+    box-sizing: border-box;
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.12) !important;
 }
 
 #send-button-wrapper {
@@ -1749,7 +1812,7 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-file-box .mck-file-sz {
-    color: #777;
+    color: #6b6b6b;
     display: inline-block;
     vertical-align: middle;
 }
@@ -1942,7 +2005,7 @@ ul.mck-intent-menu > li:hover {
 
 .mck-text-muted {
     color: inherit;
-    opacity: 0.4;
+    opacity: 1;
 }
 
 .mck-msg-left-muted {
@@ -2660,7 +2723,7 @@ ul.mck-intent-menu > li:hover {
 .mck-conversation-name {
     margin-left: 65px;
     font-size: 12px;
-    color: #a8a8ac;
+    color: var(--km-font-meta-contrast-color);
     letter-spacing: 0.3px;
 }
 
@@ -3005,6 +3068,21 @@ ul.mck-intent-menu > li:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
         0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
     background-color: var(--km-widget-bg, #fff);
+    position: relative;
+}
+.km-start-conversation-actions :is(button, [role='button']):focus-visible {
+    outline: none;
+    background-color: transparent;
+    box-shadow: none;
+    position: relative;
+}
+.km-start-conversation-actions :is(button, [role='button']):focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    border-radius: 999px;
+    pointer-events: none;
 }
 #km-conversations-empty .km-start-conversation-actions,
 .km-empty-conversation-card__cta-wrap .km-start-conversation-actions {
@@ -3038,16 +3116,29 @@ ul.mck-intent-menu > li:hover {
 #mck-msg-new {
     border-radius: 26px;
 }
-.km-start-conversation-actions.km-voice-option-enabled #mck-msg-new,
-.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-cta {
-    border-right: 1px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.22);
+.km-start-conversation-actions.km-voice-option-enabled > :first-child {
+    border-inline-end: none;
     border-radius: 26px 0 0 26px;
 }
-.km-start-conversation-actions.km-voice-option-enabled #km-start-with-voice-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-conversations-empty-voice-cta,
-.km-start-conversation-actions.km-voice-option-enabled #km-empty-conversation-voice-cta {
+.km-start-conversation-actions.km-voice-option-enabled > :last-child {
     border-radius: 0 26px 26px 0;
+}
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled > :first-child {
+    border-radius: 0 26px 26px 0;
+}
+[dir='rtl'] .km-start-conversation-actions.km-voice-option-enabled > :last-child {
+    border-radius: 26px 0 0 26px;
+}
+.km-start-conversation-actions.km-voice-option-enabled::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    left: 50%;
+    transform: translateX(-0.5px);
+    background: rgba(var(--km-accent-rgb, 95, 70, 248), 0.22);
+    pointer-events: none;
 }
 #mck-msg-new:hover,
 #km-start-with-voice-cta:hover,
@@ -3063,8 +3154,9 @@ ul.mck-intent-menu > li:hover {
 #km-conversations-empty-voice-cta:focus-visible,
 #km-empty-conversation-cta:focus-visible,
 #km-empty-conversation-voice-cta:focus-visible {
-    outline: 2px solid rgba(var(--km-accent-rgb, 95, 70, 248), 0.45);
-    outline-offset: 2px;
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.06) !important;
 }
 #mck-msg-new:focus,
 #km-start-with-voice-cta:focus,
@@ -3181,6 +3273,11 @@ ul.mck-intent-menu > li:hover {
     cursor: pointer;
     margin: 0;
     z-index: 10;
+}
+#mck-sidebox .km-faq-list:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(var(--km-accent-rgb, 95, 70, 248), 0.75);
+    background-color: rgba(var(--km-accent-rgb, 95, 70, 248), 0.08);
 }
 .km-faq-category-list-container {
     display: flex;
@@ -3642,6 +3739,11 @@ div#mck-tab-title.mck-tab-title {
     text-overflow: ellipsis;
     max-width: 140px;
 }
+#mck-tab-title,
+#mck-agent-status-text,
+#mck-conversation-title {
+    color: var(--km-on-primary-link, var(--km-on-primary, #ffffff)) !important;
+}
 #mck-conversation-back-btn,
 .mck-conversation-tab-link,
 .km-faq-back-btn {
@@ -3926,7 +4028,7 @@ button {
     min-width: 25px;
     height: 25px;
     border-radius: 50px;
-    background-color: #ec3838;
+    background-color: #d43232;
     border: 3px solid #fff;
     text-align: center;
     color: white;
@@ -4033,6 +4135,11 @@ button {
 }
 .mck-delivered-icon .mck-delivery-report--delivered-read {
     display: block;
+    fill: #6b6b6b;
+    stroke: #4f4f4f;
+    stroke-width: 0.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 .mck-pending-icon .mck-delivery-report--delivered-read,
 .mck-pending-icon .mck-delivery-report--sent {
@@ -4757,7 +4864,16 @@ div#mck-waiting-queue {
     justify-content: flex-end;
     gap: 6px;
     white-space: nowrap;
+    color: var(--km-font-meta-contrast-color);
 }
+
+.mck-conversation-status-time {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    color: var(--km-font-meta-contrast-color);
+}
+
 
 /* -----------------Support for hiding form post form submission------------- */
 .mck-msg-left [data-hidepostformsubmit='true'] {

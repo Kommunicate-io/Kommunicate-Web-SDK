@@ -169,6 +169,7 @@ class KMLabel {
                 var textNode = node.querySelector('span');
                 textNode ? (textNode.innerHTML = label) : (node.innerHTML = label);
                 node.setAttribute('title', label);
+                node.setAttribute('aria-label', label);
             });
         };
         if (isVoiceChatEnabled) {
