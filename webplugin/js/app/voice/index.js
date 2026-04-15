@@ -173,6 +173,7 @@ class Voice {
                 // First STT request should omit languageCode and rely on backend detection.
                 languageCode: '',
                 hasDetectedLanguageCode: false,
+                hasSentVoiceToTextRequest: false,
             };
         }
         return {
@@ -984,7 +985,8 @@ class Voice {
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
         const { state } = this.getVoiceLanguageState(activeConversationUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
-        const shouldSendAlternativeLanguageCodes = !sttLanguageCode;
+        const shouldSendAlternativeLanguageCodes =
+            !sttLanguageCode && state && state.hasSentVoiceToTextRequest;
 
         const payload = {
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
@@ -1008,7 +1010,12 @@ class Voice {
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
-        const response = await this.requestBinaryVoiceToText({ samples, payload });
+        let response;
+        try {
+            response = await this.requestBinaryVoiceToText({ samples, payload });
+        } finally {
+            state.hasSentVoiceToTextRequest = true;
+        }
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
