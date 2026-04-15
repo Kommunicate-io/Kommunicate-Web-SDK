@@ -242,7 +242,6 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
-
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {

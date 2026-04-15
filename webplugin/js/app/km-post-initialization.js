@@ -97,8 +97,11 @@ Kommunicate.getFaqCategories = function (data) {
                 var safeCategoryNameAttr = kommunicateCommons.encodeCategoryNameForAttribute(
                     categoryName
                 );
+                var safeCategoryNameForAria = kommunicateCommons.escapeAttributeValue(categoryName);
                 $applozic('.km-faq-category-list-container').append(
-                    '<div class="km-faq-category-card" data-category-name="' +
+                    '<div class="km-faq-category-card" role="button" tabindex="0" aria-label="' +
+                        safeCategoryNameForAria +
+                        '" data-category-name="' +
                         safeCategoryNameAttr +
                         '">' +
                         '<div class="km-faq-category-card-content">' +

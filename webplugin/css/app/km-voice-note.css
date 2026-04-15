@@ -62,11 +62,11 @@
 }
 .km-audio-player-timer {
     font-size: 14px;
-    color: #919ead;
+    color: #68727d;
 }
 
 #progressbar {
-    border: 1px solid #919ead;
+    border: 1px solid #68727d;
     border-radius: 13px;
     margin: 0 5px;
     flex-grow: 1;

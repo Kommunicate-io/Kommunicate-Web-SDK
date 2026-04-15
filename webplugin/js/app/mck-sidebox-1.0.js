@@ -51,6 +51,16 @@ const firstVisibleMsg = {
 
 (function ($applozic, w, d) {
     'use strict';
+    function isActivationKey(key) {
+        return key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 13 || key === 32;
+    }
+    function handleActivationKey(e, handler) {
+        var key = e.key || e.keyCode;
+        if (isActivationKey(key)) {
+            e.preventDefault();
+            handler();
+        }
+    }
     if (!w.applozic) {
         w.applozic = w.applozic ? w.applozic : {};
         $applozic.extend(true, w.applozic, {
@@ -3502,6 +3512,9 @@ const firstVisibleMsg = {
                             }
                         }
                     });
+                    ratingStars[i].addEventListener('keydown', function (e) {
+                        handleActivationKey(e, this.click.bind(this));
+                    });
                 }
                 if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                     ratingService.setStarsEffect(feedbackObject.rating);
@@ -4500,6 +4513,15 @@ const firstVisibleMsg = {
                         kommunicateCommons.show('#launcher-svg-container');
                     }
                 });
+                $applozic(d).on(
+                    'keydown',
+                    '#mck-sidebox-launcher .applozic-launcher',
+                    function (e) {
+                        handleActivationKey(e, function () {
+                            $applozic('#mck-sidebox-launcher .applozic-launcher').trigger('click');
+                        });
+                    }
+                );
                 $applozic(d).on('click', '#talk-to-human-link', function (event) {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
                     kommunicateCommons.hide('#km-faq');
@@ -4520,6 +4542,12 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#km-faq-option', function (e) {
                     e.preventDefault();
                     bottomTabManager.handleChange('faqs');
+                });
+                $applozic(d).on('keydown', '#km-faq-option, #km-talk-to-human', function (e) {
+                    var self = this;
+                    handleActivationKey(e, function () {
+                        $applozic(self).trigger('click');
+                    });
                 });
 
                 mck_text_box.addEventListener('input', function () {
@@ -4891,6 +4919,9 @@ const firstVisibleMsg = {
                 $applozic(d).on('click', '#km-csat-trigger', function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
+                });
+                $applozic(d).on('keydown', '#km-csat-trigger', function (e) {
+                    handleActivationKey(e, this.click.bind(this));
                 });
 
                 document.getElementById('km-csat-close-button').onclick = function (e) {
@@ -5747,6 +5778,7 @@ const firstVisibleMsg = {
                                     .addClass('mck-sent-icon')
                                     .attr('title', 'sent');
                                 mckMessageLayout.addTooltip(messageKey);
+                                mckMessageLayout.announceStatus(MCK_LABELS['message.sent.status']);
                                 if (optns.isTopPanelAdded) {
                                     $mck_tab_option_panel.data('datetime', data.createdAt);
                                 }
@@ -6782,10 +6814,34 @@ const firstVisibleMsg = {
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var inlineTemplateIdCounter = 0;
 
+            _this.announceStatus = function (text) {
+                if (!text) {
+                    return;
+                }
+                var statusEl = document.getElementById('mck-status-live');
+                if (!statusEl) {
+                    return;
+                }
+                statusEl.textContent = '';
+                window.setTimeout(function () {
+                    statusEl.textContent = text;
+                }, 50);
+            };
+
+            _this.getAccessibleMessageText = function (msg) {
+                if (!msg || typeof msg.message === 'undefined' || msg.message === null) {
+                    return '';
+                }
+                if (typeof msg.message !== 'string') {
+                    return '';
+                }
+                return msg.message.replace(/<[^>]*>/g, '').trim();
+            };
+
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
-                '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
+                '<div tabindex="0" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
                 '<div class="mck-clear">' +
                 '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name">${msgNameExpr}</div>' +
@@ -6827,7 +6883,7 @@ const firstVisibleMsg = {
             var resolvedBadgeIcon =
                 '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}' +
@@ -6835,7 +6891,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:var(--km-font-meta-contrast-color);"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
@@ -6919,6 +6975,17 @@ const firstVisibleMsg = {
                     button: button,
                 };
             }
+            function bindDropdownKeyboardActivation() {
+                $applozic(d)
+                    .off('keydown.mckDropdown')
+                    .on(
+                        'keydown.mckDropdown',
+                        '[data-toggle="mckdropdown"][role="button"]',
+                        function (event) {
+                            handleActivationKey(event, this.click.bind(this));
+                        }
+                    );
+            }
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('messageTemplate', markup);
@@ -6926,6 +6993,7 @@ const firstVisibleMsg = {
                 $applozic.template('csatModule', csatModule);
                 $applozic.template('staticMessageTemplate', staticMessageModule);
                 $applozic.template('assigneeModule', assigneeModule);
+                bindDropdownKeyboardActivation();
             };
             _this.removeStaticMessage = function () {
                 var staticMessageContainer = document.getElementById('km-static-message');
@@ -8144,6 +8212,10 @@ const firstVisibleMsg = {
                               .tmpl('messageTemplate', msgList)
                               .prependTo('#mck-message-cell .mck-message-inner');
                 }
+                if (!isUserMsg && !msgThroughListAPI) {
+                    var receivedText = _this.getAccessibleMessageText(msg);
+                    _this.announceStatus(receivedText || MCK_LABELS['message.received.status']);
+                }
                 const hasObsolete = msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 
@@ -8720,7 +8792,7 @@ const firstVisibleMsg = {
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
@@ -8738,7 +8810,7 @@ const firstVisibleMsg = {
                             return (
                                 '<a href="https://maps.google.com/maps?z=17&t=m&q=loc:' +
                                 msg.message +
-                                '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                                 msg.message +
                                 '&maptype=roadmap&markers=color:red|' +
                                 msg.message +
@@ -8756,6 +8828,7 @@ const firstVisibleMsg = {
                         fileName = fileName.replace('AWS-ENCRYPTED-', '');
                         addfileEncClass = true;
                     }
+                    var altText = kommunicateCommons.escapeAttributeValue(fileName);
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
                             let URL = addfileEncClass ? '' : alFileService.getFileurl(msg);
@@ -8767,16 +8840,20 @@ const firstVisibleMsg = {
                                     : msg.fileMeta.thumbnailUrl;
                             }
 
-                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="${
+                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ${altText}" data-type="${
                                 msg.fileMeta.contentType
                             }" data-url="${URL}" data-name="${kommunicateCommons.formatHtmlTag(
                                 msg.fileMeta.name
-                            )}"><img class="${addfileEncClass ? 'file-enc' : ''}" src="${URL}" 
-                            area-hidden="true" data-thumbnailBlobKey="${msg.fileMeta.blobKey}"
-                            ></img></a>`;
+                            )}"><img class="${
+                                addfileEncClass ? 'file-enc' : ''
+                            }" src="${URL}" alt="${altText}" data-thumbnailBlobKey="${
+                                msg.fileMeta.blobKey
+                            }"></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
-                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                altText +
+                                '" data-type="' +
                                 msg.fileMeta.contentType +
                                 '" data-url="' +
                                 msg.fileMeta.blobKey +
@@ -8784,7 +8861,9 @@ const firstVisibleMsg = {
                                 kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                 '"><img src="' +
                                 msg.fileMeta.blobKey +
-                                '" area-hidden="true"></img></a>'
+                                '" alt="' +
+                                altText +
+                                '"></img></a>'
                             );
                         } else {
                             if (msg.fileMeta.hasOwnProperty('url')) {
@@ -8797,7 +8876,9 @@ const firstVisibleMsg = {
                                         }
                                     );
                                     return (
-                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                        altText +
+                                        '" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="" data-blobKey="' +
                                         msg.fileMeta.blobKey +
@@ -8805,7 +8886,9 @@ const firstVisibleMsg = {
                                         kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                         '"><img src="' +
                                         thumbnailUrl +
-                                        '" area-hidden="true" ></img></a>'
+                                        '" alt="' +
+                                        altText +
+                                        '"></img></a>'
                                     );
                                 } else {
                                     var url = addfileEncClass ? '' : alFileService.getFileurl(msg);
@@ -8814,7 +8897,9 @@ const firstVisibleMsg = {
                                         : msg.fileMeta.thumbnailUrl;
 
                                     return (
-                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                        '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                        altText +
+                                        '" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="' +
                                         url +
@@ -8824,7 +8909,9 @@ const firstVisibleMsg = {
                                         (addfileEncClass ? ' class="file-enc"' : '') +
                                         ' src="' +
                                         thumbnailUrl +
-                                        '" area-hidden="true" data-blobKey="' +
+                                        '" alt="' +
+                                        altText +
+                                        '" data-blobKey="' +
                                         msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="' +
                                         msg.fileMeta.thumbnailBlobKey +
@@ -8836,7 +8923,9 @@ const firstVisibleMsg = {
                                 'thumbnail_' + msg.fileMeta.name
                             ) {
                                 return (
-                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                    altText +
+                                    '" data-type="' +
                                     msg.fileMeta.contentType +
                                     '" data-url="' +
                                     alFileService.getFileurl(msg) +
@@ -8846,11 +8935,15 @@ const firstVisibleMsg = {
                                     MCK_STORAGE_URL +
                                     '/files/thumbnail_' +
                                     msg.fileMeta.name +
-                                    '" area-hidden="true" ></img></a>'
+                                    '" alt="' +
+                                    altText +
+                                    '"></img></a>'
                                 );
                             } else {
                                 return (
-                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
+                                    '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" aria-label="Open attachment ' +
+                                    altText +
+                                    '" data-type="' +
                                     msg.fileMeta.contentType +
                                     '" data-url="' +
                                     alFileService.getFileurl(msg) +
@@ -8858,7 +8951,9 @@ const firstVisibleMsg = {
                                     kommunicateCommons.formatHtmlTag(msg.fileMeta.name) +
                                     '"><img src="' +
                                     msg.fileMeta.thumbnailUrl +
-                                    '" area-hidden="true" ></img></a>'
+                                    '" alt="' +
+                                    altText +
+                                    '"></img></a>'
                                 );
                             }
                         }
@@ -8877,7 +8972,7 @@ const firstVisibleMsg = {
                         );
                     } else if (msg.fileMeta.contentType.indexOf('audio') !== -1) {
                         return (
-                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player' +
+                            '<audio controls class="mck-audio-player' +
                             (addfileEncClass
                                 ? ' file-enc" data-blobkey="' + msg.fileMeta.blobKey + '">'
                                 : '">') +
@@ -8887,10 +8982,14 @@ const firstVisibleMsg = {
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/mpeg"></audio>' +
-                            '<p class="mck-file-tag"></p></a>'
+                            '<p class="mck-file-tag"></p>'
                         );
                     } else {
-                        return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
+                        return (
+                            '<a href="#" role="link" class="file-preview-link" target="_blank" aria-label="Open attachment ' +
+                            altText +
+                            '"></a>'
+                        );
                     }
                 }
                 return '';
@@ -8950,7 +9049,7 @@ const firstVisibleMsg = {
                     var geoLoc = $applozic.parseJSON(message.message);
                     var coords = geoLoc.lat + ',' + geoLoc.lon;
                     return (
-                        '<span>location</span><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '<span>location</span><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                         coords +
                         '&maptype=roadmap&markers=color:red|' +
                         coords +
@@ -8999,7 +9098,7 @@ const firstVisibleMsg = {
                     return (
                         '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
                         displayName +
-                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
                         geoLoc.lat +
                         ',' +
                         geoLoc.lon +
@@ -9139,6 +9238,7 @@ const firstVisibleMsg = {
                     return 'mck-text-user';
                 }
             };
+
             _this.addContactsFromMessageList = function (data, params) {
                 var showMoreDateTime;
                 if (data + '' === 'null') {
@@ -10687,7 +10787,6 @@ const firstVisibleMsg = {
             var _this = this;
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             _this.init = function () {};
-
             _this.createGroupDefaultSettings = function () {
                 var defaultSettings = appOptionSession.getPropertyDataFromSession('settings');
                 var conversationDetail = {
