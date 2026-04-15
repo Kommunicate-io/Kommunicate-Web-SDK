@@ -912,20 +912,6 @@ class Voice {
         }
     }
 
-    async requestLegacyTextToVoice(payload, socketConfig) {
-        const fallbackPayload = Object.assign({}, payload);
-        delete fallbackPayload.responseFormat;
-        return this.requestOmnichannelVoiceTransport({
-            payload: fallbackPayload,
-            socketConfig,
-            socketAction: socketConfig.textToVoiceAction || 'text_to_voice',
-            socketNormalizePayload: this.normalizeTextToVoiceSocketPayload,
-            httpPath: '/text-to-voice',
-            operation: 'textToVoice',
-            preferSocket: false,
-        });
-    }
-
     createPlaybackBlobFromTextToVoiceResponse(responsePayload) {
         if (responsePayload instanceof Blob) {
             return responsePayload;
@@ -960,23 +946,7 @@ class Voice {
         if (Array.isArray(config.effectsProfileId) && config.effectsProfileId.length) {
             payload.effectsProfileId = config.effectsProfileId;
         }
-        const socketConfig = this.getVoiceSocketConfig();
-        try {
-            return await this.requestBinaryTextToVoice(payload);
-        } catch (binaryError) {
-            console.warn('Binary text-to-voice request failed. Falling back to legacy PCM JSON.', {
-                message: binaryError && binaryError.message ? binaryError.message : binaryError,
-            });
-            try {
-                return await this.requestLegacyTextToVoice(payload, socketConfig);
-            } catch (fallbackError) {
-                fallbackError.binaryRequestError = binaryError;
-                if (!fallbackError.cause) {
-                    fallbackError.cause = binaryError;
-                }
-                throw fallbackError;
-            }
-        }
+        return this.requestBinaryTextToVoice(payload);
     }
 
     normalizePcmInt16Samples(input) {
