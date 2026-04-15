@@ -924,15 +924,9 @@ const firstVisibleMsg = {
                 var isCurrentGroup = messageInner
                     ? messageInner.getAttribute('data-isgroup') === 'true'
                     : false;
-                if (currentTabId) {
+                if (appOptions.voiceChat && currentTabId) {
                     var voiceSubscribeId = isCurrentGroup ? currentTabId : MCK_USER_ID;
-                    if (
-                        typeof kmVoice !== 'undefined' &&
-                        kmVoice &&
-                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
-                    ) {
-                        kmVoice.subscribeToVoiceSocketTopic(voiceSubscribeId);
-                    }
+                    kmVoice.subscribeToVoiceSocketTopic(voiceSubscribeId);
                 }
             },
             onMessageDelivered: function (resp) {},
@@ -5326,11 +5320,7 @@ const firstVisibleMsg = {
                     MCK_ON_PLUGIN_CLOSE(MCK_USER_ID);
                 }
                 window.Applozic.ALSocket.unsubscibeToTypingChannel();
-                if (
-                    typeof kmVoice !== 'undefined' &&
-                    kmVoice &&
-                    typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
-                ) {
+                if (appOptions.voiceChat) {
                     kmVoice.unsubscribeVoiceSocketTopic();
                 }
             };
@@ -7317,11 +7307,7 @@ const firstVisibleMsg = {
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
                     window.Applozic.ALSocket.subscibeToTypingChannel(subscribeId);
-                    if (
-                        typeof kmVoice !== 'undefined' &&
-                        kmVoice &&
-                        typeof kmVoice.subscribeToVoiceSocketTopic === 'function'
-                    ) {
+                    if (appOptions.voiceChat) {
                         kmVoice.subscribeToVoiceSocketTopic(subscribeId);
                     }
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
@@ -7348,11 +7334,7 @@ const firstVisibleMsg = {
 
                     var mckMessageArray = ALStorage.getLatestMessageArray();
                     window.Applozic.ALSocket.unsubscibeToTypingChannel();
-                    if (
-                        typeof kmVoice !== 'undefined' &&
-                        kmVoice &&
-                        typeof kmVoice.unsubscribeVoiceSocketTopic === 'function'
-                    ) {
+                    if (appOptions.voiceChat) {
                         kmVoice.unsubscribeVoiceSocketTopic();
                     }
                     if (mckMessageArray !== null && mckMessageArray.length > 0) {

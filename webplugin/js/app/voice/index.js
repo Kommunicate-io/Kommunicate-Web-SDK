@@ -737,46 +737,6 @@ class Voice {
         return socketPayload;
     }
 
-    logOmnichannelVoiceRequest({
-        transport,
-        url,
-        action,
-        sttMode,
-        sampleRate,
-        sampleCount,
-        operation,
-        requestMode,
-    }) {
-        const metadata = {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            transport,
-            operation,
-        };
-        if (url) {
-            metadata.url = url;
-        }
-        if (action) {
-            metadata.action = action;
-        }
-        if (sttMode) {
-            metadata.sttMode = sttMode;
-        }
-        if (sampleRate) {
-            metadata.sampleRate = sampleRate;
-        }
-        if (typeof sampleCount === 'number') {
-            metadata.sampleCount = sampleCount;
-        }
-        if (requestMode) {
-            metadata.requestMode = requestMode;
-        }
-        if (operation === 'voiceToText') {
-            console.debug(`Voice STT request send (${transport})`, metadata);
-        }
-    }
-
     handleOmnichannelVoiceError(error, { transport, silentMessage, defaultMessage }) {
         if (error && error.code === 'SILENT_AUDIO') {
             console.warn(silentMessage || 'Silent audio blocked before voice request', {
@@ -804,22 +764,12 @@ class Voice {
         operation,
         enableSilentAudioLogging = false,
         preferSocket = true,
-        requestMode,
     }) {
         const resolvedSocketConfig = socketConfig || this.getVoiceSocketConfig('tts');
         const sampleCount = Array.isArray(payload && payload.samples)
             ? payload.samples.length
             : null;
         if (preferSocket && this.isVoiceSocketEnabled(resolvedSocketConfig)) {
-            this.logOmnichannelVoiceRequest({
-                transport: 'socket',
-                action: socketAction,
-                sttMode: payload && payload.sttMode,
-                sampleRate: payload && payload.sampleRate,
-                sampleCount,
-                operation,
-                requestMode,
-            });
             try {
                 const data = await this.requestVoiceSocket(socketAction, payload, {
                     socketConfig: resolvedSocketConfig,
@@ -835,15 +785,6 @@ class Voice {
         }
 
         const httpUrl = this.getOmnichannelApiUrl(httpPath);
-        this.logOmnichannelVoiceRequest({
-            transport: 'http',
-            url: httpUrl,
-            sttMode: payload && payload.sttMode,
-            sampleRate: payload && payload.sampleRate,
-            sampleCount,
-            operation,
-            requestMode,
-        });
         try {
             const response = await fetch(httpUrl, {
                 method: 'POST',
@@ -870,12 +811,6 @@ class Voice {
 
     async requestBinaryTextToVoice(payload) {
         const httpUrl = this.getOmnichannelApiUrl('/text-to-voice');
-        this.logOmnichannelVoiceRequest({
-            transport: 'http',
-            url: httpUrl,
-            sampleRate: payload && payload.sampleRate,
-            operation: 'textToVoice',
-        });
         try {
             const response = await fetch(httpUrl, {
                 method: 'POST',
@@ -1015,15 +950,6 @@ class Voice {
 
     async requestBinaryVoiceToText({ samples, payload }) {
         const httpUrl = this.getOmnichannelApiUrl('/voice-to-text');
-        this.logOmnichannelVoiceRequest({
-            transport: 'http',
-            url: httpUrl,
-            sttMode: payload && payload.sttMode,
-            sampleRate: payload && payload.sampleRate,
-            sampleCount: samples ? samples.length : 0,
-            operation: 'voiceToText',
-            requestMode: 'binary',
-        });
         const requestBody = new Uint8Array(samples.buffer, samples.byteOffset, samples.byteLength);
         try {
             const response = await fetch(httpUrl, {
@@ -1082,21 +1008,7 @@ class Voice {
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
-        const sttRequestStartedAt = Date.now();
         const response = await this.requestBinaryVoiceToText({ samples, payload });
-        console.debug('Voice STT response completed', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            operation: 'voiceToText',
-            durationMs: Date.now() - sttRequestStartedAt,
-            sampleCount: samples.length,
-            sttMode: payload.sttMode,
-            textLength:
-                response && typeof response.text === 'string' ? response.text.trim().length : 0,
-            languageCode:
-                response && typeof response.languageCode === 'string' ? response.languageCode : '',
-        });
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
