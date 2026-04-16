@@ -2373,7 +2373,7 @@ class MckVoice {
             return fallback;
         }
         if (typeof error === 'string') {
-            return `${fallback}: ${error}`;
+            return error;
         }
         const detail = error.message || error.name || '';
         return detail ? `${fallback}: ${detail}` : fallback;
