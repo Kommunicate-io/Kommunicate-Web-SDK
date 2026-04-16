@@ -538,7 +538,6 @@ var KMPreChat = (function () {
                         dropdownContainer: phoneField.closest('.km-form-group') || document.body,
                     })
                 );
-                phoneField.addEventListener('keydown', target.phoneNumberValidation);
             }
         };
 
@@ -556,10 +555,6 @@ var KMPreChat = (function () {
                     callback('us');
                 },
             });
-        };
-
-        target.phoneNumberValidation = function (e) {
-            e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
         };
 
         var setPreChatError = function (message) {
