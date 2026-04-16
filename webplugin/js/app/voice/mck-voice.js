@@ -493,20 +493,15 @@ class MckVoice {
                 () => {
                     if (!hasPlaybackStarted) {
                         this.addSpeakingAnimation();
-                        const playAttempt = audio.play();
-                        if (playAttempt && typeof playAttempt.then === 'function') {
-                            playAttempt
-                                .then(() => {
-                                    hasPlaybackStarted = true;
-                                    this.visualizerCleanup = this.createAudioVisualizer(audio);
-                                })
-                                .catch((error) => {
-                                    this.handlePlaybackFailure(error);
-                                });
-                        } else {
-                            hasPlaybackStarted = true;
-                            this.visualizerCleanup = this.createAudioVisualizer(audio);
-                        }
+                        audio
+                            .play()
+                            .then(() => {
+                                hasPlaybackStarted = true;
+                                this.visualizerCleanup = this.createAudioVisualizer(audio);
+                            })
+                            .catch((error) => {
+                                this.handlePlaybackFailure(error);
+                            });
                     }
                 },
                 { once: true }
@@ -648,20 +643,15 @@ class MckVoice {
             if (playbackStarted || this.audioElement !== audio) {
                 return;
             }
-            const playAttempt = audio.play();
-            if (playAttempt && typeof playAttempt.then === 'function') {
-                playAttempt
-                    .then(() => {
-                        playbackStarted = true;
-                        this.visualizerCleanup = this.createAudioVisualizer(audio);
-                    })
-                    .catch((error) => {
-                        this.handleAudioPlaybackStartFailure(error);
-                    });
-                return;
-            }
-            playbackStarted = true;
-            this.visualizerCleanup = this.createAudioVisualizer(audio);
+            audio
+                .play()
+                .then(() => {
+                    playbackStarted = true;
+                    this.visualizerCleanup = this.createAudioVisualizer(audio);
+                })
+                .catch((error) => {
+                    this.handleAudioPlaybackStartFailure(error);
+                });
         };
 
         audio.addEventListener(
