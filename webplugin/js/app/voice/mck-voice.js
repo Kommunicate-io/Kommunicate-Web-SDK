@@ -35,6 +35,7 @@ class MckVoice {
 
     constructor() {
         this.mediaRecorder = null;
+        this.recordedMimeType = 'audio/wav';
         this.audioChunks = []; // recorded audio chunks
         this.isRecording = false;
         this.stream = null;
@@ -169,7 +170,7 @@ class MckVoice {
     }
 
     shouldApplyWebKitVoiceWorkarounds() {
-        return KommunicateUtils.isSafariBrowser() || KommunicateUtils.isIOSWebKitBrowser();
+        return KommunicateUtils.isIOSWebKitBrowser();
     }
 
     getAudioCaptureConstraints() {
@@ -631,7 +632,7 @@ class MckVoice {
             console.error(error, 'audio play error');
             URL.revokeObjectURL(blobUrl);
             if (!playbackStarted) {
-                this.handleAudioPlaybackStartFailure(error);
+                this.handleAudioPlaybackStartFailure(error, audio);
                 return;
             }
             this.audioElement = null;
@@ -650,7 +651,7 @@ class MckVoice {
                     this.visualizerCleanup = this.createAudioVisualizer(audio);
                 })
                 .catch((error) => {
-                    this.handleAudioPlaybackStartFailure(error);
+                    this.handleAudioPlaybackStartFailure(error, audio);
                 });
         };
 
@@ -746,16 +747,19 @@ class MckVoice {
         }
     }
 
-    handleAudioPlaybackStartFailure(error) {
+    handleAudioPlaybackStartFailure(error, audioElement = this.audioElement) {
+        if (this.audioElement !== audioElement) {
+            return;
+        }
         console.error('Audio playback start failed', error);
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
             this.visualizerCleanup = null;
         }
-        if (this.audioElement) {
+        if (audioElement) {
             try {
-                this.audioElement.pause();
-                this.audioElement.currentTime = 0;
+                audioElement.pause();
+                audioElement.currentTime = 0;
             } catch (pauseError) {
                 console.error('Audio cleanup failed after playback start error', pauseError);
             }
@@ -830,7 +834,7 @@ class MckVoice {
             try {
                 await startPlayback();
             } catch (error) {
-                this.handleAudioPlaybackStartFailure(error);
+                this.handleAudioPlaybackStartFailure(error, audio);
                 return;
             }
 
@@ -838,7 +842,7 @@ class MckVoice {
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
                 if (!playbackStarted) {
-                    this.handleAudioPlaybackStartFailure(err);
+                    this.handleAudioPlaybackStartFailure(err, audio);
                     return;
                 }
                 this.audioElement = null;
@@ -1206,6 +1210,7 @@ class MckVoice {
 
         // Create MediaRecorder instance
         this.mediaRecorder = this.createMediaRecorder(stream);
+        this.recordedMimeType = this.mediaRecorder.mimeType || 'audio/wav';
 
         // Handle data available event
         this.mediaRecorder.ondataavailable = (event) => {
@@ -1217,6 +1222,7 @@ class MckVoice {
         // Handle recording stop event
         this.mediaRecorder.onstop = async () => {
             const recordingStream = this.stream;
+            const recordedMimeType = this.recordedMimeType;
             const recordedChunks = Array.isArray(this.audioChunks) ? this.audioChunks.slice() : [];
             const recordedVadCaptureChunks = Array.isArray(this.vadCaptureChunks)
                 ? this.vadCaptureChunks.slice()
@@ -1305,7 +1311,7 @@ class MckVoice {
                 }
                 // Create blob from recorded chunks
                 if (shouldProcessRecording) {
-                    const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
+                    const audioBlob = new Blob(recordedChunks, { type: recordedMimeType });
                     const sampleRate = kmVoice.getVoiceToTextSampleRate();
                     let rawSamples = [];
                     if (this.shouldApplyWebKitVoiceWorkarounds()) {
