@@ -272,6 +272,7 @@ var kmVoiceMessageHandler = {
             this.isEligibleForUIRendering(message, msgThroughListAPI) &&
             message &&
             message.message &&
+            !mckVoice.hasQueuedVoiceMessage(message) &&
             !message._kmVoiceQueued &&
             // Skip intermediate streaming tokens — only queue the final complete message.
             // Token messages have tokenMessage=true; the complete message that replaces
@@ -302,35 +303,20 @@ var kmVoiceMessageHandler = {
             decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             queuedAtLeastOne = true;
         }
+
         return queuedAtLeastOne;
     },
 
-    queueFromSocketReceive: function (message, tabId, appOptions) {
-        var messages = this.normalizeIncomingMessages(message);
-        var queuedAtLeastOne = false;
-        for (var index = 0; index < messages.length; index++) {
-            var currentMessage = messages[index];
-            var decision = this.getQueueVoiceDecision(currentMessage, appOptions, false);
-            if (!decision.allowed || !this.isCurrentConversationMessage(currentMessage, tabId)) {
-                continue;
-            }
-            var displayName =
-                typeof mckMessageLayout !== 'undefined' &&
-                mckMessageLayout &&
-                typeof mckMessageLayout.getTabDisplayName === 'function'
-                    ? mckMessageLayout.getTabDisplayName(currentMessage.to, false)
-                    : '';
-            if (!mckVoice.processMessagesAsAudio(currentMessage, displayName)) {
-                continue;
-            }
-            currentMessage._kmVoiceQueued = true;
-            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
-            queuedAtLeastOne = true;
+    queueFromSocketReceive: function (message, tabId, appOptions, displayName) {
+        if (
+            !this.canQueueVoiceMessage(message, appOptions, false) ||
+            !this.isCurrentConversationMessage(message, tabId)
+        ) {
+            return false;
         }
-
-        var displayName = mckMessageLayout.getTabDisplayName(message.to, false);
+        mckVoice.markVoiceMessageQueued(message);
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
-        return queuedAtLeastOne;
+        return true;
     },
 };
