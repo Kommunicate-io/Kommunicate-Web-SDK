@@ -794,6 +794,10 @@ class MckVoice {
             this.processNextMessage(nextMsg);
             return;
         }
+        if (this.agentOrBotLastMsgAudio || this.agentOrBotLastMsg) {
+            const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
+            repeatButton && repeatButton.classList.remove('mck-hidden');
+        }
         this.setAwaitingBotResponsePlayback(false);
         this.resumeListeningAfterPlayback();
     }
@@ -810,6 +814,9 @@ class MckVoice {
 
     async repeatLastMsgAudio(blobUrl) {
         if (!blobUrl) {
+            if (this.agentOrBotLastMsg && this.shouldUseNativeSpeechSynthesis()) {
+                this.playNativeSpeech(this.agentOrBotLastMsg);
+            }
             return;
         }
         try {
