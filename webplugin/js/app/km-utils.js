@@ -524,6 +524,11 @@ KommunicateUtils = {
         }
         return '';
     },
+    /**
+     * Intentional duplicate logic from plugin.js.
+     * plugin.js loads first, then the rest of the app scripts.
+     * Until the build flow is refactored, this copy stays here.
+     */
     isSafariBrowser: function () {
         if (typeof navigator === 'undefined') {
             return false;
@@ -537,6 +542,29 @@ KommunicateUtils = {
             !/(Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser)/i.test(userAgent);
         var isAndroid = /Android/i.test(userAgent);
         return isSafari && !isAndroid;
+    },
+    isIOSDevice: function () {
+        if (typeof navigator === 'undefined') {
+            return false;
+        }
+        var userAgent = navigator.userAgent || '';
+        if (!userAgent) {
+            return false;
+        }
+        return (
+            /iPad|iPhone|iPod/i.test(userAgent) ||
+            (/Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1)
+        );
+    },
+    isIOSWebKitBrowser: function () {
+        if (typeof navigator === 'undefined') {
+            return false;
+        }
+        var userAgent = navigator.userAgent || '';
+        if (!userAgent) {
+            return false;
+        }
+        return this.isIOSDevice() && /AppleWebKit/i.test(userAgent);
     },
     getBooleanOption: function (value, defaultValue) {
         return typeof value === 'boolean' ? value : defaultValue;

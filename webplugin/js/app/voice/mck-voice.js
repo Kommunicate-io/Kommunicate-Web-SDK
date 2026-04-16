@@ -168,23 +168,15 @@ class MckVoice {
         return Boolean(isRecordingStarted);
     }
 
-    isSafariBrowser() {
-        if (typeof navigator === 'undefined' || !navigator.userAgent) {
-            return false;
-        }
-        const ua = navigator.userAgent;
-        const isSafari = /Safari/i.test(ua);
-        const isOtherWebkitBrowser = /Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|SamsungBrowser/i.test(
-            ua
-        );
-        return isSafari && !isOtherWebkitBrowser;
+    shouldApplyWebKitVoiceWorkarounds() {
+        return KommunicateUtils.isSafariBrowser() || KommunicateUtils.isIOSWebKitBrowser();
     }
 
     getAudioCaptureConstraints() {
-        if (this.isSafariBrowser()) {
+        if (this.shouldApplyWebKitVoiceWorkarounds()) {
             return {
                 audio: {
-                    // Safari can over-process mic input causing weak speech capture.
+                    // WebKit on iPhone can over-process mic input causing weak speech capture.
                     // Keep capture raw and normalize in STT preprocessing.
                     echoCancellation: false,
                     noiseSuppression: false,
@@ -203,6 +195,50 @@ class MckVoice {
                 channelCount: 1,
             },
         };
+    }
+
+    createMediaRecorder(stream) {
+        if (
+            !this.shouldApplyWebKitVoiceWorkarounds() ||
+            typeof MediaRecorder.isTypeSupported !== 'function'
+        ) {
+            return new MediaRecorder(stream);
+        }
+
+        const preferredMimeTypes = [
+            'audio/mp4;codecs=mp4a.40.2',
+            'audio/mp4',
+            'video/mp4;codecs=mp4a.40.2',
+            'video/mp4',
+        ];
+
+        for (let i = 0; i < preferredMimeTypes.length; i++) {
+            const mimeType = preferredMimeTypes[i];
+            if (MediaRecorder.isTypeSupported(mimeType)) {
+                try {
+                    return new MediaRecorder(stream, { mimeType });
+                } catch (error) {
+                    console.warn(`MediaRecorder init failed for ${mimeType}`, error);
+                }
+            }
+        }
+
+        return new MediaRecorder(stream);
+    }
+
+    configureInlineAudioPlayback(audio) {
+        audio.preload = 'auto';
+        audio.playsInline = true;
+        audio.setAttribute('playsinline', 'true');
+    }
+
+    resumeAudioContext(audioContext, contextName = 'audio') {
+        if (!audioContext || audioContext.state !== 'suspended') {
+            return;
+        }
+        audioContext.resume().catch((error) => {
+            console.warn(`${contextName} AudioContext resume failed`, error);
+        });
     }
 
     getVoiceInputSettings() {
@@ -402,6 +438,7 @@ class MckVoice {
     async playAudioWithMediaSource(response) {
         this.clearDeferredRecordingHandler(this.audioElement);
         const audio = new Audio();
+        this.configureInlineAudioPlayback(audio);
         this.audioElement = audio;
 
         const mediaSource = new MediaSource();
@@ -456,10 +493,20 @@ class MckVoice {
                 () => {
                     if (!hasPlaybackStarted) {
                         this.addSpeakingAnimation();
-                        audio.play().catch(console.error);
-                        // Initialize audio visualizer for dynamic animation
-                        this.visualizerCleanup = this.createAudioVisualizer(audio);
-                        hasPlaybackStarted = true;
+                        const playAttempt = audio.play();
+                        if (playAttempt && typeof playAttempt.then === 'function') {
+                            playAttempt
+                                .then(() => {
+                                    hasPlaybackStarted = true;
+                                    this.visualizerCleanup = this.createAudioVisualizer(audio);
+                                })
+                                .catch((error) => {
+                                    this.handlePlaybackFailure(error);
+                                });
+                        } else {
+                            hasPlaybackStarted = true;
+                            this.visualizerCleanup = this.createAudioVisualizer(audio);
+                        }
                     }
                 },
                 { once: true }
@@ -580,25 +627,57 @@ class MckVoice {
 
         const blobUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(blobUrl);
+        this.configureInlineAudioPlayback(audio);
         this.audioElement = audio;
         this.addSpeakingAnimation();
+        let playbackStarted = false;
 
         audio.onerror = (error) => {
             console.error(error, 'audio play error');
             URL.revokeObjectURL(blobUrl);
+            if (!playbackStarted) {
+                this.handleAudioPlaybackStartFailure(error);
+                return;
+            }
             this.audioElement = null;
             const nextMsg = this.shiftToNextQueuedMessage();
             nextMsg && this.processNextMessage(nextMsg);
         };
 
+        const startPlayback = () => {
+            if (playbackStarted || this.audioElement !== audio) {
+                return;
+            }
+            const playAttempt = audio.play();
+            if (playAttempt && typeof playAttempt.then === 'function') {
+                playAttempt
+                    .then(() => {
+                        playbackStarted = true;
+                        this.visualizerCleanup = this.createAudioVisualizer(audio);
+                    })
+                    .catch((error) => {
+                        this.handleAudioPlaybackStartFailure(error);
+                    });
+                return;
+            }
+            playbackStarted = true;
+            this.visualizerCleanup = this.createAudioVisualizer(audio);
+        };
+
         audio.addEventListener(
             'canplay',
             () => {
-                audio.play().catch(console.error);
-                this.visualizerCleanup = this.createAudioVisualizer(audio);
+                startPlayback();
             },
             { once: true }
         );
+
+        if (
+            typeof HTMLMediaElement !== 'undefined' &&
+            audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
+        ) {
+            startPlayback();
+        }
 
         audio.addEventListener('ended', () => {
             const nextMsg = this.shiftToNextQueuedMessage();
@@ -680,6 +759,24 @@ class MckVoice {
         }
     }
 
+    handleAudioPlaybackStartFailure(error) {
+        console.error('Audio playback start failed', error);
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        if (this.audioElement) {
+            try {
+                this.audioElement.pause();
+                this.audioElement.currentTime = 0;
+            } catch (pauseError) {
+                console.error('Audio cleanup failed after playback start error', pauseError);
+            }
+        }
+        this.audioElement = null;
+        this.handlePlaybackFailure(error);
+    }
+
     cancelNativeSpeech() {
         if (this.nativeSpeechUtterance && this.isNativeSpeechSynthesisAvailable()) {
             speechSynthesis.cancel();
@@ -730,15 +827,33 @@ class MckVoice {
             let audioBlobUrl = blobUrl;
 
             const audio = new Audio(audioBlobUrl);
+            this.configureInlineAudioPlayback(audio);
             this.audioElement = audio;
+            let playbackStarted = false;
 
-            this.visualizerCleanup = this.createAudioVisualizer(audio);
+            const startPlayback = async () => {
+                if (playbackStarted || this.audioElement !== audio) {
+                    return;
+                }
+                await audio.play();
+                playbackStarted = true;
+                this.visualizerCleanup = this.createAudioVisualizer(audio);
+            };
 
-            await audio.play().catch(console.error);
+            try {
+                await startPlayback();
+            } catch (error) {
+                this.handleAudioPlaybackStartFailure(error);
+                return;
+            }
 
             audio.onplay = () => {};
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
+                if (!playbackStarted) {
+                    this.handleAudioPlaybackStartFailure(err);
+                    return;
+                }
                 this.audioElement = null;
             };
             audio.onended = () => {
@@ -941,7 +1056,7 @@ class MckVoice {
         if (this.awaitingBotResponsePlayback || this.messagesQueue.length > 0) {
             return false;
         }
-        if (this.audioElement && !this.audioElement.paused && !this.audioElement.ended) {
+        if (this.audioElement && !this.audioElement.ended) {
             this.deferRecordingUntilPlaybackEnds();
             return false;
         }
@@ -1018,7 +1133,7 @@ class MckVoice {
     }
 
     async requestAudioRecordingWhenReady(options = {}) {
-        if (this.audioElement && !this.audioElement.paused && !this.audioElement.ended) {
+        if (this.audioElement && !this.audioElement.ended) {
             this.deferRecordingUntilPlaybackEnds();
             return true;
         }
@@ -1034,8 +1149,11 @@ class MckVoice {
 
         this.clearDeferredRecordingHandler(audioElement);
 
-        const handler = () => {
+        const finalizeDeferredRecording = (clearAudioElement = false) => {
             this.clearDeferredRecordingHandler(audioElement);
+            if (clearAudioElement && this.audioElement === audioElement) {
+                this.audioElement = null;
+            }
             if (
                 this.autoListeningEnabled &&
                 this.isVoiceInterfaceVisible() &&
@@ -1046,15 +1164,28 @@ class MckVoice {
             }
         };
 
-        this.deferredRecordingHandler = handler;
-        audioElement.addEventListener('ended', handler);
-        audioElement.addEventListener('pause', handler);
+        const deferredHandler = () => {
+            finalizeDeferredRecording(true);
+        };
+
+        this.deferredRecordingHandler = {
+            ended: deferredHandler,
+            error: deferredHandler,
+            abort: deferredHandler,
+            emptied: deferredHandler,
+        };
+        audioElement.addEventListener('ended', deferredHandler);
+        audioElement.addEventListener('error', deferredHandler);
+        audioElement.addEventListener('abort', deferredHandler);
+        audioElement.addEventListener('emptied', deferredHandler);
     }
 
     clearDeferredRecordingHandler(audioElement = this.audioElement) {
         if (this.deferredRecordingHandler && audioElement) {
-            audioElement.removeEventListener('ended', this.deferredRecordingHandler);
-            audioElement.removeEventListener('pause', this.deferredRecordingHandler);
+            audioElement.removeEventListener('ended', this.deferredRecordingHandler.ended);
+            audioElement.removeEventListener('error', this.deferredRecordingHandler.error);
+            audioElement.removeEventListener('abort', this.deferredRecordingHandler.abort);
+            audioElement.removeEventListener('emptied', this.deferredRecordingHandler.emptied);
         }
         this.deferredRecordingHandler = null;
     }
@@ -1087,7 +1218,7 @@ class MckVoice {
         this.vadCaptureSampleRate = 0;
 
         // Create MediaRecorder instance
-        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder = this.createMediaRecorder(stream);
 
         // Handle data available event
         this.mediaRecorder.ondataavailable = (event) => {
@@ -1190,7 +1321,7 @@ class MckVoice {
                     const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
                     const sampleRate = kmVoice.getVoiceToTextSampleRate();
                     let rawSamples = [];
-                    if (this.isSafariBrowser()) {
+                    if (this.shouldApplyWebKitVoiceWorkarounds()) {
                         rawSamples = this.extractPcmInt16FromVadCaptureChunks(
                             recordedVadCaptureChunks,
                             recordedVadCaptureSampleRate
@@ -1933,6 +2064,7 @@ class MckVoice {
         try {
             // Create audio context and analyzer
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            this.resumeAudioContext(audioContext, 'voice_visualizer');
             const analyzer = audioContext.createAnalyser();
             analyzer.fftSize = 512; // Increased for better frequency resolution
 
@@ -2848,6 +2980,7 @@ class MckVoice {
         }
         // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.resumeAudioContext(audioContext, 'silence_detection');
         const analyser = audioContext.createAnalyser();
         const microphone = audioContext.createMediaStreamSource(stream);
         const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);

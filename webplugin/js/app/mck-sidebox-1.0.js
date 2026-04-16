@@ -1092,7 +1092,7 @@ const firstVisibleMsg = {
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
             if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
-                var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+                var isIosDevice = KommunicateUtils.isIOSDevice();
 
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
