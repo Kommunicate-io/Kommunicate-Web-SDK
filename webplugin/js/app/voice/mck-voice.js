@@ -26,6 +26,7 @@ class MckVoice {
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     _VOICE_STREAM_FALLBACK_TIMEOUT_MS = 4000;
+    _VOICE_STREAM_ACTIVITY_WINDOW_MS = 6000;
 
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
@@ -49,7 +50,9 @@ class MckVoice {
         this.voiceStreamSourceWaitTimeout = null;
         this.voiceStreamFallbackQueue = [];
         this.pendingLegacyFallbacks = [];
+        this.queuedVoiceMessageIds = new Set();
         this.voiceStreamFallbackTimeout = null;
+        this.lastVoiceStreamActivityAt = 0;
         this.textboxVoiceActiveClass = 'km-voice-active';
 
         // to check if audio is empty before sending to server
@@ -133,13 +136,14 @@ class MckVoice {
         }
     }
 
-    resetVoicePlaybackQueue(reason = 'manual_reset') {
+    resetVoicePlaybackQueue() {
         this.messagesQueue = [];
         this.clearVoiceStreamSourceWaitTimeout();
         this.clearVoiceStreamFallbackTimeout();
         this.voiceStreamQueue = [];
         this.voiceStreamFallbackQueue = [];
         this.pendingLegacyFallbacks = [];
+        this.queuedVoiceMessageIds.clear();
         this.activeVoiceStreamItem = null;
     }
 
@@ -155,6 +159,17 @@ class MckVoice {
             clearTimeout(this.voiceStreamFallbackTimeout);
             this.voiceStreamFallbackTimeout = null;
         }
+    }
+
+    recordVoiceStreamActivity() {
+        this.lastVoiceStreamActivityAt = Date.now();
+    }
+
+    hasRecentVoiceStreamActivity() {
+        if (!this.lastVoiceStreamActivityAt) {
+            return false;
+        }
+        return Date.now() - this.lastVoiceStreamActivityAt <= this._VOICE_STREAM_ACTIVITY_WINDOW_MS;
     }
 
     isAudioPlaybackActive() {
@@ -181,16 +196,47 @@ class MckVoice {
         return true;
     }
 
+    getQueuedVoiceMessageId(message) {
+        if (!message || typeof message !== 'object') {
+            return '';
+        }
+        if (message.key) {
+            return `key:${message.key}`;
+        }
+        const targetId = message.groupId ? message.groupId : message.to;
+        const createdAtTime = message.createdAtTime ? message.createdAtTime : '';
+        const rawMessage = message.message;
+        const messageText =
+            typeof rawMessage === 'string' || typeof rawMessage === 'number'
+                ? String(rawMessage)
+                : '';
+        if (!targetId || !createdAtTime || !messageText) {
+            return '';
+        }
+        return `fallback:${targetId}:${createdAtTime}:${messageText}`;
+    }
+
+    hasQueuedVoiceMessage(message) {
+        const queueId = this.getQueuedVoiceMessageId(message);
+        return Boolean(queueId && this.queuedVoiceMessageIds.has(queueId));
+    }
+
+    markVoiceMessageQueued(message) {
+        const queueId = this.getQueuedVoiceMessageId(message);
+        if (!queueId) {
+            return false;
+        }
+        this.queuedVoiceMessageIds.add(queueId);
+        return true;
+    }
+
     hasPlayableVoiceStreamSource(payload) {
         if (!payload || typeof payload !== 'object') {
             return false;
         }
         const base64Audio = payload.audioBase64 || payload.base64Audio || payload.audioData;
         return Boolean(
-            payload.audioBlob instanceof Blob ||
-                payload.blob instanceof Blob ||
-                payload.file instanceof Blob ||
-                payload.audioChunk ||
+            payload.audioChunk ||
                 (Array.isArray(payload.frames) && payload.frames.length) ||
                 payload.audioUrl ||
                 payload.streamUrl ||
@@ -201,7 +247,7 @@ class MckVoice {
         );
     }
 
-    shouldUseVoiceStreamPlayback(groupId) {
+    shouldUseVoiceStreamPlayback() {
         return (
             this.isVoiceModeActive() ||
             this.awaitingBotResponsePlayback ||
@@ -209,23 +255,6 @@ class MckVoice {
             this.voiceStreamQueue.length > 0
         );
     }
-
-    getConversationIdFromMessage(message) {
-        if (!message || typeof message !== 'object') {
-            return null;
-        }
-        if (message.groupId !== undefined && message.groupId !== null) {
-            return message.groupId;
-        }
-        if (message.to !== undefined && message.to !== null) {
-            return message.to;
-        }
-        if (message.messageMetadata && message.messageMetadata.groupId !== undefined) {
-            return message.messageMetadata.groupId;
-        }
-        return null;
-    }
-
     async startVoiceMode(
         source = 'start_conversation_screen',
         { onPermissionDenied = null, suppressPermissionAlert = false } = {}
@@ -368,10 +397,14 @@ class MckVoice {
     }
 
     async processMessagesAsAudio(msg, displayName) {
-        if (
-            this.shouldUseVoiceStreamPlayback(this.getConversationIdFromMessage(msg)) &&
-            !kmIsWelcomeVoiceMessage(msg)
-        ) {
+        if (!kmIsWelcomeVoiceMessage(msg) && this.shouldUseVoiceStreamPlayback()) {
+            if (
+                this.activeVoiceStreamItem ||
+                this.voiceStreamQueue.length > 0 ||
+                this.hasRecentVoiceStreamActivity()
+            ) {
+                return true;
+            }
             return this.queueVoiceStreamFallbackMessage(msg, displayName);
         }
         try {
@@ -417,10 +450,6 @@ class MckVoice {
         if (!queueItem || !queueItem.spokenText) {
             return false;
         }
-        if (this.activeVoiceStreamItem && !this.activeVoiceStreamItem.fallbackQueueItem) {
-            this.activeVoiceStreamItem.fallbackQueueItem = queueItem;
-            return true;
-        }
         this.voiceStreamFallbackQueue.push(queueItem);
         this.scheduleVoiceStreamFallbackPlayback();
         return true;
@@ -464,6 +493,7 @@ class MckVoice {
             return false;
         }
         try {
+            this.recordVoiceStreamActivity();
             this.clearAutoListenTimeout();
             this.setAwaitingBotResponsePlayback(true);
             if (this.isRecording) {
@@ -758,15 +788,6 @@ class MckVoice {
         }
         if (!this.hasPlayableVoiceStreamSource(payload)) {
             return null;
-        }
-        if (payload.audioBlob instanceof Blob) {
-            return { kind: 'blob', value: payload.audioBlob };
-        }
-        if (payload.blob instanceof Blob) {
-            return { kind: 'blob', value: payload.blob };
-        }
-        if (payload.file instanceof Blob) {
-            return { kind: 'blob', value: payload.file };
         }
         if (Array.isArray(payload.frames) && payload.frames.length) {
             return {
@@ -2071,7 +2092,7 @@ class MckVoice {
                         })
                         .finally(() => {
                             this.pendingContinuationStart = false;
-                            this.maybeFinalizePendingVoiceMessageAfterSegment();
+                            this.finalizePendingVoiceMessage();
                         });
                 }
                 // Create blob from recorded chunks
@@ -2208,7 +2229,7 @@ class MckVoice {
                     );
                 }
                 if (stopReason === 'segment_pause' && shouldAggregateSegments) {
-                    this.maybeFinalizePendingVoiceMessageAfterSegment();
+                    this.finalizePendingVoiceMessage();
                 } else if (stopReason === 'continuation_idle' && shouldAggregateSegments) {
                     this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
@@ -3385,10 +3406,6 @@ class MckVoice {
         }, finalizeDelay);
     }
 
-    maybeFinalizePendingVoiceMessageAfterSegment() {
-        this.finalizePendingVoiceMessage();
-    }
-
     finalizePendingVoiceMessage() {
         const continuationMinWaitMs = Number(
             this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
@@ -4219,7 +4236,7 @@ class MckVoice {
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
         this.setAwaitingBotResponsePlayback(false);
-        this.resetVoicePlaybackQueue('stop_voice_mode');
+        this.resetVoicePlaybackQueue();
         this.nativeRecognitionShouldRestart = false;
         this.stopRecording(true);
         this.cancelNativeSpeech();

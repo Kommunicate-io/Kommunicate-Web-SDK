@@ -104,6 +104,7 @@ var kmVoiceMessageHandler = {
             this.isEligibleForUIRendering(message, msgThroughListAPI) &&
             message &&
             message.message &&
+            !mckVoice.hasQueuedVoiceMessage(message) &&
             !message._kmVoiceQueued &&
             // Skip intermediate streaming tokens — only queue the final complete message.
             // Token messages have tokenMessage=true; the complete message that replaces
@@ -118,19 +119,20 @@ var kmVoiceMessageHandler = {
         if (!this.canQueueVoiceMessage(message, appOptions, msgThroughListAPI)) {
             return false;
         }
+        mckVoice.markVoiceMessageQueued(message);
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
         return true;
     },
 
-    queueFromSocketReceive: function (message, tabId, appOptions) {
+    queueFromSocketReceive: function (message, tabId, appOptions, displayName) {
         if (
             !this.canQueueVoiceMessage(message, appOptions, false) ||
             !this.isCurrentConversationMessage(message, tabId)
         ) {
             return false;
         }
-        var displayName = mckMessageLayout.getTabDisplayName(message.to, false);
+        mckVoice.markVoiceMessageQueued(message);
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
         return true;

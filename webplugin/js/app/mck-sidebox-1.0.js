@@ -15381,7 +15381,8 @@ const firstVisibleMsg = {
                             kmVoiceMessageHandler.queueFromSocketReceive(
                                 message,
                                 tabId,
-                                appOptions
+                                appOptions,
+                                mckMessageLayout.getTabDisplayName(message.to, false)
                             );
                         }
 
