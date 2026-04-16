@@ -142,6 +142,12 @@ $voice-progress-transcribing-text: #9a3412;
     color: $voice-progress-transcribing-text;
 }
 
+.km-voice-progress-message[data-state='error'] .km-voice-progress-bubble {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+}
+
 /* ========================================
    ACTION BUTTON (Switch to Chat)
    ======================================== */

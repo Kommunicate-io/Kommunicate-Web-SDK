@@ -430,7 +430,7 @@ class MckVoice {
             if (!wavBlob) {
                 throw new Error('Omnichannel TTS failed to return audio');
             }
-            this.playAudioBlobWithQueue(wavBlob);
+            this.playAudioBlobWithQueue(wavBlob, spokenText);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -610,7 +610,7 @@ class MckVoice {
         }
     }
 
-    playAudioBlobWithQueue(audioBlob) {
+    playAudioBlobWithQueue(audioBlob, fallbackText = '') {
         this.clearDeferredRecordingHandler(this.audioElement);
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
@@ -632,7 +632,7 @@ class MckVoice {
             console.error(error, 'audio play error');
             URL.revokeObjectURL(blobUrl);
             if (!playbackStarted) {
-                this.handleAudioPlaybackStartFailure(error, audio);
+                this.handleAudioPlaybackStartFailure(error, audio, fallbackText);
                 return;
             }
             this.audioElement = null;
@@ -651,7 +651,7 @@ class MckVoice {
                     this.visualizerCleanup = this.createAudioVisualizer(audio);
                 })
                 .catch((error) => {
-                    this.handleAudioPlaybackStartFailure(error, audio);
+                    this.handleAudioPlaybackStartFailure(error, audio, fallbackText);
                 });
         };
 
@@ -721,7 +721,10 @@ class MckVoice {
     }
 
     shouldUseNativeSpeechSynthesis() {
-        return this.activeRecognitionMode === 'native' && this.isNativeSpeechSynthesisAvailable();
+        return (
+            this.isNativeSpeechSynthesisAvailable() &&
+            (this.activeRecognitionMode === 'native' || KommunicateUtils.isIOSWebKitBrowser())
+        );
     }
 
     isNativeSpeechSynthesisAvailable() {
@@ -747,7 +750,7 @@ class MckVoice {
         }
     }
 
-    handleAudioPlaybackStartFailure(error, audioElement = this.audioElement) {
+    handleAudioPlaybackStartFailure(error, audioElement = this.audioElement, fallbackText = '') {
         if (this.audioElement !== audioElement) {
             return;
         }
@@ -765,6 +768,10 @@ class MckVoice {
             }
         }
         this.audioElement = null;
+        if (fallbackText && this.isNativeSpeechSynthesisAvailable()) {
+            this.playNativeSpeech(fallbackText);
+            return;
+        }
         this.handlePlaybackFailure(error);
     }
 
@@ -793,6 +800,7 @@ class MckVoice {
 
     handlePlaybackFailure(error) {
         console.error(error);
+        this.showVoiceErrorMessage(error, 'Voice playback failed');
         this.removeAllAnimation();
         this.clearVoiceStatus();
         this.audioElement = null;
@@ -1074,6 +1082,9 @@ class MckVoice {
         // getUserMedia requires a secure context (HTTPS or localhost).
         if (typeof window !== 'undefined' && window.isSecureContext === false) {
             console.error('Voice recording requires a secure (HTTPS) context');
+            this.showVoiceErrorMessage(
+                'Voice recording is not available over an insecure connection. Please use HTTPS.'
+            );
             if (!suppressPermissionAlert) {
                 alert(
                     'Voice recording is not available over an insecure connection. Please use HTTPS.'
@@ -1085,6 +1096,7 @@ class MckVoice {
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
+            this.showVoiceErrorMessage('Your browser does not support audio recording');
             if (!suppressPermissionAlert) {
                 alert('Your browser does not support audio recording');
             }
@@ -1111,6 +1123,10 @@ class MckVoice {
                 this.trackVoiceEvent('onVoicePermissionDenied', source);
             }
             console.error('Error accessing microphone:', error);
+            this.showVoiceErrorMessage(
+                error,
+                'Could not access your microphone. Please allow microphone access and try again.'
+            );
             if (isPermissionDenied && typeof onPermissionDenied === 'function') {
                 onPermissionDenied(error);
             }
@@ -1428,7 +1444,8 @@ class MckVoice {
                 console.error(error);
                 this.removeAllAnimation();
                 this.clearVoiceStatus();
-                this.updateLiveTranscript(
+                this.showVoiceErrorMessage(
+                    error,
                     this.getVoiceLabel(
                         'voiceInterface.processingFailed',
                         'Unable to transcribe the recording. Please try again.'
@@ -2349,6 +2366,24 @@ class MckVoice {
                 this.clearVoiceProgressMessage();
             }, autoHide);
         }
+    }
+
+    getVoiceErrorMessage(error, fallback = 'Voice error') {
+        if (!error) {
+            return fallback;
+        }
+        if (typeof error === 'string') {
+            return `${fallback}: ${error}`;
+        }
+        const detail = error.message || error.name || '';
+        return detail ? `${fallback}: ${detail}` : fallback;
+    }
+
+    showVoiceErrorMessage(error, fallback = 'Voice error', { autoHide = 9000 } = {}) {
+        const message = this.getVoiceErrorMessage(error, fallback);
+        this.updateVoiceStatus('Voice error');
+        this.updateLiveTranscript(message, { autoHide });
+        this.showVoiceProgressMessage(message, { state: 'error', autoHide });
     }
 
     clearVoiceProgressMessage() {
