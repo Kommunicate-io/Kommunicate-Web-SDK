@@ -25,6 +25,7 @@ class MckVoice {
     _VOICE_CONTINUATION_MAX_SILENCE_MS = 3000;
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
+    _NATIVE_SPEECH_RESTART_DELAY_MS = 400;
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -434,7 +435,7 @@ class MckVoice {
             if (!wavBlob) {
                 throw new Error('Omnichannel TTS failed to return audio');
             }
-            this.playAudioBlobWithQueue(wavBlob, spokenText);
+            this.playAudioBlobWithQueue(wavBlob);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -614,7 +615,7 @@ class MckVoice {
         }
     }
 
-    playAudioBlobWithQueue(audioBlob, fallbackText = '') {
+    playAudioBlobWithQueue(audioBlob) {
         this.clearDeferredRecordingHandler(this.audioElement);
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
@@ -636,7 +637,7 @@ class MckVoice {
             console.error(error, 'audio play error');
             URL.revokeObjectURL(blobUrl);
             if (!playbackStarted) {
-                this.handleAudioPlaybackStartFailure(error, audio, fallbackText);
+                this.handleAudioPlaybackStartFailure(error, audio);
                 return;
             }
             this.handlePlaybackFailure(error);
@@ -653,7 +654,7 @@ class MckVoice {
                     this.visualizerCleanup = this.createAudioVisualizer(audio);
                 })
                 .catch((error) => {
-                    this.handleAudioPlaybackStartFailure(error, audio, fallbackText);
+                    this.handleAudioPlaybackStartFailure(error, audio);
                 });
         };
 
@@ -749,7 +750,7 @@ class MckVoice {
         }
     }
 
-    handleAudioPlaybackStartFailure(error, audioElement = this.audioElement, fallbackText = '') {
+    handleAudioPlaybackStartFailure(error, audioElement = this.audioElement) {
         if (this.audioElement !== audioElement) {
             return;
         }
@@ -768,10 +769,6 @@ class MckVoice {
             }
         }
         this.audioElement = null;
-        if (fallbackText && this.isNativeSpeechSynthesisAvailable()) {
-            this.playNativeSpeech(fallbackText);
-            return;
-        }
         this.handlePlaybackFailure(error);
     }
 
@@ -785,21 +782,24 @@ class MckVoice {
     onNativeSpeechEnded() {
         this.nativeSpeechUtterance = null;
         this.removeAllAnimation();
-        this.advanceQueueAfterPlayback();
+        this.advanceQueueAfterPlayback({ fromNativeSpeech: true });
     }
 
-    advanceQueueAfterPlayback() {
+    advanceQueueAfterPlayback({ fromNativeSpeech = false } = {}) {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
             this.processNextMessage(nextMsg);
             return;
         }
-        if (this.agentOrBotLastMsgAudio || this.agentOrBotLastMsg) {
+        if (
+            this.agentOrBotLastMsgAudio ||
+            (this.agentOrBotLastMsg && this.shouldUseNativeSpeechSynthesis())
+        ) {
             const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
             repeatButton && repeatButton.classList.remove('mck-hidden');
         }
         this.setAwaitingBotResponsePlayback(false);
-        this.resumeListeningAfterPlayback();
+        this.resumeListeningAfterPlayback({ fromNativeSpeech });
     }
 
     handlePlaybackFailure(error) {
@@ -1253,6 +1253,8 @@ class MckVoice {
                 : [];
             const recordedVadCaptureSampleRate = this.vadCaptureSampleRate;
             const stopReason = this.recordingStopReason || 'manual';
+            const hadDetectedSpeech =
+                this.speechDetected || this.hasSoundDetected || this.soundSamples > 0;
             const hasRecordedPayload =
                 recordedChunks.length > 0 || recordedVadCaptureChunks.length > 0;
             const shouldProcessRecording =
@@ -1262,9 +1264,12 @@ class MckVoice {
                         hasRecordedPayload));
             const shouldAggregateSegments =
                 this.activeRecognitionMode === 'omnichannel' &&
+                hadDetectedSpeech &&
                 (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
             const shouldRestartContinuationRecording =
-                this.activeRecognitionMode === 'omnichannel' && stopReason === 'segment_pause';
+                this.activeRecognitionMode === 'omnichannel' &&
+                hadDetectedSpeech &&
+                stopReason === 'segment_pause';
             const shouldReuseContinuationStream =
                 shouldRestartContinuationRecording &&
                 recordingStream &&
@@ -2880,11 +2885,16 @@ class MckVoice {
         }, delay);
     }
 
-    resumeListeningAfterPlayback() {
+    resumeListeningAfterPlayback({ fromNativeSpeech = false } = {}) {
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
-        this.scheduleAutoListen(0, { skipCooldown: true });
+        const shouldDelayNativeSpeechRestart =
+            fromNativeSpeech && KommunicateUtils.isIOSWebKitBrowser();
+        this.scheduleAutoListen(
+            shouldDelayNativeSpeechRestart ? this._NATIVE_SPEECH_RESTART_DELAY_MS : 0,
+            { skipCooldown: !shouldDelayNativeSpeechRestart }
+        );
     }
     updateMuteButton() {
         const button = document.getElementById('mck-voice-speak-btn');
