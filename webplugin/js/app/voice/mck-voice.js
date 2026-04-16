@@ -233,6 +233,10 @@ class MckVoice {
         audio.setAttribute('playsinline', 'true');
     }
 
+    isAudioPlaybackActive(audioElement = this.audioElement) {
+        return audioElement && !audioElement.paused && !audioElement.ended;
+    }
+
     resumeAudioContext(audioContext, contextName = 'audio') {
         if (!audioContext || audioContext.state !== 'suspended') {
             return;
@@ -635,9 +639,7 @@ class MckVoice {
                 this.handleAudioPlaybackStartFailure(error, audio, fallbackText);
                 return;
             }
-            this.audioElement = null;
-            const nextMsg = this.shiftToNextQueuedMessage();
-            nextMsg && this.processNextMessage(nextMsg);
+            this.handlePlaybackFailure(error);
         };
 
         const startPlayback = () => {
@@ -721,10 +723,7 @@ class MckVoice {
     }
 
     shouldUseNativeSpeechSynthesis() {
-        return (
-            this.isNativeSpeechSynthesisAvailable() &&
-            (this.activeRecognitionMode === 'native' || KommunicateUtils.isIOSWebKitBrowser())
-        );
+        return this.activeRecognitionMode === 'native' && this.isNativeSpeechSynthesisAvailable();
     }
 
     isNativeSpeechSynthesisAvailable() {
@@ -755,6 +754,7 @@ class MckVoice {
             return;
         }
         console.error('Audio playback start failed', error);
+        this.clearDeferredRecordingHandler(audioElement);
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
             this.visualizerCleanup = null;
@@ -804,6 +804,7 @@ class MckVoice {
 
     handlePlaybackFailure(error) {
         console.error(error);
+        this.clearDeferredRecordingHandler(this.audioElement);
         this.showVoiceErrorMessage(error, 'Voice playback failed');
         this.removeAllAnimation();
         this.clearVoiceStatus();
@@ -1062,7 +1063,7 @@ class MckVoice {
         if (this.awaitingBotResponsePlayback || this.messagesQueue.length > 0) {
             return false;
         }
-        if (this.audioElement && !this.audioElement.ended) {
+        if (this.isAudioPlaybackActive()) {
             this.deferRecordingUntilPlaybackEnds();
             return false;
         }
@@ -1147,7 +1148,7 @@ class MckVoice {
     }
 
     async requestAudioRecordingWhenReady(options = {}) {
-        if (this.audioElement && !this.audioElement.ended) {
+        if (this.isAudioPlaybackActive()) {
             this.deferRecordingUntilPlaybackEnds();
             return true;
         }
@@ -2065,8 +2066,7 @@ class MckVoice {
         if (!this.autoListeningEnabled || this.voiceMuted || this.isRecording) {
             return;
         }
-        const isAudioActive =
-            this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+        const isAudioActive = this.isAudioPlaybackActive();
         if (isAudioActive || this.messagesQueue.length > 0) {
             return;
         }
@@ -2557,8 +2557,7 @@ class MckVoice {
         this.clearAwaitingBotResponseTimeout();
         if (this.awaitingBotResponsePlayback) {
             this.awaitingBotResponseTimeout = setTimeout(() => {
-                const isPlaybackStillActive =
-                    this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+                const isPlaybackStillActive = this.isAudioPlaybackActive();
                 const hasQueuedBotMessages = this.messagesQueue.length > 0;
                 if (isPlaybackStillActive || hasQueuedBotMessages) {
                     this.setAwaitingBotResponsePlayback(true, timeoutMs);
@@ -2861,7 +2860,7 @@ class MckVoice {
             this.awaitingBotResponsePlayback ||
             this.messagesQueue.length > 0 ||
             !this.isVoiceInterfaceVisible() ||
-            this.audioElement !== null
+            this.isAudioPlaybackActive()
         ) {
             return;
         }
@@ -2874,7 +2873,7 @@ class MckVoice {
                 !this.awaitingBotResponsePlayback &&
                 this.messagesQueue.length === 0 &&
                 this.isVoiceInterfaceVisible() &&
-                this.audioElement === null
+                !this.isAudioPlaybackActive()
             ) {
                 this.requestAudioRecording();
             }
@@ -2995,8 +2994,7 @@ class MckVoice {
         if (!this.isVoiceInterfaceVisible()) {
             return;
         }
-        const isVoicePlaybackActive =
-            this.audioElement && !this.audioElement.paused && !this.audioElement.ended;
+        const isVoicePlaybackActive = this.isAudioPlaybackActive();
         if (this.isRecording || isVoicePlaybackActive) {
             this.startVoiceModeTimeout();
             return;
