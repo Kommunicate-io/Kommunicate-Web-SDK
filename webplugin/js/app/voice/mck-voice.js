@@ -662,10 +662,7 @@ class MckVoice {
             { once: true }
         );
 
-        if (
-            typeof HTMLMediaElement !== 'undefined' &&
-            audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA
-        ) {
+        if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
             startPlayback();
         }
 
