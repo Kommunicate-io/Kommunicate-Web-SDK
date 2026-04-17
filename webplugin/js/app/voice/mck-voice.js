@@ -3989,12 +3989,6 @@ class MckVoice {
         }
         this.setAwaitingBotResponsePlayback(true);
         this.clearVoiceProgressMessage();
-        const waitingLabel = this.getVoiceLabel(
-            'voiceInterface.waitingForReply',
-            'Waiting for reply...'
-        );
-        this.updateVoiceStatus(waitingLabel, false);
-        this.showVoiceProgressMessage(waitingLabel, { state: 'processing' });
         this.logVoiceDebug('voice_query_submitted', {
             textLength: trimmedMessage.length,
             preview: trimmedMessage.slice(0, 120),
