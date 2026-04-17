@@ -26,6 +26,10 @@ class MckVoice {
     _VOICE_EMPTY_STT_SUPPRESS_WINDOW_MS = 10000; // suppress low-confidence retries after repeated empty STT
     _VOICE_EMPTY_STT_SUPPRESS_COUNT = 2;
     _NATIVE_SPEECH_RESTART_DELAY_MS = 400;
+    _AUDIO_PLAYBACK_START_TIMEOUT_MS = 4000;
+    _AUDIO_PLAYBACK_RETRY_DELAY_MS = 150;
+    _WEBKIT_BOT_PLAYBACK_RESTART_DELAY_MS = 2200;
+    _VOICE_ECHO_SUPPRESS_WINDOW_MS = 7000;
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
 
@@ -43,6 +47,9 @@ class MckVoice {
         this.agentOrBotName = '';
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
+        this.agentOrBotLastMsgPlaybackData = null;
+        this.lastBotPlaybackEndedAt = 0;
+        this.lastBotPlaybackText = '';
         this.messagesQueue = [];
         this.textboxVoiceActiveClass = 'km-voice-active';
 
@@ -102,12 +109,28 @@ class MckVoice {
         this.voiceProgressAutoHideTimeout = null;
         this.awaitingBotResponsePlayback = false;
         this.awaitingBotResponseTimeout = null;
+        this.audioPlaybackWatchdog = null;
+        this.audioPlaybackStartTimeout = null;
+        this.voiceDebugOverlayElement = null;
+        this.voiceDebugEventListenerBound = false;
+        this.handleVoiceDebugOverlayEventBound = (event) =>
+            this.handleVoiceDebugOverlayEvent(event);
+        this.voiceDebugLastError = null;
+        this.voiceDebugLastPlaybackEvent = null;
+        this.visualizerAudioContext = null;
+        this.visualizerSourceNodes = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+        this.replyPlaybackAudioContext = null;
+        this.currentReplyPlaybackSource = null;
+        this.currentReplyPlaybackActive = false;
         this.VOICE_ENTRY_SOURCE = {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
             CONVERSATIONS_SCREEN: 'conversations_screen',
         };
+        this.voiceDebugEnabled = false;
+        this.voiceDebugPrefix = '[KM Voice Debug]';
         this.voiceInputSettings = this.getVoiceInputSettings();
         this.activeRecognitionMode = this.determineRecognitionMode();
+        this.refreshVoiceDebugState();
     }
 
     getVoiceEntrySources() {
@@ -127,6 +150,387 @@ class MckVoice {
         }
     }
 
+    parseVoiceDebugFlag(value) {
+        if (typeof value === 'boolean') {
+            return value;
+        }
+        if (typeof value === 'string') {
+            const normalized = value.trim().toLowerCase();
+            if (['1', 'true', 'yes', 'on'].includes(normalized)) {
+                return true;
+            }
+            if (['0', 'false', 'no', 'off'].includes(normalized)) {
+                return false;
+            }
+        }
+        return null;
+    }
+
+    getVoiceDebugFlag() {
+        if (typeof window !== 'undefined') {
+            try {
+                const searchParams = new URLSearchParams(window.location.search || '');
+                const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
+                if (queryValue !== null) {
+                    return queryValue;
+                }
+            } catch (error) {}
+
+            try {
+                const storageValue = this.parseVoiceDebugFlag(
+                    window.localStorage && window.localStorage.getItem('km_voice_debug')
+                );
+                if (storageValue !== null) {
+                    return storageValue;
+                }
+            } catch (error) {}
+
+            const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
+            if (globalValue !== null) {
+                return globalValue;
+            }
+        }
+
+        const globalConfig =
+            (typeof kommunicate !== 'undefined' && kommunicate && kommunicate._globals) || {};
+        const voiceConfig = globalConfig.voiceInputSettings || {};
+        const configValue = this.parseVoiceDebugFlag(voiceConfig.debug);
+        if (configValue !== null) {
+            return configValue;
+        }
+        const rootConfigValue = this.parseVoiceDebugFlag(globalConfig.voiceDebug);
+        if (rootConfigValue !== null) {
+            return rootConfigValue;
+        }
+        return false;
+    }
+
+    installVoiceDebugHelpers() {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
+            ? window.__kmVoiceDebugEvents
+            : [];
+        window.__kmVoiceDebugEvents = existingEvents;
+        window.__kmVoiceDebug = {
+            get enabled() {
+                return typeof kmVoice !== 'undefined' && kmVoice
+                    ? kmVoice.refreshVoiceDebugState()
+                    : false;
+            },
+            getState: () => this.getVoiceDebugState(),
+            getEvents: () => window.__kmVoiceDebugEvents.slice(),
+            logState: (label = 'manual_state_dump') => {
+                this.logVoiceDebug(label);
+                return this.getVoiceDebugState();
+            },
+        };
+    }
+
+    refreshVoiceDebugState() {
+        this.voiceDebugEnabled = this.getVoiceDebugFlag();
+        this.installVoiceDebugHelpers();
+        this.bindVoiceDebugOverlayListener();
+        this.renderVoiceDebugOverlay();
+        return this.voiceDebugEnabled;
+    }
+
+    publishVoiceDebugEvent(eventName, details = {}, level = 'log') {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
+            ? window.__kmVoiceDebugEvents
+            : [];
+        const payload = {
+            eventName,
+            details,
+            level,
+            timestamp: Date.now(),
+        };
+        if (
+            level === 'warn' ||
+            eventName.indexOf('error') !== -1 ||
+            eventName.indexOf('failed') !== -1 ||
+            eventName.indexOf('timeout') !== -1
+        ) {
+            this.voiceDebugLastError = payload;
+        }
+        if (eventName.indexOf('play_audio_blob_') === 0 || eventName === 'playback_failed') {
+            this.voiceDebugLastPlaybackEvent = payload;
+        }
+        existingEvents.push(payload);
+        if (existingEvents.length > 30) {
+            existingEvents.splice(0, existingEvents.length - 30);
+        }
+        window.__kmVoiceDebugEvents = existingEvents;
+        if (window.__kmVoiceDebug) {
+            window.__kmVoiceDebug.events = existingEvents;
+        }
+        if (typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function') {
+            window.dispatchEvent(
+                new CustomEvent('km-voice-debug-event', {
+                    detail: payload,
+                })
+            );
+        }
+    }
+
+    getAudioTrackDebugState(stream = this.stream) {
+        const track =
+            stream &&
+            typeof stream.getAudioTracks === 'function' &&
+            stream.getAudioTracks().length > 0
+                ? stream.getAudioTracks()[0]
+                : null;
+        if (!track) {
+            return null;
+        }
+        return {
+            label: track.label || '',
+            enabled: track.enabled,
+            muted: track.muted,
+            readyState: track.readyState || null,
+            settings: typeof track.getSettings === 'function' ? track.getSettings() : null,
+        };
+    }
+
+    getAudioPlaybackDebugState(audioElement = this.audioElement) {
+        if (!audioElement) {
+            return null;
+        }
+        return {
+            currentTime: Number.isFinite(audioElement.currentTime)
+                ? audioElement.currentTime
+                : null,
+            duration: Number.isFinite(audioElement.duration) ? audioElement.duration : null,
+            paused: audioElement.paused,
+            ended: audioElement.ended,
+            readyState: audioElement.readyState,
+            networkState: audioElement.networkState,
+            src: audioElement.currentSrc || audioElement.src || null,
+        };
+    }
+
+    getHtmlMediaErrorDetails(audioElement) {
+        const mediaError = audioElement && audioElement.error ? audioElement.error : null;
+        if (!mediaError) {
+            return null;
+        }
+        return {
+            code: typeof mediaError.code === 'number' ? mediaError.code : null,
+            message: mediaError.message || null,
+        };
+    }
+
+    getVoiceDebugState(extra = {}) {
+        const voiceSettings = this.voiceInputSettings || this.getVoiceInputSettings();
+        return {
+            enabled: this.voiceDebugEnabled,
+            isSecureContext: typeof window !== 'undefined' ? window.isSecureContext : null,
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            isIOSWebKitWorkaroundActive: this.shouldApplyWebKitVoiceWorkarounds(),
+            requestedRecognitionMode: voiceSettings.recognitionMode || null,
+            activeRecognitionMode: this.activeRecognitionMode,
+            nativeRecognitionAvailable: this.isNativeSpeechRecognitionAvailable(),
+            mediaDevicesSupported: Boolean(
+                typeof navigator !== 'undefined' &&
+                    navigator.mediaDevices &&
+                    navigator.mediaDevices.getUserMedia
+            ),
+            mediaRecorderSupported: typeof MediaRecorder !== 'undefined',
+            mediaRecorderState: this.mediaRecorder && this.mediaRecorder.state,
+            recordedMimeType: this.recordedMimeType || null,
+            autoListeningEnabled: this.autoListeningEnabled,
+            voiceMuted: this.voiceMuted,
+            isRecording: this.isRecording,
+            awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
+            audioPlaybackActive: this.isAudioPlaybackActive(),
+            hasAudioElement: Boolean(this.audioElement),
+            replyPlaybackActive: this.currentReplyPlaybackActive,
+            replyPlaybackAudioContextState: this.replyPlaybackAudioContext
+                ? this.replyPlaybackAudioContext.state
+                : null,
+            audioPlayback: this.getAudioPlaybackDebugState(),
+            queueLength: this.messagesQueue.length,
+            lastBotPlaybackEndedAt: this.lastBotPlaybackEndedAt || null,
+            lastBotPlaybackTextLength: (this.lastBotPlaybackText || '').length,
+            lastDebugError: this.voiceDebugLastError,
+            lastPlaybackEvent: this.voiceDebugLastPlaybackEvent,
+            streamActive: this.stream ? this.stream.active : null,
+            audioTrack: this.getAudioTrackDebugState(),
+            ...extra,
+        };
+    }
+
+    logVoiceDebug(eventName, details = {}, level = 'log') {
+        if (!this.refreshVoiceDebugState()) {
+            return;
+        }
+        this.publishVoiceDebugEvent(eventName, details, level);
+        const consoleMethod =
+            typeof console !== 'undefined' && typeof console[level] === 'function'
+                ? console[level]
+                : console.log;
+        consoleMethod.call(
+            console,
+            `${this.voiceDebugPrefix} ${eventName}`,
+            this.getVoiceDebugState(details)
+        );
+    }
+
+    bindVoiceDebugOverlayListener() {
+        if (this.voiceDebugEventListenerBound || typeof window === 'undefined') {
+            return;
+        }
+        window.addEventListener('km-voice-debug-event', this.handleVoiceDebugOverlayEventBound);
+        this.voiceDebugEventListenerBound = true;
+    }
+
+    handleVoiceDebugOverlayEvent() {
+        if (!this.voiceDebugEnabled) {
+            return;
+        }
+        this.renderVoiceDebugOverlay();
+    }
+
+    getVoiceInterfaceElement() {
+        return document.getElementById('mck-voice-interface');
+    }
+
+    getVoiceDebugOverlayElement() {
+        if (!this.voiceDebugEnabled) {
+            if (this.voiceDebugOverlayElement && this.voiceDebugOverlayElement.parentNode) {
+                this.voiceDebugOverlayElement.parentNode.removeChild(this.voiceDebugOverlayElement);
+            }
+            this.voiceDebugOverlayElement = null;
+            return null;
+        }
+        if (this.voiceDebugOverlayElement && this.voiceDebugOverlayElement.isConnected) {
+            return this.voiceDebugOverlayElement;
+        }
+        const voiceInterface = this.getVoiceInterfaceElement();
+        if (!voiceInterface) {
+            return null;
+        }
+        const overlay = document.createElement('div');
+        overlay.id = 'km-voice-debug-overlay';
+        overlay.setAttribute('aria-live', 'polite');
+        overlay.style.position = 'absolute';
+        overlay.style.left = '12px';
+        overlay.style.right = '12px';
+        overlay.style.bottom = '12px';
+        overlay.style.zIndex = '6';
+        overlay.style.maxHeight = '32vh';
+        overlay.style.overflow = 'auto';
+        overlay.style.padding = '10px 12px';
+        overlay.style.borderRadius = '16px';
+        overlay.style.background = 'rgba(15, 23, 42, 0.92)';
+        overlay.style.color = '#e2e8f0';
+        overlay.style.fontSize = '11px';
+        overlay.style.lineHeight = '1.45';
+        overlay.style.boxShadow = '0 14px 34px rgba(15, 23, 42, 0.28)';
+        overlay.style.backdropFilter = 'blur(10px)';
+        overlay.style.whiteSpace = 'pre-wrap';
+        overlay.style.wordBreak = 'break-word';
+        overlay.style.pointerEvents = 'none';
+        voiceInterface.style.position = voiceInterface.style.position || 'relative';
+        voiceInterface.appendChild(overlay);
+        this.voiceDebugOverlayElement = overlay;
+        return overlay;
+    }
+
+    formatVoiceDebugOverlayEntry(entry) {
+        const timestamp = new Date(entry.timestamp || Date.now()).toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+        const levelPrefix = entry.level && entry.level !== 'log' ? `[${entry.level}] ` : '';
+        let detailText = '';
+        try {
+            detailText = JSON.stringify(entry.details || {});
+        } catch (error) {
+            detailText = String(entry.details || '');
+        }
+        if (detailText.length > 220) {
+            detailText = `${detailText.slice(0, 220)}...`;
+        }
+        return `${timestamp} ${levelPrefix}${entry.eventName}${
+            detailText && detailText !== '{}' ? `\n${detailText}` : ''
+        }`;
+    }
+
+    formatVoiceDebugOverlaySummary(label, payload) {
+        if (!payload) {
+            return `${label}: none`;
+        }
+        const timestamp = new Date(payload.timestamp || Date.now()).toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+        let detailText = '';
+        try {
+            detailText = JSON.stringify(payload.details || {});
+        } catch (error) {
+            detailText = String(payload.details || '');
+        }
+        if (detailText.length > 180) {
+            detailText = `${detailText.slice(0, 180)}...`;
+        }
+        return `${label}: ${timestamp} ${payload.eventName}${
+            detailText && detailText !== '{}' ? ` ${detailText}` : ''
+        }`;
+    }
+
+    renderVoiceDebugOverlay() {
+        const overlay = this.getVoiceDebugOverlayElement();
+        if (!overlay) {
+            return;
+        }
+        const debugState = this.getVoiceDebugState();
+        const events =
+            typeof window !== 'undefined' && Array.isArray(window.__kmVoiceDebugEvents)
+                ? window.__kmVoiceDebugEvents.slice(-16)
+                : [];
+        if (!events.length) {
+            overlay.textContent = 'Voice Debug\nWaiting for events...';
+            return;
+        }
+        const lines = [
+            'Voice Debug',
+            `mode=${debugState.activeRecognitionMode || 'unknown'} queue=${
+                debugState.queueLength
+            } recording=${Boolean(debugState.isRecording)} awaiting=${Boolean(
+                debugState.awaitingBotResponsePlayback
+            )} muted=${Boolean(debugState.voiceMuted)}`,
+        ];
+        if (debugState.audioPlayback) {
+            lines.push(
+                `audio: paused=${Boolean(debugState.audioPlayback.paused)} ended=${Boolean(
+                    debugState.audioPlayback.ended
+                )} rs=${debugState.audioPlayback.readyState} ns=${
+                    debugState.audioPlayback.networkState
+                } t=${debugState.audioPlayback.currentTime} d=${debugState.audioPlayback.duration}`
+            );
+        } else {
+            lines.push('audio: none');
+        }
+        lines.push(this.formatVoiceDebugOverlaySummary('lastError', this.voiceDebugLastError));
+        lines.push(
+            this.formatVoiceDebugOverlaySummary('lastPlayback', this.voiceDebugLastPlaybackEvent)
+        );
+        lines.push('events:');
+        for (let i = 0; i < events.length; i++) {
+            lines.push(this.formatVoiceDebugOverlayEntry(events[i]));
+        }
+        overlay.textContent = lines.join('\n\n');
+    }
+
     resetVoicePlaybackQueue(reason = 'manual_reset') {
         this.messagesQueue = [];
     }
@@ -135,10 +539,35 @@ class MckVoice {
         source = 'start_conversation_screen',
         { onPermissionDenied = null, suppressPermissionAlert = false } = {}
     ) {
+        if (
+            typeof kmVoiceMessageHandler !== 'undefined' &&
+            kmVoiceMessageHandler &&
+            typeof kmVoiceMessageHandler.resetQueuedVoiceMessages === 'function'
+        ) {
+            kmVoiceMessageHandler.resetQueuedVoiceMessages();
+        }
+        this.logVoiceDebug('start_voice_mode_requested', {
+            source,
+            suppressPermissionAlert,
+        });
         this.trackVoiceEvent('onVoiceEntryClicked', source);
         this.trackVoiceEvent('onVoiceIconClick', source);
         this.disableNativeVoiceOutputForVoiceMode();
         this.enableAutoListening();
+        if (this.shouldUseSafariBufferPlayback()) {
+            try {
+                await this.unlockReplyPlaybackAudioContext();
+            } catch (error) {
+                this.logVoiceDebug(
+                    'reply_playback_audio_context_unlock_failed',
+                    {
+                        errorName: error && error.name,
+                        errorMessage: error && error.message,
+                    },
+                    'warn'
+                );
+            }
+        }
         this.voiceMuted = false;
         this.updateMuteButton();
         this.clearVoiceStatus();
@@ -167,6 +596,10 @@ class MckVoice {
             this.pendingVoiceSessionSource = null;
             this.stopVoiceMode();
         }
+        this.logVoiceDebug('start_voice_mode_result', {
+            source,
+            isRecordingStarted: Boolean(isRecordingStarted),
+        });
         return Boolean(isRecordingStarted);
     }
 
@@ -200,11 +633,19 @@ class MckVoice {
     }
 
     createMediaRecorder(stream) {
+        const supportedMimeTypes = [];
         if (
             !this.shouldApplyWebKitVoiceWorkarounds() ||
             typeof MediaRecorder.isTypeSupported !== 'function'
         ) {
-            return new MediaRecorder(stream);
+            const recorder = new MediaRecorder(stream);
+            this.logVoiceDebug('media_recorder_created_default', {
+                selectedMimeType: recorder.mimeType || null,
+                reason: !this.shouldApplyWebKitVoiceWorkarounds()
+                    ? 'non_ios_webkit'
+                    : 'is_type_supported_unavailable',
+            });
+            return recorder;
         }
 
         const preferredMimeTypes = [
@@ -217,25 +658,149 @@ class MckVoice {
         for (let i = 0; i < preferredMimeTypes.length; i++) {
             const mimeType = preferredMimeTypes[i];
             if (MediaRecorder.isTypeSupported(mimeType)) {
+                supportedMimeTypes.push(mimeType);
                 try {
-                    return new MediaRecorder(stream, { mimeType });
+                    const recorder = new MediaRecorder(stream, { mimeType });
+                    this.logVoiceDebug('media_recorder_created_webkit', {
+                        selectedMimeType: mimeType,
+                        supportedMimeTypes,
+                    });
+                    return recorder;
                 } catch (error) {
                     console.warn(`MediaRecorder init failed for ${mimeType}`, error);
+                    this.logVoiceDebug(
+                        'media_recorder_init_failed',
+                        {
+                            attemptedMimeType: mimeType,
+                            supportedMimeTypes,
+                            errorName: error && error.name,
+                            errorMessage: error && error.message,
+                        },
+                        'warn'
+                    );
                 }
             }
         }
 
-        return new MediaRecorder(stream);
+        const recorder = new MediaRecorder(stream);
+        this.logVoiceDebug('media_recorder_created_fallback', {
+            selectedMimeType: recorder.mimeType || null,
+            supportedMimeTypes,
+        });
+        return recorder;
     }
 
     configureInlineAudioPlayback(audio) {
         audio.preload = 'auto';
         audio.playsInline = true;
         audio.setAttribute('playsinline', 'true');
+        audio.muted = false;
+        audio.volume = 1;
+    }
+
+    shouldUseSafariBufferPlayback() {
+        return (
+            this.activeRecognitionMode === 'omnichannel' && KommunicateUtils.isIOSWebKitBrowser()
+        );
+    }
+
+    shouldUseHalfDuplexVoiceCapture() {
+        return (
+            this.activeRecognitionMode === 'omnichannel' && KommunicateUtils.isIOSWebKitBrowser()
+        );
+    }
+
+    shouldEnableAudioVisualizer() {
+        return !KommunicateUtils.isIOSWebKitBrowser();
+    }
+
+    getReplyPlaybackAudioContext() {
+        if (
+            !this.replyPlaybackAudioContext &&
+            typeof window !== 'undefined' &&
+            (window.AudioContext || window.webkitAudioContext)
+        ) {
+            this.replyPlaybackAudioContext = new (window.AudioContext ||
+                window.webkitAudioContext)();
+        }
+        return this.replyPlaybackAudioContext;
+    }
+
+    async unlockReplyPlaybackAudioContext() {
+        if (!this.shouldUseSafariBufferPlayback()) {
+            return null;
+        }
+        const audioContext = this.getReplyPlaybackAudioContext();
+        if (!audioContext) {
+            return null;
+        }
+        if (audioContext.state === 'suspended') {
+            await audioContext.resume();
+        }
+        this.logVoiceDebug('reply_playback_audio_context_ready', {
+            state: audioContext.state,
+            sampleRate: audioContext.sampleRate,
+        });
+        return audioContext;
+    }
+
+    stopReplyPlaybackSource() {
+        if (this.currentReplyPlaybackSource) {
+            try {
+                this.currentReplyPlaybackSource.onended = null;
+                this.currentReplyPlaybackSource.stop(0);
+            } catch (error) {}
+            try {
+                this.currentReplyPlaybackSource.disconnect();
+            } catch (error) {}
+        }
+        this.currentReplyPlaybackSource = null;
+        this.currentReplyPlaybackActive = false;
+    }
+
+    teardownAudioElement(audioElement = this.audioElement, { preserveSrc = false } = {}) {
+        if (!audioElement) {
+            return;
+        }
+        this.clearDeferredRecordingHandler(audioElement);
+        try {
+            audioElement.pause();
+        } catch (error) {}
+        try {
+            audioElement.currentTime = 0;
+        } catch (error) {}
+        if (!preserveSrc) {
+            try {
+                audioElement.removeAttribute('src');
+                audioElement.src = '';
+            } catch (error) {}
+            try {
+                if (typeof audioElement.load === 'function') {
+                    audioElement.load();
+                }
+            } catch (error) {}
+        }
     }
 
     isAudioPlaybackActive(audioElement = this.audioElement) {
-        return audioElement && !audioElement.paused && !audioElement.ended;
+        return (
+            this.currentReplyPlaybackActive ||
+            (audioElement && !audioElement.paused && !audioElement.ended)
+        );
+    }
+
+    clearAudioPlaybackWatchdog() {
+        if (this.audioPlaybackWatchdog) {
+            clearInterval(this.audioPlaybackWatchdog);
+            this.audioPlaybackWatchdog = null;
+        }
+    }
+
+    clearAudioPlaybackStartTimeout() {
+        if (this.audioPlaybackStartTimeout) {
+            clearTimeout(this.audioPlaybackStartTimeout);
+            this.audioPlaybackStartTimeout = null;
+        }
     }
 
     resumeAudioContext(audioContext, contextName = 'audio') {
@@ -244,6 +809,15 @@ class MckVoice {
         }
         audioContext.resume().catch((error) => {
             console.warn(`${contextName} AudioContext resume failed`, error);
+            this.logVoiceDebug(
+                'audio_context_resume_failed',
+                {
+                    contextName,
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                },
+                'warn'
+            );
         });
     }
 
@@ -322,13 +896,41 @@ class MckVoice {
             // If bot response audio is about to play, stop any active recording capture.
             // This avoids capturing bot TTS into mic input and prevents long max-duration waits.
             if (this.isRecording) {
-                this.stopRecording(true);
+                this.resetPendingVoiceSegments();
+                this.discardNextRecordingPayload = true;
+                this.logVoiceDebug(
+                    'recording_discarded_for_bot_playback',
+                    {
+                        reason: 'bot_reply_queued',
+                    },
+                    'warn'
+                );
+                this.stopRecording(true, 'bot_playback');
             }
             this.clearVoiceProgressMessage();
-            const queueItem = this.createQueuedVoiceMessage(msg, displayName);
-            this.messagesQueue.push(queueItem);
-            if (this.messagesQueue.length === 1) {
-                this.processNextMessage(queueItem);
+            const queueItems = this.createQueuedVoiceMessages(msg, displayName);
+            if (queueItems.length === 0) {
+                this.logVoiceDebug(
+                    'voice_queue_empty_after_normalization',
+                    {
+                        inputWasArray: Array.isArray(msg),
+                    },
+                    'warn'
+                );
+                this.setAwaitingBotResponsePlayback(false);
+                this.resumeListeningAfterPlayback();
+                return;
+            }
+            const shouldStartPlayback = this.messagesQueue.length === 0;
+            this.messagesQueue.push(...queueItems);
+            this.logVoiceDebug('voice_queue_items_added', {
+                addedCount: queueItems.length,
+                totalCount: this.messagesQueue.length,
+                inputWasArray: Array.isArray(msg),
+                messageHasArrayPayload: Boolean(msg && Array.isArray(msg.message)),
+            });
+            if (shouldStartPlayback) {
+                this.processNextMessage(queueItems[0]);
             }
         } catch (err) {
             console.error(err);
@@ -340,18 +942,147 @@ class MckVoice {
         }
     }
 
+    blobToDataUrl(blob) {
+        return new Promise((resolve, reject) => {
+            try {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () =>
+                    reject(reader.error || new Error('Failed to convert blob to data URL'));
+                reader.readAsDataURL(blob);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    normalizeQueuedVoiceMessages(msg) {
+        if (Array.isArray(msg)) {
+            const normalizedMessages = [];
+            msg.forEach((item) => {
+                normalizedMessages.push(...this.normalizeQueuedVoiceMessages(item));
+            });
+            return normalizedMessages;
+        }
+        if (!msg || typeof msg !== 'object') {
+            return [];
+        }
+        if (!Array.isArray(msg.message)) {
+            return [msg];
+        }
+        const baseMessage = { ...msg };
+        const normalizedParts = [];
+        msg.message.forEach((part, index) => {
+            normalizedParts.push(
+                ...this.createNormalizedQueuedVoiceMessageParts(baseMessage, part, index)
+            );
+        });
+        return normalizedParts;
+    }
+
+    createNormalizedQueuedVoiceMessageParts(baseMessage, part, index) {
+        if (Array.isArray(part)) {
+            const normalizedParts = [];
+            part.forEach((nestedPart, nestedIndex) => {
+                normalizedParts.push(
+                    ...this.createNormalizedQueuedVoiceMessageParts(
+                        baseMessage,
+                        nestedPart,
+                        `${index}-${nestedIndex}`
+                    )
+                );
+            });
+            return normalizedParts;
+        }
+        if (typeof part === 'string' || typeof part === 'number') {
+            return [
+                {
+                    ...baseMessage,
+                    key:
+                        baseMessage.key && typeof baseMessage.key === 'string'
+                            ? `${baseMessage.key}::part-${index}`
+                            : baseMessage.key,
+                    message: String(part),
+                },
+            ];
+        }
+        if (part && typeof part === 'object') {
+            const mergedMessage = {
+                ...baseMessage,
+                ...part,
+            };
+            if (mergedMessage.key === baseMessage.key && baseMessage.key && !part.key) {
+                mergedMessage.key = `${baseMessage.key}::part-${index}`;
+            }
+            if (Array.isArray(mergedMessage.message)) {
+                return this.normalizeQueuedVoiceMessages(mergedMessage);
+            }
+            if (
+                typeof mergedMessage.message === 'string' ||
+                typeof mergedMessage.message === 'number'
+            ) {
+                mergedMessage.message = String(mergedMessage.message);
+                return [mergedMessage];
+            }
+        }
+        return [];
+    }
+
+    createQueuedVoiceMessages(msg, displayName) {
+        const normalizedMessages = this.normalizeQueuedVoiceMessages(msg);
+        if (
+            normalizedMessages.length > 1 ||
+            Array.isArray(msg) ||
+            (msg && Array.isArray(msg.message))
+        ) {
+            this.logVoiceDebug('voice_message_parts_normalized', {
+                originalWasArray: Array.isArray(msg),
+                nestedMessageArray: Boolean(msg && Array.isArray(msg.message)),
+                normalizedCount: normalizedMessages.length,
+            });
+        }
+        return normalizedMessages.map((normalizedMessage) =>
+            this.createQueuedVoiceMessage(normalizedMessage, displayName)
+        );
+    }
+
+    extractVoiceMessageTextFromValue(value) {
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => this.extractVoiceMessageTextFromValue(item))
+                .filter(Boolean)
+                .join(' ');
+        }
+        if (typeof value === 'string') {
+            return value;
+        }
+        if (typeof value === 'number') {
+            return String(value);
+        }
+        if (value && typeof value === 'object') {
+            return this.extractVoiceMessageTextFromValue(value.message);
+        }
+        return '';
+    }
+
     createQueuedVoiceMessage(msg, displayName) {
-        const originalMessage =
-            msg && typeof msg.message === 'string'
-                ? msg.message
-                : msg && typeof msg.message === 'number'
-                ? String(msg.message)
-                : '';
+        const originalMessage = this.extractVoiceMessageTextFromValue(msg && msg.message);
         const messageWithoutSource = originalMessage.replace(
             /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
             ''
         );
         const spokenText = messageWithoutSource.trim();
+        if (!spokenText) {
+            this.logVoiceDebug(
+                'voice_queue_item_empty_text',
+                {
+                    messageKey: msg && msg.key,
+                    messageType: msg && msg.type,
+                    hasRawMessage: Boolean(msg && msg.message),
+                },
+                'warn'
+            );
+        }
         const queueItem = {
             msg,
             displayName,
@@ -359,6 +1090,7 @@ class MckVoice {
             spokenText,
             ttsPromise: null,
             ttsBlob: null,
+            ttsPlaybackData: null,
             ttsError: null,
         };
 
@@ -370,9 +1102,15 @@ class MckVoice {
             queueItem.ttsPromise = kmVoice
                 .textToVoice(spokenText)
                 .then((data) => {
-                    queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    if (this.shouldUseSafariBufferPlayback()) {
+                        queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                            data
+                        );
+                    } else {
+                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                    }
                     queueItem.ttsError = null;
-                    return queueItem.ttsBlob;
+                    return queueItem.ttsPlaybackData || queueItem.ttsBlob;
                 })
                 .catch((error) => {
                     queueItem.ttsPromise = null;
@@ -412,18 +1150,29 @@ class MckVoice {
                 return;
             }
 
-            if (queueItem.ttsError && !queueItem.ttsBlob && !queueItem.ttsPromise) {
+            if (
+                queueItem.ttsError &&
+                !queueItem.ttsBlob &&
+                !queueItem.ttsPlaybackData &&
+                !queueItem.ttsPromise
+            ) {
                 const prefetchError = queueItem.ttsError;
                 queueItem.ttsError = null;
                 throw prefetchError;
             }
-            if (!queueItem.ttsBlob && !queueItem.ttsPromise) {
+            if (!queueItem.ttsBlob && !queueItem.ttsPlaybackData && !queueItem.ttsPromise) {
                 queueItem.ttsPromise = kmVoice
                     .textToVoice(spokenText)
                     .then((data) => {
-                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        if (this.shouldUseSafariBufferPlayback()) {
+                            queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                                data
+                            );
+                        } else {
+                            queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        }
                         queueItem.ttsError = null;
-                        return queueItem.ttsBlob;
+                        return queueItem.ttsPlaybackData || queueItem.ttsBlob;
                     })
                     .catch((error) => {
                         queueItem.ttsPromise = null;
@@ -431,11 +1180,16 @@ class MckVoice {
                         throw error;
                     });
             }
-            const wavBlob = queueItem.ttsBlob || (await queueItem.ttsPromise);
-            if (!wavBlob) {
+            const playbackAsset =
+                queueItem.ttsPlaybackData || queueItem.ttsBlob || (await queueItem.ttsPromise);
+            if (!playbackAsset) {
                 throw new Error('Omnichannel TTS failed to return audio');
             }
-            this.playAudioBlobWithQueue(wavBlob);
+            if (this.shouldUseSafariBufferPlayback()) {
+                this.playSafariPlaybackDataWithQueue(playbackAsset);
+                return;
+            }
+            this.playAudioBlobWithQueue(playbackAsset);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -503,7 +1257,13 @@ class MckVoice {
                             .play()
                             .then(() => {
                                 hasPlaybackStarted = true;
-                                this.visualizerCleanup = this.createAudioVisualizer(audio);
+                                if (this.shouldEnableAudioVisualizer()) {
+                                    this.visualizerCleanup = this.createAudioVisualizer(audio);
+                                } else {
+                                    this.logVoiceDebug('audio_visualizer_skipped', {
+                                        reason: 'ios_webkit',
+                                    });
+                                }
                             })
                             .catch((error) => {
                                 this.handlePlaybackFailure(error);
@@ -615,66 +1375,64 @@ class MckVoice {
         }
     }
 
-    playAudioBlobWithQueue(audioBlob) {
-        this.clearDeferredRecordingHandler(this.audioElement);
+    async playAudioBlobWithQueue(audioBlob, retryAttempt = 0, sourceMode = 'object_url') {
+        this.clearAudioPlaybackWatchdog();
+        this.clearAudioPlaybackStartTimeout();
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
             this.visualizerCleanup = null;
         }
-        if (this.audioElement) {
-            this.audioElement.pause();
-            this.audioElement.currentTime = 0;
-        }
+        this.teardownAudioElement(this.audioElement);
 
-        const blobUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(blobUrl);
+        let audioSrc = '';
+        let shouldRevokeAudioSrc = false;
+        if (sourceMode === 'data_url') {
+            audioSrc = await this.blobToDataUrl(audioBlob);
+        } else {
+            audioSrc = URL.createObjectURL(audioBlob);
+            shouldRevokeAudioSrc = true;
+        }
+        const audio = new Audio(audioSrc);
         this.configureInlineAudioPlayback(audio);
         this.audioElement = audio;
         this.addSpeakingAnimation();
         let playbackStarted = false;
+        let playbackSettled = false;
+        let lastObservedTime = 0;
+        let stalledTickCount = 0;
+        this.logVoiceDebug('play_audio_blob_requested', {
+            audioBlobSize: audioBlob && audioBlob.size,
+            audioBlobType: audioBlob && audioBlob.type,
+            retryAttempt,
+            sourceMode,
+        });
 
-        audio.onerror = (error) => {
-            console.error(error, 'audio play error');
-            URL.revokeObjectURL(blobUrl);
-            if (!playbackStarted) {
-                this.handleAudioPlaybackStartFailure(error, audio);
-                return;
+        const releaseAudioSrc = () => {
+            if (shouldRevokeAudioSrc && audioSrc) {
+                URL.revokeObjectURL(audioSrc);
+                shouldRevokeAudioSrc = false;
             }
-            this.handlePlaybackFailure(error);
         };
 
-        const startPlayback = () => {
-            if (playbackStarted || this.audioElement !== audio) {
+        const settlePlayback = (reason) => {
+            if (playbackSettled || this.audioElement !== audio) {
                 return;
             }
-            audio
-                .play()
-                .then(() => {
-                    playbackStarted = true;
-                    this.visualizerCleanup = this.createAudioVisualizer(audio);
-                })
-                .catch((error) => {
-                    this.handleAudioPlaybackStartFailure(error, audio);
-                });
-        };
-
-        audio.addEventListener(
-            'canplay',
-            () => {
-                startPlayback();
-            },
-            { once: true }
-        );
-
-        if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-            startPlayback();
-        }
-
-        audio.addEventListener('ended', () => {
+            playbackSettled = true;
+            this.clearAudioPlaybackWatchdog();
+            this.clearAudioPlaybackStartTimeout();
+            this.logVoiceDebug('play_audio_blob_settled', {
+                reason,
+                currentTime: audio.currentTime,
+                duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                paused: audio.paused,
+                ended: audio.ended,
+                sourceMode,
+            });
             const nextMsg = this.shiftToNextQueuedMessage();
 
             if (nextMsg) {
-                URL.revokeObjectURL(blobUrl);
+                releaseAudioSrc();
                 if (this.visualizerCleanup) {
                     this.visualizerCleanup();
                     this.visualizerCleanup = null;
@@ -688,7 +1446,12 @@ class MckVoice {
                 URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
                 this.agentOrBotLastMsgAudio = null;
             }
-            this.agentOrBotLastMsgAudio = blobUrl;
+            if (sourceMode === 'object_url') {
+                this.agentOrBotLastMsgAudio = audioSrc;
+                shouldRevokeAudioSrc = false;
+            } else {
+                this.agentOrBotLastMsgAudio = null;
+            }
 
             document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
@@ -712,7 +1475,460 @@ class MckVoice {
                     this.clearVoiceStatus();
                 }
             }, this._RING_RECEDE_DURATION);
+        };
+
+        const startPlaybackWatchdog = () => {
+            this.clearAudioPlaybackWatchdog();
+            this.audioPlaybackWatchdog = setInterval(() => {
+                if (playbackSettled || this.audioElement !== audio) {
+                    this.clearAudioPlaybackWatchdog();
+                    return;
+                }
+                const currentTime = audio.currentTime || 0;
+                const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+                const progressed = currentTime > lastObservedTime + 0.02;
+                if (progressed) {
+                    lastObservedTime = currentTime;
+                    stalledTickCount = 0;
+                    return;
+                }
+                if (audio.ended) {
+                    settlePlayback('ended_flag');
+                    return;
+                }
+                if (duration > 0 && currentTime >= Math.max(duration - 0.12, 0)) {
+                    settlePlayback('duration_reached');
+                    return;
+                }
+                if (audio.paused && currentTime > 0.05) {
+                    stalledTickCount++;
+                    if (stalledTickCount >= 2) {
+                        settlePlayback('paused_after_progress');
+                    }
+                    return;
+                }
+                if (!audio.paused && currentTime > 0 && duration > 0) {
+                    stalledTickCount++;
+                    if (stalledTickCount >= 8) {
+                        settlePlayback('stalled_after_progress');
+                    }
+                    return;
+                }
+                stalledTickCount = 0;
+            }, 500);
+        };
+
+        const startPlaybackTimeout = () => {
+            this.clearAudioPlaybackStartTimeout();
+            this.audioPlaybackStartTimeout = setTimeout(() => {
+                if (playbackSettled || playbackStarted || this.audioElement !== audio) {
+                    return;
+                }
+                this.logVoiceDebug(
+                    'play_audio_blob_start_timeout',
+                    {
+                        readyState: audio.readyState,
+                        networkState: audio.networkState,
+                        duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                        currentTime: audio.currentTime,
+                        mediaError: this.getHtmlMediaErrorDetails(audio),
+                        sourceMode,
+                    },
+                    'warn'
+                );
+                if (retryAttempt < 1) {
+                    this.logVoiceDebug(
+                        'play_audio_blob_retry_scheduled',
+                        {
+                            reason: 'start_timeout',
+                            retryAttempt: retryAttempt + 1,
+                            sourceMode,
+                        },
+                        'warn'
+                    );
+                    this.clearDeferredRecordingHandler(audio);
+                    this.clearAudioPlaybackWatchdog();
+                    this.clearAudioPlaybackStartTimeout();
+                    if (this.visualizerCleanup) {
+                        this.visualizerCleanup();
+                        this.visualizerCleanup = null;
+                    }
+                    this.teardownAudioElement(audio);
+                    if (this.audioElement === audio) {
+                        this.audioElement = null;
+                    }
+                    releaseAudioSrc();
+                    setTimeout(() => {
+                        if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
+                            return;
+                        }
+                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode);
+                    }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
+                    return;
+                }
+                if (sourceMode === 'object_url') {
+                    this.logVoiceDebug(
+                        'play_audio_blob_retry_scheduled',
+                        {
+                            reason: 'start_timeout_fallback_data_url',
+                            retryAttempt,
+                            sourceMode: 'data_url',
+                        },
+                        'warn'
+                    );
+                    this.teardownAudioElement(audio);
+                    if (this.audioElement === audio) {
+                        this.audioElement = null;
+                    }
+                    releaseAudioSrc();
+                    setTimeout(() => {
+                        if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
+                            return;
+                        }
+                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url');
+                    }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
+                    return;
+                }
+                this.handleAudioPlaybackStartFailure(
+                    new Error('Audio playback start timed out'),
+                    audio
+                );
+            }, this._AUDIO_PLAYBACK_START_TIMEOUT_MS);
+        };
+
+        audio.onerror = (error) => {
+            console.error(error, 'audio play error');
+            const mediaError = this.getHtmlMediaErrorDetails(audio);
+            this.logVoiceDebug(
+                'play_audio_blob_error',
+                {
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                    readyState: audio.readyState,
+                    networkState: audio.networkState,
+                    currentTime: audio.currentTime,
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                    mediaError,
+                    retryAttempt,
+                    sourceMode,
+                },
+                'warn'
+            );
+            if (!playbackStarted) {
+                if (retryAttempt < 1) {
+                    this.logVoiceDebug(
+                        'play_audio_blob_retry_scheduled',
+                        {
+                            reason: 'audio_error_before_start',
+                            retryAttempt: retryAttempt + 1,
+                            mediaError,
+                            sourceMode,
+                        },
+                        'warn'
+                    );
+                    this.clearAudioPlaybackWatchdog();
+                    this.clearAudioPlaybackStartTimeout();
+                    if (this.visualizerCleanup) {
+                        this.visualizerCleanup();
+                        this.visualizerCleanup = null;
+                    }
+                    this.teardownAudioElement(audio);
+                    if (this.audioElement === audio) {
+                        this.audioElement = null;
+                    }
+                    releaseAudioSrc();
+                    setTimeout(() => {
+                        if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
+                            return;
+                        }
+                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode);
+                    }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
+                    return;
+                }
+                if (sourceMode === 'object_url') {
+                    this.logVoiceDebug(
+                        'play_audio_blob_retry_scheduled',
+                        {
+                            reason: 'audio_error_fallback_data_url',
+                            retryAttempt,
+                            mediaError,
+                            sourceMode: 'data_url',
+                        },
+                        'warn'
+                    );
+                    this.teardownAudioElement(audio);
+                    if (this.audioElement === audio) {
+                        this.audioElement = null;
+                    }
+                    releaseAudioSrc();
+                    setTimeout(() => {
+                        if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
+                            return;
+                        }
+                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url');
+                    }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
+                    return;
+                }
+                releaseAudioSrc();
+                this.handleAudioPlaybackStartFailure(error, audio);
+                return;
+            }
+            releaseAudioSrc();
+            this.handlePlaybackFailure(error);
+        };
+
+        const startPlayback = () => {
+            if (playbackStarted || this.audioElement !== audio) {
+                return;
+            }
+            audio
+                .play()
+                .then(() => {
+                    playbackStarted = true;
+                    this.clearAudioPlaybackStartTimeout();
+                    startPlaybackWatchdog();
+                    this.logVoiceDebug('play_audio_blob_started', {
+                        readyState: audio.readyState,
+                        networkState: audio.networkState,
+                        retryAttempt,
+                        sourceMode,
+                    });
+                    if (this.shouldEnableAudioVisualizer()) {
+                        this.visualizerCleanup = this.createAudioVisualizer(audio);
+                    } else {
+                        this.logVoiceDebug('audio_visualizer_skipped', {
+                            reason: 'ios_webkit',
+                            retryAttempt,
+                            sourceMode,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    this.handleAudioPlaybackStartFailure(error, audio);
+                });
+        };
+
+        audio.addEventListener(
+            'canplay',
+            () => {
+                this.logVoiceDebug('play_audio_blob_canplay', {
+                    readyState: audio.readyState,
+                    networkState: audio.networkState,
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                });
+                startPlayback();
+            },
+            { once: true }
+        );
+
+        audio.addEventListener(
+            'loadeddata',
+            () => {
+                this.logVoiceDebug('play_audio_blob_loadeddata', {
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                    readyState: audio.readyState,
+                    networkState: audio.networkState,
+                });
+                startPlayback();
+            },
+            { once: true }
+        );
+
+        audio.addEventListener(
+            'playing',
+            () => {
+                this.logVoiceDebug('play_audio_blob_playing', {
+                    currentTime: audio.currentTime,
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                });
+            },
+            { once: true }
+        );
+
+        audio.addEventListener(
+            'loadedmetadata',
+            () => {
+                this.logVoiceDebug('play_audio_blob_loadedmetadata', {
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                    readyState: audio.readyState,
+                });
+            },
+            { once: true }
+        );
+
+        audio.addEventListener(
+            'timeupdate',
+            () => {
+                this.logVoiceDebug('play_audio_blob_timeupdate', {
+                    currentTime: audio.currentTime,
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                });
+            },
+            { once: true }
+        );
+
+        if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+            startPlayback();
+        }
+
+        startPlaybackTimeout();
+
+        audio.addEventListener('ended', () => {
+            this.logVoiceDebug('play_audio_blob_ended', {
+                duration: audio.duration,
+                currentTime: audio.currentTime,
+            });
+            settlePlayback('ended_event');
         });
+
+        audio.addEventListener('pause', () => {
+            if (!playbackStarted || playbackSettled) {
+                return;
+            }
+            this.logVoiceDebug('play_audio_blob_pause', {
+                currentTime: audio.currentTime,
+                duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                ended: audio.ended,
+            });
+        });
+
+        audio.addEventListener('stalled', () => {
+            if (!playbackStarted || playbackSettled) {
+                return;
+            }
+            this.logVoiceDebug(
+                'play_audio_blob_stalled',
+                {
+                    currentTime: audio.currentTime,
+                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
+                },
+                'warn'
+            );
+        });
+
+        audio.addEventListener('suspend', () => {
+            if (!playbackStarted || playbackSettled) {
+                return;
+            }
+            this.logVoiceDebug('play_audio_blob_suspend', {
+                currentTime: audio.currentTime,
+                duration: Number.isFinite(audio.duration) ? audio.duration : null,
+            });
+        });
+    }
+
+    async playSafariPlaybackDataWithQueue(playbackData, { isRepeat = false } = {}) {
+        this.clearAudioPlaybackWatchdog();
+        this.clearAudioPlaybackStartTimeout();
+        if (this.visualizerCleanup) {
+            this.visualizerCleanup();
+            this.visualizerCleanup = null;
+        }
+        this.teardownAudioElement(this.audioElement);
+        this.audioElement = null;
+        this.stopReplyPlaybackSource();
+
+        try {
+            const audioContext = await this.unlockReplyPlaybackAudioContext();
+            if (!audioContext) {
+                throw new Error('Reply playback audio context is unavailable');
+            }
+            const sampleRate = Number(playbackData && playbackData.sampleRate) || 24000;
+            const float32Data =
+                playbackData && playbackData.float32Data instanceof Float32Array
+                    ? playbackData.float32Data
+                    : new Float32Array(
+                          Array.isArray(playbackData && playbackData.float32Data)
+                              ? playbackData.float32Data
+                              : []
+                      );
+            if (!float32Data.length) {
+                throw new Error('Safari playback data is empty');
+            }
+
+            const audioBuffer = audioContext.createBuffer(1, float32Data.length, sampleRate);
+            audioBuffer.copyToChannel(float32Data, 0);
+            const source = audioContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(audioContext.destination);
+            this.currentReplyPlaybackSource = source;
+            this.currentReplyPlaybackActive = true;
+            this.addSpeakingAnimation();
+            this.logVoiceDebug('play_audio_buffer_requested', {
+                isRepeat,
+                sampleRate,
+                sampleCount: float32Data.length,
+                duration: audioBuffer.duration,
+            });
+
+            source.onended = () => {
+                if (this.currentReplyPlaybackSource !== source) {
+                    return;
+                }
+                this.currentReplyPlaybackSource = null;
+                this.currentReplyPlaybackActive = false;
+                this.logVoiceDebug('play_audio_buffer_ended', {
+                    isRepeat,
+                    duration: audioBuffer.duration,
+                });
+                if (isRepeat) {
+                    this.removeAllAnimation();
+                    if (!this.isRecording) {
+                        this.clearVoiceStatus();
+                    }
+                    return;
+                }
+
+                const nextMsg = this.shiftToNextQueuedMessage();
+                if (nextMsg) {
+                    this.processNextMessage(nextMsg);
+                    return;
+                }
+
+                this.agentOrBotLastMsgPlaybackData = playbackData;
+                this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
+                const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
+                repeatButton && repeatButton.classList.remove('mck-hidden');
+                kommunicateCommons.hide('.voice-ring-2', '.voice-ring-3');
+                const ring1 = document.querySelector('.voice-ring-1');
+                ring1 && ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+                ring1 && ring1.classList.add('ring-recede');
+                this.setAwaitingBotResponsePlayback(false);
+                this.resumeListeningAfterPlayback();
+                setTimeout(() => {
+                    ring1 && ring1.classList.remove('ring-recede');
+                    if (!this.isRecording) {
+                        this.removeAllAnimation();
+                        this.clearVoiceStatus();
+                    }
+                }, this._RING_RECEDE_DURATION);
+            };
+
+            source.start(0);
+            this.logVoiceDebug('play_audio_buffer_started', {
+                isRepeat,
+                sampleRate,
+                sampleCount: float32Data.length,
+                duration: audioBuffer.duration,
+                audioContextState: audioContext.state,
+            });
+        } catch (error) {
+            this.stopReplyPlaybackSource();
+            this.logVoiceDebug(
+                'play_audio_buffer_failed',
+                {
+                    isRepeat,
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                },
+                'warn'
+            );
+            if (isRepeat) {
+                this.showVoiceErrorMessage(error, 'Voice playback failed');
+                return;
+            }
+            this.handlePlaybackFailure(error);
+        }
     }
 
     shiftToNextQueuedMessage() {
@@ -744,6 +1960,10 @@ class MckVoice {
         utterance.onerror = () => this.onNativeSpeechEnded();
         this.nativeSpeechUtterance = utterance;
         try {
+            this.logVoiceDebug('native_speech_requested', {
+                textLength: text.length,
+                language: utterance.lang,
+            });
             speechSynthesis.speak(utterance);
         } catch (error) {
             this.handlePlaybackFailure(error);
@@ -755,15 +1975,21 @@ class MckVoice {
             return;
         }
         console.error('Audio playback start failed', error);
-        this.clearDeferredRecordingHandler(audioElement);
+        this.logVoiceDebug(
+            'audio_playback_start_failed',
+            {
+                errorName: error && error.name,
+                errorMessage: error && error.message,
+            },
+            'warn'
+        );
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
             this.visualizerCleanup = null;
         }
         if (audioElement) {
             try {
-                audioElement.pause();
-                audioElement.currentTime = 0;
+                this.teardownAudioElement(audioElement);
             } catch (pauseError) {
                 console.error('Audio cleanup failed after playback start error', pauseError);
             }
@@ -785,6 +2011,16 @@ class MckVoice {
         this.advanceQueueAfterPlayback({ fromNativeSpeech: true });
     }
 
+    rememberRecentBotPlayback(text) {
+        const normalizedText = typeof text === 'string' ? text.trim() : '';
+        this.lastBotPlaybackEndedAt = Date.now();
+        this.lastBotPlaybackText = normalizedText;
+        this.logVoiceDebug('recent_bot_playback_recorded', {
+            textLength: normalizedText.length,
+            playbackEndedAt: this.lastBotPlaybackEndedAt,
+        });
+    }
+
     advanceQueueAfterPlayback({ fromNativeSpeech = false } = {}) {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
@@ -792,19 +2028,30 @@ class MckVoice {
             return;
         }
         if (
+            this.agentOrBotLastMsgPlaybackData ||
             this.agentOrBotLastMsgAudio ||
             (this.agentOrBotLastMsg && this.shouldUseNativeSpeechSynthesis())
         ) {
             const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
             repeatButton && repeatButton.classList.remove('mck-hidden');
         }
+        this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
         this.setAwaitingBotResponsePlayback(false);
         this.resumeListeningAfterPlayback({ fromNativeSpeech });
     }
 
     handlePlaybackFailure(error) {
         console.error(error);
+        this.logVoiceDebug(
+            'playback_failed',
+            {
+                errorName: error && error.name,
+                errorMessage: error && error.message,
+            },
+            'warn'
+        );
         this.clearDeferredRecordingHandler(this.audioElement);
+        this.stopReplyPlaybackSource();
         this.showVoiceErrorMessage(error, 'Voice playback failed');
         this.removeAllAnimation();
         this.clearVoiceStatus();
@@ -814,6 +2061,12 @@ class MckVoice {
     }
 
     async repeatLastMsgAudio(blobUrl) {
+        if (this.shouldUseSafariBufferPlayback() && this.agentOrBotLastMsgPlaybackData) {
+            await this.playSafariPlaybackDataWithQueue(this.agentOrBotLastMsgPlaybackData, {
+                isRepeat: true,
+            });
+            return;
+        }
         if (!blobUrl) {
             if (this.agentOrBotLastMsg && this.shouldUseNativeSpeechSynthesis()) {
                 this.playNativeSpeech(this.agentOrBotLastMsg);
@@ -825,11 +2078,9 @@ class MckVoice {
                 this.visualizerCleanup();
                 this.visualizerCleanup = null;
             }
-            if (this.audioElement) {
-                this.audioElement.pause();
-                this.audioElement.currentTime = 0;
-                this.audioElement = null;
-            }
+            this.teardownAudioElement(this.audioElement);
+            this.audioElement = null;
+            this.stopReplyPlaybackSource();
             this.addSpeakingAnimation();
             let audioBlobUrl = blobUrl;
 
@@ -1074,12 +2325,24 @@ class MckVoice {
 
         this.refreshRecognitionMode();
         if (this.activeRecognitionMode === 'native') {
+            this.logVoiceDebug('request_audio_recording_using_native_recognition', {
+                source,
+            });
             this.startNativeRecognition();
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
             }
             return true;
         }
+
+        const constraints = this.getAudioCaptureConstraints();
+        this.logVoiceDebug('request_audio_recording', {
+            source,
+            suppressPermissionAlert,
+            trackPermission,
+            constraints,
+            hasExistingStream: Boolean(existingStream),
+        });
 
         if (existingStream) {
             this.voiceInputSettings = this.getVoiceInputSettings();
@@ -1090,6 +2353,13 @@ class MckVoice {
         // getUserMedia requires a secure context (HTTPS or localhost).
         if (typeof window !== 'undefined' && window.isSecureContext === false) {
             console.error('Voice recording requires a secure (HTTPS) context');
+            this.logVoiceDebug(
+                'request_audio_recording_blocked_insecure_context',
+                {
+                    constraints,
+                },
+                'warn'
+            );
             this.showVoiceErrorMessage(
                 'Voice recording is not available over an insecure connection. Please use HTTPS.'
             );
@@ -1104,6 +2374,13 @@ class MckVoice {
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
+            this.logVoiceDebug(
+                'request_audio_recording_unsupported',
+                {
+                    constraints,
+                },
+                'warn'
+            );
             this.showVoiceErrorMessage('Your browser does not support audio recording');
             if (!suppressPermissionAlert) {
                 alert('Your browser does not support audio recording');
@@ -1113,9 +2390,12 @@ class MckVoice {
 
         // Request audio permission
         try {
-            const constraints = this.getAudioCaptureConstraints();
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.voiceInputSettings = this.getVoiceInputSettings();
+            this.logVoiceDebug('microphone_access_granted', {
+                constraints,
+                grantedTrack: this.getAudioTrackDebugState(stream),
+            });
             this.startRecording(stream);
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
@@ -1131,6 +2411,15 @@ class MckVoice {
                 this.trackVoiceEvent('onVoicePermissionDenied', source);
             }
             console.error('Error accessing microphone:', error);
+            this.logVoiceDebug(
+                'microphone_access_failed',
+                {
+                    constraints,
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                },
+                'warn'
+            );
             this.showVoiceErrorMessage(
                 error,
                 'Could not access your microphone. Please allow microphone access and try again.'
@@ -1231,16 +2520,38 @@ class MckVoice {
         this.silenceTimeout = null;
         this.vadCaptureChunks = [];
         this.vadCaptureSampleRate = 0;
+        this.agentOrBotLastMsgPlaybackData = null;
 
         // Create MediaRecorder instance
         this.mediaRecorder = this.createMediaRecorder(stream);
         this.recordedMimeType = this.mediaRecorder.mimeType || 'audio/wav';
+        this.logVoiceDebug('recording_started', {
+            recordedMimeType: this.recordedMimeType,
+            audioTrack: this.getAudioTrackDebugState(stream),
+        });
 
         // Handle data available event
         this.mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
                 this.audioChunks.push(event.data);
+                this.logVoiceDebug('recording_chunk_available', {
+                    chunkSize: event.data.size,
+                    chunkType: event.data.type || null,
+                    totalChunks: this.audioChunks.length,
+                });
             }
+        };
+
+        this.mediaRecorder.onerror = (event) => {
+            const recorderError = event && event.error ? event.error : event;
+            this.logVoiceDebug(
+                'media_recorder_error',
+                {
+                    errorName: recorderError && recorderError.name,
+                    errorMessage: recorderError && recorderError.message,
+                },
+                'warn'
+            );
         };
 
         // Handle recording stop event
@@ -1255,6 +2566,9 @@ class MckVoice {
             const stopReason = this.recordingStopReason || 'manual';
             const hadDetectedSpeech =
                 this.speechDetected || this.hasSoundDetected || this.soundSamples > 0;
+            const hadConfirmedSpeech =
+                Boolean(this.firstSpeechTimestamp) || Boolean(this.speechDetected);
+            const shouldUseHalfDuplexCapture = this.shouldUseHalfDuplexVoiceCapture();
             const hasRecordedPayload =
                 recordedChunks.length > 0 || recordedVadCaptureChunks.length > 0;
             const shouldProcessRecording =
@@ -1263,18 +2577,33 @@ class MckVoice {
                     ((stopReason === 'segment_pause' || stopReason === 'continuation_idle') &&
                         hasRecordedPayload));
             const shouldAggregateSegments =
+                !shouldUseHalfDuplexCapture &&
                 this.activeRecognitionMode === 'omnichannel' &&
-                hadDetectedSpeech &&
+                hadConfirmedSpeech &&
                 (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
             const shouldRestartContinuationRecording =
+                !shouldUseHalfDuplexCapture &&
                 this.activeRecognitionMode === 'omnichannel' &&
-                hadDetectedSpeech &&
+                hadConfirmedSpeech &&
                 stopReason === 'segment_pause';
             const shouldReuseContinuationStream =
                 shouldRestartContinuationRecording &&
                 recordingStream &&
                 recordingStream.active &&
                 recordingStream.getAudioTracks().some((track) => track.readyState === 'live');
+            this.logVoiceDebug('recording_stopped', {
+                stopReason,
+                recordedMimeType,
+                recordedChunkCount: recordedChunks.length,
+                recordedBytes: recordedChunks.reduce((total, chunk) => total + chunk.size, 0),
+                hadDetectedSpeech,
+                hadConfirmedSpeech,
+                shouldUseHalfDuplexCapture,
+                hasRecordedPayload,
+                shouldAggregateSegments,
+                shouldRestartContinuationRecording,
+                shouldReuseContinuationStream,
+            });
             const segmentSeq = shouldAggregateSegments
                 ? ++this.pendingVoiceSegmentSeq
                 : this.pendingVoiceSegmentSeq;
@@ -1354,11 +2683,34 @@ class MckVoice {
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
                     const { chunks } = preparedAudio;
+                    this.logVoiceDebug('voice_recording_prepared_for_stt', {
+                        stopReason,
+                        hadDetectedSpeech,
+                        hadConfirmedSpeech,
+                        shouldAggregateSegments,
+                        rawSampleCount: rawSamples.length,
+                        recordedChunkCount: recordedChunks.length,
+                        preparedChunkCount: chunks.length,
+                        preparedAudio,
+                    });
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
                     this.totalSamples = 0;
                     if (!chunks.length) {
+                        this.logVoiceDebug(
+                            'voice_recording_skipped_before_stt',
+                            {
+                                reason: 'no_prepared_chunks',
+                                stopReason,
+                                hadDetectedSpeech,
+                                hadConfirmedSpeech,
+                                shouldAggregateSegments,
+                                rawSampleCount: rawSamples.length,
+                                preparedAudio,
+                            },
+                            'warn'
+                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -1406,6 +2758,16 @@ class MckVoice {
                         throw error;
                     }
                     if (!data) {
+                        this.logVoiceDebug(
+                            'voice_stt_result_empty',
+                            {
+                                stopReason,
+                                shouldAggregateSegments,
+                                sampleRate,
+                                preparedChunkCount: chunks.length,
+                            },
+                            'warn'
+                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -1429,6 +2791,18 @@ class MckVoice {
                     }
                     const rawText = typeof data.text === 'string' ? data.text : '';
                     if (!rawText.trim()) {
+                        this.logVoiceDebug(
+                            'voice_stt_result_blank_text',
+                            {
+                                stopReason,
+                                shouldAggregateSegments,
+                                sampleRate,
+                                preparedChunkCount: chunks.length,
+                                responseKeys:
+                                    data && typeof data === 'object' ? Object.keys(data) : [],
+                            },
+                            'warn'
+                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -1465,6 +2839,10 @@ class MckVoice {
                     ),
                     { autoHide: 6000 }
                 );
+                this.recoverAfterVoiceProcessingFailure(error, {
+                    stopReason,
+                    shouldAggregateSegments,
+                });
             } finally {
                 if (shouldAggregateSegments) {
                     this.pendingVoiceSegmentInFlight = Math.max(
@@ -1472,9 +2850,20 @@ class MckVoice {
                         this.pendingVoiceSegmentInFlight - 1
                     );
                 }
+                const hasPendingVoiceSegments =
+                    Object.keys(this.pendingVoiceSegments || {}).length > 0;
                 if (stopReason === 'segment_pause' && shouldAggregateSegments) {
                     this.maybeFinalizePendingVoiceMessageAfterSegment();
-                } else if (stopReason === 'continuation_idle' && shouldAggregateSegments) {
+                } else if (
+                    stopReason === 'continuation_idle' &&
+                    (shouldAggregateSegments || hasPendingVoiceSegments)
+                ) {
+                    this.logVoiceDebug('voice_continuation_idle_finalizing_pending_segments', {
+                        shouldAggregateSegments,
+                        hasPendingVoiceSegments,
+                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
+                        pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+                    });
                     this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
                 } else {
@@ -1540,8 +2929,22 @@ class MckVoice {
         const maxChunkSamples = Math.max(frameSize, Math.round((sampleRate * maxChunkMs) / 1000));
         const minVoicedFrames = Math.max(1, Math.round(minVoicedMs / Math.max(frameMs, 1)));
         const rawDurationMs = totalSamples > 0 ? Math.round((totalSamples / sampleRate) * 1000) : 0;
+        let peakAbs = 0;
+        for (let i = 0; i < totalSamples; i++) {
+            const abs = Math.abs(Number(rawSamples[i]) || 0);
+            if (abs > peakAbs) {
+                peakAbs = abs;
+            }
+        }
 
         if (!totalSamples) {
+            this.logVoiceDebug('voice_prepare_chunks_result', {
+                reason: 'no_samples',
+                rawDurationMs,
+                totalSamples,
+                peakAbs,
+                sampleRate,
+            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1636,6 +3039,21 @@ class MckVoice {
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
+            this.logVoiceDebug('voice_prepare_chunks_result', {
+                reason: 'speech_frames_not_found',
+                rawDurationMs,
+                totalSamples,
+                peakAbs,
+                frameCount,
+                firstSpeechFrameIndex,
+                firstStopSpeechFrameIndex,
+                lastSpeechFrameIndex,
+                sampleRate,
+                frameSize,
+                startThresholdRms,
+                stopThresholdRms,
+                minVoicedFrames,
+            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -1668,6 +3086,25 @@ class MckVoice {
             );
         }
 
+        this.logVoiceDebug('voice_prepare_chunks_result', {
+            reason: 'ok',
+            chunkCount: chunks.length,
+            rawDurationMs,
+            trimmedDurationMs,
+            trimStartMs,
+            trimEndMs,
+            totalSamples,
+            peakAbs,
+            frameCount,
+            firstSpeechFrameIndex,
+            firstStopSpeechFrameIndex,
+            lastSpeechFrameIndex,
+            sampleRate,
+            frameSize,
+            startThresholdRms,
+            stopThresholdRms,
+            minVoicedFrames,
+        });
         return {
             chunks,
             rawDurationMs,
@@ -2082,16 +3519,34 @@ class MckVoice {
     }
 
     createAudioVisualizer(audioElement) {
-        let audioContext = null;
         try {
-            // Create audio context and analyzer
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (!audioElement) {
+                return () => {};
+            }
+            if (!this.visualizerAudioContext) {
+                this.visualizerAudioContext = new (window.AudioContext ||
+                    window.webkitAudioContext)();
+            }
+            const audioContext = this.visualizerAudioContext;
             this.resumeAudioContext(audioContext, 'voice_visualizer');
             const analyzer = audioContext.createAnalyser();
             analyzer.fftSize = 512; // Increased for better frequency resolution
 
-            // Connect the audio element to the analyzer
-            const source = audioContext.createMediaElementSource(audioElement);
+            let source = this.visualizerSourceNodes && this.visualizerSourceNodes.get(audioElement);
+            if (!source) {
+                source = audioContext.createMediaElementSource(audioElement);
+                if (this.visualizerSourceNodes) {
+                    this.visualizerSourceNodes.set(audioElement, source);
+                }
+            }
+
+            try {
+                source.disconnect();
+            } catch (error) {}
+            try {
+                analyzer.disconnect();
+            } catch (error) {}
+
             source.connect(analyzer);
             analyzer.connect(audioContext.destination);
 
@@ -2191,7 +3646,6 @@ class MckVoice {
                 try {
                     source.disconnect();
                     analyzer.disconnect();
-                    audioContext.close();
                 } catch (e) {
                     console.error('Error disconnecting audio nodes:', e);
                 }
@@ -2201,9 +3655,14 @@ class MckVoice {
             };
         } catch (error) {
             console.error('Error creating audio visualizer:', error);
-            if (audioContext) {
-                audioContext.close().catch(() => {});
-            }
+            this.logVoiceDebug(
+                'audio_visualizer_failed',
+                {
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                },
+                'warn'
+            );
             return () => {};
         }
     }
@@ -2391,11 +3850,50 @@ class MckVoice {
         return detail ? `${fallback}: ${detail}` : fallback;
     }
 
+    buildPlaybackErrorDetails(error, audioElement = this.audioElement) {
+        const audioState = this.getAudioPlaybackDebugState(audioElement);
+        const mediaError = this.getHtmlMediaErrorDetails(audioElement);
+        return {
+            errorName: error && error.name ? error.name : null,
+            errorMessage: error && error.message ? error.message : null,
+            queueLength: this.messagesQueue.length,
+            awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
+            audioState,
+            mediaError,
+        };
+    }
+
     showVoiceErrorMessage(error, fallback = 'Voice error', { autoHide = 9000 } = {}) {
         const message = this.getVoiceErrorMessage(error, fallback);
+        const playbackDetails = this.buildPlaybackErrorDetails(error);
+        this.logVoiceDebug(
+            'voice_error_message_shown',
+            {
+                message,
+                fallback,
+                autoHide,
+                playbackDetails,
+            },
+            'warn'
+        );
+        const debugSuffix = this.voiceDebugEnabled
+            ? ` [${playbackDetails.errorName || 'unknown'} rs=${
+                  playbackDetails.audioState && playbackDetails.audioState.readyState !== null
+                      ? playbackDetails.audioState.readyState
+                      : 'na'
+              } ns=${
+                  playbackDetails.audioState && playbackDetails.audioState.networkState !== null
+                      ? playbackDetails.audioState.networkState
+                      : 'na'
+              } mc=${
+                  playbackDetails.mediaError && playbackDetails.mediaError.code !== null
+                      ? playbackDetails.mediaError.code
+                      : 'na'
+              } q=${playbackDetails.queueLength}]`
+            : '';
         this.updateVoiceStatus('Voice error');
-        this.updateLiveTranscript(message, { autoHide });
-        this.showVoiceProgressMessage(message, { state: 'error', autoHide });
+        this.updateLiveTranscript(`${message}${debugSuffix}`, { autoHide });
+        this.showVoiceProgressMessage(`${message}${debugSuffix}`, { state: 'error', autoHide });
     }
 
     clearVoiceProgressMessage() {
@@ -2462,8 +3960,46 @@ class MckVoice {
             );
             return false;
         }
+        if (this.shouldSuppressRecentBotEcho(trimmedMessage)) {
+            this.logVoiceDebug(
+                'voice_echo_suppressed',
+                {
+                    transcriptPreview: trimmedMessage.slice(0, 120),
+                    transcriptLength: trimmedMessage.length,
+                    recentBotPreview: (this.lastBotPlaybackText || '').slice(0, 120),
+                    recentBotLength: (this.lastBotPlaybackText || '').length,
+                    elapsedMs: this.lastBotPlaybackEndedAt
+                        ? Date.now() - this.lastBotPlaybackEndedAt
+                        : null,
+                },
+                'warn'
+            );
+            this.updateLiveTranscript(
+                this.getVoiceLabel(
+                    'voiceInterface.echoSuppressed',
+                    'Ignored echoed bot audio. Listening again...'
+                ),
+                { autoHide: 2200 }
+            );
+            this.clearVoiceProgressMessage();
+            this.scheduleAutoListen(this._WEBKIT_BOT_PLAYBACK_RESTART_DELAY_MS, {
+                skipCooldown: false,
+            });
+            return false;
+        }
         this.setAwaitingBotResponsePlayback(true);
         this.clearVoiceProgressMessage();
+        const waitingLabel = this.getVoiceLabel(
+            'voiceInterface.waitingForReply',
+            'Waiting for reply...'
+        );
+        this.updateVoiceStatus(waitingLabel, false);
+        this.showVoiceProgressMessage(waitingLabel, { state: 'processing' });
+        this.logVoiceDebug('voice_query_submitted', {
+            textLength: trimmedMessage.length,
+            preview: trimmedMessage.slice(0, 120),
+            groupId: CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId,
+        });
         const messagePayload = {
             contentType: 10,
             source: 1,
@@ -2478,6 +4014,55 @@ class MckVoice {
         }
         kommunicate.sendMessage(messagePayload);
         return true;
+    }
+
+    normalizeVoiceComparisonText(text) {
+        return (text || '')
+            .toString()
+            .toLowerCase()
+            .replace(/[\s\n\r\t]+/g, ' ')
+            .replace(/[^\w ]+/g, '')
+            .trim();
+    }
+
+    shouldSuppressRecentBotEcho(text) {
+        if (!KommunicateUtils.isIOSWebKitBrowser()) {
+            return false;
+        }
+        if (!text || !this.lastBotPlaybackText || !this.lastBotPlaybackEndedAt) {
+            return false;
+        }
+        const elapsedMs = Date.now() - this.lastBotPlaybackEndedAt;
+        if (elapsedMs < 0 || elapsedMs > this._VOICE_ECHO_SUPPRESS_WINDOW_MS) {
+            return false;
+        }
+        const normalizedTranscript = this.normalizeVoiceComparisonText(text);
+        const normalizedBotText = this.normalizeVoiceComparisonText(this.lastBotPlaybackText);
+        if (!normalizedTranscript || !normalizedBotText) {
+            return false;
+        }
+        if (normalizedTranscript.length < 5 || normalizedBotText.length < 5) {
+            return false;
+        }
+        if (normalizedTranscript === normalizedBotText) {
+            return true;
+        }
+        if (
+            normalizedTranscript.includes(normalizedBotText) ||
+            normalizedBotText.includes(normalizedTranscript)
+        ) {
+            return true;
+        }
+        const shortestLength = Math.min(normalizedTranscript.length, normalizedBotText.length);
+        const longestLength = Math.max(normalizedTranscript.length, normalizedBotText.length);
+        const overlapRatio = shortestLength / longestLength;
+        if (overlapRatio < 0.85) {
+            return false;
+        }
+        return (
+            normalizedTranscript.startsWith(normalizedBotText) ||
+            normalizedBotText.startsWith(normalizedTranscript)
+        );
     }
 
     updateResponseText(text, { autoHide = 0 } = {}) {
@@ -2560,6 +4145,13 @@ class MckVoice {
     setAwaitingBotResponsePlayback(isPending, timeoutMs = 30000) {
         this.awaitingBotResponsePlayback = Boolean(isPending);
         this.clearAwaitingBotResponseTimeout();
+        this.logVoiceDebug('awaiting_bot_response_playback', {
+            isPending: this.awaitingBotResponsePlayback,
+            timeoutMs,
+            queueLength: this.messagesQueue.length,
+            isRecording: this.isRecording,
+            audioPlaybackActive: this.isAudioPlaybackActive(),
+        });
         if (this.awaitingBotResponsePlayback) {
             this.awaitingBotResponseTimeout = setTimeout(() => {
                 const isPlaybackStillActive = this.isAudioPlaybackActive();
@@ -2570,6 +4162,21 @@ class MckVoice {
                 }
                 this.awaitingBotResponsePlayback = false;
                 this.awaitingBotResponseTimeout = null;
+                this.logVoiceDebug(
+                    'awaiting_bot_response_timeout',
+                    {
+                        timeoutMs,
+                        queueLength: this.messagesQueue.length,
+                        isRecording: this.isRecording,
+                    },
+                    'warn'
+                );
+                const listeningLabel = this.getVoiceLabel(
+                    'voiceInterface.listening',
+                    'Listening...'
+                );
+                this.updateVoiceStatus(listeningLabel, true);
+                this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
                 this.scheduleAutoListen(0);
             }, timeoutMs);
         }
@@ -2663,7 +4270,47 @@ class MckVoice {
         this.finalizePendingVoiceMessage();
     }
 
+    recoverAfterVoiceProcessingFailure(error, context = {}) {
+        this.logVoiceDebug(
+            'voice_processing_failed_recovering',
+            {
+                errorName: error && error.name,
+                errorMessage: error && error.message,
+                errorStatus: error && typeof error.status === 'number' ? error.status : null,
+                continuationDecisionActive: this.continuationDecisionActive,
+                pendingContinuationStart: this.pendingContinuationStart,
+                pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
+                pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+                awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
+                ...context,
+            },
+            'warn'
+        );
+        this.resetPendingVoiceSegments();
+        if (this.awaitingBotResponsePlayback) {
+            this.setAwaitingBotResponsePlayback(false);
+        }
+        if (this.autoListeningEnabled && !this.voiceMuted && !this.isAudioPlaybackActive()) {
+            const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
+            this.updateVoiceStatus(listeningLabel, true);
+            this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+            this.scheduleAutoListen(1200);
+        }
+    }
+
     finalizePendingVoiceMessage() {
+        this.logVoiceDebug('voice_finalize_pending_message', {
+            continuationDecisionActive: this.continuationDecisionActive,
+            continuationSpeechDetected: this.continuationSpeechDetected,
+            pendingContinuationStart: this.pendingContinuationStart,
+            pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
+            pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+            isRecording: this.isRecording,
+            speechDetected: this.speechDetected,
+            firstSpeechTimestamp: this.firstSpeechTimestamp,
+            isInSilence: this.isInSilence,
+            silenceStart: this.silenceStart,
+        });
         const continuationMinWaitMs = Number(
             this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
         );
@@ -2772,6 +4419,11 @@ class MckVoice {
             return;
         }
         const userMsg = this.buildPendingVoiceMessageText();
+        this.logVoiceDebug('voice_finalize_pending_message_ready', {
+            pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+            finalTextLength: userMsg.length,
+            finalTextPreview: userMsg.slice(0, 120),
+        });
         this.resetPendingVoiceSegments();
         if (!userMsg) {
             this.removeAllAnimation();
@@ -2889,12 +4541,23 @@ class MckVoice {
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
-        const shouldDelayNativeSpeechRestart =
-            fromNativeSpeech && KommunicateUtils.isIOSWebKitBrowser();
-        this.scheduleAutoListen(
-            shouldDelayNativeSpeechRestart ? this._NATIVE_SPEECH_RESTART_DELAY_MS : 0,
-            { skipCooldown: !shouldDelayNativeSpeechRestart }
-        );
+        const isIOSWebKit = KommunicateUtils.isIOSWebKitBrowser();
+        const isHalfDuplexCapture = this.shouldUseHalfDuplexVoiceCapture();
+        const shouldDelayNativeSpeechRestart = fromNativeSpeech && isIOSWebKit;
+        const shouldDelayBotPlaybackRestart =
+            !fromNativeSpeech && isIOSWebKit && !isHalfDuplexCapture;
+        const restartDelay = shouldDelayNativeSpeechRestart
+            ? this._NATIVE_SPEECH_RESTART_DELAY_MS
+            : shouldDelayBotPlaybackRestart
+            ? this._WEBKIT_BOT_PLAYBACK_RESTART_DELAY_MS
+            : 0;
+        this.scheduleAutoListen(restartDelay, { skipCooldown: restartDelay === 0 });
+        this.logVoiceDebug('resume_listening_after_playback', {
+            fromNativeSpeech,
+            isIOSWebKit,
+            isHalfDuplexCapture,
+            restartDelay,
+        });
     }
     updateMuteButton() {
         const button = document.getElementById('mck-voice-speak-btn');
@@ -3314,6 +4977,7 @@ class MckVoice {
 
     initializeNativeRecognition() {
         if (!this.isNativeSpeechRecognitionAvailable()) {
+            this.logVoiceDebug('native_recognition_unavailable', {}, 'warn');
             return null;
         }
         if (this.nativeRecognition) {
@@ -3324,6 +4988,11 @@ class MckVoice {
             return null;
         }
         const recognition = new Recognition();
+        this.logVoiceDebug('native_recognition_initialized', {
+            recognitionEngine: window.webkitSpeechRecognition
+                ? 'webkitSpeechRecognition'
+                : 'SpeechRecognition',
+        });
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = this.voiceInputSettings.voiceLanguage || 'en-US';
@@ -3372,6 +5041,10 @@ class MckVoice {
     startNativeRecognition() {
         this.refreshRecognitionMode();
         if (this.activeRecognitionMode !== 'native') {
+            this.logVoiceDebug('native_recognition_skipped', {
+                reason: 'active_mode_not_native',
+                activeRecognitionMode: this.activeRecognitionMode,
+            });
             return;
         }
         const recognition = this.initializeNativeRecognition();
@@ -3382,6 +5055,9 @@ class MckVoice {
             return;
         }
         if (this.nativeRecognitionActive) {
+            this.logVoiceDebug('native_recognition_skipped', {
+                reason: 'already_active',
+            });
             return;
         }
         this.nativeRecognitionShouldRestart = true;
@@ -3389,6 +5065,9 @@ class MckVoice {
         try {
             recognition.start();
             this.nativeRecognitionActive = true;
+            this.logVoiceDebug('native_recognition_started', {
+                language: recognition.lang,
+            });
             this.setTextboxVoiceActive(true);
             this.addListeningAnimation();
             const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
@@ -3396,6 +5075,14 @@ class MckVoice {
             this.updateLiveTranscript('');
         } catch (error) {
             console.error('SpeechRecognition start failed:', error);
+            this.logVoiceDebug(
+                'native_recognition_start_failed',
+                {
+                    errorName: error && error.name,
+                    errorMessage: error && error.message,
+                },
+                'warn'
+            );
             this.nativeRecognitionShouldRestart = false;
             this.nativeRecognitionFailed = true;
             this.nativeRecognitionActive = false;
@@ -3421,6 +5108,7 @@ class MckVoice {
         }
         this.nativeRecognitionActive = false;
         this.isRecording = false;
+        this.logVoiceDebug('native_recognition_stopped');
     }
 
     handleNativeRecognitionResult(event) {
@@ -3441,10 +5129,18 @@ class MckVoice {
         }
         const cleanInterim = interimTranscript.trim();
         if (cleanInterim) {
+            this.logVoiceDebug('native_recognition_interim_result', {
+                transcriptLength: cleanInterim.length,
+                transcriptPreview: cleanInterim.slice(0, 120),
+            });
             this.updateLiveTranscript(cleanInterim);
         }
         const cleanFinal = finalTranscript.trim();
         if (cleanFinal) {
+            this.logVoiceDebug('native_recognition_final_result', {
+                transcriptLength: cleanFinal.length,
+                transcriptPreview: cleanFinal.slice(0, 120),
+            });
             this.handleVoiceQuery(cleanFinal);
         }
     }
@@ -3455,6 +5151,14 @@ class MckVoice {
             return;
         }
         console.error('SpeechRecognition error:', event.error);
+        this.logVoiceDebug(
+            'native_recognition_error',
+            {
+                errorName: event.error || null,
+                message: event.message || null,
+            },
+            'warn'
+        );
         this.nativeRecognitionFailed = true;
         this.refreshRecognitionMode();
         this.stopNativeRecognition();
@@ -3485,6 +5189,7 @@ class MckVoice {
                 iso: new Date().toISOString(),
                 forceStop: Boolean(forceStop),
                 stopReason,
+                discardNextRecordingPayload: this.discardNextRecordingPayload,
                 silenceElapsedMs,
                 isInSilence: this.isInSilence,
                 speechDetected: this.speechDetected,
@@ -3511,12 +5216,10 @@ class MckVoice {
     }
 
     stopAudio() {
-        if (this.audioElement) {
-            this.audioElement.pause();
-            this.audioElement.currentTime = 0;
-        }
-
-        this.clearDeferredRecordingHandler(this.audioElement);
+        this.clearAudioPlaybackWatchdog();
+        this.clearAudioPlaybackStartTimeout();
+        this.teardownAudioElement(this.audioElement);
+        this.stopReplyPlaybackSource();
 
         if (this.visualizerCleanup) {
             this.visualizerCleanup();
@@ -3527,6 +5230,13 @@ class MckVoice {
     }
 
     stopVoiceMode() {
+        if (
+            typeof kmVoiceMessageHandler !== 'undefined' &&
+            kmVoiceMessageHandler &&
+            typeof kmVoiceMessageHandler.resetQueuedVoiceMessages === 'function'
+        ) {
+            kmVoiceMessageHandler.resetQueuedVoiceMessages();
+        }
         this.disableAutoListening();
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
@@ -3558,6 +5268,7 @@ class MckVoice {
         this.firstSpeechTimestamp = 0;
         this.recordingStopReason = null;
         this.discardNextRecordingPayload = false;
+        this.agentOrBotLastMsgPlaybackData = null;
         this.resetPendingVoiceSegments();
         if (
             typeof KommunicateUI === 'object' &&
