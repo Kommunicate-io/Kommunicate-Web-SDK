@@ -2816,12 +2816,7 @@ class MckVoice {
                     const userMsg = rawText.trim();
                     if (shouldAggregateSegments) {
                         this.appendPendingVoiceSegment(segmentSeq, userMsg);
-                        const listeningLabel = this.getVoiceLabel(
-                            'voiceInterface.listening',
-                            'Listening...'
-                        );
-                        this.updateVoiceStatus(listeningLabel, true);
-                        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+                        this.showListeningState();
                         return;
                     }
                     if (!this.handleVoiceQuery(userMsg)) {
@@ -2851,8 +2846,7 @@ class MckVoice {
                         this.pendingVoiceSegmentInFlight - 1
                     );
                 }
-                const hasPendingVoiceSegments =
-                    Object.keys(this.pendingVoiceSegments || {}).length > 0;
+                const hasPendingVoiceSegments = this.getPendingVoiceSegmentCount() > 0;
                 if (stopReason === 'segment_pause' && shouldAggregateSegments) {
                     this.maybeFinalizePendingVoiceMessageAfterSegment();
                 } else if (
@@ -2863,7 +2857,7 @@ class MckVoice {
                         shouldAggregateSegments,
                         hasPendingVoiceSegments,
                         pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                        pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+                        pendingSegmentCount: this.getPendingVoiceSegmentCount(),
                     });
                     this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
@@ -4240,11 +4234,15 @@ class MckVoice {
     }
 
     appendPendingVoiceSegment(segmentSeq, text) {
-        const trimmedText = typeof text === 'string' ? text.trim() : '';
+        const trimmedText = text.trim();
         if (!trimmedText) {
             return;
         }
         this.pendingVoiceSegments[segmentSeq] = trimmedText;
+    }
+
+    getPendingVoiceSegmentCount() {
+        return Object.keys(this.pendingVoiceSegments).length;
     }
 
     buildPendingVoiceMessageText() {
@@ -4279,17 +4277,23 @@ class MckVoice {
         this.finalizePendingVoiceMessage();
     }
 
+    showListeningState() {
+        const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
+        this.updateVoiceStatus(listeningLabel, true);
+        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+    }
+
     recoverAfterVoiceProcessingFailure(error, context = {}) {
         this.logVoiceDebug(
             'voice_processing_failed_recovering',
             {
                 errorName: error && error.name,
                 errorMessage: error && error.message,
-                errorStatus: error && typeof error.status === 'number' ? error.status : null,
+                errorStatus: error && error.status,
                 continuationDecisionActive: this.continuationDecisionActive,
                 pendingContinuationStart: this.pendingContinuationStart,
                 pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+                pendingSegmentCount: this.getPendingVoiceSegmentCount(),
                 awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
                 ...context,
             },
@@ -4300,9 +4304,7 @@ class MckVoice {
             this.setAwaitingBotResponsePlayback(false);
         }
         if (this.autoListeningEnabled && !this.voiceMuted && !this.isAudioPlaybackActive()) {
-            const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
-            this.updateVoiceStatus(listeningLabel, true);
-            this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+            this.showListeningState();
             this.scheduleAutoListen(1200);
         }
     }
@@ -4313,7 +4315,7 @@ class MckVoice {
             continuationSpeechDetected: this.continuationSpeechDetected,
             pendingContinuationStart: this.pendingContinuationStart,
             pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-            pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+            pendingSegmentCount: this.getPendingVoiceSegmentCount(),
             isRecording: this.isRecording,
             speechDetected: this.speechDetected,
             firstSpeechTimestamp: this.firstSpeechTimestamp,
@@ -4429,7 +4431,7 @@ class MckVoice {
         }
         const userMsg = this.buildPendingVoiceMessageText();
         this.logVoiceDebug('voice_finalize_pending_message_ready', {
-            pendingSegmentCount: Object.keys(this.pendingVoiceSegments || {}).length,
+            pendingSegmentCount: this.getPendingVoiceSegmentCount(),
             finalTextLength: userMsg.length,
             finalTextPreview: userMsg.slice(0, 120),
         });
@@ -4547,9 +4549,7 @@ class MckVoice {
     }
 
     resumeListeningAfterPlayback({ fromNativeSpeech = false } = {}) {
-        const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
-        this.updateVoiceStatus(listeningLabel, true);
-        this.showVoiceProgressMessage(listeningLabel, { state: 'listening' });
+        this.showListeningState();
         const isIOSWebKit = KommunicateUtils.isIOSWebKitBrowser();
         const isHalfDuplexCapture = this.shouldUseHalfDuplexVoiceCapture();
         const shouldDelayNativeSpeechRestart = fromNativeSpeech && isIOSWebKit;

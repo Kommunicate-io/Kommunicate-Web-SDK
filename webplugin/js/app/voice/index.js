@@ -976,11 +976,8 @@ class Voice {
                 errorCode: error && error.code,
                 errorName: error && error.name,
                 errorMessage: error && error.message,
-                errorStatus: error && typeof error.status === 'number' ? error.status : null,
-                responseBody:
-                    error && typeof error.responseBody === 'string'
-                        ? error.responseBody.slice(0, 300)
-                        : null,
+                errorStatus: error && error.status,
+                responseBody: error && error.responseBody ? error.responseBody.slice(0, 300) : null,
             },
             'warn'
         );
@@ -1173,18 +1170,10 @@ class Voice {
         });
         const response = this.normalizeVoiceToTextPayload(rawResponse);
         this.logVoiceDebug('omnichannel_stt_response_normalized', {
-            rawKeys:
-                rawResponse && typeof rawResponse === 'object' && !Array.isArray(rawResponse)
-                    ? Object.keys(rawResponse)
-                    : [],
-            textLength:
-                response && typeof response.text === 'string' ? response.text.trim().length : 0,
-            textPreview:
-                response && typeof response.text === 'string'
-                    ? response.text.trim().slice(0, 120)
-                    : '',
-            languageCode:
-                response && typeof response.languageCode === 'string' ? response.languageCode : '',
+            rawKeys: rawResponse && !Array.isArray(rawResponse) ? Object.keys(rawResponse) : [],
+            textLength: response && response.text ? response.text.trim().length : 0,
+            textPreview: response && response.text ? response.text.trim().slice(0, 120) : '',
+            languageCode: response && response.languageCode ? response.languageCode : '',
         });
         console.debug('Voice STT response completed', {
             ts: Date.now(),
