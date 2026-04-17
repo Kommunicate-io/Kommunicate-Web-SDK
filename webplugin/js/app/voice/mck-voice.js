@@ -11,6 +11,7 @@ class MckVoice {
     _VOICE_START_THRESHOLD_RMS = 160;
     _VOICE_STOP_THRESHOLD_RMS = 120;
     _VOICE_PRE_ROLL_MS = 900;
+    _IOS_HALF_DUPLEX_PRE_ROLL_MS = 1500;
     _VOICE_POST_ROLL_MS = 800;
     _VOICE_FRAME_MS = 20;
     _VOICE_MIN_VOICED_MS = 160;
@@ -2914,7 +2915,13 @@ class MckVoice {
 
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
         const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
-        const preRollMs = Number(this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS);
+        const isHalfDuplexCapture = this.shouldUseHalfDuplexVoiceCapture();
+        const configuredPreRollMs = Number(
+            this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS
+        );
+        const preRollMs = isHalfDuplexCapture
+            ? Math.max(configuredPreRollMs, this._IOS_HALF_DUPLEX_PRE_ROLL_MS)
+            : configuredPreRollMs;
         const postRollMs = Number(this.voiceInputSettings.postRollMs || this._VOICE_POST_ROLL_MS);
         const maxChunkMs = Number(this.voiceInputSettings.maxChunkMs || this._VOICE_MAX_CHUNK_MS);
         const startThresholdRms = Number(this.voiceInputSettings.startThresholdRms);
@@ -3037,6 +3044,13 @@ class MckVoice {
         ) {
             firstSpeechFrameIndex = 0;
         }
+        if (
+            isHalfDuplexCapture &&
+            firstSpeechFrameIndex !== -1 &&
+            firstSpeechFrameIndex <= Math.max(minVoicedFrames * 8, 20)
+        ) {
+            firstSpeechFrameIndex = 0;
+        }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
             this.logVoiceDebug('voice_prepare_chunks_result', {
@@ -3104,6 +3118,7 @@ class MckVoice {
             startThresholdRms,
             stopThresholdRms,
             minVoicedFrames,
+            isHalfDuplexCapture,
         });
         return {
             chunks,
