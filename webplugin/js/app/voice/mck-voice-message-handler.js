@@ -1,13 +1,14 @@
 var kmVoiceMessageHandler = {
     _queuedVoiceMessageSignatures: [],
 
+    getVoiceController: function () {
+        return typeof mckVoice !== 'undefined' ? mckVoice : null;
+    },
+
     logVoiceDebug: function (eventName, details, level) {
-        if (
-            typeof mckVoice !== 'undefined' &&
-            mckVoice &&
-            typeof mckVoice.logVoiceDebug === 'function'
-        ) {
-            mckVoice.logVoiceDebug(eventName, details || {}, level || 'log');
+        var voiceController = this.getVoiceController();
+        if (voiceController) {
+            voiceController.logVoiceDebug(eventName, details || {}, level || 'log');
         }
     },
 
@@ -73,19 +74,12 @@ var kmVoiceMessageHandler = {
     },
 
     hasQueuedVoiceMessageSignature: function (signature) {
-        return Boolean(
-            signature &&
-                Array.isArray(this._queuedVoiceMessageSignatures) &&
-                this._queuedVoiceMessageSignatures.indexOf(signature) !== -1
-        );
+        return Boolean(signature && this._queuedVoiceMessageSignatures.indexOf(signature) !== -1);
     },
 
     rememberQueuedVoiceMessageSignature: function (signature) {
         if (!signature) {
             return;
-        }
-        if (!Array.isArray(this._queuedVoiceMessageSignatures)) {
-            this._queuedVoiceMessageSignatures = [];
         }
         if (this._queuedVoiceMessageSignatures.indexOf(signature) !== -1) {
             return;
@@ -104,12 +98,8 @@ var kmVoiceMessageHandler = {
     },
 
     isVoiceInterfaceActive: function () {
-        return (
-            typeof mckVoice !== 'undefined' &&
-            mckVoice &&
-            typeof mckVoice.isVoiceModeActive === 'function' &&
-            mckVoice.isVoiceModeActive()
-        );
+        var voiceController = this.getVoiceController();
+        return Boolean(voiceController && voiceController.isVoiceModeActive());
     },
 
     isIncomingBotMessage: function (message) {

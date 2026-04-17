@@ -24,19 +24,13 @@ class Voice {
 
     get voiceChatConfig() {
         return (
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate._globals &&
-                kommunicate._globals.voiceChatSettings) ||
-            {}
+            (kommunicate && kommunicate._globals && kommunicate._globals.voiceChatSettings) || {}
         );
     }
 
     get voiceInputConfig() {
         return (
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate._globals &&
-                kommunicate._globals.voiceInputSettings) ||
-            {}
+            (kommunicate && kommunicate._globals && kommunicate._globals.voiceInputSettings) || {}
         );
     }
 
@@ -57,32 +51,29 @@ class Voice {
     }
 
     isVoiceDebugEnabled() {
-        if (typeof window !== 'undefined') {
-            try {
-                const searchParams = new URLSearchParams(window.location.search || '');
-                const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
-                if (queryValue !== null) {
-                    return queryValue;
-                }
-            } catch (error) {}
-
-            try {
-                const storageValue = this.parseVoiceDebugFlag(
-                    window.localStorage && window.localStorage.getItem('km_voice_debug')
-                );
-                if (storageValue !== null) {
-                    return storageValue;
-                }
-            } catch (error) {}
-
-            const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
-            if (globalValue !== null) {
-                return globalValue;
+        try {
+            const searchParams = new URLSearchParams(window.location.search || '');
+            const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
+            if (queryValue !== null) {
+                return queryValue;
             }
+        } catch (error) {}
+
+        try {
+            const storageValue = this.parseVoiceDebugFlag(
+                window.localStorage && window.localStorage.getItem('km_voice_debug')
+            );
+            if (storageValue !== null) {
+                return storageValue;
+            }
+        } catch (error) {}
+
+        const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
+        if (globalValue !== null) {
+            return globalValue;
         }
 
-        const globalConfig =
-            (typeof kommunicate !== 'undefined' && kommunicate && kommunicate._globals) || {};
+        const globalConfig = (kommunicate && kommunicate._globals) || {};
         const voiceInputConfig = globalConfig.voiceInputSettings || {};
         const voiceChatConfig = globalConfig.voiceChatSettings || {};
         const inputDebug = this.parseVoiceDebugFlag(voiceInputConfig.debug);
@@ -101,44 +92,101 @@ class Voice {
     }
 
     logVoiceDebug(eventName, details = {}, level = 'log') {
-        if (!this.isVoiceDebugEnabled() || typeof console === 'undefined') {
+        if (!this.isVoiceDebugEnabled()) {
             return;
         }
-        if (typeof window !== 'undefined') {
-            const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
-                ? window.__kmVoiceDebugEvents
-                : [];
-            const payload = {
-                eventName,
-                details,
-                timestamp: Date.now(),
-            };
-            existingEvents.push(payload);
-            if (existingEvents.length > 30) {
-                existingEvents.splice(0, existingEvents.length - 30);
-            }
-            window.__kmVoiceDebugEvents = existingEvents;
-            if (window.__kmVoiceDebug) {
-                window.__kmVoiceDebug.events = existingEvents;
-            }
-            if (typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function') {
-                window.dispatchEvent(
-                    new CustomEvent('km-voice-debug-event', {
-                        detail: payload,
-                    })
-                );
-            }
+        const compactDetails = this.compactVoiceDebugDetails(details);
+        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
+            ? window.__kmVoiceDebugEvents
+            : [];
+        const payload = {
+            eventName,
+            details: compactDetails,
+            timestamp: Date.now(),
+        };
+        existingEvents.push(payload);
+        if (existingEvents.length > 30) {
+            existingEvents.splice(0, existingEvents.length - 30);
         }
-        const consoleMethod = typeof console[level] === 'function' ? console[level] : console.log;
-        consoleMethod.call(console, `[KM Voice Debug] ${eventName}`, details);
+        window.__kmVoiceDebugEvents = existingEvents;
+        if (window.__kmVoiceDebug) {
+            window.__kmVoiceDebug.events = existingEvents;
+        }
+        window.dispatchEvent(
+            new CustomEvent('km-voice-debug-event', {
+                detail: payload,
+            })
+        );
+        const consoleMethod = console[level] || console.log;
+        consoleMethod.call(console, `[KM Voice Debug] ${eventName}`, compactDetails);
+    }
+
+    compactVoiceDebugDetails(details) {
+        if (!details || typeof details !== 'object' || Array.isArray(details)) {
+            return details;
+        }
+        const compact = {};
+        const prioritizedKeys = [
+            'transport',
+            'operation',
+            'action',
+            'sttMode',
+            'durationMs',
+            'sampleRate',
+            'sampleCount',
+            'frameCount',
+            'textLength',
+            'textPreview',
+            'languageCode',
+            'errorCode',
+            'errorName',
+            'errorMessage',
+            'errorStatus',
+            'responseBody',
+            'rawKeys',
+        ];
+
+        for (let i = 0; i < prioritizedKeys.length; i++) {
+            const key = prioritizedKeys[i];
+            const value = details[key];
+            if (value === undefined || value === null || value === '') {
+                continue;
+            }
+            compact[key] = this.compactVoiceDebugValue(value);
+        }
+
+        const detailKeys = Object.keys(details);
+        for (let i = 0; i < detailKeys.length; i++) {
+            const key = detailKeys[i];
+            if (compact[key] !== undefined) {
+                continue;
+            }
+            const value = details[key];
+            if (value === undefined || value === null || value === '') {
+                continue;
+            }
+            compact[key] = this.compactVoiceDebugValue(value);
+        }
+
+        return compact;
+    }
+
+    compactVoiceDebugValue(value) {
+        if (typeof value === 'string') {
+            return value.length > 120 ? `${value.slice(0, 117)}...` : value;
+        }
+        if (Array.isArray(value)) {
+            return value.length <= 4 ? value : `[${value.length} items]`;
+        }
+        if (value && typeof value === 'object') {
+            return '[object]';
+        }
+        return value;
     }
 
     get omnichannelConfig() {
         const globalConfig =
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate._globals &&
-                kommunicate._globals.omnichannelVoice) ||
-            {};
+            (kommunicate && kommunicate._globals && kommunicate._globals.omnichannelVoice) || {};
         return this.voiceChatConfig.omnichannel || globalConfig;
     }
 
@@ -571,10 +619,7 @@ class Voice {
         }
 
         const stompClient =
-            typeof window !== 'undefined' &&
-            window.Applozic &&
-            window.Applozic.ALSocket &&
-            window.Applozic.ALSocket.stompClient;
+            window.Applozic && window.Applozic.ALSocket && window.Applozic.ALSocket.stompClient;
         if (
             stompClient &&
             typeof stompClient.send === 'function' &&
@@ -904,60 +949,29 @@ class Voice {
         };
     }
 
-    logOmnichannelVoiceRequest({
-        transport,
-        url,
-        action,
-        sttMode,
-        sampleRate,
-        sampleCount,
-        operation,
-    }) {
-        const metadata = {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            transport,
-            operation,
-        };
-        if (url) {
-            metadata.url = url;
-        }
-        if (action) {
-            metadata.action = action;
-        }
-        if (sttMode) {
-            metadata.sttMode = sttMode;
-        }
-        if (sampleRate) {
-            metadata.sampleRate = sampleRate;
-        }
-        if (typeof sampleCount === 'number') {
-            metadata.sampleCount = sampleCount;
-        }
+    logOmnichannelVoiceRequest({ transport, sttMode, sampleCount, operation }) {
         if (operation === 'voiceToText') {
-            console.debug(`Voice STT request send (${transport})`, metadata);
+            const sampleCountSuffix =
+                typeof sampleCount === 'number' ? ` samples=${sampleCount}` : '';
+            const modeSuffix = sttMode ? ` mode=${sttMode}` : '';
+            console.debug(`Voice STT request send (${transport})${modeSuffix}${sampleCountSuffix}`);
         }
     }
 
     handleOmnichannelVoiceError(error, { transport, silentMessage, defaultMessage }) {
         if (error && error.code === 'SILENT_AUDIO') {
-            console.warn(silentMessage || 'Silent audio blocked before voice request', {
-                sampleCount: error.sampleCount,
-                nonZeroRatio: error.nonZeroRatio,
-                rms: error.rms,
-                peakAbs: error.peakAbs,
-            });
+            console.warn(
+                `${silentMessage || 'Silent audio blocked before voice request'} samples=${
+                    error.sampleCount || 0
+                } peak=${error.peakAbs || 0}`
+            );
             this.logVoiceDebug(
                 'omnichannel_voice_request_failed',
                 {
                     transport,
                     errorCode: error.code,
-                    errorName: error.name,
                     errorMessage: error.message,
                     sampleCount: error.sampleCount,
-                    nonZeroRatio: error.nonZeroRatio,
-                    rms: error.rms,
                     peakAbs: error.peakAbs,
                 },
                 'warn'
@@ -968,7 +982,11 @@ class Voice {
             transport === 'socket'
                 ? defaultMessage || 'There was a problem with the voice socket operation:'
                 : defaultMessage || 'There was a problem with the fetch operation:';
-        console.error(message, error);
+        console.error(
+            `${message} ${error && error.status ? `status=${error.status} ` : ''}${
+                (error && error.message) || ''
+            }`.trim()
+        );
         this.logVoiceDebug(
             'omnichannel_voice_request_failed',
             {
@@ -977,7 +995,6 @@ class Voice {
                 errorName: error && error.name,
                 errorMessage: error && error.message,
                 errorStatus: error && error.status,
-                responseBody: error && error.responseBody ? error.responseBody.slice(0, 300) : null,
             },
             'warn'
         );
@@ -1001,9 +1018,7 @@ class Voice {
         if (preferSocket && this.isVoiceSocketEnabled(resolvedSocketConfig)) {
             this.logOmnichannelVoiceRequest({
                 transport: 'socket',
-                action: socketAction,
                 sttMode: payload && payload.sttMode,
-                sampleRate: payload && payload.sampleRate,
                 sampleCount,
                 operation,
             });
@@ -1024,9 +1039,7 @@ class Voice {
         const httpUrl = this.getOmnichannelApiUrl(httpPath);
         this.logOmnichannelVoiceRequest({
             transport: 'http',
-            url: httpUrl,
             sttMode: payload && payload.sttMode,
-            sampleRate: payload && payload.sampleRate,
             sampleCount,
             operation,
         });
@@ -1091,28 +1104,15 @@ class Voice {
         const frames = Array.isArray(response && response.frames) ? response.frames : [];
         const frameCount = frames.length;
         let sampleCount = 0;
-        let maxFrameLength = 0;
-        let minFrameLength = frameCount ? Infinity : 0;
         for (let i = 0; i < frameCount; i++) {
             const frameLength = Array.isArray(frames[i]) ? frames[i].length : 0;
             sampleCount += frameLength;
-            if (frameLength > maxFrameLength) {
-                maxFrameLength = frameLength;
-            }
-            if (frameLength < minFrameLength) {
-                minFrameLength = frameLength;
-            }
         }
         this.logVoiceDebug('omnichannel_tts_response', {
             durationMs: Date.now() - ttsStartedAt,
             textLength: text ? text.length : 0,
             frameCount,
             sampleCount,
-            sampleRate: response && response.sampleRate,
-            channelCount: response && response.channelCount,
-            bitsPerSample: response && response.bitsPerSample,
-            minFrameLength: Number.isFinite(minFrameLength) ? minFrameLength : 0,
-            maxFrameLength,
         });
         return response;
     }
@@ -1170,24 +1170,17 @@ class Voice {
         });
         const response = this.normalizeVoiceToTextPayload(rawResponse);
         this.logVoiceDebug('omnichannel_stt_response_normalized', {
-            rawKeys: rawResponse && !Array.isArray(rawResponse) ? Object.keys(rawResponse) : [],
             textLength: response && response.text ? response.text.trim().length : 0,
             textPreview: response && response.text ? response.text.trim().slice(0, 120) : '',
             languageCode: response && response.languageCode ? response.languageCode : '',
         });
-        console.debug('Voice STT response completed', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-            provider: 'omnichannel',
-            operation: 'voiceToText',
-            durationMs: Date.now() - sttRequestStartedAt,
-            sampleCount: samples.length,
-            sttMode: payload.sttMode,
-            textLength:
-                response && typeof response.text === 'string' ? response.text.trim().length : 0,
-            languageCode:
-                response && typeof response.languageCode === 'string' ? response.languageCode : '',
-        });
+        console.debug(
+            `Voice STT response completed duration=${
+                Date.now() - sttRequestStartedAt
+            }ms textLength=${
+                response && typeof response.text === 'string' ? response.text.trim().length : 0
+            }`
+        );
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
@@ -1480,9 +1473,6 @@ class Voice {
         this.logVoiceDebug('omnichannel_tts_playback_data_created', {
             sampleCount: playbackData.sampleCount,
             sampleRate: playbackData.sampleRate,
-            channelCount: playbackData.channelCount,
-            bitsPerSample: playbackData.bitsPerSample,
-            peakAbsAfterNormalize: normalized.peakAbsAfterNormalize,
         });
         return playbackData;
     }
@@ -1497,15 +1487,7 @@ class Voice {
         );
         this.logVoiceDebug('omnichannel_tts_wav_created', {
             frameCount: normalized.frames.length,
-            flattenedSampleCount: normalized.flattenedSampleCount,
-            pcmSampleCount: normalized.pcmData.length,
-            peakAbsBeforeNormalize: normalized.peakAbsBeforeNormalize,
-            peakAbsAfterNormalize: normalized.peakAbsAfterNormalize,
-            sampleRate: normalized.sampleRate,
-            channelCount: normalized.channelCount,
-            bitsPerSample: normalized.bitsPerSample,
             wavBlobSize: wavBlob.size,
-            wavBlobType: wavBlob.type,
         });
         return wavBlob;
     }

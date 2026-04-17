@@ -168,32 +168,29 @@ class MckVoice {
     }
 
     getVoiceDebugFlag() {
-        if (typeof window !== 'undefined') {
-            try {
-                const searchParams = new URLSearchParams(window.location.search || '');
-                const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
-                if (queryValue !== null) {
-                    return queryValue;
-                }
-            } catch (error) {}
-
-            try {
-                const storageValue = this.parseVoiceDebugFlag(
-                    window.localStorage && window.localStorage.getItem('km_voice_debug')
-                );
-                if (storageValue !== null) {
-                    return storageValue;
-                }
-            } catch (error) {}
-
-            const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
-            if (globalValue !== null) {
-                return globalValue;
+        try {
+            const searchParams = new URLSearchParams(window.location.search || '');
+            const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
+            if (queryValue !== null) {
+                return queryValue;
             }
+        } catch (error) {}
+
+        try {
+            const storageValue = this.parseVoiceDebugFlag(
+                window.localStorage && window.localStorage.getItem('km_voice_debug')
+            );
+            if (storageValue !== null) {
+                return storageValue;
+            }
+        } catch (error) {}
+
+        const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
+        if (globalValue !== null) {
+            return globalValue;
         }
 
-        const globalConfig =
-            (typeof kommunicate !== 'undefined' && kommunicate && kommunicate._globals) || {};
+        const globalConfig = (kommunicate && kommunicate._globals) || {};
         const voiceConfig = globalConfig.voiceInputSettings || {};
         const configValue = this.parseVoiceDebugFlag(voiceConfig.debug);
         if (configValue !== null) {
@@ -207,9 +204,6 @@ class MckVoice {
     }
 
     installVoiceDebugHelpers() {
-        if (typeof window === 'undefined') {
-            return;
-        }
         const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
             ? window.__kmVoiceDebugEvents
             : [];
@@ -238,9 +232,6 @@ class MckVoice {
     }
 
     publishVoiceDebugEvent(eventName, details = {}, level = 'log') {
-        if (typeof window === 'undefined') {
-            return;
-        }
         const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
             ? window.__kmVoiceDebugEvents
             : [];
@@ -269,13 +260,11 @@ class MckVoice {
         if (window.__kmVoiceDebug) {
             window.__kmVoiceDebug.events = existingEvents;
         }
-        if (typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function') {
-            window.dispatchEvent(
-                new CustomEvent('km-voice-debug-event', {
-                    detail: payload,
-                })
-            );
-        }
+        window.dispatchEvent(
+            new CustomEvent('km-voice-debug-event', {
+                detail: payload,
+            })
+        );
     }
 
     getAudioTrackDebugState(stream = this.stream) {
@@ -329,16 +318,14 @@ class MckVoice {
         const voiceSettings = this.voiceInputSettings || this.getVoiceInputSettings();
         return {
             enabled: this.voiceDebugEnabled,
-            isSecureContext: typeof window !== 'undefined' ? window.isSecureContext : null,
-            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            isSecureContext: window.isSecureContext,
+            userAgent: navigator.userAgent,
             isIOSWebKitWorkaroundActive: this.shouldApplyWebKitVoiceWorkarounds(),
             requestedRecognitionMode: voiceSettings.recognitionMode || null,
             activeRecognitionMode: this.activeRecognitionMode,
             nativeRecognitionAvailable: this.isNativeSpeechRecognitionAvailable(),
             mediaDevicesSupported: Boolean(
-                typeof navigator !== 'undefined' &&
-                    navigator.mediaDevices &&
-                    navigator.mediaDevices.getUserMedia
+                navigator.mediaDevices && navigator.mediaDevices.getUserMedia
             ),
             mediaRecorderSupported: typeof MediaRecorder !== 'undefined',
             mediaRecorderState: this.mediaRecorder && this.mediaRecorder.state,
@@ -370,19 +357,12 @@ class MckVoice {
             return;
         }
         this.publishVoiceDebugEvent(eventName, details, level);
-        const consoleMethod =
-            typeof console !== 'undefined' && typeof console[level] === 'function'
-                ? console[level]
-                : console.log;
-        consoleMethod.call(
-            console,
-            `${this.voiceDebugPrefix} ${eventName}`,
-            this.getVoiceDebugState(details)
-        );
+        const consoleMethod = console[level] || console.log;
+        consoleMethod.call(console, `${this.voiceDebugPrefix} ${eventName}`, details);
     }
 
     bindVoiceDebugOverlayListener() {
-        if (this.voiceDebugEventListenerBound || typeof window === 'undefined') {
+        if (this.voiceDebugEventListenerBound) {
             return;
         }
         window.addEventListener('km-voice-debug-event', this.handleVoiceDebugOverlayEventBound);
@@ -494,10 +474,9 @@ class MckVoice {
             return;
         }
         const debugState = this.getVoiceDebugState();
-        const events =
-            typeof window !== 'undefined' && Array.isArray(window.__kmVoiceDebugEvents)
-                ? window.__kmVoiceDebugEvents.slice(-16)
-                : [];
+        const events = Array.isArray(window.__kmVoiceDebugEvents)
+            ? window.__kmVoiceDebugEvents.slice(-16)
+            : [];
         if (!events.length) {
             overlay.textContent = 'Voice Debug\nWaiting for events...';
             return;
@@ -716,11 +695,7 @@ class MckVoice {
     }
 
     getReplyPlaybackAudioContext() {
-        if (
-            !this.replyPlaybackAudioContext &&
-            typeof window !== 'undefined' &&
-            (window.AudioContext || window.webkitAudioContext)
-        ) {
+        if (!this.replyPlaybackAudioContext && (window.AudioContext || window.webkitAudioContext)) {
             this.replyPlaybackAudioContext = new (window.AudioContext ||
                 window.webkitAudioContext)();
         }
@@ -2352,7 +2327,7 @@ class MckVoice {
         }
 
         // getUserMedia requires a secure context (HTTPS or localhost).
-        if (typeof window !== 'undefined' && window.isSecureContext === false) {
+        if (window.isSecureContext === false) {
             console.error('Voice recording requires a secure (HTTPS) context');
             this.logVoiceDebug(
                 'request_audio_recording_blocked_insecure_context',
@@ -2873,10 +2848,7 @@ class MckVoice {
             this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
             this.pendingVoiceSessionSource = null;
         }
-        console.debug('Voice recording started', {
-            ts: Date.now(),
-            iso: new Date().toISOString(),
-        });
+        console.debug('Voice recording started');
 
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
@@ -4354,11 +4326,9 @@ class MckVoice {
                     return;
                 }
                 if (continuationElapsed >= continuationMaxSilenceMs) {
-                    console.debug('Voice continuation long silence reached, stopping cycle', {
-                        continuationElapsed,
-                        continuationMaxSilenceMs,
-                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                    });
+                    console.debug(
+                        `Voice continuation long silence reached elapsed=${continuationElapsed}ms max=${continuationMaxSilenceMs}ms inFlight=${this.pendingVoiceSegmentInFlight}`
+                    );
                     this.stopRecording(false, 'continuation_idle');
                     return;
                 }
@@ -4415,10 +4385,9 @@ class MckVoice {
                 this.isInSilence &&
                 silenceElapsed >= continuationMaxSilenceMs
             ) {
-                console.debug('Voice continuation long silence reached, stopping cycle', {
-                    silenceElapsedMs: silenceElapsed,
-                    continuationMaxSilenceMs,
-                });
+                console.debug(
+                    `Voice continuation long silence reached elapsed=${silenceElapsed}ms max=${continuationMaxSilenceMs}ms`
+                );
                 this.stopRecording(false, 'continuation_idle');
                 return;
             }
@@ -4476,18 +4445,9 @@ class MckVoice {
             this.startSilenceTimeout();
             return;
         }
-        console.debug('Voice silence threshold reached', {
-            silenceDurationMs: silenceDuration,
-            silenceThresholdMs: this.voiceInputSettings.silenceDuration,
-            continuationMinWaitMs:
-                this.voiceInputSettings.continuationMinWaitMs ||
-                this._VOICE_CONTINUATION_MIN_WAIT_MS,
-            continuationMaxSilenceMs:
-                this.voiceInputSettings.continuationMaxSilenceMs ||
-                this._VOICE_CONTINUATION_MAX_SILENCE_MS,
-            activeRecognitionMode: this.activeRecognitionMode,
-        });
-        console.debug('User silent for a few moments, stopping recording segment');
+        console.debug(
+            `Voice silence threshold reached duration=${silenceDuration}ms threshold=${this.voiceInputSettings.silenceDuration}ms mode=${this.activeRecognitionMode}`
+        );
         this.addThinkingAnimation();
         this.updateLiveTranscript(
             this.getVoiceLabel(
@@ -4978,9 +4938,6 @@ class MckVoice {
     }
 
     isNativeSpeechRecognitionAvailable() {
-        if (typeof window === 'undefined') {
-            return false;
-        }
         return Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
     }
 
@@ -5193,24 +5150,13 @@ class MckVoice {
         if (this.mediaRecorder && this.isRecording) {
             const silenceElapsedMs = this.silenceStart ? Date.now() - this.silenceStart : 0;
             this.recordingStopReason = stopReason;
-            console.debug('Voice recording stop requested', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                forceStop: Boolean(forceStop),
-                stopReason,
-                discardNextRecordingPayload: this.discardNextRecordingPayload,
-                silenceElapsedMs,
-                isInSilence: this.isInSilence,
-                speechDetected: this.speechDetected,
-            });
+            console.debug(
+                `Voice recording stop requested reason=${stopReason} force=${Boolean(
+                    forceStop
+                )} silenceElapsedMs=${silenceElapsedMs} speechDetected=${this.speechDetected}`
+            );
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
-            console.debug('Voice recording stop invoked', {
-                ts: Date.now(),
-                iso: new Date().toISOString(),
-                stopReason,
-                silenceElapsedMs,
-            });
 
             if (this.maxRecordingTimer) {
                 clearTimeout(this.maxRecordingTimer);
