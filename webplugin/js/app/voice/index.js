@@ -34,91 +34,13 @@ class Voice {
         );
     }
 
-    parseVoiceDebugFlag(value) {
-        if (typeof value === 'boolean') {
-            return value;
-        }
-        if (typeof value === 'string') {
-            const normalized = value.trim().toLowerCase();
-            if (['1', 'true', 'yes', 'on'].includes(normalized)) {
-                return true;
-            }
-            if (['0', 'false', 'no', 'off'].includes(normalized)) {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    isVoiceDebugEnabled() {
-        try {
-            const searchParams = new URLSearchParams(window.location.search || '');
-            const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
-            if (queryValue !== null) {
-                return queryValue;
-            }
-        } catch (error) {}
-
-        try {
-            const storageValue = this.parseVoiceDebugFlag(
-                window.localStorage && window.localStorage.getItem('km_voice_debug')
-            );
-            if (storageValue !== null) {
-                return storageValue;
-            }
-        } catch (error) {}
-
-        const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
-        if (globalValue !== null) {
-            return globalValue;
-        }
-
-        const globalConfig = (kommunicate && kommunicate._globals) || {};
-        const voiceInputConfig = globalConfig.voiceInputSettings || {};
-        const voiceChatConfig = globalConfig.voiceChatSettings || {};
-        const inputDebug = this.parseVoiceDebugFlag(voiceInputConfig.debug);
-        if (inputDebug !== null) {
-            return inputDebug;
-        }
-        const chatDebug = this.parseVoiceDebugFlag(voiceChatConfig.debug);
-        if (chatDebug !== null) {
-            return chatDebug;
-        }
-        const rootDebug = this.parseVoiceDebugFlag(globalConfig.voiceDebug);
-        if (rootDebug !== null) {
-            return rootDebug;
-        }
-        return false;
-    }
-
     logVoiceDebug(eventName, details = {}, level = 'log') {
-        if (!this.isVoiceDebugEnabled()) {
-            return;
-        }
-        const compactDetails = this.compactVoiceDebugDetails(details);
-        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
-            ? window.__kmVoiceDebugEvents
-            : [];
-        const payload = {
-            eventName,
-            details: compactDetails,
-            timestamp: Date.now(),
-        };
-        existingEvents.push(payload);
-        if (existingEvents.length > 30) {
-            existingEvents.splice(0, existingEvents.length - 30);
-        }
-        window.__kmVoiceDebugEvents = existingEvents;
-        if (window.__kmVoiceDebug) {
-            window.__kmVoiceDebug.events = existingEvents;
-        }
-        window.dispatchEvent(
-            new CustomEvent('km-voice-debug-event', {
-                detail: payload,
-            })
-        );
         const consoleMethod = console[level] || console.log;
-        consoleMethod.call(console, `[KM Voice Debug] ${eventName}`, compactDetails);
+        consoleMethod.call(
+            console,
+            `[KM Voice Debug] ${eventName}`,
+            this.compactVoiceDebugDetails(details)
+        );
     }
 
     compactVoiceDebugDetails(details) {
@@ -855,7 +777,7 @@ class Voice {
             return '';
         }
 
-        const directKeys = ['text', 'transcript', 'displayText', 'message'];
+        const directKeys = ['text', 'transcript', 'displayText'];
         for (let i = 0; i < directKeys.length; i++) {
             const value = payload[directKeys[i]];
             if (typeof value === 'string' && value.trim()) {
@@ -899,6 +821,21 @@ class Voice {
             const extracted = this.extractVoiceToTextText(nestedValue, depth + 1);
             if (extracted) {
                 return extracted;
+            }
+        }
+
+        const messageValue = payload.message;
+        if (typeof messageValue === 'string' && messageValue.trim()) {
+            return messageValue.trim();
+        }
+        if (Array.isArray(messageValue)) {
+            const joined = messageValue
+                .map((item) => (typeof item === 'string' ? item.trim() : ''))
+                .filter(Boolean)
+                .join(' ')
+                .trim();
+            if (joined) {
+                return joined;
             }
         }
         return '';

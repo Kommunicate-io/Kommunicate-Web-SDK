@@ -539,7 +539,7 @@ KommunicateUtils = {
         }
         var isSafari =
             /Safari/i.test(userAgent) &&
-            !/(Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser)/i.test(userAgent);
+            !/(Chrome|Chromium|Edg|OPR|FxiOS|SamsungBrowser)/i.test(userAgent);
         var isAndroid = /Android/i.test(userAgent);
         return isSafari && !isAndroid;
     },

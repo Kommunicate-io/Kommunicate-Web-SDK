@@ -112,12 +112,6 @@ class MckVoice {
         this.awaitingBotResponseTimeout = null;
         this.audioPlaybackWatchdog = null;
         this.audioPlaybackStartTimeout = null;
-        this.voiceDebugOverlayElement = null;
-        this.voiceDebugEventListenerBound = false;
-        this.handleVoiceDebugOverlayEventBound = (event) =>
-            this.handleVoiceDebugOverlayEvent(event);
-        this.voiceDebugLastError = null;
-        this.voiceDebugLastPlaybackEvent = null;
         this.visualizerAudioContext = null;
         this.visualizerSourceNodes = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
         this.replyPlaybackAudioContext = null;
@@ -127,11 +121,9 @@ class MckVoice {
             START_CONVERSATION_SCREEN: 'start_conversation_screen',
             CONVERSATIONS_SCREEN: 'conversations_screen',
         };
-        this.voiceDebugEnabled = false;
         this.voiceDebugPrefix = '[KM Voice Debug]';
         this.voiceInputSettings = this.getVoiceInputSettings();
         this.activeRecognitionMode = this.determineRecognitionMode();
-        this.refreshVoiceDebugState();
     }
 
     getVoiceEntrySources() {
@@ -149,122 +141,6 @@ class MckVoice {
         ) {
             kmWidgetEvents.eventTracking(eventMapping[eventKey], source);
         }
-    }
-
-    parseVoiceDebugFlag(value) {
-        if (typeof value === 'boolean') {
-            return value;
-        }
-        if (typeof value === 'string') {
-            const normalized = value.trim().toLowerCase();
-            if (['1', 'true', 'yes', 'on'].includes(normalized)) {
-                return true;
-            }
-            if (['0', 'false', 'no', 'off'].includes(normalized)) {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    getVoiceDebugFlag() {
-        try {
-            const searchParams = new URLSearchParams(window.location.search || '');
-            const queryValue = this.parseVoiceDebugFlag(searchParams.get('kmVoiceDebug'));
-            if (queryValue !== null) {
-                return queryValue;
-            }
-        } catch (error) {}
-
-        try {
-            const storageValue = this.parseVoiceDebugFlag(
-                window.localStorage && window.localStorage.getItem('km_voice_debug')
-            );
-            if (storageValue !== null) {
-                return storageValue;
-            }
-        } catch (error) {}
-
-        const globalValue = this.parseVoiceDebugFlag(window.__KM_VOICE_DEBUG__);
-        if (globalValue !== null) {
-            return globalValue;
-        }
-
-        const globalConfig = (kommunicate && kommunicate._globals) || {};
-        const voiceConfig = globalConfig.voiceInputSettings || {};
-        const configValue = this.parseVoiceDebugFlag(voiceConfig.debug);
-        if (configValue !== null) {
-            return configValue;
-        }
-        const rootConfigValue = this.parseVoiceDebugFlag(globalConfig.voiceDebug);
-        if (rootConfigValue !== null) {
-            return rootConfigValue;
-        }
-        return false;
-    }
-
-    installVoiceDebugHelpers() {
-        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
-            ? window.__kmVoiceDebugEvents
-            : [];
-        window.__kmVoiceDebugEvents = existingEvents;
-        window.__kmVoiceDebug = {
-            get enabled() {
-                return typeof kmVoice !== 'undefined' && kmVoice
-                    ? kmVoice.refreshVoiceDebugState()
-                    : false;
-            },
-            getState: () => this.getVoiceDebugState(),
-            getEvents: () => window.__kmVoiceDebugEvents.slice(),
-            logState: (label = 'manual_state_dump') => {
-                this.logVoiceDebug(label);
-                return this.getVoiceDebugState();
-            },
-        };
-    }
-
-    refreshVoiceDebugState() {
-        this.voiceDebugEnabled = this.getVoiceDebugFlag();
-        this.installVoiceDebugHelpers();
-        this.bindVoiceDebugOverlayListener();
-        this.renderVoiceDebugOverlay();
-        return this.voiceDebugEnabled;
-    }
-
-    publishVoiceDebugEvent(eventName, details = {}, level = 'log') {
-        const existingEvents = Array.isArray(window.__kmVoiceDebugEvents)
-            ? window.__kmVoiceDebugEvents
-            : [];
-        const payload = {
-            eventName,
-            details,
-            level,
-            timestamp: Date.now(),
-        };
-        if (
-            level === 'warn' ||
-            eventName.indexOf('error') !== -1 ||
-            eventName.indexOf('failed') !== -1 ||
-            eventName.indexOf('timeout') !== -1
-        ) {
-            this.voiceDebugLastError = payload;
-        }
-        if (eventName.indexOf('play_audio_blob_') === 0 || eventName === 'playback_failed') {
-            this.voiceDebugLastPlaybackEvent = payload;
-        }
-        existingEvents.push(payload);
-        if (existingEvents.length > 30) {
-            existingEvents.splice(0, existingEvents.length - 30);
-        }
-        window.__kmVoiceDebugEvents = existingEvents;
-        if (window.__kmVoiceDebug) {
-            window.__kmVoiceDebug.events = existingEvents;
-        }
-        window.dispatchEvent(
-            new CustomEvent('km-voice-debug-event', {
-                detail: payload,
-            })
-        );
     }
 
     getAudioTrackDebugState(stream = this.stream) {
@@ -314,201 +190,9 @@ class MckVoice {
         };
     }
 
-    getVoiceDebugState(extra = {}) {
-        const voiceSettings = this.voiceInputSettings || this.getVoiceInputSettings();
-        return {
-            enabled: this.voiceDebugEnabled,
-            isSecureContext: window.isSecureContext,
-            userAgent: navigator.userAgent,
-            isIOSWebKitWorkaroundActive: this.shouldApplyWebKitVoiceWorkarounds(),
-            requestedRecognitionMode: voiceSettings.recognitionMode || null,
-            activeRecognitionMode: this.activeRecognitionMode,
-            nativeRecognitionAvailable: this.isNativeSpeechRecognitionAvailable(),
-            mediaDevicesSupported: Boolean(
-                navigator.mediaDevices && navigator.mediaDevices.getUserMedia
-            ),
-            mediaRecorderSupported: typeof MediaRecorder !== 'undefined',
-            mediaRecorderState: this.mediaRecorder && this.mediaRecorder.state,
-            recordedMimeType: this.recordedMimeType || null,
-            autoListeningEnabled: this.autoListeningEnabled,
-            voiceMuted: this.voiceMuted,
-            isRecording: this.isRecording,
-            awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
-            audioPlaybackActive: this.isAudioPlaybackActive(),
-            hasAudioElement: Boolean(this.audioElement),
-            replyPlaybackActive: this.currentReplyPlaybackActive,
-            replyPlaybackAudioContextState: this.replyPlaybackAudioContext
-                ? this.replyPlaybackAudioContext.state
-                : null,
-            audioPlayback: this.getAudioPlaybackDebugState(),
-            queueLength: this.messagesQueue.length,
-            lastBotPlaybackEndedAt: this.lastBotPlaybackEndedAt || null,
-            lastBotPlaybackTextLength: (this.lastBotPlaybackText || '').length,
-            lastDebugError: this.voiceDebugLastError,
-            lastPlaybackEvent: this.voiceDebugLastPlaybackEvent,
-            streamActive: this.stream ? this.stream.active : null,
-            audioTrack: this.getAudioTrackDebugState(),
-            ...extra,
-        };
-    }
-
     logVoiceDebug(eventName, details = {}, level = 'log') {
-        if (!this.refreshVoiceDebugState()) {
-            return;
-        }
-        this.publishVoiceDebugEvent(eventName, details, level);
         const consoleMethod = console[level] || console.log;
         consoleMethod.call(console, `${this.voiceDebugPrefix} ${eventName}`, details);
-    }
-
-    bindVoiceDebugOverlayListener() {
-        if (this.voiceDebugEventListenerBound) {
-            return;
-        }
-        window.addEventListener('km-voice-debug-event', this.handleVoiceDebugOverlayEventBound);
-        this.voiceDebugEventListenerBound = true;
-    }
-
-    handleVoiceDebugOverlayEvent() {
-        if (!this.voiceDebugEnabled) {
-            return;
-        }
-        this.renderVoiceDebugOverlay();
-    }
-
-    getVoiceInterfaceElement() {
-        return document.getElementById('mck-voice-interface');
-    }
-
-    getVoiceDebugOverlayElement() {
-        if (!this.voiceDebugEnabled) {
-            if (this.voiceDebugOverlayElement && this.voiceDebugOverlayElement.parentNode) {
-                this.voiceDebugOverlayElement.parentNode.removeChild(this.voiceDebugOverlayElement);
-            }
-            this.voiceDebugOverlayElement = null;
-            return null;
-        }
-        if (this.voiceDebugOverlayElement && this.voiceDebugOverlayElement.isConnected) {
-            return this.voiceDebugOverlayElement;
-        }
-        const voiceInterface = this.getVoiceInterfaceElement();
-        if (!voiceInterface) {
-            return null;
-        }
-        const overlay = document.createElement('div');
-        overlay.id = 'km-voice-debug-overlay';
-        overlay.setAttribute('aria-live', 'polite');
-        overlay.style.position = 'absolute';
-        overlay.style.left = '12px';
-        overlay.style.right = '12px';
-        overlay.style.bottom = '12px';
-        overlay.style.zIndex = '6';
-        overlay.style.maxHeight = '32vh';
-        overlay.style.overflow = 'auto';
-        overlay.style.padding = '10px 12px';
-        overlay.style.borderRadius = '16px';
-        overlay.style.background = 'rgba(15, 23, 42, 0.92)';
-        overlay.style.color = '#e2e8f0';
-        overlay.style.fontSize = '11px';
-        overlay.style.lineHeight = '1.45';
-        overlay.style.boxShadow = '0 14px 34px rgba(15, 23, 42, 0.28)';
-        overlay.style.backdropFilter = 'blur(10px)';
-        overlay.style.whiteSpace = 'pre-wrap';
-        overlay.style.wordBreak = 'break-word';
-        overlay.style.pointerEvents = 'none';
-        voiceInterface.style.position = voiceInterface.style.position || 'relative';
-        voiceInterface.appendChild(overlay);
-        this.voiceDebugOverlayElement = overlay;
-        return overlay;
-    }
-
-    formatVoiceDebugOverlayEntry(entry) {
-        const timestamp = new Date(entry.timestamp || Date.now()).toLocaleTimeString('en-US', {
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
-        const levelPrefix = entry.level && entry.level !== 'log' ? `[${entry.level}] ` : '';
-        let detailText = '';
-        try {
-            detailText = JSON.stringify(entry.details || {});
-        } catch (error) {
-            detailText = String(entry.details || '');
-        }
-        if (detailText.length > 220) {
-            detailText = `${detailText.slice(0, 220)}...`;
-        }
-        return `${timestamp} ${levelPrefix}${entry.eventName}${
-            detailText && detailText !== '{}' ? `\n${detailText}` : ''
-        }`;
-    }
-
-    formatVoiceDebugOverlaySummary(label, payload) {
-        if (!payload) {
-            return `${label}: none`;
-        }
-        const timestamp = new Date(payload.timestamp || Date.now()).toLocaleTimeString('en-US', {
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
-        let detailText = '';
-        try {
-            detailText = JSON.stringify(payload.details || {});
-        } catch (error) {
-            detailText = String(payload.details || '');
-        }
-        if (detailText.length > 180) {
-            detailText = `${detailText.slice(0, 180)}...`;
-        }
-        return `${label}: ${timestamp} ${payload.eventName}${
-            detailText && detailText !== '{}' ? ` ${detailText}` : ''
-        }`;
-    }
-
-    renderVoiceDebugOverlay() {
-        const overlay = this.getVoiceDebugOverlayElement();
-        if (!overlay) {
-            return;
-        }
-        const debugState = this.getVoiceDebugState();
-        const events = Array.isArray(window.__kmVoiceDebugEvents)
-            ? window.__kmVoiceDebugEvents.slice(-16)
-            : [];
-        if (!events.length) {
-            overlay.textContent = 'Voice Debug\nWaiting for events...';
-            return;
-        }
-        const lines = [
-            'Voice Debug',
-            `mode=${debugState.activeRecognitionMode || 'unknown'} queue=${
-                debugState.queueLength
-            } recording=${Boolean(debugState.isRecording)} awaiting=${Boolean(
-                debugState.awaitingBotResponsePlayback
-            )} muted=${Boolean(debugState.voiceMuted)}`,
-        ];
-        if (debugState.audioPlayback) {
-            lines.push(
-                `audio: paused=${Boolean(debugState.audioPlayback.paused)} ended=${Boolean(
-                    debugState.audioPlayback.ended
-                )} rs=${debugState.audioPlayback.readyState} ns=${
-                    debugState.audioPlayback.networkState
-                } t=${debugState.audioPlayback.currentTime} d=${debugState.audioPlayback.duration}`
-            );
-        } else {
-            lines.push('audio: none');
-        }
-        lines.push(this.formatVoiceDebugOverlaySummary('lastError', this.voiceDebugLastError));
-        lines.push(
-            this.formatVoiceDebugOverlaySummary('lastPlayback', this.voiceDebugLastPlaybackEvent)
-        );
-        lines.push('events:');
-        for (let i = 0; i < events.length; i++) {
-            lines.push(this.formatVoiceDebugOverlayEntry(events[i]));
-        }
-        overlay.textContent = lines.join('\n\n');
     }
 
     resetVoicePlaybackQueue(reason = 'manual_reset') {
@@ -3876,24 +3560,9 @@ class MckVoice {
             },
             'warn'
         );
-        const debugSuffix = this.voiceDebugEnabled
-            ? ` [${playbackDetails.errorName || 'unknown'} rs=${
-                  playbackDetails.audioState && playbackDetails.audioState.readyState !== null
-                      ? playbackDetails.audioState.readyState
-                      : 'na'
-              } ns=${
-                  playbackDetails.audioState && playbackDetails.audioState.networkState !== null
-                      ? playbackDetails.audioState.networkState
-                      : 'na'
-              } mc=${
-                  playbackDetails.mediaError && playbackDetails.mediaError.code !== null
-                      ? playbackDetails.mediaError.code
-                      : 'na'
-              } q=${playbackDetails.queueLength}]`
-            : '';
-        this.updateVoiceStatus('Voice error');
-        this.updateLiveTranscript(`${message}${debugSuffix}`, { autoHide });
-        this.showVoiceProgressMessage(`${message}${debugSuffix}`, { state: 'error', autoHide });
+        this.updateVoiceStatus(this.getVoiceLabel('voiceInterface.error', 'Voice error'));
+        this.updateLiveTranscript(message, { autoHide });
+        this.showVoiceProgressMessage(message, { state: 'error', autoHide });
     }
 
     clearVoiceProgressMessage() {
