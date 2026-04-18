@@ -192,7 +192,43 @@ class MckVoice {
 
     logVoiceDebug(eventName, details = {}, level = 'log') {
         const consoleMethod = console[level] || console.log;
-        consoleMethod.call(console, `${this.voiceDebugPrefix} ${eventName}`, details);
+        consoleMethod.call(
+            console,
+            `${this.voiceDebugPrefix} ${eventName}`,
+            this.compactVoiceDebugDetails(details)
+        );
+    }
+
+    compactVoiceDebugDetails(details) {
+        if (!details || typeof details !== 'object' || Array.isArray(details)) {
+            return details;
+        }
+        const compact = {};
+        const detailKeys = Object.keys(details);
+
+        for (let i = 0; i < detailKeys.length; i++) {
+            const key = detailKeys[i];
+            const value = details[key];
+            if (value === undefined || value === null || value === '') {
+                continue;
+            }
+            compact[key] = this.compactVoiceDebugValue(value);
+        }
+
+        return compact;
+    }
+
+    compactVoiceDebugValue(value) {
+        if (typeof value === 'string') {
+            return value.length > 120 ? `${value.slice(0, 117)}...` : value;
+        }
+        if (Array.isArray(value)) {
+            return `[${value.length} items]`;
+        }
+        if (value && typeof value === 'object') {
+            return '[object]';
+        }
+        return value;
     }
 
     resetVoicePlaybackQueue(reason = 'manual_reset') {
@@ -916,10 +952,6 @@ class MckVoice {
                                 hasPlaybackStarted = true;
                                 if (this.shouldEnableAudioVisualizer()) {
                                     this.visualizerCleanup = this.createAudioVisualizer(audio);
-                                } else {
-                                    this.logVoiceDebug('audio_visualizer_skipped', {
-                                        reason: 'ios_webkit',
-                                    });
                                 }
                             })
                             .catch((error) => {
@@ -1359,12 +1391,6 @@ class MckVoice {
                     });
                     if (this.shouldEnableAudioVisualizer()) {
                         this.visualizerCleanup = this.createAudioVisualizer(audio);
-                    } else {
-                        this.logVoiceDebug('audio_visualizer_skipped', {
-                            reason: 'ios_webkit',
-                            retryAttempt,
-                            sourceMode,
-                        });
                     }
                 })
                 .catch((error) => {
@@ -1372,61 +1398,12 @@ class MckVoice {
                 });
         };
 
-        audio.addEventListener(
-            'canplay',
-            () => {
-                this.logVoiceDebug('play_audio_blob_canplay', {
-                    readyState: audio.readyState,
-                    networkState: audio.networkState,
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                });
-                startPlayback();
-            },
-            { once: true }
-        );
+        audio.addEventListener('canplay', startPlayback, { once: true });
 
         audio.addEventListener(
             'loadeddata',
             () => {
-                this.logVoiceDebug('play_audio_blob_loadeddata', {
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                    readyState: audio.readyState,
-                    networkState: audio.networkState,
-                });
                 startPlayback();
-            },
-            { once: true }
-        );
-
-        audio.addEventListener(
-            'playing',
-            () => {
-                this.logVoiceDebug('play_audio_blob_playing', {
-                    currentTime: audio.currentTime,
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                });
-            },
-            { once: true }
-        );
-
-        audio.addEventListener(
-            'loadedmetadata',
-            () => {
-                this.logVoiceDebug('play_audio_blob_loadedmetadata', {
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                    readyState: audio.readyState,
-                });
-            },
-            { once: true }
-        );
-
-        audio.addEventListener(
-            'timeupdate',
-            () => {
-                this.logVoiceDebug('play_audio_blob_timeupdate', {
-                    currentTime: audio.currentTime,
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                });
             },
             { once: true }
         );
@@ -1445,17 +1422,6 @@ class MckVoice {
             settlePlayback('ended_event');
         });
 
-        audio.addEventListener('pause', () => {
-            if (!playbackStarted || playbackSettled) {
-                return;
-            }
-            this.logVoiceDebug('play_audio_blob_pause', {
-                currentTime: audio.currentTime,
-                duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                ended: audio.ended,
-            });
-        });
-
         audio.addEventListener('stalled', () => {
             if (!playbackStarted || playbackSettled) {
                 return;
@@ -1468,16 +1434,6 @@ class MckVoice {
                 },
                 'warn'
             );
-        });
-
-        audio.addEventListener('suspend', () => {
-            if (!playbackStarted || playbackSettled) {
-                return;
-            }
-            this.logVoiceDebug('play_audio_blob_suspend', {
-                currentTime: audio.currentTime,
-                duration: Number.isFinite(audio.duration) ? audio.duration : null,
-            });
         });
     }
 
@@ -2213,11 +2169,6 @@ class MckVoice {
         this.mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
                 this.audioChunks.push(event.data);
-                this.logVoiceDebug('recording_chunk_available', {
-                    chunkSize: event.data.size,
-                    chunkType: event.data.type || null,
-                    totalChunks: this.audioChunks.length,
-                });
             }
         };
 
@@ -2551,8 +2502,6 @@ class MckVoice {
             this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
             this.pendingVoiceSessionSource = null;
         }
-        console.debug('Voice recording started');
-
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
                 this.addThinkingAnimation();
@@ -3633,13 +3582,7 @@ class MckVoice {
             this.logVoiceDebug(
                 'voice_echo_suppressed',
                 {
-                    transcriptPreview: trimmedMessage.slice(0, 120),
-                    transcriptLength: trimmedMessage.length,
-                    recentBotPreview: (this.lastBotPlaybackText || '').slice(0, 120),
-                    recentBotLength: (this.lastBotPlaybackText || '').length,
-                    elapsedMs: this.lastBotPlaybackEndedAt
-                        ? Date.now() - this.lastBotPlaybackEndedAt
-                        : null,
+                    textLength: trimmedMessage.length,
                 },
                 'warn'
             );
@@ -4014,9 +3957,6 @@ class MckVoice {
                     return;
                 }
                 if (continuationElapsed >= continuationMaxSilenceMs) {
-                    console.debug(
-                        `Voice continuation long silence reached elapsed=${continuationElapsed}ms max=${continuationMaxSilenceMs}ms inFlight=${this.pendingVoiceSegmentInFlight}`
-                    );
                     this.stopRecording(false, 'continuation_idle');
                     return;
                 }
@@ -4073,9 +4013,6 @@ class MckVoice {
                 this.isInSilence &&
                 silenceElapsed >= continuationMaxSilenceMs
             ) {
-                console.debug(
-                    `Voice continuation long silence reached elapsed=${silenceElapsed}ms max=${continuationMaxSilenceMs}ms`
-                );
                 this.stopRecording(false, 'continuation_idle');
                 return;
             }
@@ -4133,9 +4070,6 @@ class MckVoice {
             this.startSilenceTimeout();
             return;
         }
-        console.debug(
-            `Voice silence threshold reached duration=${silenceDuration}ms threshold=${this.voiceInputSettings.silenceDuration}ms mode=${this.activeRecognitionMode}`
-        );
         this.addThinkingAnimation();
         this.updateLiveTranscript(
             this.getVoiceLabel(
@@ -4783,18 +4717,10 @@ class MckVoice {
         }
         const cleanInterim = interimTranscript.trim();
         if (cleanInterim) {
-            this.logVoiceDebug('native_recognition_interim_result', {
-                transcriptLength: cleanInterim.length,
-                transcriptPreview: cleanInterim.slice(0, 120),
-            });
             this.updateLiveTranscript(cleanInterim);
         }
         const cleanFinal = finalTranscript.trim();
         if (cleanFinal) {
-            this.logVoiceDebug('native_recognition_final_result', {
-                transcriptLength: cleanFinal.length,
-                transcriptPreview: cleanFinal.slice(0, 120),
-            });
             this.handleVoiceQuery(cleanFinal);
         }
     }
@@ -4836,13 +4762,11 @@ class MckVoice {
             return;
         }
         if (this.mediaRecorder && this.isRecording) {
-            const silenceElapsedMs = this.silenceStart ? Date.now() - this.silenceStart : 0;
             this.recordingStopReason = stopReason;
-            console.debug(
-                `Voice recording stop requested reason=${stopReason} force=${Boolean(
-                    forceStop
-                )} silenceElapsedMs=${silenceElapsedMs} speechDetected=${this.speechDetected}`
-            );
+            this.logVoiceDebug('recording_stop_requested', {
+                stopReason,
+                reason: stopReason,
+            });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
 

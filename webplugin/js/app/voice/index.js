@@ -48,41 +48,22 @@ class Voice {
             return details;
         }
         const compact = {};
-        const prioritizedKeys = [
+        const allowedKeys = [
             'transport',
             'operation',
-            'action',
-            'sttMode',
             'durationMs',
             'sampleRate',
             'sampleCount',
             'frameCount',
             'textLength',
-            'textPreview',
             'languageCode',
             'errorCode',
-            'errorName',
             'errorMessage',
             'errorStatus',
-            'responseBody',
-            'rawKeys',
         ];
 
-        for (let i = 0; i < prioritizedKeys.length; i++) {
-            const key = prioritizedKeys[i];
-            const value = details[key];
-            if (value === undefined || value === null || value === '') {
-                continue;
-            }
-            compact[key] = this.compactVoiceDebugValue(value);
-        }
-
-        const detailKeys = Object.keys(details);
-        for (let i = 0; i < detailKeys.length; i++) {
-            const key = detailKeys[i];
-            if (compact[key] !== undefined) {
-                continue;
-            }
+        for (let i = 0; i < allowedKeys.length; i++) {
+            const key = allowedKeys[i];
             const value = details[key];
             if (value === undefined || value === null || value === '') {
                 continue;
@@ -96,12 +77,6 @@ class Voice {
     compactVoiceDebugValue(value) {
         if (typeof value === 'string') {
             return value.length > 120 ? `${value.slice(0, 117)}...` : value;
-        }
-        if (Array.isArray(value)) {
-            return value.length <= 4 ? value : `[${value.length} items]`;
-        }
-        if (value && typeof value === 'object') {
-            return '[object]';
         }
         return value;
     }
@@ -175,9 +150,7 @@ class Voice {
     }
 
     getBrowserLanguageCode() {
-        return this.normalizeLanguageCode(
-            (typeof navigator !== 'undefined' && navigator.language) || ''
-        );
+        return this.normalizeLanguageCode(navigator.language || '');
     }
 
     getBotDetailsLanguageCode(groupId) {
@@ -358,9 +331,7 @@ class Voice {
         const languageFromUserLocale = this.normalizeLanguageCode(
             (kommunicate && kommunicate._globals && kommunicate._globals.userLocale) || ''
         );
-        const languageFromNavigator = this.normalizeLanguageCode(
-            (typeof navigator !== 'undefined' && navigator.language) || ''
-        );
+        const languageFromNavigator = this.normalizeLanguageCode(navigator.language || '');
 
         return (
             languageFromConfig ||
@@ -384,11 +355,7 @@ class Voice {
         const configuredValue = fromInputConfig || fromChatConfig || fromOmnichannelConfig;
         const primaryLanguageCode = this.getVoiceLanguageCode();
         let values = Array.isArray(configuredValue) ? configuredValue : [];
-        if (
-            !values.length &&
-            typeof navigator !== 'undefined' &&
-            Array.isArray(navigator.languages)
-        ) {
+        if (!values.length && Array.isArray(navigator.languages)) {
             values = navigator.languages;
         }
         const normalizedPrimaryLanguageCode = this.normalizeLanguageCode(primaryLanguageCode);
@@ -398,9 +365,7 @@ class Voice {
         const userLocale = this.normalizeLanguageCode(
             (kommunicate && kommunicate._globals && kommunicate._globals.userLocale) || ''
         );
-        const navigatorLocale = this.normalizeLanguageCode(
-            (typeof navigator !== 'undefined' && navigator.language) || ''
-        );
+        const navigatorLocale = this.normalizeLanguageCode(navigator.language || '');
         const localeSignals = [normalizedPrimaryLanguageCode, userLocale, navigatorLocale];
         const isIndiaLocale = localeSignals.some((localeCode) => /-IN$/i.test(localeCode));
         if (isIndiaLocale || primaryRegion === 'IN' || primaryLanguage === 'hi') {
@@ -1095,7 +1060,6 @@ class Voice {
         const response = this.normalizeVoiceToTextPayload(rawResponse);
         this.logVoiceDebug('omnichannel_stt_response_normalized', {
             textLength: response && response.text ? response.text.trim().length : 0,
-            textPreview: response && response.text ? response.text.trim().slice(0, 120) : '',
             languageCode: response && response.languageCode ? response.languageCode : '',
         });
         console.debug(
@@ -1193,7 +1157,6 @@ class Voice {
             : `${operation} failed with status ${status}`;
         const error = new Error(message);
         error.status = status;
-        error.responseBody = details;
         return error;
     }
 
