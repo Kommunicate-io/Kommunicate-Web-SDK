@@ -799,10 +799,7 @@ class MckVoice {
 
     getVoiceInputSettings() {
         const config =
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate._globals &&
-                kommunicate._globals.voiceInputSettings) ||
-            {};
+            (kommunicate && kommunicate._globals && kommunicate._globals.voiceInputSettings) || {};
         const vadConfig = config.vadConfig || {};
         const requestedMode = (
             config.recognitionMode ||
@@ -1394,6 +1391,10 @@ class MckVoice {
             if (playbackSettled || this.audioElement !== audio) {
                 return;
             }
+            const shouldRememberPlayback =
+                reason === 'ended_event' ||
+                reason === 'ended_flag' ||
+                reason === 'duration_reached';
             playbackSettled = true;
             this.clearAudioPlaybackWatchdog();
             this.clearAudioPlaybackStartTimeout();
@@ -1430,6 +1431,9 @@ class MckVoice {
             }
 
             document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
+            if (shouldRememberPlayback) {
+                this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
+            }
 
             if (this.visualizerCleanup) {
                 this.visualizerCleanup();
@@ -1933,7 +1937,7 @@ class MckVoice {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = this.voiceInputSettings.voiceLanguage || 'en-US';
         utterance.onend = () => this.onNativeSpeechEnded();
-        utterance.onerror = () => this.onNativeSpeechEnded();
+        utterance.onerror = (error) => this.onNativeSpeechError(error);
         this.nativeSpeechUtterance = utterance;
         try {
             this.logVoiceDebug('native_speech_requested', {
@@ -1984,6 +1988,19 @@ class MckVoice {
     onNativeSpeechEnded() {
         this.nativeSpeechUtterance = null;
         this.removeAllAnimation();
+        this.advanceQueueAfterPlayback({ fromNativeSpeech: true, rememberPlayback: true });
+    }
+
+    onNativeSpeechError(error) {
+        this.nativeSpeechUtterance = null;
+        this.removeAllAnimation();
+        this.logVoiceDebug(
+            'native_speech_failed',
+            {
+                errorName: error && error.error,
+            },
+            'warn'
+        );
         this.advanceQueueAfterPlayback({ fromNativeSpeech: true });
     }
 
@@ -1997,7 +2014,7 @@ class MckVoice {
         });
     }
 
-    advanceQueueAfterPlayback({ fromNativeSpeech = false } = {}) {
+    advanceQueueAfterPlayback({ fromNativeSpeech = false, rememberPlayback = false } = {}) {
         const nextMsg = this.shiftToNextQueuedMessage();
         if (nextMsg) {
             this.processNextMessage(nextMsg);
@@ -2011,7 +2028,9 @@ class MckVoice {
             const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
             repeatButton && repeatButton.classList.remove('mck-hidden');
         }
-        this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
+        if (rememberPlayback) {
+            this.rememberRecentBotPlayback(this.agentOrBotLastMsg);
+        }
         this.setAwaitingBotResponsePlayback(false);
         this.resumeListeningAfterPlayback({ fromNativeSpeech });
     }

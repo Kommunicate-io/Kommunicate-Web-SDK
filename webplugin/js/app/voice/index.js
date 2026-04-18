@@ -434,10 +434,7 @@ class Voice {
         );
         const languageFromChatContext = this.getChatContextLanguageCode();
         const languageFromUserLocale = this.normalizeLanguageCode(
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate._globals &&
-                kommunicate._globals.userLocale) ||
-                ''
+            (kommunicate && kommunicate._globals && kommunicate._globals.userLocale) || ''
         );
         const languageFromNavigator = this.normalizeLanguageCode(
             (typeof navigator !== 'undefined' && navigator.language) || ''
@@ -477,11 +474,7 @@ class Voice {
         const primaryRegion = primaryParts.length > 1 ? String(primaryParts[1]).toUpperCase() : '';
         const primaryLanguage = (primaryParts[0] || '').toLowerCase();
         const userLocale = this.normalizeLanguageCode(
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate &&
-                kommunicate._globals &&
-                kommunicate._globals.userLocale) ||
-                ''
+            (kommunicate && kommunicate._globals && kommunicate._globals.userLocale) || ''
         );
         const navigatorLocale = this.normalizeLanguageCode(
             (typeof navigator !== 'undefined' && navigator.language) || ''
@@ -532,13 +525,7 @@ class Voice {
     }
 
     getRawVoiceSocketConfig() {
-        return (
-            (typeof kommunicate !== 'undefined' &&
-                kommunicate &&
-                kommunicate._globals &&
-                kommunicate._globals.voiceSocket) ||
-            {}
-        );
+        return (kommunicate && kommunicate._globals && kommunicate._globals.voiceSocket) || {};
     }
 
     mergeVoiceSocketConfig(baseConfig = {}, overrideConfig = {}) {
