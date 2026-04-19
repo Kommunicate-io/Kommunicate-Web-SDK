@@ -162,34 +162,6 @@ class MckVoice {
         };
     }
 
-    getAudioPlaybackDebugState(audioElement = this.audioElement) {
-        if (!audioElement) {
-            return null;
-        }
-        return {
-            currentTime: Number.isFinite(audioElement.currentTime)
-                ? audioElement.currentTime
-                : null,
-            duration: Number.isFinite(audioElement.duration) ? audioElement.duration : null,
-            paused: audioElement.paused,
-            ended: audioElement.ended,
-            readyState: audioElement.readyState,
-            networkState: audioElement.networkState,
-            src: audioElement.currentSrc || audioElement.src || null,
-        };
-    }
-
-    getHtmlMediaErrorDetails(audioElement) {
-        const mediaError = audioElement && audioElement.error ? audioElement.error : null;
-        if (!mediaError) {
-            return null;
-        }
-        return {
-            code: typeof mediaError.code === 'number' ? mediaError.code : null,
-            message: mediaError.message || null,
-        };
-    }
-
     logVoiceDebug(eventName, details = {}, level = 'log') {
         const consoleMethod = console[level] || console.log;
         consoleMethod.call(
@@ -3102,19 +3074,6 @@ class MckVoice {
         }
         const detail = error.message || error.name || '';
         return detail ? `${fallback}: ${detail}` : fallback;
-    }
-
-    buildPlaybackErrorDetails(error, audioElement = this.audioElement) {
-        const audioState = this.getAudioPlaybackDebugState(audioElement);
-        const mediaError = this.getHtmlMediaErrorDetails(audioElement);
-        return {
-            errorName: error && error.name ? error.name : null,
-            errorMessage: error && error.message ? error.message : null,
-            queueLength: this.messagesQueue.length,
-            awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
-            audioState,
-            mediaError,
-        };
     }
 
     showVoiceErrorMessage(error, fallback = 'Voice error', { autoHide = 9000 } = {}) {
