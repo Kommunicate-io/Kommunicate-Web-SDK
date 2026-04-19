@@ -34,53 +34,6 @@ class Voice {
         );
     }
 
-    logVoiceDebug(eventName, details = {}, level = 'log') {
-        const consoleMethod = console[level] || console.log;
-        consoleMethod.call(
-            console,
-            `[KM Voice Debug] ${eventName}`,
-            this.compactVoiceDebugDetails(details)
-        );
-    }
-
-    compactVoiceDebugDetails(details) {
-        if (!details || typeof details !== 'object' || Array.isArray(details)) {
-            return details;
-        }
-        const compact = {};
-        const allowedKeys = [
-            'transport',
-            'operation',
-            'durationMs',
-            'sampleRate',
-            'sampleCount',
-            'frameCount',
-            'textLength',
-            'languageCode',
-            'errorCode',
-            'errorMessage',
-            'errorStatus',
-        ];
-
-        for (let i = 0; i < allowedKeys.length; i++) {
-            const key = allowedKeys[i];
-            const value = details[key];
-            if (value === undefined || value === null || value === '') {
-                continue;
-            }
-            compact[key] = this.compactVoiceDebugValue(value);
-        }
-
-        return compact;
-    }
-
-    compactVoiceDebugValue(value) {
-        if (typeof value === 'string') {
-            return value.length > 120 ? `${value.slice(0, 117)}...` : value;
-        }
-        return value;
-    }
-
     get omnichannelConfig() {
         const globalConfig =
             (kommunicate && kommunicate._globals && kommunicate._globals.omnichannelVoice) || {};
@@ -854,17 +807,6 @@ class Voice {
                     error.sampleCount || 0
                 } peak=${error.peakAbs || 0}`
             );
-            this.logVoiceDebug(
-                'omnichannel_voice_request_failed',
-                {
-                    transport,
-                    errorCode: error.code,
-                    errorMessage: error.message,
-                    sampleCount: error.sampleCount,
-                    peakAbs: error.peakAbs,
-                },
-                'warn'
-            );
             return;
         }
         const message =
@@ -875,17 +817,6 @@ class Voice {
             `${message} ${error && error.status ? `status=${error.status} ` : ''}${
                 (error && error.message) || ''
             }`.trim()
-        );
-        this.logVoiceDebug(
-            'omnichannel_voice_request_failed',
-            {
-                transport,
-                errorCode: error && error.code,
-                errorName: error && error.name,
-                errorMessage: error && error.message,
-                errorStatus: error && error.status,
-            },
-            'warn'
         );
     }
 
@@ -980,7 +911,6 @@ class Voice {
         }
         const socketConfig = this.getVoiceSocketConfig();
 
-        const ttsStartedAt = Date.now();
         const response = await this.requestOmnichannelVoiceTransport({
             payload,
             socketConfig,
@@ -989,19 +919,6 @@ class Voice {
             httpPath: '/text-to-voice',
             operation: 'textToVoice',
             preferSocket: true,
-        });
-        const frames = Array.isArray(response && response.frames) ? response.frames : [];
-        const frameCount = frames.length;
-        let sampleCount = 0;
-        for (let i = 0; i < frameCount; i++) {
-            const frameLength = Array.isArray(frames[i]) ? frames[i].length : 0;
-            sampleCount += frameLength;
-        }
-        this.logVoiceDebug('omnichannel_tts_response', {
-            durationMs: Date.now() - ttsStartedAt,
-            textLength: text ? text.length : 0,
-            frameCount,
-            sampleCount,
         });
         return response;
     }
@@ -1058,10 +975,6 @@ class Voice {
             preferSocket: false,
         });
         const response = this.normalizeVoiceToTextPayload(rawResponse);
-        this.logVoiceDebug('omnichannel_stt_response_normalized', {
-            textLength: response && response.text ? response.text.trim().length : 0,
-            languageCode: response && response.languageCode ? response.languageCode : '',
-        });
         console.debug(
             `Voice STT response completed duration=${
                 Date.now() - sttRequestStartedAt
@@ -1357,10 +1270,6 @@ class Voice {
             bitsPerSample: normalized.bitsPerSample,
             sampleCount: pcmData.length,
         };
-        this.logVoiceDebug('omnichannel_tts_playback_data_created', {
-            sampleCount: playbackData.sampleCount,
-            sampleRate: playbackData.sampleRate,
-        });
         return playbackData;
     }
 
@@ -1372,10 +1281,6 @@ class Voice {
             normalized.channelCount,
             normalized.bitsPerSample
         );
-        this.logVoiceDebug('omnichannel_tts_wav_created', {
-            frameCount: normalized.frames.length,
-            wavBlobSize: wavBlob.size,
-        });
         return wavBlob;
     }
 

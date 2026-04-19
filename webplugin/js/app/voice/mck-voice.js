@@ -246,10 +246,6 @@ class MckVoice {
         ) {
             kmVoiceMessageHandler.resetQueuedVoiceMessages();
         }
-        this.logVoiceDebug('start_voice_mode_requested', {
-            source,
-            suppressPermissionAlert,
-        });
         this.trackVoiceEvent('onVoiceEntryClicked', source);
         this.trackVoiceEvent('onVoiceIconClick', source);
         this.disableNativeVoiceOutputForVoiceMode();
@@ -258,14 +254,7 @@ class MckVoice {
             try {
                 await this.unlockReplyPlaybackAudioContext();
             } catch (error) {
-                this.logVoiceDebug(
-                    'reply_playback_audio_context_unlock_failed',
-                    {
-                        errorName: error && error.name,
-                        errorMessage: error && error.message,
-                    },
-                    'warn'
-                );
+                console.warn('Reply playback AudioContext unlock failed', error);
             }
         }
         this.voiceMuted = false;
@@ -296,10 +285,6 @@ class MckVoice {
             this.pendingVoiceSessionSource = null;
             this.stopVoiceMode();
         }
-        this.logVoiceDebug('start_voice_mode_result', {
-            source,
-            isRecordingStarted: Boolean(isRecordingStarted),
-        });
         return Boolean(isRecordingStarted);
     }
 
@@ -338,14 +323,7 @@ class MckVoice {
             !this.shouldApplyWebKitVoiceWorkarounds() ||
             typeof MediaRecorder.isTypeSupported !== 'function'
         ) {
-            const recorder = new MediaRecorder(stream);
-            this.logVoiceDebug('media_recorder_created_default', {
-                selectedMimeType: recorder.mimeType || null,
-                reason: !this.shouldApplyWebKitVoiceWorkarounds()
-                    ? 'non_ios_webkit'
-                    : 'is_type_supported_unavailable',
-            });
-            return recorder;
+            return new MediaRecorder(stream);
         }
 
         const preferredMimeTypes = [
@@ -360,34 +338,14 @@ class MckVoice {
             if (MediaRecorder.isTypeSupported(mimeType)) {
                 supportedMimeTypes.push(mimeType);
                 try {
-                    const recorder = new MediaRecorder(stream, { mimeType });
-                    this.logVoiceDebug('media_recorder_created_webkit', {
-                        selectedMimeType: mimeType,
-                        supportedMimeTypes,
-                    });
-                    return recorder;
+                    return new MediaRecorder(stream, { mimeType });
                 } catch (error) {
                     console.warn(`MediaRecorder init failed for ${mimeType}`, error);
-                    this.logVoiceDebug(
-                        'media_recorder_init_failed',
-                        {
-                            attemptedMimeType: mimeType,
-                            supportedMimeTypes,
-                            errorName: error && error.name,
-                            errorMessage: error && error.message,
-                        },
-                        'warn'
-                    );
                 }
             }
         }
 
-        const recorder = new MediaRecorder(stream);
-        this.logVoiceDebug('media_recorder_created_fallback', {
-            selectedMimeType: recorder.mimeType || null,
-            supportedMimeTypes,
-        });
-        return recorder;
+        return new MediaRecorder(stream);
     }
 
     configureInlineAudioPlayback(audio) {
@@ -433,10 +391,6 @@ class MckVoice {
         if (audioContext.state === 'suspended') {
             await audioContext.resume();
         }
-        this.logVoiceDebug('reply_playback_audio_context_ready', {
-            state: audioContext.state,
-            sampleRate: audioContext.sampleRate,
-        });
         return audioContext;
     }
 
@@ -505,15 +459,6 @@ class MckVoice {
         }
         audioContext.resume().catch((error) => {
             console.warn(`${contextName} AudioContext resume failed`, error);
-            this.logVoiceDebug(
-                'audio_context_resume_failed',
-                {
-                    contextName,
-                    errorName: error && error.name,
-                    errorMessage: error && error.message,
-                },
-                'warn'
-            );
         });
     }
 
@@ -591,37 +536,17 @@ class MckVoice {
             if (this.isRecording) {
                 this.resetPendingVoiceSegments();
                 this.discardNextRecordingPayload = true;
-                this.logVoiceDebug(
-                    'recording_discarded_for_bot_playback',
-                    {
-                        reason: 'bot_reply_queued',
-                    },
-                    'warn'
-                );
                 this.stopRecording(true, 'bot_playback');
             }
             this.clearVoiceProgressMessage();
             const queueItems = this.createQueuedVoiceMessages(msg, displayName);
             if (queueItems.length === 0) {
-                this.logVoiceDebug(
-                    'voice_queue_empty_after_normalization',
-                    {
-                        inputWasArray: Array.isArray(msg),
-                    },
-                    'warn'
-                );
                 this.setAwaitingBotResponsePlayback(false);
                 this.resumeListeningAfterPlayback();
                 return;
             }
             const shouldStartPlayback = this.messagesQueue.length === 0;
             this.messagesQueue.push(...queueItems);
-            this.logVoiceDebug('voice_queue_items_added', {
-                addedCount: queueItems.length,
-                totalCount: this.messagesQueue.length,
-                inputWasArray: Array.isArray(msg),
-                messageHasArrayPayload: Boolean(msg && Array.isArray(msg.message)),
-            });
             if (shouldStartPlayback) {
                 this.processNextMessage(queueItems[0]);
             }
@@ -723,17 +648,6 @@ class MckVoice {
 
     createQueuedVoiceMessages(msg, displayName) {
         const normalizedMessages = this.normalizeQueuedVoiceMessages(msg);
-        if (
-            normalizedMessages.length > 1 ||
-            Array.isArray(msg) ||
-            (msg && Array.isArray(msg.message))
-        ) {
-            this.logVoiceDebug('voice_message_parts_normalized', {
-                originalWasArray: Array.isArray(msg),
-                nestedMessageArray: Boolean(msg && Array.isArray(msg.message)),
-                normalizedCount: normalizedMessages.length,
-            });
-        }
         return normalizedMessages.map((normalizedMessage) =>
             this.createQueuedVoiceMessage(normalizedMessage, displayName)
         );
@@ -765,17 +679,6 @@ class MckVoice {
             ''
         );
         const spokenText = messageWithoutSource.trim();
-        if (!spokenText) {
-            this.logVoiceDebug(
-                'voice_queue_item_empty_text',
-                {
-                    messageKey: msg && msg.key,
-                    messageType: msg && msg.type,
-                    hasRawMessage: Boolean(msg && msg.message),
-                },
-                'warn'
-            );
-        }
         const queueItem = {
             msg,
             displayName,
@@ -1089,13 +992,6 @@ class MckVoice {
         let playbackSettled = false;
         let lastObservedTime = 0;
         let stalledTickCount = 0;
-        this.logVoiceDebug('play_audio_blob_requested', {
-            audioBlobSize: audioBlob && audioBlob.size,
-            audioBlobType: audioBlob && audioBlob.type,
-            retryAttempt,
-            sourceMode,
-        });
-
         const releaseAudioSrc = () => {
             if (shouldRevokeAudioSrc && audioSrc) {
                 URL.revokeObjectURL(audioSrc);
@@ -1114,14 +1010,6 @@ class MckVoice {
             playbackSettled = true;
             this.clearAudioPlaybackWatchdog();
             this.clearAudioPlaybackStartTimeout();
-            this.logVoiceDebug('play_audio_blob_settled', {
-                reason,
-                currentTime: audio.currentTime,
-                duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                paused: audio.paused,
-                ended: audio.ended,
-                sourceMode,
-            });
             const nextMsg = this.shiftToNextQueuedMessage();
 
             if (nextMsg) {
@@ -1220,28 +1108,8 @@ class MckVoice {
                 if (playbackSettled || playbackStarted || this.audioElement !== audio) {
                     return;
                 }
-                this.logVoiceDebug(
-                    'play_audio_blob_start_timeout',
-                    {
-                        readyState: audio.readyState,
-                        networkState: audio.networkState,
-                        duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                        currentTime: audio.currentTime,
-                        mediaError: this.getHtmlMediaErrorDetails(audio),
-                        sourceMode,
-                    },
-                    'warn'
-                );
+                console.warn('Audio playback start timed out');
                 if (retryAttempt < 1) {
-                    this.logVoiceDebug(
-                        'play_audio_blob_retry_scheduled',
-                        {
-                            reason: 'start_timeout',
-                            retryAttempt: retryAttempt + 1,
-                            sourceMode,
-                        },
-                        'warn'
-                    );
                     this.clearDeferredRecordingHandler(audio);
                     this.clearAudioPlaybackWatchdog();
                     this.clearAudioPlaybackStartTimeout();
@@ -1263,15 +1131,6 @@ class MckVoice {
                     return;
                 }
                 if (sourceMode === 'object_url') {
-                    this.logVoiceDebug(
-                        'play_audio_blob_retry_scheduled',
-                        {
-                            reason: 'start_timeout_fallback_data_url',
-                            retryAttempt,
-                            sourceMode: 'data_url',
-                        },
-                        'warn'
-                    );
                     this.teardownAudioElement(audio);
                     if (this.audioElement === audio) {
                         this.audioElement = null;
@@ -1294,34 +1153,8 @@ class MckVoice {
 
         audio.onerror = (error) => {
             console.error(error, 'audio play error');
-            const mediaError = this.getHtmlMediaErrorDetails(audio);
-            this.logVoiceDebug(
-                'play_audio_blob_error',
-                {
-                    errorName: error && error.name,
-                    errorMessage: error && error.message,
-                    readyState: audio.readyState,
-                    networkState: audio.networkState,
-                    currentTime: audio.currentTime,
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                    mediaError,
-                    retryAttempt,
-                    sourceMode,
-                },
-                'warn'
-            );
             if (!playbackStarted) {
                 if (retryAttempt < 1) {
-                    this.logVoiceDebug(
-                        'play_audio_blob_retry_scheduled',
-                        {
-                            reason: 'audio_error_before_start',
-                            retryAttempt: retryAttempt + 1,
-                            mediaError,
-                            sourceMode,
-                        },
-                        'warn'
-                    );
                     this.clearAudioPlaybackWatchdog();
                     this.clearAudioPlaybackStartTimeout();
                     if (this.visualizerCleanup) {
@@ -1342,16 +1175,6 @@ class MckVoice {
                     return;
                 }
                 if (sourceMode === 'object_url') {
-                    this.logVoiceDebug(
-                        'play_audio_blob_retry_scheduled',
-                        {
-                            reason: 'audio_error_fallback_data_url',
-                            retryAttempt,
-                            mediaError,
-                            sourceMode: 'data_url',
-                        },
-                        'warn'
-                    );
                     this.teardownAudioElement(audio);
                     if (this.audioElement === audio) {
                         this.audioElement = null;
@@ -1415,10 +1238,6 @@ class MckVoice {
         startPlaybackTimeout();
 
         audio.addEventListener('ended', () => {
-            this.logVoiceDebug('play_audio_blob_ended', {
-                duration: audio.duration,
-                currentTime: audio.currentTime,
-            });
             settlePlayback('ended_event');
         });
 
@@ -1426,14 +1245,6 @@ class MckVoice {
             if (!playbackStarted || playbackSettled) {
                 return;
             }
-            this.logVoiceDebug(
-                'play_audio_blob_stalled',
-                {
-                    currentTime: audio.currentTime,
-                    duration: Number.isFinite(audio.duration) ? audio.duration : null,
-                },
-                'warn'
-            );
         });
     }
 
@@ -1474,23 +1285,12 @@ class MckVoice {
             this.currentReplyPlaybackSource = source;
             this.currentReplyPlaybackActive = true;
             this.addSpeakingAnimation();
-            this.logVoiceDebug('play_audio_buffer_requested', {
-                isRepeat,
-                sampleRate,
-                sampleCount: float32Data.length,
-                duration: audioBuffer.duration,
-            });
-
             source.onended = () => {
                 if (this.currentReplyPlaybackSource !== source) {
                     return;
                 }
                 this.currentReplyPlaybackSource = null;
                 this.currentReplyPlaybackActive = false;
-                this.logVoiceDebug('play_audio_buffer_ended', {
-                    isRepeat,
-                    duration: audioBuffer.duration,
-                });
                 if (isRepeat) {
                     this.removeAllAnimation();
                     if (!this.isRecording) {
@@ -1534,15 +1334,6 @@ class MckVoice {
             });
         } catch (error) {
             this.stopReplyPlaybackSource();
-            this.logVoiceDebug(
-                'play_audio_buffer_failed',
-                {
-                    isRepeat,
-                    errorName: error && error.name,
-                    errorMessage: error && error.message,
-                },
-                'warn'
-            );
             if (isRepeat) {
                 this.showVoiceErrorMessage(error, 'Voice playback failed');
                 return;
@@ -1580,10 +1371,6 @@ class MckVoice {
         utterance.onerror = (error) => this.onNativeSpeechError(error);
         this.nativeSpeechUtterance = utterance;
         try {
-            this.logVoiceDebug('native_speech_requested', {
-                textLength: text.length,
-                language: utterance.lang,
-            });
             speechSynthesis.speak(utterance);
         } catch (error) {
             this.handlePlaybackFailure(error);
@@ -1634,13 +1421,6 @@ class MckVoice {
     onNativeSpeechError(error) {
         this.nativeSpeechUtterance = null;
         this.removeAllAnimation();
-        this.logVoiceDebug(
-            'native_speech_failed',
-            {
-                errorName: error && error.error,
-            },
-            'warn'
-        );
         this.advanceQueueAfterPlayback({ fromNativeSpeech: true });
     }
 
@@ -1648,10 +1428,6 @@ class MckVoice {
         const normalizedText = typeof text === 'string' ? text.trim() : '';
         this.lastBotPlaybackEndedAt = Date.now();
         this.lastBotPlaybackText = normalizedText;
-        this.logVoiceDebug('recent_bot_playback_recorded', {
-            textLength: normalizedText.length,
-            playbackEndedAt: this.lastBotPlaybackEndedAt,
-        });
     }
 
     advanceQueueAfterPlayback({ fromNativeSpeech = false, rememberPlayback = false } = {}) {
@@ -1960,9 +1736,6 @@ class MckVoice {
 
         this.refreshRecognitionMode();
         if (this.activeRecognitionMode === 'native') {
-            this.logVoiceDebug('request_audio_recording_using_native_recognition', {
-                source,
-            });
             this.startNativeRecognition();
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
@@ -1971,13 +1744,6 @@ class MckVoice {
         }
 
         const constraints = this.getAudioCaptureConstraints();
-        this.logVoiceDebug('request_audio_recording', {
-            source,
-            suppressPermissionAlert,
-            trackPermission,
-            constraints,
-            hasExistingStream: Boolean(existingStream),
-        });
 
         if (existingStream) {
             this.voiceInputSettings = this.getVoiceInputSettings();
@@ -1988,13 +1754,6 @@ class MckVoice {
         // getUserMedia requires a secure context (HTTPS or localhost).
         if (window.isSecureContext === false) {
             console.error('Voice recording requires a secure (HTTPS) context');
-            this.logVoiceDebug(
-                'request_audio_recording_blocked_insecure_context',
-                {
-                    constraints,
-                },
-                'warn'
-            );
             this.showVoiceErrorMessage(
                 'Voice recording is not available over an insecure connection. Please use HTTPS.'
             );
@@ -2009,13 +1768,6 @@ class MckVoice {
         // Check if browser supports getUserMedia
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             console.error('Your browser does not support audio recording');
-            this.logVoiceDebug(
-                'request_audio_recording_unsupported',
-                {
-                    constraints,
-                },
-                'warn'
-            );
             this.showVoiceErrorMessage('Your browser does not support audio recording');
             if (!suppressPermissionAlert) {
                 alert('Your browser does not support audio recording');
@@ -2027,10 +1779,6 @@ class MckVoice {
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.voiceInputSettings = this.getVoiceInputSettings();
-            this.logVoiceDebug('microphone_access_granted', {
-                constraints,
-                grantedTrack: this.getAudioTrackDebugState(stream),
-            });
             this.startRecording(stream);
             if (trackPermission) {
                 this.trackVoiceEvent('onVoicePermissionGranted', source);
@@ -2046,15 +1794,6 @@ class MckVoice {
                 this.trackVoiceEvent('onVoicePermissionDenied', source);
             }
             console.error('Error accessing microphone:', error);
-            this.logVoiceDebug(
-                'microphone_access_failed',
-                {
-                    constraints,
-                    errorName: error && error.name,
-                    errorMessage: error && error.message,
-                },
-                'warn'
-            );
             this.showVoiceErrorMessage(
                 error,
                 'Could not access your microphone. Please allow microphone access and try again.'
@@ -2174,14 +1913,7 @@ class MckVoice {
 
         this.mediaRecorder.onerror = (event) => {
             const recorderError = event && event.error ? event.error : event;
-            this.logVoiceDebug(
-                'media_recorder_error',
-                {
-                    errorName: recorderError && recorderError.name,
-                    errorMessage: recorderError && recorderError.message,
-                },
-                'warn'
-            );
+            console.error('MediaRecorder error', recorderError);
         };
 
         // Handle recording stop event
@@ -2221,19 +1953,6 @@ class MckVoice {
                 recordingStream &&
                 recordingStream.active &&
                 recordingStream.getAudioTracks().some((track) => track.readyState === 'live');
-            this.logVoiceDebug('recording_stopped', {
-                stopReason,
-                recordedMimeType,
-                recordedChunkCount: recordedChunks.length,
-                recordedBytes: recordedChunks.reduce((total, chunk) => total + chunk.size, 0),
-                hadDetectedSpeech,
-                hadConfirmedSpeech,
-                shouldUseHalfDuplexCapture,
-                hasRecordedPayload,
-                shouldAggregateSegments,
-                shouldRestartContinuationRecording,
-                shouldReuseContinuationStream,
-            });
             const segmentSeq = shouldAggregateSegments
                 ? ++this.pendingVoiceSegmentSeq
                 : this.pendingVoiceSegmentSeq;
@@ -2313,34 +2032,14 @@ class MckVoice {
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
                     const { chunks } = preparedAudio;
-                    this.logVoiceDebug('voice_recording_prepared_for_stt', {
-                        stopReason,
-                        hadDetectedSpeech,
-                        hadConfirmedSpeech,
-                        shouldAggregateSegments,
-                        rawSampleCount: rawSamples.length,
-                        recordedChunkCount: recordedChunks.length,
-                        preparedChunkCount: chunks.length,
-                        preparedAudio,
-                    });
+                    console.debug(
+                        `Voice transcribing started samples=${rawSamples.length} chunks=${chunks.length}`
+                    );
 
                     this.hasSoundDetected = false;
                     this.soundSamples = 0;
                     this.totalSamples = 0;
                     if (!chunks.length) {
-                        this.logVoiceDebug(
-                            'voice_recording_skipped_before_stt',
-                            {
-                                reason: 'no_prepared_chunks',
-                                stopReason,
-                                hadDetectedSpeech,
-                                hadConfirmedSpeech,
-                                shouldAggregateSegments,
-                                rawSampleCount: rawSamples.length,
-                                preparedAudio,
-                            },
-                            'warn'
-                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -2388,16 +2087,6 @@ class MckVoice {
                         throw error;
                     }
                     if (!data) {
-                        this.logVoiceDebug(
-                            'voice_stt_result_empty',
-                            {
-                                stopReason,
-                                shouldAggregateSegments,
-                                sampleRate,
-                                preparedChunkCount: chunks.length,
-                            },
-                            'warn'
-                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -2421,18 +2110,6 @@ class MckVoice {
                     }
                     const rawText = typeof data.text === 'string' ? data.text : '';
                     if (!rawText.trim()) {
-                        this.logVoiceDebug(
-                            'voice_stt_result_blank_text',
-                            {
-                                stopReason,
-                                shouldAggregateSegments,
-                                sampleRate,
-                                preparedChunkCount: chunks.length,
-                                responseKeys:
-                                    data && typeof data === 'object' ? Object.keys(data) : [],
-                            },
-                            'warn'
-                        );
                         if (shouldAggregateSegments) {
                             return;
                         }
@@ -2482,12 +2159,6 @@ class MckVoice {
                     stopReason === 'continuation_idle' &&
                     (shouldAggregateSegments || hasPendingVoiceSegments)
                 ) {
-                    this.logVoiceDebug('voice_continuation_idle_finalizing_pending_segments', {
-                        shouldAggregateSegments,
-                        hasPendingVoiceSegments,
-                        pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                        pendingSegmentCount: this.getPendingVoiceSegmentCount(),
-                    });
                     this.resolveContinuationDecisionWindow();
                     this.finalizePendingVoiceMessage();
                 } else {
@@ -2563,13 +2234,6 @@ class MckVoice {
         }
 
         if (!totalSamples) {
-            this.logVoiceDebug('voice_prepare_chunks_result', {
-                reason: 'no_samples',
-                rawDurationMs,
-                totalSamples,
-                peakAbs,
-                sampleRate,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -2671,21 +2335,6 @@ class MckVoice {
         }
 
         if (firstSpeechFrameIndex === -1 || lastSpeechFrameIndex === -1) {
-            this.logVoiceDebug('voice_prepare_chunks_result', {
-                reason: 'speech_frames_not_found',
-                rawDurationMs,
-                totalSamples,
-                peakAbs,
-                frameCount,
-                firstSpeechFrameIndex,
-                firstStopSpeechFrameIndex,
-                lastSpeechFrameIndex,
-                sampleRate,
-                frameSize,
-                startThresholdRms,
-                stopThresholdRms,
-                minVoicedFrames,
-            });
             return {
                 chunks: [],
                 rawDurationMs,
@@ -2718,26 +2367,6 @@ class MckVoice {
             );
         }
 
-        this.logVoiceDebug('voice_prepare_chunks_result', {
-            reason: 'ok',
-            chunkCount: chunks.length,
-            rawDurationMs,
-            trimmedDurationMs,
-            trimStartMs,
-            trimEndMs,
-            totalSamples,
-            peakAbs,
-            frameCount,
-            firstSpeechFrameIndex,
-            firstStopSpeechFrameIndex,
-            lastSpeechFrameIndex,
-            sampleRate,
-            frameSize,
-            startThresholdRms,
-            stopThresholdRms,
-            minVoicedFrames,
-            isHalfDuplexCapture,
-        });
         return {
             chunks,
             rawDurationMs,
@@ -3288,14 +2917,6 @@ class MckVoice {
             };
         } catch (error) {
             console.error('Error creating audio visualizer:', error);
-            this.logVoiceDebug(
-                'audio_visualizer_failed',
-                {
-                    errorName: error && error.name,
-                    errorMessage: error && error.message,
-                },
-                'warn'
-            );
             return () => {};
         }
     }
@@ -3498,17 +3119,6 @@ class MckVoice {
 
     showVoiceErrorMessage(error, fallback = 'Voice error', { autoHide = 9000 } = {}) {
         const message = this.getVoiceErrorMessage(error, fallback);
-        const playbackDetails = this.buildPlaybackErrorDetails(error);
-        this.logVoiceDebug(
-            'voice_error_message_shown',
-            {
-                message,
-                fallback,
-                autoHide,
-                playbackDetails,
-            },
-            'warn'
-        );
         this.updateVoiceStatus(this.getVoiceLabel('voiceInterface.error', 'Voice error'));
         this.updateLiveTranscript(message, { autoHide });
         this.showVoiceProgressMessage(message, { state: 'error', autoHide });
@@ -3579,13 +3189,6 @@ class MckVoice {
             return false;
         }
         if (this.shouldSuppressRecentBotEcho(trimmedMessage)) {
-            this.logVoiceDebug(
-                'voice_echo_suppressed',
-                {
-                    textLength: trimmedMessage.length,
-                },
-                'warn'
-            );
             this.updateLiveTranscript(
                 this.getVoiceLabel(
                     'voiceInterface.echoSuppressed',
@@ -3603,8 +3206,6 @@ class MckVoice {
         this.clearVoiceProgressMessage();
         this.logVoiceDebug('voice_query_submitted', {
             textLength: trimmedMessage.length,
-            preview: trimmedMessage.slice(0, 120),
-            groupId: CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId,
         });
         const messagePayload = {
             contentType: 10,
@@ -3751,13 +3352,6 @@ class MckVoice {
     setAwaitingBotResponsePlayback(isPending, timeoutMs = 30000) {
         this.awaitingBotResponsePlayback = Boolean(isPending);
         this.clearAwaitingBotResponseTimeout();
-        this.logVoiceDebug('awaiting_bot_response_playback', {
-            isPending: this.awaitingBotResponsePlayback,
-            timeoutMs,
-            queueLength: this.messagesQueue.length,
-            isRecording: this.isRecording,
-            audioPlaybackActive: this.isAudioPlaybackActive(),
-        });
         if (this.awaitingBotResponsePlayback) {
             this.awaitingBotResponseTimeout = setTimeout(() => {
                 const isPlaybackStillActive = this.isAudioPlaybackActive();
@@ -3768,15 +3362,6 @@ class MckVoice {
                 }
                 this.awaitingBotResponsePlayback = false;
                 this.awaitingBotResponseTimeout = null;
-                this.logVoiceDebug(
-                    'awaiting_bot_response_timeout',
-                    {
-                        timeoutMs,
-                        queueLength: this.messagesQueue.length,
-                        isRecording: this.isRecording,
-                    },
-                    'warn'
-                );
                 const listeningLabel = this.getVoiceLabel(
                     'voiceInterface.listening',
                     'Listening...'
@@ -3887,21 +3472,6 @@ class MckVoice {
     }
 
     recoverAfterVoiceProcessingFailure(error, context = {}) {
-        this.logVoiceDebug(
-            'voice_processing_failed_recovering',
-            {
-                errorName: error && error.name,
-                errorMessage: error && error.message,
-                errorStatus: error && error.status,
-                continuationDecisionActive: this.continuationDecisionActive,
-                pendingContinuationStart: this.pendingContinuationStart,
-                pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-                pendingSegmentCount: this.getPendingVoiceSegmentCount(),
-                awaitingBotResponsePlayback: this.awaitingBotResponsePlayback,
-                ...context,
-            },
-            'warn'
-        );
         this.resetPendingVoiceSegments();
         if (this.awaitingBotResponsePlayback) {
             this.setAwaitingBotResponsePlayback(false);
@@ -3913,18 +3483,6 @@ class MckVoice {
     }
 
     finalizePendingVoiceMessage() {
-        this.logVoiceDebug('voice_finalize_pending_message', {
-            continuationDecisionActive: this.continuationDecisionActive,
-            continuationSpeechDetected: this.continuationSpeechDetected,
-            pendingContinuationStart: this.pendingContinuationStart,
-            pendingVoiceSegmentInFlight: this.pendingVoiceSegmentInFlight,
-            pendingSegmentCount: this.getPendingVoiceSegmentCount(),
-            isRecording: this.isRecording,
-            speechDetected: this.speechDetected,
-            firstSpeechTimestamp: this.firstSpeechTimestamp,
-            isInSilence: this.isInSilence,
-            silenceStart: this.silenceStart,
-        });
         const continuationMinWaitMs = Number(
             this.voiceInputSettings.continuationMinWaitMs || this._VOICE_CONTINUATION_MIN_WAIT_MS
         );
@@ -4024,11 +3582,6 @@ class MckVoice {
             return;
         }
         const userMsg = this.buildPendingVoiceMessageText();
-        this.logVoiceDebug('voice_finalize_pending_message_ready', {
-            pendingSegmentCount: this.getPendingVoiceSegmentCount(),
-            finalTextLength: userMsg.length,
-            finalTextPreview: userMsg.slice(0, 120),
-        });
         this.resetPendingVoiceSegments();
         if (!userMsg) {
             this.removeAllAnimation();
@@ -4143,12 +3696,6 @@ class MckVoice {
             ? this._WEBKIT_BOT_PLAYBACK_RESTART_DELAY_MS
             : 0;
         this.scheduleAutoListen(restartDelay, { skipCooldown: restartDelay === 0 });
-        this.logVoiceDebug('resume_listening_after_playback', {
-            fromNativeSpeech,
-            isIOSWebKit,
-            isHalfDuplexCapture,
-            restartDelay,
-        });
     }
     updateMuteButton() {
         const button = document.getElementById('mck-voice-speak-btn');
@@ -4565,7 +4112,6 @@ class MckVoice {
 
     initializeNativeRecognition() {
         if (!this.isNativeSpeechRecognitionAvailable()) {
-            this.logVoiceDebug('native_recognition_unavailable', {}, 'warn');
             return null;
         }
         if (this.nativeRecognition) {
@@ -4576,11 +4122,6 @@ class MckVoice {
             return null;
         }
         const recognition = new Recognition();
-        this.logVoiceDebug('native_recognition_initialized', {
-            recognitionEngine: window.webkitSpeechRecognition
-                ? 'webkitSpeechRecognition'
-                : 'SpeechRecognition',
-        });
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = this.voiceInputSettings.voiceLanguage || 'en-US';
@@ -4629,10 +4170,6 @@ class MckVoice {
     startNativeRecognition() {
         this.refreshRecognitionMode();
         if (this.activeRecognitionMode !== 'native') {
-            this.logVoiceDebug('native_recognition_skipped', {
-                reason: 'active_mode_not_native',
-                activeRecognitionMode: this.activeRecognitionMode,
-            });
             return;
         }
         const recognition = this.initializeNativeRecognition();
@@ -4643,9 +4180,6 @@ class MckVoice {
             return;
         }
         if (this.nativeRecognitionActive) {
-            this.logVoiceDebug('native_recognition_skipped', {
-                reason: 'already_active',
-            });
             return;
         }
         this.nativeRecognitionShouldRestart = true;
@@ -4696,7 +4230,6 @@ class MckVoice {
         }
         this.nativeRecognitionActive = false;
         this.isRecording = false;
-        this.logVoiceDebug('native_recognition_stopped');
     }
 
     handleNativeRecognitionResult(event) {
@@ -4763,10 +4296,6 @@ class MckVoice {
         }
         if (this.mediaRecorder && this.isRecording) {
             this.recordingStopReason = stopReason;
-            this.logVoiceDebug('recording_stop_requested', {
-                stopReason,
-                reason: stopReason,
-            });
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
 

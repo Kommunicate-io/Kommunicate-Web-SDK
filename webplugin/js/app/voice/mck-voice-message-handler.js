@@ -5,13 +5,6 @@ var kmVoiceMessageHandler = {
         return typeof mckVoice !== 'undefined' ? mckVoice : null;
     },
 
-    logVoiceDebug: function (eventName, details, level) {
-        var voiceController = this.getVoiceController();
-        if (voiceController) {
-            voiceController.logVoiceDebug(eventName, details || {}, level || 'log');
-        }
-    },
-
     getStableMessageIdentity: function (message) {
         if (!message) {
             return '';
@@ -191,23 +184,10 @@ var kmVoiceMessageHandler = {
                 msgThroughListAPI
             );
             if (!decision.allowed) {
-                this.logVoiceDebug('voice_message_queue_skipped', {
-                    source: 'render',
-                    reason: decision.reason,
-                    signature: decision.signature,
-                    messageKey: currentMessage && currentMessage.key,
-                    textLength: this.getMessageTextLength(currentMessage),
-                });
                 continue;
             }
             decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             currentMessage._kmVoiceQueued = true;
-            this.logVoiceDebug('voice_message_queued', {
-                source: 'render',
-                signature: decision.signature,
-                messageKey: currentMessage && currentMessage.key,
-                textLength: this.getMessageTextLength(currentMessage),
-            });
             mckVoice.processMessagesAsAudio(currentMessage, displayName);
             queuedAtLeastOne = true;
         }
@@ -221,13 +201,6 @@ var kmVoiceMessageHandler = {
             var currentMessage = messages[index];
             var decision = this.getQueueVoiceDecision(currentMessage, appOptions, false);
             if (!decision.allowed || !this.isCurrentConversationMessage(currentMessage, tabId)) {
-                this.logVoiceDebug('voice_message_queue_skipped', {
-                    source: 'socket',
-                    reason: !decision.allowed ? decision.reason : 'different_conversation',
-                    signature: decision.signature,
-                    messageKey: currentMessage && currentMessage.key,
-                    textLength: this.getMessageTextLength(currentMessage),
-                });
                 continue;
             }
             var displayName =
@@ -238,12 +211,6 @@ var kmVoiceMessageHandler = {
                     : '';
             decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             currentMessage._kmVoiceQueued = true;
-            this.logVoiceDebug('voice_message_queued', {
-                source: 'socket',
-                signature: decision.signature,
-                messageKey: currentMessage && currentMessage.key,
-                textLength: this.getMessageTextLength(currentMessage),
-            });
             mckVoice.processMessagesAsAudio(currentMessage, displayName);
             queuedAtLeastOne = true;
         }
