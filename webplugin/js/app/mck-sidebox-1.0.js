@@ -1092,7 +1092,7 @@ const firstVisibleMsg = {
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
             if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
-                var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+                var isIosDevice = KommunicateUtils.isIOSDevice();
 
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
@@ -7281,6 +7281,10 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
+                var previousTabId = $mck_msg_inner.data('mck-id');
+                if (appOptions.voiceChat && previousTabId != params.tabId) {
+                    kmVoiceMessageHandler.resetQueuedVoiceMessages();
+                }
                 var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
@@ -8041,10 +8045,7 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                if (
-                    typeof kmVoiceMessageHandler !== 'undefined' &&
-                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
-                ) {
+                if (appOptions.voiceChat && kmVoiceMessageHandler.isIncomingBotMessage(msg)) {
                     kmVoiceMessageHandler.queueFromMessageRender(
                         msg,
                         displayName,
@@ -12526,13 +12527,12 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
-                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                        appOptions.voiceChat &&
                             kmVoiceMessageHandler.queueFromSocketReceive(
                                 message,
                                 tabId,
                                 appOptions
                             );
-                        }
 
                         if (
                             resp.message.metadata &&

@@ -3,8 +3,8 @@ Kommunicate.mediaService = {
     appOptions: appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals,
     userInActiveSec: 0,
     isAppleDevice: function () {
-        var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        var isIOSDevice = KommunicateUtils.isIOSDevice();
+        var isMacSafari = KommunicateUtils.isSafariBrowser();
         return isIOSDevice || isMacSafari;
     },
     endSttExplicitly: function (params) {

@@ -376,6 +376,22 @@ function languageDirectionChangeAuto() {
     return rtlLanguages.includes(locale) ? 'rtl' : 'ltr';
 }
 
+function isIOSDevice(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return /iPad|iPhone|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+}
+
+function isIOSWebKitBrowser(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
+}
+
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
@@ -416,9 +432,9 @@ function createKommunicateIframe() {
         /Safari/i.test(userAgent) &&
         !/Chrome|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
         !/Android/i.test(userAgent);
-    var isIOSWebKitBrowser = /iPhone|iPad|iPod/i.test(userAgent);
+    var isIOSWebKit = isIOSWebKitBrowser(userAgent);
     var iframeSupportsSrcdoc =
-        'srcdoc' in document.createElement('iframe') && !isSafari && !isIOSWebKitBrowser;
+        'srcdoc' in document.createElement('iframe') && !isSafari && !isIOSWebKit;
     if (iframeSupportsSrcdoc) {
         kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
     } else {
