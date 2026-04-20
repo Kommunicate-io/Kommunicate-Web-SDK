@@ -1323,6 +1323,8 @@ class MckVoice {
         } catch (error) {
             this.stopReplyPlaybackSource();
             if (isRepeat) {
+                const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
+                repeatButton && repeatButton.classList.remove('mck-hidden');
                 this.showVoiceErrorMessage(error, 'Voice playback failed');
                 return;
             }
@@ -1416,6 +1418,11 @@ class MckVoice {
         const normalizedText = typeof text === 'string' ? text.trim() : '';
         this.lastBotPlaybackEndedAt = Date.now();
         this.lastBotPlaybackText = normalizedText;
+    }
+
+    clearRecentBotPlayback() {
+        this.lastBotPlaybackEndedAt = 0;
+        this.lastBotPlaybackText = '';
     }
 
     advanceQueueAfterPlayback({ fromNativeSpeech = false, rememberPlayback = false } = {}) {
@@ -4335,6 +4342,7 @@ class MckVoice {
         this.nativeRecognitionShouldRestart = false;
         this.stopRecording(true);
         this.cancelNativeSpeech();
+        this.clearRecentBotPlayback();
         this.nativeRecognitionFailed = false;
         this.refreshRecognitionMode();
         this.voiceMuted = false;
