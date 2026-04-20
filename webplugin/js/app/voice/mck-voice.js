@@ -2646,21 +2646,30 @@ class MckVoice {
             if (mergedSamples.length >= minSamplesToSend) {
                 let nonZero = 0;
                 let maxAbs = 0;
+                let sumSquares = 0;
                 for (let i = 0; i < mergedSamples.length; i++) {
-                    const abs = Math.abs(mergedSamples[i]);
+                    const value = Number(mergedSamples[i]) || 0;
+                    const abs = Math.abs(value);
                     if (abs > 0) {
                         nonZero++;
                     }
                     if (abs > maxAbs) {
                         maxAbs = abs;
                     }
+                    sumSquares += value * value;
                 }
                 const nonZeroRatio = nonZero / Math.max(mergedSamples.length, 1);
+                const mergedRms = Math.sqrt(sumSquares / Math.max(mergedSamples.length, 1));
                 const fallbackPeakThreshold = Math.max(
-                    20,
-                    Math.round(maxAbsSilenceThreshold * 0.35)
+                    maxAbsSilenceThreshold,
+                    Math.round(maxAbsSilenceThreshold * 1.25)
                 );
-                if (maxAbs >= fallbackPeakThreshold && nonZeroRatio >= 0.01) {
+                const fallbackRmsThreshold = Math.max(40, Math.round(minChunkRms * 0.6));
+                if (
+                    maxAbs >= fallbackPeakThreshold &&
+                    mergedRms >= fallbackRmsThreshold &&
+                    nonZeroRatio >= 0.02
+                ) {
                     acceptedChunkSamples.push(mergedSamples);
                 }
             }
