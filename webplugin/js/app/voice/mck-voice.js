@@ -956,6 +956,9 @@ class MckVoice {
         let shouldRevokeAudioSrc = false;
         if (sourceMode === 'data_url') {
             audioSrc = await this.blobToDataUrl(audioBlob);
+            if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
+                return;
+            }
         } else {
             audioSrc = URL.createObjectURL(audioBlob);
             shouldRevokeAudioSrc = true;
