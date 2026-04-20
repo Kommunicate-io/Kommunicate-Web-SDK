@@ -664,7 +664,12 @@ KommunicateUtils = {
         return text
             .replace(/\r\n/g, '\n') // Normalize line endings
             .split('\n')
-            .map((line) => line.replace(/^\s*-\s*/, '- ').trimEnd()) // Trim right-side spaces
+            .map((line) =>
+                line
+                    .replace(/^(\s*\d+)([.)])(\s+)/, '$1\\$2$3')
+                    .replace(/^\s*-\s*/, '- ')
+                    .trimEnd()
+            ) // Trim right-side spaces
             .filter((line) => line !== '') // Remove empty lines
             .join('\n\n');
     },
