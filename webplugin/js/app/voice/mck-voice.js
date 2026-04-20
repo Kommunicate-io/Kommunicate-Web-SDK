@@ -837,7 +837,7 @@ class MckVoice {
                                 }
                             })
                             .catch((error) => {
-                                this.handlePlaybackFailure(error);
+                                this.handleAudioPlaybackStartFailure(error, audio);
                             });
                     }
                 },
@@ -1263,6 +1263,8 @@ class MckVoice {
                 this.currentReplyPlaybackSource = null;
                 this.currentReplyPlaybackActive = false;
                 if (isRepeat) {
+                    const repeatButton = document.getElementById('mck-voice-repeat-last-msg');
+                    repeatButton && repeatButton.classList.remove('mck-hidden');
                     this.removeAllAnimation();
                     if (!this.isRecording) {
                         this.clearVoiceStatus();
@@ -1792,7 +1794,25 @@ class MckVoice {
     deferRecordingUntilPlaybackEnds() {
         const audioElement = this.audioElement;
         if (!audioElement) {
-            this.requestAudioRecording();
+            this.clearDeferredRecordingHandler();
+            const retryDeferredRecording = () => {
+                if (this.currentReplyPlaybackActive) {
+                    this.deferredRecordingHandler = {
+                        retryTimeout: setTimeout(retryDeferredRecording, 100),
+                    };
+                    return;
+                }
+                this.clearDeferredRecordingHandler();
+                if (
+                    this.autoListeningEnabled &&
+                    this.isVoiceInterfaceVisible() &&
+                    !this.voiceMuted &&
+                    !this.isRecording
+                ) {
+                    this.requestAudioRecording();
+                }
+            };
+            retryDeferredRecording();
             return;
         }
 
@@ -1830,6 +1850,9 @@ class MckVoice {
     }
 
     clearDeferredRecordingHandler(audioElement = this.audioElement) {
+        if (this.deferredRecordingHandler && this.deferredRecordingHandler.retryTimeout) {
+            clearTimeout(this.deferredRecordingHandler.retryTimeout);
+        }
         if (this.deferredRecordingHandler && audioElement) {
             audioElement.removeEventListener('ended', this.deferredRecordingHandler.ended);
             audioElement.removeEventListener('error', this.deferredRecordingHandler.error);
@@ -1911,7 +1934,6 @@ class MckVoice {
                 hadConfirmedSpeech &&
                 (stopReason === 'segment_pause' || stopReason === 'continuation_idle');
             const shouldRestartContinuationRecording =
-                !shouldUseHalfDuplexCapture &&
                 this.activeRecognitionMode === 'omnichannel' &&
                 hadConfirmedSpeech &&
                 stopReason === 'segment_pause';
