@@ -7254,6 +7254,10 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
+                var previousTabId = $mck_msg_inner.data('mck-id');
+                if (appOptions.voiceChat && previousTabId != params.tabId) {
+                    kmVoiceMessageHandler.resetQueuedVoiceMessages();
+                }
                 var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
@@ -8014,10 +8018,7 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                if (
-                    typeof kmVoiceMessageHandler !== 'undefined' &&
-                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
-                ) {
+                if (appOptions.voiceChat && kmVoiceMessageHandler.isIncomingBotMessage(msg)) {
                     kmVoiceMessageHandler.queueFromMessageRender(
                         msg,
                         displayName,
@@ -12499,13 +12500,12 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
-                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                        appOptions.voiceChat &&
                             kmVoiceMessageHandler.queueFromSocketReceive(
                                 message,
                                 tabId,
                                 appOptions
                             );
-                        }
 
                         if (
                             resp.message.metadata &&

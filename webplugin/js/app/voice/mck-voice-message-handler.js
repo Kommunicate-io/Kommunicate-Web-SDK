@@ -1,5 +1,6 @@
 var kmVoiceMessageHandler = {
     _queuedVoiceMessageSignatures: [],
+    _MAX_MESSAGE_TEXT_SUMMARY_DEPTH: 5,
 
     getVoiceController: function () {
         return typeof mckVoice !== 'undefined' ? mckVoice : null;
@@ -32,9 +33,32 @@ var kmVoiceMessageHandler = {
         return [stableIdentity, message.groupId || message.to || '', message.type || ''].join('::');
     },
 
-    getMessageTextSummaryFromValue: function (value) {
-        if (Array.isArray(value)) {
-            return value.map(this.getMessageTextSummaryFromValue, this).filter(Boolean).join(' ');
+    hasVisitedSummaryValue: function (visited, value) {
+        if (!visited || !value || typeof value !== 'object') {
+            return false;
+        }
+        if (typeof WeakSet === 'function' && visited instanceof WeakSet) {
+            return visited.has(value);
+        }
+        return visited.indexOf(value) !== -1;
+    },
+
+    markVisitedSummaryValue: function (visited, value) {
+        if (!visited || !value || typeof value !== 'object') {
+            return;
+        }
+        if (typeof WeakSet === 'function' && visited instanceof WeakSet) {
+            visited.add(value);
+            return;
+        }
+        visited.push(value);
+    },
+
+    getMessageTextSummaryFromValue: function (value, depth, visited) {
+        var currentDepth = typeof depth === 'number' ? depth : 0;
+        var currentVisited = visited || (typeof WeakSet === 'function' ? new WeakSet() : []);
+        if (currentDepth > this._MAX_MESSAGE_TEXT_SUMMARY_DEPTH) {
+            return '';
         }
         if (typeof value === 'string') {
             return value;
@@ -42,8 +66,26 @@ var kmVoiceMessageHandler = {
         if (typeof value === 'number') {
             return String(value);
         }
+        if (Array.isArray(value)) {
+            if (this.hasVisitedSummaryValue(currentVisited, value)) {
+                return '';
+            }
+            this.markVisitedSummaryValue(currentVisited, value);
+            return value
+                .map((item) =>
+                    this.getMessageTextSummaryFromValue(item, currentDepth + 1, currentVisited)
+                )
+                .filter(Boolean)
+                .join(' ');
+        }
         if (value && typeof value === 'object') {
-            return this.getMessageTextSummaryFromValue(value.message);
+            if (this.hasVisitedSummaryValue(currentVisited, value)) {
+                return '';
+            }
+            this.markVisitedSummaryValue(currentVisited, value);
+            if (typeof value.message === 'string' || typeof value.message === 'number') {
+                return String(value.message);
+            }
         }
         return '';
     },
@@ -186,9 +228,11 @@ var kmVoiceMessageHandler = {
             if (!decision.allowed) {
                 continue;
             }
-            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
+            if (!mckVoice.processMessagesAsAudio(currentMessage, displayName)) {
+                continue;
+            }
             currentMessage._kmVoiceQueued = true;
-            mckVoice.processMessagesAsAudio(currentMessage, displayName);
+            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             queuedAtLeastOne = true;
         }
         return queuedAtLeastOne;
@@ -209,9 +253,11 @@ var kmVoiceMessageHandler = {
                 typeof mckMessageLayout.getTabDisplayName === 'function'
                     ? mckMessageLayout.getTabDisplayName(currentMessage.to, false)
                     : '';
-            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
+            if (!mckVoice.processMessagesAsAudio(currentMessage, displayName)) {
+                continue;
+            }
             currentMessage._kmVoiceQueued = true;
-            mckVoice.processMessagesAsAudio(currentMessage, displayName);
+            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             queuedAtLeastOne = true;
         }
         return queuedAtLeastOne;

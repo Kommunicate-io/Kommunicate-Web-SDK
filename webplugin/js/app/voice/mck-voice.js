@@ -211,13 +211,7 @@ class MckVoice {
         source = 'start_conversation_screen',
         { onPermissionDenied = null, suppressPermissionAlert = false } = {}
     ) {
-        if (
-            typeof kmVoiceMessageHandler !== 'undefined' &&
-            kmVoiceMessageHandler &&
-            typeof kmVoiceMessageHandler.resetQueuedVoiceMessages === 'function'
-        ) {
-            kmVoiceMessageHandler.resetQueuedVoiceMessages();
-        }
+        kmVoiceMessageHandler.resetQueuedVoiceMessages();
         this.trackVoiceEvent('onVoiceEntryClicked', source);
         this.trackVoiceEvent('onVoiceIconClick', source);
         this.disableNativeVoiceOutputForVoiceMode();
@@ -496,7 +490,7 @@ class MckVoice {
         };
     }
 
-    async processMessagesAsAudio(msg, displayName) {
+    processMessagesAsAudio(msg, displayName) {
         try {
             // Block any pending auto-listen immediately when a bot reply is queued.
             // This prevents recording from starting in the short async gap before
@@ -515,13 +509,14 @@ class MckVoice {
             if (queueItems.length === 0) {
                 this.setAwaitingBotResponsePlayback(false);
                 this.resumeListeningAfterPlayback();
-                return;
+                return false;
             }
             const shouldStartPlayback = this.messagesQueue.length === 0;
             this.messagesQueue.push(...queueItems);
             if (shouldStartPlayback) {
                 this.processNextMessage(queueItems[0]);
             }
+            return true;
         } catch (err) {
             console.error(err);
             this.messagesQueue.shift();
@@ -529,7 +524,19 @@ class MckVoice {
                 const nextMsg = this.messagesQueue[0];
                 this.processNextMessage(nextMsg);
             }
+            return false;
         }
+    }
+
+    releaseStoredReplayAudio() {
+        if (
+            this.agentOrBotLastMsgAudio &&
+            typeof this.agentOrBotLastMsgAudio === 'string' &&
+            this.agentOrBotLastMsgAudio.indexOf('blob:') === 0
+        ) {
+            URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
+        }
+        this.agentOrBotLastMsgAudio = null;
     }
 
     blobToDataUrl(blob) {
@@ -706,7 +713,7 @@ class MckVoice {
                 : messageWithoutSource;
             this.updateResponseText(responseText, { autoHide: 0 });
             this.agentOrBotLastMsg = messageWithoutSource;
-            this.agentOrBotLastMsgAudio = null;
+            this.releaseStoredReplayAudio();
 
             if (!spokenText) {
                 this.advanceQueueAfterPlayback();
@@ -855,10 +862,7 @@ class MckVoice {
                 const finalBlob = new Blob(fullChunks, { type: 'audio/mpeg' });
                 const blobUrl = URL.createObjectURL(finalBlob);
 
-                if (this.agentOrBotLastMsgAudio) {
-                    URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
-                    this.agentOrBotLastMsgAudio = null;
-                }
+                this.releaseStoredReplayAudio();
                 this.agentOrBotLastMsgAudio = blobUrl;
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
@@ -995,15 +999,10 @@ class MckVoice {
                 return;
             }
 
-            if (this.agentOrBotLastMsgAudio) {
-                URL.revokeObjectURL(this.agentOrBotLastMsgAudio);
-                this.agentOrBotLastMsgAudio = null;
-            }
+            this.releaseStoredReplayAudio();
+            this.agentOrBotLastMsgAudio = audioSrc;
             if (sourceMode === 'object_url') {
-                this.agentOrBotLastMsgAudio = audioSrc;
                 shouldRevokeAudioSrc = false;
-            } else {
-                this.agentOrBotLastMsgAudio = null;
             }
 
             document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
@@ -1443,7 +1442,7 @@ class MckVoice {
         this.advanceQueueAfterPlayback();
     }
 
-    async repeatLastMsgAudio(blobUrl) {
+    async repeatLastMsgAudio(blobUrl = this.agentOrBotLastMsgAudio) {
         if (this.shouldUseSafariBufferPlayback() && this.agentOrBotLastMsgPlaybackData) {
             await this.playSafariPlaybackDataWithQueue(this.agentOrBotLastMsgPlaybackData, {
                 isRepeat: true,
@@ -1594,7 +1593,7 @@ class MckVoice {
                 const ring1 = document.querySelector('.voice-ring-1');
                 ring1.classList.remove('mck-ring-remove-animation');
 
-                self.repeatLastMsgAudio(self.agentOrBotLastMsgAudio);
+                self.repeatLastMsgAudio();
             },
             'voiceRepeatListenerAttached'
         );
@@ -1851,8 +1850,6 @@ class MckVoice {
         this.silenceTimer = null;
         this.lastAudioLevel = 0;
         this.silenceStart = null;
-        this.agentOrBotLastMsgAudio = null;
-        this.agentOrBotLastMsg = '';
         this.hasSoundDetected = false;
         this.soundSamples = 0;
         this.totalSamples = 0;
@@ -1866,8 +1863,6 @@ class MckVoice {
         this.silenceTimeout = null;
         this.vadCaptureChunks = [];
         this.vadCaptureSampleRate = 0;
-        this.agentOrBotLastMsgPlaybackData = null;
-
         // Create MediaRecorder instance
         this.mediaRecorder = this.createMediaRecorder(stream);
         this.recordedMimeType = this.mediaRecorder.mimeType || 'audio/wav';
@@ -4285,13 +4280,7 @@ class MckVoice {
     }
 
     stopVoiceMode() {
-        if (
-            typeof kmVoiceMessageHandler !== 'undefined' &&
-            kmVoiceMessageHandler &&
-            typeof kmVoiceMessageHandler.resetQueuedVoiceMessages === 'function'
-        ) {
-            kmVoiceMessageHandler.resetQueuedVoiceMessages();
-        }
+        kmVoiceMessageHandler.resetQueuedVoiceMessages();
         this.disableAutoListening();
         this.clearDeferredRecordingHandler();
         this.clearResponseTimeout();
