@@ -351,7 +351,6 @@ function KommunicateCommons() {
         (Array.isArray(elements) ? elements : [elements]).forEach(function (element) {
             var elems = typeof element === 'string' ? document.querySelectorAll(element) : element;
             if (!elems) return;
-
             var isElementNode = elems && elems.nodeType === 1;
             var nodeList = isElementNode ? [elems] : Array.from(elems);
             nodeList.forEach(function (el) {

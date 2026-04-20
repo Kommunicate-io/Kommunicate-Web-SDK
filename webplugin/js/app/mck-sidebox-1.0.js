@@ -2325,12 +2325,6 @@ const firstVisibleMsg = {
                             adjustIframeForPrelead();
                         };
 
-                        document
-                            .getElementById('km-modal-close')
-                            .addEventListener('click', function () {
-                                resetIframeAfterPrelead();
-                                _this.closeLeadCollectionWindow();
-                            });
                         var popUpCloseButton = document.getElementById('km-popup-close-button');
                         popUpCloseButton.addEventListener('click', function (event) {
                             event.preventDefault();
@@ -2453,18 +2447,29 @@ const firstVisibleMsg = {
                                         showUserIdField: true,
                                     });
                             }
-                            if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
-                                var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
-                                    return (
-                                        item &&
-                                        typeof item.field === 'string' &&
-                                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
-                                    );
-                                });
-                                var userIdInput = document.getElementById('km-userId');
-                                if (userIdInput && !hasPreLeadUserId) {
-                                    kommunicateCommons.hide(userIdInput);
+                            var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
+                                if (!item) {
+                                    return false;
                                 }
+                                var fieldName = (item.field || '')
+                                    .toString()
+                                    .toLowerCase()
+                                    .replace(/\s+/g, '');
+                                return (
+                                    item.id === 'km-userId' ||
+                                    item.name === 'km-userId' ||
+                                    fieldName === 'userid'
+                                );
+                            });
+                            var shouldShowUserId = !isPreLeadEnabled || hasPreLeadUserId;
+                            var userIdInput = document.getElementById('km-userId');
+                            var userIdLabel = document.getElementById('km-label-user-id');
+                            if (shouldShowUserId) {
+                                userIdInput && kommunicateCommons.show(userIdInput);
+                                userIdLabel && userIdLabel.classList.remove('sr-only');
+                            } else {
+                                userIdInput && kommunicateCommons.hide(userIdInput);
+                                userIdLabel && userIdLabel.classList.add('sr-only');
                             }
                             _this.updateAuthSubmitButton &&
                                 _this.updateAuthSubmitButton(
@@ -2575,6 +2580,14 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                if (WIDGET_SETTINGS && WIDGET_SETTINGS.popup) {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.minHeight = '';
+                    }
+                }
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -5069,6 +5082,20 @@ const firstVisibleMsg = {
 
                 $applozic('.km-login-model-close').on('click', function (e) {
                     kommunicateCommons.hide('#km-chat-login-modal');
+                    var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                    kommunicateCommons.setDialogVisibility(
+                        kmChatLoginModal,
+                        false,
+                        loginModalFocusFallbacks
+                    );
+                });
+                $applozic(d).on('click', '#km-modal-close', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (mckInit) {
+                        mckInit.closeLeadCollectionWindow();
+                        return;
+                    }
                     var kmChatLoginModal = document.getElementById('km-chat-login-modal');
                     kommunicateCommons.setDialogVisibility(
                         kmChatLoginModal,

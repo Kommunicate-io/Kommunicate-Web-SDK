@@ -294,9 +294,9 @@ textarea {
   width: 100%;
   height: 40px;
   border-radius: 999px;
-  background-color: #5f46f8;
+  background-color: var(--km-accent, #5f46f8);
   margin-top: 45px;
-  color: white;
+  color: var(--km-on-primary, #ffffff);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 @media (prefers-reduced-motion: no-preference) {
