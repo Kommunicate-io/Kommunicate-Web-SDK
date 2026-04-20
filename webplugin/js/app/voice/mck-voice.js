@@ -764,7 +764,7 @@ class MckVoice {
                 this.playSafariPlaybackDataWithQueue(playbackAsset);
                 return;
             }
-            this.playAudioBlobWithQueue(playbackAsset);
+            await this.playAudioBlobWithQueue(playbackAsset);
         } catch (err) {
             this.handlePlaybackFailure(err);
         }
@@ -1100,7 +1100,11 @@ class MckVoice {
                         if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
                             return;
                         }
-                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode);
+                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode).catch(
+                            (error) => {
+                                this.handlePlaybackFailure(error);
+                            }
+                        );
                     }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
                     return;
                 }
@@ -1114,7 +1118,9 @@ class MckVoice {
                         if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
                             return;
                         }
-                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url');
+                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url').catch((error) => {
+                            this.handlePlaybackFailure(error);
+                        });
                     }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
                     return;
                 }
@@ -1144,7 +1150,11 @@ class MckVoice {
                         if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
                             return;
                         }
-                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode);
+                        this.playAudioBlobWithQueue(audioBlob, retryAttempt + 1, sourceMode).catch(
+                            (error) => {
+                                this.handlePlaybackFailure(error);
+                            }
+                        );
                     }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
                     return;
                 }
@@ -1158,7 +1168,9 @@ class MckVoice {
                         if (!this.awaitingBotResponsePlayback || this.messagesQueue.length === 0) {
                             return;
                         }
-                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url');
+                        this.playAudioBlobWithQueue(audioBlob, 0, 'data_url').catch((error) => {
+                            this.handlePlaybackFailure(error);
+                        });
                     }, this._AUDIO_PLAYBACK_RETRY_DELAY_MS);
                     return;
                 }
