@@ -413,11 +413,11 @@ function attachMobileKeyboardViewportFix(iframeElement) {
         'max-height',
     ];
     var syncFrame = function () {
+        if (!mobileViewport.matches) return;
         if (
             !iframeElement.classList.contains('kommunicate-iframe-enable-media-query') ||
             iframeElement.classList.contains('km-iframe-closed') ||
-            iframeElement.getAttribute('data-km-widget-container') === 'true' ||
-            !mobileViewport.matches
+            iframeElement.getAttribute('data-km-widget-container') === 'true'
         ) {
             frameProperties.forEach(function (property) {
                 iframeElement.style.removeProperty(property);
