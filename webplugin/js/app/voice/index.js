@@ -1101,33 +1101,28 @@ class Voice {
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
         }
-        if (shouldSendAlternativeLanguageCodes) {
-            const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
-                sttLanguageCode,
-                activeConversationUcid
-            );
-            if (firstRequestAlternatives.length) {
-                payload.alternativeLanguageCodes = firstRequestAlternatives;
-            }
-        }
+        // if (shouldSendAlternativeLanguageCodes) {
+        //     const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
+        //         sttLanguageCode,
+        //         activeConversationUcid
+        //     );
+        //     if (firstRequestAlternatives.length) {
+        //         payload.alternativeLanguageCodes = firstRequestAlternatives;
+        //     }
+        // }
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
-        const socketConfig = this.getVoiceSocketConfig('stt');
         const sttRequestStartedAt = Date.now();
+        this.logOmnichannelVoiceRequest({
+            transport: 'http',
+            sttMode: payload.sttMode,
+            sampleCount: samples.length,
+            operation: 'voiceToText',
+        });
         let rawResponse;
         try {
-            rawResponse = await this.requestOmnichannelVoiceTransport({
-                payload,
-                socketConfig,
-                socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
-                socketNormalizePayload: this.normalizeVoiceToTextSocketPayload,
-                httpPath: '/voice-to-text',
-                httpErrorOperation: 'voice-to-text',
-                operation: 'voiceToText',
-                enableSilentAudioLogging: true,
-                preferSocket: false,
-            });
+            rawResponse = await this.requestBinaryVoiceToText({ samples, payload });
         } finally {
             state.hasSentVoiceToTextRequest = true;
         }
