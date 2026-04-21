@@ -8,6 +8,9 @@ var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
+var KM_VERSIONED_BUILD_RESOURCE_PATH = MCK_STATICPATH + '/build/' + KM_RELEASE_HASH + '/resources';
+var KM_VERSIONED_KOMMUNICATE_JS =
+    KM_VERSIONED_BUILD_RESOURCE_PATH + '/kommunicate.' + KM_RELEASE_HASH + '.min.js';
 
 var kmCustomElements = {
     iframe: {
@@ -44,9 +47,10 @@ var kmCustomIframe =
     '   top: 0;' +
     '   left: 0px !important;' +
     '   border-radius: 0px;' +
-    '   height: 100% !important;' +
-    '   width: 100% !important;' +
-    '   max-height: 100% !important;' +
+    '   height: 100dvh !important;' +
+    '   width: 100vw !important;' +
+    '   max-height: 100dvh !important;' +
+    '   max-width: 100vw !important;' +
     '} } \n' +
     '.km-iframe-notification{ ' +
     '    height:80px; ' +
@@ -73,11 +77,14 @@ var kmCustomIframe =
     '@media only screen and (max-width:600px) { ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-with-popup, ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-no-popup { ' +
-    '   width: 100% !important;' +
+    '   width: 100vw !important;' +
     '   min-width: 0 !important;' +
     '   left: 0 !important;' +
     '   right: 0 !important;' +
     '   bottom: 0 !important;' +
+    '   height: 100dvh !important;' +
+    '   max-height: 100dvh !important;' +
+    '   max-width: 100vw !important;' +
     '} ' +
     '} \n' +
     '.km-iframe-closed{ ' +
@@ -276,6 +283,10 @@ function removeKommunicateScripts() {
             commons.cleanupIframeResizeListener(kommunicateIframe);
         }
     }
+    if (kommunicateIframe && kommunicateIframe.__kmCleanupViewportFix) {
+        kommunicateIframe.__kmCleanupViewportFix();
+        kommunicateIframe.__kmCleanupViewportFix = null;
+    }
     // delete iframe, kommunicate style sheet, image view modal, origin file
     removeElementFromHtmlById([
         kmCustomElements.imageModal.styleSheetId,
@@ -392,6 +403,63 @@ function isIOSWebKitBrowser(userAgent) {
     return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
 }
 
+function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
+    if (!isIOSWebKitBrowser(userAgent) || !window.visualViewport) {
+        return;
+    }
+
+    var viewport = window.visualViewport;
+    var mobileViewport = window.matchMedia('(max-width: 600px)');
+    var resetFrame = function () {
+        ['top', 'left', 'right', 'bottom', 'width', 'height', 'max-width', 'max-height'].forEach(
+            function (property) {
+                iframeElement.style.removeProperty(property);
+            }
+        );
+    };
+
+    var syncFrame = function () {
+        var isOpenMobileWidget =
+            iframeElement.classList.contains('kommunicate-iframe-enable-media-query') &&
+            !iframeElement.classList.contains('km-iframe-closed') &&
+            iframeElement.getAttribute('data-km-widget-container') !== 'true' &&
+            mobileViewport.matches;
+
+        if (!isOpenMobileWidget) {
+            resetFrame();
+            return;
+        }
+
+        [
+            ['top', viewport.offsetTop + 'px'],
+            ['left', viewport.offsetLeft + 'px'],
+            ['right', 'auto'],
+            ['bottom', 'auto'],
+            ['width', viewport.width + 'px'],
+            ['height', viewport.height + 'px'],
+            ['max-width', viewport.width + 'px'],
+            ['max-height', viewport.height + 'px'],
+        ].forEach(function (entry) {
+            iframeElement.style.setProperty(entry[0], entry[1], 'important');
+        });
+    };
+
+    var onViewportChange = function () {
+        window.requestAnimationFrame(syncFrame);
+    };
+    var classObserver = new MutationObserver(syncFrame);
+
+    viewport.addEventListener('resize', onViewportChange);
+    viewport.addEventListener('scroll', onViewportChange);
+    classObserver.observe(iframeElement, { attributes: true, attributeFilter: ['class'] });
+    iframeElement.__kmCleanupViewportFix = function () {
+        viewport.removeEventListener('resize', onViewportChange);
+        viewport.removeEventListener('scroll', onViewportChange);
+        classObserver.disconnect();
+        resetFrame();
+    };
+}
+
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
@@ -452,6 +520,7 @@ function createKommunicateIframe() {
         document.body.appendChild(kommunicateIframe);
     }
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
+    attachIOSKeyboardViewportFix(kommunicateIframe, userAgent);
     attemptContainerAutoLaunch(kommunicateIframe);
 
     if (!iframeSupportsSrcdoc) {
@@ -557,7 +626,7 @@ function addKommunicatePluginToIframe() {
     var imported = addableDocument.createElement('script');
     imported.async = false;
     imported.type = 'text/javascript';
-    imported.src = KOMMUNICATE_MIN_JS;
+    imported.src = KM_VERSIONED_KOMMUNICATE_JS;
     addableDocument.head.appendChild(imported);
     addFullviewImageModal();
 }
