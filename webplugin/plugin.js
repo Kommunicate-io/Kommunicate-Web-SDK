@@ -277,6 +277,9 @@ function removeKommunicateScripts() {
             commons.cleanupIframeResizeListener(kommunicateIframe);
         }
     }
+    kommunicateIframe &&
+        kommunicateIframe.__kmDetachViewportFix &&
+        kommunicateIframe.__kmDetachViewportFix();
     // delete iframe, kommunicate style sheet, image view modal, origin file
     removeElementFromHtmlById([
         kmCustomElements.imageModal.styleSheetId,
@@ -437,13 +440,18 @@ function attachMobileKeyboardViewportFix(iframeElement) {
     var onViewportChange = function () {
         window.requestAnimationFrame(syncFrame);
     };
-
+    var observer = new MutationObserver(syncFrame);
     viewport.addEventListener('resize', onViewportChange);
     viewport.addEventListener('scroll', onViewportChange);
-    new MutationObserver(syncFrame).observe(iframeElement, {
+    observer.observe(iframeElement, {
         attributes: true,
         attributeFilter: ['class'],
     });
+    iframeElement.__kmDetachViewportFix = function () {
+        viewport.removeEventListener('resize', onViewportChange);
+        viewport.removeEventListener('scroll', onViewportChange);
+        observer.disconnect();
+    };
     syncFrame();
 }
 // Create element iframe for kommunicate widget
