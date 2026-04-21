@@ -155,13 +155,9 @@ var KMPreChat = (function () {
             }
             var userIdInput = document.getElementById('km-userId');
             if (userIdInput) {
-                kommunicateCommons.show(userIdInput);
+                toggleField(userIdInput, true);
                 userIdInput.setAttribute('type', 'text');
-                if (showUserIdField) {
-                    userIdInput.setAttribute('required', 'true');
-                } else {
-                    userIdInput.removeAttribute('required');
-                }
+                userIdInput.required = Boolean(showUserIdField);
                 var userIdLabel = deps.MCK_LABELS['form.label.userId'];
                 userIdInput.setAttribute('placeholder', userIdLabel);
                 userIdInput.setAttribute('aria-label', userIdLabel);
@@ -185,15 +181,11 @@ var KMPreChat = (function () {
                         userIdLabelNode.parentElement.insertBefore(labelContainer, userIdLabelNode);
                         labelContainer.appendChild(userIdLabelNode);
                     }
-                    var userIdContainer =
-                        typeof userIdInput.closest === 'function'
-                            ? userIdInput.closest('.km-form-group')
-                            : null;
                     if (!showUserIdField) {
-                        kommunicateCommons.hide(userIdContainer);
+                        toggleField(userIdInput, false);
                         userIdLabelNode.classList.add('sr-only');
                     } else {
-                        kommunicateCommons.show(userIdContainer);
+                        toggleField(userIdInput, true);
                         userIdLabelNode.classList.remove('sr-only');
                     }
                 }
@@ -353,6 +345,20 @@ var KMPreChat = (function () {
             return kmChatInputDiv;
         };
 
+        function toggleField(input, show) {
+            if (!input) {
+                return;
+            }
+            var container = input.closest('.km-form-group');
+            if (show) {
+                kommunicateCommons.show(input);
+                container && kommunicateCommons.show(container);
+            } else {
+                kommunicateCommons.hide(input);
+                container && kommunicateCommons.hide(container);
+            }
+        }
+
         target.createInputField = function (preLeadCollection) {
             var rawField = (preLeadCollection.field || '').toString();
             var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
@@ -451,13 +457,94 @@ var KMPreChat = (function () {
                 typeof deps.getAuthenticationTypeId === 'function'
                     ? deps.getAuthenticationTypeId()
                     : deps.MCK_AUTHENTICATION_TYPE_ID;
-            if (authTypeId > 0) {
-                var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
-                    return (
-                        item &&
-                        typeof item.field === 'string' &&
-                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
+            var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
+            var isPreLeadEnabled = target.isPreLeadCollectionEnabled();
+            var normalizedUserIdLabel = (
+                (deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) ||
+                ''
+            )
+                .toString()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+            var normalizedLeadUserIdLabel = (leadLabels.userId || '')
+                .toString()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+            var isUserIdField = function (item) {
+                if (!item) {
+                    return false;
+                }
+                var fieldName = (item.field || '').toString().toLowerCase().replace(/\s+/g, '');
+                return (
+                    item.id === 'km-userId' ||
+                    item.name === 'km-userId' ||
+                    fieldName === 'userid' ||
+                    (normalizedUserIdLabel && fieldName === normalizedUserIdLabel) ||
+                    (normalizedLeadUserIdLabel && fieldName === normalizedLeadUserIdLabel)
+                );
+            };
+            var allowTemplateUserId = authTypeId > 0 && !isPreLeadEnabled;
+            var allowUserIdInPreLead =
+                isPreLeadEnabled &&
+                deps.KM_PRELEAD_COLLECTION.some(function (item) {
+                    return isUserIdField(item);
+                });
+            var useTemplateUserId = false;
+            if (allowTemplateUserId) {
+                var userIdInput = document.getElementById('km-userId');
+                if (userIdInput) {
+                    var labelText =
+                        (deps.MCK_LABELS && deps.MCK_LABELS['form.label.userId']) || 'User ID';
+                    var userIdConfig = null;
+                    for (var idx = 0; idx < deps.KM_PRELEAD_COLLECTION.length; idx++) {
+                        var candidate = deps.KM_PRELEAD_COLLECTION[idx];
+                        var candidateField = ((candidate && candidate.field) || '')
+                            .toString()
+                            .toLowerCase()
+                            .replace(/\s+/g, '');
+                        if (candidateField === 'userid') {
+                            userIdConfig = candidate;
+                            break;
+                        }
+                    }
+                    if (userIdConfig) {
+                        labelText = userIdConfig.field || labelText;
+                    }
+                    toggleField(userIdInput, true);
+                    userIdInput.classList.remove('n-vis');
+                    userIdInput.setAttribute('type', (userIdConfig && userIdConfig.type) || 'text');
+                    userIdInput.required = !(
+                        userIdConfig &&
+                        typeof userIdConfig.required !== 'undefined' &&
+                        !userIdConfig.required
                     );
+                    userIdInput.setAttribute(
+                        'placeholder',
+                        (userIdConfig && userIdConfig.placeholder) || labelText
+                    );
+                    userIdInput.setAttribute('aria-label', labelText);
+                    var userIdLabelNode = document.getElementById('km-label-user-id');
+                    if (userIdLabelNode) {
+                        userIdLabelNode.textContent = labelText;
+                        userIdLabelNode.classList.remove('sr-only');
+                        userIdLabelNode.classList.add('km-form-label', 'km-tertiary-title');
+                    }
+                    useTemplateUserId = true;
+                }
+            } else {
+                var fallbackUserIdInput = document.getElementById('km-userId');
+                if (fallbackUserIdInput) {
+                    toggleField(fallbackUserIdInput, false);
+                    fallbackUserIdInput.removeAttribute('required');
+                    var fallbackLabel = document.getElementById('km-label-user-id');
+                    if (fallbackLabel) {
+                        fallbackLabel.classList.add('sr-only');
+                    }
+                }
+            }
+            if (allowTemplateUserId) {
+                var hasUserId = deps.KM_PRELEAD_COLLECTION.some(function (item) {
+                    return isUserIdField(item);
                 });
                 var hasPassword = deps.KM_PRELEAD_COLLECTION.some(function (item) {
                     return (
@@ -466,8 +553,7 @@ var KMPreChat = (function () {
                         item.field.toLowerCase().replace(/\s+/g, '') === 'password'
                     );
                 });
-                var leadLabels = deps.MCK_LABELS['lead.collection'] || {};
-                if (!hasUserId) {
+                if (!hasUserId && !useTemplateUserId) {
                     deps.KM_PRELEAD_COLLECTION.push({
                         id: 'km-userId',
                         name: 'km-userId',
@@ -496,6 +582,12 @@ var KMPreChat = (function () {
                 var fieldName = ((dataToCollect && dataToCollect.field) || '').toString();
                 if (fieldName.toLowerCase() === 'phone') {
                     enableCountryCode = dataToCollect.enableCountryCode;
+                }
+                if (isUserIdField(dataToCollect) && !allowUserIdInPreLead) {
+                    continue;
+                }
+                if (useTemplateUserId && isUserIdField(dataToCollect)) {
+                    continue;
                 }
                 var kmInputField = target.createInputField(dataToCollect);
                 $applozic('.km-last-child').append(kmInputField);

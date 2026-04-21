@@ -1086,7 +1086,7 @@ const firstVisibleMsg = {
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
             if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
-                var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+                var isIosDevice = KommunicateUtils.isIOSDevice();
 
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
@@ -2319,12 +2319,6 @@ const firstVisibleMsg = {
                             adjustIframeForPrelead();
                         };
 
-                        document
-                            .getElementById('km-modal-close')
-                            .addEventListener('click', function () {
-                                resetIframeAfterPrelead();
-                                _this.closeLeadCollectionWindow();
-                            });
                         var popUpCloseButton = document.getElementById('km-popup-close-button');
                         popUpCloseButton.addEventListener('click', function (event) {
                             event.preventDefault();
@@ -2447,18 +2441,29 @@ const firstVisibleMsg = {
                                         showUserIdField: true,
                                     });
                             }
-                            if (isPreLeadEnabled && MCK_AUTHENTICATION_TYPE_ID <= 0) {
-                                var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
-                                    return (
-                                        item &&
-                                        typeof item.field === 'string' &&
-                                        item.field.toLowerCase().replace(/\s+/g, '') === 'userid'
-                                    );
-                                });
-                                var userIdInput = document.getElementById('km-userId');
-                                if (userIdInput && !hasPreLeadUserId) {
-                                    kommunicateCommons.hide(userIdInput);
+                            var hasPreLeadUserId = KM_PRELEAD_COLLECTION.some(function (item) {
+                                if (!item) {
+                                    return false;
                                 }
+                                var fieldName = (item.field || '')
+                                    .toString()
+                                    .toLowerCase()
+                                    .replace(/\s+/g, '');
+                                return (
+                                    item.id === 'km-userId' ||
+                                    item.name === 'km-userId' ||
+                                    fieldName === 'userid'
+                                );
+                            });
+                            var shouldShowUserId = !isPreLeadEnabled || hasPreLeadUserId;
+                            var userIdInput = document.getElementById('km-userId');
+                            var userIdLabel = document.getElementById('km-label-user-id');
+                            if (shouldShowUserId) {
+                                userIdInput && kommunicateCommons.show(userIdInput);
+                                userIdLabel && userIdLabel.classList.remove('sr-only');
+                            } else {
+                                userIdInput && kommunicateCommons.hide(userIdInput);
+                                userIdLabel && userIdLabel.classList.add('sr-only');
                             }
                             _this.updateAuthSubmitButton &&
                                 _this.updateAuthSubmitButton(
@@ -2569,6 +2574,14 @@ const firstVisibleMsg = {
 
             _this.closeLeadCollectionWindow = function () {
                 var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                if (WIDGET_SETTINGS && WIDGET_SETTINGS.popup) {
+                    var kommunicateIframe =
+                        parent.document &&
+                        parent.document.getElementById('kommunicate-widget-iframe');
+                    if (kommunicateIframe) {
+                        kommunicateIframe.style.minHeight = '';
+                    }
+                }
 
                 if (KOMMUNICATE_VERSION === 'v2') {
                     var kommunicateIframe = parent.document.getElementById(
@@ -5070,6 +5083,20 @@ const firstVisibleMsg = {
                         loginModalFocusFallbacks
                     );
                 });
+                $applozic(d).on('click', '#km-modal-close', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (mckInit) {
+                        mckInit.closeLeadCollectionWindow();
+                        return;
+                    }
+                    var kmChatLoginModal = document.getElementById('km-chat-login-modal');
+                    kommunicateCommons.setDialogVisibility(
+                        kmChatLoginModal,
+                        false,
+                        loginModalFocusFallbacks
+                    );
+                });
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
                     mckMessageService.stopBusinessHoursTimer();
@@ -7244,6 +7271,10 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
+                var previousTabId = $mck_msg_inner.data('mck-id');
+                if (appOptions.voiceChat && previousTabId != params.tabId) {
+                    kmVoiceMessageHandler.resetQueuedVoiceMessages();
+                }
                 var userId = kmLocalStorage.getLocalStorage(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
@@ -7996,10 +8027,7 @@ const firstVisibleMsg = {
                     nameTextExpr = '';
                 }
 
-                if (
-                    typeof kmVoiceMessageHandler !== 'undefined' &&
-                    kmVoiceMessageHandler.isIncomingBotMessage(msg)
-                ) {
+                if (appOptions.voiceChat && kmVoiceMessageHandler.isIncomingBotMessage(msg)) {
                     kmVoiceMessageHandler.queueFromMessageRender(
                         msg,
                         displayName,
@@ -12481,13 +12509,12 @@ const firstVisibleMsg = {
                             : mckMessageLayout.getContact(message.to);
 
                         const tabId = $mck_message_inner.data('mck-id');
-                        if (typeof kmVoiceMessageHandler !== 'undefined') {
+                        appOptions.voiceChat &&
                             kmVoiceMessageHandler.queueFromSocketReceive(
                                 message,
                                 tabId,
                                 appOptions
                             );
-                        }
 
                         if (
                             resp.message.metadata &&

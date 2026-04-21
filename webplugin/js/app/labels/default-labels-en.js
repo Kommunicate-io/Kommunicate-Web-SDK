@@ -280,6 +280,7 @@
             hearingYou: 'Hearing you...',
             transcribing: 'Transcribing...',
             didNotCatchThat: "Didn't catch that. Please try again.",
+            error: 'Voice error',
             noActiveConversation: 'Please open a conversation first.',
             silenceTimeout: 'No speech detected. Listening for more...',
             listeningNote: 'AI assistant is listening for you—just speak.',
