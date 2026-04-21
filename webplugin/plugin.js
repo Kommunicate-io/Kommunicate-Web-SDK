@@ -394,7 +394,7 @@ function isIOSWebKitBrowser(userAgent) {
 }
 
 function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
-    if (!isIOSWebKitBrowser(userAgent) || !window.visualViewport) {
+    if (!window.visualViewport) {
         return;
     }
 
@@ -418,10 +418,9 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
             iframeElement.getAttribute('data-km-widget-container') === 'true' ||
             !mobileViewport.matches
         ) {
-            iframeElement.classList.contains('km-iframe-closed') &&
-                frameProperties.forEach(function (property) {
-                    iframeElement.style.removeProperty(property);
-                });
+            frameProperties.forEach(function (property) {
+                iframeElement.style.removeProperty(property);
+            });
             return;
         }
 
