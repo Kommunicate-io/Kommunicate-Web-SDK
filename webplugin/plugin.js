@@ -397,7 +397,6 @@ function attachMobileKeyboardViewportFix(iframeElement) {
     if (!window.visualViewport) {
         return;
     }
-
     var viewport = window.visualViewport;
     var mobileViewport = window.matchMedia('(max-width: 600px)');
     var frameProperties = [
@@ -410,7 +409,6 @@ function attachMobileKeyboardViewportFix(iframeElement) {
         'max-width',
         'max-height',
     ];
-
     var syncFrame = function () {
         if (
             !iframeElement.classList.contains('kommunicate-iframe-enable-media-query') ||
@@ -423,7 +421,6 @@ function attachMobileKeyboardViewportFix(iframeElement) {
             });
             return;
         }
-
         [
             ['top', viewport.offsetTop + 'px'],
             ['left', viewport.offsetLeft + 'px'],
@@ -449,7 +446,6 @@ function attachMobileKeyboardViewportFix(iframeElement) {
     });
     syncFrame();
 }
-
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
