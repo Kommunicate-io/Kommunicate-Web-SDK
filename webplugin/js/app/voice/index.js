@@ -675,20 +675,6 @@ class Voice {
         });
     }
 
-    normalizeTextToVoiceSocketPayload(socketPayload) {
-        if (socketPayload && Array.isArray(socketPayload.frames)) {
-            return socketPayload;
-        }
-        if (
-            socketPayload &&
-            socketPayload.textToVoice &&
-            Array.isArray(socketPayload.textToVoice.frames)
-        ) {
-            return socketPayload.textToVoice;
-        }
-        return socketPayload;
-    }
-
     normalizeVoiceToTextSocketPayload(socketPayload) {
         return this.normalizeVoiceToTextPayload(socketPayload);
     }
@@ -940,14 +926,23 @@ class Voice {
     }
 
     createPlaybackBlobFromTextToVoiceResponse(responsePayload) {
-        if (responsePayload instanceof Blob) {
-            return responsePayload;
+        if (!(responsePayload instanceof Blob)) {
+            throw new Error('Omnichannel TTS failed to return binary audio');
         }
-        const normalizedPayload = this.normalizeTextToVoiceSocketPayload(responsePayload);
-        if (normalizedPayload && Array.isArray(normalizedPayload.frames)) {
-            return this.createWavBlobFromOmnichannelFrames(normalizedPayload);
-        }
-        throw new Error('Omnichannel TTS failed to return playable audio');
+        return responsePayload;
+    }
+
+    async createPlaybackAudioDataFromTextToVoiceResponse(responsePayload) {
+        const audioBlob = this.createPlaybackBlobFromTextToVoiceResponse(responsePayload);
+        const audioBuffer = await this.decodeAudioBlob(audioBlob);
+        const monoChannelData = this.getMonoChannelData(audioBuffer);
+        return {
+            float32Data: new Float32Array(monoChannelData),
+            sampleRate: audioBuffer.sampleRate,
+            channelCount: 1,
+            bitsPerSample: 32,
+            sampleCount: monoChannelData.length,
+        };
     }
 
     async textToVoice(text = '') {
@@ -972,18 +967,6 @@ class Voice {
         }
         if (Array.isArray(config.effectsProfileId) && config.effectsProfileId.length) {
             payload.effectsProfileId = config.effectsProfileId;
-        }
-        const socketConfig = this.getVoiceSocketConfig();
-        if (this.isVoiceSocketEnabled(socketConfig)) {
-            return this.requestOmnichannelVoiceTransport({
-                payload,
-                socketConfig,
-                socketAction: socketConfig.textToVoiceAction || 'text_to_voice',
-                socketNormalizePayload: this.normalizeTextToVoiceSocketPayload,
-                httpPath: '/text-to-voice',
-                operation: 'textToVoice',
-                preferSocket: true,
-            });
         }
         return this.requestBinaryTextToVoice(payload);
     }
@@ -1348,126 +1331,6 @@ class Voice {
             buffer[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
         }
         return buffer;
-    }
-
-    getNormalizedOmnichannelPcmData(payload = {}) {
-        const frames = Array.isArray(payload.frames) ? payload.frames : [];
-        const flattened = [];
-        let maxFrameAbs = 0;
-        for (let i = 0; i < frames.length; i++) {
-            const frame = frames[i];
-            if (!Array.isArray(frame)) {
-                continue;
-            }
-            for (let j = 0; j < frame.length; j++) {
-                const sample = Number(frame[j]) || 0;
-                const absSample = Math.abs(sample);
-                if (absSample > maxFrameAbs) {
-                    maxFrameAbs = absSample;
-                }
-                flattened.push(sample);
-            }
-        }
-        let pcmData = Int16Array.from(flattened);
-        let peak = 0;
-        for (let i = 0; i < pcmData.length; i++) {
-            const abs = Math.abs(pcmData[i]);
-            if (abs > peak) {
-                peak = abs;
-            }
-        }
-        if (peak > 0 && peak < 12000) {
-            const targetPeak = 18000;
-            const gain = Math.min(targetPeak / peak, 4);
-            const normalized = new Int16Array(pcmData.length);
-            for (let i = 0; i < pcmData.length; i++) {
-                const amplified = Math.round(pcmData[i] * gain);
-                normalized[i] = Math.max(-32768, Math.min(32767, amplified));
-            }
-            pcmData = normalized;
-        }
-        let finalPeak = 0;
-        for (let i = 0; i < pcmData.length; i++) {
-            const abs = Math.abs(pcmData[i]);
-            if (abs > finalPeak) {
-                finalPeak = abs;
-            }
-        }
-        return {
-            frames,
-            flattenedSampleCount: flattened.length,
-            pcmData,
-            peakAbsBeforeNormalize: maxFrameAbs,
-            peakAbsAfterNormalize: finalPeak,
-            sampleRate: payload.sampleRate || this.getTextToVoiceSampleRate(),
-            channelCount: payload.channelCount || this._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
-            bitsPerSample:
-                payload.bitsPerSample || this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
-        };
-    }
-
-    createPlaybackAudioDataFromOmnichannelFrames(payload = {}) {
-        const normalized = this.getNormalizedOmnichannelPcmData(payload);
-        const pcmData = normalized.pcmData || new Int16Array(0);
-        const float32Data = new Float32Array(pcmData.length);
-        for (let i = 0; i < pcmData.length; i++) {
-            const sample = pcmData[i];
-            float32Data[i] = sample < 0 ? sample / 0x8000 : sample / 0x7fff;
-        }
-        const playbackData = {
-            float32Data,
-            sampleRate: normalized.sampleRate,
-            channelCount: normalized.channelCount,
-            bitsPerSample: normalized.bitsPerSample,
-            sampleCount: pcmData.length,
-        };
-        return playbackData;
-    }
-
-    createWavBlobFromOmnichannelFrames(payload = {}) {
-        const normalized = this.getNormalizedOmnichannelPcmData(payload);
-        const wavBlob = this.createWavBlobFromPcmData(
-            normalized.pcmData,
-            normalized.sampleRate,
-            normalized.channelCount,
-            normalized.bitsPerSample
-        );
-        return wavBlob;
-    }
-
-    createWavBlobFromPcmData(pcmData, sampleRate, channelCount, bitsPerSample) {
-        const bytesPerSample = bitsPerSample / 8;
-        const blockAlign = channelCount * bytesPerSample;
-        const byteRate = sampleRate * blockAlign;
-        const dataSize = pcmData.length * bytesPerSample;
-        const buffer = new ArrayBuffer(44 + dataSize);
-        const view = new DataView(buffer);
-
-        this.writeAscii(view, 0, 'RIFF');
-        view.setUint32(4, 36 + dataSize, true);
-        this.writeAscii(view, 8, 'WAVE');
-        this.writeAscii(view, 12, 'fmt ');
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, channelCount, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, byteRate, true);
-        view.setUint16(32, blockAlign, true);
-        view.setUint16(34, bitsPerSample, true);
-        this.writeAscii(view, 36, 'data');
-        view.setUint32(40, dataSize, true);
-
-        let offset = 44;
-        for (let i = 0; i < pcmData.length; i++, offset += 2) {
-            view.setInt16(offset, pcmData[i], true);
-        }
-        return new Blob([view], { type: 'audio/wav' });
-    }
-
-    writeAscii(view, offset, value) {
-        for (let i = 0; i < value.length; i++) {
-            view.setUint8(offset + i, value.charCodeAt(i));
-        }
     }
 }
 

@@ -676,14 +676,9 @@ class MckVoice {
         ) {
             queueItem.ttsPromise = kmVoice
                 .textToVoice(spokenText)
-                .then((data) => {
-                    if (
-                        this.shouldUseSafariBufferPlayback() &&
-                        data &&
-                        typeof data === 'object' &&
-                        Array.isArray(data.frames)
-                    ) {
-                        queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                .then(async (data) => {
+                    if (this.shouldUseSafariBufferPlayback()) {
+                        queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
                             data
                         );
                     } else {
@@ -743,14 +738,9 @@ class MckVoice {
             if (!queueItem.ttsBlob && !queueItem.ttsPlaybackData && !queueItem.ttsPromise) {
                 queueItem.ttsPromise = kmVoice
                     .textToVoice(spokenText)
-                    .then((data) => {
-                        if (
-                            this.shouldUseSafariBufferPlayback() &&
-                            data &&
-                            typeof data === 'object' &&
-                            Array.isArray(data.frames)
-                        ) {
-                            queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                    .then(async (data) => {
+                        if (this.shouldUseSafariBufferPlayback()) {
+                            queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
                                 data
                             );
                         } else {
