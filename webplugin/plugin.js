@@ -393,7 +393,7 @@ function isIOSWebKitBrowser(userAgent) {
     return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
 }
 
-function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
+function attachMobileKeyboardViewportFix(iframeElement) {
     if (!window.visualViewport) {
         return;
     }
@@ -510,7 +510,7 @@ function createKommunicateIframe() {
         document.body.appendChild(kommunicateIframe);
     }
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
-    attachIOSKeyboardViewportFix(kommunicateIframe, userAgent);
+    attachMobileKeyboardViewportFix(kommunicateIframe);
     attemptContainerAutoLaunch(kommunicateIframe);
 
     if (!iframeSupportsSrcdoc) {
