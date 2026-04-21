@@ -8,9 +8,6 @@ var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
-var KM_VERSIONED_BUILD_RESOURCE_PATH = MCK_STATICPATH + '/build/' + KM_RELEASE_HASH + '/resources';
-var KM_VERSIONED_KOMMUNICATE_JS =
-    KM_VERSIONED_BUILD_RESOURCE_PATH + '/kommunicate.' + KM_RELEASE_HASH + '.min.js';
 
 var kmCustomElements = {
     iframe: {
@@ -47,10 +44,7 @@ var kmCustomIframe =
     '   top: 0;' +
     '   left: 0px !important;' +
     '   border-radius: 0px;' +
-    '   height: 100dvh !important;' +
     '   width: 100vw !important;' +
-    '   max-height: 100dvh !important;' +
-    '   max-width: 100vw !important;' +
     '} } \n' +
     '.km-iframe-notification{ ' +
     '    height:80px; ' +
@@ -283,10 +277,6 @@ function removeKommunicateScripts() {
             commons.cleanupIframeResizeListener(kommunicateIframe);
         }
     }
-    if (kommunicateIframe && kommunicateIframe.__kmCleanupViewportFix) {
-        kommunicateIframe.__kmCleanupViewportFix();
-        kommunicateIframe.__kmCleanupViewportFix = null;
-    }
     // delete iframe, kommunicate style sheet, image view modal, origin file
     removeElementFromHtmlById([
         kmCustomElements.imageModal.styleSheetId,
@@ -410,13 +400,6 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
 
     var viewport = window.visualViewport;
     var mobileViewport = window.matchMedia('(max-width: 600px)');
-    var resetFrame = function () {
-        ['top', 'left', 'right', 'bottom', 'width', 'height', 'max-width', 'max-height'].forEach(
-            function (property) {
-                iframeElement.style.removeProperty(property);
-            }
-        );
-    };
 
     var syncFrame = function () {
         var isOpenMobileWidget =
@@ -426,7 +409,18 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
             mobileViewport.matches;
 
         if (!isOpenMobileWidget) {
-            resetFrame();
+            [
+                'top',
+                'left',
+                'right',
+                'bottom',
+                'width',
+                'height',
+                'max-width',
+                'max-height',
+            ].forEach(function (property) {
+                iframeElement.style.removeProperty(property);
+            });
             return;
         }
 
@@ -447,17 +441,14 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
     var onViewportChange = function () {
         window.requestAnimationFrame(syncFrame);
     };
-    var classObserver = new MutationObserver(syncFrame);
 
     viewport.addEventListener('resize', onViewportChange);
     viewport.addEventListener('scroll', onViewportChange);
-    classObserver.observe(iframeElement, { attributes: true, attributeFilter: ['class'] });
-    iframeElement.__kmCleanupViewportFix = function () {
-        viewport.removeEventListener('resize', onViewportChange);
-        viewport.removeEventListener('scroll', onViewportChange);
-        classObserver.disconnect();
-        resetFrame();
-    };
+    new MutationObserver(syncFrame).observe(iframeElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+    });
+    syncFrame();
 }
 
 // Create element iframe for kommunicate widget
@@ -626,7 +617,7 @@ function addKommunicatePluginToIframe() {
     var imported = addableDocument.createElement('script');
     imported.async = false;
     imported.type = 'text/javascript';
-    imported.src = KM_VERSIONED_KOMMUNICATE_JS;
+    imported.src = KOMMUNICATE_MIN_JS;
     addableDocument.head.appendChild(imported);
     addFullviewImageModal();
 }
