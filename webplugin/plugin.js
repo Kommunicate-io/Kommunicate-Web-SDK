@@ -400,6 +400,16 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
 
     var viewport = window.visualViewport;
     var mobileViewport = window.matchMedia('(max-width: 600px)');
+    var frameProperties = [
+        'top',
+        'left',
+        'right',
+        'bottom',
+        'width',
+        'height',
+        'max-width',
+        'max-height',
+    ];
 
     var syncFrame = function () {
         var isOpenMobileWidget =
@@ -409,18 +419,11 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
             mobileViewport.matches;
 
         if (!isOpenMobileWidget) {
-            [
-                'top',
-                'left',
-                'right',
-                'bottom',
-                'width',
-                'height',
-                'max-width',
-                'max-height',
-            ].forEach(function (property) {
-                iframeElement.style.removeProperty(property);
-            });
+            if (iframeElement.classList.contains('km-iframe-closed')) {
+                frameProperties.forEach(function (property) {
+                    iframeElement.style.removeProperty(property);
+                });
+            }
             return;
         }
 
