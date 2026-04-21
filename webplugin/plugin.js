@@ -412,18 +412,16 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
     ];
 
     var syncFrame = function () {
-        var isOpenMobileWidget =
-            iframeElement.classList.contains('kommunicate-iframe-enable-media-query') &&
-            !iframeElement.classList.contains('km-iframe-closed') &&
-            iframeElement.getAttribute('data-km-widget-container') !== 'true' &&
-            mobileViewport.matches;
-
-        if (!isOpenMobileWidget) {
-            if (iframeElement.classList.contains('km-iframe-closed')) {
+        if (
+            !iframeElement.classList.contains('kommunicate-iframe-enable-media-query') ||
+            iframeElement.classList.contains('km-iframe-closed') ||
+            iframeElement.getAttribute('data-km-widget-container') === 'true' ||
+            !mobileViewport.matches
+        ) {
+            iframeElement.classList.contains('km-iframe-closed') &&
                 frameProperties.forEach(function (property) {
                     iframeElement.style.removeProperty(property);
                 });
-            }
             return;
         }
 
@@ -440,7 +438,6 @@ function attachIOSKeyboardViewportFix(iframeElement, userAgent) {
             iframeElement.style.setProperty(entry[0], entry[1], 'important');
         });
     };
-
     var onViewportChange = function () {
         window.requestAnimationFrame(syncFrame);
     };
