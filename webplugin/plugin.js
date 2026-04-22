@@ -44,7 +44,9 @@ var kmCustomIframe =
     '   top: 0;' +
     '   left: 0px !important;' +
     '   border-radius: 0px;' +
-    '   width: 100vw !important;' +
+    '   height: 100% !important;' +
+    '   width: 100% !important;' +
+    '   max-height: 100% !important;' +
     '} } \n' +
     '.km-iframe-notification{ ' +
     '    height:80px; ' +
@@ -71,14 +73,11 @@ var kmCustomIframe =
     '@media only screen and (max-width:600px) { ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-with-popup, ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-no-popup { ' +
-    '   width: 100vw !important;' +
+    '   width: 100% !important;' +
     '   min-width: 0 !important;' +
     '   left: 0 !important;' +
     '   right: 0 !important;' +
     '   bottom: 0 !important;' +
-    '   height: 100dvh !important;' +
-    '   max-height: 100dvh !important;' +
-    '   max-width: 100vw !important;' +
     '} ' +
     '} \n' +
     '.km-iframe-closed{ ' +
@@ -396,8 +395,8 @@ function isIOSWebKitBrowser(userAgent) {
     return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
 }
 
-function attachMobileKeyboardViewportFix(iframeElement) {
-    if (!window.visualViewport) {
+function attachMobileKeyboardViewportFix(iframeElement, userAgent) {
+    if (!isIOSWebKitBrowser(userAgent) || !window.visualViewport) {
         return;
     }
     var viewport = window.visualViewport;
@@ -412,8 +411,17 @@ function attachMobileKeyboardViewportFix(iframeElement) {
         'max-width',
         'max-height',
     ];
+    var viewportFixApplied = false;
     var syncFrame = function () {
-        if (!mobileViewport.matches) return;
+        if (!mobileViewport.matches) {
+            if (viewportFixApplied) {
+                frameProperties.forEach(function (property) {
+                    iframeElement.style.removeProperty(property);
+                });
+                viewportFixApplied = false;
+            }
+            return;
+        }
         if (
             !iframeElement.classList.contains('kommunicate-iframe-enable-media-query') ||
             iframeElement.classList.contains('km-iframe-closed') ||
@@ -422,6 +430,7 @@ function attachMobileKeyboardViewportFix(iframeElement) {
             frameProperties.forEach(function (property) {
                 iframeElement.style.removeProperty(property);
             });
+            viewportFixApplied = false;
             return;
         }
         [
@@ -436,6 +445,7 @@ function attachMobileKeyboardViewportFix(iframeElement) {
         ].forEach(function (entry) {
             iframeElement.style.setProperty(entry[0], entry[1], 'important');
         });
+        viewportFixApplied = true;
     };
     var onViewportChange = function () {
         window.requestAnimationFrame(syncFrame);
@@ -514,7 +524,7 @@ function createKommunicateIframe() {
         document.body.appendChild(kommunicateIframe);
     }
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
-    attachMobileKeyboardViewportFix(kommunicateIframe);
+    attachMobileKeyboardViewportFix(kommunicateIframe, userAgent);
     attemptContainerAutoLaunch(kommunicateIframe);
 
     if (!iframeSupportsSrcdoc) {
