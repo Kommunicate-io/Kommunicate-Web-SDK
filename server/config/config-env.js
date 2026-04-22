@@ -6,7 +6,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             omnichannelBaseUrl: 'https://omni-channel-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'http://10.10.24.82:3030',
+            hostUrl: 'http://localhost:3030',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
         },
         pluginProperties: {
