@@ -56,6 +56,9 @@ const firstVisibleMsg = {
     }
     function handleActivationKey(e, handler) {
         var key = e.key || e.keyCode;
+        if (e.repeat) {
+            return;
+        }
         if (isActivationKey(key)) {
             e.preventDefault();
             handler();

@@ -14,10 +14,12 @@ Kommunicate.messageTemplate = {
     getAttachmentContanier: function (data, fileExpr, isUserMsg, fileUrl) {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
-        data.cancelUploadLabel = window.MCK_LABELS && MCK_LABELS['attachment.cancelUpload'];
-        data.retryUploadLabel = window.MCK_LABELS && MCK_LABELS['attachment.retryUpload'];
+        var attachmentLabels = window.MCK_LABELS || {};
+        var downloadAttachmentLabel = attachmentLabels['attachment.download'];
+        data.cancelUploadLabel = attachmentLabels['attachment.cancelUpload'];
+        data.retryUploadLabel = attachmentLabels['attachment.retryUpload'];
         data.downloadAttachmentLabel =
-            (window.MCK_LABELS && MCK_LABELS['attachment.download']) +
+            downloadAttachmentLabel +
             (data.fileMeta && data.fileMeta.name ? ': ' + data.fileMeta.name : '');
         data.previewContainerClass = isUserMsg
             ? 'km-custom-widget-background-color'
