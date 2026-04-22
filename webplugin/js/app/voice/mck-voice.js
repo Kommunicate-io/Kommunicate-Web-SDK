@@ -676,13 +676,13 @@ class MckVoice {
         ) {
             queueItem.ttsPromise = kmVoice
                 .textToVoice(spokenText)
-                .then((data) => {
+                .then(async (data) => {
                     if (this.shouldUseSafariBufferPlayback()) {
-                        queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                        queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
                             data
                         );
                     } else {
-                        queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                        queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(data);
                     }
                     queueItem.ttsError = null;
                     return queueItem.ttsPlaybackData || queueItem.ttsBlob;
@@ -738,13 +738,15 @@ class MckVoice {
             if (!queueItem.ttsBlob && !queueItem.ttsPlaybackData && !queueItem.ttsPromise) {
                 queueItem.ttsPromise = kmVoice
                     .textToVoice(spokenText)
-                    .then((data) => {
+                    .then(async (data) => {
                         if (this.shouldUseSafariBufferPlayback()) {
-                            queueItem.ttsPlaybackData = kmVoice.createPlaybackAudioDataFromOmnichannelFrames(
+                            queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
                                 data
                             );
                         } else {
-                            queueItem.ttsBlob = kmVoice.createWavBlobFromOmnichannelFrames(data);
+                            queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(
+                                data
+                            );
                         }
                         queueItem.ttsError = null;
                         return queueItem.ttsPlaybackData || queueItem.ttsBlob;
@@ -2039,7 +2041,7 @@ class MckVoice {
                         );
                     }
                     if (!rawSamples.length) {
-                        rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob);
+                        rawSamples = await kmVoice.extractPcmInt16Samples(audioBlob, sampleRate);
                     }
                     const preparedAudio = this.prepareVoiceChunks(rawSamples, sampleRate);
                     const { chunks } = preparedAudio;
@@ -2214,7 +2216,8 @@ class MckVoice {
     }
 
     prepareVoiceChunks(rawSamples = [], sampleRate = 16000) {
-        const totalSamples = Array.isArray(rawSamples) ? rawSamples.length : 0;
+        const totalSamples =
+            rawSamples && typeof rawSamples.length === 'number' ? rawSamples.length : 0;
         const isHalfDuplexCapture = this.shouldUseHalfDuplexVoiceCapture();
         const configuredPreRollMs = Number(
             this.voiceInputSettings.preRollMs || this._VOICE_PRE_ROLL_MS
@@ -2266,7 +2269,7 @@ class MckVoice {
             let sumSquares = 0;
             let frameLength = 0;
             for (let i = start; i < end; i++) {
-                const sample = Number(rawSamples[i]) || 0;
+                const sample = rawSamples[i];
                 sumSquares += sample * sample;
                 frameLength++;
             }
@@ -2453,24 +2456,23 @@ class MckVoice {
             return samples;
         };
 
-        const sendSamplesForStt = async (samples, label = '') => {
+        const sendSamplesForStt = async (samples) => {
             if (!samples || !samples.length) {
                 return null;
             }
             const preparedSamples = normalizeSamplesForStt(samples);
             sentSamplesCount += preparedSamples.length;
-            const chunkBlob = kmVoice.createWavBlobFromPcmData(
-                Int16Array.from(preparedSamples),
-                sampleRate,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.channelCount,
-                kmVoice._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample
-            );
+            const pcmSamples =
+                preparedSamples instanceof Int16Array
+                    ? preparedSamples
+                    : Int16Array.from(preparedSamples);
             sttRequestCount++;
             let response;
             try {
-                response = await kmVoice.voiceToText(chunkBlob, {
+                response = await kmVoice.voiceToText(pcmSamples, {
                     ucid: this.voiceInputSettings.ucid,
                     sttMode: 'recognize',
+                    sampleRate,
                 });
             } catch (error) {
                 if (error && error.code === 'SILENT_AUDIO') {
@@ -2549,7 +2551,7 @@ class MckVoice {
                 let frameSumSquares = 0;
                 let frameLength = 0;
                 for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
-                    const sample = Number(chunkSamples[sampleIndex]) || 0;
+                    const sample = chunkSamples[sampleIndex];
                     frameSumSquares += sample * sample;
                     frameLength++;
                 }
@@ -2585,7 +2587,7 @@ class MckVoice {
                     let frameSumSquares = 0;
                     let frameLength = 0;
                     for (let sampleIndex = start; sampleIndex < end; sampleIndex++) {
-                        const sample = Number(chunkSamples[sampleIndex]) || 0;
+                        const sample = chunkSamples[sampleIndex];
                         frameSumSquares += sample * sample;
                         frameLength++;
                     }
@@ -2634,7 +2636,7 @@ class MckVoice {
             let sumSquares = 0;
             let maxAbs = 0;
             for (let j = 0; j < processedChunkSamples.length; j++) {
-                const value = Number(processedChunkSamples[j]) || 0;
+                const value = processedChunkSamples[j];
                 const absValue = Math.abs(value);
                 sumSquares += value * value;
                 if (absValue > maxAbs) {
@@ -3910,10 +3912,7 @@ class MckVoice {
         }
         const sourceRate = vadCaptureSampleRate || 16000;
         const targetRate = kmVoice.getVoiceToTextSampleRate();
-        const preprocessed =
-            typeof kmVoice.preprocessSttFloat32Samples === 'function'
-                ? kmVoice.preprocessSttFloat32Samples(merged, sourceRate)
-                : merged;
+        const preprocessed = kmVoice.preprocessSttFloat32Samples(merged, sourceRate);
         const resampled = kmVoice.resampleToTargetRate(preprocessed, sourceRate, targetRate);
         const int16 = kmVoice.float32ToInt16(resampled);
         return Array.from(int16);
