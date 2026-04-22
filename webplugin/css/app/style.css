@@ -591,7 +591,9 @@ input[type=number]::-webkit-outer-spin-button {
   left: -18px;
   width: 32px;
   height: 32px;
+  margin: 0;
   padding: 0;
+  border: 0;
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -2668,6 +2670,14 @@ input[type=number]::-webkit-outer-spin-button {
 .km-attachment-wrapper .km-attachment-upload-icon:hover,
 .km-attachment-wrapper .km-attachment-download-icon:hover {
   cursor: pointer;
+}
+.km-attachment-wrapper .km-attachment-icon {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  justify-content: center;
+  padding: 0;
 }
 .km-attachment-wrapper .km-attachment-file-name {
   font-weight: 700;
