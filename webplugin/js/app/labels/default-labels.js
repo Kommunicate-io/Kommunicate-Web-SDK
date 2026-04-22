@@ -129,6 +129,16 @@ class KMLabel {
                 node.setAttribute('title', value);
             });
         };
+        var setTitleAndAriaForSelector = function (selector, path) {
+            var value = resolveLabel(path);
+            if (value === null || typeof value === 'undefined') {
+                return;
+            }
+            getNodes(selector).forEach(function (node) {
+                node.setAttribute('title', value);
+                node.setAttribute('aria-label', value);
+            });
+        };
         var setPlaceholderForSelector = function (selector, path) {
             var value = resolveLabel(path);
             if (value === null || typeof value === 'undefined') {
@@ -231,28 +241,76 @@ class KMLabel {
         [
             { selector: '#mck-btn-loc', path: 'location.share.title' },
             { selector: '#mck-file-up', path: 'file.attachment' },
-            { selector: '.mck-file-attach-label', path: 'file.attach.title' },
             { selector: '#mck-msg-sbmt', path: 'send.message' },
             { selector: '#mck-btn-smiley', path: 'smiley' },
+            { selector: '#mck-img-file-up', path: 'upload.image' },
+            { selector: '#mck-vid-file-up', path: 'upload.video' },
+            { selector: '#mck-mic-animation-container', path: 'voice.input' },
+            { selector: '#mck-mic-btn-container', path: 'voice.input.options' },
+            { selector: '#mck-voice-web', path: 'voice.mode' },
+            { selector: '#intent-option', path: 'quick.replies' },
+            { selector: '#options', path: 'options' },
+            {
+                selector: '#mck-tab-option-panel [data-toggle="mckdropdown"]',
+                path: 'conversation.options',
+            },
+            { selector: '#close', path: 'reply.preview.close' },
+            { selector: '.km-faqsearch-clear', path: 'search.clear' },
+            { selector: '#km-empty-faq-search-clear', path: 'search.clear' },
+            { selector: '.voiceNote', path: 'micOptions.dropup.VOICE_NOTE_TRIGGER' },
+            { selector: '.voiceInput', path: 'micOptions.dropup.VOICE_INPUT_TRIGGER' },
+            { selector: '#delete-recording', path: 'recording.delete' },
+            { selector: '#pause-btn', path: 'recording.pause' },
+            { selector: '#play-btn', path: 'recording.play' },
+            { selector: '#send-btn', path: 'recording.send' },
+            { selector: '#mck-stop-recording', path: 'recording.stop' },
+            { selector: '#mck-voice-repeat-last-msg', path: 'voiceInterface.repeatLastMsg' },
+            { selector: '.chat-popup-widget-close-btn-container', path: 'popup.close' },
+            { selector: '#km-csat-trigger', path: 'conversation.header.dropdown.CSAT_RATING_TEXT' },
+            {
+                selector: '#km-restart-conversation',
+                path: 'conversation.header.dropdown.RESTART_CONVERSATION',
+            },
+            {
+                selector: '#user-overide-voice-output',
+                path: 'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON',
+            },
+            { selector: '#km-faq-option', path: 'conversation.header.dropdown.FAQ' },
+            { selector: '#km-talk-to-human', path: 'conversation.header.dropdown.HANDOFF' },
         ].forEach(function (binding) {
+            setTitleAndAriaForSelector(binding.selector, binding.path);
+        });
+        [{ selector: '.mck-file-attach-label', path: 'file.attach.title' }].forEach(function (
+            binding
+        ) {
             setTitleOnlyForSelector(binding.selector, binding.path);
         });
 
-        setPlaceholderForSelector('#mck-loc-address', 'location.placeholder');
+        setPlaceholderAndAriaLabelForSelector('#mck-loc-address', 'location.placeholder');
         setPlaceholderAndAriaLabelForSelector(
             '#mck-feedback-comment',
             'csat.rating.CONVERSATION_REVIEW_PLACEHOLDER'
         );
+        setPlaceholderAndAriaLabelForSelector('#km-faq-search-input', 'search.faq');
+        setPlaceholderAndAriaLabelForSelector('#km-empty-faq-search', 'search.faq');
         document.getElementById('mck-text-box').dataset.text = MCK_LABELS['input.message'];
         document.getElementById('mck-char-warning-text').innerHTML = MCK_LABELS['char.limit.warn'];
-        document
-            .getElementById('km-faq-search-input')
-            .setAttribute('placeholder', MCK_LABELS['search.faq']);
         var faqBackButton = document.getElementById('km-faq-back-btn');
         if (faqBackButton) {
             faqBackButton.setAttribute('aria-label', MCK_LABELS['faq.back.to.categories']);
             faqBackButton.setAttribute('title', MCK_LABELS['faq.back.to.categories']);
         }
+        ['1', '2', '3', '4', '5'].forEach(function (starValue) {
+            var starInput = document.getElementById('star' + starValue);
+            if (!starInput) {
+                return;
+            }
+            var label =
+                resolveLabel('csat.rating.STAR_' + starValue) ||
+                (starValue === '1' ? '1 star' : starValue + ' stars');
+            starInput.setAttribute('aria-label', label);
+            starInput.setAttribute('title', label);
+        });
         var htmlBindings = {
             'mck-no-faq-found': 'looking.for.something.else',
             'km-internet-disconnect-msg': 'offline.msg',
