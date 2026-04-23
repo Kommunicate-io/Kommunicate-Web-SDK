@@ -95,16 +95,6 @@
     color: var(--km-on-primary, #ffffff);
 }
 
-.mck-sidebox-search .mck-box-top,
-.mck-search-tab-box {
-    padding-right: 0;
-}
-
-.mck-search-tab-box,
-.mck-search-box-top {
-    background-color: rgba(241, 241, 241, 0.6);
-}
-
 .km-faq-and-close-btn-container {
     display: flex;
     align-items: center;
@@ -142,18 +132,4 @@
         justify-content: center;
         line-height: 0;
     }
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-3 {
-    width: 30px;
-    height: inherit;
-    padding: 14px 0;
-}
-
-.mck-sidebox-search .mck-box-top .blk-lg-5 {
-    width: calc(100% - 60px);
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-7 {
-    width: calc(100% - 50px);
 }

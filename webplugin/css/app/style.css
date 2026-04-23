@@ -12,10 +12,12 @@
   --km-font-title-color: #1c2043;
   --km-font-meta-size: 12px;
   --km-font-meta-color: #8d94b5;
+  --km-font-meta-contrast-color: #737373;
   --km-font-body-color: #6e6e6e;
   --km-font-body-size: 14px;
   --km-accent-rgb: 95, 70, 248;
   --km-font-family: Inter, Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif;
+  --km-primary-title-color: #eae3ff;
   --km-modal-header-bg: #5c5aa7;
   --km-modal-header-color: #ffffff;
   --km-modal-body-bg: #ffffff;
@@ -49,8 +51,7 @@ $known-prefixes
 .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) .mck-back-btn-container, .layout-classic #mck-sidebox-content.active-tab-conversations:not(.active-subsection-conversation-individual) #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual .km-bottom-tab-wrapper, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #mck-tab-conversation, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-individual #km-faq, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list .km-conversations-empty:not(.n-vis) ~ #mck-contacts-content, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-sidebox-ft, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #mck-tab-individual, #mck-sidebox-content.active-tab-conversations.active-subsection-conversation-list #km-widget-options, #mck-sidebox-content.active-tab-conversations .km-faq-back-btn-wrapper, .km-empty-conversation-active #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) #mck-sidebox-ft, #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-image-container,
 #mck-sidebox-content:not(.active-tab-conversations) .mck-agent-status-indicator,
 #mck-sidebox-content:not(.active-tab-conversations) #mck-agent-status-text,
-#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box,
-#mck-sidebox-content:not(.active-tab-conversations) #mck-tab-status, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #mck-tab-conversation,
+#mck-sidebox-content:not(.active-tab-conversations) .mck-typing-box, #mck-sidebox-content:not(.active-tab-conversations) .mck-conversation, #mck-tab-conversation,
 #mck-tab-individual,
 #mck-contacts-content,
 #km-faqdiv,
@@ -293,9 +294,9 @@ textarea {
   width: 100%;
   height: 40px;
   border-radius: 999px;
-  background-color: #5f46f8;
+  background-color: var(--km-accent, #5f46f8);
   margin-top: 45px;
-  color: white;
+  color: var(--km-on-primary, #ffffff);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 14px 30px rgba(var(--km-accent-rgb, 95, 70, 248), 0.35);
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -1212,6 +1213,21 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0px solid #dcdcdc;
 }
 
+#mck-message-cell .mck-m-b:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(95, 70, 248, 0.35);
+  border-radius: 24px;
+}
+
+#mck-message-cell .mck-m-b:focus-visible .mck-msg-box {
+  box-shadow: none;
+}
+
+.mck-sidebox .mck-msg-box :is(a, button, [role=button]):focus-visible {
+  outline: 2px solid rgba(95, 70, 248, 0.45);
+  outline-offset: 2px;
+}
+
 .km-answer-feedback-button {
   cursor: pointer;
   width: 14px;
@@ -1636,7 +1652,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--km-on-primary, #ffffff);
+  color: var(--km-font-meta-contrast-color, #1c1c1c);
   font-weight: 700;
 }
 .km-empty-conversation-card__section-meta {
@@ -1649,10 +1665,6 @@ input[type=number]::-webkit-outer-spin-button {
   color: #1c1c1c;
   text-align: center;
 }
-.mck-sidebox .km-empty-conversation-card__info {
-  margin: 24px 0 4px !important;
-}
-
 .km-empty-conversation-card__previews {
   list-style: none;
   padding: 0;
@@ -1716,7 +1728,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
   font-size: 14px;
   line-height: 1.45;
-  color: #ffffff;
+  color: #1c1c1c;
 }
 .km-empty-conversation-card__cta-wrap {
   display: flex;
@@ -3569,6 +3581,10 @@ div#mck-rated:before {
 }
 
 .mck-contact-list .mck-cont-msg-date {
+  color: var(--km-font-meta-contrast-color);
+}
+
+.mck-contact-list .mck-cont-msg-date {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -3590,7 +3606,6 @@ div#mck-rated:before {
   align-items: center;
 }
 
-.mck-box .mck-contact-list .mck-conversation-topic,
 .mck-box .mck-contact-list .mck-cont-name,
 .mck-box .mck-contact-list .mck-cont-msg-wrapper {
   flex: 1 1 auto;
@@ -3618,6 +3633,11 @@ div#mck-rated:before {
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  color: var(--km-font-meta-contrast-color);
+}
+
+.mck-cont-msg-date .mck-conversation-status-time {
+  color: var(--km-font-meta-contrast-color) !important;
 }
 
 .mck-running-on {
@@ -3729,16 +3749,6 @@ div#mck-rated:before {
   color: var(--km-on-primary, #ffffff);
 }
 
-.mck-sidebox-search .mck-box-top,
-.mck-search-tab-box {
-  padding-right: 0;
-}
-
-.mck-search-tab-box,
-.mck-search-box-top {
-  background-color: rgba(241, 241, 241, 0.6);
-}
-
 .km-faq-and-close-btn-container {
   display: flex;
   align-items: center;
@@ -3772,20 +3782,6 @@ div#mck-rated:before {
   align-items: center;
   justify-content: center;
   line-height: 0;
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-3 {
-  width: 30px;
-  height: inherit;
-  padding: 14px 0;
-}
-
-.mck-sidebox-search .mck-box-top .blk-lg-5 {
-  width: calc(100% - 60px);
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-7 {
-  width: calc(100% - 50px);
 }
 
 .mck-dropdown-menu {
@@ -4390,6 +4386,12 @@ div#mck-rated:before {
   color: #9a3412;
 }
 
+.km-voice-progress-message[data-state=error] .km-voice-progress-bubble {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #b91c1c;
+}
+
 /* ========================================
    ACTION BUTTON (Switch to Chat)
    ======================================== */
@@ -4570,7 +4572,7 @@ div#mck-rated:before {
 .km-voice-inline-mic-icon {
   width: 20px;
   height: 20px;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='white' stroke-width='2' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M10 2.5a3.5 3.5 0 0 1 3.5 3.5v3a3.5 3.5 0 0 1-7 0v-3A3.5 3.5 0 0 1 10 2.5Z'/><path d='M6.5 11.5a4.5 4.5 0 0 0 9 0'/><path d='M10 15.5v3'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><rect x='9' y='3' width='6' height='11' rx='3'/><path d='M5 10a7 7 0 0 0 14 0'/><path d='M12 17v4'/><path d='M9 21h6'/></svg>");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

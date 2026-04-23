@@ -358,9 +358,6 @@ Kommunicate.markup = {
             {{/payload}}
         </div>`;
     },
-    getButtonListTemplate: function () {
-        return `{{#buttons}}<button aria-label="{{action.payload.title}}" class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`;
-    },
     getCardHeaderTemplate: function () {
         return `<img class="{{headerImageClass}}" src="{{imgSrc}}"></img>
             <div class="{{headerOverlayTextClass}}">{{overlayText}}</div>`;
@@ -1053,7 +1050,6 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
                 Kommunicate.markup.getGenericSuggestedReplyButton(),
                 singlePayload
             );
-        } else if (singlePayload.action && singlePayload.action.type == 'submit') {
         }
     }
     return buttonContainerHtml + '</div>';

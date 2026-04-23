@@ -1,7 +1,4 @@
 /*css for ask number of rooms in hotel booking */
-.km-room-person-selector-text {
-    border-bottom-left-radius: 4px;
-}
 .km-room-person-selector-container {
     margin-top: 3px;
     border-top-left-radius: 4px;
@@ -85,9 +82,6 @@
     color: #7766b5;
 }
 
-.km-guest-text-lable .km-children-text-lable {
-    width: 30 px;
-}
 .km-children-text-lable span {
     display: block;
     font-size: 12px;
@@ -104,29 +98,6 @@
     padding-left: 0;
     max-width: 100%;
     transform: translateX(-10px);
-}
-.km-next-card-btn,
-.km-previous-card-btn {
-    position: absolute;
-    bottom: 50%;
-    /* transform: translateY(-50%); */
-    background-color: #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.12);
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    z-index: 5;
-}
-.km-next-card-btn {
-    right: 0px;
-}
-.km-previous-card-btn {
-    left: 0px;
 }
 .km-single-card-message {
     width: 300px !important;
@@ -152,9 +123,6 @@
     background-size: cover;
     background-position-y: 30%;
     object-fit: cover;
-}
-.km-image-card-2 {
-    background-image: url('/images/card-message-img-2.jpg');
 }
 .km-card-message-image-price-container {
     position: absolute;
@@ -216,10 +184,6 @@
     height: 16px;
     margin-bottom: -3px;
     fill: #000;
-}
-.card-message-footer {
-    width: 100%;
-    height: 34px;
 }
 .km-card-message-footer-button {
     width: 100%;
@@ -481,14 +445,6 @@
 .km-blocked-room-details {
     padding: 0px;
 }
-.km-blocked-room-image-container {
-    border-radius: 8px 8px 0px 0px;
-    width: 100%;
-    height: 100px;
-    /* background-image: url('/images/card-message-img-1.jpg');*/
-    background-size: cover;
-    background-position-y: 30%;
-}
 .km-blocked-room-text-container {
     padding-top: 5px;
 }
@@ -558,11 +514,6 @@
     display: inline !important;
     width: 41.5% !important;
 }
-.km-pxinfo-btn-right {
-    display: inline !important;
-    width: 43% !important;
-    margin-left: 5px !important;
-}
 /********** Guest Details Form Ends Here ***********/
 
 .mck-away-msg {
@@ -618,13 +569,6 @@
 }
 /******** Generic list template*************/
 /* FAQ List */
-
-.km-dialog-box {
-    /*width:96%;*/
-}
-
-.km-faq-list--container {
-}
 
 /********  dialog box template *************/
 /* FAQ Answer */
@@ -727,22 +671,14 @@
 }
 
 .mck-msg-box-rich-text-container .email-message-indicator span:first-child,
-.email-conversation-indicator span:first-child,
 .km-msg-box .email-message-indicator span:first-child {
     margin-right: 10px;
 }
-.mck-msg-box-rich-text-container
-    .email-message-indicator
-    span:first-child
-    svg
-    .email-conversation-indicator
-    span:first-child
-    svg,
+.mck-msg-box-rich-text-container .email-message-indicator span:first-child svg,
 .km-msg-box .email-message-indicator span:first-child svg {
     vertical-align: middle;
 }
 .mck-msg-box-rich-text-container .email-message-indicator span:last-child,
-.email-conversation-indicator span:last-child,
 .km-msg-box .email-message-indicator span:last-child {
     font-size: 14px;
     font-weight: 300;
@@ -775,10 +711,6 @@
     transform: translateY(-50%);
     box-shadow: 0px 0px 12px 0px rgba(17, 34, 34, 0.24);
 }
-.mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email {
-    margin-left: 10px;
-}
-
 .km-slider-multiple-cards-container {
     margin-left: -65px;
 }

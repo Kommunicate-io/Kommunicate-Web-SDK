@@ -191,8 +191,6 @@ function ApplozicSidebox() {
                 mckSidebox.style.visibility = 'visible';
                 var mckLocBox = document.getElementById('mck-loc-box');
                 mckLocBox.style.visibility = 'visible';
-                var mckGmSearchBox = document.getElementById('mck-gm-search-box');
-                mckGmSearchBox.style.visibility = 'visible';
             }
             if (
                 navigator.userAgent.indexOf('MSIE') !== -1 ||
@@ -363,11 +361,21 @@ function ApplozicSidebox() {
             }
 
             if (options.voiceNote) {
-                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js));
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js).catch((error) => {
+                        options.voiceNote = false;
+                        console.error(error);
+                    })
+                );
             }
 
             if (options.voiceChat) {
-                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js));
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js).catch((error) => {
+                        options.voiceChat = false;
+                        console.error(error);
+                    })
+                );
             }
 
             await Promise.all(promises);
@@ -632,7 +640,6 @@ function ApplozicSidebox() {
             );
 
             options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
-            options.voiceChatApiKey = options.voiceChatApiKey || data.voiceChatApiKey;
             options.storageSuffix =
                 typeof options.storageSuffix == 'string' ? options.storageSuffix : '';
             appOptionSession.deletePropertyDataFromSession('settings');

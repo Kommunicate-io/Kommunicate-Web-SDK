@@ -165,6 +165,8 @@ function KmCustomTheme() {
             '--km-widget-header-background': primaryColor,
             '--km-on-primary': contrastColor,
             '--km-on-primary-link': contrastColor,
+            '--km-modal-header-bg': primaryColor,
+            '--km-modal-header-color': contrastColor,
             '--km-custom-widget-background-color': primaryColor,
             '--km-custom-widget-contrast-color': contrastColor,
             '--km-custom-widget-border-color': primaryColor,
@@ -242,7 +244,6 @@ function KmCustomTheme() {
             additionalVars || {},
             customVars
         );
-
         Object.keys(mergedVars).forEach(function (name) {
             var value = mergedVars[name];
             if (value != null) {

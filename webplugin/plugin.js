@@ -55,7 +55,6 @@ var kmCustomIframe =
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
     '    width: 390px; ' +
-    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3)' +
     '} \n ' +
     '.km-iframe-dimension-with-popup{ ' +
     '    height: 85vh; ' +
@@ -63,7 +62,13 @@ var kmCustomIframe =
     '    width: 27vw; ' +
     '    min-width: 390px; ' +
     '    max-width: 460px; ' +
-    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);' +
+    '} \n ' +
+    '.kommunicate-custom-iframe.km-iframe-dimension-with-popup.km-iframe-shadow-ready, ' +
+    '.kommunicate-custom-iframe.km-iframe-dimension-no-popup.km-iframe-shadow-ready{ ' +
+    '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3) !important;' +
+    '} \n ' +
+    '.kommunicate-custom-iframe.km-iframe-loading{' +
+    '    box-shadow: none !important;' +
     '} \n ' +
     '@media only screen and (max-width:600px) { ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-with-popup, ' +
@@ -371,6 +376,22 @@ function languageDirectionChangeAuto() {
     return rtlLanguages.includes(locale) ? 'rtl' : 'ltr';
 }
 
+function isIOSDevice(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return /iPad|iPhone|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+}
+
+function isIOSWebKitBrowser(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
+}
+
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
@@ -409,9 +430,11 @@ function createKommunicateIframe() {
     var userAgent = navigator.userAgent || '';
     var isSafari =
         /Safari/i.test(userAgent) &&
-        !/Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
+        !/Chrome|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
         !/Android/i.test(userAgent);
-    var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
+    var isIOSWebKit = isIOSWebKitBrowser(userAgent);
+    var iframeSupportsSrcdoc =
+        'srcdoc' in document.createElement('iframe') && !isSafari && !isIOSWebKit;
     if (iframeSupportsSrcdoc) {
         kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
     } else {

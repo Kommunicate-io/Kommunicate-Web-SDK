@@ -8,7 +8,146 @@ var kmIsWelcomeVoiceMessage = function (message) {
     );
 };
 
+
 var kmVoiceMessageHandler = {
+    _queuedVoiceMessageSignatures: [],
+    _MAX_MESSAGE_TEXT_SUMMARY_DEPTH: 5,
+
+    getVoiceController: function () {
+        return typeof mckVoice !== 'undefined' ? mckVoice : null;
+    },
+
+    getStableMessageIdentity: function (message) {
+        if (!message) {
+            return '';
+        }
+        return (
+            message.key ||
+            message.createdAtTime ||
+            message.pairedMessageKey ||
+            (message.metadata &&
+                (message.metadata.messageKey ||
+                    message.metadata.id ||
+                    message.metadata.KM_MESSAGE_KEY)) ||
+            ''
+        );
+    },
+
+    getMessageVoiceSignature: function (message) {
+        if (!message) {
+            return '';
+        }
+        var stableIdentity = this.getStableMessageIdentity(message);
+        if (!stableIdentity) {
+            return '';
+        }
+        return [stableIdentity, message.groupId || message.to || '', message.type || ''].join('::');
+    },
+
+    hasVisitedSummaryValue: function (visited, value) {
+        if (!visited || !value || typeof value !== 'object') {
+            return false;
+        }
+        if (typeof WeakSet === 'function' && visited instanceof WeakSet) {
+            return visited.has(value);
+        }
+        return visited.indexOf(value) !== -1;
+    },
+
+    markVisitedSummaryValue: function (visited, value) {
+        if (!visited || !value || typeof value !== 'object') {
+            return;
+        }
+        if (typeof WeakSet === 'function' && visited instanceof WeakSet) {
+            visited.add(value);
+            return;
+        }
+        visited.push(value);
+    },
+
+    getMessageTextSummaryFromValue: function (value, depth, visited) {
+        var currentDepth = typeof depth === 'number' ? depth : 0;
+        var currentVisited = visited || (typeof WeakSet === 'function' ? new WeakSet() : []);
+        if (currentDepth > this._MAX_MESSAGE_TEXT_SUMMARY_DEPTH) {
+            return '';
+        }
+        if (typeof value === 'string') {
+            return value;
+        }
+        if (typeof value === 'number') {
+            return String(value);
+        }
+        if (Array.isArray(value)) {
+            if (this.hasVisitedSummaryValue(currentVisited, value)) {
+                return '';
+            }
+            this.markVisitedSummaryValue(currentVisited, value);
+            return value
+                .map((item) =>
+                    this.getMessageTextSummaryFromValue(item, currentDepth + 1, currentVisited)
+                )
+                .filter(Boolean)
+                .join(' ');
+        }
+        if (value && typeof value === 'object') {
+            if (this.hasVisitedSummaryValue(currentVisited, value)) {
+                return '';
+            }
+            this.markVisitedSummaryValue(currentVisited, value);
+            if (typeof value.message === 'string' || typeof value.message === 'number') {
+                return String(value.message);
+            }
+        }
+        return '';
+    },
+
+    getMessageTextSummary: function (message) {
+        if (!message) {
+            return '';
+        }
+        return this.getMessageTextSummaryFromValue(message.message).trim();
+    },
+
+    getMessageTextLength: function (message) {
+        return this.getMessageTextSummary(message).length;
+    },
+
+    normalizeIncomingMessages: function (message) {
+        if (Array.isArray(message)) {
+            return message.filter(Boolean);
+        }
+        return message ? [message] : [];
+    },
+
+    hasQueuedVoiceMessageSignature: function (signature) {
+        return Boolean(signature && this._queuedVoiceMessageSignatures.indexOf(signature) !== -1);
+    },
+
+    rememberQueuedVoiceMessageSignature: function (signature) {
+        if (!signature) {
+            return;
+        }
+        if (this._queuedVoiceMessageSignatures.indexOf(signature) !== -1) {
+            return;
+        }
+        this._queuedVoiceMessageSignatures.push(signature);
+        if (this._queuedVoiceMessageSignatures.length > 100) {
+            this._queuedVoiceMessageSignatures.splice(
+                0,
+                this._queuedVoiceMessageSignatures.length - 100
+            );
+        }
+    },
+
+    resetQueuedVoiceMessages: function () {
+        this._queuedVoiceMessageSignatures = [];
+    },
+
+    isVoiceInterfaceActive: function () {
+        var voiceController = this.getVoiceController();
+        return Boolean(voiceController && voiceController.isVoiceModeActive());
+    },
+
     isIncomingBotMessage: function (message) {
         return message && (message.type === 0 || message.type === 4 || message.type === 6);
     },
@@ -113,12 +252,61 @@ var kmVoiceMessageHandler = {
             appOptions &&
             appOptions.voiceChat
         );
+    getQueueVoiceDecision: function (message, appOptions, msgThroughListAPI) {
+        var signature = this.getMessageVoiceSignature(message);
+        var messageTextSummary = this.getMessageTextSummary(message);
+        if (!this.isVoiceInterfaceActive()) {
+            return { allowed: false, reason: 'voice_interface_inactive', signature: signature };
+        }
+        if (!this.isIncomingBotMessage(message)) {
+            return { allowed: false, reason: 'not_incoming_bot_message', signature: signature };
+        }
+        if (!this.isEligibleForUIRendering(message, msgThroughListAPI)) {
+            return { allowed: false, reason: 'message_not_visible', signature: signature };
+        }
+        if (!messageTextSummary) {
+            return { allowed: false, reason: 'empty_message', signature: signature };
+        }
+        if (message._kmVoiceQueued) {
+            return {
+                allowed: false,
+                reason: 'message_object_already_queued',
+                signature: signature,
+            };
+        }
+        if (message.tokenMessage) {
+            return { allowed: false, reason: 'token_message_skipped', signature: signature };
+        }
+        if (!(appOptions && appOptions.voiceChat)) {
+            return { allowed: false, reason: 'voice_chat_disabled', signature: signature };
+        }
+        if (signature && this.hasQueuedVoiceMessageSignature(signature)) {
+            return { allowed: false, reason: 'message_already_queued', signature: signature };
+        }
+        return { allowed: true, reason: 'queued', signature: signature };
     },
 
     queueFromMessageRender: function (message, displayName, appOptions, msgThroughListAPI) {
-        if (!this.canQueueVoiceMessage(message, appOptions, msgThroughListAPI)) {
-            return false;
+        var messages = this.normalizeIncomingMessages(message);
+        var queuedAtLeastOne = false;
+        for (var index = 0; index < messages.length; index++) {
+            var currentMessage = messages[index];
+            var decision = this.getQueueVoiceDecision(
+                currentMessage,
+                appOptions,
+                msgThroughListAPI
+            );
+            if (!decision.allowed) {
+                continue;
+            }
+            if (!mckVoice.processMessagesAsAudio(currentMessage, displayName)) {
+                continue;
+            }
+            currentMessage._kmVoiceQueued = true;
+            decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
+            queuedAtLeastOne = true;
         }
+
         mckVoice.markVoiceMessageQueued(message);
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
@@ -136,5 +324,8 @@ var kmVoiceMessageHandler = {
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
         return true;
+
     },
+
+ 
 };
