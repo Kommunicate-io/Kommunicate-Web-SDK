@@ -15,9 +15,10 @@ Kommunicate.messageTemplate = {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
         var attachmentLabels = window.MCK_LABELS || {};
-        var downloadAttachmentLabel = attachmentLabels['attachment.download'];
-        data.cancelUploadLabel = attachmentLabels['attachment.cancelUpload'];
-        data.retryUploadLabel = attachmentLabels['attachment.retryUpload'];
+        var downloadAttachmentLabel =
+            attachmentLabels['attachment.download'] || 'Download attachment';
+        data.cancelUploadLabel = attachmentLabels['attachment.cancelUpload'] || 'Cancel upload';
+        data.retryUploadLabel = attachmentLabels['attachment.retryUpload'] || 'Retry upload';
         data.downloadAttachmentLabel =
             downloadAttachmentLabel +
             (data.fileMeta && data.fileMeta.name ? ': ' + data.fileMeta.name : '');
