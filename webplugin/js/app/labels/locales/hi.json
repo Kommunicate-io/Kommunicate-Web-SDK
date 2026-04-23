@@ -219,7 +219,7 @@
   "voice.input.unsupported": "इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है।",
   "voiceInterface.listening": "सुन रहा हूँ...",
   "voiceInterface.listeningNote": "एआई सहायक आपकी बात सुन रहा है, बस बोलें।",
-  "voiceInterface.mutedNote": "माइक्रोफ़ोन रुका हुआ है। वॉइस इनपुट फिर शुरू करने के लिए माइक्रोफ़ोन पर टैप करें।",
+  "voiceInterface.mutedNote": "माइक्रोफ़ोन रुका हुआ है। वॉइस इनपुट फिर शुरू करने के लिए माइक्रोफ़ोन बटन का उपयोग करें।",
   "voiceInterface.processing": "प्रोसेस हो रहा है",
   "voiceInterface.processingFailed": "रिकॉर्डिंग को ट्रांसक्राइब नहीं किया जा सका। कृपया फिर से प्रयास करें।",
   "voiceInterface.noSpeechDetected": "कोई आवाज़ नहीं मिली। कृपया फिर से प्रयास करें।",

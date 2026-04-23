@@ -219,7 +219,7 @@
   "voice.input.unsupported": "此浏览器不支持语音输入。",
   "voiceInterface.listening": "正在聆听...",
   "voiceInterface.listeningNote": "AI 助手正在聆听你，请直接说话。",
-  "voiceInterface.mutedNote": "麦克风已暂停。点击麦克风可恢复语音输入。",
+  "voiceInterface.mutedNote": "麦克风已暂停。请使用麦克风按钮恢复语音输入。",
   "voiceInterface.processing": "处理中",
   "voiceInterface.processingFailed": "无法转写录音，请重试。",
   "voiceInterface.noSpeechDetected": "未检测到语音，请重试。",

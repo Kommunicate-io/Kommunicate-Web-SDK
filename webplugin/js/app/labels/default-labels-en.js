@@ -310,7 +310,7 @@
             noActiveConversation: 'Please open a conversation first.',
             silenceTimeout: 'No speech detected. Listening for more...',
             listeningNote: 'AI assistant is listening for you—just speak.',
-            mutedNote: 'Microphone paused. Tap the mic to resume voice input.',
+            mutedNote: 'Microphone paused. Use the microphone button to resume voice input.',
             processing: 'Processing',
             processingFailed: 'Unable to transcribe the recording. Please try again.',
             noSpeechDetected: 'No speech detected. Please try again.',
