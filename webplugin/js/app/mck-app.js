@@ -369,7 +369,7 @@ function ApplozicSidebox() {
                 );
             }
 
-            if (options.voiceChat) {
+            if (options.voiceChat || options.voiceInput || options.voiceOutput) {
                 promises.push(
                     loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js).catch((error) => {
                         options.voiceChat = false;

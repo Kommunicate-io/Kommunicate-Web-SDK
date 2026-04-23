@@ -2,6 +2,208 @@ Kommunicate.mediaService = {
     browserLocale: window.navigator.language || window.navigator.userLanguage || 'en-US',
     appOptions: appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals,
     userInActiveSec: 0,
+    fallbackVoiceInput: {
+        recorder: null,
+        stream: null,
+        chunks: [],
+        mimeType: 'audio/webm',
+        stopTimer: null,
+        stopping: false,
+    },
+    fallbackVoiceOutput: {
+        audio: null,
+        url: '',
+    },
+    getFallbackVoiceClient: function () {
+        return typeof kmVoice !== 'undefined' ? kmVoice : null;
+    },
+    getFallbackVoiceRecorderHelper: function () {
+        return typeof mckVoice !== 'undefined' ? mckVoice : null;
+    },
+    getFallbackVoiceClientMethod: function (methodName) {
+        var fallbackVoiceClient = this.getFallbackVoiceClient();
+        return fallbackVoiceClient
+            ? fallbackVoiceClient[methodName].bind(fallbackVoiceClient)
+            : null;
+    },
+    getFallbackVoiceRecorderHelperMethod: function (methodName) {
+        var fallbackVoiceRecorderHelper = this.getFallbackVoiceRecorderHelper();
+        return fallbackVoiceRecorderHelper
+            ? fallbackVoiceRecorderHelper[methodName].bind(fallbackVoiceRecorderHelper)
+            : null;
+    },
+    getSpeechRecognition: function () {
+        return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    },
+    getSpeechSynthesis: function () {
+        return window.speechSynthesis || null;
+    },
+    supportsVoiceInput: function () {
+        return Boolean(this.getSpeechRecognition() || this.canUseFallbackVoiceInput());
+    },
+    canUseFallbackVoiceInput: function () {
+        return Boolean(
+            this.getFallbackVoiceClientMethod('voiceToText') &&
+                window.MediaRecorder &&
+                navigator.mediaDevices &&
+                navigator.mediaDevices.getUserMedia &&
+                (window.AudioContext || window.webkitAudioContext) &&
+                window.isSecureContext !== false
+        );
+    },
+    canUseFallbackVoiceOutput: function () {
+        return Boolean(this.getFallbackVoiceClientMethod('textToVoice'));
+    },
+    getFallbackVoiceInputConfig: function () {
+        return (
+            (kommunicate && kommunicate._globals && kommunicate._globals.voiceInputSettings) || {}
+        );
+    },
+    getFallbackVoiceInputConstraints: function () {
+        var getAudioCaptureConstraints = this.getFallbackVoiceRecorderHelperMethod(
+            'getAudioCaptureConstraints'
+        );
+        if (getAudioCaptureConstraints) {
+            return getAudioCaptureConstraints();
+        }
+        return {
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+                channelCount: 1,
+            },
+        };
+    },
+    createFallbackVoiceInputRecorder: function (stream) {
+        var createMediaRecorder = this.getFallbackVoiceRecorderHelperMethod('createMediaRecorder');
+        if (createMediaRecorder) {
+            return createMediaRecorder(stream);
+        }
+        return new MediaRecorder(stream);
+    },
+    clearFallbackVoiceInputStopTimer: function () {
+        if (this.fallbackVoiceInput.stopTimer) {
+            clearTimeout(this.fallbackVoiceInput.stopTimer);
+            this.fallbackVoiceInput.stopTimer = null;
+        }
+    },
+    stopFallbackVoiceInputStream: function () {
+        if (this.fallbackVoiceInput.stream) {
+            this.fallbackVoiceInput.stream.getTracks().forEach(function (track) {
+                track.stop();
+            });
+            this.fallbackVoiceInput.stream = null;
+        }
+    },
+    resetFallbackVoiceInputState: function () {
+        this.clearFallbackVoiceInputStopTimer();
+        this.fallbackVoiceInput.recorder = null;
+        this.fallbackVoiceInput.chunks = [];
+        this.fallbackVoiceInput.mimeType = 'audio/webm';
+        this.fallbackVoiceInput.stopping = false;
+        this.stopFallbackVoiceInputStream();
+        Kommunicate.typingAreaService.hideMiceRecordingAnimation();
+    },
+    stopFallbackVoiceInputRecording: function () {
+        if (
+            !this.fallbackVoiceInput.recorder ||
+            this.fallbackVoiceInput.stopping ||
+            this.fallbackVoiceInput.recorder.state === 'inactive'
+        ) {
+            return;
+        }
+        this.fallbackVoiceInput.stopping = true;
+        this.clearFallbackVoiceInputStopTimer();
+        this.fallbackVoiceInput.recorder.stop();
+    },
+    processFallbackVoiceInputTranscript: async function (audioBlob) {
+        if (!audioBlob || !audioBlob.size) {
+            return;
+        }
+        try {
+            var voiceToText = this.getFallbackVoiceClientMethod('voiceToText');
+            var voiceInputSettings = this.getFallbackVoiceInputConfig();
+            var response = await voiceToText(audioBlob, {
+                ucid: voiceInputSettings.ucid,
+                sttMode: 'recognize',
+            });
+            var transcript =
+                response && typeof response.text === 'string' ? response.text.trim() : '';
+            if (transcript) {
+                Kommunicate.typingAreaService.populateText(
+                    this.capitalizeFirstCharacter(transcript)
+                );
+            }
+        } catch (error) {
+            if (error && error.code === 'SILENT_AUDIO') {
+                return;
+            }
+            console.error('error while fallback speech recognition:', error);
+            alert('Could not process voice input. Please try again.');
+        }
+    },
+    startFallbackVoiceInputRecording: async function () {
+        if (!this.canUseFallbackVoiceInput()) {
+            alert('browser do not support speech recognition');
+            return;
+        }
+        if (
+            this.fallbackVoiceInput.recorder &&
+            this.fallbackVoiceInput.recorder.state !== 'inactive'
+        ) {
+            this.stopFallbackVoiceInputRecording();
+            return;
+        }
+        try {
+            var constraints = this.getFallbackVoiceInputConstraints();
+            var stream = await navigator.mediaDevices.getUserMedia(constraints);
+            var recorder = this.createFallbackVoiceInputRecorder(stream);
+            var that = this;
+            var maxRecordingDurationMs = Math.max(
+                Number(that.appOptions.voiceInputTimeout || 10) * 1000,
+                3000
+            );
+
+            that.fallbackVoiceInput.stream = stream;
+            that.fallbackVoiceInput.recorder = recorder;
+            that.fallbackVoiceInput.chunks = [];
+            that.fallbackVoiceInput.mimeType = recorder.mimeType || 'audio/webm';
+            that.fallbackVoiceInput.stopping = false;
+
+            recorder.ondataavailable = function (event) {
+                if (event.data && event.data.size > 0) {
+                    that.fallbackVoiceInput.chunks.push(event.data);
+                }
+            };
+            recorder.onerror = function (event) {
+                console.error(
+                    'fallback MediaRecorder error',
+                    event && event.error ? event.error : event
+                );
+            };
+            recorder.onstop = async function () {
+                var audioBlob = new Blob(that.fallbackVoiceInput.chunks, {
+                    type: that.fallbackVoiceInput.mimeType,
+                });
+                that.resetFallbackVoiceInputState();
+                await that.processFallbackVoiceInputTranscript(audioBlob);
+            };
+
+            recorder.start(250);
+            Kommunicate.typingAreaService.showMicRcordingAnimation();
+            that.clearFallbackVoiceInputStopTimer();
+            that.fallbackVoiceInput.stopTimer = setTimeout(function () {
+                that.stopFallbackVoiceInputRecording();
+            }, maxRecordingDurationMs);
+        } catch (error) {
+            this.resetFallbackVoiceInputState();
+            console.error('error while starting fallback voice input:', error);
+            alert(
+                'Could not access your microphone. Please allow microphone access and try again.'
+            );
+        }
+    },
     isAppleDevice: function () {
         var isIOSDevice = KommunicateUtils.isIOSDevice();
         var isMacSafari = KommunicateUtils.isSafariBrowser();
@@ -34,9 +236,65 @@ Kommunicate.mediaService = {
             return m.toUpperCase();
         });
     },
+    getVoiceOutputText: function (message) {
+        var textToSpeak = '';
+        if (message.hasOwnProperty('fileMeta')) {
+            textToSpeak += MCK_LABELS['voice.output'].attachment;
+            textToSpeak += message.fileMeta.name;
+        } else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+            var coord = JSON.parse(message.message);
+            textToSpeak += MCK_LABELS['voice.output'].location.init;
+            textToSpeak +=
+                MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
+            textToSpeak +=
+                MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
+        } else if (
+            message.message &&
+            message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
+        ) {
+            textToSpeak += message.message;
+        }
+        return textToSpeak;
+    },
+    clearFallbackVoiceOutput: function () {
+        if (this.fallbackVoiceOutput.audio) {
+            this.fallbackVoiceOutput.audio.pause();
+            this.fallbackVoiceOutput.audio.src = '';
+            this.fallbackVoiceOutput.audio = null;
+        }
+        if (this.fallbackVoiceOutput.url) {
+            URL.revokeObjectURL(this.fallbackVoiceOutput.url);
+            this.fallbackVoiceOutput.url = '';
+        }
+    },
+    playFallbackVoiceOutput: function (audioBlob) {
+        var that = this;
+        var audio = new Audio();
+        var objectUrl = URL.createObjectURL(audioBlob);
+        that.fallbackVoiceOutput.audio = audio;
+        that.fallbackVoiceOutput.url = objectUrl;
+        audio.src = objectUrl;
+        audio.onended = function () {
+            that.stopVoiceOutput();
+        };
+        audio.onerror = function (error) {
+            console.error('Error while converting the message to voice:', error);
+            that.stopVoiceOutput();
+        };
+        audio.play().catch(function (error) {
+            console.error('Error while playing voice output:', error);
+            that.stopVoiceOutput();
+        });
+    },
     processVoiceInputClickedEvent: function () {
+        var mediaService = Kommunicate.mediaService;
+        var Recognition = mediaService.getSpeechRecognition();
         kmWidgetEvents.eventTracking(eventMapping.onVoiceIconClick);
-        if (!('webkitSpeechRecognition' in window)) {
+        if (!Recognition) {
+            if (mediaService.canUseFallbackVoiceInput()) {
+                mediaService.startFallbackVoiceInputRecording();
+                return;
+            }
             alert('browser do not support speech recognition');
         } else {
             //As of April 2023, works only in chrome, edge and safari(limited support)
@@ -45,7 +303,7 @@ Kommunicate.mediaService = {
             var isAppleProduct = Kommunicate.mediaService.isAppleDevice();
             var appOptions = Kommunicate.mediaService.appOptions;
 
-            var recognition = new webkitSpeechRecognition();
+            var recognition = new Recognition();
             recognition.continuous = isAppleProduct; // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             recognition.lang = appOptions.language || Kommunicate.mediaService.browserLocale;
@@ -100,95 +358,84 @@ Kommunicate.mediaService = {
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
-        //Text to Speech
+        var speechSynth = this.getSpeechSynthesis();
+        var appOptions =
+            appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
+        var textToSpeak;
 
-        if ('speechSynthesis' in window) {
-            var speechSynth = window.speechSynthesis;
+        if (offSpeech) {
+            this.stopVoiceOutput();
+            return;
+        }
 
-            if (offSpeech) {
-                speechSynth.cancel();
-                return;
+        if (!appOptions || !appOptions.voiceOutput || !Kommunicate.visibleMessage(message)) {
+            return;
+        }
+
+        textToSpeak = this.getVoiceOutputText(message);
+        if (!textToSpeak) {
+            return;
+        }
+
+        if (speechSynth) {
+            var skipForEach = false;
+            var utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = appOptions.language || 'en-US';
+            utterance.rate = appOptions.voiceRate || 1;
+            utterance.text = textToSpeak;
+
+            function updateVoiceName(voice) {
+                utterance.voice = voice;
+                skipForEach = true;
             }
 
-            // get appOptions from widget script
-            var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
+            if (appOptions.voiceName) {
+                AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
+                    if (skipForEach) return;
 
-            // If the message isn't part of the UI, it's not included in voice output either
-            if (!appOptions || !Kommunicate.visibleMessage(message)) return;
-
-            // if voiceOutput is enabled
-            if (appOptions.voiceOutput) {
-                var textToSpeak = '';
-
-                if (message.hasOwnProperty('fileMeta')) {
-                    textToSpeak += MCK_LABELS['voice.output'].attachment;
-                    textToSpeak += message.fileMeta.name;
-                } else if (
-                    message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
-                ) {
-                    coord = JSON.parse(message.message);
-                    textToSpeak += MCK_LABELS['voice.output'].location.init;
-                    textToSpeak +=
-                        MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
-                    textToSpeak +=
-                        MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
-                } else if (
-                    message.message &&
-                    message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
-                ) {
-                    textToSpeak += message.message;
-                }
-
-                if (textToSpeak) {
-                    var skipForEach = false;
-                    var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                    utterance.lang = appOptions.language || 'en-US';
-                    utterance.rate = appOptions.voiceRate || 1;
-                    utterance.text = textToSpeak;
-
-                    function updateVoiceName(voice) {
-                        utterance.voice = voice;
-                        skipForEach = true;
-                    }
-
-                    if (appOptions.voiceName) {
-                        AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
-                            if (skipForEach) return;
-
-                            if (Array.isArray(appOptions.voiceName)) {
-                                appOptions.voiceName.forEach(function (voiceName) {
-                                    if (voice.name === voiceName.trim()) {
-                                        updateVoiceName(voice);
-                                    }
-                                });
-                            } else if (voice.name === appOptions.voiceName.trim()) {
+                    if (Array.isArray(appOptions.voiceName)) {
+                        appOptions.voiceName.forEach(function (voiceName) {
+                            if (voice.name === voiceName.trim()) {
                                 updateVoiceName(voice);
                             }
                         });
+                    } else if (voice.name === appOptions.voiceName.trim()) {
+                        updateVoiceName(voice);
                     }
-                    utterance.onerror = function (event) {
-                        if (event.error === 'interrupted') {
-                            console.debug(
-                                'Speech was interrupted. This is expected if speech is canceled or a new utterance is started.'
-                            );
-                        } else {
-                            console.error(
-                                'Error while converting the message to voice:',
-                                event.error
-                            );
-                        }
-                    };
-
-                    speechSynth.speak(utterance);
-                }
+                });
             }
+            utterance.onerror = function (event) {
+                if (event.error === 'interrupted') {
+                    console.debug(
+                        'Speech was interrupted. This is expected if speech is canceled or a new utterance is started.'
+                    );
+                } else {
+                    console.error('Error while converting the message to voice:', event.error);
+                }
+            };
+
+            speechSynth.speak(utterance);
+            return;
+        }
+
+        if (this.canUseFallbackVoiceOutput()) {
+            var textToVoice = this.getFallbackVoiceClientMethod('textToVoice');
+            this.stopVoiceOutput();
+            textToVoice(textToSpeak)
+                .then(function (audioBlob) {
+                    Kommunicate.mediaService.playFallbackVoiceOutput(audioBlob);
+                })
+                .catch(function (error) {
+                    console.error('Error while converting the message to voice:', error);
+                });
         }
     },
     stopVoiceOutput: function () {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
+        var speechSynth = this.getSpeechSynthesis();
+        if (speechSynth) {
+            speechSynth.cancel();
         }
+        this.clearFallbackVoiceOutput();
     },
     initRecorder: function () {
         const LIVE_OUTPUT = false; // a feature to live output the recording voice to the speaker
