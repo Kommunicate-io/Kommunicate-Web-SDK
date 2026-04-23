@@ -2669,14 +2669,6 @@ input[type=number]::-webkit-outer-spin-button {
 .km-attachment-wrapper .km-attachment-download-icon:hover {
   cursor: pointer;
 }
-.km-attachment-wrapper .km-attachment-icon {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  display: inline-flex;
-  justify-content: center;
-  padding: 0;
-}
 .km-attachment-wrapper .km-attachment-file-name {
   font-weight: 700;
   white-space: nowrap;
