@@ -8,7 +8,6 @@ var kmIsWelcomeVoiceMessage = function (message) {
     );
 };
 
-
 var kmVoiceMessageHandler = {
     _queuedVoiceMessageSignatures: [],
     _MAX_MESSAGE_TEXT_SUMMARY_DEPTH: 5,
@@ -94,8 +93,12 @@ var kmVoiceMessageHandler = {
                 return '';
             }
             this.markVisitedSummaryValue(currentVisited, value);
-            if (typeof value.message === 'string' || typeof value.message === 'number') {
-                return String(value.message);
+            if (value.message !== undefined) {
+                return this.getMessageTextSummaryFromValue(
+                    value.message,
+                    currentDepth + 1,
+                    currentVisited
+                );
             }
         }
         return '';
@@ -194,10 +197,42 @@ var kmVoiceMessageHandler = {
         return Boolean(message && message.type === 'voice_stream_error');
     },
 
+    getVoiceStreamPayload: function (message) {
+        if (!message) {
+            return null;
+        }
+        var payload = message.message || message.payload || message.data || message;
+        if (!payload || typeof payload !== 'object') {
+            return null;
+        }
+        if (payload === message) {
+            return payload;
+        }
+        return Object.assign({ type: message.type }, payload);
+    },
+
+    getVoiceStreamConversationTarget: function (message) {
+        var payload = this.getVoiceStreamPayload(message);
+        var metadata = payload && payload.messageMetadata ? payload.messageMetadata : {};
+        return {
+            groupId:
+                (payload && (payload.groupId || payload.clientGroupId)) ||
+                metadata.groupId ||
+                metadata.clientGroupId,
+            to:
+                (payload && payload.to) ||
+                metadata.to ||
+                metadata.userId ||
+                metadata.senderId ||
+                metadata.contactId,
+        };
+    },
+
     isWelcomeVoiceMessage: kmIsWelcomeVoiceMessage,
 
     isIncomingBotVoiceStream: function (message) {
-        var metadata = message && message.messageMetadata;
+        var payload = this.getVoiceStreamPayload(message);
+        var metadata = payload && payload.messageMetadata;
         if (!metadata) {
             return false;
         }
@@ -212,46 +247,36 @@ var kmVoiceMessageHandler = {
     },
 
     handleSocketVoiceStream: function (message, tabId, appOptions) {
+        var voiceStreamPayload = this.getVoiceStreamPayload(message);
+        if (!voiceStreamPayload) {
+            return false;
+        }
         if (appOptions && appOptions.voiceChat && this.isVoiceStreamErrorMessage(message)) {
-            mckVoice.handleVoiceStreamError(message);
+            mckVoice.handleVoiceStreamError(voiceStreamPayload);
             return true;
         }
         if (
             !appOptions ||
             !appOptions.voiceChat ||
             !this.isVoiceStreamMessage(message) ||
+            !voiceStreamPayload.streamId ||
             !mckVoice.shouldUseVoiceStreamPlayback() ||
             !this.isCurrentConversationMessage(
-                {
-                    groupId: message?.messageMetadata?.groupId,
-                    to: message?.messageMetadata?.groupId,
-                },
+                this.getVoiceStreamConversationTarget(message),
                 tabId
             ) ||
             !this.isIncomingBotVoiceStream(message)
         ) {
             return false;
         }
-        mckVoice.processVoiceStreamMessage(message);
+        mckVoice.processVoiceStreamMessage(voiceStreamPayload);
         return true;
     },
 
     canQueueVoiceMessage: function (message, appOptions, msgThroughListAPI) {
-        return (
-            mckVoice.isVoiceModeActive() &&
-            this.isIncomingBotMessage(message) &&
-            this.isEligibleForUIRendering(message, msgThroughListAPI) &&
-            message &&
-            message.message &&
-            !mckVoice.hasQueuedVoiceMessage(message) &&
-            !message._kmVoiceQueued &&
-            // Skip intermediate streaming tokens — only queue the final complete message.
-            // Token messages have tokenMessage=true; the complete message that replaces
-            // them does not, so TTS fires exactly once per bot turn.
-            !message.tokenMessage &&
-            appOptions &&
-            appOptions.voiceChat
-        );
+        return this.getQueueVoiceDecision(message, appOptions, msgThroughListAPI).allowed;
+    },
+
     getQueueVoiceDecision: function (message, appOptions, msgThroughListAPI) {
         var signature = this.getMessageVoiceSignature(message);
         var messageTextSummary = this.getMessageTextSummary(message);
@@ -266,6 +291,13 @@ var kmVoiceMessageHandler = {
         }
         if (!messageTextSummary) {
             return { allowed: false, reason: 'empty_message', signature: signature };
+        }
+        if (mckVoice.hasQueuedVoiceMessage(message)) {
+            return {
+                allowed: false,
+                reason: 'message_already_marked_queued',
+                signature: signature,
+            };
         }
         if (message._kmVoiceQueued) {
             return {
@@ -302,15 +334,12 @@ var kmVoiceMessageHandler = {
             if (!mckVoice.processMessagesAsAudio(currentMessage, displayName)) {
                 continue;
             }
+            mckVoice.markVoiceMessageQueued(currentMessage);
             currentMessage._kmVoiceQueued = true;
             decision.signature && this.rememberQueuedVoiceMessageSignature(decision.signature);
             queuedAtLeastOne = true;
         }
-
-        mckVoice.markVoiceMessageQueued(message);
-        message._kmVoiceQueued = true;
-        mckVoice.processMessagesAsAudio(message, displayName);
-        return true;
+        return queuedAtLeastOne;
     },
 
     queueFromSocketReceive: function (message, tabId, appOptions, displayName) {
@@ -324,8 +353,5 @@ var kmVoiceMessageHandler = {
         message._kmVoiceQueued = true;
         mckVoice.processMessagesAsAudio(message, displayName);
         return true;
-
     },
-
- 
 };
