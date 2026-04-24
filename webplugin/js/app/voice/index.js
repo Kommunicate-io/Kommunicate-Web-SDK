@@ -96,6 +96,14 @@ class Voice {
         );
     }
 
+    isAudioMimeType(contentType) {
+        return String(contentType || '')
+            .split(';')[0]
+            .trim()
+            .toLowerCase()
+            .startsWith('audio/');
+    }
+
     normalizeLanguageCode(languageCode) {
         if (languageCode == null) {
             return '';
@@ -828,11 +836,125 @@ class Voice {
             transport === 'socket'
                 ? defaultMessage || 'There was a problem with the voice socket operation:'
                 : defaultMessage || 'There was a problem with the fetch operation:';
+        const requestUrl =
+            error && (error.voiceRequestUrl || error.requestUrl)
+                ? ` url=${error.voiceRequestUrl || error.requestUrl}`
+                : '';
         console.error(
-            `${message} ${error && error.status ? `status=${error.status} ` : ''}${
-                (error && error.message) || ''
-            }`.trim()
+            `${message} ${
+                error && typeof error.status === 'number' ? `status=${error.status} ` : ''
+            }${(error && error.message) || ''}${requestUrl}`.trim()
         );
+    }
+
+    createAudioBlobFromBase64(base64Value, mimeType = 'audio/mpeg') {
+        const normalized = String(base64Value || '').replace(/^data:audio\/[^;]+;base64,/, '');
+        const binary = atob(normalized);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: mimeType || 'audio/mpeg' });
+    }
+
+    extractTextToVoiceAudioPayload(payload, depth = 0) {
+        if (depth > 4 || payload == null) {
+            return null;
+        }
+        if (typeof payload === 'string') {
+            return /^(blob:|data:|https?:)/i.test(payload)
+                ? { kind: 'url', url: payload, mimeType: 'audio/mpeg' }
+                : null;
+        }
+        if (Array.isArray(payload)) {
+            for (let i = 0; i < payload.length; i++) {
+                const nestedAudioPayload = this.extractTextToVoiceAudioPayload(
+                    payload[i],
+                    depth + 1
+                );
+                if (nestedAudioPayload) {
+                    return nestedAudioPayload;
+                }
+            }
+            return null;
+        }
+        if (typeof payload !== 'object') {
+            return null;
+        }
+
+        const mimeType =
+            payload.mimeType ||
+            payload.contentType ||
+            payload.audioMimeType ||
+            payload.format ||
+            'audio/mpeg';
+        const base64Audio =
+            payload.audioBase64 || payload.base64Audio || payload.audioData || payload.audioContent;
+        if (typeof base64Audio === 'string' && base64Audio.trim()) {
+            return {
+                kind: 'base64',
+                data: base64Audio.trim(),
+                mimeType,
+            };
+        }
+
+        const audioUrl =
+            payload.audioUrl ||
+            payload.streamUrl ||
+            payload.url ||
+            (payload.fileMeta && payload.fileMeta.url);
+        if (typeof audioUrl === 'string' && audioUrl.trim()) {
+            return {
+                kind: 'url',
+                url: audioUrl.trim(),
+                mimeType,
+            };
+        }
+
+        const nestedKeys = ['textToVoice', 'response', 'data', 'result', 'audio', 'message'];
+        for (let i = 0; i < nestedKeys.length; i++) {
+            const nestedAudioPayload = this.extractTextToVoiceAudioPayload(
+                payload[nestedKeys[i]],
+                depth + 1
+            );
+            if (nestedAudioPayload) {
+                return nestedAudioPayload;
+            }
+        }
+
+        return null;
+    }
+
+    async resolveTextToVoiceAudioBlob(payload) {
+        const audioPayload = this.extractTextToVoiceAudioPayload(payload);
+        if (!audioPayload) {
+            const message =
+                (payload &&
+                    ((typeof payload.message === 'string' && payload.message) ||
+                        (payload.error &&
+                            (payload.error.message ||
+                                (typeof payload.error === 'string' ? payload.error : ''))))) ||
+                'text-to-voice failed to return audio';
+            throw new Error(String(message));
+        }
+        if (audioPayload.kind === 'base64') {
+            return this.createAudioBlobFromBase64(audioPayload.data, audioPayload.mimeType);
+        }
+        const audioResponse = await fetch(audioPayload.url, {
+            headers: this.getOmnichannelHeaders({
+                accept: `${audioPayload.mimeType}, audio/*;q=0.9, */*;q=0.8`,
+                contentType: null,
+            }),
+        });
+        if (!audioResponse.ok) {
+            throw await this.buildHttpError(audioResponse, 'text-to-voice audio fetch');
+        }
+        const contentType = audioResponse.headers.get('Content-Type') || audioPayload.mimeType;
+        const audioBytes = await audioResponse.arrayBuffer();
+        if (!audioBytes || !audioBytes.byteLength) {
+            throw new Error('text-to-voice audio fetch returned an empty audio response');
+        }
+        return new Blob([audioBytes], { type: contentType || audioPayload.mimeType });
     }
 
     async requestOmnichannelVoiceTransport({
@@ -917,20 +1039,25 @@ class Voice {
             }
 
             const contentType = response.headers.get('Content-Type') || '';
-            if (!this.isMimeType(contentType, 'audio/mpeg')) {
+            if (this.isAudioMimeType(contentType)) {
+                const audioBytes = await response.arrayBuffer();
+                if (!audioBytes || !audioBytes.byteLength) {
+                    throw new Error('text-to-voice returned an empty audio response');
+                }
+                return new Blob([audioBytes], { type: contentType.split(';')[0].trim() });
+            }
+            if (contentType && !this.isMimeType(contentType, 'application/json')) {
                 throw new Error(
-                    `text-to-voice failed to return audio/mpeg. Received ${
+                    `text-to-voice failed to return audio. Received ${
                         contentType || 'unknown content type'
                     }`
                 );
             }
-
-            const audioBytes = await response.arrayBuffer();
-            if (!audioBytes || !audioBytes.byteLength) {
-                throw new Error('text-to-voice returned an empty audio response');
-            }
-
-            return new Blob([audioBytes], { type: 'audio/mpeg' });
+            const responsePayload = await this.parseVoiceToTextHttpResponse(
+                response,
+                'text-to-voice'
+            );
+            return await this.resolveTextToVoiceAudioBlob(responsePayload);
         } catch (error) {
             this.handleOmnichannelVoiceError(error, {
                 transport: 'http',
@@ -1064,6 +1191,12 @@ class Voice {
             }
             return await this.parseVoiceToTextHttpResponse(response, 'voice-to-text');
         } catch (error) {
+            if (error && typeof error.status !== 'number') {
+                error.status = 0;
+            }
+            if (error) {
+                error.voiceRequestUrl = httpUrl;
+            }
             this.handleOmnichannelVoiceError(error, {
                 transport: 'http',
                 silentMessage: 'Silent audio blocked before voice-to-text API call',

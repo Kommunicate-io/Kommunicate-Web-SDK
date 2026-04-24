@@ -617,14 +617,7 @@ class MckVoice {
 
     async processMessagesAsAudio(msg, displayName) {
         if (!kmIsWelcomeVoiceMessage(msg) && this.shouldUseVoiceStreamPlayback()) {
-            if (
-                this.activeVoiceStreamItem ||
-                this.voiceStreamQueue.length > 0 ||
-                this.hasRecentVoiceStreamActivity()
-            ) {
-                return true;
-            }
-            return this.queueVoiceStreamFallbackMessage(msg, displayName);
+            return true;
         }
         try {
             const queueItem = this.createQueuedVoiceMessage(msg, displayName);
@@ -727,6 +720,7 @@ class MckVoice {
             ) {
                 this.processNextVoiceStreamMessage();
             }
+            return true;
         } catch (err) {
             this.handleVoiceStreamPlaybackFailure(err);
         }
@@ -1381,6 +1375,54 @@ class MckVoice {
         this.resumeListeningAfterPlayback();
     }
 
+    createQueuedVoiceMessage(msg, displayName, options = {}) {
+        const shouldPrefetchTts = options.prefetchTts !== false;
+        const originalMessage = this.extractVoiceMessageTextFromValue(msg && msg.message);
+        const messageWithoutSource = originalMessage.replace(
+            /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
+            ''
+        );
+        const spokenText = messageWithoutSource.trim();
+        const queueItem = {
+            msg,
+            displayName,
+            messageWithoutSource,
+            spokenText,
+            ttsPromise: null,
+            ttsBlob: null,
+            ttsPlaybackData: null,
+            ttsError: null,
+        };
+
+        if (
+            spokenText &&
+            shouldPrefetchTts &&
+            !this.shouldUseNativeSpeechSynthesis() &&
+            this.activeRecognitionMode === 'omnichannel'
+        ) {
+            queueItem.ttsPromise = kmVoice
+                .textToVoice(spokenText)
+                .then(async (data) => {
+                    if (this.shouldUseSafariBufferPlayback()) {
+                        queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
+                            data
+                        );
+                    } else {
+                        queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(data);
+                    }
+                    queueItem.ttsError = null;
+                    return queueItem.ttsPlaybackData || queueItem.ttsBlob;
+                })
+                .catch((error) => {
+                    queueItem.ttsPromise = null;
+                    queueItem.ttsError = error;
+                    return null;
+                });
+        }
+
+        return queueItem;
+    }
+
     releaseStoredReplayAudio() {
         if (
             this.agentOrBotLastMsgAudio &&
@@ -1504,69 +1546,22 @@ class MckVoice {
         return '';
     }
 
-    createQueuedVoiceMessage(msg, displayName, options = {}) {
-        const shouldPrefetchTts = options.prefetchTts !== false;
-        const originalMessage =
-            msg && typeof msg.message === 'string'
-                ? msg.message
-                : msg && typeof msg.message === 'number'
-                ? String(msg.message)
-                : '';
-
-        const messageWithoutSource = originalMessage.replace(
-            /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
-            ''
-        );
-        const spokenText = messageWithoutSource.trim();
-        const queueItem = {
-            msg,
-            displayName,
-            messageWithoutSource,
-            spokenText,
-            ttsPromise: null,
-            ttsBlob: null,
-            ttsPlaybackData: null,
-            ttsError: null,
-        };
-
-        if (
-            spokenText &&
-            shouldPrefetchTts &&
-            !this.shouldUseNativeSpeechSynthesis() &&
-            this.activeRecognitionMode === 'omnichannel'
-        ) {
-            queueItem.ttsPromise = kmVoice
-                .textToVoice(spokenText)
-                .then(async (data) => {
-                    if (this.shouldUseSafariBufferPlayback()) {
-                        queueItem.ttsPlaybackData = await kmVoice.createPlaybackAudioDataFromTextToVoiceResponse(
-                            data
-                        );
-                    } else {
-                        queueItem.ttsBlob = kmVoice.createPlaybackBlobFromTextToVoiceResponse(data);
-                    }
-                    queueItem.ttsError = null;
-                    return queueItem.ttsPlaybackData || queueItem.ttsBlob;
-                })
-                .catch((error) => {
-                    queueItem.ttsPromise = null;
-                    queueItem.ttsError = error;
-                    return null;
-                });
-        }
-
-        return queueItem;
-    }
-
     async processNextMessage(queueItemOrMsg, displayName) {
+        let queueItem = null;
+        let spokenText = '';
         try {
-            const queueItem =
+            queueItem =
                 queueItemOrMsg &&
                 typeof queueItemOrMsg === 'object' &&
                 Object.prototype.hasOwnProperty.call(queueItemOrMsg, 'messageWithoutSource')
                     ? queueItemOrMsg
                     : this.createQueuedVoiceMessage(queueItemOrMsg, displayName);
-            const { messageWithoutSource, spokenText, displayName: queuedDisplayName } = queueItem;
+            const {
+                messageWithoutSource,
+                spokenText: queueItemSpokenText,
+                displayName: queuedDisplayName,
+            } = queueItem;
+            spokenText = queueItemSpokenText;
 
             this.agentOrBotName = queuedDisplayName;
             const responseText = queuedDisplayName
@@ -1621,7 +1616,7 @@ class MckVoice {
             const playbackAsset =
                 queueItem.ttsPlaybackData || queueItem.ttsBlob || (await queueItem.ttsPromise);
             if (!playbackAsset) {
-                throw new Error('Omnichannel TTS failed to return audio');
+                throw queueItem.ttsError || new Error('Omnichannel TTS failed to return audio');
             }
             if (this.shouldUseSafariBufferPlayback()) {
                 this.playSafariPlaybackDataWithQueue(playbackAsset);
@@ -1629,6 +1624,11 @@ class MckVoice {
             }
             await this.playAudioBlobWithQueue(playbackAsset);
         } catch (err) {
+            if (spokenText && this.canFallbackToNativeTts(err)) {
+                console.warn('Voice TTS failed. Falling back to native speech synthesis.', err);
+                this.playNativeSpeech(spokenText);
+                return;
+            }
             this.handlePlaybackFailure(err);
         }
     }
@@ -2211,6 +2211,46 @@ class MckVoice {
         return typeof speechSynthesis !== 'undefined';
     }
 
+    isRecoverableVoiceServiceError(error) {
+        const message = error && error.message ? error.message : '';
+        return Boolean(
+            error &&
+                (error.name === 'TypeError' ||
+                    /Failed to fetch|NetworkError|text-to-voice|voice-to-text/i.test(message) ||
+                    (typeof error.status === 'number' && error.status >= 500))
+        );
+    }
+
+    canFallbackToNativeTts(error) {
+        return (
+            this.isNativeSpeechSynthesisAvailable() && this.isRecoverableVoiceServiceError(error)
+        );
+    }
+
+    canFallbackToNativeRecognition(error) {
+        return (
+            this.activeRecognitionMode !== 'native' &&
+            this.isNativeSpeechRecognitionAvailable() &&
+            this.isRecoverableVoiceServiceError(error)
+        );
+    }
+
+    activateNativeRecognitionFallback() {
+        this.nativeRecognitionFailed = false;
+        this.activeRecognitionMode = 'native';
+        this.updateLiveTranscript(
+            this.getVoiceLabel(
+                'voiceInterface.nativeFallback',
+                'Voice service unavailable. Switching to browser voice input. Please try again.'
+            ),
+            { autoHide: 3500 }
+        );
+        if (!this.awaitingBotResponsePlayback) {
+            this.showListeningState();
+            this.scheduleAutoListen(1200);
+        }
+    }
+
     playNativeSpeech(text) {
         if (!text || !this.isNativeSpeechSynthesisAvailable()) {
             this.advanceQueueAfterPlayback();
@@ -2364,7 +2404,14 @@ class MckVoice {
         this.advanceVoiceStreamQueueAfterPlayback(fallbackQueueItem);
     }
 
-    async repeatLastMsgAudio(blobUrl) {
+    async repeatLastMsgAudio(blobUrl = this.agentOrBotLastMsgAudio) {
+        if (this.shouldUseSafariBufferPlayback() && this.agentOrBotLastMsgPlaybackData) {
+            await this.playSafariPlaybackDataWithQueue(this.agentOrBotLastMsgPlaybackData, {
+                isRepeat: true,
+            });
+            return;
+        }
+
         if (!blobUrl) {
             if (this.agentOrBotLastMsg && this.shouldUseNativeSpeechSynthesis()) {
                 this.playNativeSpeech(this.agentOrBotLastMsg);
@@ -2985,6 +3032,14 @@ class MckVoice {
                             // Re-enter listening automatically so the user doesn't
                             // have to tap the mic button again.
                             this.scheduleAutoListen(2600);
+                            return;
+                        }
+                        if (this.canFallbackToNativeRecognition(error)) {
+                            console.warn(
+                                'Voice STT failed. Falling back to browser speech recognition.',
+                                error
+                            );
+                            this.activateNativeRecognitionFallback();
                             return;
                         }
                         throw error;
