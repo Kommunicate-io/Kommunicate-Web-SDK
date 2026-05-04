@@ -21,17 +21,16 @@ Kommunicate.mediaService = {
     getFallbackVoiceRecorderHelper: function () {
         return typeof mckVoice !== 'undefined' ? mckVoice : null;
     },
-    getFallbackVoiceClientMethod: function (methodName) {
-        var fallbackVoiceClient = this.getFallbackVoiceClient();
-        return fallbackVoiceClient
-            ? fallbackVoiceClient[methodName].bind(fallbackVoiceClient)
+    getBoundFallbackMethod: function (fallbackClient, methodName) {
+        return fallbackClient && fallbackClient[methodName]
+            ? fallbackClient[methodName].bind(fallbackClient)
             : null;
     },
+    getFallbackVoiceClientMethod: function (methodName) {
+        return this.getBoundFallbackMethod(this.getFallbackVoiceClient(), methodName);
+    },
     getFallbackVoiceRecorderHelperMethod: function (methodName) {
-        var fallbackVoiceRecorderHelper = this.getFallbackVoiceRecorderHelper();
-        return fallbackVoiceRecorderHelper
-            ? fallbackVoiceRecorderHelper[methodName].bind(fallbackVoiceRecorderHelper)
-            : null;
+        return this.getBoundFallbackMethod(this.getFallbackVoiceRecorderHelper(), methodName);
     },
     getSpeechRecognition: function () {
         return window.SpeechRecognition || window.webkitSpeechRecognition || null;
