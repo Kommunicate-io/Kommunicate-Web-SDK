@@ -140,11 +140,14 @@ Kommunicate.mediaService = {
             that.fallbackVoiceInput.stream = stream;
             that.fallbackVoiceInput.recorder = recorder;
             that.fallbackVoiceInput.chunks = [];
-            that.fallbackVoiceInput.mimeType = recorder.mimeType || 'audio/webm';
+            that.fallbackVoiceInput.mimeType = recorder.mimeType || '';
             that.fallbackVoiceInput.stopping = false;
 
             recorder.ondataavailable = function (event) {
                 if (event.data && event.data.size > 0) {
+                    if (!that.fallbackVoiceInput.mimeType && event.data.type) {
+                        that.fallbackVoiceInput.mimeType = event.data.type;
+                    }
                     that.fallbackVoiceInput.chunks.push(event.data);
                 }
             };
@@ -156,7 +159,7 @@ Kommunicate.mediaService = {
             };
             recorder.onstop = async function () {
                 var audioBlob = new Blob(that.fallbackVoiceInput.chunks, {
-                    type: that.fallbackVoiceInput.mimeType,
+                    type: that.fallbackVoiceInput.mimeType || 'audio/webm',
                 });
                 that.resetFallbackVoiceInputState();
                 await that.processFallbackVoiceInputTranscript(audioBlob);
