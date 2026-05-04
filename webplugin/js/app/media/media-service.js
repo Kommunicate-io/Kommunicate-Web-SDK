@@ -15,23 +15,6 @@ Kommunicate.mediaService = {
         url: '',
         requestId: 0,
     },
-    getFallbackVoiceClient: function () {
-        return typeof kmVoice !== 'undefined' ? kmVoice : null;
-    },
-    getFallbackVoiceRecorderHelper: function () {
-        return typeof mckVoice !== 'undefined' ? mckVoice : null;
-    },
-    getBoundFallbackMethod: function (fallbackClient, methodName) {
-        return fallbackClient && fallbackClient[methodName]
-            ? fallbackClient[methodName].bind(fallbackClient)
-            : null;
-    },
-    getFallbackVoiceClientMethod: function (methodName) {
-        return this.getBoundFallbackMethod(this.getFallbackVoiceClient(), methodName);
-    },
-    getFallbackVoiceRecorderHelperMethod: function (methodName) {
-        return this.getBoundFallbackMethod(this.getFallbackVoiceRecorderHelper(), methodName);
-    },
     getSpeechRecognition: function () {
         return window.SpeechRecognition || window.webkitSpeechRecognition || null;
     },
@@ -43,7 +26,7 @@ Kommunicate.mediaService = {
     },
     canUseFallbackVoiceInput: function () {
         return Boolean(
-            this.getFallbackVoiceClientMethod('voiceToText') &&
+            kmVoice.voiceToText &&
                 window.MediaRecorder &&
                 navigator.mediaDevices &&
                 navigator.mediaDevices.getUserMedia &&
@@ -52,7 +35,7 @@ Kommunicate.mediaService = {
         );
     },
     canUseFallbackVoiceOutput: function () {
-        return Boolean(this.getFallbackVoiceClientMethod('textToVoice'));
+        return Boolean(kmVoice.textToVoice);
     },
     getFallbackVoiceInputConfig: function () {
         return (
@@ -68,27 +51,10 @@ Kommunicate.mediaService = {
         return Math.max(maxDurationMs || 10000, 3000);
     },
     getFallbackVoiceInputConstraints: function () {
-        var getAudioCaptureConstraints = this.getFallbackVoiceRecorderHelperMethod(
-            'getAudioCaptureConstraints'
-        );
-        if (getAudioCaptureConstraints) {
-            return getAudioCaptureConstraints();
-        }
-        return {
-            audio: {
-                echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true,
-                channelCount: 1,
-            },
-        };
+        return mckVoice.getAudioCaptureConstraints();
     },
     createFallbackVoiceInputRecorder: function (stream) {
-        var createMediaRecorder = this.getFallbackVoiceRecorderHelperMethod('createMediaRecorder');
-        if (createMediaRecorder) {
-            return createMediaRecorder(stream);
-        }
-        return new MediaRecorder(stream);
+        return mckVoice.createMediaRecorder(stream);
     },
     clearFallbackVoiceInputStopTimer: function () {
         if (this.fallbackVoiceInput.stopTimer) {
@@ -130,9 +96,8 @@ Kommunicate.mediaService = {
             return;
         }
         try {
-            var voiceToText = this.getFallbackVoiceClientMethod('voiceToText');
             var voiceInputSettings = this.getFallbackVoiceInputConfig();
-            var response = await voiceToText(audioBlob, {
+            var response = await kmVoice.voiceToText(audioBlob, {
                 ucid: voiceInputSettings.ucid,
                 sttMode: 'recognize',
             });
@@ -430,11 +395,11 @@ Kommunicate.mediaService = {
         }
 
         if (this.canUseFallbackVoiceOutput()) {
-            var textToVoice = this.getFallbackVoiceClientMethod('textToVoice');
             var fallbackVoiceOutputRequestId;
             this.stopVoiceOutput();
             fallbackVoiceOutputRequestId = this.fallbackVoiceOutput.requestId;
-            textToVoice(textToSpeak)
+            kmVoice
+                .textToVoice(textToSpeak)
                 .then(function (audioBlob) {
                     if (
                         Kommunicate.mediaService.isCurrentFallbackVoiceOutputRequest(
