@@ -6703,7 +6703,6 @@ const firstVisibleMsg = {
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.isWaitingQueue = false;
                                 CURRENT_GROUP_DATA.groupMembers = groupPxy.groupUsers;
-                                console.log('groupPxy now checking', groupPxy);
 
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
                                 CURRENT_GROUP_DATA.teamId =
