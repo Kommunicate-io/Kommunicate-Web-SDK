@@ -12,6 +12,7 @@ Kommunicate.mediaService = {
         starting: false,
         startToken: 0,
         requestId: 0,
+        errorTimer: null,
     },
     fallbackVoiceOutput: {
         audio: null,
@@ -44,6 +45,26 @@ Kommunicate.mediaService = {
         return (
             (kommunicate && kommunicate._globals && kommunicate._globals.voiceInputSettings) || {}
         );
+    },
+    showVoiceInputErrorMessage: function (message) {
+        var errorElement = document.getElementById('mck-msg-error');
+        if (!errorElement) {
+            console.warn(message);
+            return;
+        }
+        if (this.fallbackVoiceInput.errorTimer) {
+            clearTimeout(this.fallbackVoiceInput.errorTimer);
+            this.fallbackVoiceInput.errorTimer = null;
+        }
+        var that = this;
+        errorElement.textContent = message;
+        errorElement.classList.add('mck-no-mb');
+        kommunicateCommons.show(errorElement);
+        this.fallbackVoiceInput.errorTimer = setTimeout(function () {
+            kommunicateCommons.hide(errorElement);
+            errorElement.classList.remove('mck-no-mb');
+            that.fallbackVoiceInput.errorTimer = null;
+        }, 5000);
     },
     getFallbackVoiceInputMaxDurationMs: function () {
         var appOptions = this.appOptions || {};
@@ -153,12 +174,22 @@ Kommunicate.mediaService = {
                 return;
             }
             console.error('error while fallback speech recognition:', error);
-            alert('Could not process voice input. Please try again.');
+            this.showVoiceInputErrorMessage(
+                kommunicateCommons.getLocalizedLabel(
+                    'voiceInterface.processingFailed',
+                    'Could not process voice input. Please try again.'
+                )
+            );
         }
     },
     startFallbackVoiceInputRecording: async function () {
         if (!this.canUseFallbackVoiceInput()) {
-            alert('browser do not support speech recognition');
+            this.showVoiceInputErrorMessage(
+                kommunicateCommons.getLocalizedLabel(
+                    'voice.input.unsupported',
+                    'Voice input is not supported in this browser.'
+                )
+            );
             return;
         }
         if (this.fallbackVoiceInput.starting) {
@@ -244,8 +275,11 @@ Kommunicate.mediaService = {
             }
             this.resetFallbackVoiceInputState();
             console.error('error while starting fallback voice input:', error);
-            alert(
-                'Could not access your microphone. Please allow microphone access and try again.'
+            this.showVoiceInputErrorMessage(
+                kommunicateCommons.getLocalizedLabel(
+                    'voice.permission.required',
+                    'Microphone permission is required for voice mode.'
+                )
             );
         } finally {
             if (this.isCurrentFallbackVoiceInputStart(startToken)) {
@@ -347,7 +381,12 @@ Kommunicate.mediaService = {
                 mediaService.startFallbackVoiceInputRecording();
                 return;
             }
-            alert('browser do not support speech recognition');
+            mediaService.showVoiceInputErrorMessage(
+                kommunicateCommons.getLocalizedLabel(
+                    'voice.input.unsupported',
+                    'Voice input is not supported in this browser.'
+                )
+            );
         } else {
             //As of April 2023, works only in chrome, edge and safari(limited support)
             var lastListeningEventTime = 0;

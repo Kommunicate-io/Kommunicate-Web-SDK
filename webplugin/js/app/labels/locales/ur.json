@@ -216,6 +216,7 @@
   "start.voice": "آواز",
   "start.with.voice": "آواز سے شروع کریں",
   "voice.permission.required": "وائس موڈ کے لیے مائیکروفون کی اجازت درکار ہے۔",
+  "voice.input.unsupported": "اس براؤزر میں وائس ان پٹ سپورٹ نہیں ہے۔",
   "voiceInterface.listening": "سن رہا ہوں...",
   "voiceInterface.listeningNote": "اے آئی اسسٹنٹ آپ کی بات سن رہا ہے، بس بولیں۔",
   "voiceInterface.mutedNote": "مائیکروفون موقوف ہے۔ وائس ان پٹ دوبارہ شروع کرنے کے لیے مائیکروفون پر ٹیپ کریں۔",

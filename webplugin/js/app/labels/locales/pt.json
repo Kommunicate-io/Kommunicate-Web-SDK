@@ -216,6 +216,7 @@
   "start.voice": "Voz",
   "start.with.voice": "Começar com voz",
   "voice.permission.required": "A permissão do microfone é necessária para o modo de voz.",
+  "voice.input.unsupported": "A entrada de voz não é compatível com este navegador.",
   "voiceInterface.listening": "Ouvindo...",
   "voiceInterface.listeningNote": "O assistente de IA está ouvindo você, é só falar.",
   "voiceInterface.mutedNote": "Microfone pausado. Toque no microfone para retomar a entrada de voz.",
