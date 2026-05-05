@@ -1063,15 +1063,6 @@ class Voice {
         const sampleRate = Number(sampleRateOverride) || this.getVoiceToTextSampleRate();
         const samples = await this.resolveVoiceToTextSamples(audioInput, sampleRate);
         const audioMetrics = this.evaluatePcmInt16Quality(samples);
-        console.debug('Voice STT audio metrics', {
-            sampleRate,
-            sampleCount: audioMetrics.sampleCount,
-            nonZeroRatio: audioMetrics.nonZeroRatio,
-            rms: audioMetrics.rms,
-            peakAbs: audioMetrics.peakAbs,
-            zcr: audioMetrics.zcr,
-            isSilent: audioMetrics.isSilent,
-        });
         if (audioMetrics.isSilent) {
             const silentAudioError = this.createSilentAudioError(audioMetrics);
             throw silentAudioError;

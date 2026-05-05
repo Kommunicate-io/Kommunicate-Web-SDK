@@ -156,6 +156,7 @@ Kommunicate.mediaService = {
                     'fallback MediaRecorder error',
                     event && event.error ? event.error : event
                 );
+                that.resetFallbackVoiceInputState();
             };
             recorder.onstop = async function () {
                 var audioBlob = new Blob(that.fallbackVoiceInput.chunks, {
