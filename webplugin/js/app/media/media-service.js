@@ -9,6 +9,9 @@ Kommunicate.mediaService = {
         mimeType: 'audio/webm',
         stopTimer: null,
         stopping: false,
+        starting: false,
+        startToken: 0,
+        requestId: 0,
     },
     fallbackVoiceOutput: {
         audio: null,
@@ -56,6 +59,24 @@ Kommunicate.mediaService = {
     createFallbackVoiceInputRecorder: function (stream) {
         return mckVoice.createMediaRecorder(stream);
     },
+    getFallbackVoiceInputComposerText: function () {
+        var textbox = document.getElementById('mck-text-box');
+        return textbox ? textbox.textContent || '' : '';
+    },
+    getNextFallbackVoiceInputRequestId: function () {
+        this.fallbackVoiceInput.requestId += 1;
+        return this.fallbackVoiceInput.requestId;
+    },
+    isCurrentFallbackVoiceInputRequest: function (requestId) {
+        return this.fallbackVoiceInput.requestId === requestId;
+    },
+    getNextFallbackVoiceInputStartToken: function () {
+        this.fallbackVoiceInput.startToken += 1;
+        return this.fallbackVoiceInput.startToken;
+    },
+    isCurrentFallbackVoiceInputStart: function (startToken) {
+        return this.fallbackVoiceInput.startToken === startToken;
+    },
     clearFallbackVoiceInputStopTimer: function () {
         if (this.fallbackVoiceInput.stopTimer) {
             clearTimeout(this.fallbackVoiceInput.stopTimer);
@@ -76,6 +97,8 @@ Kommunicate.mediaService = {
         this.fallbackVoiceInput.chunks = [];
         this.fallbackVoiceInput.mimeType = 'audio/webm';
         this.fallbackVoiceInput.stopping = false;
+        this.fallbackVoiceInput.starting = false;
+        this.getNextFallbackVoiceInputStartToken();
         this.stopFallbackVoiceInputStream();
         Kommunicate.typingAreaService.hideMiceRecordingAnimation();
     },
@@ -91,16 +114,26 @@ Kommunicate.mediaService = {
         this.clearFallbackVoiceInputStopTimer();
         this.fallbackVoiceInput.recorder.stop();
     },
-    processFallbackVoiceInputTranscript: async function (audioBlob) {
+    processFallbackVoiceInputTranscript: async function (audioBlob, requestId) {
         if (!audioBlob || !audioBlob.size) {
             return;
         }
+        if (!this.isCurrentFallbackVoiceInputRequest(requestId)) {
+            return;
+        }
+        var composerTextBeforeRequest = this.getFallbackVoiceInputComposerText();
         try {
             var voiceInputSettings = this.getFallbackVoiceInputConfig();
             var response = await kmVoice.voiceToText(audioBlob, {
                 ucid: voiceInputSettings.ucid,
                 sttMode: 'recognize',
             });
+            if (
+                !this.isCurrentFallbackVoiceInputRequest(requestId) ||
+                this.getFallbackVoiceInputComposerText() !== composerTextBeforeRequest
+            ) {
+                return;
+            }
             var transcript =
                 response && typeof response.text === 'string' ? response.text.trim() : '';
             if (transcript) {
@@ -110,6 +143,12 @@ Kommunicate.mediaService = {
                 window.$applozic.fn.applozic('toggleMediaOptions');
             }
         } catch (error) {
+            if (
+                !this.isCurrentFallbackVoiceInputRequest(requestId) ||
+                this.getFallbackVoiceInputComposerText() !== composerTextBeforeRequest
+            ) {
+                return;
+            }
             if (error && error.code === 'SILENT_AUDIO') {
                 return;
             }
@@ -122,6 +161,9 @@ Kommunicate.mediaService = {
             alert('browser do not support speech recognition');
             return;
         }
+        if (this.fallbackVoiceInput.starting) {
+            return;
+        }
         if (
             this.fallbackVoiceInput.recorder &&
             this.fallbackVoiceInput.recorder.state !== 'inactive'
@@ -129,19 +171,37 @@ Kommunicate.mediaService = {
             this.stopFallbackVoiceInputRecording();
             return;
         }
+        var stream = null;
+        var startToken = null;
         try {
             var constraints = this.getFallbackVoiceInputConstraints();
-            var stream = await navigator.mediaDevices.getUserMedia(constraints);
+            this.fallbackVoiceInput.starting = true;
+            startToken = this.getNextFallbackVoiceInputStartToken();
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            if (
+                !this.fallbackVoiceInput.starting ||
+                !this.isCurrentFallbackVoiceInputStart(startToken) ||
+                (this.fallbackVoiceInput.recorder &&
+                    this.fallbackVoiceInput.recorder.state !== 'inactive')
+            ) {
+                stream.getTracks().forEach(function (track) {
+                    track.stop();
+                });
+                return;
+            }
             var recorder = this.createFallbackVoiceInputRecorder(stream);
             var that = this;
             // Fallback recording uses its own max-duration config; voiceInputTimeout remains the silence timeout for native STT.
             var maxRecordingDurationMs = that.getFallbackVoiceInputMaxDurationMs();
+            var fallbackVoiceInputRequestId = that.getNextFallbackVoiceInputRequestId();
 
             that.fallbackVoiceInput.stream = stream;
             that.fallbackVoiceInput.recorder = recorder;
             that.fallbackVoiceInput.chunks = [];
             that.fallbackVoiceInput.mimeType = recorder.mimeType || '';
             that.fallbackVoiceInput.stopping = false;
+            that.fallbackVoiceInput.starting = false;
+            stream = null;
 
             recorder.ondataavailable = function (event) {
                 if (event.data && event.data.size > 0) {
@@ -156,6 +216,7 @@ Kommunicate.mediaService = {
                     'fallback MediaRecorder error',
                     event && event.error ? event.error : event
                 );
+                that.getNextFallbackVoiceInputRequestId();
                 that.resetFallbackVoiceInputState();
             };
             recorder.onstop = async function () {
@@ -163,7 +224,10 @@ Kommunicate.mediaService = {
                     type: that.fallbackVoiceInput.mimeType || 'audio/webm',
                 });
                 that.resetFallbackVoiceInputState();
-                await that.processFallbackVoiceInputTranscript(audioBlob);
+                await that.processFallbackVoiceInputTranscript(
+                    audioBlob,
+                    fallbackVoiceInputRequestId
+                );
             };
 
             recorder.start(250);
@@ -173,11 +237,20 @@ Kommunicate.mediaService = {
                 that.stopFallbackVoiceInputRecording();
             }, maxRecordingDurationMs);
         } catch (error) {
+            if (stream) {
+                stream.getTracks().forEach(function (track) {
+                    track.stop();
+                });
+            }
             this.resetFallbackVoiceInputState();
             console.error('error while starting fallback voice input:', error);
             alert(
                 'Could not access your microphone. Please allow microphone access and try again.'
             );
+        } finally {
+            if (this.isCurrentFallbackVoiceInputStart(startToken)) {
+                this.fallbackVoiceInput.starting = false;
+            }
         }
     },
     isAppleDevice: function () {
