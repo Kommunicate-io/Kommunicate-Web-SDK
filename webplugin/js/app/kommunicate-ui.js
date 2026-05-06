@@ -1784,14 +1784,19 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
 
-        var startNewButton = document.getElementById('mck-msg-new');
-        if (startNewButton) {
-            if (isWidgetSingleThreaded) {
-                startNewButton.classList.add('force-n-vis');
-            } else {
-                startNewButton.classList.remove('force-n-vis');
+        ['km-start-conversation-actions', 'mck-msg-new', 'km-start-with-voice-cta'].forEach(
+            function (elementId) {
+                var startConversationElement = document.getElementById(elementId);
+                if (!startConversationElement) {
+                    return;
+                }
+                if (isWidgetSingleThreaded) {
+                    startConversationElement.classList.add('force-n-vis');
+                } else {
+                    startConversationElement.classList.remove('force-n-vis');
+                }
             }
-        }
+        );
     },
     updateSingleThreadedClass: function (hasMultipleConversations) {
         var isWidgetSingleThreaded =

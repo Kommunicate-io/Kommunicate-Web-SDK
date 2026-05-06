@@ -183,7 +183,7 @@ $applozic.extend(true, Kommunicate, {
                         },
                     },
                     success: function (response) {
-                        console.log(response);
+                        console.debug(response);
                     },
                     error: function (error) {
                         console.log(error);

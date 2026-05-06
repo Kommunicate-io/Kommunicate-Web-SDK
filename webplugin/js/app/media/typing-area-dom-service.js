@@ -45,7 +45,7 @@ Kommunicate.typingAreaService = {
                 this.showMicButton();
             }
         } else if (appOption && appOption.voiceInput && !appOption.voiceNote) {
-            if (!window.hasOwnProperty('webkitSpeechRecognition')) {
+            if (!Kommunicate.mediaService.supportsVoiceInput()) {
                 console.log('browser do not support speech recognition');
                 this.hideMicButton();
             } else {
@@ -56,7 +56,7 @@ Kommunicate.typingAreaService = {
             }
         } else if (appOption && appOption.voiceInput && appOption.voiceNote) {
             if (
-                !window.hasOwnProperty('webkitSpeechRecognition') ||
+                !Kommunicate.mediaService.supportsVoiceInput() ||
                 !window.hasOwnProperty('MediaRecorder')
             ) {
                 console.log('browser do not support speech recognition or media recording');

@@ -1071,8 +1071,6 @@ class Voice {
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
         const { state } = this.getVoiceLanguageState(activeConversationUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
-        const shouldSendAlternativeLanguageCodes =
-            !sttLanguageCode && state && state.hasSentVoiceToTextRequest;
 
         const payload = {
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
@@ -1084,15 +1082,6 @@ class Voice {
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
         }
-        // if (shouldSendAlternativeLanguageCodes) {
-        //     const firstRequestAlternatives = this.getFirstSttAlternativeLanguageCodes(
-        //         sttLanguageCode,
-        //         activeConversationUcid
-        //     );
-        //     if (firstRequestAlternatives.length) {
-        //         payload.alternativeLanguageCodes = firstRequestAlternatives;
-        //     }
-        // }
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
         }
