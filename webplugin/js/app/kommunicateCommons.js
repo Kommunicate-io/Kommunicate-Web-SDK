@@ -149,6 +149,11 @@ function KommunicateCommons() {
         var baseHeight =
             computedStyle && computedStyle.height ? parseInt(computedStyle.height, 10) : NaN;
 
+        var iframeBottomOffset =
+            computedStyle && computedStyle.bottom ? parseFloat(computedStyle.bottom) : NaN;
+        if (isNaN(iframeBottomOffset)) {
+            iframeBottomOffset = IFRAME_BOTTOM_OFFSET; // fallback, currently 120 or default 15
+        }
         if (isNaN(baseHeight)) {
             return;
         }
@@ -158,7 +163,9 @@ function KommunicateCommons() {
             navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
         }
         var navAdjustedIframeHeight = baseHeight - navHeight;
-        var finalIframeHeight = navAdjustedIframeHeight > 0 ? navAdjustedIframeHeight : baseHeight;
+        var finalIframeHeight =
+            (navAdjustedIframeHeight > 0 ? navAdjustedIframeHeight : baseHeight) -
+            iframeBottomOffset;
         var shouldEnforceTopGap =
             iframeElement.classList &&
             iframeElement.classList.contains('km-iframe-dimension-with-popup');
@@ -167,7 +174,7 @@ function KommunicateCommons() {
                 heightSourceWindow && heightSourceWindow.innerHeight
                     ? heightSourceWindow.innerHeight
                     : window.innerHeight;
-            var maxIframeHeightWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - IFRAME_BOTTOM_OFFSET;
+            var maxIframeHeightWithTopGap = viewportHeight - MIN_TOP_CTA_GAP - iframeBottomOffset;
             if (!isNaN(maxIframeHeightWithTopGap) && maxIframeHeightWithTopGap > 0) {
                 finalIframeHeight = Math.max(finalIframeHeight, maxIframeHeightWithTopGap);
             }
