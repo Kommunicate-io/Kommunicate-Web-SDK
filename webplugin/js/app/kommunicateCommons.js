@@ -149,15 +149,14 @@ function KommunicateCommons() {
         var baseHeight =
             computedStyle && computedStyle.height ? parseInt(computedStyle.height, 10) : NaN;
 
-        var iframeBottomOffset =
-            computedStyle && computedStyle.bottom ? parseFloat(computedStyle.bottom) : NaN;
-        if (isNaN(iframeBottomOffset)) {
-            iframeBottomOffset = IFRAME_BOTTOM_OFFSET; // fallback, currently 120 or default 15
-        }
         if (isNaN(baseHeight)) {
             return;
         }
-
+        var iframeBottomOffset =
+            computedStyle && computedStyle.bottom ? parseFloat(computedStyle.bottom) : NaN;
+        if (isNaN(iframeBottomOffset)) {
+            iframeBottomOffset = IFRAME_BOTTOM_OFFSET;
+        }
         var navHeight = getBottomNavHeight(iframeElement);
         if (isNaN(navHeight) || navHeight <= 0) {
             navHeight = DEFAULT_BOTTOM_NAV_HEIGHT;
