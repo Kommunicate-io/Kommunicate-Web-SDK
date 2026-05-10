@@ -276,6 +276,9 @@ function removeKommunicateScripts() {
             commons.cleanupIframeResizeListener(kommunicateIframe);
         }
     }
+    kommunicateIframe &&
+        kommunicateIframe.__kmDetachViewportFix &&
+        kommunicateIframe.__kmDetachViewportFix();
     // delete iframe, kommunicate style sheet, image view modal, origin file
     removeElementFromHtmlById([
         kmCustomElements.imageModal.styleSheetId,
@@ -376,6 +379,91 @@ function languageDirectionChangeAuto() {
     return rtlLanguages.includes(locale) ? 'rtl' : 'ltr';
 }
 
+function isIOSDevice(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return /iPad|iPhone|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+}
+
+function isIOSWebKitBrowser(userAgent) {
+    var ua = userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent || '' : '');
+    if (!ua) {
+        return false;
+    }
+    return isIOSDevice(ua) && /AppleWebKit/i.test(ua);
+}
+
+function attachMobileKeyboardViewportFix(iframeElement, userAgent) {
+    if (!isIOSWebKitBrowser(userAgent) || !window.visualViewport) {
+        return;
+    }
+    var viewport = window.visualViewport;
+    var mobileViewport = window.matchMedia('(max-width: 600px)');
+    var frameProperties = [
+        'top',
+        'left',
+        'right',
+        'bottom',
+        'width',
+        'height',
+        'max-width',
+        'max-height',
+    ];
+    var viewportFixApplied = false;
+    var syncFrame = function () {
+        if (!mobileViewport.matches) {
+            if (viewportFixApplied) {
+                frameProperties.forEach(function (property) {
+                    iframeElement.style.removeProperty(property);
+                });
+                viewportFixApplied = false;
+            }
+            return;
+        }
+        if (
+            !iframeElement.classList.contains('kommunicate-iframe-enable-media-query') ||
+            iframeElement.classList.contains('km-iframe-closed') ||
+            iframeElement.getAttribute('data-km-widget-container') === 'true'
+        ) {
+            frameProperties.forEach(function (property) {
+                iframeElement.style.removeProperty(property);
+            });
+            viewportFixApplied = false;
+            return;
+        }
+        [
+            ['top', viewport.offsetTop + 'px'],
+            ['left', viewport.offsetLeft + 'px'],
+            ['right', 'auto'],
+            ['bottom', 'auto'],
+            ['width', viewport.width + 'px'],
+            ['height', viewport.height + 'px'],
+            ['max-width', viewport.width + 'px'],
+            ['max-height', viewport.height + 'px'],
+        ].forEach(function (entry) {
+            iframeElement.style.setProperty(entry[0], entry[1], 'important');
+        });
+        viewportFixApplied = true;
+    };
+    var onViewportChange = function () {
+        window.requestAnimationFrame(syncFrame);
+    };
+    var observer = new MutationObserver(syncFrame);
+    viewport.addEventListener('resize', onViewportChange);
+    viewport.addEventListener('scroll', onViewportChange);
+    observer.observe(iframeElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+    });
+    iframeElement.__kmDetachViewportFix = function () {
+        viewport.removeEventListener('resize', onViewportChange);
+        viewport.removeEventListener('scroll', onViewportChange);
+        observer.disconnect();
+    };
+    syncFrame();
+}
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
@@ -414,9 +502,11 @@ function createKommunicateIframe() {
     var userAgent = navigator.userAgent || '';
     var isSafari =
         /Safari/i.test(userAgent) &&
-        !/Chrome|CriOS|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
+        !/Chrome|Chromium|Edg|OPR|FxiOS|SamsungBrowser/i.test(userAgent) &&
         !/Android/i.test(userAgent);
-    var iframeSupportsSrcdoc = 'srcdoc' in document.createElement('iframe') && !isSafari;
+    var isIOSWebKit = isIOSWebKitBrowser(userAgent);
+    var iframeSupportsSrcdoc =
+        'srcdoc' in document.createElement('iframe') && !isSafari && !isIOSWebKit;
     if (iframeSupportsSrcdoc) {
         kommunicateIframe.setAttribute('srcdoc', srcdocHtml);
     } else {
@@ -434,6 +524,7 @@ function createKommunicateIframe() {
         document.body.appendChild(kommunicateIframe);
     }
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
+    attachMobileKeyboardViewportFix(kommunicateIframe, userAgent);
     attemptContainerAutoLaunch(kommunicateIframe);
 
     if (!iframeSupportsSrcdoc) {

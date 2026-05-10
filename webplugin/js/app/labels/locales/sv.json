@@ -216,6 +216,7 @@
   "start.voice": "Röst",
   "start.with.voice": "Starta med röst",
   "voice.permission.required": "Mikrofonbehörighet krävs för röstläge.",
+  "voice.input.unsupported": "Röstinmatning stöds inte i den här webbläsaren.",
   "voiceInterface.listening": "Lyssnar...",
   "voiceInterface.listeningNote": "AI-assistenten lyssnar på dig, bara prata.",
   "voiceInterface.mutedNote": "Mikrofonen är pausad. Tryck på mikrofonen för att fortsätta röstinmatning.",

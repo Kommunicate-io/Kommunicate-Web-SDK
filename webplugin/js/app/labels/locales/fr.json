@@ -216,6 +216,7 @@
   "start.voice": "Voix",
   "start.with.voice": "Commencer avec la voix",
   "voice.permission.required": "L'autorisation du microphone est requise pour le mode vocal.",
+  "voice.input.unsupported": "La saisie vocale n'est pas prise en charge dans ce navigateur.",
   "voiceInterface.listening": "À l'écoute...",
   "voiceInterface.listeningNote": "L'assistant IA vous écoute, parlez simplement.",
   "voiceInterface.mutedNote": "Microphone en pause. Appuyez sur le micro pour reprendre la saisie vocale.",

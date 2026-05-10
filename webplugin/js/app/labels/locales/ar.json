@@ -216,6 +216,7 @@
   "start.voice": "صوت",
   "start.with.voice": "ابدأ بالصوت",
   "voice.permission.required": "يلزم إذن الميكروفون لوضع الصوت.",
+  "voice.input.unsupported": "الإدخال الصوتي غير مدعوم في هذا المتصفح.",
   "voiceInterface.listening": "جارٍ الاستماع...",
   "voiceInterface.listeningNote": "المساعد الذكي يستمع إليك، فقط تكلّم.",
   "voiceInterface.mutedNote": "تم إيقاف الميكروفون مؤقتًا. اضغط على الميكروفون لاستئناف الإدخال الصوتي.",

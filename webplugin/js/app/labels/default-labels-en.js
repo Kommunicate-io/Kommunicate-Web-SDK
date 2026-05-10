@@ -22,6 +22,8 @@
         'start.voice': 'Voice',
         'start.with.voice': 'Start with Voice',
         'voice.permission.required': 'Microphone permission is required for voice mode.',
+        'voice.input.unsupported': 'Voice input is not supported in this browser.',
+        'voiceInterface.processingFailed': 'Unable to transcribe the recording. Please try again.',
         'search.contacts': 'Contacts',
         'search.groups': 'Groups',
         'char.limit.warn':
@@ -280,6 +282,7 @@
             hearingYou: 'Hearing you...',
             transcribing: 'Transcribing...',
             didNotCatchThat: "Didn't catch that. Please try again.",
+            error: 'Voice error',
             noActiveConversation: 'Please open a conversation first.',
             silenceTimeout: 'No speech detected. Listening for more...',
             listeningNote: 'AI assistant is listening for you—just speak.',

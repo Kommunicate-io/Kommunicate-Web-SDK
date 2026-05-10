@@ -216,6 +216,7 @@
   "start.voice": "语音",
   "start.with.voice": "通过语音开始",
   "voice.permission.required": "语音模式需要麦克风权限。",
+  "voice.input.unsupported": "此浏览器不支持语音输入。",
   "voiceInterface.listening": "正在聆听...",
   "voiceInterface.listeningNote": "AI 助手正在聆听你，请直接说话。",
   "voiceInterface.mutedNote": "麦克风已暂停。点击麦克风可恢复语音输入。",

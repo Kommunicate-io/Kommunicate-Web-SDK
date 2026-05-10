@@ -216,6 +216,7 @@
   "start.voice": "आवाज़",
   "start.with.voice": "आवाज़ से शुरू करें",
   "voice.permission.required": "वॉइस मोड के लिए माइक्रोफ़ोन की अनुमति आवश्यक है।",
+  "voice.input.unsupported": "इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है।",
   "voiceInterface.listening": "सुन रहा हूँ...",
   "voiceInterface.listeningNote": "एआई सहायक आपकी बात सुन रहा है, बस बोलें।",
   "voiceInterface.mutedNote": "माइक्रोफ़ोन रुका हुआ है। वॉइस इनपुट फिर शुरू करने के लिए माइक्रोफ़ोन पर टैप करें।",

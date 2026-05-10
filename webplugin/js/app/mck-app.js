@@ -361,11 +361,23 @@ function ApplozicSidebox() {
             }
 
             if (options.voiceNote) {
-                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js));
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js).catch((error) => {
+                        options.voiceNote = false;
+                        console.error(error);
+                    })
+                );
             }
 
-            if (options.voiceChat) {
-                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js));
+            if (options.voiceChat || options.voiceInput || options.voiceOutput) {
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js).catch((error) => {
+                        options.voiceChat = false;
+                        options.voiceInput = false;
+                        options.voiceOutput = false;
+                        console.error(error);
+                    })
+                );
             }
 
             await Promise.all(promises);
