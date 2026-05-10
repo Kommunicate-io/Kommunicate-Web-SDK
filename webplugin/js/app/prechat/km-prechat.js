@@ -672,10 +672,7 @@ var KMPreChat = (function () {
         };
 
         var isPreChatFieldVisible = function (field) {
-            if (!field || field.disabled || field.classList.contains('n-vis')) {
-                return false;
-            }
-            return !(field.closest && field.closest('.n-vis'));
+            return !!field && !field.disabled && !(field.closest && field.closest('.n-vis'));
         };
 
         var validatePhoneNumberField = function (fieldValue) {
@@ -700,17 +697,15 @@ var KMPreChat = (function () {
 
             var validationRegex = field.getAttribute('data-validation-regex');
             if (validationRegex && fieldValue) {
-                var regex = null;
                 try {
-                    regex = new RegExp(validationRegex);
+                    if (!new RegExp(validationRegex).test(fieldValue)) {
+                        return (
+                            field.getAttribute('data-validation-error-text') ||
+                            getLeadCollectionLabel('commonErrorMsg', '')
+                        );
+                    }
                 } catch (e) {
-                    regex = null;
-                }
-                if (regex && !regex.test(fieldValue)) {
-                    return (
-                        field.getAttribute('data-validation-error-text') ||
-                        getLeadCollectionLabel('commonErrorMsg', '')
-                    );
+                    return getLeadCollectionLabel('commonErrorMsg', '');
                 }
             }
 

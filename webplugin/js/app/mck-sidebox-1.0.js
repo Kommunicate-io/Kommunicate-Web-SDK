@@ -5000,8 +5000,8 @@ const firstVisibleMsg = {
                         $error_chat_login.text() &&
                         $error_chat_login.text().trim();
                     if (
-                        (_this.validatePreChatForm && !_this.validatePreChatForm()) ||
-                        (!_this.validatePreChatForm && hasPreChatError)
+                        (mckInit.validatePreChatForm && !mckInit.validatePreChatForm()) ||
+                        (!mckInit.validatePreChatForm && hasPreChatError)
                     ) {
                         return false;
                     }
