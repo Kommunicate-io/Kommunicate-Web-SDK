@@ -365,7 +365,9 @@ var KMPreChat = (function () {
                 return null;
             }
             var regex = validation.regex;
+            var flags = '';
             if (regex instanceof RegExp) {
+                flags = regex.flags;
                 regex = regex.source;
             }
             if (typeof regex !== 'string') {
@@ -373,6 +375,7 @@ var KMPreChat = (function () {
             }
             return {
                 regex: regex,
+                flags: flags,
                 errorText:
                     validation.errorText || getLeadCollectionLabel('commonErrorMsg', ''),
             };
@@ -385,6 +388,7 @@ var KMPreChat = (function () {
             input.setAttribute('pattern', validation.regex);
             input.setAttribute('title', validation.errorText || '');
             input.setAttribute('data-km-validation-regex', validation.regex);
+            input.setAttribute('data-km-validation-flags', validation.flags || '');
             input.setAttribute('data-km-validation-error', validation.errorText || '');
             input.setAttribute(
                 'oninvalid',
@@ -682,6 +686,7 @@ var KMPreChat = (function () {
             var emailField = document.getElementById('km-email');
             var phoneField = document.getElementById('km-phone');
             var submitBtn = document.getElementById('km-submit-chat-login');
+            var chatLoginForm = document.getElementById('km-form-chat-login');
             var customValidationFields = Array.prototype.slice.call(
                 document.querySelectorAll('[data-km-validation-regex]')
             );
@@ -702,6 +707,7 @@ var KMPreChat = (function () {
 
             var validateCustomField = function (field) {
                 var regexText = field.getAttribute('data-km-validation-regex');
+                var regexFlags = field.getAttribute('data-km-validation-flags') || '';
                 var errorText =
                     field.getAttribute('data-km-validation-error') ||
                     getLeadCollectionLabel('commonErrorMsg', '');
@@ -713,13 +719,14 @@ var KMPreChat = (function () {
                     return true;
                 }
                 try {
-                    if (!new RegExp(regexText).test(value)) {
+                    if (!new RegExp(regexText, regexFlags).test(value)) {
                         setError(errorText);
                         return false;
                     }
                 } catch (error) {
                     console.error('Invalid pre-chat validation regex', error);
-                    return true;
+                    setError(errorText);
+                    return false;
                 }
                 return true;
             };
@@ -733,7 +740,6 @@ var KMPreChat = (function () {
                         return false;
                     }
                 }
-                setError('');
                 return true;
             };
 
@@ -809,17 +815,27 @@ var KMPreChat = (function () {
                 });
             }
 
+            var handleSubmitValidation = function (event) {
+                formSubmitted = true;
+                if (
+                    !handleCustomValidation() ||
+                    (handleEmailValidation && !handleEmailValidation()) ||
+                    (handlePhoneValidation && !handlePhoneValidation())
+                ) {
+                    if (event && typeof event.preventDefault === 'function') {
+                        event.preventDefault();
+                    }
+                    return false;
+                }
+                setError('');
+                return true;
+            };
+
             if (submitBtn) {
-                submitBtn.addEventListener('click', function () {
-                    formSubmitted = true;
-                    if (!handleCustomValidation()) {
-                        return;
-                    }
-                    if (handleEmailValidation && !handleEmailValidation()) {
-                        return;
-                    }
-                    handlePhoneValidation && handlePhoneValidation();
-                });
+                submitBtn.addEventListener('click', handleSubmitValidation);
+            }
+            if (chatLoginForm) {
+                chatLoginForm.addEventListener('submit', handleSubmitValidation);
             }
         };
 
