@@ -4363,7 +4363,10 @@ const firstVisibleMsg = {
                 var mck_text_box = document.getElementById('mck-text-box');
                 mck_text_box.addEventListener('paste', function (e) {
                     e.preventDefault();
-                    const text = (e.clipboardData || window.clipboardData).getData('text');
+                    const text = (e.clipboardData || window.clipboardData)
+                        .getData('text')
+                        .replace(/\r\n/g, '\n')
+                        .replace(/\n+$/, '');
                     document.execCommand('insertText', false, text);
                 });
 
@@ -7505,6 +7508,19 @@ const firstVisibleMsg = {
                 }
             };
 
+            _this.sortMessagesByCreatedAt = function (messages, descending) {
+                if (!Array.isArray(messages)) {
+                    return messages;
+                }
+                return messages.slice().sort(function (firstMessage, secondMessage) {
+                    var firstCreatedAt = Number(firstMessage && firstMessage.createdAtTime) || 0;
+                    var secondCreatedAt = Number(secondMessage && secondMessage.createdAtTime) || 0;
+                    return descending
+                        ? secondCreatedAt - firstCreatedAt
+                        : firstCreatedAt - secondCreatedAt;
+                });
+            };
+
             _this.processMessageList = function (data, scroll, isValidated, append, allowReload) {
                 // allowReload parameter is using to reload chat widget when the socket connect
                 var showMoreDateTime;
@@ -7522,6 +7538,9 @@ const firstVisibleMsg = {
                 var contact = isGroup
                     ? mckGroupUtils.getGroup(tabId)
                     : mckMessageLayout.fetchContact(tabId);
+                if (data && Array.isArray(data.message)) {
+                    data.message = _this.sortMessagesByCreatedAt(data.message, !append);
+                }
                 scroll &&
                     $mck_msg_inner.data(
                         'last-message-received-time',
@@ -7529,7 +7548,9 @@ const firstVisibleMsg = {
                     );
                 if (allowReload) {
                     scroll = false;
-                    data && data.message && (data.message = data.message.reverse());
+                    data &&
+                        data.message &&
+                        (data.message = _this.sortMessagesByCreatedAt(data.message, false));
                 }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
