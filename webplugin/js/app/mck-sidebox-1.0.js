@@ -8218,10 +8218,7 @@ const firstVisibleMsg = {
                         feedbackClass: showHelpfulButtons ? 'vis' : 'n-vis',
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
-                        feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate({
-                            msg,
-                            assigneeKey: groupAssigneeKey,
-                        }),
+                        feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
                     },
                 ];
 
