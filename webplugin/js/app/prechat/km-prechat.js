@@ -359,6 +359,40 @@ var KMPreChat = (function () {
             }
         }
 
+        var getCustomValidation = function (preLeadCollection) {
+            var validation = preLeadCollection && preLeadCollection.validation;
+            if (!validation || !validation.regex) {
+                return null;
+            }
+            var regex = validation.regex;
+            if (regex instanceof RegExp) {
+                regex = regex.source;
+            }
+            if (typeof regex !== 'string') {
+                return null;
+            }
+            return {
+                regex: regex,
+                errorText:
+                    validation.errorText || getLeadCollectionLabel('commonErrorMsg', ''),
+            };
+        };
+
+        var setValidationAttributes = function (input, validation) {
+            if (!input || !validation || !validation.regex) {
+                return;
+            }
+            input.setAttribute('pattern', validation.regex);
+            input.setAttribute('title', validation.errorText || '');
+            input.setAttribute('data-km-validation-regex', validation.regex);
+            input.setAttribute('data-km-validation-error', validation.errorText || '');
+            input.setAttribute(
+                'oninvalid',
+                "setCustomValidity(this.getAttribute('data-km-validation-error') || '')"
+            );
+            input.setAttribute('oninput', "setCustomValidity('')");
+        };
+
         target.createInputField = function (preLeadCollection) {
             var rawField = (preLeadCollection.field || '').toString();
             var normalizedField = rawField.toLowerCase().replace(/\s+/g, '');
@@ -427,7 +461,10 @@ var KMPreChat = (function () {
                 kmChatInput.setAttribute('type', preLeadCollection.type || 'text');
                 kmChatInput.setAttribute('placeholder', preLeadCollection.placeholder || '');
                 kmChatInput.setAttribute('aria-label', preLeadCollection.field);
-                if (preLeadCollection.type === 'email') {
+                var customValidation = getCustomValidation(preLeadCollection);
+                if (customValidation) {
+                    setValidationAttributes(kmChatInput, customValidation);
+                } else if (preLeadCollection.type === 'email') {
                     kmChatInput.setAttribute('pattern', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$');
                     kmChatInput.setAttribute('title', '');
                     kmChatInput.setAttribute(
@@ -645,6 +682,9 @@ var KMPreChat = (function () {
             var emailField = document.getElementById('km-email');
             var phoneField = document.getElementById('km-phone');
             var submitBtn = document.getElementById('km-submit-chat-login');
+            var customValidationFields = Array.prototype.slice.call(
+                document.querySelectorAll('[data-km-validation-regex]')
+            );
             var formSubmitted = false;
 
             var setError = function (message) {
@@ -660,24 +700,72 @@ var KMPreChat = (function () {
                 }
             };
 
+            var validateCustomField = function (field) {
+                var regexText = field.getAttribute('data-km-validation-regex');
+                var errorText =
+                    field.getAttribute('data-km-validation-error') ||
+                    getLeadCollectionLabel('commonErrorMsg', '');
+                if (!regexText) {
+                    return true;
+                }
+                var value = field.value || '';
+                if (!value && !field.hasAttribute('required')) {
+                    return true;
+                }
+                try {
+                    if (!new RegExp(regexText).test(value)) {
+                        setError(errorText);
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Invalid pre-chat validation regex', error);
+                    return true;
+                }
+                return true;
+            };
+
+            var handleCustomValidation = function () {
+                if (!formSubmitted) {
+                    return true;
+                }
+                for (var i = 0; i < customValidationFields.length; i++) {
+                    if (!validateCustomField(customValidationFields[i])) {
+                        return false;
+                    }
+                }
+                setError('');
+                return true;
+            };
+
+            customValidationFields.forEach(function (field) {
+                field.addEventListener('input', function () {
+                    handleCustomValidation();
+                });
+                field.addEventListener('blur', function () {
+                    handleCustomValidation();
+                });
+            });
+
             if (emailField) {
                 var isValidEmail = function (value) {
                     return KommunicateUI.isValidEmail(value);
                 };
                 var handleEmailValidation = function () {
                     if (!formSubmitted) {
-                        return;
+                        return true;
                     }
                     var value = (emailField.value || '').toLowerCase();
                     if (!value) {
                         setError('');
-                        return;
+                        return true;
                     }
                     if (!isValidEmail(value)) {
                         setError(getLeadCollectionLabel('errorEmail', ''));
+                        return false;
                     } else {
                         setError('');
                     }
+                    return true;
                 };
                 emailField.addEventListener('input', function () {
                     handleEmailValidation();
@@ -690,12 +778,12 @@ var KMPreChat = (function () {
             if (phoneField) {
                 var handlePhoneValidation = function () {
                     if (!formSubmitted) {
-                        return;
+                        return true;
                     }
                     var value = phoneField.value || '';
                     if (!value) {
                         setError('');
-                        return;
+                        return true;
                     }
                     var isValid = true;
                     var intlInstance = deps.getIntlTelInstance();
@@ -707,9 +795,11 @@ var KMPreChat = (function () {
                     }
                     if (!isValid) {
                         setError(getLeadCollectionLabel('commonErrorMsg', ''));
+                        return false;
                     } else {
                         setError('');
                     }
+                    return true;
                 };
                 phoneField.addEventListener('input', function () {
                     handlePhoneValidation();
@@ -722,7 +812,12 @@ var KMPreChat = (function () {
             if (submitBtn) {
                 submitBtn.addEventListener('click', function () {
                     formSubmitted = true;
-                    handleEmailValidation && handleEmailValidation();
+                    if (!handleCustomValidation()) {
+                        return;
+                    }
+                    if (handleEmailValidation && !handleEmailValidation()) {
+                        return;
+                    }
                     handlePhoneValidation && handlePhoneValidation();
                 });
             }
