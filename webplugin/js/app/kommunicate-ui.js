@@ -1296,16 +1296,27 @@ KommunicateUI = {
         kommunicateCommons.show($statusText);
     },
     toggleVoiceOutputOverride: function (voiceOutput) {
+        var voiceOutputButton = document.getElementById('user-overide-voice-output');
+        var voiceOutputText = document.getElementById('user-overide-voice-output-text');
+        var dropdownLabels = KommunicateUI.getLabel('conversation.header.dropdown', {});
+        var voiceOutputLabel;
         if (voiceOutput) {
             kommunicateCommons.hide('#user-overide-voice-output-svg-off');
             kommunicateCommons.show('#user-overide-voice-output-svg-on');
-            document.getElementById('user-overide-voice-output-text').innerText =
-                MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_OFF;
+            voiceOutputLabel =
+                dropdownLabels.USER_OVERIDE_VOICE_OUTPUT_OFF || 'Turn voice output off';
         } else {
             kommunicateCommons.hide('#user-overide-voice-output-svg-on');
             kommunicateCommons.show('#user-overide-voice-output-svg-off');
-            document.getElementById('user-overide-voice-output-text').innerText =
-                MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_ON;
+            voiceOutputLabel =
+                dropdownLabels.USER_OVERIDE_VOICE_OUTPUT_ON || 'Turn voice output on';
+        }
+        if (voiceOutputText) {
+            voiceOutputText.innerText = voiceOutputLabel;
+        }
+        if (voiceOutputButton) {
+            voiceOutputButton.setAttribute('aria-label', voiceOutputLabel);
+            voiceOutputButton.setAttribute('title', voiceOutputLabel);
         }
     },
     loadQuickReplies: function (quickReplies) {

@@ -219,7 +219,7 @@
   "voice.input.unsupported": "A entrada de voz não é compatível com este navegador.",
   "voiceInterface.listening": "Ouvindo...",
   "voiceInterface.listeningNote": "O assistente de IA está ouvindo você, é só falar.",
-  "voiceInterface.mutedNote": "Microfone pausado. Toque no microfone para retomar a entrada de voz.",
+  "voiceInterface.mutedNote": "Microfone pausado. Use o botão do microfone para retomar a entrada de voz.",
   "voiceInterface.processing": "Processando",
   "voiceInterface.processingFailed": "Não foi possível transcrever a gravação. Tente novamente.",
   "voiceInterface.noSpeechDetected": "Nenhuma fala detectada. Tente novamente.",

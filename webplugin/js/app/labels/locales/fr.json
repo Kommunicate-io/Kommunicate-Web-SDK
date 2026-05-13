@@ -219,7 +219,7 @@
   "voice.input.unsupported": "La saisie vocale n'est pas prise en charge dans ce navigateur.",
   "voiceInterface.listening": "À l'écoute...",
   "voiceInterface.listeningNote": "L'assistant IA vous écoute, parlez simplement.",
-  "voiceInterface.mutedNote": "Microphone en pause. Appuyez sur le micro pour reprendre la saisie vocale.",
+  "voiceInterface.mutedNote": "Microphone en pause. Utilisez le bouton du microphone pour reprendre la saisie vocale.",
   "voiceInterface.processing": "Traitement en cours",
   "voiceInterface.processingFailed": "Impossible de transcrire l'enregistrement. Veuillez réessayer.",
   "voiceInterface.noSpeechDetected": "Aucune parole détectée. Veuillez réessayer.",

@@ -56,6 +56,9 @@ const firstVisibleMsg = {
     }
     function handleActivationKey(e, handler) {
         var key = e.key || e.keyCode;
+        if (e.repeat) {
+            return;
+        }
         if (isActivationKey(key)) {
             e.preventDefault();
             handler();
@@ -7002,6 +7005,15 @@ const firstVisibleMsg = {
                         }
                     );
             }
+            function bindRoleButtonKeyboardActivation() {
+                var selector =
+                    '#km-restart-conversation, #user-overide-voice-output, .voiceNote, .voiceInput, #delete-recording, #pause-btn, #play-btn, #send-btn, #mck-stop-recording, #mck-voice-repeat-last-msg';
+                $applozic(d)
+                    .off('keydown.mckRoleButtonActivation', selector)
+                    .on('keydown.mckRoleButtonActivation', selector, function (event) {
+                        handleActivationKey(event, this.click.bind(this));
+                    });
+            }
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('messageTemplate', markup);
@@ -7010,6 +7022,7 @@ const firstVisibleMsg = {
                 $applozic.template('staticMessageTemplate', staticMessageModule);
                 $applozic.template('assigneeModule', assigneeModule);
                 bindDropdownKeyboardActivation();
+                bindRoleButtonKeyboardActivation();
             };
             _this.removeStaticMessage = function () {
                 var staticMessageContainer = document.getElementById('km-static-message');
@@ -8205,10 +8218,7 @@ const firstVisibleMsg = {
                         feedbackClass: showHelpfulButtons ? 'vis' : 'n-vis',
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
-                        feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate({
-                            msg,
-                            assigneeKey: groupAssigneeKey,
-                        }),
+                        feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
                     },
                 ];
 

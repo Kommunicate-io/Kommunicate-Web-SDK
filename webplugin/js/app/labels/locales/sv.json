@@ -219,7 +219,7 @@
   "voice.input.unsupported": "Röstinmatning stöds inte i den här webbläsaren.",
   "voiceInterface.listening": "Lyssnar...",
   "voiceInterface.listeningNote": "AI-assistenten lyssnar på dig, bara prata.",
-  "voiceInterface.mutedNote": "Mikrofonen är pausad. Tryck på mikrofonen för att fortsätta röstinmatning.",
+  "voiceInterface.mutedNote": "Mikrofonen är pausad. Använd mikrofonknappen för att återuppta röstinmatningen.",
   "voiceInterface.processing": "Bearbetar",
   "voiceInterface.processingFailed": "Det gick inte att transkribera inspelningen. Försök igen.",
   "voiceInterface.noSpeechDetected": "Inget tal upptäcktes. Försök igen.",

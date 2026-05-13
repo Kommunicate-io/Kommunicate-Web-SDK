@@ -219,7 +219,7 @@
   "voice.input.unsupported": "Spracheingabe wird in diesem Browser nicht unterstützt.",
   "voiceInterface.listening": "Ich höre zu...",
   "voiceInterface.listeningNote": "Der KI-Assistent hört zu. Sprich einfach.",
-  "voiceInterface.mutedNote": "Mikrofon pausiert. Tippe auf das Mikrofon, um die Spracheingabe fortzusetzen.",
+  "voiceInterface.mutedNote": "Mikrofon pausiert. Verwende die Mikrofontaste, um die Spracheingabe fortzusetzen.",
   "voiceInterface.processing": "Wird verarbeitet",
   "voiceInterface.processingFailed": "Die Aufnahme konnte nicht transkribiert werden. Bitte versuche es erneut.",
   "voiceInterface.noSpeechDetected": "Keine Sprache erkannt. Bitte versuche es erneut.",
