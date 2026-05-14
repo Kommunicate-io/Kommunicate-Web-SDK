@@ -1234,6 +1234,48 @@ input[type=number]::-webkit-outer-spin-button {
   height: 14px;
 }
 
+.answer-feedback-helpful,
+.answer-feedback-not-helpful {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 4px;
+  line-height: 1;
+  position: relative;
+  overflow: visible;
+}
+.answer-feedback-helpful::after,
+.answer-feedback-not-helpful::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 1px solid #ff6b81;
+  box-shadow: 0 0 0 2px #ff6b81;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+.answer-feedback-helpful:focus, .answer-feedback-helpful:focus-visible,
+.answer-feedback-not-helpful:focus,
+.answer-feedback-not-helpful:focus-visible {
+  background: rgba(255, 107, 129, 0.08);
+  outline: none;
+}
+.answer-feedback-helpful:focus::after, .answer-feedback-helpful:focus-visible::after,
+.answer-feedback-not-helpful:focus::after,
+.answer-feedback-not-helpful:focus-visible::after {
+  opacity: 1;
+}
+
 .km-answer-feedback {
   position: absolute;
   bottom: 5px;

@@ -219,7 +219,7 @@
   "voice.input.unsupported": "L'input vocale non è supportato in questo browser.",
   "voiceInterface.listening": "In ascolto...",
   "voiceInterface.listeningNote": "L'assistente IA ti sta ascoltando, parla pure.",
-  "voiceInterface.mutedNote": "Microfono in pausa. Tocca il microfono per riprendere l'input vocale.",
+  "voiceInterface.mutedNote": "Microfono in pausa. Usa il pulsante del microfono per riprendere l'input vocale.",
   "voiceInterface.processing": "Elaborazione in corso",
   "voiceInterface.processingFailed": "Impossibile trascrivere la registrazione. Riprova.",
   "voiceInterface.noSpeechDetected": "Nessun parlato rilevato. Riprova.",

@@ -219,20 +219,24 @@ class AnswerFeedback {
         });
     };
 
-    getFeedbackTemplate = (data) => {
-        return `<div class="answer-feedback-helpful">
+    getFeedbackTemplate = () => {
+        return `<button type="button" class="answer-feedback-helpful" aria-label="${
+            MCK_LABELS.answerFeedback.helpful
+        }" title="${MCK_LABELS.answerFeedback.helpful}">
                    ${
                        KommunicateConstants.ANSWER_FEEDBACK_ICONS[
                            KommunicateConstants.ANSWER_FEEDBACK.HELPFUL
                        ]
                    }
-                </div>
-                <div class="answer-feedback-not-helpful">
+                </button>
+                <button type="button" class="answer-feedback-not-helpful" aria-label="${
+                    MCK_LABELS.answerFeedback.notHelpful
+                }" title="${MCK_LABELS.answerFeedback.notHelpful}">
                     ${
                         KommunicateConstants.ANSWER_FEEDBACK_ICONS[
                             KommunicateConstants.ANSWER_FEEDBACK.NOT_HELPFUL
                         ]
                     }
-                </div>`;
+                </button>`;
     };
 }

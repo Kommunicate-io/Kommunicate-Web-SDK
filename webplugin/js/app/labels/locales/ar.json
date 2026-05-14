@@ -219,7 +219,7 @@
   "voice.input.unsupported": "الإدخال الصوتي غير مدعوم في هذا المتصفح.",
   "voiceInterface.listening": "جارٍ الاستماع...",
   "voiceInterface.listeningNote": "المساعد الذكي يستمع إليك، فقط تكلّم.",
-  "voiceInterface.mutedNote": "تم إيقاف الميكروفون مؤقتًا. اضغط على الميكروفون لاستئناف الإدخال الصوتي.",
+  "voiceInterface.mutedNote": "تم إيقاف الميكروفون مؤقتًا. استخدم زر الميكروفون لاستئناف الإدخال الصوتي.",
   "voiceInterface.processing": "جارٍ المعالجة",
   "voiceInterface.processingFailed": "تعذر تحويل التسجيل إلى نص. يرجى المحاولة مرة أخرى.",
   "voiceInterface.noSpeechDetected": "لم يتم اكتشاف أي كلام. يرجى المحاولة مرة أخرى.",

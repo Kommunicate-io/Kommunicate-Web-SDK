@@ -3735,7 +3735,7 @@ class MckVoice {
         }
         const key = this.voiceMuted ? 'voiceInterface.mutedNote' : 'voiceInterface.listeningNote';
         const fallback = this.voiceMuted
-            ? 'Microphone paused. Tap the mic to resume voice input.'
+            ? 'Microphone paused. Use the microphone button to resume voice input.'
             : 'AI assistant is listening for you—just speak.';
         noteElement.textContent = this.getVoiceLabel(key, fallback);
     }

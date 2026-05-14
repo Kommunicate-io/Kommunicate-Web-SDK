@@ -75,6 +75,7 @@ var kmCustomIframe =
     '.kommunicate-custom-iframe.km-iframe-dimension-no-popup { ' +
     '   width: 100% !important;' +
     '   min-width: 0 !important;' +
+    '   max-width: 100% !important;' +
     '   left: 0 !important;' +
     '   right: 0 !important;' +
     '   bottom: 0 !important;' +
