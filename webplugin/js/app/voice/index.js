@@ -1254,18 +1254,6 @@ class Voice {
                 response && typeof response.text === 'string' ? response.text.trim().length : 0
             }`
         );
-        const socketConfig = this.getVoiceSocketConfig('stt');
-        const response = await this.requestOmnichannelVoiceTransport({
-            payload,
-            socketConfig,
-            socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
-            socketNormalizePayload: this.normalizeVoiceToTextSocketPayload,
-            httpPath: '/voice-to-text',
-            httpErrorOperation: 'voice-to-text',
-            operation: 'voiceToText',
-            enableSilentAudioLogging: true,
-            preferSocket: false,
-        });
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
