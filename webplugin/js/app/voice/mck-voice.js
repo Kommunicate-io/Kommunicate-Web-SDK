@@ -3080,6 +3080,7 @@ class MckVoice {
             this.trackVoiceEvent('onVoiceSessionStarted', this.pendingVoiceSessionSource);
             this.pendingVoiceSessionSource = null;
         }
+
         this.maxRecordingTimer = setTimeout(() => {
             if (this.isRecording) {
                 this.addThinkingAnimation();

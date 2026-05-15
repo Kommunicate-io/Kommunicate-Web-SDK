@@ -790,6 +790,21 @@ class Voice {
             text: this.extractVoiceToTextText(payload),
             languageCode: this.extractVoiceToTextLanguageCode(payload),
         };
+        if (url) {
+            metadata.url = url;
+        }
+        if (action) {
+            metadata.action = action;
+        }
+        if (sttMode) {
+            metadata.sttMode = sttMode;
+        }
+        if (sampleRate) {
+            metadata.sampleRate = sampleRate;
+        }
+        if (typeof sampleCount === 'number') {
+            metadata.sampleCount = sampleCount;
+        }
     }
 
     logOmnichannelVoiceRequest({ transport, sttMode, sampleCount, operation }) {
@@ -1106,6 +1121,18 @@ class Voice {
                 response && typeof response.text === 'string' ? response.text.trim().length : 0
             }`
         );
+        const socketConfig = this.getVoiceSocketConfig('stt');
+        const response = await this.requestOmnichannelVoiceTransport({
+            payload,
+            socketConfig,
+            socketAction: socketConfig.voiceToTextAction || 'voice_to_text',
+            socketNormalizePayload: this.normalizeVoiceToTextSocketPayload,
+            httpPath: '/voice-to-text',
+            httpErrorOperation: 'voice-to-text',
+            operation: 'voiceToText',
+            enableSilentAudioLogging: true,
+            preferSocket: false,
+        });
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
             const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
