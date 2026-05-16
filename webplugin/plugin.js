@@ -8,6 +8,7 @@ var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
+var MCK_OMNICHANNEL_BASE_URL = ':MCK_OMNICHANNEL_BASE_URL';
 
 var kmCustomElements = {
     iframe: {
@@ -604,6 +605,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
+    addableWindow.MCK_OMNICHANNEL_BASE_URL = MCK_OMNICHANNEL_BASE_URL;
 
     var options = addableWindow.applozic._globals;
     options.__KM_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
@@ -691,6 +693,7 @@ function injectJquery() {
 
     addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
     addableWindow.MCK_ENV_DETAILS = MCK_ENV_DETAILS;
+    addableWindow.MCK_OMNICHANNEL_BASE_URL = MCK_OMNICHANNEL_BASE_URL;
 
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');

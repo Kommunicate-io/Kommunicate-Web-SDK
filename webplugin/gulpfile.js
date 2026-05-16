@@ -387,6 +387,7 @@ const generateFilesByVersion = (location) => {
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
+                .replace(':MCK_OMNICHANNEL_BASE_URL', config.urls.omnichannelBaseUrl)
                 .replace(
                     ':MCK_ENV_DETAILS',
                     JSON.stringify({

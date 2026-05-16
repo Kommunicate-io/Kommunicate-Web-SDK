@@ -1,5 +1,5 @@
 class Voice {
-    _OMNICHANNEL_BASE_URL = 'https://omni-channel-test.kommunicate.io';
+    _OMNICHANNEL_BASE_URL = 'https://omni-channel.kommunicate.io';
     _OMNICHANNEL_API_PREFIX = '/voice';
     _OMNICHANNEL_STT_AUDIO_CONFIG = {
         bitsPerSample: 16,
@@ -41,15 +41,9 @@ class Voice {
     }
 
     getOmnichannelBaseUrl() {
-        const config = this.omnichannelConfig || {};
-        const pluginSettingsBaseUrl =
-            typeof KM_PLUGIN_SETTINGS !== 'undefined' &&
-            KM_PLUGIN_SETTINGS &&
-            KM_PLUGIN_SETTINGS.omnichannelBaseUrl;
-        return (config.baseUrl || pluginSettingsBaseUrl || this._OMNICHANNEL_BASE_URL).replace(
-            /\/+$/,
-            ''
-        );
+        const configuredBaseUrl =
+            typeof MCK_OMNICHANNEL_BASE_URL !== 'undefined' && MCK_OMNICHANNEL_BASE_URL;
+        return (configuredBaseUrl || this._OMNICHANNEL_BASE_URL).replace(/\/+$/, '');
     }
 
     getOmnichannelApiUrl(path = '') {
