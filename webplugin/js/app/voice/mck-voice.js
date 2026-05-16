@@ -33,6 +33,8 @@ class MckVoice {
     _VOICE_ECHO_SUPPRESS_WINDOW_MS = 7000;
     _VOICE_STREAM_FALLBACK_TIMEOUT_MS = 4000;
     _VOICE_STREAM_ACTIVITY_WINDOW_MS = 6000;
+    _VOICE_RECORDING_HEALTH_CHECK_MS = 1500;
+    _VOICE_RECORDING_STALL_MS = 6000;
 
     // Threshold for frequency-domain visualizer (0..255 scale)
     _NOISE_THRESHOLD = 8;
@@ -96,6 +98,8 @@ class MckVoice {
         this.discardNextRecordingPayload = false;
         this.maxRecordingTimer = null;
         this.deferredRecordingHandler = null;
+        this.recordingHealthTimer = null;
+        this.lastRecordingActivityAt = 0;
         this.silenceDetectionContext = null;
         this.silenceTimeout = null;
         this.initialSpeechTimeout = null;
@@ -542,6 +546,79 @@ class MckVoice {
             clearTimeout(this.audioPlaybackStartTimeout);
             this.audioPlaybackStartTimeout = null;
         }
+    }
+
+    markRecordingActivity() {
+        this.lastRecordingActivityAt = Date.now();
+    }
+
+    clearRecordingHealthWatchdog() {
+        if (this.recordingHealthTimer) {
+            clearInterval(this.recordingHealthTimer);
+            this.recordingHealthTimer = null;
+        }
+    }
+
+    startRecordingHealthWatchdog() {
+        this.clearRecordingHealthWatchdog();
+        this.markRecordingActivity();
+        this.recordingHealthTimer = setInterval(() => {
+            this.handleRecordingHealthCheck();
+        }, this._VOICE_RECORDING_HEALTH_CHECK_MS);
+    }
+
+    handleRecordingHealthCheck() {
+        if (!this.isRecording || this.activeRecognitionMode === 'native') {
+            this.clearRecordingHealthWatchdog();
+            return;
+        }
+        const audioTrack =
+            this.stream &&
+            typeof this.stream.getAudioTracks === 'function' &&
+            this.stream.getAudioTracks()[0];
+        if (!audioTrack || audioTrack.readyState !== 'live') {
+            this.restartStalledRecording('audio_track_inactive');
+            return;
+        }
+        const idleDuration = Date.now() - (this.lastRecordingActivityAt || 0);
+        if (idleDuration < this._VOICE_RECORDING_STALL_MS) {
+            return;
+        }
+        this.restartStalledRecording('audio_activity_stalled');
+    }
+
+    restartStalledRecording(reason) {
+        if (!this.isRecording) {
+            return;
+        }
+        this.logVoiceDebug(
+            'recording_stalled_restart',
+            {
+                reason,
+                audioTrack: this.getAudioTrackDebugState(),
+            },
+            'warn'
+        );
+        this.discardNextRecordingPayload = true;
+        this.clearRecordingHealthWatchdog();
+        if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+            this.stopRecording(false, 'recorder_stalled');
+            return;
+        }
+        const stalledStream = this.stream;
+        this.isRecording = false;
+        this.recordingStopReason = null;
+        this.clearInitialSpeechTimeout();
+        this.clearSilenceTimeout();
+        if (this.maxRecordingTimer) {
+            clearTimeout(this.maxRecordingTimer);
+            this.maxRecordingTimer = null;
+        }
+        if (stalledStream) {
+            stalledStream.getTracks().forEach((track) => track.stop());
+        }
+        this.stream = null;
+        this.scheduleAutoListen(300, { skipCooldown: true });
     }
 
     resumeAudioContext(audioContext, contextName = 'audio') {
@@ -2843,6 +2920,7 @@ class MckVoice {
         this.recordingStopReason = null;
         this.maxRecordingTimer = null;
         this.lastRecordingEnd = 0;
+        this.markRecordingActivity();
         this.silenceNoiseStart = null;
         this.silenceTimeout = null;
         this.vadCaptureChunks = [];
@@ -2858,6 +2936,7 @@ class MckVoice {
         // Handle data available event
         this.mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
+                this.markRecordingActivity();
                 this.audioChunks.push(event.data);
             }
         };
@@ -2909,6 +2988,7 @@ class MckVoice {
             if (shouldAggregateSegments) {
                 this.pendingVoiceSegmentInFlight++;
             }
+            this.clearRecordingHealthWatchdog();
             // Mark recording as ended immediately so stale VAD/silence loops
             // cannot keep firing while STT work is still running.
             this.isRecording = false;
@@ -3152,6 +3232,7 @@ class MckVoice {
 
         // Set up audio analysis for silence detection
         this.setupSilenceDetection(stream);
+        this.startRecordingHealthWatchdog();
         const listeningLabel = this.getVoiceLabel('voiceInterface.listening', 'Listening...');
         this.updateVoiceStatus(listeningLabel, true);
         this.updateLiveTranscript('');
@@ -4809,6 +4890,7 @@ class MckVoice {
         // Clean up when recording stops
         scriptProcessor.onaudioprocess = (event) => {
             if (this.isRecording && event && event.inputBuffer) {
+                this.markRecordingActivity();
                 const inputChannel = event.inputBuffer.getChannelData(0);
                 if (inputChannel && inputChannel.length) {
                     this.vadCaptureChunks.push(new Float32Array(inputChannel));
@@ -5245,7 +5327,20 @@ class MckVoice {
         }
         if (this.mediaRecorder && this.isRecording) {
             this.recordingStopReason = stopReason;
-            this.mediaRecorder.stop();
+            if (this.mediaRecorder.state === 'inactive') {
+                this.clearRecordingHealthWatchdog();
+                this.isRecording = false;
+                this.recordingStopReason = null;
+            } else {
+                try {
+                    this.mediaRecorder.stop();
+                } catch (error) {
+                    this.clearRecordingHealthWatchdog();
+                    this.isRecording = false;
+                    this.recordingStopReason = null;
+                    console.warn('MediaRecorder stop failed', error);
+                }
+            }
             forceStop && (this.isRecording = false);
 
             if (this.maxRecordingTimer) {
