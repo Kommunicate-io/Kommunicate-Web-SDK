@@ -655,7 +655,10 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) 
                 ? JSON.stringify(payload[i].replyMetadata)
                 : payload[i].replyMetadata;
         payload[i].buttonClass = buttonClass;
-        payload[i].hidePostCTA = hidePostCTA;
+        payload[i].hidePostCTA =
+            template == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL
+                ? false
+                : hidePostCTA;
     }
     return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {
         payload: payload,

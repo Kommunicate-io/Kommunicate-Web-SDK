@@ -132,19 +132,20 @@ class AnswerFeedback {
         if (!CURRENT_GROUP_DATA.answerFeedback) return false;
         // only visible if the message is from the bot
         // needed later contact(group.removedUsers || [])
-        let currentUser = group.users;
-        currentUser = currentUser[msg.to];
+        const currentUser = group.users[msg.to] || group.users[msg.from];
 
         if (!currentUser) return false;
 
         // If valid(0 | 1) feedback is already given then don't show the feedback buttons
         const validFeedback =
+            msg.metadata &&
             msg.metadata.hasOwnProperty('KM_ANSWER_FEEDBACK') &&
             msg.metadata.KM_ANSWER_FEEDBACK != KommunicateConstants.ANSWER_FEEDBACK.DISCARD;
 
         if (
             currentUser.role !== KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT ||
             validFeedback ||
+            !msg.metadata ||
             !msg.metadata.hasOwnProperty('KM_ANSWER_SOURCE') // From where bot fetched the answer like the webpages, document urls
         ) {
             return false;
