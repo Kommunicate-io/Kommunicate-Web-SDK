@@ -6166,6 +6166,7 @@ const firstVisibleMsg = {
                                                             MCK_BLOCKED_BY_MAP[
                                                                 userDetail.userId
                                                             ] = true;
+                                                            mckUserUtils.disableMessageComposer();
                                                             $mck_tab_title.removeClass(
                                                                 'mck-tab-title-w-status'
                                                             );
@@ -6175,7 +6176,7 @@ const firstVisibleMsg = {
                                                             kommunicateCommons.hide(
                                                                 '.mck-typing-box'
                                                             );
-                                                            $mck_msg_inner.data('blocked', false);
+                                                            $mck_msg_inner.data('blocked', true);
                                                         } else {
                                                             mckUserUtils.toggleBlockUser(
                                                                 params.tabId,
@@ -9314,6 +9315,10 @@ const firstVisibleMsg = {
                         return messageTime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short',
+                            year:
+                                currentTime.getFullYear() != messageTime.getFullYear()
+                                    ? 'numeric'
+                                    : undefined,
                             hour: '2-digit',
                             minute: '2-digit',
                             hour12: false,
@@ -9326,6 +9331,17 @@ const firstVisibleMsg = {
                         });
                     }
                 } else {
+                    var messageDate = new Date(createdAtTime);
+                    if (messageDate.getFullYear() != new Date().getFullYear()) {
+                        return messageDate.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true,
+                        });
+                    }
                     return mckDateUtils.getDate(createdAtTime);
                 }
             };
@@ -11444,12 +11460,23 @@ const firstVisibleMsg = {
                     }
                 });
             };
-            _this.toggleBlockUser = function (tabId, isBlocked) {
-                if (isBlocked) {
-                    $mck_msg_error.html(MCK_LABELS['blocked']);
+            _this.disableMessageComposer = function (message) {
+                if (message) {
+                    $mck_msg_error.html(message);
                     kommunicateCommons.show('#mck-msg-error');
                     document.querySelector('#mck-msg-error').classList.add('mck-no-mb');
-                    kommunicateCommons.hide('#mck-msg-form');
+                }
+                kommunicateCommons.hide('#mck-msg-form');
+            };
+            _this.enableMessageComposer = function () {
+                $mck_msg_error.html('');
+                kommunicateCommons.hide('#mck-msg-error');
+                document.querySelector('#mck-msg-error').classList.remove('mck-no-mb');
+                kommunicateCommons.show('#mck-msg-form');
+            };
+            _this.toggleBlockUser = function (tabId, isBlocked) {
+                if (isBlocked) {
+                    _this.disableMessageComposer(MCK_LABELS['blocked']);
                     $mck_tab_title.removeClass('mck-tab-title-w-status');
                     kommunicateCommons.hide('#mck-tab-status', '.mck-typing-box');
                     $mck_message_inner.data('blocked', true);
@@ -11457,10 +11484,7 @@ const firstVisibleMsg = {
                         .html(MCK_LABELS['unblock.user'])
                         .attr('title', MCK_LABELS['unblock.user']);
                 } else {
-                    $mck_msg_error.html('');
-                    kommunicateCommons.hide('#mck-msg-error');
-                    document.querySelector('#mck-msg-error').classList.remove('mck-no-mb');
-                    kommunicateCommons.show('#mck-msg-form');
+                    _this.enableMessageComposer();
                     $mck_message_inner.data('blocked', false);
                     $mck_block_button
                         .html(MCK_LABELS['block.user'])
@@ -12119,10 +12143,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.disableGroupTab = function () {
-                $mck_msg_error.html(MCK_LABELS['group.chat.disabled']);
-                kommunicateCommons.show('#mck-msg-error');
-                document.querySelector('#mck-msg-error').classList.add('mck-no-mb');
-                kommunicateCommons.hide('#mck-msg-form');
+                _this.disableMessageComposer(MCK_LABELS['group.chat.disabled']);
                 $mck_tab_title.removeClass('mck-tab-title-w-status');
                 kommunicateCommons.hide('#mck-tab-status');
             };
