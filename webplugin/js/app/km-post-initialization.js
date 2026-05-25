@@ -7,6 +7,7 @@
 Kommunicate.postPluginInitialization = function (err, data) {
     // get the third party settings
     KommunicateKB.init(Kommunicate.getBaseUrl());
+    KommunicateUI.bindMessageCopyHandler();
     var categoryName;
     var primaryCTA = kommunicate?._globals?.primaryCTA;
 
