@@ -697,15 +697,21 @@ var KMPreChat = (function () {
 
             var validationRegex = field.getAttribute('data-validation-regex');
             if (validationRegex && fieldValue) {
+                var customError =
+                    field.getAttribute('data-validation-error-text') ||
+                    getLeadCollectionLabel('commonErrorMsg', '');
+                var validationPattern;
                 try {
-                    if (!new RegExp(validationRegex).test(fieldValue)) {
-                        return (
-                            field.getAttribute('data-validation-error-text') ||
-                            getLeadCollectionLabel('commonErrorMsg', '')
-                        );
-                    }
+                    validationPattern = new RegExp(validationRegex);
                 } catch (e) {
-                    return getLeadCollectionLabel('commonErrorMsg', '');
+                    try {
+                        validationPattern = new RegExp(validationRegex.replace(/^\^\+/, '^\\+'));
+                    } catch (retryError) {
+                        return customError;
+                    }
+                }
+                if (!validationPattern.test(fieldValue)) {
+                    return customError;
                 }
             }
 
