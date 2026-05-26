@@ -1213,6 +1213,24 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0px solid #dcdcdc;
 }
 
+.mck-msg-content {
+  max-width: 100%;
+  min-width: 0;
+}
+.mck-msg-content pre,
+.mck-msg-content code[class*=language-] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.mck-msg-content pre code {
+  display: inline;
+  white-space: inherit;
+  overflow-wrap: inherit;
+}
+
 #mck-message-cell .mck-m-b:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 2px rgba(95, 70, 248, 0.35);

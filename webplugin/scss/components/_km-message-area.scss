@@ -74,6 +74,28 @@
     border: 0px solid $input-border-color;
 }
 
+.mck-msg-content {
+    max-width: 100%;
+    min-width: 0;
+
+    pre,
+    code[class*='language-'] {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    pre {
+        code {
+            display: inline;
+            white-space: inherit;
+            overflow-wrap: inherit;
+        }
+    }
+}
+
 #mck-message-cell .mck-m-b:focus-visible {
     outline: none;
     box-shadow: inset 0 0 0 2px rgba($primary-color, 0.35);
