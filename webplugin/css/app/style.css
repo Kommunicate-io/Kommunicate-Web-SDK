@@ -1301,7 +1301,6 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex !important;
   justify-content: flex-end;
   align-items: center;
-  gap: 6px;
 }
 .km-answer-feedback svg {
   stroke: #1c1c1c;
