@@ -74,6 +74,28 @@
     border: 0px solid $input-border-color;
 }
 
+.mck-msg-content {
+    max-width: 100%;
+    min-width: 0;
+
+    pre,
+    code[class*='language-'] {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    pre {
+        code {
+            display: inline;
+            white-space: inherit;
+            overflow-wrap: inherit;
+        }
+    }
+}
+
 #mck-message-cell .mck-m-b:focus-visible {
     outline: none;
     box-shadow: inset 0 0 0 2px rgba($primary-color, 0.35);
@@ -137,12 +159,11 @@
 
 .km-answer-feedback {
     position: absolute;
-    bottom: 5px;
+    bottom: 2px;
     left: 75%;
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
-    gap: 6px;
 
     & svg {
         stroke: $text-primary-color;
@@ -194,12 +215,12 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    height: 30px;
-    width: 30px;
-    right: 0;
+    height: 22px;
+    width: 22px;
+    right: -20px;
     background: black;
     border-radius: 50%;
-    bottom: -25px;
+    bottom: -11px;
 
     & svg {
         path {
