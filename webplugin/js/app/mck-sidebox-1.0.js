@@ -4997,6 +4997,17 @@ const firstVisibleMsg = {
                 $applozic('#km-form-chat-login').submit(function (e) {
                     var $submit_chat_login = $applozic('#km-submit-chat-login');
                     var $error_chat_login = $applozic('#km-error-chat-login');
+                    var hasPreChatError =
+                        $error_chat_login &&
+                        !$error_chat_login.hasClass('n-vis') &&
+                        $error_chat_login.text() &&
+                        $error_chat_login.text().trim();
+                    if (
+                        (mckInit.validatePreChatForm && !mckInit.validatePreChatForm()) ||
+                        (!mckInit.validatePreChatForm && hasPreChatError)
+                    ) {
+                        return false;
+                    }
                     var userId = $applozic('#km-userId').val();
                     var email = $applozic('#km-email').val();
                     var userName = $applozic('#km-name').val();
@@ -5015,11 +5026,6 @@ const firstVisibleMsg = {
                         if (!anonymousUserIdForPreChatLead) {
                             userId = contactNumber;
                         }
-
-                        // Remove listener from phone number
-                        document
-                            .getElementById('km-phone')
-                            .removeEventListener('keydown', _this.phoneNumberValidation);
                     }
                     if (email) {
                         const userIdForCookie = anonymousUserIdForPreChatLead ? userId : email;
