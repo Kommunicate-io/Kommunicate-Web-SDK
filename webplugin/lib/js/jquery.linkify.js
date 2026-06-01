@@ -3,7 +3,7 @@
  * Version: https://github.com/uudashr/jquery-linkify/blob/9053e5a7184e3532c65908c3337c64066934ec14/jquery.linkify.js
  */
 function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
-    relNoFollow = "";
+    var relNoFollow = "";
     if (noFollow) {
         relNoFollow = " rel=\"nofollow\"";
     }
@@ -61,12 +61,25 @@ function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
                 }
             }
 
+            function shouldSkipLinkify(node) {
+                return (
+                    node.nodeType == 1 &&
+                    ['A', 'SCRIPT', 'STYLE', 'TEXTAREA', 'SVG'].indexOf(node.nodeName) !== -1
+                );
+            }
+
             function convertTextToLink(node) {
                 if (node.nodeType == 3) {
                     return linkify(node.data, buildHashtagUrl, includeW3, target, noFollow);
-                } else {
+                } else if (shouldSkipLinkify(node)) {
                     return node.outerHTML;
                 }
+                if (node.childNodes && node.childNodes.length) {
+                    var clone = node.cloneNode(false);
+                    clone.innerHTML = convertChildNodes(node);
+                    return clone.outerHTML;
+                }
+                return node.outerHTML || '';
             }
 
             function convertChildNodes(child) {
