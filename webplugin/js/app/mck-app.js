@@ -413,9 +413,7 @@ function ApplozicSidebox() {
     }
 
     function getWidgetCustomPositionProperties(widgetSettings) {
-        var horizontalPositionProperty =
-            widgetSettings.position === KommunicateConstants.POSITION.LEFT ? 'left' : 'right';
-        return ['bottom', horizontalPositionProperty];
+        return ['bottom', widgetSettings.position];
     }
 
     function applyWidgetCustomPosition(widgetSettings) {
