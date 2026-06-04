@@ -946,12 +946,14 @@ $applozic.extend(true, Kommunicate, {
                 currentMsg.querySelector('.km-cta-multi-button-container') // checking if button container is exist in the message div
             ) {
                 var allCTAButtons = currentMsg.querySelectorAll('.km-quick-replies');
+                var isCardMessage = currentMsg.querySelector('.km-card-message-container');
 
                 allCTAButtons.forEach(function (cta) {
                     cta.setAttribute('data-hidden', true);
                 });
 
                 allCTAButtons.length &&
+                    !isCardMessage &&
                     currentMsg.classList.contains('contains-quick-replies-only') &&
                     currentMsg.classList.add('km-hide-message');
             } else if (

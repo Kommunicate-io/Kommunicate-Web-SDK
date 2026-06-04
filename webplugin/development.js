@@ -63,7 +63,9 @@ const minifyPluginContent = (code) => {
 };
 
 const rewriteBundledFontPaths = (cssContent) =>
-    cssContent.replaceAll(BUNDLED_FONT_PATH, VERSIONED_BUNDLED_FONT_PATH);
+    typeof cssContent === 'string'
+        ? cssContent.split(BUNDLED_FONT_PATH).join(VERSIONED_BUNDLED_FONT_PATH)
+        : cssContent;
 
 /**
  *
@@ -124,6 +126,7 @@ const generateCSSBundle = ({ fileName, source, output }) => {
             .map(rewriteBundledFontPaths)
             .join('\n');
 
+        fs.mkdirSync(path.dirname(output), { recursive: true });
         fs.writeFileSync(output, combinedCss);
         console.log(`${fileName}combined successfully`);
     } catch (err) {
