@@ -3,6 +3,7 @@ class GenAiService {
         this.currentElement = null;
         this.textMsgDiv = null;
         this.currentIndex = -1;
+        this.currentMessage = '';
     }
 
     addTokenizeMsg = (...args) => {
@@ -24,9 +25,12 @@ class GenAiService {
             return;
         }
         this.currentIndex = this.currentIndex + 1;
-        const textNode = document.createTextNode(`${msg.message} `);
+        this.currentMessage += `${msg.message} `;
         const targetElement = this.currentElement || this.textMsgDiv;
-        targetElement.appendChild(textNode);
+        targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(this.currentMessage);
+        $applozic(targetElement).linkify({
+            target: '_blank',
+        });
 
         if (!this.currentElement) {
             $textMessage.append(this.textMsgDiv);
@@ -37,6 +41,7 @@ class GenAiService {
         this.currentElement = null;
         this.textMsgDiv = null;
         this.currentIndex = -1;
+        this.currentMessage = '';
     };
 
     enableTextArea = (bool) => {

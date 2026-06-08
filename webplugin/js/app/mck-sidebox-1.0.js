@@ -8599,21 +8599,9 @@ const firstVisibleMsg = {
                     if (msg.tokenMessage && floatWhere !== 'mck-msg-right' && !msgThroughListAPI) {
                         genAiService.addTokenizeMsg(msg, `mck-text-msg-left`, $textMessage);
                     } else {
-                        if (KommunicateUtils.containsRawHTML(emoji_template)) {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.textContent = emoji_template.trim();
-                            emoji_template = tempDiv.innerHTML;
-                        } else {
-                            const normalized = KommunicateUtils.normalizeMarkdown(emoji_template);
-                            emoji_template = window.DOMPurify.sanitize(
-                                marked.parse(normalized.trim()),
-                                {
-                                    ALLOWED_TAGS: KM_ALLOWED_TAGS,
-                                    ALLOWED_ATTR: KM_ALLOWED_ATTR,
-                                    WHOLE_DOCUMENT: true,
-                                }
-                            );
-                        }
+                        emoji_template = KommunicateUtils.getSanitizedMarkdownMessage(
+                            emoji_template
+                        );
                         const $normalTextMsg = $applozic(`<div class="${className}" />`);
                         $normalTextMsg[0].innerHTML = emoji_template;
                         $textMessage.append($normalTextMsg);
