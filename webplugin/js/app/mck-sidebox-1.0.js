@@ -804,11 +804,7 @@ const firstVisibleMsg = {
             } else {
                 kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
             }
-            if (!PRE_CHAT_LEAD_COLLECTION_POPUP_ON) {
-                kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
-            } else {
-                kommunicateIframe.style.height = '';
-            }
+            kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
             // Apply container mode styling if in container
             kommunicateCommons.applyContainerMode && kommunicateCommons.applyContainerMode();
         }
@@ -2283,7 +2279,8 @@ const firstVisibleMsg = {
                                 return;
                             }
                             if (kommunicateIframe) {
-                                kommunicateIframe.style.minHeight = '600px';
+                                kommunicateIframe.style.minHeight = '';
+                                kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
                                 kommunicateIframe.classList.remove('km-iframe-loading');
                                 kommunicateIframe.classList.add('km-iframe-shadow-ready');
                             }

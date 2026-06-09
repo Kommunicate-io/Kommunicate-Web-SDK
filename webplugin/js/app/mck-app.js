@@ -399,6 +399,56 @@ function ApplozicSidebox() {
         }
     }
 
+    var widgetPositionProperties = ['right', 'bottom', 'left'];
+
+    function normalizeWidgetPositionValue(value) {
+        return value == null || value === '' || !isFinite(value) ? null : Number(value) + 'px';
+    }
+
+    function resetWidgetCustomPosition(kommunicateIframe) {
+        widgetPositionProperties.forEach(function (property) {
+            kommunicateIframe.style.removeProperty(property);
+        });
+        kommunicateIframe.removeAttribute('data-km-custom-widget-position');
+    }
+
+    function getWidgetCustomPositionProperties(widgetSettings) {
+        return ['bottom', widgetSettings.position];
+    }
+
+    function applyWidgetCustomPosition(widgetSettings) {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        if (
+            !kommunicateIframe ||
+            kommunicateIframe.getAttribute('data-km-widget-container') === 'true'
+        ) {
+            return;
+        }
+
+        var widgetCustomPosition = widgetSettings && widgetSettings.widgetCustomPosition;
+        var hadAppliedPosition =
+            kommunicateIframe.getAttribute('data-km-custom-widget-position') === 'true';
+        if (!widgetCustomPosition) {
+            hadAppliedPosition && resetWidgetCustomPosition(kommunicateIframe);
+            return;
+        }
+
+        hadAppliedPosition && resetWidgetCustomPosition(kommunicateIframe);
+        var appliedPosition = false;
+        getWidgetCustomPositionProperties(widgetSettings).forEach(function (property) {
+            var cssValue = normalizeWidgetPositionValue(widgetCustomPosition[property]);
+            if (cssValue == null) {
+                return;
+            }
+            kommunicateIframe.style.setProperty(property, cssValue);
+            appliedPosition = true;
+        });
+
+        if (appliedPosition) {
+            kommunicateIframe.setAttribute('data-km-custom-widget-position', 'true');
+        }
+    }
+
     async function mckInitSidebox(data, randomUserId) {
         try {
             appOptionSession.setAppInstanceCount();
@@ -517,6 +567,7 @@ function ApplozicSidebox() {
             options['agentId'] = options.appSettings.agentId;
             options['agentName'] = options.appSettings.agentName;
             options['widgetSettings'] = widgetSettings;
+            applyWidgetCustomPosition(widgetSettings);
             options['customerCreatedAt'] = options.appSettings.customerCreatedAt;
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
