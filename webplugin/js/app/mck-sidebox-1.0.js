@@ -7844,6 +7844,10 @@ const firstVisibleMsg = {
 
                 if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
+                if (msg.tokenMessage && !msgThroughListAPI) {
+                    genAiService.prepareTokenizedMessage(msg);
+                }
+
                 if (
                     typeof msg.metadata === 'object' &&
                     typeof msg.metadata.AL_REPLY !== 'undefined'
@@ -7878,15 +7882,11 @@ const firstVisibleMsg = {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
-                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage) {
-                    // deleting tokenized message after receiving complete message from chat server
-                    const element = document.querySelector(`div[data-msgkey="tokenized_response"]`);
-                    if (element) {
-                        console.log('deleted');
-                        element.remove();
-                        genAiService.resetState();
-                    }
-                }
+                const replaceTokenizedStreamElementAfterRender =
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage;
+                const tokenizedStreamElementToReplace = replaceTokenizedStreamElementAfterRender
+                    ? genAiService.getNextTokenizedStreamElement()
+                    : null;
 
                 // GEN AI BOT
 
@@ -8226,13 +8226,14 @@ const firstVisibleMsg = {
                 ];
 
                 if (!$applozic('#mck-message-cell .' + msg.key).length > 0) {
-                    append
-                        ? $applozic
-                              .tmpl('messageTemplate', msgList)
-                              .appendTo('#mck-message-cell .mck-message-inner')
-                        : $applozic
-                              .tmpl('messageTemplate', msgList)
-                              .prependTo('#mck-message-cell .mck-message-inner');
+                    const $messageTemplate = $applozic.tmpl('messageTemplate', msgList);
+                    if (tokenizedStreamElementToReplace) {
+                        $messageTemplate.insertBefore(tokenizedStreamElementToReplace);
+                    } else {
+                        append
+                            ? $messageTemplate.appendTo('#mck-message-cell .mck-message-inner')
+                            : $messageTemplate.prependTo('#mck-message-cell .mck-message-inner');
+                    }
                 }
                 if (!isUserMsg && !msgThroughListAPI) {
                     var receivedText = _this.getAccessibleMessageText(msg);
@@ -8596,21 +8597,9 @@ const firstVisibleMsg = {
                     if (msg.tokenMessage && floatWhere !== 'mck-msg-right' && !msgThroughListAPI) {
                         genAiService.addTokenizeMsg(msg, `mck-text-msg-left`, $textMessage);
                     } else {
-                        if (KommunicateUtils.containsRawHTML(emoji_template)) {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.textContent = emoji_template.trim();
-                            emoji_template = tempDiv.innerHTML;
-                        } else {
-                            const normalized = KommunicateUtils.normalizeMarkdown(emoji_template);
-                            emoji_template = window.DOMPurify.sanitize(
-                                marked.parse(normalized.trim()),
-                                {
-                                    ALLOWED_TAGS: KM_ALLOWED_TAGS,
-                                    ALLOWED_ATTR: KM_ALLOWED_ATTR,
-                                    WHOLE_DOCUMENT: true,
-                                }
-                            );
-                        }
+                        emoji_template = KommunicateUtils.getSanitizedMarkdownMessage(
+                            emoji_template
+                        );
                         const $normalTextMsg = $applozic(`<div class="${className}" />`);
                         $normalTextMsg[0].innerHTML = emoji_template;
                         $textMessage.append($normalTextMsg);
@@ -8751,6 +8740,12 @@ const firstVisibleMsg = {
                 if (msg.contentType === 2) {
                     kommunicateCommons.hide($textMessage);
                     kommunicateCommons.show('.' + CSS.escape(replyId) + ' .mck-file-text');
+                }
+                if (replaceTokenizedStreamElementAfterRender) {
+                    genAiService.removeTokenizedStreamElement(
+                        tokenizedStreamElementToReplace,
+                        msg.key
+                    );
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(

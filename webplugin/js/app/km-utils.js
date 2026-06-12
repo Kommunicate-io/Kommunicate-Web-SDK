@@ -705,4 +705,19 @@ KommunicateUtils = {
     containsRawHTML: function (text) {
         return /<\/?[a-z][\s\S]*>/i.test(text);
     },
+
+    getSanitizedMarkdownMessage: function (text) {
+        if (KommunicateUtils.containsRawHTML(text)) {
+            const tempDiv = document.createElement('div');
+            tempDiv.textContent = text.trim();
+            return tempDiv.innerHTML;
+        }
+
+        const normalized = KommunicateUtils.normalizeMarkdown(text);
+        return window.DOMPurify.sanitize(marked.parse(normalized.trim()), {
+            ALLOWED_TAGS: KM_ALLOWED_TAGS,
+            ALLOWED_ATTR: KM_ALLOWED_ATTR,
+            WHOLE_DOCUMENT: true,
+        });
+    },
 };
