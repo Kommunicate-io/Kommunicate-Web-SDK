@@ -720,6 +720,12 @@ KommunicateUI = {
             $applozic(primaryFaqSearch).trigger(enterEvent);
         }
 
+        var welcomeAskAnythingInput = document.getElementById('km-welcome-ask-anything-input');
+        var welcomeAskAnythingButton = document.getElementById('km-welcome-ask-anything-submit');
+        KommunicateUI.toggleWelcomeFaqInput();
+        KommunicateUI.toggleWelcomeAskAnything();
+        KommunicateUI.renderWelcomeSuggestedQuestions();
+
         if (welcomeFaqSearchInput) {
             $applozic(welcomeFaqSearchInput).on(
                 'input',
@@ -751,6 +757,21 @@ KommunicateUI = {
                 syncFaqSearchValue('');
                 setFaqSearchIconState(false);
                 triggerFaqSearchFromWelcome();
+            });
+
+        if (welcomeAskAnythingInput) {
+            $applozic(welcomeAskAnythingInput).on('keyup', function (event) {
+                if (!event || event.which !== 13) {
+                    return;
+                }
+                KommunicateUI.submitWelcomeAskAnything();
+            });
+        }
+
+        welcomeAskAnythingButton &&
+            $applozic(welcomeAskAnythingButton).on('click', function (event) {
+                event.preventDefault();
+                KommunicateUI.submitWelcomeAskAnything();
             });
 
         $applozic('#km-faq-search-input').keyup(
@@ -1252,6 +1273,144 @@ KommunicateUI = {
             KM_GLOBAL.primaryCTA === HEADER_CTA.FAQ ||
             !ctaData.currentCTAKey //if cta button is not valid then use the FAQ button default
         );
+    },
+    getWelcomeChatWidgetSettings: function () {
+        return (
+            (KM_GLOBAL.widgetSettings && KM_GLOBAL.widgetSettings.chatWidget) ||
+            (KM_GLOBAL.appSettings && KM_GLOBAL.appSettings.chatWidget)
+        );
+    },
+    getWelcomePageSettings: function () {
+        var chatWidgetSettings = KommunicateUI.getWelcomeChatWidgetSettings();
+        return (chatWidgetSettings && chatWidgetSettings.welcomePage) || null;
+    },
+    isWelcomeQuestionInputEnabled: function () {
+        var welcomePageSettings = KommunicateUI.getWelcomePageSettings();
+        if (welcomePageSettings && welcomePageSettings.questionInput) {
+            return !!(
+                welcomePageSettings.questionInput === true ||
+                welcomePageSettings.questionInput.enabled
+            );
+        }
+        var chatWidgetSettings = KommunicateUI.getWelcomeChatWidgetSettings();
+        return !!(chatWidgetSettings && chatWidgetSettings.askMeAnything);
+    },
+    isWelcomeFaqInputEnabled: function () {
+        var welcomePageSettings = KommunicateUI.getWelcomePageSettings();
+        if (welcomePageSettings && welcomePageSettings.faqInput) {
+            return !!(
+                welcomePageSettings.faqInput === true || welcomePageSettings.faqInput.enabled
+            );
+        }
+        return false;
+    },
+    getWelcomeSuggestedQuestions: function () {
+        var welcomePageSettings = KommunicateUI.getWelcomePageSettings();
+        var suggestedQuestions = welcomePageSettings && welcomePageSettings.suggestedQuestions;
+        if (!Array.isArray(suggestedQuestions)) {
+            var chatWidgetSettings = KommunicateUI.getWelcomeChatWidgetSettings();
+            suggestedQuestions = chatWidgetSettings && chatWidgetSettings.faqQuestions;
+        }
+        if (!Array.isArray(suggestedQuestions)) {
+            return [];
+        }
+        return suggestedQuestions
+            .map(function (question) {
+                return (question || '').trim();
+            })
+            .filter(Boolean);
+    },
+    toggleWelcomeAskAnything: function () {
+        var askAnythingSelector = '#km-welcome-ask-anything-wrapper';
+        KommunicateUI.isWelcomeQuestionInputEnabled()
+            ? kommunicateCommons.show(askAnythingSelector)
+            : kommunicateCommons.hide(askAnythingSelector);
+    },
+    toggleWelcomeFaqInput: function () {
+        var faqInputSelector = '#km-empty-conversation-card__search';
+        KommunicateUI.isWelcomeFaqInputEnabled()
+            ? kommunicateCommons.show(faqInputSelector)
+            : kommunicateCommons.hide(faqInputSelector);
+    },
+    submitWelcomePrompt: function (query, onComplete) {
+        var trimmedQuery = (query || '').trim();
+        if (!trimmedQuery) {
+            return false;
+        }
+        KommunicateUI.toggleConversationsEmptyState &&
+            KommunicateUI.toggleConversationsEmptyState(false);
+        KommunicateUI.isConversationListView = false;
+        typeof setActiveSubsectionState === 'function' &&
+            setActiveSubsectionState('conversation-individual');
+        KommunicateUI.showChat && KommunicateUI.showChat();
+        KommunicateUI.hideFaq && KommunicateUI.hideFaq();
+        Kommunicate.startConversation({}, function (groupId) {
+            var resolvedGroupId =
+                typeof groupId === 'object' && groupId && groupId.data ? groupId.data.id : groupId;
+
+            if (resolvedGroupId) {
+                $applozic.fn.applozic('sendGroupMessage', {
+                    groupId: resolvedGroupId,
+                    message: trimmedQuery,
+                    type: 0,
+                });
+            }
+
+            KommunicateUI.setHasConversationHistory(true);
+            typeof setActiveSubsectionState === 'function' &&
+                setActiveSubsectionState('conversation-individual');
+            if (onComplete) {
+                onComplete();
+            }
+            KommunicateUI.activateTypingField();
+        });
+        return true;
+    },
+    renderWelcomeSuggestedQuestions: function () {
+        var faqGrid = document.getElementById('km-welcome-faq-grid');
+        if (!faqGrid) {
+            return;
+        }
+        faqGrid.innerHTML = '';
+        var questions = KommunicateUI.getWelcomeSuggestedQuestions();
+        if (!questions.length) {
+            kommunicateCommons.hide(faqGrid);
+            return;
+        }
+        questions.forEach(function (question) {
+            var questionButton = document.createElement('button');
+            questionButton.type = 'button';
+            questionButton.className = 'km-welcome-faq-card';
+            questionButton.textContent = question;
+            questionButton.addEventListener('click', function () {
+                KommunicateUI.submitWelcomePrompt(question);
+            });
+            faqGrid.appendChild(questionButton);
+        });
+        kommunicateCommons.show(faqGrid);
+    },
+    submitWelcomeAskAnything: function () {
+        var askAnythingInput = document.getElementById('km-welcome-ask-anything-input');
+        var askAnythingButton = document.getElementById('km-welcome-ask-anything-submit');
+        var query = (askAnythingInput && askAnythingInput.value) || '';
+
+        if (!query.trim()) {
+            askAnythingInput && askAnythingInput.focus();
+            return;
+        }
+
+        askAnythingInput && (askAnythingInput.disabled = true);
+        askAnythingButton && (askAnythingButton.disabled = true);
+
+        KommunicateUI.submitWelcomePrompt(query, function () {
+            if (askAnythingInput) {
+                askAnythingInput.value = '';
+                askAnythingInput.disabled = false;
+            }
+            if (askAnythingButton) {
+                askAnythingButton.disabled = false;
+            }
+        });
     },
 
     sendFaqQueryAsMsg: function (groupId) {

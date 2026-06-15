@@ -405,6 +405,15 @@ class KMLabel {
             kmWelcomeSearch.placeholder = searchLabel;
             kmWelcomeSearch.setAttribute('aria-label', searchLabel);
         }
+        var kmWelcomeAskAnything = document.getElementById('km-welcome-ask-anything-input');
+        if (kmWelcomeAskAnything) {
+            var askAnythingLabel =
+                MCK_LABELS['search.askAnything'] ||
+                kmWelcomeAskAnything.placeholder ||
+                'Ask me anything';
+            kmWelcomeAskAnything.placeholder = askAnythingLabel;
+            kmWelcomeAskAnything.setAttribute('aria-label', askAnythingLabel);
+        }
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
     }
 }

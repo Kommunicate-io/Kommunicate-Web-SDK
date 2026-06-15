@@ -155,6 +155,7 @@
         'closed.conversation.message':
             'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
         'search.faq': 'Search in FAQs...',
+        'search.askAnything': 'Ask me anything',
         'faq.search.noResults': 'No results found',
         'looking.for.something.else': 'Looking for something else?',
         'faq.back.to.categories': 'Back to categories',

@@ -124,6 +124,19 @@ const firstVisibleMsg = {
         messageType: 5,
         type: 0,
     };
+    function getAnswerFeedbackSetting(appOptions, botDetails) {
+        var chatWidgetSettings = appOptions.appSettings && appOptions.appSettings.chatWidget;
+        var widgetOverride =
+            typeof appOptions.answerFeedback === 'boolean'
+                ? appOptions.answerFeedback
+                : chatWidgetSettings && typeof chatWidgetSettings.answerFeedback === 'boolean'
+                ? chatWidgetSettings.answerFeedback
+                : null;
+
+        return typeof widgetOverride === 'boolean'
+            ? widgetOverride
+            : !!(botDetails && botDetails.answerFeedback);
+    }
     function toggleSingleThreadedClass(shouldApply) {
         var sidebox = document.getElementById('mck-sidebox');
         if (!sidebox || !sidebox.classList) {
@@ -10835,7 +10848,10 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
                         CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = res?.languageCode || '';
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.answerFeedback = getAnswerFeedbackSetting(
+                            appOptions,
+                            res
+                        );
                         CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
