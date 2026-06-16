@@ -2195,3 +2195,41 @@ KommunicateUI = {
 
     window.addEventListener('beforeunload', teardownYoutubeOriginFix);
 })();
+
+(function initMessageCopyTrim() {
+    function getNodeWithinMessageCell(node) {
+        if (!node) {
+            return null;
+        }
+        var elementNode = node.nodeType === 1 ? node : node.parentElement;
+        return elementNode && elementNode.closest
+            ? elementNode.closest('#mck-message-cell .mck-message-inner')
+            : null;
+    }
+
+    document.addEventListener('copy', function (event) {
+        var selection = window.getSelection && window.getSelection();
+        if (!selection || !selection.rangeCount) {
+            return;
+        }
+
+        var range = selection.getRangeAt(0);
+        var selectedMessageCell = getNodeWithinMessageCell(range.commonAncestorContainer);
+        if (!selectedMessageCell) {
+            return;
+        }
+
+        var copiedText = selection.toString();
+        if (!copiedText) {
+            return;
+        }
+
+        var normalizedText = copiedText.replace(/(?:\r?\n)+$/, '');
+        if (normalizedText === copiedText) {
+            return;
+        }
+
+        event.preventDefault();
+        event.clipboardData.setData('text/plain', normalizedText);
+    });
+})();
