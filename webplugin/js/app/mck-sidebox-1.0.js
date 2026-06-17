@@ -9478,6 +9478,10 @@ const firstVisibleMsg = {
             });
 
             _this.populateAutoSuggest = function (params) {
+                var existingTypeahead = $mck_autosuggest_search_input.data('mcktypeahead');
+                if (existingTypeahead && existingTypeahead.$menu) {
+                    existingTypeahead.$menu.removeClass('n-vis');
+                }
                 $mck_autosuggest_search_input.mcktypeahead({
                     order: 'desc',
                     hint: false,
