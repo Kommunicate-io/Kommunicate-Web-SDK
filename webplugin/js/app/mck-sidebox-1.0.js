@@ -779,8 +779,8 @@ const firstVisibleMsg = {
 
         _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
-            kommunicateCommons.show('.mck-box-form-container');
-            kommunicateCommons.hide('#mck-contact-loading', '#mck-contacts-content');
+            openWidgetIframe();
+            KommunicateUI.showChurnCustomerModal();
         };
 
         function openWidgetIframe() {
@@ -2546,7 +2546,12 @@ const firstVisibleMsg = {
                             }
                             // mckUtils.manageIdleTime();
                         } else if (result == 'CHURNED_CUSTOMER') {
-                            _this.onInitApp({});
+                            appOptions.appSettings.currentActivatedPlan = 'churn';
+                            _this.onInitApp({ currentActivatedPlan: 'churn' });
+                            KommunicateUI.showChurnCustomerModal();
+                            if (typeof onInitCallback === 'function') {
+                                onInitCallback();
+                            }
                         } else {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {

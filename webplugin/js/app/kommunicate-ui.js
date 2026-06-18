@@ -103,6 +103,29 @@ KommunicateUI = {
     setTopBarManager: function (manager) {
         topBarManagerRef = manager;
     },
+    getChurnCustomerUrl: function () {
+        var kommunicateIframe =
+            parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+        var utmSourceUrl = kommunicateIframe
+            ? kommunicateIframe.getAttribute('data-url') || parent.window.location.href
+            : window.location.href;
+        return (
+            'https://www.kommunicate.io/poweredby?utm_source=' +
+            utmSourceUrl +
+            '&utm_medium=webplugin&utm_campaign=deactivation'
+        );
+    },
+    showChurnCustomerModal: function () {
+        var sidebox = document.getElementById('mck-sidebox');
+        var linkForChurn = document.getElementById('deactivate-link');
+        var churnCustomerModal = document.getElementById('km-churn-customer');
+
+        sidebox.classList.add('km-churn-active');
+        linkForChurn.setAttribute('href', KommunicateUI.getChurnCustomerUrl());
+        kommunicateCommons.hide('#mck-contact-loading');
+        kommunicateCommons.show('#km-churn-customer');
+        churnCustomerModal.focus();
+    },
     updateScroll: function (element) {
         element.scrollTop = element.scrollHeight;
     },

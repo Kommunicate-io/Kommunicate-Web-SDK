@@ -312,6 +312,7 @@ class KMLabel {
             starInput.setAttribute('title', label);
         });
         var htmlBindings = {
+            'km-churn-notice': 'account.churned.notice',
             'mck-no-faq-found': 'looking.for.something.else',
             'km-internet-disconnect-msg': 'offline.msg',
             'km-socket-disconnect-msg': 'socket-disconnect.msg',
@@ -338,6 +339,7 @@ class KMLabel {
             'km-bottom-tab-faq-text': 'modern.nav.faqs',
             'km-bottom-tab-whatsnew-text': 'modern.nav.whatsnew',
             'km-bottom-tab-empty-text': 'modern.nav.empty',
+            'km-churn-banner-text': 'account.churned.banner',
             'km-conversations-empty-title': 'empty.conversations',
             'km-conversations-empty-subtitle': 'mck.empty.welcome.subtitle',
             'km-empty-conversation-eyebrow': 'mck.empty.welcome.eyebrow',
