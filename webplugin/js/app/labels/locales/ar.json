@@ -110,6 +110,7 @@
   "offline.msg": "عذراً! لا يوجد اتصال بالإنترنت. تحقق من الشبكة وحاول مرة أخرى.",
   "socket-disconnect.msg": "خطأ أثناء مزامنة الرسائل. تحقق من جدار الحماية أو حاول مرة أخرى لاحقًا.",
   "business-hour.msg": "لقد اتصلت بنا خارج ساعات العمل. سيتولى روبوتنا استفساراتك حتى يعود الفريق.",
+  "account.churned.notice": "تم تعطيل المراسلة عبر <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">روبوت Kommunicate للدردشة</a> لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a>.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName أنشأ المجموعة :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName أزال :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName أضاف :userName",

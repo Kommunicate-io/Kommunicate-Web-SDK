@@ -110,6 +110,7 @@
   "offline.msg": "Poxa! Sem conexão com a internet. Verifique sua rede e tente novamente.",
   "socket-disconnect.msg": "Erro ao sincronizar mensagens. Verifique o firewall ou tente novamente mais tarde.",
   "business-hour.msg": "Você nos contatou fora do horário comercial. Nosso bot atenderá seu pedido até a equipe voltar.",
+  "account.churned.notice": "As mensagens via <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">chatbot da Kommunicate</a> estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a>.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName criou o grupo :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName removeu :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName adicionou :userName",
