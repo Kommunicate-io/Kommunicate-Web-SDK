@@ -2620,6 +2620,11 @@ const firstVisibleMsg = {
                         kommunicateCommons.show(this);
                     }
                 });
+                // Reuse the churned-account UI for inactive startup/trial accounts.
+                if (kommunicateCommons.shouldShowInactiveAccountModal(data)) {
+                    data.currentActivatedPlan = 'churn';
+                    appOptions.appSettings.currentActivatedPlan = 'churn';
+                }
                 MCK_USER_ID = data.userId;
                 USER_DEVICE_KEY = data.deviceKey;
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;

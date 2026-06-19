@@ -251,8 +251,18 @@ function KommunicateCommons() {
         }
     };
 
+    // This shared helper is intentionally limited to startup-plan expiry because
+    // other plan/branding checks already depend on that narrower behavior.
     _this.isKommunicatePlanExpired = function (data) {
         return _this.getDaysCount() > 31 && _this.isStartupPlan(data);
+    };
+
+    // The inactive-account modal should appear for expired startup and expired trial accounts.
+    _this.shouldShowInactiveAccountModal = function (data) {
+        return (
+            _this.isKommunicatePlanExpired(data) ||
+            (_this.getDaysCount() > 31 && _this.isTrialPlan(data.pricingPackage))
+        );
     };
 
     _this.getDaysCount = function () {
