@@ -172,15 +172,41 @@ class KMLabel {
                 value.indexOf('{{supportEmailLink}}') !== -1
                     ? value
                     : fallbackTemplate;
-            node.innerHTML = template
-                .replace(
-                    /\{\{deactivateLink\}\}/g,
-                    '<a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate chatbot</a>'
-                )
-                .replace(
-                    /\{\{supportEmailLink\}\}/g,
-                    '<a href="mailto:support@kommunicate.io">support@kommunicate.io</a>'
+            var createDeactivateLink = function () {
+                var link = document.createElement('a');
+                link.id = 'deactivate-link';
+                link.href = 'https://www.kommunicate.io/poweredby';
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.appendChild(document.createTextNode('Kommunicate chatbot'));
+                return link;
+            };
+            var createSupportEmailLink = function () {
+                var link = document.createElement('a');
+                link.href = 'mailto:support@kommunicate.io';
+                link.appendChild(document.createTextNode('support@kommunicate.io'));
+                return link;
+            };
+            var appendText = function (text) {
+                if (text) {
+                    node.appendChild(document.createTextNode(text));
+                }
+            };
+            var tokenRegex = /\{\{(deactivateLink|supportEmailLink)\}\}/g;
+            var cursor = 0;
+            var match;
+
+            node.textContent = '';
+            while ((match = tokenRegex.exec(template)) !== null) {
+                appendText(template.slice(cursor, match.index));
+                node.appendChild(
+                    match[1] === 'deactivateLink'
+                        ? createDeactivateLink()
+                        : createSupportEmailLink()
                 );
+                cursor = tokenRegex.lastIndex;
+            }
+            appendText(template.slice(cursor));
         };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
