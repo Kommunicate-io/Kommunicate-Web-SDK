@@ -111,7 +111,7 @@ KommunicateUI = {
             : window.location.href;
         return (
             'https://www.kommunicate.io/poweredby?utm_source=' +
-            utmSourceUrl +
+            encodeURIComponent(utmSourceUrl) +
             '&utm_medium=webplugin&utm_campaign=deactivation'
         );
     },
