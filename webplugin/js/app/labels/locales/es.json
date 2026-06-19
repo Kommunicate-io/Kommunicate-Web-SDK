@@ -110,7 +110,7 @@
   "offline.msg": "¡Vaya! No hay conexión a internet. Revisa tu red e inténtalo de nuevo.",
   "socket-disconnect.msg": "Error al sincronizar mensajes. Revisa tu firewall o intenta de nuevo más tarde.",
   "business-hour.msg": "Nos contactaste fuera del horario laboral. Nuestro bot manejará tus consultas hasta que el equipo vuelva.",
-  "account.churned.notice": "La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}.",
+  "account.churned.notice": "La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName creó el grupo :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName eliminó a :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName añadió a :userName",

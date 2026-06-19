@@ -123,7 +123,7 @@
             'business-hour.msg':
                 'لقد اتصلت بنا خارج ساعات العمل. سيتولى روبوتنا استفساراتك حتى يعود الفريق.',
             'account.churned.notice':
-                'تم تعطيل المراسلة عبر {{deactivateLink}} لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على {{supportEmailLink}}.',
+                'تم تعطيل المراسلة عبر {{deactivateLink}} لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName أنشأ المجموعة :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName أزال :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName أضاف :userName',
@@ -332,7 +332,7 @@
             'business-hour.msg':
                 'Sie haben uns außerhalb der Geschäftszeiten kontaktiert. Unser Bot kümmert sich um Ihre Fragen, bis das Team zurück ist.',
             'account.churned.notice':
-                'Das Versenden von Nachrichten über den {{deactivateLink}} ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie {{supportEmailLink}}.',
+                'Das Versenden von Nachrichten über den {{deactivateLink}} ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName hat die Gruppe :groupName erstellt',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName hat :userName entfernt',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName hat :userName hinzugefügt',
@@ -545,7 +545,7 @@
             'business-hour.msg':
                 'Nos contactaste fuera del horario laboral. Nuestro bot manejará tus consultas hasta que el equipo vuelva.',
             'account.churned.notice':
-                'La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}.',
+                'La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName creó el grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName eliminó a :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName añadió a :userName',
@@ -760,7 +760,7 @@
             'business-hour.msg':
                 "Vous nous avez contactés en dehors de nos heures d'ouverture. Notre bot traitera vos demandes jusqu'au retour de l'équipe.",
             'account.churned.notice':
-                'La messagerie via le {{deactivateLink}} est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à {{supportEmailLink}}.',
+                'La messagerie via le {{deactivateLink}} est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName a créé le groupe :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName a supprimé :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName a ajouté :userName',
@@ -1191,7 +1191,7 @@
             'business-hour.msg':
                 'Ci hai contattato fuori dall’orario di lavoro. Il nostro bot gestirà la tua richiesta finché il team non tornerà online.',
             'account.churned.notice':
-                'La messaggistica tramite il {{deactivateLink}} è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a {{supportEmailLink}}.',
+                'La messaggistica tramite il {{deactivateLink}} è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName ha creato il gruppo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName ha rimosso :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName ha aggiunto :userName',
@@ -1406,7 +1406,7 @@
             'business-hour.msg':
                 'Você nos contatou fora do horário comercial. Nosso bot atenderá seu pedido até a equipe voltar.',
             'account.churned.notice':
-                'As mensagens via {{deactivateLink}} estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em {{supportEmailLink}}.',
+                'As mensagens via {{deactivateLink}} estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName criou o grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName removeu :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName adicionou :userName',
@@ -1618,7 +1618,7 @@
             'business-hour.msg':
                 'Du kontaktade oss utanför kontorstid. Vår bot hanterar dina frågor tills teamet är online igen.',
             'account.churned.notice':
-                'Meddelanden via {{deactivateLink}} är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på {{supportEmailLink}}.',
+                'Meddelanden via {{deactivateLink}} är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på {{supportEmailLink}}',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName skapade gruppen :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName tog bort :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName lade till :userName',
