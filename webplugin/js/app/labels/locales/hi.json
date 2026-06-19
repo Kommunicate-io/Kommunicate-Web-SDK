@@ -110,7 +110,7 @@
   "offline.msg": "ओह ओह! इंटरनेट कनेक्शन नहीं है। कृपया अपने नेटवर्क की जाँच करें और पुनः प्रयास करें।",
   "socket-disconnect.msg": "संदेशों को सिंक करते समय त्रुटि हुई। अपने फ़ायरवॉल सेटिंग्स की जांच करें या कुछ समय बाद पुनः प्रयास करें।",
   "business-hour.msg": "आपने हमें हमारे व्यापारिक घंटों के बाहर संपर्क किया है। जब तक टीम ऑनलाइन नहीं आती, हमारा बॉट आपकी क्वेरी संभालेगा।",
-  "account.churned.notice": "इस खाते के लिए <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">Kommunicate चैटबॉट</a> के माध्यम से मैसेजिंग अक्षम है। इसे सक्षम करने के लिए कृपया वेबसाइट के एडमिन से संपर्क करें। यदि आप एडमिन हैं, तो <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a> पर हमसे संपर्क करें।",
+  "account.churned.notice": "इस खाते के लिए {{deactivateLink}} के माध्यम से मैसेजिंग अक्षम है। इसे सक्षम करने के लिए कृपया वेबसाइट के एडमिन से संपर्क करें। यदि आप एडमिन हैं, तो {{supportEmailLink}} पर हमसे संपर्क करें।",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName ने समूह :groupName बनाया",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName ने :userName को हटा दिया",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName ने :userName को जोड़ा",

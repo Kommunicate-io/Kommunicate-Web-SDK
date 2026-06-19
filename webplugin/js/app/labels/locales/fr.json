@@ -110,7 +110,7 @@
   "offline.msg": "Oups ! Pas de connexion Internet. Veuillez vérifier votre réseau et réessayer.",
   "socket-disconnect.msg": "Erreur lors de la synchronisation des messages. Vérifiez votre pare-feu ou réessayez plus tard.",
   "business-hour.msg": "Vous nous avez contactés en dehors de nos heures d'ouverture. Notre bot traitera vos demandes jusqu'au retour de l'équipe.",
-  "account.churned.notice": "La messagerie via le <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">chatbot Kommunicate</a> est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a>.",
+  "account.churned.notice": "La messagerie via le {{deactivateLink}} est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à {{supportEmailLink}}.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName a créé le groupe :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName a supprimé :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName a ajouté :userName",
