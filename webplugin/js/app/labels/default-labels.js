@@ -158,6 +158,30 @@ class KMLabel {
                 node.setAttribute('aria-label', value);
             });
         };
+        var renderChurnNotice = function () {
+            var node = document.getElementById('km-churn-notice');
+            var value = resolveLabel('account.churned.notice');
+            if (!node || value === null || typeof value === 'undefined') {
+                return;
+            }
+            var fallbackTemplate =
+                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}.';
+            var template =
+                typeof value === 'string' &&
+                value.indexOf('{{deactivateLink}}') !== -1 &&
+                value.indexOf('{{supportEmailLink}}') !== -1
+                    ? value
+                    : fallbackTemplate;
+            node.innerHTML = template
+                .replace(
+                    /\{\{deactivateLink\}\}/g,
+                    '<a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate chatbot</a>'
+                )
+                .replace(
+                    /\{\{supportEmailLink\}\}/g,
+                    '<a href="mailto:support@kommunicate.io">support@kommunicate.io</a>'
+                );
+        };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
             binding
@@ -312,7 +336,6 @@ class KMLabel {
             starInput.setAttribute('title', label);
         });
         var htmlBindings = {
-            'km-churn-notice': 'account.churned.notice',
             'mck-no-faq-found': 'looking.for.something.else',
             'km-internet-disconnect-msg': 'offline.msg',
             'km-socket-disconnect-msg': 'socket-disconnect.msg',
@@ -362,6 +385,7 @@ class KMLabel {
         Object.keys(htmlBindings).forEach(function (id) {
             setLabel(id, htmlBindings[id], 'html');
         });
+        renderChurnNotice();
         Object.keys(textBindings).forEach(function (id) {
             setLabel(id, textBindings[id], 'text');
         });

@@ -123,7 +123,7 @@
             'business-hour.msg':
                 'لقد اتصلت بنا خارج ساعات العمل. سيتولى روبوتنا استفساراتك حتى يعود الفريق.',
             'account.churned.notice':
-                'تم تعطيل المراسلة عبر <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">روبوت Kommunicate للدردشة</a> لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'تم تعطيل المراسلة عبر {{deactivateLink}} لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName أنشأ المجموعة :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName أزال :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName أضاف :userName',
@@ -332,7 +332,7 @@
             'business-hour.msg':
                 'Sie haben uns außerhalb der Geschäftszeiten kontaktiert. Unser Bot kümmert sich um Ihre Fragen, bis das Team zurück ist.',
             'account.churned.notice':
-                'Das Versenden von Nachrichten über den <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate-Chatbot</a> ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'Das Versenden von Nachrichten über den {{deactivateLink}} ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName hat die Gruppe :groupName erstellt',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName hat :userName entfernt',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName hat :userName hinzugefügt',
@@ -545,7 +545,7 @@
             'business-hour.msg':
                 'Nos contactaste fuera del horario laboral. Nuestro bot manejará tus consultas hasta que el equipo vuelva.',
             'account.churned.notice':
-                'La mensajería a través del <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">chatbot de Kommunicate</a> está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName creó el grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName eliminó a :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName añadió a :userName',
@@ -760,7 +760,7 @@
             'business-hour.msg':
                 "Vous nous avez contactés en dehors de nos heures d'ouverture. Notre bot traitera vos demandes jusqu'au retour de l'équipe.",
             'account.churned.notice':
-                'La messagerie via le <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">chatbot Kommunicate</a> est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'La messagerie via le {{deactivateLink}} est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName a créé le groupe :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName a supprimé :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName a ajouté :userName',
@@ -978,7 +978,7 @@
             'business-hour.msg':
                 'आपने हमें हमारे व्यापारिक घंटों के बाहर संपर्क किया है। जब तक टीम ऑनलाइन नहीं आती, हमारा बॉट आपकी क्वेरी संभालेगा।',
             'account.churned.notice':
-                'इस खाते के लिए <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate चैटबॉट</a> के माध्यम से मैसेजिंग अक्षम है। इसे सक्षम करने के लिए कृपया वेबसाइट के एडमिन से संपर्क करें। यदि आप एडमिन हैं, तो <a href="mailto:support@kommunicate.io">support@kommunicate.io</a> पर हमसे संपर्क करें।',
+                'इस खाते के लिए {{deactivateLink}} के माध्यम से मैसेजिंग अक्षम है। इसे सक्षम करने के लिए कृपया वेबसाइट के एडमिन से संपर्क करें। यदि आप एडमिन हैं, तो {{supportEmailLink}} पर हमसे संपर्क करें।',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName ने समूह :groupName बनाया',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName ने :userName को हटा दिया',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName ने :userName को जोड़ा',
@@ -1191,7 +1191,7 @@
             'business-hour.msg':
                 'Ci hai contattato fuori dall’orario di lavoro. Il nostro bot gestirà la tua richiesta finché il team non tornerà online.',
             'account.churned.notice':
-                'La messaggistica tramite il <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">chatbot di Kommunicate</a> è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'La messaggistica tramite il {{deactivateLink}} è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName ha creato il gruppo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName ha rimosso :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName ha aggiunto :userName',
@@ -1406,7 +1406,7 @@
             'business-hour.msg':
                 'Você nos contatou fora do horário comercial. Nosso bot atenderá seu pedido até a equipe voltar.',
             'account.churned.notice':
-                'As mensagens via <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">chatbot da Kommunicate</a> estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'As mensagens via {{deactivateLink}} estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName criou o grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName removeu :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName adicionou :userName',
@@ -1618,7 +1618,7 @@
             'business-hour.msg':
                 'Du kontaktade oss utanför kontorstid. Vår bot hanterar dina frågor tills teamet är online igen.',
             'account.churned.notice':
-                'Meddelanden via <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate-chatboten</a> är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på <a href="mailto:support@kommunicate.io">support@kommunicate.io</a>.',
+                'Meddelanden via {{deactivateLink}} är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på {{supportEmailLink}}.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName skapade gruppen :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName tog bort :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName lade till :userName',
@@ -1829,7 +1829,7 @@
             'business-hour.msg':
                 'آپ نے ہمیں کاروباری اوقات کے بعد رابطہ کیا ہے۔ جب تک ٹیم آن لائن نہ آئے، ہمارا بوٹ آپ کی پُرُشوں کا جواب دے گا.',
             'account.churned.notice':
-                'اس اکاؤنٹ کے لیے <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate چیٹ بوٹ</a> کے ذریعے پیغام رسانی غیر فعال ہے۔ اسے فعال کرنے کے لیے براہ کرم ویب سائٹ کے ایڈمن سے رابطہ کریں۔ اگر آپ ایڈمن ہیں تو <a href="mailto:support@kommunicate.io">support@kommunicate.io</a> پر ہم سے رابطہ کریں۔',
+                'اس اکاؤنٹ کے لیے {{deactivateLink}} کے ذریعے پیغام رسانی غیر فعال ہے۔ اسے فعال کرنے کے لیے براہ کرم ویب سائٹ کے ایڈمن سے رابطہ کریں۔ اگر آپ ایڈمن ہیں تو {{supportEmailLink}} پر ہم سے رابطہ کریں۔',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName نے گروپ :groupName بنایا',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName نے :userName کو ہٹایا',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName نے :userName کو شامل کیا',
@@ -2039,7 +2039,7 @@
             'business-hour.msg':
                 '您在我们的工作时间之外联系，机器人会处理您的问题，直至客服重新上线。',
             'account.churned.notice':
-                '此账户已禁用通过 <a id="deactivate-link" href="https://www.kommunicate.io/poweredby" target="_blank" rel="noopener noreferrer">Kommunicate 聊天机器人</a> 发送消息。如需启用，请联系网站管理员。如果您就是管理员，请通过 <a href="mailto:support@kommunicate.io">support@kommunicate.io</a> 与我们联系。',
+                '此账户已禁用通过 {{deactivateLink}} 发送消息。如需启用，请联系网站管理员。如果您就是管理员，请通过 {{supportEmailLink}} 与我们联系。',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName 创建了群组 :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName 移除了 :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName 添加了 :userName',

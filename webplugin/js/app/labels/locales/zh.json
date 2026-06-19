@@ -110,7 +110,7 @@
   "offline.msg": "哎呀！暂无网络连接，请检查后再试。",
   "socket-disconnect.msg": "同步消息时出错，请检查防火墙或稍后再试。",
   "business-hour.msg": "您在我们的工作时间之外联系，机器人会处理您的问题，直至客服重新上线。",
-  "account.churned.notice": "此账户已禁用通过 <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">Kommunicate 聊天机器人</a> 发送消息。如需启用，请联系网站管理员。如果您就是管理员，请通过 <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a> 与我们联系。",
+  "account.churned.notice": "此账户已禁用通过 {{deactivateLink}} 发送消息。如需启用，请联系网站管理员。如果您就是管理员，请通过 {{supportEmailLink}} 与我们联系。",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName 创建了群组 :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName 移除了 :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName 添加了 :userName",

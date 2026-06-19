@@ -110,7 +110,7 @@
   "offline.msg": "اوہ اوہ! انٹرنیٹ کنیکشن موجود نہیں۔ براہ کرم اپنا نیٹ ورک چیک کریں اور دوبارہ کوشش کریں.",
   "socket-disconnect.msg": "پیغامات کی مطابقت پذیری میں خرابی ہوئی۔ اپنے فائر وال کی ترتیبات چیک کریں یا کچھ دیر بعد دوبارہ کوشش کریں.",
   "business-hour.msg": "آپ نے ہمیں کاروباری اوقات کے بعد رابطہ کیا ہے۔ جب تک ٹیم آن لائن نہ آئے، ہمارا بوٹ آپ کی پُرُشوں کا جواب دے گا.",
-  "account.churned.notice": "اس اکاؤنٹ کے لیے <a id=\"deactivate-link\" href=\"https://www.kommunicate.io/poweredby\" target=\"_blank\" rel=\"noopener noreferrer\">Kommunicate چیٹ بوٹ</a> کے ذریعے پیغام رسانی غیر فعال ہے۔ اسے فعال کرنے کے لیے براہ کرم ویب سائٹ کے ایڈمن سے رابطہ کریں۔ اگر آپ ایڈمن ہیں تو <a href=\"mailto:support@kommunicate.io\">support@kommunicate.io</a> پر ہم سے رابطہ کریں۔",
+  "account.churned.notice": "اس اکاؤنٹ کے لیے {{deactivateLink}} کے ذریعے پیغام رسانی غیر فعال ہے۔ اسے فعال کرنے کے لیے براہ کرم ویب سائٹ کے ایڈمن سے رابطہ کریں۔ اگر آپ ایڈمن ہیں تو {{supportEmailLink}} پر ہم سے رابطہ کریں۔",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName نے گروپ :groupName بنایا",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName نے :userName کو ہٹایا",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName نے :userName کو شامل کیا",
