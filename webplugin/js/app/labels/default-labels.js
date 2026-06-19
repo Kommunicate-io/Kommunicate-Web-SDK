@@ -165,7 +165,7 @@ class KMLabel {
                 return;
             }
             var fallbackTemplate =
-                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}.';
+                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}';
             var template =
                 typeof value === 'string' &&
                 value.indexOf('{{deactivateLink}}') !== -1 &&
