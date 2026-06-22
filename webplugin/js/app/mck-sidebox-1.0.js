@@ -10838,6 +10838,11 @@ const firstVisibleMsg = {
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
                         */
                         const res = data.data[0];
+                        if (res?.status === 'expired') {
+                            appOptions.appSettings.currentActivatedPlan = 'churn';
+                            KommunicateUI.showChurnCustomerModal();
+                            return;
+                        }
                         CURRENT_GROUP_DATA.CHAR_CHECK =
                             res?.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
                         !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();

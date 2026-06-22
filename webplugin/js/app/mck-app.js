@@ -550,12 +550,16 @@ function ApplozicSidebox() {
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
             options['appSettings'] = $applozic.extend(true, data, options.appSettings);
-
             options['agentId'] = options.appSettings.agentId;
             options['agentName'] = options.appSettings.agentName;
             options['widgetSettings'] = widgetSettings;
             applyWidgetCustomPosition(widgetSettings);
-            options['customerCreatedAt'] = options.appSettings.customerCreatedAt;
+            options['customerCreatedAt'] =
+                options.appSettings.createdAt ||
+                options.appSettings.created_at ||
+                options.appSettings.customerCreatedAt;
+            options['trialPeriod'] =
+                options.appSettings.trialPeriod || options.appSettings.trial_period;
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
