@@ -606,6 +606,20 @@ KommunicateUtils = {
     getBooleanOption: function (value, defaultValue) {
         return typeof value === 'boolean' ? value : defaultValue;
     },
+    resolveBooleanOption: function (value, defaultValue) {
+        if (typeof value === 'boolean') {
+            return value;
+        }
+        if (typeof value === 'string') {
+            if (value.toLowerCase() === 'true') {
+                return true;
+            }
+            if (value.toLowerCase() === 'false') {
+                return false;
+            }
+        }
+        return defaultValue;
+    },
     formatParams: function (params) {
         return (
             '?' +
@@ -614,6 +628,50 @@ KommunicateUtils = {
                     return key + '=' + encodeURIComponent(params[key]);
                 })
                 .join('&')
+        );
+    },
+    normalizeCustomRegexPatterns: function (patterns) {
+        if (Array.isArray(patterns)) {
+            return patterns
+                .map(function (pattern) {
+                    return String(pattern || '').trim();
+                })
+                .filter(Boolean);
+        }
+        if (typeof patterns === 'string') {
+            return patterns
+                .split(/\s*\|\|\s*|\n/)
+                .map(function (pattern) {
+                    return pattern.trim();
+                })
+                .filter(Boolean);
+        }
+        return [];
+    },
+    getSensitiveInfoMaskConfig: function (widgetSettings) {
+        var settings = widgetSettings || {};
+        var maskCards = this.resolveBooleanOption(
+            settings.maskCards,
+            this.resolveBooleanOption(settings.maskPaymentCardNumbers, false)
+        );
+
+        return {
+            maskCards: maskCards,
+            maskPhoneNumbers: this.resolveBooleanOption(settings.maskPhoneNumbers, false),
+            maskEmailAddresses: this.resolveBooleanOption(settings.maskEmailAddresses, false),
+            maskCustomPatterns: this.resolveBooleanOption(settings.maskCustomPatterns, false),
+            customRegexPatterns: this.normalizeCustomRegexPatterns(settings.customRegexPatterns),
+        };
+    },
+    hasSensitiveInfoMaskingEnabled: function (config) {
+        return Boolean(
+            config &&
+                (config.maskCards ||
+                    config.maskPhoneNumbers ||
+                    config.maskEmailAddresses ||
+                    (config.maskCustomPatterns &&
+                        config.customRegexPatterns &&
+                        config.customRegexPatterns.length))
         );
     },
     getCardSanitizerSchemes: function () {
@@ -636,8 +694,34 @@ KommunicateUtils = {
         }
         return null;
     },
+    passesLuhnCheck: function (normalizedCandidate) {
+        var sum = 0;
+        var shouldDouble = false;
+
+        for (var index = normalizedCandidate.length - 1; index >= 0; index--) {
+            var digit = parseInt(normalizedCandidate.charAt(index), 10);
+            if (isNaN(digit)) {
+                return false;
+            }
+
+            if (shouldDouble) {
+                digit = digit * 2;
+                if (digit > 9) {
+                    digit = digit - 9;
+                }
+            }
+
+            sum += digit;
+            shouldDouble = !shouldDouble;
+        }
+
+        return normalizedCandidate.length >= 12 && sum % 10 === 0;
+    },
     maskCardCandidate: function (candidate, maskCharacter) {
         return candidate.replace(/\d/g, maskCharacter || 'X');
+    },
+    maskNonWhitespaceCandidate: function (candidate, maskCharacter) {
+        return candidate.replace(/\S/g, maskCharacter || 'X');
     },
     sanitizeCardNumbersInMessage: function (message, options) {
         if (typeof message !== 'string' || message === '') {
@@ -657,13 +741,126 @@ KommunicateUtils = {
                     schemes
                 );
 
-                if (!matchingScheme) {
+                if (!matchingScheme && !KommunicateUtils.passesLuhnCheck(normalizedCandidate)) {
                     return match;
                 }
 
                 return prefix + KommunicateUtils.maskCardCandidate(candidate, maskCharacter);
             }
         );
+    },
+    sanitizePhoneNumbersInMessage: function (message, options) {
+        if (typeof message !== 'string' || message === '') {
+            return message;
+        }
+
+        var sanitizerOptions = options || {};
+        var maskCharacter = sanitizerOptions.maskCharacter || 'X';
+
+        return message.replace(
+            /(^|[^0-9A-Za-z])(\+?(?:\d[\s().-]?){9,14}\d)(?=[^0-9A-Za-z]|$)/g,
+            function (match, prefix, candidate) {
+                var normalizedCandidate = candidate.replace(/[^\d]/g, '');
+                var hasPhoneLikeFormatting = /^[+]/.test(candidate) || /[\s().-]/.test(candidate);
+
+                if (
+                    normalizedCandidate.length < 10 ||
+                    normalizedCandidate.length > 15 ||
+                    (!hasPhoneLikeFormatting && normalizedCandidate.length !== 10)
+                ) {
+                    return match;
+                }
+
+                return (
+                    prefix + KommunicateUtils.maskNonWhitespaceCandidate(candidate, maskCharacter)
+                );
+            }
+        );
+    },
+    sanitizeEmailAddressesInMessage: function (message, options) {
+        if (typeof message !== 'string' || message === '') {
+            return message;
+        }
+
+        var sanitizerOptions = options || {};
+        var maskCharacter = sanitizerOptions.maskCharacter || 'X';
+
+        return message.replace(
+            /(^|[^A-Z0-9._%+-])([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})(?=[^A-Z0-9.-]|$)/gi,
+            function (match, prefix, candidate) {
+                return (
+                    prefix + KommunicateUtils.maskNonWhitespaceCandidate(candidate, maskCharacter)
+                );
+            }
+        );
+    },
+    sanitizeCustomPatternsInMessage: function (message, options) {
+        if (typeof message !== 'string' || message === '') {
+            return message;
+        }
+
+        var sanitizerOptions = options || {};
+        var maskCharacter = sanitizerOptions.maskCharacter || 'X';
+        var customRegexPatterns = this.normalizeCustomRegexPatterns(
+            sanitizerOptions.customRegexPatterns
+        );
+        var sanitizedMessage = message;
+
+        customRegexPatterns.forEach(function (pattern) {
+            try {
+                var compiledPattern = new RegExp(pattern, 'g');
+                sanitizedMessage = sanitizedMessage.replace(compiledPattern, function (match) {
+                    return KommunicateUtils.maskNonWhitespaceCandidate(match, maskCharacter);
+                });
+            } catch (error) {
+                console.warn('[KM] Invalid custom sensitive info regex skipped', pattern, error);
+            }
+        });
+
+        return sanitizedMessage;
+    },
+    sanitizeSensitiveInfo: function (message, widgetSettings, options) {
+        if (typeof message !== 'string' || message === '') {
+            return message;
+        }
+
+        var sanitizerOptions = options || {};
+        var config = this.getSensitiveInfoMaskConfig(widgetSettings);
+        var sanitizedMessage = message;
+
+        if (!this.hasSensitiveInfoMaskingEnabled(config)) {
+            return sanitizedMessage;
+        }
+
+        if (config.maskCards) {
+            sanitizedMessage = this.sanitizeCardNumbersInMessage(
+                sanitizedMessage,
+                sanitizerOptions
+            );
+        }
+
+        if (config.maskEmailAddresses) {
+            sanitizedMessage = this.sanitizeEmailAddressesInMessage(
+                sanitizedMessage,
+                sanitizerOptions
+            );
+        }
+
+        if (config.maskPhoneNumbers) {
+            sanitizedMessage = this.sanitizePhoneNumbersInMessage(
+                sanitizedMessage,
+                sanitizerOptions
+            );
+        }
+
+        if (config.maskCustomPatterns && config.customRegexPatterns.length) {
+            sanitizedMessage = this.sanitizeCustomPatternsInMessage(sanitizedMessage, {
+                maskCharacter: sanitizerOptions.maskCharacter,
+                customRegexPatterns: config.customRegexPatterns,
+            });
+        }
+
+        return sanitizedMessage;
     },
     /**
      * When a new group is created, initially CURRENT_GROUP_DATA.groupMembers array has role of a member.

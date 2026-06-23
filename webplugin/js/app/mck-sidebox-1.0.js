@@ -5433,14 +5433,10 @@ const firstVisibleMsg = {
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
-                if (
-                    WIDGET_SETTINGS &&
-                    WIDGET_SETTINGS.maskPaymentCardNumbers &&
-                    typeof messagePxy.message === 'string' &&
-                    messagePxy.message.length > 0
-                ) {
-                    messagePxy.message = KommunicateUtils.sanitizeCardNumbersInMessage(
-                        messagePxy.message
+                if (typeof messagePxy.message === 'string' && messagePxy.message.length > 0) {
+                    messagePxy.message = KommunicateUtils.sanitizeSensitiveInfo(
+                        messagePxy.message,
+                        WIDGET_SETTINGS
                     );
                 }
                 if (messagePxy.to) {
