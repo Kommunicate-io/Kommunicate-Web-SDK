@@ -5433,7 +5433,7 @@ const firstVisibleMsg = {
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
-                if (typeof messagePxy.message === 'string' && messagePxy.message.length > 0) {
+                if (messagePxy.message) {
                     messagePxy.message = KommunicateUtils.sanitizeSensitiveInfo(
                         messagePxy.message,
                         WIDGET_SETTINGS
