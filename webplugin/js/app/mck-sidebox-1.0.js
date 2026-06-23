@@ -5433,6 +5433,16 @@ const firstVisibleMsg = {
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
+                if (
+                    WIDGET_SETTINGS &&
+                    WIDGET_SETTINGS.maskPaymentCardNumbers &&
+                    typeof messagePxy.message === 'string' &&
+                    messagePxy.message.length > 0
+                ) {
+                    messagePxy.message = KommunicateUtils.sanitizeCardNumbersInMessage(
+                        messagePxy.message
+                    );
+                }
                 if (messagePxy.to) {
                     if (
                         alUserService.MCK_USER_DETAIL_MAP[messagePxy.to] &&

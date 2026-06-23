@@ -207,6 +207,43 @@ KommunicateConstants = {
         2: 'chat-popup-widget-container--vertical',
         3: 'chat-popup-widget-container--actionable',
     },
+    CARD_SCHEMES: [
+        {
+            name: 'visa',
+            prefixPattern: /^4/,
+            allowedLengths: [13, 16, 19],
+        },
+        {
+            name: 'mastercard',
+            prefixPattern: /^(5[1-5]|2(?:2(?:2[1-9]|[3-9]\d)|[3-6]\d{2}|7(?:0\d|1\d|20)))/,
+            allowedLengths: [16],
+        },
+        {
+            name: 'american-express',
+            prefixPattern: /^(34|37)/,
+            allowedLengths: [15],
+        },
+        {
+            name: 'discover',
+            prefixPattern: /^(6011|65|64[4-9]|622(?:12[6-9]|1[3-9]\d|[2-8]\d{2}|9(?:0\d|1\d|2[0-5])))/,
+            allowedLengths: [16, 17, 18, 19],
+        },
+        {
+            name: 'diners-club',
+            prefixPattern: /^(30[0-5]|36|3[89])/,
+            allowedLengths: [14],
+        },
+        {
+            name: 'jcb',
+            prefixPattern: /^35(?:2[89]|[3-8]\d)/,
+            allowedLengths: [16, 17, 18, 19],
+        },
+        {
+            name: 'unionpay',
+            prefixPattern: /^62/,
+            allowedLengths: [16, 17, 18, 19],
+        },
+    ],
     GROUP_ROLE: {
         USER: 0,
         ADMIN: 1,
@@ -577,6 +614,55 @@ KommunicateUtils = {
                     return key + '=' + encodeURIComponent(params[key]);
                 })
                 .join('&')
+        );
+    },
+    getCardSanitizerSchemes: function () {
+        return KommunicateConstants.CARD_SCHEMES;
+    },
+    normalizeCardCandidate: function (candidate) {
+        return candidate.replace(/[\s-]/g, '');
+    },
+    matchesCardScheme: function (normalizedCandidate, scheme) {
+        return (
+            scheme.allowedLengths.indexOf(normalizedCandidate.length) !== -1 &&
+            scheme.prefixPattern.test(normalizedCandidate)
+        );
+    },
+    getMatchingCardScheme: function (normalizedCandidate, schemes) {
+        for (var i = 0; i < schemes.length; i++) {
+            if (this.matchesCardScheme(normalizedCandidate, schemes[i])) {
+                return schemes[i];
+            }
+        }
+        return null;
+    },
+    maskCardCandidate: function (candidate, maskCharacter) {
+        return candidate.replace(/\d/g, maskCharacter || 'X');
+    },
+    sanitizeCardNumbersInMessage: function (message, options) {
+        if (typeof message !== 'string' || message === '') {
+            return message;
+        }
+
+        var sanitizerOptions = options || {};
+        var maskCharacter = sanitizerOptions.maskCharacter || 'X';
+        var schemes = sanitizerOptions.schemes || this.getCardSanitizerSchemes();
+
+        return message.replace(
+            /(^|[^0-9A-Za-z])((?:\d[\s-]?){11,18}\d)(?=[^0-9A-Za-z]|$)/g,
+            function (match, prefix, candidate) {
+                var normalizedCandidate = KommunicateUtils.normalizeCardCandidate(candidate);
+                var matchingScheme = KommunicateUtils.getMatchingCardScheme(
+                    normalizedCandidate,
+                    schemes
+                );
+
+                if (!matchingScheme) {
+                    return match;
+                }
+
+                return prefix + KommunicateUtils.maskCardCandidate(candidate, maskCharacter);
+            }
         );
     },
     /**
