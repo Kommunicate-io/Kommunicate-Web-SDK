@@ -263,12 +263,9 @@ function KommunicateCommons() {
         return _this.getDaysCount() > TRIAL_PERIOD;
     };
 
-    // The inactive-account modal should appear only for expired startup and trial accounts.
+    // The inactive-account modal should appear only for expired trial accounts.
     _this.shouldShowInactiveAccountModal = function (data) {
-        return (
-            _this.isAccountExpired() &&
-            (_this.isStartupPlan(data) || _this.isTrialPlan(data.pricingPackage))
-        );
+        return _this.isAccountExpired() && _this.isTrialPlan(data.pricingPackage);
     };
 
     _this.getDaysCount = function () {
