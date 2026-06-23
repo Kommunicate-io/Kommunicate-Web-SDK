@@ -570,8 +570,10 @@ KommunicateUtils = {
         return typeof value === 'boolean' ? value : defaultValue;
     },
     resolveBooleanOption: function (value, defaultValue) {
-        if (typeof value === 'boolean') {
-            return value;
+        var booleanValue = this.getBooleanOption(value, null);
+
+        if (booleanValue !== null) {
+            return booleanValue;
         }
         if (typeof value === 'string') {
             if (value.toLowerCase() === 'true') {
@@ -628,13 +630,10 @@ KommunicateUtils = {
     },
     hasSensitiveInfoMaskingEnabled: function (config) {
         return Boolean(
-            config &&
-                (config.maskCards ||
-                    config.maskPhoneNumbers ||
-                    config.maskEmailAddresses ||
-                    (config.maskCustomPatterns &&
-                        config.customRegexPatterns &&
-                        config.customRegexPatterns.length))
+            config.maskCards ||
+                config.maskPhoneNumbers ||
+                config.maskEmailAddresses ||
+                (config.maskCustomPatterns && config.customRegexPatterns.length)
         );
     },
     isValidPaymentCardCandidate: function (candidate, options) {
@@ -656,10 +655,6 @@ KommunicateUtils = {
         return candidate.replace(/\S/g, maskCharacter || 'X');
     },
     sanitizeCardNumbersInMessage: function (message, options) {
-        if (typeof message !== 'string' || message === '') {
-            return message;
-        }
-
         var sanitizerOptions = options || {};
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
 
@@ -675,10 +670,6 @@ KommunicateUtils = {
         );
     },
     sanitizePhoneNumbersInMessage: function (message, options) {
-        if (typeof message !== 'string' || message === '') {
-            return message;
-        }
-
         var sanitizerOptions = options || {};
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
 
@@ -703,10 +694,6 @@ KommunicateUtils = {
         );
     },
     sanitizeEmailAddressesInMessage: function (message, options) {
-        if (typeof message !== 'string' || message === '') {
-            return message;
-        }
-
         var sanitizerOptions = options || {};
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
 
@@ -720,10 +707,6 @@ KommunicateUtils = {
         );
     },
     sanitizeCustomPatternsInMessage: function (message, options) {
-        if (typeof message !== 'string' || message === '') {
-            return message;
-        }
-
         var sanitizerOptions = options || {};
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
         var customRegexPatterns = this.normalizeCustomRegexPatterns(
@@ -745,10 +728,6 @@ KommunicateUtils = {
         return sanitizedMessage;
     },
     sanitizeSensitiveInfo: function (message, widgetSettings, options) {
-        if (typeof message !== 'string' || message === '') {
-            return message;
-        }
-
         var sanitizerOptions = options || {};
         var config = this.getSensitiveInfoMaskConfig(widgetSettings);
         var sanitizedMessage = message;
