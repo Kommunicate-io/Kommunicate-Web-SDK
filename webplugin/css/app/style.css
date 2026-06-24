@@ -594,12 +594,13 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(28, 28, 28, 0.12);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   box-sizing: border-box;
   z-index: 2;
   transform: translateY(-50%);
@@ -609,7 +610,8 @@ input[type=number]::-webkit-outer-spin-button {
   outline-offset: 2px;
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn-container:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-color: rgba(28, 28, 28, 0.18);
 }
 .chat-popup-widget-container .chat-popup-widget-close-btn:focus-visible {
   outline: 2px solid rgba(76, 102, 205, 0.6);
@@ -621,6 +623,7 @@ input[type=number]::-webkit-outer-spin-button {
   height: 100%;
   margin: 0;
   padding: 0;
+  color: #1c1c1c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -630,6 +633,10 @@ input[type=number]::-webkit-outer-spin-button {
 .chat-popup-widget-container .chat-popup-widget-close-btn svg {
   width: 14px;
   height: 14px;
+  display: block;
+}
+.chat-popup-widget-container .chat-popup-widget-close-btn svg path {
+  fill: currentColor;
 }
 .chat-popup-widget-container .chat-popup-widget-text {
   margin: 0;
@@ -670,7 +677,7 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
 }
 .chat-popup-widget-container--horizontal .chat-popup-widget-close-btn {
-  background: transparent;
+  background: #ffffff;
 }
 .chat-popup-widget-container--vertical {
   border-radius: 20px;
@@ -711,12 +718,12 @@ input[type=number]::-webkit-outer-spin-button {
   transform: none;
   width: 18px;
   height: 18px;
-  border: none;
-  box-shadow: none;
-  background: transparent;
+  border: 1px solid rgba(28, 28, 28, 0.12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  background: #ffffff;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-close-btn {
-  background: transparent;
+  background: #ffffff;
 }
 .chat-popup-widget-container--vertical .chat-popup-widget-close-btn svg {
   width: 12px;
