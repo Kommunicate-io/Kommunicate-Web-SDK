@@ -5433,6 +5433,7 @@ const firstVisibleMsg = {
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
+                var originalMessage = messagePxy.message;
                 if (messagePxy.message) {
                     messagePxy.message = KommunicateUtils.sanitizeSensitiveInfo(
                         messagePxy.message,
@@ -5452,6 +5453,9 @@ const firstVisibleMsg = {
                     }
                 }
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
+                if (originalMessage && originalMessage !== messagePxy.message) {
+                    metadata.KM_SENSITIVE_INFO_MASKED = 'true';
+                }
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (typeof msgKeys !== 'undefined' && msgKeys !== '' && !messagePxy.forward) {
                     metadata.AL_REPLY = msgKeys;
