@@ -46,6 +46,11 @@
     display: flex !important;
 }
 
+#mck-sidebox.km-churn-active #km-chat-widget-close-button {
+    position: relative;
+    z-index: 31;
+}
+
 #km-churn-customer .km-churn-modal {
     width: 100%;
     max-width: 320px;
