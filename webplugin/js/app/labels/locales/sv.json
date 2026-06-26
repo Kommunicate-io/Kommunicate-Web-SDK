@@ -110,6 +110,7 @@
   "offline.msg": "Aj då! Ingen internetanslutning. Kontrollera nätverket och försök igen.",
   "socket-disconnect.msg": "Fel vid synkronisering av meddelanden. Kontrollera brandväggen eller försök igen senare.",
   "business-hour.msg": "Du kontaktade oss utanför kontorstid. Vår bot hanterar dina frågor tills teamet är online igen.",
+  "account.churned.notice": "Meddelanden via {{deactivateLink}} är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på {{supportEmailLink}}",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName skapade gruppen :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName tog bort :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName lade till :userName",

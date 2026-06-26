@@ -3,6 +3,7 @@
 function KommunicateCommons() {
     var _this = this;
     var CUSTOMER_CREATED_AT;
+    var TRIAL_PERIOD;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
     var iframeResizeListeners = typeof WeakMap === 'function' ? new WeakMap() : null;
@@ -10,6 +11,7 @@ function KommunicateCommons() {
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
+        TRIAL_PERIOD = Number(optns.trialPeriod);
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
@@ -251,8 +253,19 @@ function KommunicateCommons() {
         }
     };
 
+    // This shared helper is intentionally limited to startup-plan expiry because
+    // other plan/branding checks already depend on that narrower behavior.
     _this.isKommunicatePlanExpired = function (data) {
-        return _this.getDaysCount() > 31 && _this.isStartupPlan(data);
+        return _this.getDaysCount() > TRIAL_PERIOD && _this.isStartupPlan(data);
+    };
+
+    _this.isAccountExpired = function () {
+        return _this.getDaysCount() > TRIAL_PERIOD;
+    };
+
+    // The inactive-account modal should appear only for expired trial accounts.
+    _this.shouldShowInactiveAccountModal = function (data) {
+        return _this.isAccountExpired() && _this.isTrialPlan(data.pricingPackage);
     };
 
     _this.getDaysCount = function () {

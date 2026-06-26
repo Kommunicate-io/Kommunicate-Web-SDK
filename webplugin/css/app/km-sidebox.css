@@ -13,22 +13,80 @@
 }
 .km-churn-banner {
     color: #886026;
-    position: relative;
-    z-index: 999;
-    background: #fbd683;
-    -webkit-box-align: center;
-    padding: 12px 16px;
-    font-size: 14px;
+    background: linear-gradient(135deg, #fbd683 0%, #f6c154 100%);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
-#km-churn-customer .km-churn-heading {
-    padding-left: 5px;
+#mck-sidebox.km-churn-active {
+    position: relative;
 }
 
-#deactivate-link {
-    color: #886026;
+#mck-sidebox.km-churn-active .mck-box-body {
+    position: static;
+}
+
+#km-churn-customer {
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px 28px;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    z-index: 30;
+}
+
+#km-churn-customer.vis {
+    display: flex !important;
+}
+
+#mck-sidebox.km-churn-active #km-chat-widget-close-button {
+    position: relative;
+    z-index: 31;
+}
+
+#km-churn-customer .km-churn-modal {
+    width: 100%;
+    max-width: 320px;
+    overflow: hidden;
+    border: 1px solid #f3dfb4;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    pointer-events: auto;
+}
+
+#km-churn-customer .km-churn-content {
+    padding: 20px;
+}
+
+#km-churn-customer .km-churn-message {
+    margin: 0;
+    color: #5b6472;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#km-churn-customer .km-churn-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+
+#km-churn-customer .km-churn-message a {
+    color: #2563eb;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+#km-churn-customer .km-churn-message a:hover,
+#km-churn-customer .km-churn-message a:focus {
+    color: #1d4ed8;
 }
 
 #km-business-hour-box {

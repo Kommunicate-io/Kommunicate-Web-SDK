@@ -158,6 +158,56 @@ class KMLabel {
                 node.setAttribute('aria-label', value);
             });
         };
+        var renderChurnNotice = function () {
+            var node = document.getElementById('km-churn-notice');
+            var value = resolveLabel('account.churned.notice');
+            if (!node || value === null || typeof value === 'undefined') {
+                return;
+            }
+            var fallbackTemplate =
+                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}';
+            var template =
+                typeof value === 'string' &&
+                value.indexOf('{{deactivateLink}}') !== -1 &&
+                value.indexOf('{{supportEmailLink}}') !== -1
+                    ? value
+                    : fallbackTemplate;
+            var createDeactivateLink = function () {
+                var link = document.createElement('a');
+                link.id = 'deactivate-link';
+                link.href = 'https://www.kommunicate.io/poweredby';
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.appendChild(document.createTextNode('Kommunicate chatbot'));
+                return link;
+            };
+            var createSupportEmailLink = function () {
+                var link = document.createElement('a');
+                link.href = 'mailto:support@kommunicate.io';
+                link.appendChild(document.createTextNode('support@kommunicate.io'));
+                return link;
+            };
+            var appendText = function (text) {
+                if (text) {
+                    node.appendChild(document.createTextNode(text));
+                }
+            };
+            var tokenRegex = /\{\{(deactivateLink|supportEmailLink)\}\}/g;
+            var cursor = 0;
+            var match;
+
+            node.textContent = '';
+            while ((match = tokenRegex.exec(template)) !== null) {
+                appendText(template.slice(cursor, match.index));
+                node.appendChild(
+                    match[1] === 'deactivateLink'
+                        ? createDeactivateLink()
+                        : createSupportEmailLink()
+                );
+                cursor = tokenRegex.lastIndex;
+            }
+            appendText(template.slice(cursor));
+        };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
             binding
@@ -338,6 +388,7 @@ class KMLabel {
             'km-bottom-tab-faq-text': 'modern.nav.faqs',
             'km-bottom-tab-whatsnew-text': 'modern.nav.whatsnew',
             'km-bottom-tab-empty-text': 'modern.nav.empty',
+            'km-churn-banner-text': 'account.churned.banner',
             'km-conversations-empty-title': 'empty.conversations',
             'km-conversations-empty-subtitle': 'mck.empty.welcome.subtitle',
             'km-empty-conversation-eyebrow': 'mck.empty.welcome.eyebrow',
@@ -360,6 +411,7 @@ class KMLabel {
         Object.keys(htmlBindings).forEach(function (id) {
             setLabel(id, htmlBindings[id], 'html');
         });
+        renderChurnNotice();
         Object.keys(textBindings).forEach(function (id) {
             setLabel(id, textBindings[id], 'text');
         });

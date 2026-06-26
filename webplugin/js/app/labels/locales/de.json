@@ -110,6 +110,7 @@
   "offline.msg": "Oh nein! Keine Internetverbindung. Prüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut.",
   "socket-disconnect.msg": "Fehler beim Synchronisieren der Nachrichten. Prüfen Sie Ihre Firewall oder versuchen Sie es später erneut.",
   "business-hour.msg": "Sie haben uns außerhalb der Geschäftszeiten kontaktiert. Unser Bot kümmert sich um Ihre Fragen, bis das Team zurück ist.",
+  "account.churned.notice": "Das Versenden von Nachrichten über den {{deactivateLink}} ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie {{supportEmailLink}}",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName hat die Gruppe :groupName erstellt",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName hat :userName entfernt",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName hat :userName hinzugefügt",

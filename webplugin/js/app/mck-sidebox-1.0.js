@@ -779,8 +779,8 @@ const firstVisibleMsg = {
 
         _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
-            kommunicateCommons.show('.mck-box-form-container');
-            kommunicateCommons.hide('#mck-contact-loading', '#mck-contacts-content');
+            openWidgetIframe();
+            KommunicateUI.showChurnCustomerModal();
         };
 
         function openWidgetIframe() {
@@ -2546,7 +2546,12 @@ const firstVisibleMsg = {
                             }
                             // mckUtils.manageIdleTime();
                         } else if (result == 'CHURNED_CUSTOMER') {
-                            _this.onInitApp({});
+                            appOptions.appSettings.currentActivatedPlan = 'churn';
+                            _this.onInitApp({ currentActivatedPlan: 'churn' });
+                            KommunicateUI.showChurnCustomerModal();
+                            if (typeof onInitCallback === 'function') {
+                                onInitCallback();
+                            }
                         } else {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
@@ -2615,6 +2620,11 @@ const firstVisibleMsg = {
                         kommunicateCommons.show(this);
                     }
                 });
+                // Reuse the churned-account UI for inactive startup/trial accounts.
+                if (kommunicateCommons.shouldShowInactiveAccountModal(data)) {
+                    data.currentActivatedPlan = 'churn';
+                    appOptions.appSettings.currentActivatedPlan = 'churn';
+                }
                 MCK_USER_ID = data.userId;
                 USER_DEVICE_KEY = data.deviceKey;
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
@@ -10832,6 +10842,11 @@ const firstVisibleMsg = {
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
                         */
                         const res = data.data[0];
+                        if (res?.status === 'expired') {
+                            appOptions.appSettings.currentActivatedPlan = 'churn';
+                            KommunicateUI.showChurnCustomerModal();
+                            return;
+                        }
                         CURRENT_GROUP_DATA.CHAR_CHECK =
                             res?.aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
                         !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();

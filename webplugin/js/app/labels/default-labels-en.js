@@ -171,6 +171,9 @@
             'Error while syncing messages. Check your firewall settings or try again after some time.',
         'business-hour.msg':
             'You have reached us outside our business hours. Our bot will handle your queries until the team is back online.',
+        'account.churned.banner': 'Account inactive',
+        'account.churned.notice':
+            'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}',
         'local.file.warning.description':
             'Conversation will not be updated in real-time as you are running the installation script from your local file system.',
         'local.file.warning.learnMore': 'Learn more about this',
