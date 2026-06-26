@@ -23,8 +23,12 @@
     letter-spacing: 0.01em;
 }
 
-#mck-sidebox.km-churn-active .mck-box-body {
+#mck-sidebox.km-churn-active {
     position: relative;
+}
+
+#mck-sidebox.km-churn-active .mck-box-body {
+    position: static;
 }
 
 #km-churn-customer {
@@ -34,8 +38,8 @@
     justify-content: center;
     padding: 24px 20px 28px;
     background: rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    z-index: 2;
+    pointer-events: auto;
+    z-index: 30;
 }
 
 #km-churn-customer.vis {
