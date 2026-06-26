@@ -851,11 +851,9 @@ $applozic.extend(true, Kommunicate, {
 
         // genai last message
         if (!msgThroughListAPI) {
-            // Enable the msg area when we got the last token
             if (msg.metadata?.lastToken === 'true') {
                 genAiService.completeCurrentStream(msg.key);
-                genAiService.enableTextArea(true);
-            } else if (!msg.tokenMessage && !genAiService.hasActiveStream()) {
+            } else if (!msg.tokenMessage) {
                 genAiService.clearActiveStream();
                 genAiService.enableTextArea(true);
             }
