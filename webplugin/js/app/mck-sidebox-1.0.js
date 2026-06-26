@@ -7901,7 +7901,8 @@ const firstVisibleMsg = {
                 // GEN AI BOT
 
                 if (msg.tokenMessage && !msgThroughListAPI) {
-                    genAiService.enableTextArea(false);
+                    // message not from the sockets
+                    document.getElementById('mck-text-box').setAttribute('contenteditable', true);
                 }
 
                 if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
