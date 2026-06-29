@@ -32,7 +32,6 @@ $popupClass: '.chat-popup-widget-container';
         width: 32px;
         height: 32px;
         padding: 0;
-        border: 2px solid rgba(28, 28, 28, 0.72);
         border-radius: 50%;
         background: #ffffff;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -42,11 +41,8 @@ $popupClass: '.chat-popup-widget-container';
         cursor: pointer;
         transition: background 0.2s ease, transform 0.2s ease;
         box-sizing: border-box;
-        overflow: hidden;
         z-index: 2;
         transform: translateY(-50%);
-        appearance: none;
-        -webkit-appearance: none;
     }
 
     /* Keyboard focus ring on the close button container */
@@ -77,17 +73,9 @@ $popupClass: '.chat-popup-widget-container';
         box-sizing: border-box;
     }
 
-    & .chat-popup-widget-close-icon-svg {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 0;
-    }
-
     & .chat-popup-widget-close-btn svg {
         width: 14px;
         height: 14px;
-        display: block;
     }
 
     & .chat-popup-widget-text {
@@ -100,11 +88,6 @@ $popupClass: '.chat-popup-widget-container';
         width: calc(100% - 40px) !important ;
         bottom: 5px;
         right: 0px;
-
-        & .chat-popup-widget-close-btn-container {
-            top: 19px;
-            transform: none;
-        }
 
         &.km-animate {
             opacity: 0;
