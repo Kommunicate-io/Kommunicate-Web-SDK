@@ -5026,13 +5026,13 @@ const firstVisibleMsg = {
                     }
                     var normalizedEmail = email ? $applozic.trim(email).toLowerCase() : null;
                     if (normalizedEmail) {
-                        const userIdForCookie = anonymousUserIdForPreChatLead
+                        const userIdForLocalStorage = anonymousUserIdForPreChatLead
                             ? userId
                             : normalizedEmail;
-                        userId = userIdForCookie;
+                        userId = userIdForLocalStorage;
                         kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                            value: userIdForCookie,
+                            value: userIdForLocalStorage,
                             expiresInDays: 30,
                         });
 
