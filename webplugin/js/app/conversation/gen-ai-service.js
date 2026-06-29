@@ -5,6 +5,7 @@ class GenAiService {
         this.currentIndex = -1;
         this.currentMessage = '';
         this.currentStreamKey = '';
+        this.pendingMessages = {};
     }
 
     prepareTokenizedMessage = (msg) => {
@@ -28,21 +29,51 @@ class GenAiService {
             divElement.setAttribute('class', className);
             this.textMsgDiv = divElement;
         }
-        if (this.currentIndex != msg.index - 1) {
-            // if any token is missed then  stop there
+        this.pendingMessages[Number(msg.index)] = msg.message;
+        if (!this.currentElement && !this.textMsgDiv.parentNode) {
+            $textMessage.append(this.textMsgDiv);
+        }
+        if (!this.renderPendingMessages()) {
             return;
         }
-        this.currentIndex = this.currentIndex + 1;
-        this.currentMessage += `${msg.message} `;
+    };
+
+    renderPendingMessages = () => {
+        let messageUpdated = false;
+        let nextIndex = this.currentIndex + 1;
+        while (Object.prototype.hasOwnProperty.call(this.pendingMessages, nextIndex)) {
+            this.currentMessage += `${this.pendingMessages[nextIndex]} `;
+            delete this.pendingMessages[nextIndex];
+            this.currentIndex = nextIndex;
+            nextIndex = this.currentIndex + 1;
+            messageUpdated = true;
+        }
+        if (messageUpdated) {
+            this.renderCurrentMessage();
+        }
+        return messageUpdated;
+    };
+
+    renderRemainingMessages = () => {
+        if (!this.currentMessage && !Object.keys(this.pendingMessages).length) {
+            return;
+        }
+        Object.keys(this.pendingMessages)
+            .map(Number)
+            .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
+            .forEach((index) => {
+                this.currentMessage += `${this.pendingMessages[index]} `;
+            });
+        this.pendingMessages = {};
+        this.renderCurrentMessage();
+    };
+
+    renderCurrentMessage = () => {
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(this.currentMessage);
         $applozic(targetElement).linkify({
             target: '_blank',
         });
-
-        if (!this.currentElement) {
-            $textMessage.append(this.textMsgDiv);
-        }
     };
 
     clearActiveStream = () => {
@@ -51,10 +82,12 @@ class GenAiService {
         this.currentIndex = -1;
         this.currentMessage = '';
         this.currentStreamKey = '';
+        this.pendingMessages = {};
     };
 
     completeCurrentStream = (streamKey) => {
         if (!streamKey || streamKey === this.currentStreamKey) {
+            this.renderRemainingMessages();
             this.clearActiveStream();
         }
     };
