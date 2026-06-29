@@ -187,7 +187,7 @@ Kommunicate.popupChatTemplate = {
                 closeButtonLabelAttr +
                 '" title="' +
                 closeButtonLabelAttr +
-                '"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.6667 4.27337L11.7267 3.33337L8.00001 7.06004L4.27334 3.33337L3.33334 4.27337L7.06001 8.00004L3.33334 11.7267L4.27334 12.6667L8.00001 8.94004L11.7267 12.6667L12.6667 11.7267L8.94001 8.00004L12.6667 4.27337Z" fill="#1C1C1C"/></svg></span></div></button>';
+                '"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4.5 4.5L11.5 11.5M11.5 4.5L4.5 11.5" stroke="#1C1C1C" stroke-width="1.75" stroke-linecap="round"/></svg></span></div></button>';
 
             chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
