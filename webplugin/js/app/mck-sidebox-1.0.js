@@ -5429,9 +5429,6 @@ const firstVisibleMsg = {
                     "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                 );
 
-                // GEN AI
-                genAiService.enableTextArea(false);
-
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
                     Kommunicate.internetStatus &&
