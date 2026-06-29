@@ -4,16 +4,7 @@ class GenAiService {
         this.textMsgDiv = null;
         this.currentIndex = -1;
         this.currentMessage = '';
-        this.currentStreamKey = '';
-        this.pendingMessages = {};
     }
-
-    prepareTokenizedMessage = (msg) => {
-        if (this.currentStreamKey !== msg.key) {
-            this.clearActiveStream();
-            this.currentStreamKey = msg.key;
-        }
-    };
 
     addTokenizeMsg = (...args) => {
         const [msg, className, $textMessage] = args;
@@ -76,51 +67,11 @@ class GenAiService {
         });
     };
 
-    clearActiveStream = () => {
+    resetState = () => {
         this.currentElement = null;
         this.textMsgDiv = null;
         this.currentIndex = -1;
         this.currentMessage = '';
-        this.currentStreamKey = '';
-        this.pendingMessages = {};
-    };
-
-    completeCurrentStream = (streamKey) => {
-        if (!streamKey || streamKey === this.currentStreamKey) {
-            this.renderRemainingMessages();
-            this.clearActiveStream();
-        }
-    };
-
-    getNextTokenizedStreamElement = () => {
-        return document.querySelector('div[data-msgkey^="tokenized_response"]');
-    };
-
-    removeTokenizedStreamElement = (element, messageKey) => {
-        if (!element) {
-            return false;
-        }
-
-        const messageElement = document.querySelector(`div[data-msgkey="${messageKey}"]`);
-        if (messageElement) {
-            ['km-clubbing-first', 'km-clubbing-last'].forEach((className) => {
-                messageElement.classList.remove(className);
-                if (element.classList.contains(className)) {
-                    messageElement.classList.add(className);
-                }
-            });
-        }
-
-        element.remove();
-        return true;
-    };
-
-    hasActiveStream = () => {
-        return Boolean(this.currentStreamKey);
-    };
-
-    resetState = () => {
-        this.clearActiveStream();
     };
 
     enableTextArea = (bool) => {
