@@ -7854,10 +7854,6 @@ const firstVisibleMsg = {
 
                 if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
-                if (msg.tokenMessage && !msgThroughListAPI) {
-                    genAiService.prepareTokenizedMessage(msg);
-                }
-
                 if (
                     typeof msg.metadata === 'object' &&
                     typeof msg.metadata.AL_REPLY !== 'undefined'
@@ -7892,11 +7888,15 @@ const firstVisibleMsg = {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
-                const replaceTokenizedStreamElementAfterRender =
-                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage;
-                const tokenizedStreamElementToReplace = replaceTokenizedStreamElementAfterRender
-                    ? genAiService.getNextTokenizedStreamElement()
-                    : null;
+                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage) {
+                    // deleting tokenized message after receiving complete message from chat server
+                    const element = document.querySelector(`div[data-msgkey="tokenized_response"]`);
+                    if (element) {
+                        console.log('deleted');
+                        element.remove();
+                        genAiService.resetState();
+                    }
+                }
 
                 // GEN AI BOT
 
@@ -8235,14 +8235,13 @@ const firstVisibleMsg = {
                 ];
 
                 if (!$applozic('#mck-message-cell .' + msg.key).length > 0) {
-                    const $messageTemplate = $applozic.tmpl('messageTemplate', msgList);
-                    if (tokenizedStreamElementToReplace) {
-                        $messageTemplate.insertBefore(tokenizedStreamElementToReplace);
-                    } else {
-                        append
-                            ? $messageTemplate.appendTo('#mck-message-cell .mck-message-inner')
-                            : $messageTemplate.prependTo('#mck-message-cell .mck-message-inner');
-                    }
+                    append
+                        ? $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .appendTo('#mck-message-cell .mck-message-inner')
+                        : $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .prependTo('#mck-message-cell .mck-message-inner');
                 }
                 if (!isUserMsg && !msgThroughListAPI) {
                     var receivedText = _this.getAccessibleMessageText(msg);
@@ -8749,12 +8748,6 @@ const firstVisibleMsg = {
                 if (msg.contentType === 2) {
                     kommunicateCommons.hide($textMessage);
                     kommunicateCommons.show('.' + CSS.escape(replyId) + ' .mck-file-text');
-                }
-                if (replaceTokenizedStreamElementAfterRender) {
-                    genAiService.removeTokenizedStreamElement(
-                        tokenizedStreamElementToReplace,
-                        msg.key
-                    );
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(
