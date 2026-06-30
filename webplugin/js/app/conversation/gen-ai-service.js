@@ -31,13 +31,18 @@ class GenAiService {
         }
         const tokenIndex = Number(msg.index);
         this.currentMessageParts[tokenIndex] = msg.message;
-        this.currentIndex = Math.max(this.currentIndex, tokenIndex);
-        this.currentMessage =
-            Object.keys(this.currentMessageParts)
-                .map(Number)
-                .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
-                .map((index) => this.currentMessageParts[index])
-                .join(' ') + ' ';
+        if (tokenIndex === this.currentIndex + 1) {
+            this.currentIndex = tokenIndex;
+            this.currentMessage += `${msg.message} `;
+        } else {
+            this.currentIndex = Math.max(this.currentIndex, tokenIndex);
+            this.currentMessage =
+                Object.keys(this.currentMessageParts)
+                    .map(Number)
+                    .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
+                    .map((index) => this.currentMessageParts[index])
+                    .join(' ') + ' ';
+        }
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(this.currentMessage);
         $applozic(targetElement).linkify({
