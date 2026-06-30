@@ -4,6 +4,7 @@ class GenAiService {
         this.textMsgDiv = null;
         this.currentIndex = -1;
         this.currentMessage = '';
+        this.currentMessageParts = {};
         this.currentStreamKey = '';
     }
 
@@ -28,12 +29,15 @@ class GenAiService {
             divElement.setAttribute('class', className);
             this.textMsgDiv = divElement;
         }
-        if (this.currentIndex != msg.index - 1) {
-            // if any token is missed then  stop there
-            return;
-        }
-        this.currentIndex = this.currentIndex + 1;
-        this.currentMessage += `${msg.message} `;
+        const tokenIndex = Number(msg.index);
+        this.currentMessageParts[tokenIndex] = msg.message;
+        this.currentIndex = Math.max(this.currentIndex, tokenIndex);
+        this.currentMessage =
+            Object.keys(this.currentMessageParts)
+                .map(Number)
+                .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
+                .map((index) => this.currentMessageParts[index])
+                .join(' ') + ' ';
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(this.currentMessage);
         $applozic(targetElement).linkify({
@@ -50,6 +54,7 @@ class GenAiService {
         this.textMsgDiv = null;
         this.currentIndex = -1;
         this.currentMessage = '';
+        this.currentMessageParts = {};
         this.currentStreamKey = '';
     };
 
