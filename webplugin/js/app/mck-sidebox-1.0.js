@@ -7890,9 +7890,11 @@ const firstVisibleMsg = {
                     return;
                 }
                 const replaceTokenizedStreamElementAfterRender =
-                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage;
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    !msg.tokenMessage &&
+                    (msg.type === 0 || msg.type === 4 || msg.type === 6);
                 const tokenizedStreamElementToReplace = replaceTokenizedStreamElementAfterRender
-                    ? genAiService.getNextTokenizedStreamElement()
+                    ? genAiService.getNextTokenizedStreamElement(msg)
                     : null;
 
                 // GEN AI BOT
