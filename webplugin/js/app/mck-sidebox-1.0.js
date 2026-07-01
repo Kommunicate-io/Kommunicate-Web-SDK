@@ -5429,9 +5429,6 @@ const firstVisibleMsg = {
                     "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                 );
 
-                // GEN AI
-                genAiService.enableTextArea(false);
-
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
                     Kommunicate.internetStatus &&
@@ -7893,9 +7890,11 @@ const firstVisibleMsg = {
                     return;
                 }
                 const replaceTokenizedStreamElementAfterRender =
-                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage;
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    !msg.tokenMessage &&
+                    (msg.type === 0 || msg.type === 4 || msg.type === 6);
                 const tokenizedStreamElementToReplace = replaceTokenizedStreamElementAfterRender
-                    ? genAiService.getNextTokenizedStreamElement()
+                    ? genAiService.getNextTokenizedStreamElement(msg)
                     : null;
 
                 // GEN AI BOT
