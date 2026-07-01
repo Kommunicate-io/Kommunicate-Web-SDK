@@ -636,17 +636,170 @@ KommunicateUtils = {
                 (config.maskCustomPatterns && config.customRegexPatterns.length)
         );
     },
-    isValidPaymentCardCandidate: function (candidate, options) {
+    getPaymentCardValidation: function (candidate, options) {
         var sanitizerOptions = options || {};
         var cardValidator =
             sanitizerOptions.cardValidator ||
             (typeof KMCardValidator !== 'undefined' ? KMCardValidator : null);
 
         if (!cardValidator) {
+            return null;
+        }
+
+        return cardValidator.number(candidate);
+    },
+    isValidPaymentCardCandidate: function (candidate, options) {
+        var cardValidation = this.getPaymentCardValidation(candidate, options);
+        return Boolean(cardValidation && cardValidation.isValid);
+    },
+    isPotentialPaymentCardCandidate: function (candidate, options) {
+        var cardValidation = this.getPaymentCardValidation(candidate, options);
+        return Boolean(cardValidation && cardValidation.isPotentiallyValid);
+    },
+    phoneValidationUtils: null,
+    phoneValidationUtilsPromise: null,
+    preloadSensitiveInfoValidators: function () {
+        this.loadPhoneValidationUtils();
+    },
+    loadPhoneValidationUtils: function () {
+        if (this.phoneValidationUtils) {
+            return Promise.resolve(this.phoneValidationUtils);
+        }
+
+        if (this.phoneValidationUtilsPromise) {
+            return this.phoneValidationUtilsPromise;
+        }
+
+        if (typeof window === 'undefined' || !window.MCK_STATICPATH) {
+            return Promise.resolve(null);
+        }
+
+        this.phoneValidationUtilsPromise = import(
+            window.MCK_STATICPATH + '/lib/js/intl-tel-utils.js'
+        )
+            .then(function (module) {
+                KommunicateUtils.phoneValidationUtils = module.default || module;
+                return KommunicateUtils.phoneValidationUtils;
+            })
+            .catch(function () {
+                return null;
+            });
+
+        return this.phoneValidationUtilsPromise;
+    },
+    getPhoneValidationCountryCandidates: function () {
+        var countries = [];
+        var locale =
+            typeof navigator !== 'undefined' && (navigator.language || navigator.userLanguage);
+        var localeCountryMatch = locale && locale.match(/[-_]([A-Za-z]{2})$/);
+
+        if (localeCountryMatch) {
+            countries.push(localeCountryMatch[1].toLowerCase());
+        }
+
+        if (
+            typeof window !== 'undefined' &&
+            window.intlTelInput &&
+            typeof window.intlTelInput.getCountryData === 'function'
+        ) {
+            window.intlTelInput.getCountryData().forEach(function (country) {
+                countries.push((country.iso2 || '').toLowerCase());
+            });
+        }
+
+        return countries
+            .concat(['us', 'gb', 'in', 'ph', 'ca', 'au'])
+            .filter(function (country, index, list) {
+                return country && list.indexOf(country) === index;
+            });
+    },
+    normalizePhoneNumberCandidate: function (candidate) {
+        var phoneNumberParts = this.splitPhoneNumberExtension(candidate);
+        var normalizedCoreCandidate = phoneNumberParts.coreCandidate.replace(/\s+$/, '');
+
+        if (/^00\d/.test(normalizedCoreCandidate)) {
+            normalizedCoreCandidate = '+' + normalizedCoreCandidate.slice(2);
+        }
+
+        return {
+            coreCandidate: normalizedCoreCandidate,
+            extension: phoneNumberParts.extension,
+        };
+    },
+    splitPhoneNumberExtension: function (candidate) {
+        var extensionMatch = candidate.match(/(?:\s*(?:ext\.?|x|×)\s*\d{1,6})$/i);
+
+        return {
+            coreCandidate: extensionMatch ? candidate.slice(0, extensionMatch.index) : candidate,
+            extension: extensionMatch ? extensionMatch[0] : '',
+        };
+    },
+    isValidPhoneNumberCandidate: function (candidate, options) {
+        var sanitizedOptions = options || {};
+        var phoneNumberParts = this.normalizePhoneNumberCandidate(candidate);
+        var phoneValidationUtils =
+            sanitizedOptions.phoneValidationUtils || this.phoneValidationUtils;
+        var coreCandidate = phoneNumberParts.coreCandidate;
+        var normalizedCandidate = coreCandidate.replace(/[^\d]/g, '');
+        var hasPhoneLikeFormatting = /^[+]/.test(coreCandidate) || /[\s().-]/.test(coreCandidate);
+        var hasCardLikeFormatting = /^[\d\s-]+$/.test(coreCandidate) && /[\s-]/.test(coreCandidate);
+        var hasInternationalPrefix = /^\+/.test(coreCandidate) || /^00/.test(normalizedCandidate);
+        var hasNationalTrunkPrefix = /^0/.test(normalizedCandidate);
+
+        if (phoneValidationUtils && typeof phoneValidationUtils.isValidNumber === 'function') {
+            if (
+                normalizedCandidate.length >= 12 &&
+                hasCardLikeFormatting &&
+                !hasNationalTrunkPrefix &&
+                this.isPotentialPaymentCardCandidate(candidate, sanitizedOptions)
+            ) {
+                return false;
+            }
+
+            if (/^\+/.test(coreCandidate)) {
+                if (
+                    phoneValidationUtils.isValidNumber(coreCandidate) ||
+                    phoneValidationUtils.isPossibleNumber(coreCandidate)
+                ) {
+                    return true;
+                }
+            } else {
+                var countryCandidates = this.getPhoneValidationCountryCandidates();
+
+                for (var i = 0; i < countryCandidates.length; i++) {
+                    if (
+                        phoneValidationUtils.isValidNumber(coreCandidate, countryCandidates[i]) ||
+                        phoneValidationUtils.isPossibleNumber(coreCandidate, countryCandidates[i])
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (normalizedCandidate.length < 10 || normalizedCandidate.length > 15) {
             return false;
         }
 
-        return Boolean(cardValidator.number(candidate).isValid);
+        if (
+            !hasPhoneLikeFormatting &&
+            normalizedCandidate.length !== 10 &&
+            !hasInternationalPrefix &&
+            !hasNationalTrunkPrefix
+        ) {
+            return false;
+        }
+
+        if (
+            normalizedCandidate.length >= 12 &&
+            hasCardLikeFormatting &&
+            !hasNationalTrunkPrefix &&
+            this.isPotentialPaymentCardCandidate(candidate, sanitizedOptions)
+        ) {
+            return false;
+        }
+
+        return true;
     },
     maskCardCandidate: function (candidate, maskCharacter) {
         return candidate.replace(/\d/g, maskCharacter || 'X');
@@ -674,16 +827,9 @@ KommunicateUtils = {
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
 
         return message.replace(
-            /(^|[^0-9A-Za-z])(\+?(?:\d[\s().-]?){9,14}\d)(?=[^0-9A-Za-z]|$)/g,
+            /(^|[^0-9A-Za-z])(\+?[\d(][\d\s().-]{8,}\d(?:\s*(?:ext\.?|x|×)\s*\d{1,6})?)(?=[^0-9A-Za-z]|$)/gi,
             function (match, prefix, candidate) {
-                var normalizedCandidate = candidate.replace(/[^\d]/g, '');
-                var hasPhoneLikeFormatting = /^[+]/.test(candidate) || /[\s().-]/.test(candidate);
-
-                if (
-                    normalizedCandidate.length < 10 ||
-                    normalizedCandidate.length > 15 ||
-                    (!hasPhoneLikeFormatting && normalizedCandidate.length !== 10)
-                ) {
+                if (!KommunicateUtils.isValidPhoneNumberCandidate(candidate, sanitizerOptions)) {
                     return match;
                 }
 
@@ -693,6 +839,45 @@ KommunicateUtils = {
             }
         );
     },
+    isValidEmailAddressCandidate: function (candidate) {
+        var emailParts = candidate.split('@');
+
+        if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1]) {
+            return false;
+        }
+
+        var domainParts = emailParts[1].split('.');
+        var topLevelDomain = domainParts[domainParts.length - 1];
+
+        if (
+            !/^[A-Z0-9._%+-]+$/i.test(emailParts[0]) ||
+            domainParts.length < 2 ||
+            !/^[A-Z]{2,24}$/i.test(topLevelDomain)
+        ) {
+            return false;
+        }
+
+        var hasAlphabeticDomainLabel = false;
+
+        for (var i = 0; i < domainParts.length; i++) {
+            var domainLabel = domainParts[i];
+
+            if (
+                !domainLabel ||
+                !/^[A-Z0-9-]+$/i.test(domainLabel) ||
+                domainLabel.charAt(0) === '-' ||
+                domainLabel.charAt(domainLabel.length - 1) === '-'
+            ) {
+                return false;
+            }
+
+            if (i < domainParts.length - 1 && /[A-Z]/i.test(domainLabel)) {
+                hasAlphabeticDomainLabel = true;
+            }
+        }
+
+        return hasAlphabeticDomainLabel;
+    },
     sanitizeEmailAddressesInMessage: function (message, options) {
         var sanitizerOptions = options || {};
         var maskCharacter = sanitizerOptions.maskCharacter || 'X';
@@ -700,6 +885,10 @@ KommunicateUtils = {
         return message.replace(
             /(^|[^A-Z0-9._%+-])([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})(?=[^A-Z0-9.-]|$)/gi,
             function (match, prefix, candidate) {
+                if (!KommunicateUtils.isValidEmailAddressCandidate(candidate)) {
+                    return match;
+                }
+
                 return (
                     prefix + KommunicateUtils.maskNonWhitespaceCandidate(candidate, maskCharacter)
                 );

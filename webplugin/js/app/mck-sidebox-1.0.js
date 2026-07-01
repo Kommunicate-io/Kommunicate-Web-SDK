@@ -996,6 +996,7 @@ const firstVisibleMsg = {
         };
         _this.init = function () {
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
+            KommunicateUtils.preloadSensitiveInfoValidators();
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             kmCustomTheme.init(appOptions);
