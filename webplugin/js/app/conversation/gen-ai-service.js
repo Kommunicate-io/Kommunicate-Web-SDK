@@ -1,66 +1,136 @@
 class GenAiService {
     constructor() {
-        this.currentElement = null;
-        this.textMsgDiv = null;
-        this.currentIndex = -1;
-        this.currentMessage = '';
-        this.currentStreamKey = '';
+        this.streams = {};
     }
 
     prepareTokenizedMessage = (msg) => {
-        if (this.currentStreamKey !== msg.key) {
-            this.clearActiveStream();
-            this.currentStreamKey = msg.key;
-        }
+        this.getStreamState(msg.key);
     };
 
     addTokenizeMsg = (...args) => {
         const [msg, className, $textMessage] = args;
-        this.currentElement = null;
+        const stream = this.getStreamState(msg.key);
+        stream.currentElement = null;
+        stream.groupId = msg.groupId;
+        stream.to = msg.to;
+        stream.createdAtTime = stream.createdAtTime || msg.createdAtTime;
 
-        if (!this.currentElement) {
-            this.currentElement = document
+        if (!stream.currentElement) {
+            stream.currentElement = document
                 .querySelector(`div[data-msgkey="${msg.key}"]`)
                 ?.querySelector(`.${className}`);
         }
-        if (!this.textMsgDiv) {
+        stream.currentStreamElement = document.querySelector(`div[data-msgkey="${msg.key}"]`);
+        if (!stream.textMsgDiv) {
             const divElement = document.createElement('div');
             divElement.setAttribute('class', className);
-            this.textMsgDiv = divElement;
+            stream.textMsgDiv = divElement;
         }
-        if (this.currentIndex != msg.index - 1) {
-            // if any token is missed then  stop there
-            return;
+        const tokenIndex = Number(msg.index);
+        stream.currentMessageParts[tokenIndex] = msg.message;
+        if (tokenIndex === stream.currentIndex + 1) {
+            stream.currentIndex = tokenIndex;
+            stream.currentMessage += `${msg.message} `;
+        } else {
+            stream.currentIndex = Math.max(stream.currentIndex, tokenIndex);
+            stream.currentMessage =
+                Object.keys(stream.currentMessageParts)
+                    .map(Number)
+                    .sort((firstIndex, secondIndex) => firstIndex - secondIndex)
+                    .map((index) => stream.currentMessageParts[index])
+                    .join(' ') + ' ';
         }
-        this.currentIndex = this.currentIndex + 1;
-        this.currentMessage += `${msg.message} `;
-        const targetElement = this.currentElement || this.textMsgDiv;
-        targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(this.currentMessage);
+        const targetElement = stream.currentElement || stream.textMsgDiv;
+        targetElement.innerHTML = KommunicateUtils.getSanitizedMarkdownMessage(
+            stream.currentMessage
+        );
         $applozic(targetElement).linkify({
             target: '_blank',
         });
 
-        if (!this.currentElement) {
-            $textMessage.append(this.textMsgDiv);
+        if (!stream.currentElement) {
+            $textMessage.append(stream.textMsgDiv);
+        }
+    };
+
+    getStreamState = (streamKey) => {
+        if (!this.streams[streamKey]) {
+            this.streams[streamKey] = {
+                streamKey,
+                currentElement: null,
+                textMsgDiv: null,
+                currentIndex: -1,
+                currentMessage: '',
+                currentMessageParts: {},
+                currentStreamElement: null,
+                groupId: null,
+                to: null,
+                createdAtTime: null,
+                completed: false,
+            };
+        }
+        return this.streams[streamKey];
+    };
+
+    completeCurrentStream = (streamKey) => {
+        if (streamKey && this.streams[streamKey]) {
+            this.streams[streamKey].completed = true;
         }
     };
 
     clearActiveStream = () => {
-        this.currentElement = null;
-        this.textMsgDiv = null;
-        this.currentIndex = -1;
-        this.currentMessage = '';
-        this.currentStreamKey = '';
+        this.resetState();
     };
 
-    completeCurrentStream = (streamKey) => {
-        if (!streamKey || streamKey === this.currentStreamKey) {
-            this.clearActiveStream();
+    getNextTokenizedStreamElement = (msg) => {
+        const completedStreams = Object.keys(this.streams)
+            .map((key) => this.streams[key])
+            .filter((stream) => stream.completed && stream.currentStreamElement);
+        const matchedStream = this.getMatchingCompletedStream(completedStreams, msg);
+        return matchedStream
+            ? matchedStream.currentStreamElement
+            : document.querySelector('div[data-msgkey^="tokenized_response"]');
+    };
+
+    getMatchingCompletedStream = (completedStreams, msg) => {
+        if (!completedStreams.length) {
+            return null;
         }
-    };
-
-    getNextTokenizedStreamElement = () => {
-        return document.querySelector('div[data-msgkey^="tokenized_response"]');
+        const messageKeys = [
+            msg.key,
+            msg.oldKey,
+            msg.pairedMessageKey,
+            msg.metadata && msg.metadata.PLATFORM_MESSAGE_ID,
+        ].filter(Boolean);
+        const keyMatchedStream = completedStreams.find((stream) => {
+            const streamElementKey =
+                stream.currentStreamElement && stream.currentStreamElement.dataset.msgkey;
+            return (
+                messageKeys.indexOf(stream.streamKey) !== -1 ||
+                messageKeys.indexOf(streamElementKey) !== -1
+            );
+        });
+        if (keyMatchedStream) {
+            return keyMatchedStream;
+        }
+        const sameConversationStreams = completedStreams.filter((stream) => {
+            return (
+                (msg.groupId && stream.groupId === msg.groupId) ||
+                (!msg.groupId && msg.to && stream.to === msg.to)
+            );
+        });
+        const streamsToCompare = sameConversationStreams.length
+            ? sameConversationStreams
+            : completedStreams;
+        if (msg.createdAtTime) {
+            return streamsToCompare.sort((firstStream, secondStream) => {
+                return (
+                    Math.abs(firstStream.createdAtTime - msg.createdAtTime) -
+                    Math.abs(secondStream.createdAtTime - msg.createdAtTime)
+                );
+            })[0];
+        }
+        return streamsToCompare[0];
     };
 
     removeTokenizedStreamElement = (element, messageKey) => {
@@ -79,15 +149,19 @@ class GenAiService {
         }
 
         element.remove();
+        const streamKey = Object.keys(this.streams).find(
+            (key) => this.streams[key].currentStreamElement === element
+        );
+        delete this.streams[streamKey || messageKey];
         return true;
     };
 
     hasActiveStream = () => {
-        return Boolean(this.currentStreamKey);
+        return Boolean(Object.keys(this.streams).length);
     };
 
     resetState = () => {
-        this.clearActiveStream();
+        this.streams = {};
     };
 
     enableTextArea = (bool) => {
