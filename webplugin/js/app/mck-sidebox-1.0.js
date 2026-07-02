@@ -996,6 +996,7 @@ const firstVisibleMsg = {
         };
         _this.init = function () {
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
+            KommunicateUtils.preloadSensitiveInfoValidators();
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             kmCustomTheme.init(appOptions);
@@ -5440,6 +5441,13 @@ const firstVisibleMsg = {
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
+                var originalMessage = messagePxy.message;
+                if (messagePxy.message) {
+                    messagePxy.message = KommunicateUtils.sanitizeSensitiveInfo(
+                        messagePxy.message,
+                        WIDGET_SETTINGS
+                    );
+                }
                 if (messagePxy.to) {
                     if (
                         alUserService.MCK_USER_DETAIL_MAP[messagePxy.to] &&
@@ -5453,6 +5461,9 @@ const firstVisibleMsg = {
                     }
                 }
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
+                if (originalMessage && originalMessage !== messagePxy.message) {
+                    metadata.KM_SENSITIVE_INFO_MASKED = 'true';
+                }
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (typeof msgKeys !== 'undefined' && msgKeys !== '' && !messagePxy.forward) {
                     metadata.AL_REPLY = msgKeys;
