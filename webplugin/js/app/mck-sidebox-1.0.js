@@ -5035,14 +5035,15 @@ const firstVisibleMsg = {
                             userId = contactNumber;
                         }
                     }
-                    if (email) {
-                        const userIdForCookie = anonymousUserIdForPreChatLead ? userId : email;
-
-                        userId = userIdForCookie;
-
+                    var normalizedEmail = email ? $applozic.trim(email).toLowerCase() : null;
+                    if (normalizedEmail) {
+                        const userIdForLocalStorage = anonymousUserIdForPreChatLead
+                            ? userId
+                            : normalizedEmail;
+                        userId = userIdForLocalStorage;
                         kmLocalStorage.setLocalStorage({
                             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-                            value: userIdForCookie,
+                            value: userIdForLocalStorage,
                             expiresInDays: 30,
                         });
 
@@ -5069,8 +5070,8 @@ const firstVisibleMsg = {
                         authenticationTypeId: MCK_AUTHENTICATION_TYPE_ID,
                         enableEncryption: true,
                     };
-                    if (email) {
-                        options.email = email.toLowerCase();
+                    if (normalizedEmail) {
+                        options.email = normalizedEmail;
                     }
                     if (userName) {
                         options.displayName = userName;
