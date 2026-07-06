@@ -171,13 +171,13 @@ class KMLabel {
                 return;
             }
             var value = resolveLabel('account.churned.notice');
-            if (typeof value !== 'string' || !value.trim()) {
+            var noticeText = (value || node.textContent).trim();
+            if (!noticeText) {
                 return;
             }
-            var noticeText = value;
             var sentenceMatch = noticeText.match(/^(.+?[.!?۔。！？])(\s*.*)?$/);
             var firstSentence = sentenceMatch ? sentenceMatch[1] : noticeText;
-            var remainingText = sentenceMatch && sentenceMatch[2] ? sentenceMatch[2] : '';
+            var remainingText = sentenceMatch ? sentenceMatch[2] || '' : '';
             var labelRegex = /(^|[.!?۔。！？]\s+)([^.!?۔。！？:：\n][^:：\n]*[:：])/g;
             var cursor = 0;
             var match;
