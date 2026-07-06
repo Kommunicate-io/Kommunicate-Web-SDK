@@ -172,14 +172,11 @@ class KMLabel {
                 value.indexOf('{{supportEmailLink}}') !== -1
                     ? value
                     : fallbackTemplate;
-            var createDeactivateLink = function () {
-                var link = document.createElement('a');
-                link.id = 'deactivate-link';
-                link.href = 'https://www.kommunicate.io/poweredby';
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.appendChild(document.createTextNode('Kommunicate chatbot'));
-                return link;
+            var createDeactivateText = function () {
+                var text = document.createElement('span');
+                text.id = 'deactivate-link';
+                text.appendChild(document.createTextNode('Kommunicate chatbot'));
+                return text;
             };
             var createSupportEmailLink = function () {
                 var link = document.createElement('a');
@@ -201,7 +198,7 @@ class KMLabel {
                 appendText(template.slice(cursor, match.index));
                 node.appendChild(
                     match[1] === 'deactivateLink'
-                        ? createDeactivateLink()
+                        ? createDeactivateText()
                         : createSupportEmailLink()
                 );
                 cursor = tokenRegex.lastIndex;
