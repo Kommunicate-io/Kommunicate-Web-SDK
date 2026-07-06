@@ -173,7 +173,7 @@
             'You have reached us outside our business hours. Our bot will handle your queries until the team is back online.',
         'account.churned.banner': 'Account inactive',
         'account.churned.notice':
-            '<strong class="km-churn-message-highlight">Chat has been disabled for this website.</strong> <strong class="km-churn-message-label">Visitors:</strong> Please contact the website owner using another contact method. <strong class="km-churn-message-label">Website administrators:</strong> If you need help restoring chat, contact Kommunicate Support.',
+            'Chat has been disabled for this website. Visitors: Please contact the website owner using another contact method. Website administrators: If you need help restoring chat, contact Kommunicate Support.',
         'local.file.warning.description':
             'Conversation will not be updated in real-time as you are running the installation script from your local file system.',
         'local.file.warning.learnMore': 'Learn more about this',

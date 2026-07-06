@@ -110,7 +110,7 @@
   "offline.msg": "عذراً! لا يوجد اتصال بالإنترنت. تحقق من الشبكة وحاول مرة أخرى.",
   "socket-disconnect.msg": "خطأ أثناء مزامنة الرسائل. تحقق من جدار الحماية أو حاول مرة أخرى لاحقًا.",
   "business-hour.msg": "لقد اتصلت بنا خارج ساعات العمل. سيتولى روبوتنا استفساراتك حتى يعود الفريق.",
-  "account.churned.notice": "<strong class=\"km-churn-message-highlight\">تم تعطيل الدردشة لهذا الموقع الإلكتروني.</strong> <strong class=\"km-churn-message-label\">الزوار:</strong> يُرجى التواصل مع مالك الموقع باستخدام وسيلة اتصال أخرى. <strong class=\"km-churn-message-label\">مسؤولو الموقع:</strong> إذا كنتم بحاجة إلى مساعدة لاستعادة الدردشة، فتواصلوا مع دعم Kommunicate.",
+  "account.churned.notice": "تم تعطيل الدردشة لهذا الموقع الإلكتروني. الزوار: يُرجى التواصل مع مالك الموقع باستخدام وسيلة اتصال أخرى. مسؤولو الموقع: إذا كنتم بحاجة إلى مساعدة لاستعادة الدردشة، فتواصلوا مع دعم Kommunicate.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName أنشأ المجموعة :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName أزال :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName أضاف :userName",

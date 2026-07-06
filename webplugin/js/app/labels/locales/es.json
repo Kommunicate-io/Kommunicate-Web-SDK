@@ -110,7 +110,7 @@
   "offline.msg": "¡Vaya! No hay conexión a internet. Revisa tu red e inténtalo de nuevo.",
   "socket-disconnect.msg": "Error al sincronizar mensajes. Revisa tu firewall o intenta de nuevo más tarde.",
   "business-hour.msg": "Nos contactaste fuera del horario laboral. Nuestro bot manejará tus consultas hasta que el equipo vuelva.",
-  "account.churned.notice": "<strong class=\"km-churn-message-highlight\">El chat se ha deshabilitado para este sitio web.</strong> <strong class=\"km-churn-message-label\">Visitantes:</strong> Pónganse en contacto con el propietario del sitio web mediante otro método de contacto. <strong class=\"km-churn-message-label\">Administradores del sitio web:</strong> Si necesitan ayuda para restaurar el chat, contacten con el soporte de Kommunicate.",
+  "account.churned.notice": "El chat se ha deshabilitado para este sitio web. Visitantes: Pónganse en contacto con el propietario del sitio web mediante otro método de contacto. Administradores del sitio web: Si necesitan ayuda para restaurar el chat, contacten con el soporte de Kommunicate.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName creó el grupo :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName eliminó a :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName añadió a :userName",

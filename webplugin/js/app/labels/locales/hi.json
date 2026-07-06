@@ -110,7 +110,7 @@
   "offline.msg": "ओह ओह! इंटरनेट कनेक्शन नहीं है। कृपया अपने नेटवर्क की जाँच करें और पुनः प्रयास करें।",
   "socket-disconnect.msg": "संदेशों को सिंक करते समय त्रुटि हुई। अपने फ़ायरवॉल सेटिंग्स की जांच करें या कुछ समय बाद पुनः प्रयास करें।",
   "business-hour.msg": "आपने हमें हमारे व्यापारिक घंटों के बाहर संपर्क किया है। जब तक टीम ऑनलाइन नहीं आती, हमारा बॉट आपकी क्वेरी संभालेगा।",
-  "account.churned.notice": "<strong class=\"km-churn-message-highlight\">इस वेबसाइट के लिए चैट अक्षम कर दी गई है।</strong> <strong class=\"km-churn-message-label\">आगंतुक:</strong> कृपया वेबसाइट के मालिक से किसी अन्य संपर्क माध्यम से संपर्क करें। <strong class=\"km-churn-message-label\">वेबसाइट प्रशासक:</strong> यदि आपको चैट बहाल करने में सहायता चाहिए, तो Kommunicate सहायता टीम से संपर्क करें।",
+  "account.churned.notice": "इस वेबसाइट के लिए चैट अक्षम कर दी गई है। आगंतुक: कृपया वेबसाइट के मालिक से किसी अन्य संपर्क माध्यम से संपर्क करें। वेबसाइट प्रशासक: यदि आपको चैट बहाल करने में सहायता चाहिए, तो Kommunicate सहायता टीम से संपर्क करें।",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName ने समूह :groupName बनाया",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName ने :userName को हटा दिया",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName ने :userName को जोड़ा",
