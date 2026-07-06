@@ -165,12 +165,41 @@ class KMLabel {
                 return;
             }
             var fallbackTemplate =
-                '<strong class="km-churn-message-highlight">Chat has been disabled for this website.</strong> <strong class="km-churn-message-label">Visitors:</strong> Please contact the website owner using another contact method. <strong class="km-churn-message-label">Website administrators:</strong> If you need help restoring chat, contact Kommunicate Support.';
+                'Chat has been disabled for this website. Visitors: Please contact the website owner using another contact method. Website administrators: If you need help restoring chat, contact Kommunicate Support.';
             var template = typeof value === 'string' && value.trim() ? value : fallbackTemplate;
-
-            node.innerHTML = template
+            var noticeText = template
                 .replace(/\{\{deactivateLink\}\}/g, 'Kommunicate chatbot')
                 .replace(/\{\{supportEmailLink\}\}/g, 'Kommunicate Support');
+            var appendText = function (text) {
+                if (text) {
+                    node.appendChild(document.createTextNode(text));
+                }
+            };
+            var appendStrongText = function (text, className) {
+                if (!text) {
+                    return;
+                }
+                var strongNode = document.createElement('strong');
+                strongNode.className = className;
+                strongNode.appendChild(document.createTextNode(text));
+                node.appendChild(strongNode);
+            };
+            var sentenceMatch = noticeText.match(/^(.+?[.!?۔。！？])(\s*.*)?$/);
+            var firstSentence = sentenceMatch ? sentenceMatch[1] : noticeText;
+            var remainingText = sentenceMatch && sentenceMatch[2] ? sentenceMatch[2] : '';
+            var labelRegex = /(^|[.!?۔。！？]\s+)([^.!?۔。！？:：\n][^:：\n]*[:：])/g;
+            var cursor = 0;
+            var match;
+
+            node.textContent = '';
+            appendStrongText(firstSentence, 'km-churn-message-highlight');
+            while ((match = labelRegex.exec(remainingText)) !== null) {
+                appendText(remainingText.slice(cursor, match.index));
+                appendText(match[1]);
+                appendStrongText(match[2], 'km-churn-message-label');
+                cursor = match.index + match[0].length;
+            }
+            appendText(remainingText.slice(cursor));
         };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (

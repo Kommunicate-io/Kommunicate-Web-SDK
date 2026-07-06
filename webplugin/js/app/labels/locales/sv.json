@@ -110,7 +110,7 @@
   "offline.msg": "Aj då! Ingen internetanslutning. Kontrollera nätverket och försök igen.",
   "socket-disconnect.msg": "Fel vid synkronisering av meddelanden. Kontrollera brandväggen eller försök igen senare.",
   "business-hour.msg": "Du kontaktade oss utanför kontorstid. Vår bot hanterar dina frågor tills teamet är online igen.",
-  "account.churned.notice": "<strong class=\"km-churn-message-highlight\">Chatten har inaktiverats för den här webbplatsen.</strong> <strong class=\"km-churn-message-label\">Besökare:</strong> Kontakta webbplatsens ägare via en annan kontaktväg. <strong class=\"km-churn-message-label\">Webbplatsadministratörer:</strong> Om ni behöver hjälp med att återställa chatten, kontakta Kommunicates support.",
+  "account.churned.notice": "Chatten har inaktiverats för den här webbplatsen. Besökare: Kontakta webbplatsens ägare via en annan kontaktväg. Webbplatsadministratörer: Om ni behöver hjälp med att återställa chatten, kontakta Kommunicates support.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName skapade gruppen :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName tog bort :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName lade till :userName",
