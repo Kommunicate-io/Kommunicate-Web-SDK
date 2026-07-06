@@ -171,19 +171,10 @@ class KMLabel {
                 return;
             }
             var value = resolveLabel('account.churned.notice');
-            var fallbackText = node.textContent.trim();
-            var template =
-                typeof value === 'string' && value.trim()
-                    ? value
-                    : typeof fallbackText === 'string' && fallbackText
-                    ? fallbackText
-                    : '';
-            if (!template) {
+            if (typeof value !== 'string' || !value.trim()) {
                 return;
             }
-            var noticeText = template
-                .replace(/\{\{deactivateLink\}\}/g, 'Kommunicate chatbot')
-                .replace(/\{\{supportEmailLink\}\}/g, 'Kommunicate Support');
+            var noticeText = value;
             var sentenceMatch = noticeText.match(/^(.+?[.!?۔。！？])(\s*.*)?$/);
             var firstSentence = sentenceMatch ? sentenceMatch[1] : noticeText;
             var remainingText = sentenceMatch && sentenceMatch[2] ? sentenceMatch[2] : '';
