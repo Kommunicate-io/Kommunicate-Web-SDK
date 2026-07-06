@@ -73,6 +73,20 @@
     line-height: 1.6;
 }
 
+#km-churn-customer .km-churn-message-highlight {
+    display: block;
+    margin-bottom: 10px;
+    color: #334155;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+#km-churn-customer .km-churn-message-label {
+    color: #334155;
+    font-weight: 700;
+}
+
 #km-churn-customer .km-churn-icon {
     display: inline-flex;
     flex: 0 0 auto;

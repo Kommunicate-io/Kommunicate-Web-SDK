@@ -165,45 +165,12 @@ class KMLabel {
                 return;
             }
             var fallbackTemplate =
-                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}';
-            var template =
-                typeof value === 'string' &&
-                value.indexOf('{{deactivateLink}}') !== -1 &&
-                value.indexOf('{{supportEmailLink}}') !== -1
-                    ? value
-                    : fallbackTemplate;
-            var createDeactivateText = function () {
-                var text = document.createElement('span');
-                text.id = 'deactivate-link';
-                text.appendChild(document.createTextNode('Kommunicate chatbot'));
-                return text;
-            };
-            var createSupportEmailLink = function () {
-                var link = document.createElement('a');
-                link.href = 'mailto:support@kommunicate.io';
-                link.appendChild(document.createTextNode('support@kommunicate.io'));
-                return link;
-            };
-            var appendText = function (text) {
-                if (text) {
-                    node.appendChild(document.createTextNode(text));
-                }
-            };
-            var tokenRegex = /\{\{(deactivateLink|supportEmailLink)\}\}/g;
-            var cursor = 0;
-            var match;
+                '<strong class="km-churn-message-highlight">Chat has been disabled for this website.</strong> <strong class="km-churn-message-label">Visitors:</strong> Please contact the website owner using another contact method. <strong class="km-churn-message-label">Website administrators:</strong> If you need help restoring chat, contact Kommunicate Support.';
+            var template = typeof value === 'string' && value.trim() ? value : fallbackTemplate;
 
-            node.textContent = '';
-            while ((match = tokenRegex.exec(template)) !== null) {
-                appendText(template.slice(cursor, match.index));
-                node.appendChild(
-                    match[1] === 'deactivateLink'
-                        ? createDeactivateText()
-                        : createSupportEmailLink()
-                );
-                cursor = tokenRegex.lastIndex;
-            }
-            appendText(template.slice(cursor));
+            node.innerHTML = template
+                .replace(/\{\{deactivateLink\}\}/g, 'Kommunicate chatbot')
+                .replace(/\{\{supportEmailLink\}\}/g, 'Kommunicate Support');
         };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (

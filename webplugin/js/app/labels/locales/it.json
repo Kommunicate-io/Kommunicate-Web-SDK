@@ -110,7 +110,7 @@
   "offline.msg": "Oh no! Nessuna connessione internet. Controlla la tua rete e riprova.",
   "socket-disconnect.msg": "Errore durante la sincronizzazione dei messaggi. Controlla il firewall o riprova più tardi.",
   "business-hour.msg": "Ci hai contattato fuori dall’orario di lavoro. Il nostro bot gestirà la tua richiesta finché il team non tornerà online.",
-  "account.churned.notice": "La messaggistica tramite il {{deactivateLink}} è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a {{supportEmailLink}}",
+  "account.churned.notice": "<strong class=\"km-churn-message-highlight\">La chat è stata disattivata per questo sito web.</strong> <strong class=\"km-churn-message-label\">Visitatori:</strong> contattate il proprietario del sito web utilizzando un altro metodo di contatto. <strong class=\"km-churn-message-label\">Amministratori del sito web:</strong> se avete bisogno di aiuto per ripristinare la chat, contattate il supporto di Kommunicate.",
   "group.metadata.CREATE_GROUP_MESSAGE": ":adminName ha creato il gruppo :groupName",
   "group.metadata.REMOVE_MEMBER_MESSAGE": ":adminName ha rimosso :userName",
   "group.metadata.ADD_MEMBER_MESSAGE": ":adminName ha aggiunto :userName",
