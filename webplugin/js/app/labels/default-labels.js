@@ -158,48 +158,67 @@ class KMLabel {
                 node.setAttribute('aria-label', value);
             });
         };
+        var churnNoticeTemplate = [
+            '{{#tokens}}',
+            '{{#isHeadline}}<strong class="km-churn-message-highlight">{{text}}</strong>{{/isHeadline}}',
+            '{{#isLabel}}<strong class="km-churn-message-label">{{text}}</strong>{{/isLabel}}',
+            '{{#isText}}{{text}}{{/isText}}',
+            '{{/tokens}}',
+        ].join('');
         var renderChurnNotice = function () {
             var node = document.getElementById('km-churn-notice');
-            var value = resolveLabel('account.churned.notice');
-            if (!node || value === null || typeof value === 'undefined') {
+            if (!node) {
                 return;
             }
-            var fallbackTemplate =
-                'Chat has been disabled for this website. Visitors: Please contact the website owner using another contact method. Website administrators: If you need help restoring chat, contact Kommunicate Support.';
-            var template = typeof value === 'string' && value.trim() ? value : fallbackTemplate;
+            var value = resolveLabel('account.churned.notice');
+            var fallbackText = node.textContent.trim();
+            var template =
+                typeof value === 'string' && value.trim()
+                    ? value
+                    : typeof fallbackText === 'string' && fallbackText
+                    ? fallbackText
+                    : '';
+            if (!template) {
+                return;
+            }
             var noticeText = template
                 .replace(/\{\{deactivateLink\}\}/g, 'Kommunicate chatbot')
                 .replace(/\{\{supportEmailLink\}\}/g, 'Kommunicate Support');
-            var appendText = function (text) {
-                if (text) {
-                    node.appendChild(document.createTextNode(text));
-                }
-            };
-            var appendStrongText = function (text, className) {
-                if (!text) {
-                    return;
-                }
-                var strongNode = document.createElement('strong');
-                strongNode.className = className;
-                strongNode.appendChild(document.createTextNode(text));
-                node.appendChild(strongNode);
-            };
             var sentenceMatch = noticeText.match(/^(.+?[.!?۔。！？])(\s*.*)?$/);
             var firstSentence = sentenceMatch ? sentenceMatch[1] : noticeText;
             var remainingText = sentenceMatch && sentenceMatch[2] ? sentenceMatch[2] : '';
             var labelRegex = /(^|[.!?۔。！？]\s+)([^.!?۔。！？:：\n][^:：\n]*[:：])/g;
             var cursor = 0;
             var match;
+            var tokens = [
+                {
+                    isHeadline: true,
+                    text: firstSentence,
+                },
+            ];
+            var appendToken = function (text, type) {
+                if (!text) {
+                    return;
+                }
+                tokens.push({
+                    isHeadline: false,
+                    isLabel: type === 'label',
+                    isText: type === 'text',
+                    text: text,
+                });
+            };
 
-            node.textContent = '';
-            appendStrongText(firstSentence, 'km-churn-message-highlight');
+            remainingText = remainingText.replace(/^\s+/, '');
             while ((match = labelRegex.exec(remainingText)) !== null) {
-                appendText(remainingText.slice(cursor, match.index));
-                appendText(match[1]);
-                appendStrongText(match[2], 'km-churn-message-label');
+                appendToken(remainingText.slice(cursor, match.index), 'text');
+                appendToken(match[1], 'text');
+                appendToken(match[2], 'label');
                 cursor = match.index + match[0].length;
             }
-            appendText(remainingText.slice(cursor));
+            appendToken(remainingText.slice(cursor), 'text');
+            node.innerHTML = Mustache.to_html(churnNoticeTemplate, {
+                tokens: tokens,
+            });
         };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
