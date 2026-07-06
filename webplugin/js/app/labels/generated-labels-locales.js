@@ -123,7 +123,7 @@
             'business-hour.msg':
                 'لقد اتصلت بنا خارج ساعات العمل. سيتولى روبوتنا استفساراتك حتى يعود الفريق.',
             'account.churned.notice':
-                'تم تعطيل المراسلة عبر {{deactivateLink}} لهذا الحساب. لتمكينها، يرجى التواصل مع مشرف الموقع. إذا كنت أنت المشرف، فتواصل معنا على {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">تم تعطيل الدردشة لهذا الموقع الإلكتروني.</strong> <strong class="km-churn-message-label">الزوار:</strong> يُرجى التواصل مع مالك الموقع باستخدام وسيلة اتصال أخرى. <strong class="km-churn-message-label">مسؤولو الموقع:</strong> إذا كنتم بحاجة إلى مساعدة لاستعادة الدردشة، فتواصلوا مع دعم Kommunicate.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName أنشأ المجموعة :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName أزال :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName أضاف :userName',
@@ -332,7 +332,7 @@
             'business-hour.msg':
                 'Sie haben uns außerhalb der Geschäftszeiten kontaktiert. Unser Bot kümmert sich um Ihre Fragen, bis das Team zurück ist.',
             'account.churned.notice':
-                'Das Versenden von Nachrichten über den {{deactivateLink}} ist für dieses Konto deaktiviert. Um es zu aktivieren, wenden Sie sich bitte an den Administrator der Website. Wenn Sie der Administrator sind, kontaktieren Sie {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">Der Chat wurde für diese Website deaktiviert.</strong> <strong class="km-churn-message-label">Besucher:</strong> Bitte kontaktieren Sie den Website-Betreiber über einen anderen Kontaktweg. <strong class="km-churn-message-label">Website-Administratoren:</strong> Wenn Sie Hilfe bei der Wiederherstellung des Chats benötigen, wenden Sie sich an den Kommunicate-Support.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName hat die Gruppe :groupName erstellt',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName hat :userName entfernt',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName hat :userName hinzugefügt',
@@ -545,7 +545,7 @@
             'business-hour.msg':
                 'Nos contactaste fuera del horario laboral. Nuestro bot manejará tus consultas hasta que el equipo vuelva.',
             'account.churned.notice':
-                'La mensajería a través del {{deactivateLink}} está deshabilitada para esta cuenta. Para habilitarla, ponte en contacto con el administrador del sitio web. Si eres el administrador, escríbenos a {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">El chat se ha deshabilitado para este sitio web.</strong> <strong class="km-churn-message-label">Visitantes:</strong> Pónganse en contacto con el propietario del sitio web mediante otro método de contacto. <strong class="km-churn-message-label">Administradores del sitio web:</strong> Si necesitan ayuda para restaurar el chat, contacten con el soporte de Kommunicate.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName creó el grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName eliminó a :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName añadió a :userName',
@@ -760,7 +760,7 @@
             'business-hour.msg':
                 "Vous nous avez contactés en dehors de nos heures d'ouverture. Notre bot traitera vos demandes jusqu'au retour de l'équipe.",
             'account.churned.notice':
-                'La messagerie via le {{deactivateLink}} est désactivée pour ce compte. Pour l’activer, veuillez contacter l’administrateur du site web. Si vous êtes l’administrateur, contactez-nous à {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">Le chat a été désactivé pour ce site web.</strong> <strong class="km-churn-message-label">Visiteurs :</strong> veuillez contacter le propriétaire du site en utilisant un autre moyen de contact. <strong class="km-churn-message-label">Administrateurs du site web :</strong> si vous avez besoin d’aide pour rétablir le chat, contactez le support Kommunicate.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName a créé le groupe :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName a supprimé :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName a ajouté :userName',
@@ -978,7 +978,7 @@
             'business-hour.msg':
                 'आपने हमें हमारे व्यापारिक घंटों के बाहर संपर्क किया है। जब तक टीम ऑनलाइन नहीं आती, हमारा बॉट आपकी क्वेरी संभालेगा।',
             'account.churned.notice':
-                'इस खाते के लिए {{deactivateLink}} के माध्यम से मैसेजिंग अक्षम है। इसे सक्षम करने के लिए कृपया वेबसाइट के एडमिन से संपर्क करें। यदि आप एडमिन हैं, तो {{supportEmailLink}} पर हमसे संपर्क करें।',
+                '<strong class="km-churn-message-highlight">इस वेबसाइट के लिए चैट अक्षम कर दी गई है।</strong> <strong class="km-churn-message-label">आगंतुक:</strong> कृपया वेबसाइट के मालिक से किसी अन्य संपर्क माध्यम से संपर्क करें। <strong class="km-churn-message-label">वेबसाइट प्रशासक:</strong> यदि आपको चैट बहाल करने में सहायता चाहिए, तो Kommunicate सहायता टीम से संपर्क करें।',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName ने समूह :groupName बनाया',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName ने :userName को हटा दिया',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName ने :userName को जोड़ा',
@@ -1191,7 +1191,7 @@
             'business-hour.msg':
                 'Ci hai contattato fuori dall’orario di lavoro. Il nostro bot gestirà la tua richiesta finché il team non tornerà online.',
             'account.churned.notice':
-                'La messaggistica tramite il {{deactivateLink}} è disabilitata per questo account. Per abilitarla, contatta l’amministratore del sito web. Se sei l’amministratore, scrivici a {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">La chat è stata disattivata per questo sito web.</strong> <strong class="km-churn-message-label">Visitatori:</strong> contattate il proprietario del sito web utilizzando un altro metodo di contatto. <strong class="km-churn-message-label">Amministratori del sito web:</strong> se avete bisogno di aiuto per ripristinare la chat, contattate il supporto di Kommunicate.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName ha creato il gruppo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName ha rimosso :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName ha aggiunto :userName',
@@ -1406,7 +1406,7 @@
             'business-hour.msg':
                 'Você nos contatou fora do horário comercial. Nosso bot atenderá seu pedido até a equipe voltar.',
             'account.churned.notice':
-                'As mensagens via {{deactivateLink}} estão desativadas para esta conta. Para habilitar, entre em contato com o administrador do site. Se você for o administrador, fale conosco em {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">O chat foi desativado para este site.</strong> <strong class="km-churn-message-label">Visitantes:</strong> entrem em contato com o proprietário do site usando outro meio de contato. <strong class="km-churn-message-label">Administradores do site:</strong> se precisarem de ajuda para restaurar o chat, entrem em contato com o suporte da Kommunicate.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName criou o grupo :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName removeu :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName adicionou :userName',
@@ -1618,7 +1618,7 @@
             'business-hour.msg':
                 'Du kontaktade oss utanför kontorstid. Vår bot hanterar dina frågor tills teamet är online igen.',
             'account.churned.notice':
-                'Meddelanden via {{deactivateLink}} är inaktiverade för det här kontot. För att aktivera dem, kontakta webbplatsens administratör. Om du är administratören, kontakta oss på {{supportEmailLink}}',
+                '<strong class="km-churn-message-highlight">Chatten har inaktiverats för den här webbplatsen.</strong> <strong class="km-churn-message-label">Besökare:</strong> Kontakta webbplatsens ägare via en annan kontaktväg. <strong class="km-churn-message-label">Webbplatsadministratörer:</strong> Om ni behöver hjälp med att återställa chatten, kontakta Kommunicates support.',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName skapade gruppen :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName tog bort :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName lade till :userName',
@@ -1829,7 +1829,7 @@
             'business-hour.msg':
                 'آپ نے ہمیں کاروباری اوقات کے بعد رابطہ کیا ہے۔ جب تک ٹیم آن لائن نہ آئے، ہمارا بوٹ آپ کی پُرُشوں کا جواب دے گا.',
             'account.churned.notice':
-                'اس اکاؤنٹ کے لیے {{deactivateLink}} کے ذریعے پیغام رسانی غیر فعال ہے۔ اسے فعال کرنے کے لیے براہ کرم ویب سائٹ کے ایڈمن سے رابطہ کریں۔ اگر آپ ایڈمن ہیں تو {{supportEmailLink}} پر ہم سے رابطہ کریں۔',
+                '<strong class="km-churn-message-highlight">اس ویب سائٹ کے لیے چیٹ غیر فعال کر دی گئی ہے۔</strong> <strong class="km-churn-message-label">وزیٹرز:</strong> براہ کرم ویب سائٹ کے مالک سے کسی دوسرے رابطے کے ذریعے رابطہ کریں۔ <strong class="km-churn-message-label">ویب سائٹ ایڈمنسٹریٹرز:</strong> اگر آپ کو چیٹ بحال کرنے میں مدد چاہیے تو Kommunicate سپورٹ سے رابطہ کریں۔',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName نے گروپ :groupName بنایا',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName نے :userName کو ہٹایا',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName نے :userName کو شامل کیا',
@@ -2039,7 +2039,7 @@
             'business-hour.msg':
                 '您在我们的工作时间之外联系，机器人会处理您的问题，直至客服重新上线。',
             'account.churned.notice':
-                '此账户已禁用通过 {{deactivateLink}} 发送消息。如需启用，请联系网站管理员。如果您就是管理员，请通过 {{supportEmailLink}} 与我们联系。',
+                '<strong class="km-churn-message-highlight">此网站的聊天功能已被禁用。</strong> <strong class="km-churn-message-label">访客：</strong>请通过其他联系方式联系网站所有者。<strong class="km-churn-message-label">网站管理员：</strong>如果您需要帮助恢复聊天，请联系 Kommunicate 支持团队。',
             'group.metadata.CREATE_GROUP_MESSAGE': ':adminName 创建了群组 :groupName',
             'group.metadata.REMOVE_MEMBER_MESSAGE': ':adminName 移除了 :userName',
             'group.metadata.ADD_MEMBER_MESSAGE': ':adminName 添加了 :userName',
