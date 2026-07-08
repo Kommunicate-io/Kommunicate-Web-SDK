@@ -80,6 +80,7 @@ KommunicateUI = {
     leadCollectionEnabledOnAwayMessage: false,
     welcomeMessageEnabled: false,
     leadCollectionEnabledOnWelcomeMessage: false,
+    pendingWelcomePrompt: null,
     skipPopupChatTemplate: false,
     anonymousUser: false,
     isCSATtriggeredByUser: false,
@@ -1332,8 +1333,57 @@ KommunicateUI = {
             ? kommunicateCommons.show(faqInputSelector)
             : kommunicateCommons.hide(faqInputSelector);
     },
+    dispatchWelcomePrompt: function (groupId, query) {
+        var normalizedGroupId = String(groupId);
+        $applozic.fn.applozic('sendGroupMessage', {
+            groupId: normalizedGroupId,
+            message: query,
+            type: 0,
+        });
+    },
+    queueWelcomePrompt: function (groupId, query) {
+        var normalizedGroupId = String(groupId);
+        KommunicateUI.pendingWelcomePrompt &&
+            clearTimeout(KommunicateUI.pendingWelcomePrompt.timeoutId);
+        KommunicateUI.pendingWelcomePrompt = {
+            groupId: normalizedGroupId,
+            query: query,
+            timeoutId: setTimeout(function () {
+                KommunicateUI.flushPendingWelcomePrompt(normalizedGroupId);
+            }, 4000),
+        };
+    },
+    flushPendingWelcomePrompt: function (groupId) {
+        var normalizedGroupId = String(groupId);
+        var pendingWelcomePrompt = KommunicateUI.pendingWelcomePrompt;
+        if (!pendingWelcomePrompt || pendingWelcomePrompt.groupId !== normalizedGroupId) {
+            return;
+        }
+        clearTimeout(pendingWelcomePrompt.timeoutId);
+        KommunicateUI.pendingWelcomePrompt = null;
+        KommunicateUI.dispatchWelcomePrompt(normalizedGroupId, pendingWelcomePrompt.query);
+    },
+    shouldFlushPendingWelcomePrompt: function (groupId, message) {
+        return (
+            message &&
+            String(message.groupId) === String(groupId) &&
+            (message.type === 0 || message.type === 4 || message.type === 6) &&
+            message.contentType === 0
+        );
+    },
+    resolveWelcomePromptGroupId: function (groupId) {
+        if (!groupId) {
+            return '';
+        }
+        if (typeof groupId === 'object') {
+            return groupId.data && groupId.data.id ? String(groupId.data.id) : '';
+        }
+        return String(groupId);
+    },
     submitWelcomePrompt: function (query, onComplete) {
         var trimmedQuery = (query || '').trim();
+        var hasCompleted = false;
+        var completionTimeoutId;
         if (!trimmedQuery) {
             return false;
         }
@@ -1344,26 +1394,27 @@ KommunicateUI = {
             setActiveSubsectionState('conversation-individual');
         KommunicateUI.showChat && KommunicateUI.showChat();
         KommunicateUI.hideFaq && KommunicateUI.hideFaq();
-        Kommunicate.startConversation({}, function (groupId) {
-            var resolvedGroupId =
-                typeof groupId === 'object' && groupId && groupId.data ? groupId.data.id : groupId;
-
-            if (resolvedGroupId) {
-                $applozic.fn.applozic('sendGroupMessage', {
-                    groupId: resolvedGroupId,
-                    message: trimmedQuery,
-                    type: 0,
-                });
+        var finalizeWelcomePromptSubmission = function (groupId) {
+            var resolvedGroupId;
+            if (hasCompleted) {
+                return;
             }
-
-            KommunicateUI.setHasConversationHistory(true);
-            typeof setActiveSubsectionState === 'function' &&
-                setActiveSubsectionState('conversation-individual');
+            hasCompleted = true;
+            completionTimeoutId && clearTimeout(completionTimeoutId);
+            resolvedGroupId = KommunicateUI.resolveWelcomePromptGroupId(groupId);
+            if (resolvedGroupId) {
+                KommunicateUI.queueWelcomePrompt(resolvedGroupId, trimmedQuery);
+                KommunicateUI.setHasConversationHistory(true);
+                typeof setActiveSubsectionState === 'function' &&
+                    setActiveSubsectionState('conversation-individual');
+            }
             if (onComplete) {
-                onComplete();
+                onComplete(!!resolvedGroupId);
             }
             KommunicateUI.activateTypingField();
-        });
+        };
+        completionTimeoutId = setTimeout(finalizeWelcomePromptSubmission, 5000);
+        Kommunicate.startConversation({}, finalizeWelcomePromptSubmission);
         return true;
     },
     renderWelcomeSuggestedQuestions: function () {
@@ -1402,11 +1453,11 @@ KommunicateUI = {
         askAnythingInput && (askAnythingInput.disabled = true);
         askAnythingButton && (askAnythingButton.disabled = true);
 
-        KommunicateUI.submitWelcomePrompt(query, function () {
-            if (askAnythingInput) {
+        KommunicateUI.submitWelcomePrompt(query, function (isSuccess) {
+            if (askAnythingInput && isSuccess) {
                 askAnythingInput.value = '';
-                askAnythingInput.disabled = false;
             }
+            askAnythingInput && (askAnythingInput.disabled = false);
             if (askAnythingButton) {
                 askAnythingButton.disabled = false;
             }
