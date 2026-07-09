@@ -5747,17 +5747,12 @@ const firstVisibleMsg = {
 
             _this.updateMessageMetadataForVoiceInput = function (messagePxy, metadata) {
                 var resolvedMetadata = metadata || {};
-                if (
-                    resolvedMetadata.KM_INPUT_TYPE ||
-                    typeof mckVoice === 'undefined' ||
-                    !mckVoice ||
-                    !mckVoice.isVoiceModeActive() ||
-                    !messagePxy.message ||
-                    messagePxy.fileMeta
-                ) {
+                if (resolvedMetadata.KM_INPUT_TYPE || !messagePxy.message || messagePxy.fileMeta) {
                     return resolvedMetadata;
                 }
-                resolvedMetadata.KM_INPUT_TYPE = 'VOICE';
+                if (typeof mckVoice !== 'undefined' && mckVoice && mckVoice.isVoiceModeActive()) {
+                    resolvedMetadata.KM_INPUT_TYPE = 'VOICE';
+                }
                 return resolvedMetadata;
             };
 
