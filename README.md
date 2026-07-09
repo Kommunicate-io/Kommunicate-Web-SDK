@@ -1,246 +1,238 @@
-<img src="https://s3.amazonaws.com/kommunicate.io/Header.jpg" />
 
-# [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin and Chatbot Integration For Web
+# Kommunicate AI Agent and Live Chat For Web
 
+## Overview:
 
-## Overview
+Kommunicate provides an open-source AI agent and live chat plugin for websites. The Kommunicate plugin is lightweight, flexible, and easy to integrate. Kommunicate AI agents can autonomously resolve customer support queries and are powered by natural language processing, the latest AI models from OpenAI, Anthropic, Google Gemini, and CX Agent Studio.
 
-Kommunicate provides open source live chat Plugin. The Kommunicate plugin is flexible, lightweight and easily integrable. 
-It lets you easily add real-time live chat and in-app messaging in your websites and web apps for customer support. The live chat plugin is equipped with advance messaging options such as real-time chat, sending attachments, sharing location and rich messaging.
+Kommunicate supports document and image uploads, location sharing, and rich messaging capabilities to create engaging customer experiences.
 
-Kommunicate has a powerful human + chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
+Kommunicate also includes a built-in human-in-the-loop support system. When an AI agent is unable to understand or resolve a customer query, it can seamlessly escalate the conversation to a live support agent. Human agents can then continue the conversation directly from the Kommunicate platform.
 
-<img src="./custom-bot-server-code-sample/images/chatWidget.png" alt="Kompose-build">
+In addition, Kommunicate unifies customer conversations from websites, email, voice, and messaging channels such as WhatsApp, Telegram, Instagram, Viber, and LINE into a single platform, enabling better team collaboration, faster response times, and more efficient issue resolution.
 
+## Build an AI agent on Kommunicate and integrate it into your website
 
+## Kompose
 
-## Build a BOT on Kommunicate and integrate it in your Website 
+Kompose is a no-code AI agent builder that helps businesses build and deploy customer support AI agents across chat, email, and voice channels. Creating an AI agent with Kompose requires no coding skills, simply upload your training materials and provide clear instructions on how the agent should respond and behave.
 
-### Kompose
+The Kommunicate platform includes a feature-rich chat widget with capabilities such as:
 
-[Kompose](https://dashboard.kommunicate.io/bots/bot-builder) is a Kommunicate’s bot builder that help you in building your own bot, a techie, non-techie, or a person who doesn’t have any idea about chatbots can also build the bot. Anyone can create a chatbot with the Kompose without any assistance.
+- File and attachment sharing
+- Voice AI interactions
+- Lead capture forms
+- Rich messaging experiences
+- Location sharing
+- Human agent handoff
+- Conversation analytics and reporting
 
-<img src="./custom-bot-server-code-sample/images/Final.gif" alt="Kompose-build">
+Kommunicate also provides detailed insights into AI agent performance, helping teams identify unanswered queries, optimize responses, and continuously improve automation. When required, conversations can be seamlessly transferred from the AI agent to a human support representative, ensuring customers always receive the assistance they need. All conversations are centrally managed within the Kommunicate platform, allowing support teams to monitor, respond to, and track customer interactions efficiently.
 
-
-
-
-### Following is the UI to create the BOT
-
-<img src="./custom-bot-server-code-sample/images/botCreation.png" alt="Kompose-build">
-
-
-
-
-## Dialogflow Chatbot Integration
-
-Dialogflow is a Google-owned NLP platform to facilitate human-computer interactions such as chatbots, voice bots, etc. 
-
-Kommunicate's Dialogflow integration provides a more versatile, customizable and better chatting experience. Kommunicate chat widget supports all of Dialogflow's features such as Google Assistant, Rich Messaging, etc. On top of that, it is equipped with advanced features such as bot-human handoff, conversation managing dashboard, reporting, and others. 
-
-You can connect your Dialogflow chatbot with Kommunicate in the following 4 simple steps. [Here](https://www.youtube.com/watch?v=ZlrFYRwJxS8) is a video for the same. 
-
-### Step 1: Get your API credentials from Dialogflow
-- Login to Dialogflow console and select your agent from the dropdown in the left panel.
-- Click on the settings button. It will open a setting page for the agent.
-- Inside the general tab search for GOOGLE PROJECTS and click on your service account.
-- After getting redirected to your SERVICE ACCOUNT, create a key in JSON format for your project from the actions section and it will get automatically downloaded.
-
-### Step 2: Create a free Kommunicate account
-Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations). 
-
-### Step 3: Integrate your Dialogflow chatbot with Kommunicate
-- In the Bot integrations section, choose Dialogflow. A popup window will open.
-- Upload your Key file here and proceed.
-- Give a name and image to your chatbot. It will be visible to the users chatting with your chatbot.
-- Enable/Disable chatbot to human handoff. If enabled, it will automatically assign conversations to humans in case the chatbot is not able to answer.
-
-### Step 4: Install the chat widget on your website
-You can install the Kommunicate chat widget on your website by adding a code snippet to your website. More information on how to integrate with your website [here](https://docs.kommunicate.io/docs/web-installation.html). 
-
-> Note: Here's a [sample chatbot](https://docs.kommunicate.io/docs/bot-samples) for you to get started with Dialogflow. 
-
-## Amazon Lex Integration
-
-Amazon Lex is an AWS service for building conversational interfaces using voice and text, enabling human-computer interactions such as chatbots, voice bots, etc.
-
-Kommunicate's Amazon Lex integration offers a more versatile, customizable, and enhanced chatting experience. Additionally, it comes equipped with advanced features such as bot-human handoff, a conversation management dashboard, reporting, and more.
-
-You can integrate Amazon Lex Bot with Kommunicate by following the below steps. [Here](https://www.youtube.com/watch?v=cuaAiutVkow) is a video for the same.
-
-### Step 1: Get your credentials from Amazon Lex
-
-**A. Access Key ID & Secret access key:** An access key ID and secret access key are required to sign requests you make using the AWS SDKs. To get your access key [sign into your AWS console](https://aws.amazon.com/console/) as a Root or IAM user.
-
-  1. Open the [Identity and Access Management (IAM)](https://us-east-1.console.aws.amazon.com/iam/) panel in the same AWS account where the Lex bot is present.
-
-  2. Go to Access management -> Users. Create a user by clicking the Add Users button. Add a user name, e.g., "Lex-bot".
-
-  3. Set permissions: Choose "Attach Policies Directly".
-
-  4. Select the following two permissions: AmazonLexReadOnly & AmazonLexRunBotsOnly.
-
-  5. Keep the "Tags" empty and proceed to Next.
-
-  6. On the next page confirm the attached permissions to the user and click on “Create User”.
-
-  7. Now that your user is created, select the user, and on the next page click on Security Credentials.
-
-  8. Scroll down and click on Create Access Key.
-
-  9. Select Third-Party Service and proceed next to generate the access keys.
-
-A. **Bot name in Lex platform:** Lex requires a name for your bot when you create it. Once you create the bot, you can also get it from the bot list in Lex home page.
-
-B. **Bot Alias:** You create a bot alias when you publish the bot. It helps you to work with multiple versions of your bot. Update the bot alias in Kommunicate if you want Kommunicate to connect with a specific version of the bot.
-
-C. **Region**: AWS region where Lex service is running. You can find your region in the top-right corner following the user name in the AWS console.
-
-
-### Step 2: Create a free Kommunicate account
-
-Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations).
-
-### Step 3: Integrate your Amazon Lex Bot with Kommunicate
-
-Once you have the above information follow the below steps to integrate the bot with Kommunicate:
-
-  1. Log in to Kommunicate and go to [bot section](https://dashboard.kommunicate.io/bots/bot-integrations).
-
-  2. Click the Integrate Bot in the Amazon Lex card.
-
-  3. Fill in the required detail and click next.
-
-  4. Give your bot a name. This name will be visible to your users who interact with the bot.
-
-  5. Enable/Disable the autoHandoff setting if you want your bot to assign the conversation to a human agent in your team when the conversation is hung up by the bot.
-
-  6. Click on Let this bot handle all new conversations. All new Conversations started after the integration will be assigned to this bot and your bot will start answering them.
-
-### Step 4: Install the chat widget on your website
-
-You can install the Kommunicate chat widget on your website by adding a code snippet to your website. More information on how to integrate with your website [here](https://docs.kommunicate.io/docs/web-installation.html).
+![Kompose knowledge source documents](images/kompose-knowledge-source-documents.png)
 
 ## OpenAI Integration
 
-OpenAI is an AI research organization that focuses on developing and promoting friendly artificial intelligence, enabling seamless human-computer interactions through advanced models like GPT.
+Kommunicate's OpenAI integration enables businesses to deploy AI-powered customer support agents using OpenAI's latest models. These agents can answer customer queries, automate repetitive support tasks, and seamlessly transfer conversations to human agents when required.
 
-Kommunicate's OpenAI integration offers a more versatile, customizable, and enhanced chatting experience. The Kommunicate chat widget supports all of OpenAI's features, such as natural language understanding and dynamic response generation. Additionally, it is equipped with advanced features such as bot-human handoff, a conversation management dashboard, reporting, and more.
+### Integrations Options
 
-You can integrate OpenAI Bot with Kommunicate by following the below steps. [Here](https://www.youtube.com/watch?v=dZM9OOK66KU) is a video for the same
+You can connect OpenAI to Kommunicate in two ways:
 
-### How to integrate Kommunicate bot with ChatGPT
+#### Managed Integration via Kommunicate
 
-**Step 1:**  Login to your Kommunicate account. If you don’t have an account, [Signup for free today!](https://dashboard.kommunicate.io/signup)
+- No OpenAI account setup required
+- Select an OpenAI model directly within Kommunicate
+- Simplified billing and configuration
 
+#### Bring Your Own OpenAI API Key
 
-**Step 2:** Once you are in, click on the **Bot Integration** icon on the left panel of the screen. 
+- Connect your existing OpenAI account
+- Full control over model selection and API usage
+- Use your own OpenAI billing account
 
-**Step 3:**  Now you can create a new bot or edit your active chatbot by clicking the **Go to bot builder button**.
+### Deployment Steps
 
-**Step 4:** Click on Settings in the top-right corner of the page.
+#### Step 1: Create an AI Agent
 
-**Step 5:** Turn the toggle on for **Get answers from web**. That’s all!
+Navigate to Agent Integrations and create a new AI agent using Kompose AI Agent Builder.
 
+![OpenAI create AI agent](images/openai-create-ai-agent.png)
 
-Please disable the toggle for **Small Talk** when you turn on ChatGPT.
+#### Step 2: Configure OpenAI
 
+Choose either:
 
-That’s how much it takes to integrate ChatGPT into your Kommunicate bot.
+- Integration via Kommunicate and select an OpenAI model, or
+- Integration via API Key and enter your OpenAI API credentials.
 
-## Gemini Bot
+Configure model settings such as response length and creativity, then save your configuration.
 
-Gemini, developed by Google DeepMind, is an advanced AI platform designed for powerful, natural language-driven interactions like chatbots and voice assistants.
+![OpenAI configure OpenAI](images/openai-configure-openai.png)
 
-Kommunicate’s Gemini integration enhances the chat experience with versatile and customizable features. The Kommunicate chat widget leverages Gemini’s capabilities, including intelligent response generation and robust language understanding. Additionally, it offers advanced functionality like bot-human handoff, conversation management, real-time reporting, and more.
+#### Step 3: Train Your AI Agent
 
+Upload documents, connect your help center, or add website URLs to build your AI agent's knowledge base.
 
-**Step 1:**  Login to your Kommunicate account. If you don’t have an account, [Signup for free today!](https://dashboard.kommunicate.io/signup)
+![OpenAI train AI agent](images/openai-train-ai-agent.png)
 
-**Step 2:** Once you are in, click on the **Bot Integration** icon on the left panel of the screen.
+#### Step 4: Deploy to Your Website
 
-**Step 3:**  Click on the card of Gemini AI where it is written **Integrate Bot**.
+Navigate to Integrations -> Universal Plugins for Websites, copy the JavaScript snippet, and add it to your website.
 
-**Step 4:** Once you reach the Integration Page, there will be an option of **Integration via Kommunicate**.
+Your OpenAI-powered AI agent is now ready to assist customers.
 
-**Step 5:** After selecting the desired Gemini model from the dropdown menu, click on **Save and Proceed**.
+![OpenAI deploy website](images/openai-deploy-website.png)
 
-**Step 6:** Give your bot a name. This name will be visible to your users who interact with the bot.
+## Google CX Agent Studio Integration
 
-**Step 7:** Enable/Disable the autoHandoff setting if you want your bot to assign the conversation to a human agent in your team when the conversation is hung up by the bot.
+Kommunicate integrates with Google CX Agent Studio, allowing organizations to deploy Dialogflow and CX Agent Studio agents through Kommunicate's omnichannel support platform.
 
-**Step 8:** Click on "Let this bot handle all new conversations". All new Conversations started after the integration will be assigned to this bot and your bot will start answering them.
+### Why Use This Integration?
 
-That’s how much it takes to integrate Gemini into your Kommunicate bot.
+- Leverage existing Google CX Agent Studio agents
+- Add live chat and human handoff capabilities
+- Access centralized conversation management
+- Deploy across web and mobile channels
 
+### Steps to Deploy Google CX Agent Studio AI Agent with Kommunicate
 
-## Other Features
+#### Step 1: Connect Google CX Agent Studio
 
-**Live chat widget:**  Make it easier for your visitors and users to reach you with an instant website and in-app support through chat. The widget is highly customizable. 
+![Google CX connect agent](images/google-cx-connect-agent.png)
 
-**Chatbots:** Automate and speed up your customer service by integrating AI-powered chatbots. Build your chatbots and deploy them using Kommunicate and seamlessly add them in the live chat.
+#### Step 2: Add Google Credentials
 
-**Conversations:** Manage all your customer queries coming from the live chat plugin. Easily manage and assign agents to cater to user conversations.
+Enter the required Google Cloud and CX Agent Studio credentials, including project details and authentication information.
 
-**Dashboard:** A powerful dashboard to see, analyze and act upon your customer conversation data. Helps you analyze the performance of support agents as well.
+Once validated, Kommunicate will establish the connection with your Google agent.
 
-**Helpcenter:** Create your knowledge base and deploy on a dedicated page to cater to generic and recurring customer queries. Your customers will also be able to directly access FAQs in chat.
+#### Step 3: Deploy the Chat Widget
 
-**Mailbox:** A simple and powerful team inbox for ticketing, managing, receiving and replying to all your customer support emails. 
+Navigate to Integrations -> Universal Plugins for Websites, copy the installation code, and add it to your website.
 
-**Integrations:** Easily move data between Kommunicate and your other favorite apps. Integrate your favorite CRM, knowledge base software and other apps.
+Your Google CX Agent Studio agent is now available through the Kommunicate chat widget.
 
-**Conversation Routing:** Select routing rules for incoming conversations for both your agents and bots. Choose between automatic assignments or to notify all.
+![Google CX deploy chat widget](images/google-cx-deploy-chat-widget.png)
 
-**Smart Rich Messaging:** Leverage rich messages using buttons, cards, carousels, forms or lists to provide an exquisite support chat experience to your customers.
+## Google Gemini Integration
 
-**Quick Replies:** Quickly respond to generic user queries using Quick Replies. Easily create and manage templated messages from your dashboard.
+Kommunicate's Google Gemini integration enables businesses and developers to build, deploy, and manage AI-powered customer support agents across websites and digital channels. Use the latest AI models from Google Gemini.
 
-### Example :
+### Ways to Connect Google Gemini with Kommunicate
 
-https://jsfiddle.net/Kommunicate_Support/abkrsfcz/29/
+You can create an Google Gemini-powered AI agent in Kommunicate using either of the following methods:
+
+#### Integration via Kommunicate
+
+Use Kommunicate's managed Google Gemini integration and select your preferred Gemini model directly from the platform.
+
+#### Integration via Google Gemini API Key
+
+Connect your own Google Gemini account by providing a Gemini API key and configuring the AI agent within Kommunicate.
+
+### Setup Instructions
+
+#### Step 1: Create an AI Agent:
+
+After signing up for Kommunicate, navigate to Agent Integrations and create a new AI agent using Kompose AI Agent Builder or select Gemini integration.
+
+![Google Gemini create AI agent](images/google-gemini-create-ai-agent.png)
+
+#### Step 2: Choose Your Google Gemini Integration Method
+
+Select how you would like to connect Google Gemini to your AI agent:
+
+- Integration via Kommunicate - Choose a Google Gemini model directly from Kommunicate and start building your AI agent.
+- Integration via API Key - Connect your Google Gemini account by entering your OpenAI API key and configuring the agent with your preferred model and settings.
+
+Once configured, save the settings and begin training your AI agent with your website content, documents, or help center articles.
+
+![Google Gemini configure integration](images/google-gemini-configure-integration.png)
+
+#### Step 3: Go to Integrations. Select Universal Plugins for Websites. Copy the JavaScript and add it to your website.
+
+![Google Gemini deploy website](images/google-gemini-deploy-website.png)
+
+## Anthropic Integration
+
+Kommunicate's Anthropic integration enables businesses and developers to build, deploy, and manage AI-powered customer support agents across websites and digital channels. Use the latest AI models from Anthropic and resolve customer support queries accurately and instantly.
+
+### Ways to Connect Anthropic with Kommunicate
+
+You can create an Anthropic-powered AI agent in Kommunicate using either of the following methods:
+
+#### Integration via Kommunicate
+
+Use Kommunicate's managed Anthropic integration and select your preferred Anthropic model directly from the platform.
+
+#### Integration via Google Gemini API Key
+
+Connect your own Anthropic account by providing an Anthropic API key and configuring the AI agent within Kommunicate.
+
+### Setup Instructions
+
+#### Step 1: Create an AI Agent:
+
+After signing up for Kommunicate, navigate to Agent Integrations and create a new AI agent using Kompose AI Agent Builder or select Anthropic integration.
+
+![Anthropic create AI agent](images/anthropic-create-ai-agent.png)
+
+#### Step 2: Choose Your Anthropic Integration Method
+
+Select how you would like to connect Anthropic to your AI agent:
+
+- Integration via Kommunicate - Choose an Anthropic model directly from Kommunicate and start building your AI agent.
+- Integration via API Key - Connect your Antropic account by entering your OpenAI API key and configuring the agent with your preferred model and settings.
+
+Once configured, save the settings and begin training your AI agent with your website content, documents, or help center articles.
+
+![Anthropic configure integration](images/anthropic-configure-integration.png)
+
+#### Step 3: Go to Integrations. Select Universal Plugins for Websites. Copy the JavaScript and add it to your website.
+
+![Anthropic deploy website](images/anthropic-deploy-website.png)
 
 ## Getting Started :
 
-Create your account by [signing](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to [Settings -> Install](https://dashboard.kommunicate.io/settings/install) section and copy the script.
+Create your account by [signing up](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web) for Kommunicate. If you already have a Kommunicate account, log in to your account and go to [Settings -> Install](https://dashboard.kommunicate.io/settings/install) section and copy the script.
 
 Or
 
-You can copy the below script and replace the required parameters manually. Note: You will get your <APP_ID> in the [Install](https://dashboard.kommunicate.io/settings/install) section. 
+You can copy the below script and replace the required parameters manually. Note: You will get your `<APP_ID>` in the [Install](https://dashboard.kommunicate.io/settings/install) section.
 
-
-```
+```html
 <script type="text/javascript">
-    (function(d, m){
+  (function(d, m){
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {
-      "appId": "<APP_ID>",  
+    var kommunicateSettings = {
+      "appId": "<APP_ID>",
       "automaticChatOpenOnNavigation": true,
       "popupWidget": true
       /*
       "onInit": function (){
         // paste your code here
       },
-        "botIds":["<BOT_ID_1>","<BOT_ID_2>"]
+      "botIds":["<BOT_ID_1>","<BOT_ID_2>"]
       */
-      };
+    };
 
     /*----------------- Kommunicate settings end ------------------*/
 
-     var s = document.createElement("script");
-      s.type = "text/javascript";
-      s.async = true;
-      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
-      var h = document.getElementsByTagName("head")[0];
-      h.appendChild(s);
-      window.kommunicate = m;
-      m._globals = kommunicateSettings;
-    })(document, window.kommunicate || {});
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+    var h = document.getElementsByTagName("head")[0];
+    h.appendChild(s);
+    window.kommunicate = m;
+    m._globals = kommunicateSettings;
+  })(document, window.kommunicate || {});
 </script>
 ```
 
 ## Technical Documentation:
 
-Please check out the detailed [documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation and customizations.
+Please check out the [detailed documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation and customizations.
