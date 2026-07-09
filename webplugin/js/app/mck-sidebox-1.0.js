@@ -5745,6 +5745,17 @@ const firstVisibleMsg = {
                 );
             };
 
+            _this.updateMessageMetadataForVoiceInput = function (messagePxy, metadata) {
+                var resolvedMetadata = metadata || {};
+                if (resolvedMetadata.KM_INPUT_TYPE || !messagePxy.message || messagePxy.fileMeta) {
+                    return resolvedMetadata;
+                }
+                if (typeof mckVoice !== 'undefined' && mckVoice && mckVoice.isVoiceModeActive()) {
+                    resolvedMetadata.KM_INPUT_TYPE = 'VOICE';
+                }
+                return resolvedMetadata;
+            };
+
             _this.submitMessage = function (messagePxy, optns) {
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
@@ -5766,6 +5777,7 @@ const firstVisibleMsg = {
                     "#mck-message-cell .mck-message-inner div[name='message']." + randomId
                 );
 
+                metadata = _this.updateMessageMetadataForVoiceInput(messagePxy, metadata);
                 $applozic.extend(metadata, {
                     KM_CHAT_CONTEXT: JSON.stringify(_this.getChatContext(messagePxy)),
                 });
