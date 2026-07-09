@@ -158,55 +158,58 @@ class KMLabel {
                 node.setAttribute('aria-label', value);
             });
         };
+        var churnNoticeTemplate = [
+            '{{#tokens}}',
+            '{{#isHeadline}}<strong class="km-churn-message-highlight">{{text}}</strong>{{/isHeadline}}',
+            '{{#isLabel}}<strong class="km-churn-message-label">{{text}}</strong>{{/isLabel}}',
+            '{{#isText}}{{text}}{{/isText}}',
+            '{{/tokens}}',
+        ].join('');
         var renderChurnNotice = function () {
             var node = document.getElementById('km-churn-notice');
-            var value = resolveLabel('account.churned.notice');
-            if (!node || value === null || typeof value === 'undefined') {
+            if (!node) {
                 return;
             }
-            var fallbackTemplate =
-                'Messaging via {{deactivateLink}} is disabled for this account. To enable, please contact the admin of the website. If you are the admin, get in touch at {{supportEmailLink}}';
-            var template =
-                typeof value === 'string' &&
-                value.indexOf('{{deactivateLink}}') !== -1 &&
-                value.indexOf('{{supportEmailLink}}') !== -1
-                    ? value
-                    : fallbackTemplate;
-            var createDeactivateLink = function () {
-                var link = document.createElement('a');
-                link.id = 'deactivate-link';
-                link.href = 'https://www.kommunicate.io/poweredby';
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.appendChild(document.createTextNode('Kommunicate chatbot'));
-                return link;
-            };
-            var createSupportEmailLink = function () {
-                var link = document.createElement('a');
-                link.href = 'mailto:support@kommunicate.io';
-                link.appendChild(document.createTextNode('support@kommunicate.io'));
-                return link;
-            };
-            var appendText = function (text) {
-                if (text) {
-                    node.appendChild(document.createTextNode(text));
-                }
-            };
-            var tokenRegex = /\{\{(deactivateLink|supportEmailLink)\}\}/g;
+            var value = resolveLabel('account.churned.notice');
+            var noticeText = (value || node.textContent).trim();
+            if (!noticeText) {
+                return;
+            }
+            var sentenceMatch = noticeText.match(/^(.+?[.!?۔。！？])(\s*.*)?$/);
+            var firstSentence = sentenceMatch ? sentenceMatch[1] : noticeText;
+            var remainingText = sentenceMatch ? sentenceMatch[2] || '' : '';
+            var labelRegex = /(^|[.!?۔。！？]\s+)([^.!?۔。！？:：\n][^:：\n]*[:：])/g;
             var cursor = 0;
             var match;
+            var tokens = [
+                {
+                    isHeadline: true,
+                    text: firstSentence,
+                },
+            ];
+            var appendToken = function (text, type) {
+                if (!text) {
+                    return;
+                }
+                tokens.push({
+                    isHeadline: false,
+                    isLabel: type === 'label',
+                    isText: type === 'text',
+                    text: text,
+                });
+            };
 
-            node.textContent = '';
-            while ((match = tokenRegex.exec(template)) !== null) {
-                appendText(template.slice(cursor, match.index));
-                node.appendChild(
-                    match[1] === 'deactivateLink'
-                        ? createDeactivateLink()
-                        : createSupportEmailLink()
-                );
-                cursor = tokenRegex.lastIndex;
+            remainingText = remainingText.replace(/^\s+/, '');
+            while ((match = labelRegex.exec(remainingText)) !== null) {
+                appendToken(remainingText.slice(cursor, match.index), 'text');
+                appendToken(match[1], 'text');
+                appendToken(match[2], 'label');
+                cursor = match.index + match[0].length;
             }
-            appendText(template.slice(cursor));
+            appendToken(remainingText.slice(cursor), 'text');
+            node.innerHTML = Mustache.to_html(churnNoticeTemplate, {
+                tokens: tokens,
+            });
         };
 
         [{ selector: '#mck-conversation-title', path: 'conversations.title' }].forEach(function (
