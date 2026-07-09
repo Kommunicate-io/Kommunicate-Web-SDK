@@ -5739,6 +5739,7 @@ const firstVisibleMsg = {
                     resolvedMetadata.KM_INPUT_TYPE ||
                     typeof mckVoice === 'undefined' ||
                     !mckVoice ||
+                    typeof mckVoice.isVoiceModeActive !== 'function' ||
                     !mckVoice.isVoiceModeActive() ||
                     !messagePxy.message ||
                     messagePxy.fileMeta
