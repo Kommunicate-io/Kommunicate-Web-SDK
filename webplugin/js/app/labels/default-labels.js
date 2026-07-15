@@ -255,7 +255,7 @@ class KMLabel {
                 path: 'conversation.options',
             },
             { selector: '#close', path: 'reply.preview.close' },
-            { selector: '.km-faqsearch-clear', path: 'search.clear' },
+            { selector: '.km-faqsearch-clear-action', path: 'search.clear' },
             { selector: '#km-empty-faq-search-clear', path: 'search.clear' },
             { selector: '.voiceNote', path: 'micOptions.dropup.VOICE_NOTE_TRIGGER' },
             { selector: '.voiceInput', path: 'micOptions.dropup.VOICE_INPUT_TRIGGER' },

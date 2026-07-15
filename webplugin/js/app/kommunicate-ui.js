@@ -28,7 +28,7 @@ function getFaqClearButton() {
         return null;
     }
     return (
-        document.querySelector('.km-faqsearch-clear') ||
+        document.querySelector('.km-faqsearch-clear-action') ||
         document.querySelector('.km-faqsearch-icon__clear')
     );
 }
@@ -672,7 +672,7 @@ KommunicateUI = {
         });
 
         var $faqSearchIcon = $applozic('.km-faqsearch-icon');
-        var $faqClearIcon = $applozic('.km-faqsearch-clear');
+        var $faqClearIcon = $applozic('.km-faqsearch-clear-action');
 
         function setFaqSearchIconState(hasValue) {
             hasValue
@@ -726,6 +726,7 @@ KommunicateUI = {
         KommunicateUI.toggleWelcomeFaqInput();
         KommunicateUI.toggleWelcomeAskAnything();
         KommunicateUI.renderWelcomeSuggestedQuestions();
+        KommunicateUI.updateWelcomeAskAnythingButtonState();
 
         if (welcomeFaqSearchInput) {
             $applozic(welcomeFaqSearchInput).on(
@@ -761,6 +762,9 @@ KommunicateUI = {
             });
 
         if (welcomeAskAnythingInput) {
+            $applozic(welcomeAskAnythingInput).on('input', function () {
+                KommunicateUI.updateWelcomeAskAnythingButtonState();
+            });
             $applozic(welcomeAskAnythingInput).on('keyup', function (event) {
                 if (!event || event.which !== 13) {
                     return;
@@ -793,7 +797,7 @@ KommunicateUI = {
             }, 500)
         );
 
-        $applozic(d).on('click', '.km-faqsearch-clear', function (evt) {
+        $applozic(d).on('click', '.km-faqsearch-clear-action', function (evt) {
             evt.stopPropagation();
             $applozic('#km-faq-search-input').val('');
             setFaqSearchIconState(false);
@@ -1333,6 +1337,15 @@ KommunicateUI = {
             ? kommunicateCommons.show(faqInputSelector)
             : kommunicateCommons.hide(faqInputSelector);
     },
+    updateWelcomeAskAnythingButtonState: function () {
+        var askAnythingInput = document.getElementById('km-welcome-ask-anything-input');
+        var askAnythingButton = document.getElementById('km-welcome-ask-anything-submit');
+        var hasQuery = !!((askAnythingInput && askAnythingInput.value) || '').trim();
+
+        if (askAnythingButton) {
+            askAnythingButton.disabled = !hasQuery;
+        }
+    },
     dispatchWelcomePrompt: function (groupId, query) {
         var normalizedGroupId = String(groupId);
         $applozic.fn.applozic('sendGroupMessage', {
@@ -1414,7 +1427,7 @@ KommunicateUI = {
             KommunicateUI.activateTypingField();
         };
         completionTimeoutId = setTimeout(finalizeWelcomePromptSubmission, 5000);
-        Kommunicate.startConversation({}, finalizeWelcomePromptSubmission);
+        Kommunicate.startConversation({ skipBotEvent: true }, finalizeWelcomePromptSubmission);
         return true;
     },
     renderWelcomeSuggestedQuestions: function () {
@@ -1461,6 +1474,7 @@ KommunicateUI = {
             if (askAnythingButton) {
                 askAnythingButton.disabled = false;
             }
+            KommunicateUI.updateWelcomeAskAnythingButtonState();
         });
     },
 
