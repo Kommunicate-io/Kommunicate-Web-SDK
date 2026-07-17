@@ -308,7 +308,7 @@ class KMLabel {
                 path: 'conversation.options',
             },
             { selector: '#close', path: 'reply.preview.close' },
-            { selector: '.km-faqsearch-clear', path: 'search.clear' },
+            { selector: '.km-faqsearch-clear-action', path: 'search.clear' },
             { selector: '#km-empty-faq-search-clear', path: 'search.clear' },
             { selector: '.voiceNote', path: 'micOptions.dropup.VOICE_NOTE_TRIGGER' },
             { selector: '.voiceInput', path: 'micOptions.dropup.VOICE_INPUT_TRIGGER' },
@@ -459,6 +459,15 @@ class KMLabel {
                 MCK_LABELS['search.faq'] || kmWelcomeSearch.placeholder || 'Search in FAQs...';
             kmWelcomeSearch.placeholder = searchLabel;
             kmWelcomeSearch.setAttribute('aria-label', searchLabel);
+        }
+        var kmWelcomeAskAnything = document.getElementById('km-welcome-ask-anything-input');
+        if (kmWelcomeAskAnything) {
+            var askAnythingLabel =
+                MCK_LABELS['search.askAnything'] ||
+                kmWelcomeAskAnything.placeholder ||
+                'Ask me anything';
+            kmWelcomeAskAnything.placeholder = askAnythingLabel;
+            kmWelcomeAskAnything.setAttribute('aria-label', askAnythingLabel);
         }
         KommunicateUI.updateWelcomeCtaLabel && KommunicateUI.updateWelcomeCtaLabel();
     }

@@ -529,7 +529,7 @@
                                     />
                                     <button
                                         type="button"
-                                        class="km-faqsearch-clear n-vis"
+                                        class="km-faqsearch-clear km-faqsearch-clear-action n-vis"
                                         aria-label="Clear search"
                                     >
                                         <svg
@@ -606,7 +606,10 @@
                                         id="km-empty-conversation-title"
                                     ></h3>
                                 </div>
-                                <div class="km-empty-conversation-card__search">
+                                <div
+                                    id="km-empty-conversation-card__search"
+                                    class="km-empty-conversation-card__search"
+                                >
                                     <div
                                         class="km-empty-conversation-card__search-field km-contact-input-container km-faq-search-shell km-custom-widget-border-color"
                                     >
@@ -637,7 +640,7 @@
                                         <button
                                             type="button"
                                             id="km-empty-faq-search-clear"
-                                            class="km-faqsearch-clear n-vis"
+                                            class="km-faqsearch-clear km-faqsearch-clear-action n-vis"
                                             aria-label="Clear search"
                                         >
                                             <svg
@@ -655,10 +658,51 @@
                                 </div>
                             </div>
                             <div class="km-empty-conversation-card__body">
-                                <p
-                                    class="km-empty-conversation-card__info"
-                                    id="km-empty-conversation-subtitle"
-                                ></p>
+                                <div
+                                    id="km-welcome-ask-anything-wrapper"
+                                    class="km-faqsearch-field km-welcome-ask-anything-wrapper n-vis"
+                                >
+                                    <div class="km-contact-input-container km-faq-search-shell">
+                                        <input
+                                            id="km-welcome-ask-anything-input"
+                                            class="km-empty-conversation-card__search-input km-faqsearch-input km-welcome-ask-anything-input"
+                                            type="text"
+                                            placeholder="Ask me anything"
+                                            aria-label="Ask me anything"
+                                            autocomplete="off"
+                                        />
+                                        <div class="km-welcome-ask-anything-submit-wrap">
+                                            <button
+                                                type="button"
+                                                id="km-welcome-ask-anything-submit"
+                                                class="km-faqsearch-clear km-welcome-ask-anything-submit"
+                                                title="Send Message"
+                                                aria-label="Send Message"
+                                            >
+                                                <span class="mck-icon-send">
+                                                    <svg
+                                                        focusable="false"
+                                                        aria-hidden="true"
+                                                        width="15"
+                                                        height="15"
+                                                        viewBox="0 0 15 15"
+                                                    >
+                                                        <use
+                                                            xlink:href="#icon-39"
+                                                            href="#icon-39"
+                                                        ></use>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="km-welcome-faq-grid-container">
+                                    <div
+                                        id="km-welcome-faq-grid"
+                                        class="km-welcome-faq-grid n-vis"
+                                    ></div>
+                                </div>
                                 <div class="km-empty-conversation-card__cta-wrap">
                                     <div
                                         id="km-empty-conversation-actions"

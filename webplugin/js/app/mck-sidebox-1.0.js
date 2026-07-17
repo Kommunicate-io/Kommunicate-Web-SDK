@@ -124,6 +124,19 @@ const firstVisibleMsg = {
         messageType: 5,
         type: 0,
     };
+    function getAnswerFeedbackSetting(appOptions, botDetails) {
+        var chatWidgetSettings = appOptions.appSettings && appOptions.appSettings.chatWidget;
+        var widgetOverride =
+            typeof appOptions.answerFeedback === 'boolean'
+                ? appOptions.answerFeedback
+                : chatWidgetSettings && typeof chatWidgetSettings.answerFeedback === 'boolean'
+                ? chatWidgetSettings.answerFeedback
+                : null;
+
+        return typeof widgetOverride === 'boolean'
+            ? widgetOverride
+            : !!(botDetails && botDetails.answerFeedback);
+    }
     function toggleSingleThreadedClass(shouldApply) {
         var sidebox = document.getElementById('mck-sidebox');
         if (!sidebox || !sidebox.classList) {
@@ -7555,6 +7568,7 @@ const firstVisibleMsg = {
             _this.processMessageList = function (data, scroll, isValidated, append, allowReload) {
                 // allowReload parameter is using to reload chat widget when the socket connect
                 var showMoreDateTime;
+                var shouldFlushPendingWelcomePrompt = false;
                 if (data && (data.message || data.message === 0)) {
                     var hasMessages = Array.isArray(data.message)
                         ? data.message.length > 0
@@ -7624,6 +7638,9 @@ const firstVisibleMsg = {
                                 allowReload,
                                 true
                             );
+                            !shouldFlushPendingWelcomePrompt &&
+                                KommunicateUI.shouldFlushPendingWelcomePrompt(tabId, message) &&
+                                (shouldFlushPendingWelcomePrompt = true);
                             HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
 
                             showMoreDateTime = message.createdAtTime;
@@ -7631,6 +7648,7 @@ const firstVisibleMsg = {
                         }
                     });
                 }
+                shouldFlushPendingWelcomePrompt && KommunicateUI.flushPendingWelcomePrompt(tabId);
                 $mck_tab_option_panel.data('datetime', showMoreDateTime);
                 if (!scroll && $scrollToDiv.length > 0) {
                     $mck_msg_inner.scrollTop(
@@ -8827,6 +8845,9 @@ const firstVisibleMsg = {
                         target: '_blank',
                     });
                 }
+                !isUserMsg &&
+                    KommunicateUI.shouldFlushPendingWelcomePrompt(msg.groupId, msg) &&
+                    KommunicateUI.flushPendingWelcomePrompt(msg.groupId);
 
                 if (typeof callback == 'function') {
                     callback();
@@ -10877,7 +10898,10 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = res?.generativeResponse || false;
                         CURRENT_GROUP_DATA.BOT_DETAILS_LANGUAGE_CODE = res?.languageCode || '';
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.answerFeedback = getAnswerFeedbackSetting(
+                            appOptions,
+                            res
+                        );
                         CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
