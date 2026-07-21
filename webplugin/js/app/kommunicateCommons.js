@@ -6,6 +6,7 @@ function KommunicateCommons() {
     var TRIAL_PERIOD;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    var CURRENT_WEBSITE_URL_METADATA_KEY = 'currentWebsiteUrl';
     var iframeResizeListeners = typeof WeakMap === 'function' ? new WeakMap() : null;
     KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
@@ -448,7 +449,44 @@ function KommunicateCommons() {
         dialog.style.display = 'none';
     };
 
+    _this.getCurrentWebsiteUrl = function () {
+        try {
+            var parentUrl = parent.window && parent.window.location && parent.window.location.href;
+            if (parentUrl) {
+                return parentUrl;
+            }
+
+            var kommunicateIframe =
+                parent.document && parent.document.getElementById('kommunicate-widget-iframe');
+            if (kommunicateIframe) {
+                return kommunicateIframe.getAttribute('data-url') || '';
+            }
+        } catch (e) {
+            return window.location && window.location.href;
+        }
+
+        return window.location && window.location.href;
+    };
+
+    _this.addCurrentWebsiteUrlToMessageMetadata = function (messagePxy) {
+        if (!messagePxy) {
+            return;
+        }
+
+        var currentWebsiteUrl = _this.getCurrentWebsiteUrl();
+        if (!currentWebsiteUrl) {
+            return;
+        }
+
+        if (!messagePxy.metadata) {
+            messagePxy.metadata = {};
+        }
+        messagePxy.metadata[CURRENT_WEBSITE_URL_METADATA_KEY] = currentWebsiteUrl;
+    };
+
     _this.setMessagePxyRecipient = function (messagePxy) {
+        _this.addCurrentWebsiteUrlToMessageMetadata(messagePxy);
+
         if (typeof window.$applozic !== 'function') {
             return;
         }
