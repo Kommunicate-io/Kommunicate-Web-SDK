@@ -51,6 +51,9 @@ class GenAiService {
         if (!stream.currentElement) {
             $textMessage.append(stream.textMsgDiv);
         }
+        if (stream.currentIndex === 0) {
+            console.log('BPOL:: first_token_ui', Date.now(), msg.key);
+        }
     };
 
     getStreamState = (streamKey) => {

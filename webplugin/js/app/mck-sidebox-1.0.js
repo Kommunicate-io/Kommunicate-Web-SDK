@@ -5222,6 +5222,9 @@ const firstVisibleMsg = {
                         }
                     }
                 });
+                $mck_msg_sbmt.on('click', function () {
+                    console.log('BPOL:: send_button_pressed', Date.now());
+                });
                 $mck_msg_form.submit(function () {
                     if (
                         $mck_autosuggest_search_input &&
@@ -5803,6 +5806,7 @@ const firstVisibleMsg = {
                     $mck_text_box.data('triggerNextIntent', null);
                 }
                 messagePxy.metadata = metadata;
+                console.log('BPOL:: send_api_call', Date.now(), messagePxy.key);
                 window.Applozic.ALApiService.ajax({
                     type: 'POST',
                     url: MCK_BASE_URL + MESSAGE_SEND_URL,
@@ -8654,6 +8658,9 @@ const firstVisibleMsg = {
                         const $normalTextMsg = $applozic(`<div class="${className}" />`);
                         $normalTextMsg[0].innerHTML = emoji_template;
                         $textMessage.append($normalTextMsg);
+                        if (msg.metadata && msg.metadata.PLATFORM_MESSAGE_ID && msg.message) {
+                            console.log('BPOL:: whole_message_ui', Date.now(), msg.key);
+                        }
                         // Ensure all links open in a new tab
                         $normalTextMsg.find('a').attr('target', '_blank');
                     }

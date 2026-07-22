@@ -547,6 +547,23 @@ window['APPLOZIC'] ||
                             messageType === 'MESSAGE_RECEIVED'
                         ) {
                             var messageFeed = apzMessageUtils.getMessageFeed(resp.message);
+                            if (resp.message.tokenMessage && Number(resp.message.index) === 0) {
+                                console.log(
+                                    'BPOL:: first_token_received',
+                                    Date.now(),
+                                    resp.message.key
+                                );
+                            } else if (
+                                resp.message.metadata &&
+                                resp.message.metadata.PLATFORM_MESSAGE_ID &&
+                                resp.message.message
+                            ) {
+                                console.log(
+                                    'BPOL:: whole_message_received',
+                                    Date.now(),
+                                    resp.message.key
+                                );
+                            }
                             events.onMessageReceived({
                                 message: messageFeed,
                             });
