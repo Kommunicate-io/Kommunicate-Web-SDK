@@ -224,7 +224,7 @@ Kommunicate.markup = {
     getQuickRepliesTemplate: function () {
         return `
             {{#payload}}
-                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}" style="{{buttonStyle}}">{{title}}</button>
             {{/payload}}
             `;
     },
@@ -632,6 +632,38 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) 
     var payload = JSON.parse(options.payload);
     var buttonClass;
     var hidePostCTA = kommunicate._globals.hidePostCTA;
+    var followUpMessageStyle = options.KM_FOLLOWUP_MESSAGE_STYLE;
+    var buttonStyle = '';
+
+    if (typeof followUpMessageStyle === 'string') {
+        try {
+            followUpMessageStyle = JSON.parse(followUpMessageStyle);
+        } catch (e) {
+            followUpMessageStyle = null;
+        }
+    }
+
+    if (followUpMessageStyle) {
+        buttonStyle = ['color', 'fontStyle', 'fontWeight', 'font-style', 'font-weight']
+            .reduce(function (styles, key) {
+                var value = followUpMessageStyle[key];
+                if (!value) {
+                    return styles;
+                }
+
+                var cssKey =
+                    key.indexOf('-') !== -1
+                        ? key
+                        : key.replace(/[A-Z]/g, function (match) {
+                              return '-' + match.toLowerCase();
+                          });
+
+                styles.push(cssKey + ':' + value);
+                return styles;
+            }, [])
+            .join(';');
+    }
+
     switch (template) {
         case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
             buttonClass = 'km-quick-rpy-btn km-custom-widget-border-color ';
@@ -654,6 +686,7 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) 
                 ? JSON.stringify(payload[i].replyMetadata)
                 : payload[i].replyMetadata;
         payload[i].buttonClass = buttonClass;
+        payload[i].buttonStyle = buttonStyle;
         payload[i].hidePostCTA = hidePostCTA;
     }
     return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {
