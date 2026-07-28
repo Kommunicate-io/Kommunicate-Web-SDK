@@ -6904,6 +6904,32 @@ const firstVisibleMsg = {
                 return msg.message.replace(/<[^>]*>/g, '').trim();
             };
 
+            function getFollowUpMessageStyleExpr(metadata) {
+                var followUpMessageStyle = metadata && metadata.KM_FOLLOWUP_MESSAGE_STYLE;
+                if (!followUpMessageStyle) {
+                    return '';
+                }
+
+                return ['color', 'fontStyle', 'fontWeight', 'font-style', 'font-weight']
+                    .reduce(function (styles, key) {
+                        var value = followUpMessageStyle[key];
+                        if (!value) {
+                            return styles;
+                        }
+
+                        var cssKey =
+                            key.indexOf('-') !== -1
+                                ? key
+                                : key.replace(/[A-Z]/g, function (match) {
+                                      return '-' + match.toLowerCase();
+                                  });
+
+                        styles.push(cssKey + ':' + value);
+                        return styles;
+                    }, [])
+                    .join(';');
+            }
+
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
@@ -6924,7 +6950,7 @@ const firstVisibleMsg = {
                 '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
                 '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
                 '</div>' +
-                '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1">' +
+                '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1" style="${followUpMessageStyleExpr}">' +
                 '<div class="mck-msg-feedback-sticker ${showFeedbackSticker}">{{html feedbackStickerExpr}}</div>' +
                 '</div>' +
                 '</div>' +
@@ -8250,6 +8276,7 @@ const firstVisibleMsg = {
                         downloadMediaUrlExpr: alFileService.getFileAttachment(msg),
                         msgClassExpr: messageClass,
                         msgBoxColor: msgBoxColorStyle,
+                        followUpMessageStyleExpr: getFollowUpMessageStyleExpr(msg.metadata),
                         progressMeterClassExpr: progressMeterClass,
                         attachmentBoxExpr: attachmentBox,
                         msgExpr: frwdMsgExpr,
