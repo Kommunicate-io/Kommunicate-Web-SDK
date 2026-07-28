@@ -6910,6 +6910,14 @@ const firstVisibleMsg = {
                     return '';
                 }
 
+                if (typeof followUpMessageStyle === 'string') {
+                    try {
+                        followUpMessageStyle = JSON.parse(followUpMessageStyle);
+                    } catch (e) {
+                        return '';
+                    }
+                }
+
                 return ['color', 'fontStyle', 'fontWeight', 'font-style', 'font-weight']
                     .reduce(function (styles, key) {
                         var value = followUpMessageStyle[key];
