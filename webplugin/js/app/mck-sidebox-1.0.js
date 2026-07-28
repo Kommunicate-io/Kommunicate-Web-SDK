@@ -6904,35 +6904,101 @@ const firstVisibleMsg = {
                 return msg.message.replace(/<[^>]*>/g, '').trim();
             };
 
-            function getFollowUpMessageStyleExpr(metadata) {
-                var followUpMessageStyle = metadata && metadata.KM_FOLLOWUP_MESSAGE_STYLE;
-                if (!followUpMessageStyle) {
-                    return '';
-                }
-
+            function parseFollowUpMessageStyle(followUpMessageStyle) {
                 if (typeof followUpMessageStyle === 'string') {
                     try {
                         followUpMessageStyle = JSON.parse(followUpMessageStyle);
                     } catch (e) {
-                        return '';
+                        return null;
                     }
                 }
 
-                return ['color', 'fontStyle', 'fontWeight', 'font-style', 'font-weight']
-                    .reduce(function (styles, key) {
-                        var value = followUpMessageStyle[key];
-                        if (!value) {
-                            return styles;
+                return kommunicateCommons.isObject(followUpMessageStyle)
+                    ? followUpMessageStyle
+                    : null;
+            }
+
+            function sanitizeFollowUpColorValue(value) {
+                if (typeof value !== 'string') {
+                    return '';
+                }
+
+                value = value.trim();
+
+                return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value)
+                    ? value
+                    : '';
+            }
+
+            function sanitizeFollowUpFontStyleValue(value) {
+                if (typeof value !== 'string') {
+                    return '';
+                }
+
+                value = value.trim().toLowerCase();
+
+                return ['normal', 'italic', 'oblique'].indexOf(value) !== -1 ? value : '';
+            }
+
+            function sanitizeFollowUpFontWeightValue(value) {
+                if (typeof value !== 'string' && typeof value !== 'number') {
+                    return '';
+                }
+
+                value = String(value).trim().toLowerCase();
+
+                return /^(normal|bold|bolder|lighter|[1-9]00)$/.test(value) ? value : '';
+            }
+
+            function getFollowUpStyleValue(followUpMessageStyle, keys, sanitizer) {
+                for (var i = 0; i < keys.length; i++) {
+                    var sanitizedValue = sanitizer(followUpMessageStyle[keys[i]]);
+                    if (sanitizedValue) {
+                        return sanitizedValue;
+                    }
+                }
+
+                return '';
+            }
+
+            function getFollowUpMessageStyleExpr(metadata) {
+                var followUpMessageStyle = parseFollowUpMessageStyle(
+                    metadata && metadata.KM_FOLLOWUP_MESSAGE_STYLE
+                );
+                var styleConfig = [
+                    {
+                        keys: ['color'],
+                        cssKey: 'color',
+                        sanitizer: sanitizeFollowUpColorValue,
+                    },
+                    {
+                        keys: ['fontStyle', 'font-style'],
+                        cssKey: 'font-style',
+                        sanitizer: sanitizeFollowUpFontStyleValue,
+                    },
+                    {
+                        keys: ['fontWeight', 'font-weight'],
+                        cssKey: 'font-weight',
+                        sanitizer: sanitizeFollowUpFontWeightValue,
+                    },
+                ];
+
+                if (!followUpMessageStyle) {
+                    return '';
+                }
+
+                return styleConfig
+                    .reduce(function (styles, styleOption) {
+                        var value = getFollowUpStyleValue(
+                            followUpMessageStyle,
+                            styleOption.keys,
+                            styleOption.sanitizer
+                        );
+
+                        if (value) {
+                            styles.push(styleOption.cssKey + ':' + value);
                         }
 
-                        var cssKey =
-                            key.indexOf('-') !== -1
-                                ? key
-                                : key.replace(/[A-Z]/g, function (match) {
-                                      return '-' + match.toLowerCase();
-                                  });
-
-                        styles.push(cssKey + ':' + value);
                         return styles;
                     }, [])
                     .join(';');

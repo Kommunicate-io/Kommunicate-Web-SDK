@@ -229,7 +229,7 @@ Kommunicate.markup = {
             `;
     },
     getGenericSuggestedReplyButton: function () {
-        return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{name}}</button>`;
+        return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}" style="{{buttonStyle}}">{{name}}</button>`;
     },
     getPassangerDetail: function (options) {
         if (!options.sessionId) {
@@ -628,13 +628,7 @@ Kommunicate.markup.getFormMarkup = function (options) {
         return formMarkup;
     }
 };
-Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) {
-    var payload = JSON.parse(options.payload);
-    var buttonClass;
-    var hidePostCTA = kommunicate._globals.hidePostCTA;
-    var followUpMessageStyle = options.KM_FOLLOWUP_MESSAGE_STYLE;
-    var buttonStyle = '';
-
+var parseFollowUpMessageStyle = function (followUpMessageStyle) {
     if (typeof followUpMessageStyle === 'string') {
         try {
             followUpMessageStyle = JSON.parse(followUpMessageStyle);
@@ -643,26 +637,105 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) 
         }
     }
 
-    if (followUpMessageStyle) {
-        buttonStyle = ['color', 'fontStyle', 'fontWeight', 'font-style', 'font-weight']
-            .reduce(function (styles, key) {
-                var value = followUpMessageStyle[key];
-                if (!value) {
-                    return styles;
-                }
+    return kommunicateCommons.isObject(followUpMessageStyle) ? followUpMessageStyle : null;
+};
 
-                var cssKey =
-                    key.indexOf('-') !== -1
-                        ? key
-                        : key.replace(/[A-Z]/g, function (match) {
-                              return '-' + match.toLowerCase();
-                          });
-
-                styles.push(cssKey + ':' + value);
-                return styles;
-            }, [])
-            .join(';');
+var sanitizeFollowUpColorValue = function (value) {
+    if (typeof value !== 'string') {
+        return '';
     }
+
+    value = value.trim();
+
+    return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value) ? value : '';
+};
+
+var sanitizeFollowUpFontStyleValue = function (value) {
+    if (typeof value !== 'string') {
+        return '';
+    }
+
+    value = value.trim().toLowerCase();
+
+    return ['normal', 'italic', 'oblique'].indexOf(value) !== -1 ? value : '';
+};
+
+var sanitizeFollowUpFontWeightValue = function (value) {
+    if (typeof value !== 'string' && typeof value !== 'number') {
+        return '';
+    }
+
+    value = String(value).trim().toLowerCase();
+
+    return /^(normal|bold|bolder|lighter|[1-9]00)$/.test(value) ? value : '';
+};
+
+var getFollowUpStyleValue = function (followUpMessageStyle, keys, sanitizer) {
+    for (var i = 0; i < keys.length; i++) {
+        var sanitizedValue = sanitizer(followUpMessageStyle[keys[i]]);
+        if (sanitizedValue) {
+            return sanitizedValue;
+        }
+    }
+
+    return '';
+};
+
+var getFollowUpButtonStyle = function (followUpMessageStyle) {
+    followUpMessageStyle = parseFollowUpMessageStyle(followUpMessageStyle);
+    var colorValue;
+
+    if (!followUpMessageStyle) {
+        return '';
+    }
+
+    colorValue = getFollowUpStyleValue(followUpMessageStyle, ['color'], sanitizeFollowUpColorValue);
+
+    return [
+        {
+            cssKey: 'color',
+            value: colorValue,
+        },
+        {
+            cssKey: 'font-style',
+            value: getFollowUpStyleValue(
+                followUpMessageStyle,
+                ['fontStyle', 'font-style'],
+                sanitizeFollowUpFontStyleValue
+            ),
+        },
+        {
+            cssKey: 'font-weight',
+            value: getFollowUpStyleValue(
+                followUpMessageStyle,
+                ['fontWeight', 'font-weight'],
+                sanitizeFollowUpFontWeightValue
+            ),
+        },
+        {
+            cssKey: 'border-color',
+            value:
+                getFollowUpStyleValue(
+                    followUpMessageStyle,
+                    ['borderColor', 'border-color'],
+                    sanitizeFollowUpColorValue
+                ) || colorValue,
+        },
+    ]
+        .reduce(function (styles, styleOption) {
+            if (styleOption.value) {
+                styles.push(styleOption.cssKey + ':' + styleOption.value);
+            }
+
+            return styles;
+        }, [])
+        .join(';');
+};
+Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) {
+    var payload = JSON.parse(options.payload);
+    var buttonClass;
+    var hidePostCTA = kommunicate._globals.hidePostCTA;
+    var buttonStyle = getFollowUpButtonStyle(options.KM_FOLLOWUP_MESSAGE_STYLE);
 
     switch (template) {
         case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
@@ -1040,6 +1113,7 @@ Kommunicate.markup.getLinkTarget = function (buttonInfo) {
 Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     var buttonPayloadList = metadata.payload ? JSON.parse(metadata.payload) : [];
     var buttonContainerHtml = '<div class="km-cta-multi-button-container">';
+    var buttonStyle = getFollowUpButtonStyle(metadata.KM_FOLLOWUP_MESSAGE_STYLE);
     var buttonClass =
         ' km-custom-widget-border-color ' +
         (buttonPayloadList.length == 1
@@ -1076,6 +1150,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
                 }));
         } else if (singlePayload.type == 'quickReply' || singlePayload.type == 'suggestedReply') {
             singlePayload.buttonClass = 'km-quick-rpy-btn ' + buttonClass;
+            singlePayload.buttonStyle = buttonStyle;
             singlePayload.message = singlePayload.action.message || singlePayload.name;
             singlePayload.type == 'quickReply' &&
                 (singlePayload.hidePostCTA = kommunicate._globals.hidePostCTA);
