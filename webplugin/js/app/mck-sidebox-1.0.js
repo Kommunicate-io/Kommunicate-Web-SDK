@@ -6919,11 +6919,7 @@ const firstVisibleMsg = {
             }
 
             function sanitizeFollowUpColorValue(value) {
-                if (typeof value !== 'string') {
-                    return '';
-                }
-
-                value = value.trim();
+                value = String(value).trim();
 
                 return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value)
                     ? value
@@ -6931,20 +6927,12 @@ const firstVisibleMsg = {
             }
 
             function sanitizeFollowUpFontStyleValue(value) {
-                if (typeof value !== 'string') {
-                    return '';
-                }
-
-                value = value.trim().toLowerCase();
+                value = String(value).trim().toLowerCase();
 
                 return ['normal', 'italic', 'oblique'].indexOf(value) !== -1 ? value : '';
             }
 
             function sanitizeFollowUpFontWeightValue(value) {
-                if (typeof value !== 'string' && typeof value !== 'number') {
-                    return '';
-                }
-
                 value = String(value).trim().toLowerCase();
 
                 return /^(normal|bold|bolder|lighter|[1-9]00)$/.test(value) ? value : '';
@@ -7004,6 +6992,25 @@ const firstVisibleMsg = {
                     .join(';');
             }
 
+            function getFollowUpMessageBubbleStyleExpr(metadata) {
+                var followUpMessageStyle = parseFollowUpMessageStyle(
+                    metadata && metadata.KM_FOLLOWUP_MESSAGE_STYLE
+                );
+                var backgroundColor;
+
+                if (!followUpMessageStyle) {
+                    return '';
+                }
+
+                backgroundColor = getFollowUpStyleValue(
+                    followUpMessageStyle,
+                    ['backgroundColor', 'background-color'],
+                    sanitizeFollowUpColorValue
+                );
+
+                return backgroundColor ? 'background-color:' + backgroundColor : '';
+            }
+
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
@@ -7015,7 +7022,7 @@ const firstVisibleMsg = {
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class ="km-conversation-container-right ${kmAttchMsg}">' +
                 '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>' +
-                '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">' +
+                '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}" style="${followUpMessageBubbleStyleExpr}">' +
                 '<div class="move-right mck-msg-text"></div>' +
                 '<div class="mck-msg-reply mck-vertical-line ${msgReplyToVisibleExpr}">' +
                 '<div class="mck-msgto">${msgReplyTo} </div>' +
@@ -8351,6 +8358,9 @@ const firstVisibleMsg = {
                         msgClassExpr: messageClass,
                         msgBoxColor: msgBoxColorStyle,
                         followUpMessageStyleExpr: getFollowUpMessageStyleExpr(msg.metadata),
+                        followUpMessageBubbleStyleExpr: getFollowUpMessageBubbleStyleExpr(
+                            msg.metadata
+                        ),
                         progressMeterClassExpr: progressMeterClass,
                         attachmentBoxExpr: attachmentBox,
                         msgExpr: frwdMsgExpr,

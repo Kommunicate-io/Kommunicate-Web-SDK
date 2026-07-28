@@ -641,30 +641,18 @@ var parseFollowUpMessageStyle = function (followUpMessageStyle) {
 };
 
 var sanitizeFollowUpColorValue = function (value) {
-    if (typeof value !== 'string') {
-        return '';
-    }
-
-    value = value.trim();
+    value = String(value).trim();
 
     return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value) ? value : '';
 };
 
 var sanitizeFollowUpFontStyleValue = function (value) {
-    if (typeof value !== 'string') {
-        return '';
-    }
-
-    value = value.trim().toLowerCase();
+    value = String(value).trim().toLowerCase();
 
     return ['normal', 'italic', 'oblique'].indexOf(value) !== -1 ? value : '';
 };
 
 var sanitizeFollowUpFontWeightValue = function (value) {
-    if (typeof value !== 'string' && typeof value !== 'number') {
-        return '';
-    }
-
     value = String(value).trim().toLowerCase();
 
     return /^(normal|bold|bolder|lighter|[1-9]00)$/.test(value) ? value : '';
