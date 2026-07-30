@@ -19,6 +19,45 @@
         function getKommunicateUI() {
             return params.KommunicateUI || w.KommunicateUI;
         }
+
+        function getBottomFaqRedirectConfig() {
+            var appOptions =
+                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
+            var appSettings = appOptions.appSettings || {};
+            var url = appSettings.bottomFaqRedirectUrl || appOptions.bottomFaqRedirectUrl;
+            var target =
+                appSettings.bottomFaqRedirectTarget ||
+                appOptions.bottomFaqRedirectTarget ||
+                '_blank';
+
+            url = typeof url === 'string' ? url.trim() : '';
+            target = typeof target === 'string' && target.trim() ? target.trim() : '_blank';
+
+            return { url: url, target: target };
+        }
+
+        function openBottomFaqRedirect(url, target) {
+            try {
+                if (target === '_top') {
+                    w.top.location.href = url;
+                    return;
+                }
+                if (target === '_parent') {
+                    w.parent.location.href = url;
+                    return;
+                }
+                if (target === '_self') {
+                    if (w.parent && w.parent !== w) {
+                        w.parent.location.href = url;
+                        return;
+                    }
+                    w.location.href = url;
+                    return;
+                }
+            } catch (e) {}
+
+            w.open(url, target, 'noopener,noreferrer');
+        }
         function getTopBarManager() {
             return params.topBarManager;
         }
@@ -404,6 +443,16 @@
             if (resolvedTabType === COLLAPSE_TAB_TYPE) {
                 handleCollapseAction();
                 return;
+            }
+            if (resolvedTabType === 'faqs' && options.userTriggered && !options.skipFaqTrigger) {
+                var bottomFaqRedirectConfig = getBottomFaqRedirectConfig();
+                if (bottomFaqRedirectConfig.url) {
+                    openBottomFaqRedirect(
+                        bottomFaqRedirectConfig.url,
+                        bottomFaqRedirectConfig.target
+                    );
+                    return;
+                }
             }
             setBottomTabState(resolvedTabType);
             showBottomTabs();
