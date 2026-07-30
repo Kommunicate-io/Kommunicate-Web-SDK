@@ -4198,19 +4198,66 @@ div#mck-rated:before {
 
 .km-header-cta {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   color: white;
-  height: 15px;
+  height: 32px;
   background-color: transparent;
-  width: auto;
+  width: 32px;
+  min-width: 32px;
+  padding: 0;
+  border-radius: 10px;
   font-size: 16px !important;
   cursor: pointer;
-  line-height: 15px !important;
-  white-space: nowrap;
+  line-height: 0 !important;
+  flex-shrink: 0;
+}
+.km-header-cta svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.km-header-cta#km-talk-to-human svg {
+  transform: translateY(3px);
 }
 .km-header-cta .restart-conversation-icon {
   margin-top: -4px;
+}
+.km-header-cta:hover .tooltip-text, .km-header-cta:focus-visible .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.km-header-cta .tooltip-text {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  visibility: hidden;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(15, 23, 42, 0.96);
+  color: #ffffff;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  padding: 6px 10px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.km-header-cta .tooltip-text::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgba(15, 23, 42, 0.96) transparent;
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */

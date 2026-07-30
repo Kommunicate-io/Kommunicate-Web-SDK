@@ -7218,9 +7218,12 @@ const firstVisibleMsg = {
                     : MCK_LABELS['header.primary.CTA'][currentCTAKey];
 
                 buttonPrimary.innerHTML =
-                    '<span class="tooltip-text n-vis"></span>' +
+                    '<span class="tooltip-text">' +
+                    toolTipText +
+                    '</span>' +
                     (nestedKey ? currentCTA.icon[nestedKey] : currentCTA.icon);
 
+                buttonPrimary.setAttribute('aria-label', toolTipText);
                 buttonPrimary.setAttribute('title', toolTipText);
                 buttonPrimary.id = currentCTA.id;
             };
