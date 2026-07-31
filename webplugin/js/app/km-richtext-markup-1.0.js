@@ -641,6 +641,9 @@ var parseFollowUpMessageStyle = function (followUpMessageStyle) {
 };
 
 var sanitizeFollowUpColorValue = function (value) {
+    if (value === undefined || value === null) {
+        return '';
+    }
     value = String(value).trim();
 
     return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value) ? value : '';

@@ -6919,6 +6919,9 @@ const firstVisibleMsg = {
             }
 
             function sanitizeFollowUpColorValue(value) {
+                if (value === undefined || value === null) {
+                    return '';
+                }
                 value = String(value).trim();
 
                 return /^(#[0-9a-fA-F]{3,8}|(?:rgb|hsl)a?\([0-9%,.\s/]+\)|[a-zA-Z]+)$/.test(value)
@@ -7217,11 +7220,12 @@ const firstVisibleMsg = {
                     ? MCK_LABELS['header.primary.CTA'][currentCTAKey][nestedKey]
                     : MCK_LABELS['header.primary.CTA'][currentCTAKey];
 
-                buttonPrimary.innerHTML =
-                    '<span class="tooltip-text">' +
-                    toolTipText +
-                    '</span>' +
-                    (nestedKey ? currentCTA.icon[nestedKey] : currentCTA.icon);
+                buttonPrimary.innerHTML = nestedKey ? currentCTA.icon[nestedKey] : currentCTA.icon;
+
+                var tooltipTextNode = document.createElement('span');
+                tooltipTextNode.className = 'tooltip-text';
+                tooltipTextNode.textContent = toolTipText;
+                buttonPrimary.insertBefore(tooltipTextNode, buttonPrimary.firstChild);
 
                 buttonPrimary.setAttribute('aria-label', toolTipText);
                 buttonPrimary.setAttribute('title', toolTipText);

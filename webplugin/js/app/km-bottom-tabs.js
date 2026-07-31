@@ -21,13 +21,20 @@
         }
 
         function getBottomFaqRedirectConfig() {
-            var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
-            var appSettings = appOptions.appSettings || {};
-            var url = appSettings.bottomFaqRedirectUrl || appOptions.bottomFaqRedirectUrl;
+            var sessionOptions = appOptionSession.getPropertyDataFromSession('appOptions') || {};
+            var globalOptions = (w.applozic && w.applozic._globals) || {};
+            var sessionSettings = sessionOptions.appSettings || {};
+            var globalSettings = globalOptions.appSettings || {};
+            var url =
+                sessionSettings.bottomFaqRedirectUrl ||
+                sessionOptions.bottomFaqRedirectUrl ||
+                globalSettings.bottomFaqRedirectUrl ||
+                globalOptions.bottomFaqRedirectUrl;
             var target =
-                appSettings.bottomFaqRedirectTarget ||
-                appOptions.bottomFaqRedirectTarget ||
+                sessionSettings.bottomFaqRedirectTarget ||
+                sessionOptions.bottomFaqRedirectTarget ||
+                globalSettings.bottomFaqRedirectTarget ||
+                globalOptions.bottomFaqRedirectTarget ||
                 '_blank';
 
             url = typeof url === 'string' ? url.trim() : '';
@@ -47,10 +54,6 @@
                     return;
                 }
                 if (target === '_self') {
-                    if (w.parent && w.parent !== w) {
-                        w.parent.location.href = url;
-                        return;
-                    }
                     w.location.href = url;
                     return;
                 }
