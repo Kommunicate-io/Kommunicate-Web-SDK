@@ -916,13 +916,36 @@ KommunicateUtils = {
 
         return sanitizedMessage;
     },
+    protectUrlsInMessage: function (message) {
+        var protectedUrls = [];
+        var protectedMessage = message.replace(/https?:\/\/[^\s<>"']+/gi, function (match) {
+            var placeholder = '__KM_URL_TOKEN_' + protectedUrls.length + '__';
+            protectedUrls.push(match);
+            return placeholder;
+        });
+
+        return {
+            message: protectedMessage,
+            protectedUrls: protectedUrls,
+        };
+    },
+    restoreProtectedUrlsInMessage: function (message, protectedUrls) {
+        var restoredMessage = message;
+
+        protectedUrls.forEach(function (url, index) {
+            restoredMessage = restoredMessage.replace('__KM_URL_TOKEN_' + index + '__', url);
+        });
+
+        return restoredMessage;
+    },
     sanitizeSensitiveInfo: function (message, widgetSettings, options) {
         var sanitizerOptions = options || {};
         var config = this.getSensitiveInfoMaskConfig(widgetSettings);
-        var sanitizedMessage = message;
+        var protectedUrlData = this.protectUrlsInMessage(message);
+        var sanitizedMessage = protectedUrlData.message;
 
         if (!this.hasSensitiveInfoMaskingEnabled(config)) {
-            return sanitizedMessage;
+            return message;
         }
 
         if (config.maskCards) {
@@ -953,7 +976,7 @@ KommunicateUtils = {
             });
         }
 
-        return sanitizedMessage;
+        return this.restoreProtectedUrlsInMessage(sanitizedMessage, protectedUrlData.protectedUrls);
     },
     /**
      * When a new group is created, initially CURRENT_GROUP_DATA.groupMembers array has role of a member.

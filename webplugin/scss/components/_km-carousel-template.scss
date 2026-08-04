@@ -282,6 +282,10 @@
     justify-content: flex-start;
     flex-wrap: wrap;
 }
+
+.contains-quick-replies-only .mck-msg-box-rich-text-container.km-cta-multi-button-container {
+    margin: 6px 0;
+}
 .km-slick-container .tns-controls button {
     position: absolute;
     padding: 0;
