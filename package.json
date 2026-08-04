@@ -35,7 +35,6 @@
     "run-danger-local": "danger local",
     "run-danger-test": "danger ci",
     "lint:scss-sync": "node scripts/check-scss-sync.js",
-    "test:km-utils-sensitive-info": "node --test tests/km-utils-sensitive-info.test.js",
     "lint:tab-visibility-sync": "npm run lint:scss-sync",
     "setup-git-hooks": "node setup-git-hooks.js",
     "gulp-build": "cd ./webplugin && gulp",
