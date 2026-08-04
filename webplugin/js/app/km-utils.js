@@ -906,9 +906,18 @@ KommunicateUtils = {
         customRegexPatterns.forEach(function (pattern) {
             try {
                 var compiledPattern = new RegExp(pattern, 'g');
-                sanitizedMessage = sanitizedMessage.replace(compiledPattern, function (match) {
-                    return KommunicateUtils.maskNonWhitespaceCandidate(match, maskCharacter);
-                });
+                sanitizedMessage = KommunicateUtils.replaceUnprotectedText(
+                    sanitizedMessage,
+                    sanitizerOptions.protectedUrls,
+                    function (unprotectedMessage) {
+                        return unprotectedMessage.replace(compiledPattern, function (match) {
+                            return KommunicateUtils.maskNonWhitespaceCandidate(
+                                match,
+                                maskCharacter
+                            );
+                        });
+                    }
+                );
             } catch (error) {
                 console.warn('[KM] Invalid custom sensitive info regex skipped', pattern, error);
             }
@@ -916,11 +925,52 @@ KommunicateUtils = {
 
         return sanitizedMessage;
     },
+    escapeRegexPattern: function (value) {
+        return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    },
+    replaceUnprotectedText: function (message, protectedUrls, replacer) {
+        if (!protectedUrls || !protectedUrls.length) {
+            return replacer(message);
+        }
+
+        var protectedTokenMap = {};
+        var protectedTokenPattern = new RegExp(
+            '(' +
+                protectedUrls
+                    .map(function (protectedUrl) {
+                        protectedTokenMap[protectedUrl.placeholder] = protectedUrl.url;
+                        return KommunicateUtils.escapeRegexPattern(protectedUrl.placeholder);
+                    })
+                    .join('|') +
+                ')',
+            'g'
+        );
+
+        return message
+            .split(protectedTokenPattern)
+            .map(function (segment) {
+                return Object.prototype.hasOwnProperty.call(protectedTokenMap, segment)
+                    ? segment
+                    : replacer(segment);
+            })
+            .join('');
+    },
     protectUrlsInMessage: function (message) {
         var protectedUrls = [];
+        var placeholderPrefix =
+            '__KM_URL_TOKEN_' + this.getRandomId().slice(0, 8).toUpperCase() + '_';
+
+        while (message.indexOf(placeholderPrefix) !== -1) {
+            placeholderPrefix =
+                '__KM_URL_TOKEN_' + this.getRandomId().slice(0, 8).toUpperCase() + '_';
+        }
+
         var protectedMessage = message.replace(/https?:\/\/[^\s<>"']+/gi, function (match) {
-            var placeholder = '__KM_URL_TOKEN_' + protectedUrls.length + '__';
-            protectedUrls.push(match);
+            var placeholder = placeholderPrefix + protectedUrls.length + '__';
+            protectedUrls.push({
+                placeholder: placeholder,
+                url: match,
+            });
             return placeholder;
         });
 
@@ -932,8 +982,10 @@ KommunicateUtils = {
     restoreProtectedUrlsInMessage: function (message, protectedUrls) {
         var restoredMessage = message;
 
-        protectedUrls.forEach(function (url, index) {
-            restoredMessage = restoredMessage.replace('__KM_URL_TOKEN_' + index + '__', url);
+        protectedUrls.forEach(function (protectedUrl) {
+            restoredMessage = restoredMessage.replace(protectedUrl.placeholder, function () {
+                return protectedUrl.url;
+            });
         });
 
         return restoredMessage;
@@ -973,6 +1025,7 @@ KommunicateUtils = {
             sanitizedMessage = this.sanitizeCustomPatternsInMessage(sanitizedMessage, {
                 maskCharacter: sanitizerOptions.maskCharacter,
                 customRegexPatterns: config.customRegexPatterns,
+                protectedUrls: protectedUrlData.protectedUrls,
             });
         }
 
