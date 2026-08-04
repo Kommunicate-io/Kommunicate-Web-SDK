@@ -902,58 +902,55 @@ KommunicateUtils = {
             sanitizerOptions.customRegexPatterns
         );
         var sanitizedMessage = message;
+        var protectedUrls = sanitizerOptions.protectedUrls || [];
+        var protectedUrlPattern = null;
+
+        if (protectedUrls.length) {
+            protectedUrlPattern = new RegExp(
+                '(' +
+                    protectedUrls
+                        .map(function (protectedUrl) {
+                            return protectedUrl.placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        })
+                        .join('|') +
+                    ')',
+                'g'
+            );
+        }
 
         customRegexPatterns.forEach(function (pattern) {
             try {
                 var compiledPattern = new RegExp(pattern, 'g');
-                sanitizedMessage = KommunicateUtils.replaceUnprotectedText(
-                    sanitizedMessage,
-                    sanitizerOptions.protectedUrls,
-                    function (unprotectedMessage) {
-                        return unprotectedMessage.replace(compiledPattern, function (match) {
+                if (!protectedUrlPattern) {
+                    sanitizedMessage = sanitizedMessage.replace(compiledPattern, function (match) {
+                        return KommunicateUtils.maskNonWhitespaceCandidate(match, maskCharacter);
+                    });
+                    return;
+                }
+
+                sanitizedMessage = sanitizedMessage
+                    .split(protectedUrlPattern)
+                    .map(function (segment) {
+                        for (var i = 0; i < protectedUrls.length; i++) {
+                            if (segment === protectedUrls[i].placeholder) {
+                                return segment;
+                            }
+                        }
+
+                        return segment.replace(compiledPattern, function (match) {
                             return KommunicateUtils.maskNonWhitespaceCandidate(
                                 match,
                                 maskCharacter
                             );
                         });
-                    }
-                );
+                    })
+                    .join('');
             } catch (error) {
                 console.warn('[KM] Invalid custom sensitive info regex skipped', pattern, error);
             }
         });
 
         return sanitizedMessage;
-    },
-    escapeRegexPattern: function (value) {
-        return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    },
-    replaceUnprotectedText: function (message, protectedUrls, replacer) {
-        if (!protectedUrls || !protectedUrls.length) {
-            return replacer(message);
-        }
-
-        var protectedTokenMap = {};
-        var protectedTokenPattern = new RegExp(
-            '(' +
-                protectedUrls
-                    .map(function (protectedUrl) {
-                        protectedTokenMap[protectedUrl.placeholder] = protectedUrl.url;
-                        return KommunicateUtils.escapeRegexPattern(protectedUrl.placeholder);
-                    })
-                    .join('|') +
-                ')',
-            'g'
-        );
-
-        return message
-            .split(protectedTokenPattern)
-            .map(function (segment) {
-                return Object.prototype.hasOwnProperty.call(protectedTokenMap, segment)
-                    ? segment
-                    : replacer(segment);
-            })
-            .join('');
     },
     protectUrlsInMessage: function (message) {
         var protectedUrls = [];
