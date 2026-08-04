@@ -1444,6 +1444,10 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 12px 0;
 }
 
+.mck-m-b.contains-quick-replies-only {
+  margin-bottom: 10px;
+}
+
 .mck-box-form-container {
   display: flex;
   align-items: center;
@@ -3153,6 +3157,10 @@ input[type=number]::-webkit-outer-spin-button {
   flex-flow: row;
   justify-content: flex-start;
   flex-wrap: wrap;
+}
+
+.contains-quick-replies-only .mck-msg-box-rich-text-container.km-cta-multi-button-container {
+  margin: 6px 0;
 }
 
 .km-slick-container .tns-controls button {
