@@ -902,13 +902,49 @@ KommunicateUtils = {
             sanitizerOptions.customRegexPatterns
         );
         var sanitizedMessage = message;
+        var protectedUrls = sanitizerOptions.protectedUrls || [];
+        var protectedUrlPattern = null;
+
+        if (protectedUrls.length) {
+            protectedUrlPattern = new RegExp(
+                '(' +
+                    protectedUrls
+                        .map(function (protectedUrl) {
+                            return protectedUrl.placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        })
+                        .join('|') +
+                    ')',
+                'g'
+            );
+        }
 
         customRegexPatterns.forEach(function (pattern) {
             try {
                 var compiledPattern = new RegExp(pattern, 'g');
-                sanitizedMessage = sanitizedMessage.replace(compiledPattern, function (match) {
-                    return KommunicateUtils.maskNonWhitespaceCandidate(match, maskCharacter);
-                });
+                if (!protectedUrlPattern) {
+                    sanitizedMessage = sanitizedMessage.replace(compiledPattern, function (match) {
+                        return KommunicateUtils.maskNonWhitespaceCandidate(match, maskCharacter);
+                    });
+                    return;
+                }
+
+                sanitizedMessage = sanitizedMessage
+                    .split(protectedUrlPattern)
+                    .map(function (segment) {
+                        for (var i = 0; i < protectedUrls.length; i++) {
+                            if (segment === protectedUrls[i].placeholder) {
+                                return segment;
+                            }
+                        }
+
+                        return segment.replace(compiledPattern, function (match) {
+                            return KommunicateUtils.maskNonWhitespaceCandidate(
+                                match,
+                                maskCharacter
+                            );
+                        });
+                    })
+                    .join('');
             } catch (error) {
                 console.warn('[KM] Invalid custom sensitive info regex skipped', pattern, error);
             }
@@ -916,13 +952,49 @@ KommunicateUtils = {
 
         return sanitizedMessage;
     },
+    protectUrlsInMessage: function (message) {
+        var protectedUrls = [];
+        var placeholderPrefix =
+            '__KM_URL_TOKEN_' + this.getRandomId().slice(0, 8).toUpperCase() + '_';
+
+        while (message.indexOf(placeholderPrefix) !== -1) {
+            placeholderPrefix =
+                '__KM_URL_TOKEN_' + this.getRandomId().slice(0, 8).toUpperCase() + '_';
+        }
+
+        var protectedMessage = message.replace(/https?:\/\/[^\s<>"']+/gi, function (match) {
+            var placeholder = placeholderPrefix + protectedUrls.length + '__';
+            protectedUrls.push({
+                placeholder: placeholder,
+                url: match,
+            });
+            return placeholder;
+        });
+
+        return {
+            message: protectedMessage,
+            protectedUrls: protectedUrls,
+        };
+    },
+    restoreProtectedUrlsInMessage: function (message, protectedUrls) {
+        var restoredMessage = message;
+
+        protectedUrls.forEach(function (protectedUrl) {
+            restoredMessage = restoredMessage.replace(protectedUrl.placeholder, function () {
+                return protectedUrl.url;
+            });
+        });
+
+        return restoredMessage;
+    },
     sanitizeSensitiveInfo: function (message, widgetSettings, options) {
         var sanitizerOptions = options || {};
         var config = this.getSensitiveInfoMaskConfig(widgetSettings);
-        var sanitizedMessage = message;
+        var protectedUrlData = this.protectUrlsInMessage(message);
+        var sanitizedMessage = protectedUrlData.message;
 
         if (!this.hasSensitiveInfoMaskingEnabled(config)) {
-            return sanitizedMessage;
+            return message;
         }
 
         if (config.maskCards) {
@@ -950,10 +1022,11 @@ KommunicateUtils = {
             sanitizedMessage = this.sanitizeCustomPatternsInMessage(sanitizedMessage, {
                 maskCharacter: sanitizerOptions.maskCharacter,
                 customRegexPatterns: config.customRegexPatterns,
+                protectedUrls: protectedUrlData.protectedUrls,
             });
         }
 
-        return sanitizedMessage;
+        return this.restoreProtectedUrlsInMessage(sanitizedMessage, protectedUrlData.protectedUrls);
     },
     /**
      * When a new group is created, initially CURRENT_GROUP_DATA.groupMembers array has role of a member.
