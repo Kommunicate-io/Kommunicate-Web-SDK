@@ -36,6 +36,8 @@ function KmCustomTheme() {
         primaryColor: '--km-accent',
         primaryColorRgb: '--km-accent-rgb',
         chatHeaderBackground: '--km-widget-header-background',
+        primaryForeground: '--km-on-primary',
+        primaryForegroundColor: '--km-on-primary',
         onPrimary: '--km-on-primary',
         onPrimaryLink: '--km-on-primary-link',
         primaryVariant: '--km-primary-variant',
@@ -63,6 +65,19 @@ function KmCustomTheme() {
 
     function hasThemeValue(value) {
         return value != null && String(value).trim().length > 0;
+    }
+
+    function mergeThemeOverrides(overrides, source, aliasOnly) {
+        if (!kommunicateCommons.isObject(source)) {
+            return;
+        }
+        Object.keys(source).forEach(function (key) {
+            var resolvedKey = THEME_VARIABLE_ALIASES[key] || key;
+            if (aliasOnly && resolvedKey === key && key.indexOf('--km-') !== 0) {
+                return;
+            }
+            overrides[resolvedKey] = source[key];
+        });
     }
 
     _this.init = function (optns) {
@@ -217,14 +232,19 @@ function KmCustomTheme() {
             WIDGET_SETTINGS.themeVars,
         ];
         var overrides = {};
+        mergeThemeOverrides(overrides, WIDGET_SETTINGS, true);
         overrideSources.forEach(function (source) {
-            if (kommunicateCommons.isObject(source)) {
-                Object.keys(source).forEach(function (key) {
-                    var resolvedKey = THEME_VARIABLE_ALIASES[key] || key;
-                    overrides[resolvedKey] = source[key];
-                });
-            }
+            mergeThemeOverrides(overrides, source, false);
         });
+        var resolvedForeground =
+            overrides['--km-on-primary'] || overrides['--km-custom-widget-contrast-color'];
+        if (hasThemeValue(resolvedForeground)) {
+            overrides['--km-on-primary'] = overrides['--km-on-primary'] || resolvedForeground;
+            overrides['--km-on-primary-link'] =
+                overrides['--km-on-primary-link'] || overrides['--km-on-primary'];
+            overrides['--km-custom-widget-contrast-color'] =
+                overrides['--km-custom-widget-contrast-color'] || overrides['--km-on-primary'];
+        }
         if (isClassicLayout() && !hasThemeValue(overrides['--km-on-primary'])) {
             console.log('overriding --km-on-primary for classic layout');
             overrides['--km-on-primary'] = '#ffffff';
