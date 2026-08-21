@@ -313,6 +313,10 @@ KommunicateConstants = {
         'business_yearly_v8',
         'business_monthly_v8_inr',
         'business_yearly_v8_inr',
+        'enterprise_monthly_v9',
+        'enterprise_yearly_v9',
+        'enterprise_monthly_v9_inr',
+        'enterprise_yearly_v9_inr',
     ]),
     PRODUCTS: {
         KOMMUNICATE: 'kommunicate',
