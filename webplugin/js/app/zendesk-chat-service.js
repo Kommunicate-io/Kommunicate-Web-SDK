@@ -83,7 +83,6 @@ function ZendeskChatService() {
                 };
             }
             zChat.init(zendeskInitOptions);
-            _this.updateVisitorPath();
             zChat.on('connection_update', _this.handleZopimConnectedStatus);
             zChat.on('chat', _this.zopimEvents);
         }
@@ -93,6 +92,7 @@ function ZendeskChatService() {
         if (status === 'connected') {
             ZENDESK_SDK_CONNECTED = true;
             console.log('SDK Connected');
+            _this.updateVisitorPath();
             messagesInBuffer.length &&
                 messagesInBuffer.map((messageEvent) => {
                     console.log('handleUserMessage: ', messageEvent);
