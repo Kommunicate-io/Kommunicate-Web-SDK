@@ -125,6 +125,9 @@ Kommunicate.client = {
                     : parent.location.href,
                 conversationMetadata: JSON.stringify(conversationDetail.metadata),
             };
+            if (conversationDetail.metadata && conversationDetail.metadata.source) {
+                groupMetadata.source = conversationDetail.metadata.source;
+            }
 
             typeof conversationDetail.teamId != 'undefined' &&
                 (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
