@@ -1553,17 +1553,59 @@ KommunicateUI = {
         }
     },
     loadQuickReplies: function (quickReplies) {
+        var getQuickReplyValue = function (quickReply, keys) {
+            if (!quickReply || typeof quickReply !== 'object') {
+                return '';
+            }
+            for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+                if (quickReply[keys[keyIndex]]) {
+                    return quickReply[keys[keyIndex]];
+                }
+            }
+            return '';
+        };
         var intentList = document.getElementById('mck-intent-options');
         if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
             kommunicateCommons.show('#mck-quick-replies-box');
             for (var i = 0; i < quickReplies.length; i++) {
+                var quickReply = quickReplies[i];
+                var isRichQuickReply = quickReply && typeof quickReply === 'object';
+                var title = isRichQuickReply
+                    ? getQuickReplyValue(quickReply, ['title', 'name', 'message'])
+                    : quickReply;
+                var message = isRichQuickReply
+                    ? getQuickReplyValue(quickReply, ['message', 'title', 'name'])
+                    : quickReply;
                 var li = document.createElement('li');
-                li.innerText = quickReplies[i];
+                li.innerText = title;
+                li.dataset.reply = message;
+                if (isRichQuickReply) {
+                    li.dataset.languagecode =
+                        quickReply.updateLanguage || quickReply.languageCode || '';
+                    li.dataset.metadata =
+                        typeof quickReply.replyMetadata === 'object'
+                            ? JSON.stringify(quickReply.replyMetadata)
+                            : quickReply.replyMetadata || '';
+                }
                 intentList.appendChild(li);
                 li.onclick = function (e) {
                     e.preventDefault();
-                    document.getElementById('mck-text-box').innerText = this.innerText;
-                    document.getElementById('mck-msg-sbmt').click();
+                    if (!this.dataset.metadata && !this.dataset.languagecode) {
+                        document.getElementById('mck-text-box').innerText = this.dataset.reply;
+                        document.getElementById('mck-msg-sbmt').click();
+                        return;
+                    }
+                    var metadata = {};
+                    try {
+                        metadata = JSON.parse(this.dataset.metadata);
+                    } catch (error) {}
+                    this.dataset.languagecode &&
+                        Kommunicate.updateUserLanguage(this.dataset.languagecode);
+                    document.getElementById('mck-text-box').setAttribute('data-quick-reply', true);
+                    Kommunicate.sendMessage({
+                        message: this.dataset.reply,
+                        metadata: metadata,
+                    });
                 };
             }
         }
