@@ -8281,9 +8281,27 @@ const firstVisibleMsg = {
                     if (tokenizedStreamElementToReplace) {
                         $messageTemplate.insertBefore(tokenizedStreamElementToReplace);
                     } else {
-                        append
+                        const shouldOrderLiveWelcomeMessage =
+                            append && !msgThroughListAPI && msg.metadata?.WELCOME_EVENT;
+                        const $nextMessage = shouldOrderLiveWelcomeMessage
+                            ? $applozic('#mck-message-cell .mck-message-inner [name="message"]')
+                                  .filter(function () {
+                                      return (
+                                          Number($applozic(this).attr('data-msgtime')) >
+                                          Number(msg.createdAtTime)
+                                      );
+                                  })
+                                  .first()
+                            : null;
+
+                        const didInsertWelcomeMessageOutOfOrder =
+                            $nextMessage && $nextMessage.length;
+                        didInsertWelcomeMessageOutOfOrder
+                            ? $messageTemplate.insertBefore($nextMessage)
+                            : append
                             ? $messageTemplate.appendTo('#mck-message-cell .mck-message-inner')
                             : $messageTemplate.prependTo('#mck-message-cell .mck-message-inner');
+                        didInsertWelcomeMessageOutOfOrder && _this.messageClubbing(true, true);
                     }
                 }
                 if (!isUserMsg && !msgThroughListAPI) {
@@ -10621,7 +10639,7 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.messageClubbing = function (processAllMessages) {
+            _this.messageClubbing = function (processAllMessages, resetExistingClubbing) {
                 var allMessages = $applozic(
                     '#mck-message-cell .mck-message-inner div[name="message"]'
                 );
@@ -10640,6 +10658,8 @@ const firstVisibleMsg = {
                         allMessages[_len - 1].classList.add('km-clubbing-last');
                     }
                 } else {
+                    resetExistingClubbing &&
+                        allMessages.removeClass('km-clubbing-first km-clubbing-last');
                     $applozic.each(allMessages, function (key, value) {
                         var timeOffset =
                             allMessages[key].nextSibling &&
