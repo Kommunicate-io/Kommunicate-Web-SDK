@@ -1553,16 +1553,59 @@ KommunicateUI = {
         }
     },
     loadQuickReplies: function (quickReplies) {
+        var getNormalizedLocale = function (locale) {
+            return locale && locale.toLowerCase().replace(/_/g, '-');
+        };
+        var getLocaleValue = function (value) {
+            if (!kommunicateCommons.isObject(value)) {
+                return value;
+            }
+            var getValueForLocale = function (locale) {
+                for (var key in value) {
+                    if (
+                        value.hasOwnProperty(key) &&
+                        getNormalizedLocale(key) === locale &&
+                        value[key]
+                    ) {
+                        return value[key];
+                    }
+                }
+            };
+            var locale =
+                getNormalizedLocale(kommunicate._globals.userLocale) ||
+                getNormalizedLocale(
+                    (navigator.languages && navigator.languages[0]) ||
+                        navigator.language ||
+                        navigator.userLanguage
+                );
+            var languageCode = locale && locale.split('-')[0];
+            return (
+                getValueForLocale(locale) ||
+                getValueForLocale(languageCode) ||
+                getValueForLocale('en') ||
+                value[Object.keys(value)[0]] ||
+                ''
+            );
+        };
         var intentList = document.getElementById('mck-intent-options');
         if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
             kommunicateCommons.show('#mck-quick-replies-box');
             for (var i = 0; i < quickReplies.length; i++) {
+                var quickReply = quickReplies[i];
+                var isQuickReplyObject = kommunicateCommons.isObject(quickReply);
+                var title = isQuickReplyObject
+                    ? getLocaleValue(quickReply.title || quickReply.name || quickReply.message)
+                    : quickReply;
+                var message = isQuickReplyObject
+                    ? getLocaleValue(quickReply.message || quickReply.title || quickReply.name)
+                    : quickReply;
                 var li = document.createElement('li');
-                li.innerText = quickReplies[i];
+                li.innerText = title;
+                li.dataset.reply = message;
                 intentList.appendChild(li);
                 li.onclick = function (e) {
                     e.preventDefault();
-                    document.getElementById('mck-text-box').innerText = this.innerText;
+                    document.getElementById('mck-text-box').innerText = this.dataset.reply;
                     document.getElementById('mck-msg-sbmt').click();
                 };
             }
