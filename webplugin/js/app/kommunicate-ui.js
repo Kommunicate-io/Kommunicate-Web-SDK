@@ -1436,7 +1436,10 @@ KommunicateUI = {
             KommunicateUI.activateTypingField();
         };
         completionTimeoutId = setTimeout(finalizeWelcomePromptSubmission, 5000);
-        Kommunicate.startConversation({ skipBotEvent: true }, finalizeWelcomePromptSubmission);
+        Kommunicate.startConversation(
+            { skipBotEvent: JSON.stringify(['WELCOME_EVENT']) },
+            finalizeWelcomePromptSubmission
+        );
         return true;
     },
     renderWelcomeSuggestedQuestions: function () {
