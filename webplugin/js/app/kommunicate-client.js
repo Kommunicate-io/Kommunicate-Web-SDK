@@ -134,7 +134,7 @@ Kommunicate.client = {
             conversationDetail.metadata.KM_ORIGINAL_TITLE &&
                 (groupMetadata.KM_ORIGINAL_TITLE = true);
             conversationDetail.skipBotEvent &&
-                (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
+                (groupMetadata.SKIP_BOT_EVENT = JSON.stringify(['WELCOME_EVENT']));
             conversationDetail.customWelcomeEvent &&
                 (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
 
