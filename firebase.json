@@ -110,24 +110,6 @@
             "value": "public, max-age=900"
           }
         ]
-      },
-      {
-        "source": "/demo2.html",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-store"
-          }
-        ]
-      },
-      {
-        "source": "/rich-message-tests/**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-store"
-          }
-        ]
       }
     ],
     "rewrites": [

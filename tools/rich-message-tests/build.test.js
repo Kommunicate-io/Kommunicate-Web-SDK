@@ -27,13 +27,6 @@ try {
     assert(panel.includes("fetch('./rich-message-tests/cases.json')"));
     const gulpfile = fs.readFileSync(path.join(__dirname, '../../webplugin/gulpfile.js'), 'utf8');
     assert(gulpfile.includes("generateTestPages(config.getEnvId(), buildDir);"));
-    const config = require('../../firebase.json');
-    const headers = config.hosting.headers;
-    for (const source of ['/demo2.html', '/rich-message-tests/**']) {
-        const index = headers.findIndex(rule => rule.source === source);
-        assert(index > headers.findIndex(rule => rule.source === '**/*.js'));
-        assert(headers[index].headers.some(header => header.key === 'Cache-Control' && header.value === 'no-store'));
-    }
     console.log('Test-page build regression tests passed.');
 } finally {
     fs.rmdirSync(temp, { recursive: true });
