@@ -16,6 +16,7 @@ const SentryCli = require('@sentry/cli');
 const clean = require('gulp-clean');
 const tap = require('gulp-tap');
 const fs = require('fs');
+const generateTestPages = require('./build-test-pages');
 const {
     PLUGIN_CSS_FILES,
     PLUGIN_BUNDLE_FILES,
@@ -304,7 +305,7 @@ const generateBuildFiles = () => {
 
     // Copy demo2.html example into build so it can be served on Firebase
     // This allows accessing it via /demo2.html (and via /demo2 with a rewrite)
-    copyFileToBuild('../example/demo2.html', `${buildDir}/demo2.html`);
+    generateTestPages(config.getEnvId(), buildDir);
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild('js/app/applozic.chat-6.2.9.min.js', `${buildDir}/applozic.chat-6.2.9.min.js`);

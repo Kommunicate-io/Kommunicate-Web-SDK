@@ -288,20 +288,21 @@
                             id="appId"
                             name="appId"
                             required
-                            value="kommunicate-support"
+                            value="28012c5af21b3145d45399669c3fb799"
                             style="flex: 1"
                         />
                     </div>
 
                     <div class="compact-row">
                         <label for="agentId" style="flex: 0 0 auto; min-width: 70px"
-                            >Agent ID</label
+                            >Bot ID</label
                         >
                         <input
                             type="text"
                             id="agentId"
                             name="agentId"
-                            placeholder="Optional: route chat to this agent"
+                            value="ai-agent-bh0x4-k8yv4"
+                            placeholder="Route test conversations to this bot"
                             style="flex: 1"
                         />
                     </div>
@@ -496,7 +497,7 @@
                     <div id="widget-container"></div>
                     <iframe
                         id="legacy-iframe"
-                        src="/chat?appId=kommunicate-support"
+                        src="/chat?appId=28012c5af21b3145d45399669c3fb799"
                         allow="microphone; geolocation;"
                         title="Legacy iframe preview"
                         loading="lazy"
@@ -507,8 +508,8 @@
 
         <script>
             const defaultState = {
-                appId: 'kommunicate-support',
-                agentId: '',
+                appId: '28012c5af21b3145d45399669c3fb799',
+                agentId: 'ai-agent-bh0x4-k8yv4',
                 layout: 'modern',
                 containerMode: 'outside',
                 widgetPosition: 'right',
@@ -883,7 +884,7 @@
 
                 if (config.agentId) {
                     const agentRoutingSettings = {
-                        defaultAgentIds: [config.agentId],
+                        defaultBotIds: [config.agentId],
                         defaultAssignee: config.agentId,
                         skipRouting: true,
                     };
@@ -923,7 +924,9 @@
                     s.id = 'kommunicate-widget-script';
                     s.type = 'text/javascript';
                     s.async = true;
-                    const scriptUrl = '/kommunicate-widget-3.0.min.js';
+                    const scriptUrl = disableCache
+                        ? 'https://widget-test.kommunicate.io/kommunicate-widget-3.0.min.js'
+                        : '/kommunicate-widget-3.0.min.js';
                     s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
                     const h = d.getElementsByTagName('head')[0];
                     h.appendChild(s);
@@ -1023,5 +1026,9 @@
             resetForm();
             handlePendingLaunch();
         </script>
+        <!-- rich-message-tests:start -->
+        <script src="./rich-message-tests/runner.js"></script>
+        <script src="./rich-message-tests/panel.js"></script>
+        <!-- rich-message-tests:end -->
     </body>
 </html>
