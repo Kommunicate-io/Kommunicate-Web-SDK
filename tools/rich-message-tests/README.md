@@ -9,7 +9,7 @@ The test page lives at `example/demo2.html`; browser helpers and cases are in `e
 From the Web SDK repository, run:
 
 ```sh
-npm run serve:rich-messages
+node tools/rich-message-tests/serve.js
 ```
 
 Open **http://127.0.0.1:8080/demo2.html** and click **Launch rich-message tests**. Your App ID and Bot ID are already filled in. Keep the terminal running; Ctrl+C stops the server. Do not double-click the HTML file: it needs HTTP to load its test cases.
@@ -70,7 +70,9 @@ Selectors are scoped to the new bot response. Each action needs `type`, `selecto
 ## Regression tests
 
 ```sh
-npm run test:rich-messages
+node tools/rich-message-tests/runner.test.js
+node tools/rich-message-tests/interactions.test.js
+node tools/rich-message-tests/build.test.js
 ```
 
 Uses Node's built-in assertions only. Covers automatic Chat selection on the modern Welcome screen, avoiding duplicate startup clicks, entering text before waiting for Send to enable, cancellation before sending, failure continuation, cancellation, timeout, host restrictions, configuration validation, HTML Shadow DOM content, explicit skips, stale messages, fallback replies, missing elements, and broken images. The interaction tests cover field events, checkbox toggles, missing controls, cancellation, link interception, POST serialization, invalid-submit rejection, and restoring transport hooks after errors. This does not replace a live browser run against the release widget and configured bot.
@@ -85,4 +87,4 @@ Startup now selects Chat from the modern Welcome screen, and enters text before 
 
 The extended suite was exercised against the live test bot in Chrome, Modern layout, Float outside placement: **12 passed, 0 failed, 1 skipped**. Name/password entry, radio and checkbox choices, dropdown selection, textarea validation and correction, captured POST data, reply clicks, and intercepted link targets passed. The repeat-run startup check passed. Autosuggestions remain skipped; Classic layout and real external form backend responses were not verified. Both `runner.test.js` and `interactions.test.js` passed.
 
-The regression command also checks the test-only build gate and emitted page/helper paths without requiring the SDK build dependencies. The complete SDK build still requires the repository dependencies.
+The build regression test also checks the test-only build gate and emitted page/helper paths without requiring the SDK build dependencies. The complete SDK build still requires the repository dependencies.

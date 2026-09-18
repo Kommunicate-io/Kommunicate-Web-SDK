@@ -6,8 +6,6 @@
   "author": "Forward <team.engineering@kommunicate.io>",
   "license": "ISC",
   "scripts": {
-    "serve:rich-messages": "node tools/rich-message-tests/serve.js",
-    "test:rich-messages": "node tools/rich-message-tests/runner.test.js && node tools/rich-message-tests/interactions.test.js && node tools/rich-message-tests/build.test.js",
     "postinstall": "husky install",
     "prettify-commit": "lint-staged --allow-empty",
     "watch:scss:style": "sass --watch webplugin/scss/style.scss:webplugin/css/app/style.css --no-source-map --style=expanded",
