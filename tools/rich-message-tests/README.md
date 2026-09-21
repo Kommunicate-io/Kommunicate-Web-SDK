@@ -12,7 +12,7 @@ From the Web SDK repository, run:
 node tools/rich-message-tests/serve.js
 ```
 
-Open **http://127.0.0.1:8080/demo2.html** and click **Launch rich-message tests**. Your App ID and Bot ID are already filled in. Keep the terminal running; Ctrl+C stops the server. Do not double-click the HTML file: it needs HTTP to load its test cases.
+Open **http://127.0.0.1:8080/demo2.html** and replace the default App ID with your test App ID. Enter your test bot ID in **Agent ID**, then click **Launch rich-message tests**. Keep the terminal running; Ctrl+C stops the server. Do not double-click the HTML file: it needs HTTP to load its test cases.
 
 On localhost the page loads the hosted `widget-test.kommunicate.io` bundle, which uses the test backend. Internet access is required. This tests the deployed test widget, not an unbuilt local SDK change. No `npm install` is needed for this page or its runner tests.
 
@@ -21,7 +21,7 @@ On localhost the page loads the hosted `widget-test.kommunicate.io` bundle, whic
 1. Run `npm run build-test` through the existing test deployment pipeline. The existing demo-page build step copies the page to `webplugin/build/demo2.html` and its three runtime assets to `webplugin/build/rich-message-tests/`. Only `NODE_ENV=test` includes these assets; regression tests and the local server are never deployed. The page uses the test build's `/kommunicate-widget-3.0.min.js`. Existing Firebase caching rules are unchanged. After deploying updated tests, use a hard refresh or disable browser caching in DevTools to ensure the latest helper scripts load. Other builds retain the existing demo page with the automation scripts removed. Allowed browser hosts are localhost, 127.0.0.1, test, and widget-test.kommunicate.io.
 2. Cases are mapped to the supplied `ai-agent-bh0x4-k8yv4_1789712771810.json` export. No bot changes or retraining are required for this mapping. The export is configuration evidence; it does not confirm that the live bot responds successfully.
 3. Keep `cases.json` synchronized when you change training phrases or rich payloads. Each case uses the exported trigger and response text, with CSS selectors checked against the SDK markup. The Suggested Replies intent has an introductory “Here w go” response; checks wait for its subsequent rich response, “Do you want more updates?”.
-4. The page is preconfigured with test App ID `28012c5af21b3145d45399669c3fb799` and Bot ID `ai-agent-bh0x4-k8yv4`. Bot routing uses the SDK's `defaultBotIds` setting. You can change both fields. Choose Modern or Classic, and Float outside or Anchor inside preview. Disable pre-chat for unattended runs.
+4. The page defaults to App ID `kommunicate-support` and an empty Agent ID. For these rich-message cases, enter test App ID `28012c5af21b3145d45399669c3fb799` and bot ID `ai-agent-bh0x4-k8yv4` in the Agent ID field. Bot routing uses the SDK's `defaultBotIds` setting. Choose Modern or Classic, and Float outside or Anchor inside preview. Disable pre-chat for unattended runs.
 5. Click **Launch rich-message tests**. The page reloads with the selected configuration, opens the widget, sends the triggers in order, and lists each result. Repeat with the other layout for both layouts' coverage. Download the JSON report for release records.
 
 ## Exported cases

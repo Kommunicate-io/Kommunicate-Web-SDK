@@ -42,7 +42,7 @@
             }
         </style>
         <h2 id="rich-heading">Rich-message tests</h2>
-        <p>Check messages, buttons and forms with your test bot. Use the App ID and Bot ID in the settings below.</p>
+        <p>Check messages, buttons and forms with your test bot. Enter your test App ID and your bot’s ID in the Agent ID field below.</p>
         <div class="actions">
           <button id="rich-launch" type="button">Launch rich-message tests</button>
           <button id="rich-stop" type="button" disabled>Stop</button>
@@ -145,7 +145,7 @@
             const cases = runner.validate(JSON.parse(editor.value), document);
             const appId = document.getElementById('appId').value.trim();
             if (!appId || appId === 'kommunicate-support' || !document.getElementById('agentId').value.trim()) {
-                throw new Error('Enter your dedicated test App ID and Bot ID first.');
+                throw new Error('Enter your dedicated test App ID and your bot ID in the Agent ID field first.');
             }
             if (document.querySelector('input[name="containerMode"]:checked').value === 'iframe') {
                 throw new Error('Select Float outside or Anchor inside preview for these checks.');

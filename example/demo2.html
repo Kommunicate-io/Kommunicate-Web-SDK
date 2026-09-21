@@ -288,21 +288,20 @@
                             id="appId"
                             name="appId"
                             required
-                            value="28012c5af21b3145d45399669c3fb799"
+                            value="kommunicate-support"
                             style="flex: 1"
                         />
                     </div>
 
                     <div class="compact-row">
                         <label for="agentId" style="flex: 0 0 auto; min-width: 70px"
-                            >Bot ID</label
+                            >Agent ID</label
                         >
                         <input
                             type="text"
                             id="agentId"
                             name="agentId"
-                            value="ai-agent-bh0x4-k8yv4"
-                            placeholder="Route test conversations to this bot"
+                            placeholder="Optional: route chat to this agent"
                             style="flex: 1"
                         />
                     </div>
@@ -497,7 +496,7 @@
                     <div id="widget-container"></div>
                     <iframe
                         id="legacy-iframe"
-                        src="/chat?appId=28012c5af21b3145d45399669c3fb799"
+                        src="/chat?appId=kommunicate-support"
                         allow="microphone; geolocation;"
                         title="Legacy iframe preview"
                         loading="lazy"
@@ -508,8 +507,8 @@
 
         <script>
             const defaultState = {
-                appId: '28012c5af21b3145d45399669c3fb799',
-                agentId: 'ai-agent-bh0x4-k8yv4',
+                appId: 'kommunicate-support',
+                agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
                 widgetPosition: 'right',
