@@ -1,0 +1,296 @@
+[
+  {
+    "name": "Buttons Rich message",
+    "trigger": "Buttons",
+    "responseText": "The oval shaped buttons below are examples of suggested replies",
+    "selectors": [
+      "button[aria-label=\"Example 1\"]",
+      "button[aria-label=\"Example 2\"]",
+      "button[aria-label=\"Example for a long button\"]"
+    ],
+    "actions": [
+      {
+        "type": "reply",
+        "selector": "button[aria-label=\"Example 1\"]",
+        "label": "Reply click sends the configured message",
+        "expectedText": "Message for Example 1."
+      }
+    ]
+  },
+  {
+    "name": "Suggested Replies",
+    "trigger": "Suggested Replies",
+    "responseText": "Do you want more updates?",
+    "selectors": [
+      "button[aria-label=\"Yes\"]",
+      "button[aria-label=\"No\"]"
+    ],
+    "actions": [
+      {
+        "type": "reply",
+        "selector": "button[aria-label=\"Yes\"]",
+        "label": "Reply click sends the configured message",
+        "expectedText": "Cool! send me more."
+      }
+    ]
+  },
+  {
+    "name": "Link Buttons Rich message",
+    "trigger": "Link buttons",
+    "responseText": "click on the buttons",
+    "selectors": [
+      "button[aria-label=\"Go To Google\"][data-url^=\"https://www.google.com\"]",
+      "button[aria-label=\"Go To Facebook\"][data-url^=\"https://www.facebook.com\"]"
+    ],
+    "actions": [
+      {
+        "type": "link",
+        "selector": "button[aria-label=\"Go To Google\"]",
+        "label": "New-tab link verified (navigation intercepted)",
+        "url": "https://www.google.com",
+        "target": "_blank"
+      },
+      {
+        "type": "link",
+        "selector": "button[aria-label=\"Go To Facebook\"]",
+        "label": "Same-tab link verified (navigation intercepted)",
+        "url": "https://www.facebook.com",
+        "target": "_parent"
+      }
+    ]
+  },
+  {
+    "name": "Submit Buttons",
+    "trigger": "My bill",
+    "responseText": "click the pay button",
+    "selectors": [
+      "button[data-buttontype=\"submit\"]"
+    ],
+    "actions": [
+      {
+        "type": "submit",
+        "selector": "button[type=\"submit\"], button[data-buttontype=\"submit\"]",
+        "label": "Submission payload captured (endpoint not contacted)",
+        "url": "https://example.com/book",
+        "expectedData": {
+          "amount": "1000",
+          "description": "movie ticket"
+        }
+      }
+    ]
+  },
+  {
+    "name": "List Template Rich message",
+    "trigger": "List template",
+    "responseText": "This is the sample json for list template",
+    "selectors": [
+      ".km-list-container",
+      "button[aria-label=\"See us on facebook\"]",
+      ".km-list-container img"
+    ]
+  },
+  {
+    "name": "Cards Rich message",
+    "trigger": "Cards",
+    "responseText": "This is the sample json for card template",
+    "selectors": [
+      ".km-carousel-card-template",
+      ".km-carousel-card-title[title=\"Card Title\"]",
+      ".km-carousel-card-template img",
+      "button[aria-label=\"Link Button\"]"
+    ]
+  },
+  {
+    "name": "Card Carousel Rich msg",
+    "trigger": "Card Carousel",
+    "responseText": "Carousel",
+    "selectors": [
+      ".km-carousel-card-title[title=\"OYO Rooms 1\"]",
+      ".km-carousel-card-title[title=\"OYO Rooms 2\"]",
+      ".km-carousel-card-title[title=\"OYO Rooms 3\"]",
+      "button[aria-label=\"Link Button\"]",
+      "button[aria-label=\"Suggested Reply\"]",
+      "button[aria-label=\"Submit button\"]",
+      ".km-carousel-card-template img"
+    ],
+    "actions": [
+      {
+        "type": "reply",
+        "selector": "button[aria-label=\"Suggested Reply\"]",
+        "label": "Reply click sends the configured message",
+        "expectedText": "text will be sent as message"
+      }
+    ]
+  },
+  {
+    "name": "Videos & YouTube rich msg",
+    "trigger": "Videos & YouTube",
+    "responseText": "Hello this is example videos",
+    "selectors": [
+      "video.mck-rich-video",
+      "iframe[src=\"https://www.youtube.com/embed/3-ijFzzF934\"], iframe[src^=\"https://www.youtube.com/embed/3-ijFzzF934?\"]"
+    ]
+  },
+  {
+    "name": "HTML Rich message",
+    "trigger": "HTML",
+    "responseText": "This is a heading",
+    "selectors": [
+      "h1",
+      "p"
+    ]
+  },
+  {
+    "name": "Form Template",
+    "trigger": "Form",
+    "responseText": "Submit your details",
+    "selectors": [
+      "input[placeholder=\"Enter your name\"]",
+      "input[type=\"password\"]",
+      "input[type=\"radio\"][value=\"male\"]",
+      "input[type=\"checkbox\"][value=\"metal\"]",
+      "button[type=\"submit\"]"
+    ],
+    "actions": [
+      {
+        "type": "fill",
+        "selector": "input[placeholder=\"Enter your name\"]",
+        "label": "Name entered",
+        "value": "Release QA"
+      },
+      {
+        "type": "fill",
+        "selector": "input[type=\"password\"]",
+        "label": "Synthetic password entered",
+        "value": "QaOnly42"
+      },
+      {
+        "type": "check",
+        "selector": "input[type=\"radio\"][value=\"male\"]",
+        "label": "Radio selected",
+        "checked": true
+      },
+      {
+        "type": "check",
+        "selector": "input[type=\"checkbox\"][value=\"metal\"]",
+        "label": "Metal checked",
+        "checked": true
+      },
+      {
+        "type": "check",
+        "selector": "input[type=\"checkbox\"][value=\"blues\"]",
+        "label": "Blues checked",
+        "checked": true
+      },
+      {
+        "type": "check",
+        "selector": "input[type=\"checkbox\"][value=\"blues\"]",
+        "label": "Blues unchecked",
+        "checked": false
+      },
+      {
+        "type": "submit",
+        "selector": "button[type=\"submit\"], button[data-buttontype=\"submit\"]",
+        "label": "Submission payload captured (endpoint not contacted)",
+        "url": "<URL>",
+        "expectedData": {
+          "Name": "Release QA",
+          "Password": "QaOnly42",
+          "Gender": "male",
+          "music_type": [
+            "metal"
+          ],
+          "userDetail": "some_secret_detail"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Form dropdown",
+    "trigger": "Form dropdown",
+    "responseText": "Form Dropdown - Template 1",
+    "selectors": [
+      "select[name=\"profession\"]",
+      "input[placeholder=\"Enter your name\"]",
+      "button[type=\"submit\"]"
+    ],
+    "actions": [
+      {
+        "type": "select",
+        "selector": "select[name=\"profession\"]",
+        "label": "Profession selected",
+        "value": "Engineer"
+      },
+      {
+        "type": "fill",
+        "selector": "input[placeholder=\"Enter your name\"]",
+        "label": "Name entered",
+        "value": "Release QA"
+      },
+      {
+        "type": "submit",
+        "selector": "button[type=\"submit\"], button[data-buttontype=\"submit\"]",
+        "label": "Submission payload captured (endpoint not contacted)",
+        "url": "https://reqres.in/api/users",
+        "expectedData": {
+          "profession": "Engineer",
+          "Name": "Release QA"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Form with Text Area",
+    "trigger": "Form text area",
+    "responseText": "Form Textarea with Validation",
+    "selectors": [
+      "textarea[name=\"review\"]",
+      "input[placeholder=\"Enter your name\"]",
+      "button[type=\"submit\"]"
+    ],
+    "actions": [
+      {
+        "type": "fill",
+        "selector": "textarea[name=\"review\"]",
+        "label": "Invalid review entered",
+        "value": "Invalid @ review"
+      },
+      {
+        "type": "invalidSubmit",
+        "selector": "button[type=\"submit\"]",
+        "label": "Invalid review blocked with visible validation error",
+        "url": "https://reqres.in/api/users",
+        "errorSelector": ".mck-form-error-review"
+      },
+      {
+        "type": "fill",
+        "selector": "textarea[name=\"review\"]",
+        "label": "Valid review entered",
+        "value": "Kommunicate release testing"
+      },
+      {
+        "type": "fill",
+        "selector": "input[placeholder=\"Enter your name\"]",
+        "label": "Name entered",
+        "value": "Release QA"
+      },
+      {
+        "type": "submit",
+        "selector": "button[type=\"submit\"], button[data-buttontype=\"submit\"]",
+        "label": "Submission payload captured (endpoint not contacted)",
+        "url": "https://reqres.in/api/users",
+        "expectedData": {
+          "review": "Kommunicate release testing",
+          "Name": "Release QA"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Autosuggestions in your chat box",
+    "trigger": "Where do you wanna go this summer?\"",
+    "responseText": "Where do you wanna go this summer?",
+    "selectors": [],
+    "skipReason": "Needs a composer autosuggestion interaction check; message rendering alone cannot verify suggestions."
+  }
+]

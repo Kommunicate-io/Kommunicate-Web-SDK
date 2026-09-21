@@ -190,7 +190,7 @@
             .widget-preview {
                 border: 1px solid #d1d9f2;
                 border-radius: 18px;
-                min-height: 600px;
+                height: 600px;
                 padding: 20px;
                 display: flex;
                 align-items: center;
@@ -883,7 +883,7 @@
 
                 if (config.agentId) {
                     const agentRoutingSettings = {
-                        defaultAgentIds: [config.agentId],
+                        defaultBotIds: [config.agentId],
                         defaultAssignee: config.agentId,
                         skipRouting: true,
                     };
@@ -923,7 +923,9 @@
                     s.id = 'kommunicate-widget-script';
                     s.type = 'text/javascript';
                     s.async = true;
-                    const scriptUrl = '/kommunicate-widget-3.0.min.js';
+                    const scriptUrl = disableCache
+                        ? 'https://widget-test.kommunicate.io/kommunicate-widget-3.0.min.js'
+                        : '/kommunicate-widget-3.0.min.js';
                     s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
                     const h = d.getElementsByTagName('head')[0];
                     h.appendChild(s);
@@ -1023,5 +1025,9 @@
             resetForm();
             handlePendingLaunch();
         </script>
+        <!-- rich-message-tests:start -->
+        <script src="./rich-message-tests/runner.js"></script>
+        <script src="./rich-message-tests/panel.js"></script>
+        <!-- rich-message-tests:end -->
     </body>
 </html>
