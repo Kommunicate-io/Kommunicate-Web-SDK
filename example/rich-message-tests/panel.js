@@ -3,22 +3,61 @@
     const runner = window.RichMessageTests;
     if (!runner.allowed(location.hostname)) return;
     const panel = document.createElement('section');
-    panel.className = 'panel';
+    panel.className = 'rich-test-panel';
+    panel.setAttribute('aria-labelledby', 'rich-heading');
     panel.innerHTML = `
-        <h2>Rich-message release checks</h2>
-        <p>Use a dedicated test app and trained bot. Checks send real chat messages and verify new bot responses in the selected widget layout.</p>
-        <p>Cases are matched to your exported bot. Set App ID and Bot ID above, then launch. Missing automation is reported as skipped.</p>
-        <label for="rich-cases">Test cases (JSON)</label>
-        <textarea id="rich-cases" rows="12" spellcheck="false"></textarea>
-        <p>Checks render messages, fill forms, and click configured controls. Form payloads are captured locally and link navigation is intercepted. External endpoints and video playback are not tested. Form values are synthetic test data.</p>
+        <style>
+            main.rich-test-layout { grid-template-columns: minmax(340px, 400px) minmax(0, 1fr); align-items: start; }
+            .rich-test-layout > .preview-panel { position: sticky; top: 24px; }
+            .rich-test-panel { margin: 20px 0; padding: 18px; border: 1px solid #dbe2f0; border-radius: 14px; background: #f8fafc; }
+            .rich-test-panel h2 { font-size: 18px; margin: 0 0 8px; }
+            .rich-test-panel p { font-size: 13px; line-height: 1.5; }
+            .rich-test-panel .actions { gap: 8px; }
+            .rich-test-panel .actions button { padding: 10px 14px; font-size: 13px; }
+            .rich-test-panel #rich-launch { width: 100%; }
+            .rich-test-panel .actions button:not(#rich-launch) { background: #e2e8f0; color: #0f172a; }
+            .rich-test-panel .actions button:disabled { opacity: .45; cursor: not-allowed; }
+            .rich-test-panel :is(button, summary, textarea):focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+            .rich-test-panel details { margin-top: 14px; }
+            .rich-test-panel summary { font-size: 13px; }
+            .rich-test-panel summary::after { content: '+'; }
+            .rich-test-panel details[open] > summary::after { content: '−'; }
+            .rich-test-panel label { display: block; margin: 12px 0 6px; font-size: 12px; }
+            .rich-test-panel textarea { font-family: Consolas, monospace; font-size: 12px; }
+            .rich-test-panel #rich-status { margin: 14px 0 0; padding: 10px; border-radius: 8px; background: #eef2ff; color: #1f3e8a; overflow-wrap: anywhere; }
+            .rich-test-panel #rich-results { list-style: none; padding: 0; margin: 12px 0 0; max-height: 420px; overflow-y: auto; }
+            .rich-test-panel #rich-results:empty { display: none; }
+            .rich-test-panel .rich-result { padding: 10px; margin-bottom: 8px; border: 1px solid #dbe2f0; border-left: 3px solid #94a3b8; border-radius: 8px; background: white; overflow-wrap: anywhere; }
+            .rich-test-panel .rich-result[data-status="failed"] { border-left-color: #b91c1c; }
+            .rich-test-panel .rich-result[data-status="passed"] { border-left-color: #15803d; }
+            .rich-test-panel .rich-result[data-status="running"] { border-left-color: #2563eb; }
+            .rich-test-panel .rich-result strong { display: block; font-size: 13px; margin: 5px 0; }
+            .rich-test-panel .rich-result span { font-size: 11px; font-weight: 700; color: #475569; }
+            .rich-test-panel .rich-result[data-status="failed"] span { color: #991b1b; }
+            .rich-test-panel .rich-result[data-status="passed"] span { color: #166534; }
+            .rich-test-panel .rich-result p { margin: 0; font-size: 12px; }
+            @media (max-width: 800px) {
+                main.rich-test-layout { grid-template-columns: minmax(0, 1fr); }
+                .rich-test-layout > .preview-panel { position: static; }
+            }
+        </style>
+        <h2 id="rich-heading">Rich-message tests</h2>
+        <p>Check messages, buttons and forms with your test bot. Use the App ID and Bot ID in the settings below.</p>
         <div class="actions">
           <button id="rich-launch" type="button">Launch rich-message tests</button>
           <button id="rich-stop" type="button" disabled>Stop</button>
           <button id="rich-download" type="button" disabled>Download report</button>
         </div>
         <p id="rich-status" role="status" aria-live="polite">Loading test cases…</p>
-        <ol id="rich-results"></ol>`;
-    document.querySelector('main').appendChild(panel);
+        <ol id="rich-results" aria-label="Test results"></ol>
+        <details>
+          <summary>Test cases & coverage</summary>
+          <p>Checks send real chat messages, fill fields with synthetic data, and click controls. Form payloads are captured locally and link navigation is intercepted. External endpoint responses and video playback are not tested. Unsupported checks are skipped.</p>
+          <label for="rich-cases">Edit test cases (JSON)</label>
+          <textarea id="rich-cases" rows="10" spellcheck="false"></textarea>
+        </details>`;
+    document.querySelector('main').classList.add('rich-test-layout');
+    document.getElementById('widget-config-form').before(panel);
     const editor = panel.querySelector('#rich-cases');
     const launch = panel.querySelector('#rich-launch');
     const stop = panel.querySelector('#rich-stop');
@@ -34,8 +73,15 @@
         list.replaceChildren();
         results.forEach(result => {
             const row = document.createElement('li');
-            row.textContent = `${result.status.toUpperCase()} — ${result.name}${result.detail ? ': ' + result.detail : ''}`;
-            row.style.color = result.status === 'failed' ? '#991b1b' : result.status === 'passed' ? '#166534' : '#475569';
+            row.className = 'rich-result';
+            row.dataset.status = result.status;
+            const badge = document.createElement('span');
+            badge.textContent = result.status.toUpperCase();
+            const name = document.createElement('strong');
+            name.textContent = result.name;
+            const detail = document.createElement('p');
+            detail.textContent = result.detail;
+            row.append(badge, name, detail);
             list.appendChild(row);
         });
     }
