@@ -241,6 +241,12 @@ function KommunicateCommons() {
     };
     _this.isEnterprisePlan = function (data) {
         try {
+            const featureAccess =
+                Kommunicate._globals.appSettings.companySetting?.featureAccess || [];
+            if (featureAccess.includes('settings.business-hours')) {
+                return true;
+            }
+
             const isExpired = _this.isKommunicatePlanExpired(data);
             if (isExpired) {
                 return false;
