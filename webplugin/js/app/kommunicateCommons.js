@@ -242,7 +242,7 @@ function KommunicateCommons() {
     _this.hasBusinessHoursAccess = function (data) {
         try {
             const featureAccess = Kommunicate._globals.appSettings.chatWidget?.featureAccess || [];
-            if (featureAccess.includes('settings.business-hours')) {
+            if (featureAccess.includes(KommunicateConstants.FEATURE_ACCESS.BUSINESS_HOURS)) {
                 return true;
             }
 
