@@ -239,10 +239,9 @@ function KommunicateCommons() {
             data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP
         );
     };
-    _this.isEnterprisePlan = function (data) {
+    _this.hasBusinessHoursAccess = function (data) {
         try {
-            const featureAccess =
-                Kommunicate._globals.appSettings.companySetting?.featureAccess || [];
+            const featureAccess = Kommunicate._globals.appSettings.chatWidget?.featureAccess || [];
             if (featureAccess.includes('settings.business-hours')) {
                 return true;
             }
