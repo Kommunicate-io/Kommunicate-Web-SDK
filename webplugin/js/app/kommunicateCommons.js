@@ -239,8 +239,13 @@ function KommunicateCommons() {
             data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP
         );
     };
-    _this.isEnterprisePlan = function (data) {
+    _this.hasBusinessHoursAccess = function (data) {
         try {
+            const featureAccess = Kommunicate._globals.appSettings.chatWidget?.featureAccess || [];
+            if (featureAccess.includes(KommunicateConstants.FEATURE_ACCESS.BUSINESS_HOURS)) {
+                return true;
+            }
+
             const isExpired = _this.isKommunicatePlanExpired(data);
             if (isExpired) {
                 return false;
