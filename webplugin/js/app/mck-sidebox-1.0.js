@@ -4191,7 +4191,7 @@ const firstVisibleMsg = {
                                 (team) => String(team.teamId) === String(CURRENT_GROUP_DATA.teamId)
                             );
                         }
-                        isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
+                        isBusinessHourAvailable = kommunicateCommons.hasBusinessHoursAccess(
                             INIT_APP_DATA
                         );
                         BUSINESS_HOUR_SETTING = teamSettings;
