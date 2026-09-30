@@ -4656,45 +4656,9 @@ const firstVisibleMsg = {
                     var fileFromClipboard =
                         clipboardData && clipboardData.files && clipboardData.files[0];
 
-                    if (event.type === 'paste' && clipboardData) {
-                        console.info('[KM clipboard attachment diagnostic]', {
-                            types: Array.prototype.slice.call(clipboardData.types),
-                            textLength: clipboardText ? clipboardText.length : 0,
-                            files: Array.prototype.slice
-                                .call(clipboardData.files)
-                                .map(function (file) {
-                                    return {
-                                        name: file.name,
-                                        type: file.type,
-                                        size: file.size,
-                                        lastModified: file.lastModified,
-                                    };
-                                }),
-                        });
-                    }
-
                     if (fileFromClipboard && !clipboardText) {
-                        console.info(
-                            '[KM clipboard attachment diagnostic] uploading clipboard file',
-                            {
-                                name: fileFromClipboard.name,
-                                type: fileFromClipboard.type,
-                                size: fileFromClipboard.size,
-                            }
-                        );
                         mckFileService.uploadFileFunction(null, fileFromClipboard);
                         return;
-                    }
-
-                    if (fileFromClipboard && clipboardText) {
-                        console.info(
-                            '[KM clipboard attachment diagnostic] ignored clipboard file because paste contains text',
-                            {
-                                name: fileFromClipboard.name,
-                                type: fileFromClipboard.type,
-                                size: fileFromClipboard.size,
-                            }
-                        );
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
                         var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot
