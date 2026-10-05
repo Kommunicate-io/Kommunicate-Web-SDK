@@ -232,10 +232,6 @@
                 mapTypeControl: false,
             };
 
-            if (mapConfig.googleApiKey) {
-                mapOptions.mapId = mapConfig.googleApiKey;
-            }
-
             mapInstance = new googleMaps.maps.Map($mckMapContent[0], mapOptions);
 
             const handleDragEnd = (event) => {
