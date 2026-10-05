@@ -10,7 +10,7 @@ class TypingService {
         this.alreadyScrolledFirstMsg = false;
         this.cumulativeHeight = 0;
         this.isKmTalkToHumanMsg = false;
-        this.TYPING_TIMEOUT_MILLISEC = 20000; // 20 seconds
+        this.TYPING_TIMEOUT_MILLISEC = 60000; // 1 minute
     }
 
     init(appOptions = {}) {

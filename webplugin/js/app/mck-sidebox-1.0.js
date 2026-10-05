@@ -4651,11 +4651,12 @@ const firstVisibleMsg = {
                 };
 
                 $mck_text_box.on('input paste', function (event) {
+                    var clipboardData = event.originalEvent && event.originalEvent.clipboardData;
+                    var clipboardText = clipboardData && clipboardData.getData('text/plain');
                     var fileFromClipboard =
-                        event.originalEvent.clipboardData &&
-                        event.originalEvent.clipboardData.files &&
-                        event.originalEvent.clipboardData.files[0];
-                    if (fileFromClipboard) {
+                        clipboardData && clipboardData.files && clipboardData.files[0];
+
+                    if (fileFromClipboard && !clipboardText) {
                         mckFileService.uploadFileFunction(null, fileFromClipboard);
                         return;
                     }
