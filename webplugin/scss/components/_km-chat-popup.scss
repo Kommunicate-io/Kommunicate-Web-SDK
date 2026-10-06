@@ -601,9 +601,10 @@ $popupClass: '.chat-popup-widget-container';
     right: 0;
     bottom: 70px;
     z-index: 1;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    min-width: 220px;
+    height: 56px;
+    padding: 0 24px;
+    border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -620,9 +621,18 @@ $popupClass: '.chat-popup-widget-container';
 }
 
 .km-whatsapp-launcher-icon {
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     display: flex;
+    flex: 0 0 auto;
+}
+
+.km-whatsapp-launcher-label {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .km-whatsapp-launcher-icon svg {
