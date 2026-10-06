@@ -48,6 +48,8 @@ const pluginVersions = ['v1', 'v2', 'v3'];
 PLUGIN_SETTING.kommunicateApiUrl =
     PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
 PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
+PLUGIN_SETTING.omnichannelBaseUrl =
+    PLUGIN_SETTING.omnichannelBaseUrl || config.urls.omnichannelBaseUrl;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 
