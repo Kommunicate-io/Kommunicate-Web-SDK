@@ -6,46 +6,142 @@
 
 Kommunicate.client = {
     getGeoIpLocation: function () {
-        return new Promise(function (resolve) {
-            if (typeof mckUtils === 'undefined' || typeof mckUtils.ajax !== 'function') {
-                resolve({});
-                return;
-            }
+        var globals = applozic._globals;
+        if (globals && globals.capturedLocationPromise) {
+            return globals.capturedLocationPromise;
+        }
+
+        var promise = new Promise(function (resolve) {
             var isResolved = false;
             var timeoutMs = 3000;
-            var fallbackTimer = setTimeout(function () {
+            var xhr = new XMLHttpRequest();
+            var finish = function (location) {
                 if (isResolved) {
                     return;
                 }
                 isResolved = true;
-                resolve({});
+                clearTimeout(fallbackTimer);
+                resolve(location || {});
+            };
+            var fallbackTimer = setTimeout(function () {
+                finish({});
             }, timeoutMs);
-            mckUtils.ajax({
-                url: 'https://ipapi.co/json',
-                timeout: timeoutMs,
-                success: function (data) {
-                    if (isResolved) {
-                        return;
-                    }
-                    isResolved = true;
-                    clearTimeout(fallbackTimer);
-                    var location = {};
-                    if (data && typeof data === 'object') {
-                        data.city && (location.city = data.city);
-                        data.region && (location.region = data.region);
-                        data.country_name && (location.country = data.country_name);
-                    }
-                    resolve(location);
-                },
-                error: function () {
-                    if (isResolved) {
-                        return;
-                    }
-                    isResolved = true;
-                    clearTimeout(fallbackTimer);
-                    resolve({});
-                },
+            xhr.open('GET', 'https://ipapi.co/json', true);
+            xhr.timeout = timeoutMs;
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState !== 4) {
+                    return;
+                }
+                if (xhr.status !== 200 || !xhr.responseText) {
+                    finish({});
+                    return;
+                }
+                var data;
+                try {
+                    data = JSON.parse(xhr.responseText);
+                } catch (error) {
+                    finish({});
+                    return;
+                }
+                var location = {};
+                if (data && typeof data === 'object') {
+                    data.city && (location.city = data.city);
+                    data.region && (location.region = data.region);
+                    data.country_name && (location.country = data.country_name);
+                    var countryCode = data.country_code || data.country;
+                    countryCode && (location.countryCode = countryCode);
+                }
+                finish(location);
+            };
+            xhr.onerror = function () {
+                finish({});
+            };
+            xhr.ontimeout = function () {
+                finish({});
+            };
+            try {
+                xhr.send(null);
+            } catch (error) {
+                finish({});
+            }
+        });
+
+        if (globals) {
+            globals.capturedLocationPromise = promise;
+        }
+        return promise;
+    },
+    /**
+     * Skip widget startup for a country rule.
+     * An ignore list, or countryAccess.mode "block", skips matching countries.
+     * countryAccess.mode "allow" skips every other country.
+     * A failed lookup does not skip initialization.
+     * @param {Array|String} ignoreCountries
+     * @param {{mode?: String, countries?: Array|String}} countryAccess
+     * @returns {Promise<boolean>}
+     */
+    shouldSkipWidgetForCountry: function (ignoreCountries, countryAccess) {
+        function normalizeCountryList(value) {
+            var list = Array.isArray(value)
+                ? value
+                : typeof value === 'string'
+                ? value.split(',')
+                : [];
+            var normalized = [];
+            list.forEach(function (country) {
+                var token = String(country || '')
+                    .trim()
+                    .toLowerCase();
+                if (token && normalized.indexOf(token) === -1) {
+                    normalized.push(token);
+                }
             });
+            return normalized;
+        }
+
+        function countryMatchesList(location, countryList) {
+            var tokens = [location.country, location.countryCode];
+            for (var i = 0; i < tokens.length; i++) {
+                var token = String(tokens[i] || '')
+                    .trim()
+                    .toLowerCase();
+                if (token && countryList.indexOf(token) !== -1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function hasResolvedCountry(location) {
+            return Boolean(
+                String((location && location.country) || '').trim() ||
+                    String((location && location.countryCode) || '').trim()
+            );
+        }
+
+        var legacyCountries = normalizeCountryList(ignoreCountries);
+        var accessMode = countryAccess && countryAccess.mode;
+        if (accessMode === 'include') {
+            accessMode = 'allow';
+        } else if (accessMode === 'exclude') {
+            accessMode = 'block';
+        }
+        var accessCountries = normalizeCountryList(countryAccess && countryAccess.countries);
+        var hasAccess =
+            (accessMode === 'allow' || accessMode === 'block') && accessCountries.length;
+        if (!legacyCountries.length && !hasAccess) {
+            return Promise.resolve(false);
+        }
+
+        return this.getGeoIpLocation().then(function (location) {
+            if (!hasResolvedCountry(location)) {
+                return false;
+            }
+            if (legacyCountries.length) {
+                return countryMatchesList(location, legacyCountries);
+            }
+            var matchesAccess = countryMatchesList(location, accessCountries);
+            return accessMode === 'allow' ? !matchesAccess : matchesAccess;
         });
     },
     /**

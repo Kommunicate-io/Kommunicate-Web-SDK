@@ -478,6 +478,25 @@ function ApplozicSidebox() {
                 typeof widgetSettings.captureLocation === 'boolean'
                     ? widgetSettings.captureLocation
                     : false;
+            var ignoreCountries =
+                options.ignoreCountries != null
+                    ? options.ignoreCountries
+                    : widgetSettings.ignoreCountries;
+            var countryAccess =
+                options.ignoreCountries == null && widgetSettings.captureLocation
+                    ? {
+                          mode: widgetSettings.countryInitMode,
+                          countries: widgetSettings.widgetCountries,
+                      }
+                    : null;
+            // Start the lookup before the rest of startup so a country can stop initialization.
+            var skipForCountry = Kommunicate.client.shouldSkipWidgetForCountry(
+                ignoreCountries,
+                countryAccess
+            );
+            if (widgetSettings.captureLocation) {
+                Kommunicate.client.getGeoIpLocation();
+            }
             var disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
@@ -536,6 +555,10 @@ function ApplozicSidebox() {
             // Remove scripts if disableChatWidget property is enabled
             // or domain restrictions are enabled
             if ((disableChatWidget || isCurrentDomainDisabled) && !isCurrentDomainKommunicate) {
+                parent.window && parent.window.removeKommunicateScripts();
+                return false;
+            }
+            if (!isCurrentDomainKommunicate && (await skipForCountry)) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
