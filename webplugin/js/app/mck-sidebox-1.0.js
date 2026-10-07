@@ -77,7 +77,7 @@ const firstVisibleMsg = {
         genereateCloudFileUrl: 'https://googleupload.applozic.com/files/url?key={key}', // deprecated legacy file-url template kept for backward-compatible config surface
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
+        mapStaticAPIkey: KM_PLUGIN_SETTINGS.googleApiKey || '',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
