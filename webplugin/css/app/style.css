@@ -1158,6 +1158,51 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /* Chat Popup Template Code Ends */
+.km-whatsapp-launcher {
+  position: absolute;
+  right: 0;
+  bottom: 70px;
+  z-index: 1;
+  min-width: 220px;
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #25d366;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 2px 5px 1px rgba(107, 104, 104, 0.5);
+}
+
+.km-whatsapp-launcher:hover,
+.km-whatsapp-launcher:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.km-whatsapp-launcher-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.km-whatsapp-launcher-label {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.km-whatsapp-launcher-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
 .mck-btn-text-panel--small, .mck-textbox-container .mck-btn-text-panel, .mck-textbox-container .mck-text-box-panel, .mck-textbox-container .mck-location-sharing-box {
   display: inline-flex;
   align-items: center;

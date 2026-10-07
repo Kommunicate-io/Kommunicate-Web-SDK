@@ -79,6 +79,9 @@ const firstVisibleMsg = {
         notificationSoundLink: '',
         mapStaticAPIkey: 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         launcher: 'applozic-launcher',
+        whatsappNumber: '',
+        showWhatsAppOnWidget: false,
+        whatsappLabel: 'Chat on WhatsApp',
         emojilibrary: false,
         userId: null,
         appId: null,
@@ -137,6 +140,21 @@ const firstVisibleMsg = {
             ? widgetOverride
             : !!(botDetails && botDetails.answerFeedback);
     }
+    function getWhatsAppUrl(number) {
+        var normalizedNumber = String(number).replace(/\D/g, '');
+        if (!normalizedNumber) {
+            return '';
+        }
+        return 'https://wa.me/' + normalizedNumber;
+    }
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
     function toggleSingleThreadedClass(shouldApply) {
         var sidebox = document.getElementById('mck-sidebox');
         if (!sidebox || !sidebox.classList) {
@@ -157,6 +175,15 @@ const firstVisibleMsg = {
             // storing custom appOptions into session Storage.
             appOptionSession.setSessionData('appOptions', appOptions);
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
+            var persistedChatWidgetSettings =
+                (appOptions.appSettings && appOptions.appSettings.chatWidget) ||
+                appOptions.widgetSettings;
+            if (persistedChatWidgetSettings) {
+                appOptions.showWhatsAppOnWidget = persistedChatWidgetSettings.showWhatsAppOnWidget;
+                appOptions.whatsappNumber = persistedChatWidgetSettings.whatsappNumber;
+                appOptions.whatsappLabel =
+                    persistedChatWidgetSettings.whatsappLabel || appOptions.whatsappLabel;
+            }
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
             appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
             appOptions.accessToken = appOptions.password || appOptions.accessToken;
@@ -2075,6 +2102,25 @@ const firstVisibleMsg = {
                     '<div id="launcher-svg-container" class="vis" style ="white-space: nowrap;">' +
                     CUSTOM_CHAT_LAUNCHER +
                     '</div>';
+                var whatsappUrl = appOptions.showWhatsAppOnWidget
+                    ? getWhatsAppUrl(appOptions.whatsappNumber)
+                    : '';
+                var whatsappLabel = escapeHtml(appOptions.whatsappLabel || 'Chat on WhatsApp');
+                var whatsappLauncherHtml = whatsappUrl
+                    ? '<a class="km-whatsapp-launcher" href="' +
+                      whatsappUrl +
+                      '" target="_blank" rel="noopener noreferrer" aria-label="' +
+                      whatsappLabel +
+                      '" title="' +
+                      whatsappLabel +
+                      '">' +
+                      '<span class="km-whatsapp-launcher-icon" aria-hidden="true">' +
+                      '<svg viewBox="0 0 24 24" focusable="false"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.9c0 2.1.5 4.1 1.6 5.9L.1 24l6.3-1.6a11.9 11.9 0 0 0 5.7 1.4h.1c6.5 0 11.8-5.3 11.8-11.9 0-3.2-1.2-6.2-3.5-8.4Zm-8.4 18.3h-.1a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.7-.2-.4a9.9 9.9 0 0 1-1.5-5.2c0-5.5 4.4-9.9 9.9-9.9 2.6 0 5.1 1 7 2.9a9.8 9.8 0 0 1 2.9 7c0 5.5-4.5 9.9-9.9 9.9Zm5.4-7.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4Z"/></svg>' +
+                      '</span><span class="km-whatsapp-launcher-label">' +
+                      whatsappLabel +
+                      '</span>' +
+                      '</a>'
+                    : '';
                 if (isAnonymousChat) {
                     return (
                         '<a href="#" target="_self" aria-label="Open Chat" tabindex="0" role="button">' +
@@ -2092,6 +2138,7 @@ const firstVisibleMsg = {
                         '<div class="mck-close-btn-container">' +
                         '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg width="16" height="16" viewBox="0 0 16 16" focusable="false" aria-hidden="true"><use xlink:href="#icon-26" href="#icon-26"></use></svg></span><span class="mck-close-text">Close</span></div></div>' +
                         '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' +
+                        whatsappLauncherHtml +
                         Kommunicate.popupChatTemplate.getPopupChatTemplate(
                             MCK_POPUP_WIDGET_CONTENT,
                             WIDGET_SETTINGS
@@ -12117,7 +12164,6 @@ const firstVisibleMsg = {
                 var kmIframe = parent.document.getElementById('kommunicate-widget-iframe');
                 kommunicateCommons.hide('#mck-msg-preview-visual-indicator');
                 $mck_msg_preview_visual_indicator_text.html('');
-                kmIframe.style.width = '';
             };
 
             _this.showMessagePreview = function (message) {
