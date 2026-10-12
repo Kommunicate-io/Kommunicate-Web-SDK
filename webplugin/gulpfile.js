@@ -349,6 +349,8 @@ const generateBuildFiles = () => {
             generateFilesByVersion('build/plugin.js');
         });
     });
+    copyFileToBuild('whatsapp-widget.js', `${buildDir}/whatsapp-widget.js`);
+    minifyJS('whatsapp-widget.js', buildDir, 'whatsapp-widget.min.js', true);
     // Generate mck-app.js file for build folder.
     fs.readFile(path.join(__dirname, 'js/app/mck-app.js'), 'utf8', function (err, data) {
         // console.log(data, err);
