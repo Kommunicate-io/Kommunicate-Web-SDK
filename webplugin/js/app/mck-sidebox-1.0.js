@@ -12117,6 +12117,7 @@ const firstVisibleMsg = {
                 var kmIframe = parent.document.getElementById('kommunicate-widget-iframe');
                 kommunicateCommons.hide('#mck-msg-preview-visual-indicator');
                 $mck_msg_preview_visual_indicator_text.html('');
+                kmIframe.style.width = '';
             };
 
             _this.showMessagePreview = function (message) {

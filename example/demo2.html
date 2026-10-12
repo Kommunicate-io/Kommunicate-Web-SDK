@@ -507,7 +507,7 @@
 
         <script>
             const defaultState = {
-                appId: '1883b190054b065cd3096b8179deb2e13',
+                appId: 'kommunicate-support',
                 agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
@@ -822,7 +822,6 @@
                     layout: config.layout,
                     popupWidget: config.containerMode === 'outside',
                     automaticChatOpenOnNavigation: true,
-                    locShare: true,
                     voiceChat: config.voiceModeEnabled,
                     widgetSettings: config.widgetSettings,
                     whatsNewList: [
@@ -925,7 +924,7 @@
                     s.type = 'text/javascript';
                     s.async = true;
                     const scriptUrl = disableCache
-                        ? '/v3/kommunicate.app'
+                        ? 'https://widget-test.kommunicate.io/kommunicate-widget-3.0.min.js'
                         : '/kommunicate-widget-3.0.min.js';
                     s.src = scriptUrl + (disableCache ? '?_=' + Date.now() : '');
                     const h = d.getElementsByTagName('head')[0];
