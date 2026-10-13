@@ -72,76 +72,38 @@ Kommunicate.client = {
         return promise;
     },
     /**
-     * Skip widget startup for a country rule.
-     * An ignore list, or countryAccess.mode "block", skips matching countries.
-     * countryAccess.mode "allow" skips every other country.
-     * A failed lookup does not skip initialization.
-     * @param {Array|String} ignoreCountries
-     * @param {{mode?: String, countries?: Array|String}} countryAccess
+     * Skip widget startup when the visitor's country is outside an allow list
+     * or inside a block list. A failed lookup does not skip initialization.
+     * @param {{mode?: String, countries?: Array}} countryAccess
      * @returns {Promise<boolean>}
      */
-    shouldSkipWidgetForCountry: function (ignoreCountries, countryAccess) {
-        function normalizeCountryList(value) {
-            var list = Array.isArray(value)
-                ? value
-                : typeof value === 'string'
-                ? value.split(',')
-                : [];
-            var normalized = [];
-            list.forEach(function (country) {
-                var token = String(country || '')
+    shouldSkipWidgetForCountry: function (countryAccess) {
+        var mode = countryAccess && countryAccess.mode;
+        var countries = [];
+        var source = countryAccess && countryAccess.countries;
+        if (Array.isArray(source)) {
+            source.forEach(function (country) {
+                var code = String(country || '')
                     .trim()
                     .toLowerCase();
-                if (token && normalized.indexOf(token) === -1) {
-                    normalized.push(token);
+                if (code && countries.indexOf(code) === -1) {
+                    countries.push(code);
                 }
             });
-            return normalized;
         }
-
-        function countryMatchesList(location, countryList) {
-            var tokens = [location.country, location.countryCode];
-            for (var i = 0; i < tokens.length; i++) {
-                var token = String(tokens[i] || '')
-                    .trim()
-                    .toLowerCase();
-                if (token && countryList.indexOf(token) !== -1) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function hasResolvedCountry(location) {
-            return Boolean(
-                String((location && location.country) || '').trim() ||
-                    String((location && location.countryCode) || '').trim()
-            );
-        }
-
-        var legacyCountries = normalizeCountryList(ignoreCountries);
-        var accessMode = countryAccess && countryAccess.mode;
-        if (accessMode === 'include') {
-            accessMode = 'allow';
-        } else if (accessMode === 'exclude') {
-            accessMode = 'block';
-        }
-        var accessCountries = normalizeCountryList(countryAccess && countryAccess.countries);
-        var hasAccess =
-            (accessMode === 'allow' || accessMode === 'block') && accessCountries.length;
-        if (!legacyCountries.length && !hasAccess) {
+        if ((mode !== 'allow' && mode !== 'block') || !countries.length) {
             return Promise.resolve(false);
         }
 
         return this.getGeoIpLocation().then(function (location) {
-            if (!hasResolvedCountry(location)) {
+            var countryCode = String((location && location.countryCode) || '')
+                .trim()
+                .toLowerCase();
+            if (!countryCode) {
                 return false;
             }
-            if (legacyCountries.length) {
-                return countryMatchesList(location, legacyCountries);
-            }
-            var matchesAccess = countryMatchesList(location, accessCountries);
-            return accessMode === 'allow' ? !matchesAccess : matchesAccess;
+            var matches = countries.indexOf(countryCode) !== -1;
+            return mode === 'allow' ? !matches : matches;
         });
     },
     /**

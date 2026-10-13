@@ -478,25 +478,14 @@ function ApplozicSidebox() {
                 typeof widgetSettings.captureLocation === 'boolean'
                     ? widgetSettings.captureLocation
                     : false;
-            var ignoreCountries =
-                options.ignoreCountries != null
-                    ? options.ignoreCountries
-                    : widgetSettings.ignoreCountries;
-            var countryAccess =
-                options.ignoreCountries == null && widgetSettings.captureLocation
+            var skipForCountry = Kommunicate.client.shouldSkipWidgetForCountry(
+                widgetSettings.captureLocation
                     ? {
                           mode: widgetSettings.countryInitMode,
                           countries: widgetSettings.widgetCountries,
                       }
-                    : null;
-            // Start the lookup before the rest of startup so a country can stop initialization.
-            var skipForCountry = Kommunicate.client.shouldSkipWidgetForCountry(
-                ignoreCountries,
-                countryAccess
+                    : null
             );
-            if (widgetSettings.captureLocation) {
-                Kommunicate.client.getGeoIpLocation();
-            }
             var disableChatWidget =
                 options.disableChatWidget != null
                     ? options.disableChatWidget
