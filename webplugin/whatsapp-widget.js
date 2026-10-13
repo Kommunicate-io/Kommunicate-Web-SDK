@@ -3,7 +3,7 @@
 
     var STYLE_ID = 'kommunicate-whatsapp-widget-style';
     var LAUNCHER_ID = 'km-whatsapp-launcher';
-    var DEFAULT_API_URL = 'https://apps.kommunicate.io';
+    var DEFAULT_API_URL = 'https://api.kommunicate.io';
 
     function escapeHtml(value) {
         return String(value).replace(/[&<>'"]/g, function (character) {
