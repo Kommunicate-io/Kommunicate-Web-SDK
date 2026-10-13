@@ -548,6 +548,7 @@ function ApplozicSidebox() {
                 return false;
             }
             if (!isCurrentDomainKommunicate && (await skipForCountry)) {
+                appOptionSession.removeAppInstanceCount();
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
