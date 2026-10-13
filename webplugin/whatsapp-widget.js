@@ -121,14 +121,12 @@
                 return;
             }
             options.onError('WhatsApp settings request failed with status ' + request.status + '.');
-            console.error('Kommunicate WhatsApp settings request failed:', request.status);
         };
         request.onerror = function () {
             if (token !== currentToken) {
                 return;
             }
             options.onError('WhatsApp settings request could not be completed.');
-            console.error('Kommunicate WhatsApp settings request could not be completed.');
         };
         request.send();
     }
@@ -136,11 +134,17 @@
     window.KommunicateWhatsApp = {
         init: function (options) {
             options = options || {};
-            options.onError = options.onError || function () {};
+            options.onError =
+                options.onError ||
+                function (message) {
+                    console.warn('Kommunicate WhatsApp:', message);
+                };
             if (!options.appId) {
                 throw new Error('KommunicateWhatsApp.init requires an appId.');
             }
             var token = ++currentToken;
+            var existingLauncher = document.getElementById(LAUNCHER_ID);
+            existingLauncher && existingLauncher.remove();
             if (options.settings) {
                 mount(options.settings, options.onError, token);
                 return;
