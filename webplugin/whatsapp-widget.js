@@ -17,9 +17,18 @@
         });
     }
 
+    function isMobileDevice() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+    }
+
     function getWhatsAppUrl(number) {
         var digits = String(number || '').replace(/\D/g, '');
-        return digits ? 'https://wa.me/' + digits : '';
+        if (!digits) {
+            return '';
+        }
+        return isMobileDevice()
+            ? 'https://wa.me/' + digits
+            : 'https://web.whatsapp.com/send?phone=' + digits;
     }
 
     function addStyles() {
