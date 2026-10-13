@@ -14,56 +14,41 @@ Kommunicate.client = {
         var promise = new Promise(function (resolve) {
             var isResolved = false;
             var timeoutMs = 3000;
-            var xhr = new XMLHttpRequest();
-            var finish = function (location) {
+            var fallbackTimer = setTimeout(function () {
                 if (isResolved) {
                     return;
                 }
                 isResolved = true;
-                clearTimeout(fallbackTimer);
-                resolve(location || {});
-            };
-            var fallbackTimer = setTimeout(function () {
-                finish({});
+                resolve({});
             }, timeoutMs);
-            xhr.open('GET', 'https://ipapi.co/json', true);
-            xhr.timeout = timeoutMs;
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState !== 4) {
-                    return;
-                }
-                if (xhr.status !== 200 || !xhr.responseText) {
-                    finish({});
-                    return;
-                }
-                var data;
-                try {
-                    data = JSON.parse(xhr.responseText);
-                } catch (error) {
-                    finish({});
-                    return;
-                }
-                var location = {};
-                if (data && typeof data === 'object') {
-                    data.city && (location.city = data.city);
-                    data.region && (location.region = data.region);
-                    data.country_name && (location.country = data.country_name);
-                    var countryCode = data.country_code || data.country;
-                    countryCode && (location.countryCode = countryCode);
-                }
-                finish(location);
-            };
-            xhr.onerror = function () {
-                finish({});
-            };
-            xhr.ontimeout = function () {
-                finish({});
-            };
-            try {
-                xhr.send(null);
-            } catch (error) {
-                finish({});
-            }
+            $applozic.ajax({
+                url: 'https://ipapi.co/json',
+                timeout: timeoutMs,
+                success: function (data) {
+                    if (isResolved) {
+                        return;
+                    }
+                    isResolved = true;
+                    clearTimeout(fallbackTimer);
+                    var location = {};
+                    if (data && typeof data === 'object') {
+                        data.city && (location.city = data.city);
+                        data.region && (location.region = data.region);
+                        data.country_name && (location.country = data.country_name);
+                        var countryCode = data.country_code || data.country;
+                        countryCode && (location.countryCode = countryCode);
+                    }
+                    resolve(location);
+                },
+                error: function () {
+                    if (isResolved) {
+                        return;
+                    }
+                    isResolved = true;
+                    clearTimeout(fallbackTimer);
+                    resolve({});
+                },
+            });
         });
 
         if (globals) {
