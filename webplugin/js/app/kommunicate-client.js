@@ -6,11 +6,12 @@
 
 Kommunicate.client = {
     getGeoIpLocation: function () {
-        return new Promise(function (resolve) {
-            if (typeof mckUtils === 'undefined' || typeof mckUtils.ajax !== 'function') {
-                resolve({});
-                return;
-            }
+        var globals = applozic._globals;
+        if (globals && globals.capturedLocationPromise) {
+            return globals.capturedLocationPromise;
+        }
+
+        var promise = new Promise(function (resolve) {
             var isResolved = false;
             var timeoutMs = 3000;
             var fallbackTimer = setTimeout(function () {
@@ -20,7 +21,7 @@ Kommunicate.client = {
                 isResolved = true;
                 resolve({});
             }, timeoutMs);
-            mckUtils.ajax({
+            $applozic.ajax({
                 url: 'https://ipapi.co/json',
                 timeout: timeoutMs,
                 success: function (data) {
@@ -34,6 +35,8 @@ Kommunicate.client = {
                         data.city && (location.city = data.city);
                         data.region && (location.region = data.region);
                         data.country_name && (location.country = data.country_name);
+                        var countryCode = data.country_code || data.country;
+                        countryCode && (location.countryCode = countryCode);
                     }
                     resolve(location);
                 },
@@ -46,6 +49,46 @@ Kommunicate.client = {
                     resolve({});
                 },
             });
+        });
+
+        if (globals) {
+            globals.capturedLocationPromise = promise;
+        }
+        return promise;
+    },
+    /**
+     * Skip widget startup when the visitor's country is outside an allow list
+     * or inside a block list. A failed lookup does not skip initialization.
+     * @param {{mode?: String, countries?: Array}} countryAccess
+     * @returns {Promise<boolean>}
+     */
+    shouldSkipWidgetForCountry: function (countryAccess) {
+        var mode = countryAccess && countryAccess.mode;
+        var countries = [];
+        var source = countryAccess && countryAccess.countries;
+        if (Array.isArray(source)) {
+            source.forEach(function (country) {
+                var code = String(country || '')
+                    .trim()
+                    .toLowerCase();
+                if (code && countries.indexOf(code) === -1) {
+                    countries.push(code);
+                }
+            });
+        }
+        if ((mode !== 'allow' && mode !== 'block') || !countries.length) {
+            return Promise.resolve(false);
+        }
+
+        return this.getGeoIpLocation().then(function (location) {
+            var countryCode = String((location && location.countryCode) || '')
+                .trim()
+                .toLowerCase();
+            if (!countryCode) {
+                return false;
+            }
+            var matches = countries.indexOf(countryCode) !== -1;
+            return mode === 'allow' ? !matches : matches;
         });
     },
     /**
