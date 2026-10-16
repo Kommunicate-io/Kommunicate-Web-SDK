@@ -7,7 +7,7 @@ function resolveBranch() {
         process.env.BRANCH ||
         process.env.BRANCH_NAME ||
         process.env.REF_NAME;
-    if (envBranch) return envBranch;
+    if (envBranch) return envBranch.trim();
     try {
         return execSync('git rev-parse --abbrev-ref HEAD', {
             cwd: path.join(__dirname, '..', '..'),
