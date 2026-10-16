@@ -358,29 +358,20 @@ class Voice {
         const hasConfiguredAlternativeLanguageCodes =
             Array.isArray(configuredValue) && configuredValue.length > 0;
         const primaryLanguageCode = this.getVoiceLanguageCode();
-        let values = hasConfiguredAlternativeLanguageCodes ? configuredValue : [];
-        if (!values.length && Array.isArray(navigator.languages)) {
-            values = navigator.languages;
-        }
+        // Which languages a bot should consider is a property of what the BUSINESS wants to
+        // support, not of the VISITOR's own browser locale - a visitor whose browser isn't set
+        // to an Indian locale should still get Hindi/Kannada considered as candidates. This
+        // previously only applied when the visitor's own locale looked Indian, which silently
+        // disabled Kannada/Hindi support for the vast majority of real visitors, and previously
+        // fell back to the full, possibly long, navigator.languages list otherwise - diluting
+        // the candidate set across multiple sequential batches and often pushing kn-IN into a
+        // batch that's rarely reached. Google STT auto-detect accepts at most 3 language codes
+        // per single request, so this default deliberately uses exactly 3 so they always land
+        // in the same, first batch Google actually evaluates.
+        let values = hasConfiguredAlternativeLanguageCodes
+            ? configuredValue
+            : ['en-IN', 'hi-IN', 'kn-IN'];
         const normalizedPrimaryLanguageCode = this.normalizeLanguageCode(primaryLanguageCode);
-        const primaryParts = normalizedPrimaryLanguageCode.split('-');
-        const primaryRegion = primaryParts.length > 1 ? String(primaryParts[1]).toUpperCase() : '';
-        const primaryLanguage = (primaryParts[0] || '').toLowerCase();
-        const userLocale = this.normalizeLanguageCode(
-            (kommunicate && kommunicate._globals && kommunicate._globals.userLocale) || ''
-        );
-        const navigatorLocale = this.normalizeLanguageCode(navigator.language || '');
-        const localeSignals = [normalizedPrimaryLanguageCode, userLocale, navigatorLocale];
-        const isIndiaLocale = localeSignals.some((localeCode) => /-IN$/i.test(localeCode));
-        if (
-            !hasConfiguredAlternativeLanguageCodes &&
-            (isIndiaLocale || primaryRegion === 'IN' || primaryLanguage === 'hi')
-        ) {
-            // Google STT auto-detect accepts at most 3 language codes per request; this fills
-            // that budget exactly so en-IN/hi-IN keep working unchanged while kn-IN rides along
-            // in the same call instead of being dropped into a second, rarely-reached batch.
-            values = values.concat(['en-IN', 'hi-IN', 'kn-IN']);
-        }
         const uniqueCodes = [];
         values.forEach((code) => {
             const normalizedCode = this.normalizeLanguageCode(code);
