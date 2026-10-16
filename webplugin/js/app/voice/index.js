@@ -329,8 +329,10 @@ class Voice {
         const fromChatConfig = this.voiceChatConfig.alternativeLanguageCodes;
         const fromOmnichannelConfig = this.omnichannelConfig.alternativeLanguageCodes;
         const configuredValue = fromInputConfig || fromChatConfig || fromOmnichannelConfig;
+        const hasConfiguredAlternativeLanguageCodes =
+            Array.isArray(configuredValue) && configuredValue.length > 0;
         const primaryLanguageCode = this.getVoiceLanguageCode();
-        let values = Array.isArray(configuredValue) ? configuredValue : [];
+        let values = hasConfiguredAlternativeLanguageCodes ? configuredValue : [];
         if (!values.length && Array.isArray(navigator.languages)) {
             values = navigator.languages;
         }
@@ -344,8 +346,14 @@ class Voice {
         const navigatorLocale = this.normalizeLanguageCode(navigator.language || '');
         const localeSignals = [normalizedPrimaryLanguageCode, userLocale, navigatorLocale];
         const isIndiaLocale = localeSignals.some((localeCode) => /-IN$/i.test(localeCode));
-        if (isIndiaLocale || primaryRegion === 'IN' || primaryLanguage === 'hi') {
-            values = values.concat(['en-IN', 'hi-IN']);
+        if (
+            !hasConfiguredAlternativeLanguageCodes &&
+            (isIndiaLocale || primaryRegion === 'IN' || primaryLanguage === 'hi')
+        ) {
+            // Google STT auto-detect accepts at most 3 language codes per request; this fills
+            // that budget exactly so en-IN/hi-IN keep working unchanged while kn-IN rides along
+            // in the same call instead of being dropped into a second, rarely-reached batch.
+            values = values.concat(['en-IN', 'hi-IN', 'kn-IN']);
         }
         const uniqueCodes = [];
         values.forEach((code) => {
@@ -1204,6 +1212,7 @@ class Voice {
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
         const { state } = this.getVoiceLanguageState(activeConversationUcid);
         const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
+        const { alternativeLanguageCodes } = this.getSpeechLanguageConfig();
 
         const payload = {
             bitsPerSample: this._OMNICHANNEL_STT_AUDIO_CONFIG.bitsPerSample,
@@ -1214,6 +1223,9 @@ class Voice {
         };
         if (sttLanguageCode) {
             payload.languageCode = sttLanguageCode;
+        }
+        if (Array.isArray(alternativeLanguageCodes) && alternativeLanguageCodes.length) {
+            payload.alternativeLanguageCodes = alternativeLanguageCodes;
         }
         if (resolvedUcid !== undefined && resolvedUcid !== null && resolvedUcid !== '') {
             payload.ucid = String(resolvedUcid);
