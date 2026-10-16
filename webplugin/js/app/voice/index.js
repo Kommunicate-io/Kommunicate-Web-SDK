@@ -14,6 +14,13 @@ class Voice {
     _SILENCE_HIGH_ZCR_MAX_RMS = 1200;
     _VOICE_SOCKET_TIMEOUT_MS = 30000;
     _DEFAULT_VOICE_SESSION_KEY = '__default_voice_session__';
+    // A detected language only counts toward locking the conversation's language when the
+    // backend reports at least this much confidence, and only after the SAME language is
+    // confirmed this many times in a row - mirrors the call/Twilio path's language lock
+    // (see NON_DEFAULT_LANGUAGE_LOCK_TURNS in Kommunicate-Omni-Channel), which the web widget
+    // previously lacked: it locked instantly on any single detection regardless of confidence.
+    _LANGUAGE_LOCK_CONFIDENCE_THRESHOLD = 0.6;
+    _LANGUAGE_LOCK_CONFIRM_TURNS = 2;
     _voiceSocketClient = null;
     _voiceSocketSubscription = null;
     _voiceSocketRequestSeq = 0;
@@ -171,6 +178,8 @@ class Voice {
                 languageCode: '',
                 hasDetectedLanguageCode: false,
                 hasSentVoiceToTextRequest: false,
+                pendingLanguageCode: '',
+                pendingLanguageConfirmCount: 0,
             };
         }
         return {
@@ -210,16 +219,33 @@ class Voice {
         return this.normalizeLanguageCode(state.languageCode || '');
     }
 
-    setSessionVoiceLanguageCode(state, languageCode) {
+    setSessionVoiceLanguageCode(state, languageCode, confidence) {
         const normalizedLanguage = this.normalizeLanguageCode(languageCode);
         if (!state || !normalizedLanguage) {
+            return false;
+        }
+        const normalizedConfidence = typeof confidence === 'number' ? confidence : 0;
+        if (normalizedConfidence < this._LANGUAGE_LOCK_CONFIDENCE_THRESHOLD) {
+            // Too weak to trust (e.g. a stray noise/partial-audio chunk) - ignore it without
+            // disturbing any confirmation streak already building toward a real lock.
             return false;
         }
         if (state.hasDetectedLanguageCode && state.languageCode === normalizedLanguage) {
             return false;
         }
+        if (state.pendingLanguageCode === normalizedLanguage) {
+            state.pendingLanguageConfirmCount += 1;
+        } else {
+            state.pendingLanguageCode = normalizedLanguage;
+            state.pendingLanguageConfirmCount = 1;
+        }
+        if (state.pendingLanguageConfirmCount < this._LANGUAGE_LOCK_CONFIRM_TURNS) {
+            return false;
+        }
         state.languageCode = normalizedLanguage;
         state.hasDetectedLanguageCode = true;
+        state.pendingLanguageCode = '';
+        state.pendingLanguageConfirmCount = 0;
         return true;
     }
 
@@ -1253,7 +1279,13 @@ class Voice {
         );
         const detectedLanguageCode = this.normalizeLanguageCode(response && response.languageCode);
         if (detectedLanguageCode) {
-            const didUpdateLanguage = this.setSessionVoiceLanguageCode(state, detectedLanguageCode);
+            const detectedConfidence =
+                typeof response?.confidence === 'number' ? response.confidence : 0;
+            const didUpdateLanguage = this.setSessionVoiceLanguageCode(
+                state,
+                detectedLanguageCode,
+                detectedConfidence
+            );
             if (didUpdateLanguage) {
                 this.syncVoiceLanguageWithChatContext(detectedLanguageCode);
                 await this.persistVoiceLanguageForGroup(
