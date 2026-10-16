@@ -362,15 +362,15 @@ class Voice {
         // support, not of the VISITOR's own browser locale - a visitor whose browser isn't set
         // to an Indian locale should still get Hindi/Kannada considered as candidates. This
         // previously only applied when the visitor's own locale looked Indian, which silently
-        // disabled Kannada/Hindi support for the vast majority of real visitors, and previously
-        // fell back to the full, possibly long, navigator.languages list otherwise - diluting
-        // the candidate set across multiple sequential batches and often pushing kn-IN into a
-        // batch that's rarely reached. Google STT auto-detect accepts at most 3 language codes
-        // per single request, so this default deliberately uses exactly 3 so they always land
-        // in the same, first batch Google actually evaluates.
-        let values = hasConfiguredAlternativeLanguageCodes
-            ? configuredValue
-            : ['en-IN', 'hi-IN', 'kn-IN'];
+        // disabled Kannada/Hindi support for the vast majority of real visitors.
+        // NOTE: don't add a hardcoded "en-IN" placeholder here - a genuine en-US/en-GB/etc.
+        // speaker would then get routed through Google's Indian-English regional model instead
+        // of their own, degrading transcription quality even though the detected language
+        // (English) is technically correct. voiceToText() sends the visitor's own resolved
+        // locale as the primary language code, so the real English coverage comes from there;
+        // this just adds Hindi/Kannada, keeping the total at 3 (Google's auto-detect cap per
+        // request) together with that primary so everything lands in a single batch.
+        let values = hasConfiguredAlternativeLanguageCodes ? configuredValue : ['hi-IN', 'kn-IN'];
         const normalizedPrimaryLanguageCode = this.normalizeLanguageCode(primaryLanguageCode);
         const uniqueCodes = [];
         values.forEach((code) => {
@@ -1228,7 +1228,12 @@ class Voice {
         const activeConversationUcid = this.getActiveConversationId();
         const resolvedUcid = this.resolveVoiceSessionUcid(ucid);
         const { state } = this.getVoiceLanguageState(activeConversationUcid);
-        const sttLanguageCode = this.getSessionVoiceLanguageCode(state);
+        // Before the conversation locks onto a confirmed language, fall back to the visitor's
+        // own resolved locale (not a hardcoded guess) so their real language/region rides along
+        // with the Hindi/Kannada candidates below, instead of them being routed through a
+        // generic regional model that may not match their actual accent.
+        const sttLanguageCode =
+            this.getSessionVoiceLanguageCode(state) || this.getVoiceLanguageCode();
         const { alternativeLanguageCodes } = this.getSpeechLanguageConfig();
 
         const payload = {
