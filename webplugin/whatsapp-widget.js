@@ -134,20 +134,6 @@
         request.send();
     }
 
-    function getKommunicateWidgetAppId() {
-        return (
-            window.kommunicate && window.kommunicate._globals && window.kommunicate._globals.appId
-        );
-    }
-
-    function getScriptAppId() {
-        var script = document.currentScript;
-        if (!script) {
-            return '';
-        }
-        return new URL(script.src, window.location.href).searchParams.get('appId') || '';
-    }
-
     window.KommunicateWhatsApp = {
         init: function (options) {
             options = options || {};
@@ -174,9 +160,4 @@
             launcher && launcher.remove();
         },
     };
-
-    var appId = getKommunicateWidgetAppId() || getScriptAppId();
-    if (appId) {
-        window.KommunicateWhatsApp.init({ appId: appId });
-    }
 })(window, document);
