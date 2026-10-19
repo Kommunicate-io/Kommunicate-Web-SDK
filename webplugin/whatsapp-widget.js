@@ -3,7 +3,7 @@
 
     var STYLE_ID = 'kommunicate-whatsapp-widget-style';
     var LAUNCHER_ID = 'km-whatsapp-launcher';
-    var DEFAULT_API_URL = 'https://api.kommunicate.io';
+    var DEFAULT_API_URL = ':MCK_KOMMUNICATE_API_URL';
 
     function escapeHtml(value) {
         return String(value).replace(/[&<>'"]/g, function (character) {
@@ -37,8 +37,11 @@
         }
         var style = document.createElement('style');
         style.id = STYLE_ID;
+        // z-index is kept just below the Kommunicate chat widget iframe's
+        // 2243000, so the open chat panel naturally covers this launcher
+        // instead of floating on top of it.
         style.textContent =
-            '#km-whatsapp-launcher{position:fixed;z-index:2243001;min-width:220px;height:56px;padding:0 24px;border-radius:30px;display:flex;align-items:center;justify-content:center;background:#25d366;color:#fff;text-decoration:none;box-shadow:0 2px 5px 1px rgba(107,104,104,.5);box-sizing:border-box;font:600 16px/1 Arial,sans-serif}#km-whatsapp-launcher:hover,#km-whatsapp-launcher:focus{color:#fff;text-decoration:none}#km-whatsapp-launcher .km-whatsapp-launcher-icon{width:26px;height:26px;display:flex;flex:0 0 auto}#km-whatsapp-launcher .km-whatsapp-launcher-label{margin-left:10px;white-space:nowrap}#km-whatsapp-launcher .km-whatsapp-launcher-icon svg{width:100%;height:100%;fill:currentColor}@media only screen and (max-width:600px){#km-whatsapp-launcher{max-width:calc(100vw - 20px)}}';
+            '#km-whatsapp-launcher{position:fixed;z-index:2242999;min-width:220px;height:56px;padding:0 24px;border-radius:30px;display:flex;align-items:center;justify-content:center;background:#25d366;color:#fff;text-decoration:none;box-shadow:0 2px 5px 1px rgba(107,104,104,.5);box-sizing:border-box;font:600 16px/1 Arial,sans-serif}#km-whatsapp-launcher:hover,#km-whatsapp-launcher:focus{color:#fff;text-decoration:none}#km-whatsapp-launcher .km-whatsapp-launcher-icon{width:26px;height:26px;display:flex;flex:0 0 auto}#km-whatsapp-launcher .km-whatsapp-launcher-label{margin-left:10px;white-space:nowrap}#km-whatsapp-launcher .km-whatsapp-launcher-icon svg{width:100%;height:100%;fill:currentColor}@media only screen and (max-width:600px){#km-whatsapp-launcher{max-width:calc(100vw - 20px)}}';
         document.head.appendChild(style);
     }
 
@@ -131,6 +134,12 @@
         request.send();
     }
 
+    function getKommunicateWidgetAppId() {
+        return (
+            window.kommunicate && window.kommunicate._globals && window.kommunicate._globals.appId
+        );
+    }
+
     window.KommunicateWhatsApp = {
         init: function (options) {
             options = options || {};
@@ -157,4 +166,9 @@
             launcher && launcher.remove();
         },
     };
+
+    var appId = getKommunicateWidgetAppId();
+    if (appId) {
+        window.KommunicateWhatsApp.init({ appId: appId });
+    }
 })(window, document);

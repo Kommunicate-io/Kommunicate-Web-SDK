@@ -351,8 +351,24 @@ const generateBuildFiles = () => {
             generateFilesByVersion('build/plugin.js');
         });
     });
-    copyFileToBuild('whatsapp-widget.js', `${buildDir}/whatsapp-widget.js`);
-    minifyJS('whatsapp-widget.js', buildDir, 'whatsapp-widget.min.js', true);
+    // Generate whatsapp-widget.js file for build folder, substituting the
+    // environment's API host so the embed snippet never needs an apiUrl.
+    fs.readFile(path.join(__dirname, 'whatsapp-widget.js'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating whatsapp-widget.js', err);
+        }
+        var whatsappWidget = data.replace(
+            ':MCK_KOMMUNICATE_API_URL',
+            config.urls.kommunicateBaseUrl
+        );
+
+        fs.writeFile(`${buildDir}/whatsapp-widget.js`, whatsappWidget, function (err) {
+            if (err) {
+                console.log('whatsapp-widget.js generation error');
+            }
+            minifyJS(`${buildDir}/whatsapp-widget.js`, buildDir, 'whatsapp-widget.min.js', true);
+        });
+    });
     // Generate mck-app.js file for build folder.
     fs.readFile(path.join(__dirname, 'js/app/mck-app.js'), 'utf8', function (err, data) {
         // console.log(data, err);
