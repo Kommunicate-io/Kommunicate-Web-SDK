@@ -140,6 +140,14 @@
         );
     }
 
+    function getScriptAppId() {
+        var script = document.currentScript;
+        if (!script) {
+            return '';
+        }
+        return new URL(script.src, window.location.href).searchParams.get('appId') || '';
+    }
+
     window.KommunicateWhatsApp = {
         init: function (options) {
             options = options || {};
@@ -167,7 +175,7 @@
         },
     };
 
-    var appId = getKommunicateWidgetAppId();
+    var appId = getKommunicateWidgetAppId() || getScriptAppId();
     if (appId) {
         window.KommunicateWhatsApp.init({ appId: appId });
     }
