@@ -358,13 +358,14 @@ const generateBuildFiles = () => {
             console.log('error while generating whatsapp-widget.js', err);
         }
         var whatsappWidget = data.replace(
-            ':MCK_KOMMUNICATE_API_URL',
+            'https://api.kommunicate.io',
             config.urls.kommunicateBaseUrl
         );
 
         fs.writeFile(`${buildDir}/whatsapp-widget.js`, whatsappWidget, function (err) {
             if (err) {
-                console.log('whatsapp-widget.js generation error');
+                console.log('whatsapp-widget.js generation error', err);
+                return;
             }
             minifyJS(`${buildDir}/whatsapp-widget.js`, buildDir, 'whatsapp-widget.min.js', true);
         });
