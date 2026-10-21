@@ -143,15 +143,54 @@ var kmCustomIframe =
 var KM_CONTAINER_WAIT_MAX = 30;
 var KM_CONTAINER_WAIT_INTERVAL = 100;
 
-function getWidgetContainerIdFromGlobals() {
-    var globals =
+function getKommunicateGlobals() {
+    return (
         (window.kommunicate && window.kommunicate._globals) ||
         (window.Kommunicate && window.Kommunicate._globals) ||
-        (window.applozic && window.applozic._globals);
+        (window.applozic && window.applozic._globals)
+    );
+}
+
+function getWidgetContainerIdFromGlobals() {
+    var globals = getKommunicateGlobals();
     if (globals && typeof globals.containerId === 'string') {
         return globals.containerId.trim();
     }
     return null;
+}
+
+// Optional channel-specific launcher scripts (e.g. a WhatsApp click-to-chat
+// button), loaded on demand via kommunicateSettings.channelUI:
+//   channelUI: "whatsapp"            // or ["whatsapp", "telegram"]
+// Adding a new channel in future only needs a new entry here - no changes
+// to the loading logic below.
+var CHANNEL_WIDGETS = {
+    whatsapp: {
+        src: MCK_CONTEXTPATH + '/whatsapp-widget.min.js',
+        globalName: 'KommunicateWhatsApp',
+    },
+};
+
+function loadChannelWidgets() {
+    var globals = getKommunicateGlobals();
+    if (!globals || !globals.channelUI || !globals.appId) {
+        return;
+    }
+    var channels = [].concat(globals.channelUI);
+    channels.forEach(function (channel) {
+        var widget = CHANNEL_WIDGETS[channel];
+        if (!widget) {
+            return;
+        }
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = widget.src;
+        s.onload = function () {
+            window[widget.globalName] && window[widget.globalName].init({ appId: globals.appId });
+        };
+        document.getElementsByTagName('head')[0].appendChild(s);
+    });
 }
 
 function getWidgetContainerElement() {
@@ -265,6 +304,7 @@ if (!window.__kmPopupResizeListener) {
 
 if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
     isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
+    loadChannelWidgets();
 }
 
 function removeKommunicateScripts() {
