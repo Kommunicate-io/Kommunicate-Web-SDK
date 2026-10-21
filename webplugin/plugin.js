@@ -303,7 +303,18 @@ if (!window.__kmPopupResizeListener) {
 }
 
 if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
-    isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
+    // A page using channelUI (e.g. a WhatsApp-only button) skips the chat
+    // widget iframe by default - not just hiding it with CSS, but never
+    // creating the iframe's full inner app (jQuery, UI, etc.), so a
+    // WhatsApp-only embed stays lightweight. Set showChatWidget: true
+    // alongside channelUI to show both the chat widget and the channel
+    // button from the same kommunicateSettings object.
+    var kommunicateGlobals = getKommunicateGlobals();
+    var hasChannelUI = !!(kommunicateGlobals && kommunicateGlobals.channelUI);
+    var shouldHideChatWidget = hasChannelUI && kommunicateGlobals.showChatWidget !== true;
+    if (!shouldHideChatWidget) {
+        isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
+    }
     loadChannelWidgets();
 }
 
