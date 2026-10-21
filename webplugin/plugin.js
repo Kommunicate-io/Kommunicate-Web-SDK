@@ -171,11 +171,27 @@ var CHANNEL_WIDGETS = {
     },
 };
 
+var channelWidgetsGeneration = 0;
+
+function hasRegisteredChannelWidget(channelUI) {
+    if (!channelUI) {
+        return false;
+    }
+    var channels = [].concat(channelUI);
+    for (var i = 0; i < channels.length; i++) {
+        if (CHANNEL_WIDGETS[channels[i]]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function loadChannelWidgets() {
     var globals = getKommunicateGlobals();
     if (!globals || !globals.channelUI || !globals.appId) {
         return;
     }
+    var generation = channelWidgetsGeneration;
     var channels = [].concat(globals.channelUI);
     channels.forEach(function (channel) {
         var widget = CHANNEL_WIDGETS[channel];
@@ -187,6 +203,12 @@ function loadChannelWidgets() {
         s.async = true;
         s.src = widget.src;
         s.onload = function () {
+            // If removeKommunicateScripts() ran while this was loading, skip
+            // init() entirely instead of recreating the launcher after
+            // cleanup already finished.
+            if (generation !== channelWidgetsGeneration) {
+                return;
+            }
             window[widget.globalName] && window[widget.globalName].init({ appId: globals.appId });
         };
         document.getElementsByTagName('head')[0].appendChild(s);
@@ -310,7 +332,9 @@ if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
     // alongside channelUI to show both the chat widget and the channel
     // button from the same kommunicateSettings object.
     var kommunicateGlobals = getKommunicateGlobals();
-    var hasChannelUI = !!(kommunicateGlobals && kommunicateGlobals.channelUI);
+    var hasChannelUI = !!(
+        kommunicateGlobals && hasRegisteredChannelWidget(kommunicateGlobals.channelUI)
+    );
     var shouldHideChatWidget = hasChannelUI && kommunicateGlobals.showChatWidget !== true;
     if (!shouldHideChatWidget) {
         isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
@@ -342,6 +366,14 @@ function removeKommunicateScripts() {
         "script[src*='kommunicate.app'], script[src*='kommunicate-widget-3.0.min.js']"
     );
     originFile && originFile.parentNode.removeChild(originFile);
+    // Invalidate any channel widget (e.g. WhatsApp) still loading, and tear
+    // down one that already mounted, so cleanup can't be undone by a
+    // pending or late onload.
+    channelWidgetsGeneration++;
+    for (var channelKey in CHANNEL_WIDGETS) {
+        var channelGlobal = window[CHANNEL_WIDGETS[channelKey].globalName];
+        channelGlobal && typeof channelGlobal.destroy === 'function' && channelGlobal.destroy();
+    }
 }
 
 function removeElementFromHtmlById(elementIdArray) {
