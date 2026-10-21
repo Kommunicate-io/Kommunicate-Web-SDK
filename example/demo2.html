@@ -288,7 +288,7 @@
                             id="appId"
                             name="appId"
                             required
-                            value="kommunicate-support"
+                            value="1883b190054b065cd3096b8179deb2e13"
                             style="flex: 1"
                         />
                     </div>
@@ -507,7 +507,7 @@
 
         <script>
             const defaultState = {
-                appId: 'kommunicate-support',
+                appId: '1883b190054b065cd3096b8179deb2e13',
                 agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
@@ -911,7 +911,12 @@
                     existingScript.remove();
                 }
 
-                const disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+                const forceLocalWidget = new URLSearchParams(window.location.search).has(
+                    'localWidget'
+                );
+                const disableCache =
+                    !forceLocalWidget &&
+                    ['localhost', '127.0.0.1'].includes(window.location.hostname);
 
                 console.log(
                     'Injecting Kommunicate widget with kommunicateSettings:',
@@ -1024,6 +1029,15 @@
 
             resetForm();
             handlePendingLaunch();
+        </script>
+        <script type="text/javascript">
+            (function (d, w) {
+                var s = d.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://widget-test.kommunicate.io/whatsapp-widget.min.js';
+                d.getElementsByTagName('head')[0].appendChild(s);
+            })(document, window);
         </script>
         <!-- rich-message-tests:start -->
         <script src="./rich-message-tests/runner.js"></script>
