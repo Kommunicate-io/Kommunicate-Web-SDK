@@ -40,6 +40,12 @@ Object.assign(PLUGIN_SETTING, {
     omnichannelBaseUrl: PLUGIN_SETTING.omnichannelBaseUrl || config.urls.omnichannelBaseUrl,
 });
 
+// googleApiKey is served only via the dev-only /map-view.html route in
+// server/app.js; it must not be embedded in KM_PLUGIN_SETTINGS here either,
+// mirroring the same exclusion applied in gulpfile.js for the real build.
+const { googleApiKey: DEV_GOOGLE_MAPS_API_KEY, ...PLUGIN_SETTINGS_FOR_WIDGET } = PLUGIN_SETTING;
+void DEV_GOOGLE_MAPS_API_KEY;
+
 let PLUGIN_FILE_DATA = new Object();
 let BUILD_URL = MCK_STATIC_PATH + '/build';
 const BUNDLED_FONT_PATH = '../../css/app/fonts/';
@@ -354,7 +360,7 @@ const generateFilesByVersion = (location) => {
                 )
                 .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
                 .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTINGS_FOR_WIDGET))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
                 .replace(

@@ -51,6 +51,11 @@ PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.bot
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 
+// googleApiKey is baked into map-view.html only (see generateMapViewFile below);
+// it must not be embedded in the widget's own KM_PLUGIN_SETTINGS payload,
+// since that payload ships unrestricted to every page the widget loads on.
+const { googleApiKey: GOOGLE_MAPS_API_KEY, ...PLUGIN_SETTINGS_FOR_WIDGET } = PLUGIN_SETTING;
+
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 const BUNDLED_FONT_PATH = '../../css/app/fonts/';
 const VERSIONED_BUNDLED_FONT_PATH = '../css/app/fonts/';
@@ -366,6 +371,26 @@ const generateBuildFiles = () => {
             // combineJsFiles();
         });
     });
+    generateMapViewFile();
+};
+
+// Generate map-view.html: the isolated, same-origin page the location-share
+// map iframe loads. Keeping the Maps JS API key out of mck-app.js/plugin.js
+// (see PLUGIN_SETTINGS_FOR_WIDGET above) and only baking it in here is what
+// lets the GCP key be HTTP-referrer-restricted to this domain.
+const generateMapViewFile = () => {
+    fs.readFile(path.join(__dirname, 'template/map-view.html'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating map-view.html', err);
+            return;
+        }
+        var mapView = data.replace(':GOOGLE_MAPS_API_KEY', GOOGLE_MAPS_API_KEY || '');
+        fs.writeFile(`${buildDir}/map-view.html`, mapView, function (err) {
+            if (err) {
+                console.log('map-view.html generation error', err);
+            }
+        });
+    });
 };
 
 const generateFilesByVersion = (location) => {
@@ -385,7 +410,7 @@ const generateFilesByVersion = (location) => {
                 )
                 .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
                 .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTINGS_FOR_WIDGET))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
                 .replace(

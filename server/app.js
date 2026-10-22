@@ -59,6 +59,24 @@ app.get(/^\/plugin(?:\/build)?\/mck-sidebox.*\.html$/, async (req, res, next) =>
     }
 });
 
+// Dev-only equivalent of gulpfile.js's generateMapViewFile(): the production
+// build bakes the key into webplugin/build/map-view.html at build time, but
+// local dev serves files straight from webplugin/ with no build step, so
+// mirror that substitution here for local testing parity.
+app.get('/map-view.html', async (req, res, next) => {
+    try {
+        const mapViewPath = path.join(__dirname, '../webplugin/template/map-view.html');
+        const raw = await fs.promises.readFile(mapViewPath, 'utf8');
+        const html = raw.replace(
+            ':GOOGLE_MAPS_API_KEY',
+            config.pluginProperties.googleApiKey || ''
+        );
+        res.type('html').send(html);
+    } catch (error) {
+        next(error);
+    }
+});
+
 //static paths
 app.use(
     '/plugin',
