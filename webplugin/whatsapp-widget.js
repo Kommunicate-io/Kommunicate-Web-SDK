@@ -73,7 +73,7 @@
             '</span>';
         document.body.appendChild(launcher);
         var customPosition = chatWidget.whatsappCustomPosition || {};
-        var horizontalPosition = chatWidget.whatsappPosition === 'left' ? 'left' : 'right';
+        var horizontalPosition = chatWidget.whatsappPosition === 'right' ? 'right' : 'left';
         var oppositePosition = horizontalPosition === 'left' ? 'right' : 'left';
         var horizontalOffset = customPosition[horizontalPosition];
         launcher.style.bottom =
