@@ -37,8 +37,11 @@
         }
         var style = document.createElement('style');
         style.id = STYLE_ID;
+        // z-index is kept just below the Kommunicate chat widget iframe's
+        // 2243000, so the open chat panel naturally covers this launcher
+        // instead of floating on top of it.
         style.textContent =
-            '#km-whatsapp-launcher{position:fixed;z-index:2243001;min-width:220px;height:56px;padding:0 24px;border-radius:30px;display:flex;align-items:center;justify-content:center;background:#25d366;color:#fff;text-decoration:none;box-shadow:0 2px 5px 1px rgba(107,104,104,.5);box-sizing:border-box;font:600 16px/1 Arial,sans-serif}#km-whatsapp-launcher:hover,#km-whatsapp-launcher:focus{color:#fff;text-decoration:none}#km-whatsapp-launcher .km-whatsapp-launcher-icon{width:26px;height:26px;display:flex;flex:0 0 auto}#km-whatsapp-launcher .km-whatsapp-launcher-label{margin-left:10px;white-space:nowrap}#km-whatsapp-launcher .km-whatsapp-launcher-icon svg{width:100%;height:100%;fill:currentColor}@media only screen and (max-width:600px){#km-whatsapp-launcher{max-width:calc(100vw - 20px)}}';
+            '#km-whatsapp-launcher{position:fixed;z-index:2242999;min-width:220px;height:56px;padding:0 24px;border-radius:30px;display:flex;align-items:center;justify-content:center;background:#25d366;color:#fff;text-decoration:none;box-shadow:0 2px 5px 1px rgba(107,104,104,.5);box-sizing:border-box;font:600 16px/1 Arial,sans-serif}#km-whatsapp-launcher:hover,#km-whatsapp-launcher:focus{color:#fff;text-decoration:none}#km-whatsapp-launcher .km-whatsapp-launcher-icon{width:26px;height:26px;display:flex;flex:0 0 auto}#km-whatsapp-launcher .km-whatsapp-launcher-label{margin-left:10px;white-space:nowrap}#km-whatsapp-launcher .km-whatsapp-launcher-icon svg{width:100%;height:100%;fill:currentColor}@media only screen and (max-width:600px){#km-whatsapp-launcher{max-width:calc(100vw - 20px)}}';
         document.head.appendChild(style);
     }
 
@@ -70,7 +73,7 @@
             '</span>';
         document.body.appendChild(launcher);
         var customPosition = chatWidget.whatsappCustomPosition || {};
-        var horizontalPosition = chatWidget.whatsappPosition === 'left' ? 'left' : 'right';
+        var horizontalPosition = chatWidget.whatsappPosition === 'right' ? 'right' : 'left';
         var oppositePosition = horizontalPosition === 'left' ? 'right' : 'left';
         var horizontalOffset = customPosition[horizontalPosition];
         launcher.style.bottom =

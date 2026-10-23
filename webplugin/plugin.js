@@ -143,15 +143,76 @@ var kmCustomIframe =
 var KM_CONTAINER_WAIT_MAX = 30;
 var KM_CONTAINER_WAIT_INTERVAL = 100;
 
-function getWidgetContainerIdFromGlobals() {
-    var globals =
+function getKommunicateGlobals() {
+    return (
         (window.kommunicate && window.kommunicate._globals) ||
         (window.Kommunicate && window.Kommunicate._globals) ||
-        (window.applozic && window.applozic._globals);
+        (window.applozic && window.applozic._globals)
+    );
+}
+
+function getWidgetContainerIdFromGlobals() {
+    var globals = getKommunicateGlobals();
     if (globals && typeof globals.containerId === 'string') {
         return globals.containerId.trim();
     }
     return null;
+}
+
+// Optional channel-specific launcher scripts (e.g. a WhatsApp click-to-chat
+// button), loaded on demand via kommunicateSettings.channelUI:
+//   channelUI: "whatsapp"            // or ["whatsapp", "telegram"]
+// Adding a new channel in future only needs a new entry here - no changes
+// to the loading logic below.
+var CHANNEL_WIDGETS = {
+    whatsapp: {
+        src: MCK_CONTEXTPATH + '/whatsapp-widget.min.js',
+        globalName: 'KommunicateWhatsApp',
+    },
+};
+
+var channelWidgetsGeneration = 0;
+
+function hasRegisteredChannelWidget(channelUI) {
+    if (!channelUI) {
+        return false;
+    }
+    var channels = [].concat(channelUI);
+    for (var i = 0; i < channels.length; i++) {
+        if (CHANNEL_WIDGETS[channels[i]]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function loadChannelWidgets() {
+    var globals = getKommunicateGlobals();
+    if (!globals || !globals.channelUI || !globals.appId) {
+        return;
+    }
+    var generation = channelWidgetsGeneration;
+    var channels = [].concat(globals.channelUI);
+    channels.forEach(function (channel) {
+        var widget = CHANNEL_WIDGETS[channel];
+        if (!widget) {
+            return;
+        }
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = widget.src;
+        s.onload = function () {
+            // If removeKommunicateScripts() ran while this was loading, skip
+            // init() entirely instead of recreating the launcher after
+            // cleanup already finished.
+            if (generation !== channelWidgetsGeneration) {
+                return;
+            }
+            window[widget.globalName] && window[widget.globalName].init({ appId: globals.appId });
+        };
+        document.getElementsByTagName('head')[0].appendChild(s);
+    });
 }
 
 function getWidgetContainerElement() {
@@ -264,7 +325,21 @@ if (!window.__kmPopupResizeListener) {
 }
 
 if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
-    isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
+    // A page using channelUI (e.g. a WhatsApp-only button) skips the chat
+    // widget iframe by default - not just hiding it with CSS, but never
+    // creating the iframe's full inner app (jQuery, UI, etc.), so a
+    // WhatsApp-only embed stays lightweight. Set showChatWidget: true
+    // alongside channelUI to show both the chat widget and the channel
+    // button from the same kommunicateSettings object.
+    var kommunicateGlobals = getKommunicateGlobals();
+    var hasChannelUI = !!(
+        kommunicateGlobals && hasRegisteredChannelWidget(kommunicateGlobals.channelUI)
+    );
+    var shouldHideChatWidget = hasChannelUI && kommunicateGlobals.showChatWidget !== true;
+    if (!shouldHideChatWidget) {
+        isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
+    }
+    loadChannelWidgets();
 }
 
 function removeKommunicateScripts() {
@@ -291,6 +366,14 @@ function removeKommunicateScripts() {
         "script[src*='kommunicate.app'], script[src*='kommunicate-widget-3.0.min.js']"
     );
     originFile && originFile.parentNode.removeChild(originFile);
+    // Invalidate any channel widget (e.g. WhatsApp) still loading, and tear
+    // down one that already mounted, so cleanup can't be undone by a
+    // pending or late onload.
+    channelWidgetsGeneration++;
+    for (var channelKey in CHANNEL_WIDGETS) {
+        var channelGlobal = window[CHANNEL_WIDGETS[channelKey].globalName];
+        channelGlobal && typeof channelGlobal.destroy === 'function' && channelGlobal.destroy();
+    }
 }
 
 function removeElementFromHtmlById(elementIdArray) {
