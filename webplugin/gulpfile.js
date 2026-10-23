@@ -53,6 +53,9 @@ PLUGIN_SETTING.omnichannelBaseUrl =
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 PLUGIN_SETTING.dashboardUrl = PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 
+// googleApiKey is baked into map-view.html only (see generateMapViewFile below), never into KM_PLUGIN_SETTINGS.
+const { googleApiKey: GOOGLE_MAPS_API_KEY, ...PLUGIN_SETTINGS_FOR_WIDGET } = PLUGIN_SETTING;
+
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 const BUNDLED_FONT_PATH = '../../css/app/fonts/';
 const VERSIONED_BUNDLED_FONT_PATH = '../css/app/fonts/';
@@ -370,6 +373,23 @@ const generateBuildFiles = () => {
             // combineJsFiles();
         });
     });
+    generateMapViewFile();
+};
+
+// Generates map-view.html with the Maps key baked in, kept out of plugin.js/mck-app.js so it can be referrer-restricted to this domain.
+const generateMapViewFile = () => {
+    fs.readFile(path.join(__dirname, 'template/map-view.html'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating map-view.html', err);
+            return;
+        }
+        var mapView = data.replace(':GOOGLE_MAPS_API_KEY', GOOGLE_MAPS_API_KEY || '');
+        fs.writeFile(`${buildDir}/map-view.html`, mapView, function (err) {
+            if (err) {
+                console.log('map-view.html generation error', err);
+            }
+        });
+    });
 };
 
 const generateFilesByVersion = (location) => {
@@ -389,7 +409,7 @@ const generateFilesByVersion = (location) => {
                 )
                 .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
                 .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTINGS_FOR_WIDGET))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
                 .replace(
