@@ -59,6 +59,8 @@
                 var autocompleteEl = null;
                 var mapsApiReady = false;
                 var isAddressSelectionFromAutocomplete = false;
+                // Lets a stale async geocode response (e.g. drag to A then B before A's reply lands) drop itself.
+                var geocodeRequestId = 0;
 
                 function post(type, payload) {
                     var message = Object.assign({ type: type }, payload || {});
@@ -117,7 +119,11 @@
                         return;
                     }
                     var target = toPlainLatLng(latLng);
+                    var requestId = ++geocodeRequestId;
                     geocoder.geocode({ location: target }, function (results, status) {
+                        if (requestId !== geocodeRequestId) {
+                            return;
+                        }
                         if (status !== 'OK' || !results || !results.length) {
                             return;
                         }
@@ -135,7 +141,11 @@
                     if (!geocoder || !address) {
                         return;
                     }
+                    var requestId = ++geocodeRequestId;
                     geocoder.geocode({ address: address }, function (results, status) {
+                        if (requestId !== geocodeRequestId) {
+                            return;
+                        }
                         if (status !== 'OK' || !results || !results.length) {
                             return;
                         }
@@ -197,10 +207,7 @@
                         syncLocation(event.latLng);
                     };
 
-                    // AdvancedMarkerElement requires a configured vector Map ID
-                    // (Google Cloud Console), which this map does not have, so
-                    // it is intentionally not used here - the classic Marker
-                    // needs no Map ID and renders identically for this case.
+                    // No AdvancedMarkerElement: it requires a configured Map ID we don't have; classic Marker needs none.
                     marker = new googleMaps.maps.Marker({
                         map: map,
                         position: { lat: state.lat, lng: state.lng },
@@ -230,13 +237,14 @@
                                     return;
                                 }
                                 var place = prediction.toPlace();
+                                var requestId = ++geocodeRequestId;
                                 isAddressSelectionFromAutocomplete = true;
                                 place
                                     .fetchFields({
                                         fields: ['location', 'formattedAddress', 'displayName'],
                                     })
                                     .then(function () {
-                                        if (!place.location) {
+                                        if (requestId !== geocodeRequestId || !place.location) {
                                             return;
                                         }
                                         var formatted =

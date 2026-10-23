@@ -49,6 +49,7 @@
         let hasInitLocationShare = false;
         let mapIframe = null;
         let mapIframeReady = false;
+        let mapIframeOrigin = null;
 
         const $mckMyLoc = $applozic('#mck-my-loc');
         const $mckLocBox = $applozic('#mck-loc-box');
@@ -61,10 +62,7 @@
         const $mckMapContent = $applozic('#mck-map-content');
         const $mckLocAddress = $applozic('#mck-loc-address');
 
-        // The map and its address/autocomplete UI live entirely inside the
-        // map-view.html iframe (same origin as the widget, so its Google Maps
-        // requests can be HTTP-referrer-restricted). The plain input below is
-        // only a non-JS fallback; hide it once the iframe takes over.
+        // Map UI lives in the map-view.html iframe (referrer-restrictable); hide the plain fallback input once it loads.
         const hideNativeAddressInput = () => {
             const formGroup = $mckLocAddress.closest('.mck-form-group');
             if (formGroup && formGroup.length) {
@@ -82,6 +80,12 @@
                 typeof windowRef.MCK_CONTEXTPATH === 'string' ? windowRef.MCK_CONTEXTPATH : '';
             const iframe = document.createElement('iframe');
             iframe.src = baseUrl + MAP_VIEW_PATH;
+            try {
+                mapIframeOrigin = new URL(iframe.src, windowRef.location.href).origin;
+            } catch (error) {
+                logger('mck-map-integration: could not resolve map iframe origin.', error);
+                mapIframeOrigin = null;
+            }
             iframe.title = 'Share location';
             iframe.setAttribute('frameborder', '0');
             iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;';
@@ -102,10 +106,10 @@
         };
 
         const postToMap = (type, payload) => {
-            if (!mapIframe || !mapIframeReady || !mapIframe.contentWindow) {
+            if (!mapIframe || !mapIframeReady || !mapIframe.contentWindow || !mapIframeOrigin) {
                 return;
             }
-            mapIframe.contentWindow.postMessage(Object.assign({ type }, payload), '*');
+            mapIframe.contentWindow.postMessage(Object.assign({ type }, payload), mapIframeOrigin);
         };
 
         const handleMapMessage = (event) => {

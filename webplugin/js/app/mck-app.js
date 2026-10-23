@@ -34,10 +34,7 @@ function ApplozicSidebox() {
             alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.9.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
-        // Google Maps JS API is no longer loaded here: the location-share map
-        // now runs inside its own same-origin iframe (map-view.html), so the
-        // Maps browser key can be HTTP-referrer-restricted instead of shipping
-        // unrestricted in this bundle. See mck-map-integration.js.
+        // Maps JS now loads only inside map-view.html's iframe, not here - see mck-map-integration.js.
     ];
     var mck_style_loader = [
         {
