@@ -11,6 +11,13 @@
 
     const safeFn = (fn, fallback) => (typeof fn === 'function' ? fn : fallback);
 
+    const MAP_VIEW_PATH = '/map-view.html';
+    const MSG_READY = 'km-map:ready';
+    const MSG_INIT = 'km-map:init';
+    const MSG_SET_LOCATION = 'km-map:set-location';
+    const MSG_LOCATION_CHANGED = 'km-map:location-changed';
+    const MSG_RESIZE = 'km-map:resize';
+
     const createLayout = ({
         $applozic,
         kommunicateCommons = {},
@@ -39,16 +46,10 @@
         const setLocation = safeFn(state.setLocation, noop);
 
         const layout = {};
-        let geocoder = null;
-        let currentAddress = '';
         let hasInitLocationShare = false;
-        let mapInstance = null;
-        let mapMarker = null;
-        let AdvancedMarkerElement = null;
-        let placeAutocompleteElement = null;
-        let placeAutocompleteInput = null;
-        let manualAddressHandlersBound = false;
-        let isAddressSelectionFromAutocomplete = false;
+        let mapIframe = null;
+        let mapIframeReady = false;
+        let mapIframeOrigin = null;
 
         const $mckMyLoc = $applozic('#mck-my-loc');
         const $mckLocBox = $applozic('#mck-loc-box');
@@ -61,29 +62,87 @@
         const $mckMapContent = $applozic('#mck-map-content');
         const $mckLocAddress = $applozic('#mck-loc-address');
 
-        const ensureGeocoder = (googleMaps) => {
-            if (geocoder) {
-                return geocoder;
+        // Map UI lives in the map-view.html iframe (referrer-restrictable); hide the plain fallback input once it loads.
+        const hideNativeAddressInput = () => {
+            const formGroup = $mckLocAddress.closest('.mck-form-group');
+            if (formGroup && formGroup.length) {
+                kommunicateCommons.hide ? kommunicateCommons.hide(formGroup) : formGroup.hide();
+            } else {
+                $mckLocAddress.hide();
             }
-            const GeocoderCtor = googleMaps?.maps?.Geocoder;
-            if (typeof GeocoderCtor !== 'function') {
-                logger('Google Maps Geocoder is unavailable.');
+        };
+
+        const ensureMapIframe = () => {
+            if (mapIframe) {
+                return mapIframe;
+            }
+            const baseUrl =
+                typeof windowRef.MCK_CONTEXTPATH === 'string' ? windowRef.MCK_CONTEXTPATH : '';
+            const iframe = document.createElement('iframe');
+            iframe.src = baseUrl + MAP_VIEW_PATH;
+            try {
+                mapIframeOrigin = new URL(iframe.src, windowRef.location.href).origin;
+            } catch (error) {
+                logger('mck-map-integration: could not resolve map iframe origin.', error);
+                mapIframeOrigin = null;
+            }
+            iframe.title = 'Share location';
+            iframe.setAttribute('frameborder', '0');
+            iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;';
+
+            const mapContentEl = $mckMapContent[0];
+            if (!mapContentEl) {
+                logger('mck-map-integration: #mck-map-content not found in DOM.');
                 return null;
             }
-            try {
-                geocoder = new GeocoderCtor();
-            } catch (error) {
-                logger('Google Maps Geocoder init error', error);
-                geocoder = null;
+            mapContentEl.innerHTML = '';
+            mapContentEl.appendChild(iframe);
+            hideNativeAddressInput();
+
+            mapIframe = iframe;
+            mapIframeReady = false;
+            windowRef.addEventListener('message', handleMapMessage);
+            return iframe;
+        };
+
+        const postToMap = (type, payload) => {
+            if (!mapIframe || !mapIframeReady || !mapIframe.contentWindow || !mapIframeOrigin) {
+                return;
             }
-            return geocoder;
+            mapIframe.contentWindow.postMessage(Object.assign({ type }, payload), mapIframeOrigin);
+        };
+
+        const handleMapMessage = (event) => {
+            if (!mapIframe || event.source !== mapIframe.contentWindow) {
+                return;
+            }
+            const data = event.data || {};
+            if (data.type === MSG_READY) {
+                mapIframeReady = true;
+                const initial = getStoredLocation();
+                postToMap(MSG_INIT, { lat: initial.lat, lng: initial.lng });
+                return;
+            }
+            if (data.type === MSG_LOCATION_CHANGED) {
+                applyLocationChange({ lat: data.lat, lng: data.lng }, data.address);
+            }
+        };
+
+        const applyLocationChange = (latLng, address) => {
+            const target = updateStoredLocation(latLng);
+            $mckLocLat.val(target.lat);
+            $mckLocLon.val(target.lng);
+            $mckLocLat.trigger('change');
+            $mckLocLon.trigger('change');
+            if (typeof address === 'string') {
+                $mckLocAddress.val(address);
+            }
+            return target;
         };
 
         layout.init = () => {
             const config = getMapConfig();
-            const googleMaps = window.google;
-            if (config.isLocShare && googleMaps && typeof googleMaps.maps === 'object') {
-                ensureGeocoder(googleMaps);
+            if (config.isLocShare) {
                 $mckBtnAttach.on('click', layout.fileMenuToggle);
                 $mckBtnLoc.on('click', (event) => {
                     event.preventDefault();
@@ -144,13 +203,13 @@
         layout.onGetCurrLocation = (position) => {
             const coords = extractCoordinates(position);
             if (coords) {
-                updateStoredLocation(coords);
+                applyLocationChange(coords);
             }
             layout.openMapBox();
         };
 
         layout.onErrorCurrLocation = () => {
-            updateStoredLocation({
+            applyLocationChange({
                 lat: 46.15242437752303,
                 lng: 2.7470703125,
             });
@@ -170,43 +229,14 @@
             if (!coords) {
                 return;
             }
-            syncMarkerPosition(coords, {
-                pan: true,
-            });
-            reverseGeocodeLatLng(coords);
+            applyLocationChange(coords);
+            postToMap(MSG_SET_LOCATION, coords);
         };
 
         layout.openMapBox = () => {
-            const googleMaps = window.google;
-            if (!googleMaps || !googleMaps.maps) {
-                $mckLocBox.attr('aria-hidden', 'false');
-                $mckLocBox.mckModal();
-                return;
-            }
-            ensureGeocoder(googleMaps);
-            AdvancedMarkerElement =
-                AdvancedMarkerElement || googleMaps.maps.marker?.AdvancedMarkerElement || null;
-
-            const mapConfig = getMapConfig();
+            ensureMapIframe();
             const initialLatLng = getStoredLocation();
-
-            if (!mapInstance) {
-                initializeMap(initialLatLng, mapConfig, googleMaps);
-                initializeAutocomplete(googleMaps);
-                initializeAddressManualHandlers();
-            } else {
-                mapInstance.setCenter(initialLatLng);
-                updateMarkerPosition(initialLatLng);
-            }
-
-            syncMarkerPosition(initialLatLng, {
-                pan: false,
-                address: currentAddress || getAddressFieldValue(),
-            });
-
-            if (!currentAddress) {
-                reverseGeocodeLatLng(initialLatLng);
-            }
+            postToMap(MSG_INIT, { lat: initialLatLng.lat, lng: initialLatLng.lng });
 
             $mckLocBox.off('shown.bs.mck-box', handleLocModalShown);
             $mckLocBox.on('shown.bs.mck-box', handleLocModalShown);
@@ -216,298 +246,7 @@
 
         const handleLocModalShown = () => {
             $mckLocBox.off('shown.bs.mck-box', handleLocModalShown);
-            const googleMaps = window.google;
-            if (mapInstance && googleMaps?.maps?.event) {
-                googleMaps.maps.event.trigger(mapInstance, 'resize');
-                mapInstance.setCenter(getStoredLocation());
-            }
-        };
-
-        const initializeMap = (latLng, mapConfig, googleMaps) => {
-            const mapOptions = {
-                center: latLng,
-                zoom: 14,
-                fullscreenControl: false,
-                streetViewControl: false,
-                mapTypeControl: false,
-            };
-
-            if (mapConfig.googleApiKey) {
-                mapOptions.mapId = mapConfig.googleApiKey;
-            }
-
-            mapInstance = new googleMaps.maps.Map($mckMapContent[0], mapOptions);
-
-            const handleDragEnd = (event) => {
-                const position = getMarkerLatLng(event?.latLng);
-                syncMarkerPosition(position, {
-                    pan: true,
-                });
-                reverseGeocodeLatLng(position);
-            };
-
-            if (AdvancedMarkerElement) {
-                mapMarker = new AdvancedMarkerElement({
-                    map: mapInstance,
-                    position: latLng,
-                    gmpDraggable: true,
-                });
-                mapMarker.addListener('dragend', handleDragEnd);
-            } else {
-                mapMarker = new googleMaps.maps.Marker({
-                    map: mapInstance,
-                    position: latLng,
-                    draggable: true,
-                });
-                mapMarker.addListener('dragend', handleDragEnd);
-            }
-
-            mapInstance.addListener('click', (event) => {
-                syncMarkerPosition(event.latLng, {
-                    pan: true,
-                });
-                reverseGeocodeLatLng(event.latLng);
-            });
-        };
-
-        const initializeAutocomplete = (googleMaps) => {
-            if (
-                placeAutocompleteElement ||
-                !$mckLocAddress.length ||
-                !googleMaps?.maps?.places?.PlaceAutocompleteElement ||
-                !mapInstance
-            ) {
-                return;
-            }
-
-            try {
-                placeAutocompleteElement = new googleMaps.maps.places.PlaceAutocompleteElement();
-            } catch (error) {
-                logger('PlaceAutocompleteElement init error', error);
-                placeAutocompleteElement = null;
-                return;
-            }
-
-            const originalInput = $mckLocAddress[0];
-            if (!originalInput?.parentNode) {
-                placeAutocompleteElement = null;
-                return;
-            }
-
-            placeAutocompleteElement.id = 'mck-loc-address-autocomplete';
-            placeAutocompleteElement.className = originalInput.className || '';
-            placeAutocompleteElement.placeholder = originalInput.getAttribute('placeholder') || '';
-            placeAutocompleteElement.setAttribute(
-                'aria-label',
-                originalInput.getAttribute('aria-label') || 'Enter a location'
-            );
-            if (originalInput.value) {
-                placeAutocompleteElement.value = originalInput.value;
-            }
-
-            originalInput.parentNode.insertBefore(placeAutocompleteElement, originalInput);
-            $mckLocAddress.hide();
-            ensurePlaceAutocompleteInput();
-            placeAutocompleteElement.addEventListener(
-                'gmp-select',
-                handlePlaceAutocompleteSelection
-            );
-        };
-
-        const handlePlaceAutocompleteSelection = (event) => {
-            const prediction = event?.placePrediction;
-            if (!prediction || typeof prediction.toPlace !== 'function') {
-                return;
-            }
-
-            const place = prediction.toPlace();
-            isAddressSelectionFromAutocomplete = true;
-            place
-                .fetchFields({
-                    fields: ['location', 'formattedAddress', 'displayName'],
-                })
-                .then(() => {
-                    if (!place.location) {
-                        return;
-                    }
-                    const formatted =
-                        place.formattedAddress || place.displayName || currentAddress || '';
-                    syncMarkerPosition(place.location, {
-                        pan: true,
-                        address: formatted,
-                    });
-                })
-                .catch((error) => {
-                    logger('PlaceAutocompleteElement selection error', error);
-                })
-                .finally(() => {
-                    setTimeout(() => {
-                        isAddressSelectionFromAutocomplete = false;
-                    }, 0);
-                });
-        };
-
-        const initializeAddressManualHandlers = () => {
-            if (manualAddressHandlersBound) {
-                return;
-            }
-            const manualTarget =
-                placeAutocompleteElement || ensurePlaceAutocompleteInput() || $mckLocAddress[0];
-            if (!manualTarget) {
-                return;
-            }
-            manualAddressHandlersBound = true;
-            manualTarget.addEventListener('keydown', handleManualAddressKeyDown, true);
-            manualTarget.addEventListener('blur', handleManualAddressBlur, true);
-        };
-
-        const handleManualAddressKeyDown = (event) => {
-            if (event.key !== 'Enter' && event.keyCode !== 13) {
-                return;
-            }
-            event.preventDefault();
-            const address = (getAddressFieldValue() || '').trim();
-            if (address) {
-                geocodeAddress(address);
-            }
-        };
-
-        const handleManualAddressBlur = () => {
-            if (isAddressSelectionFromAutocomplete) {
-                return;
-            }
-            const address = (getAddressFieldValue() || '').trim();
-            if (address && address !== currentAddress) {
-                geocodeAddress(address);
-            }
-        };
-
-        const ensurePlaceAutocompleteInput = () => {
-            if (!placeAutocompleteElement?.querySelector) {
-                placeAutocompleteInput = null;
-                return null;
-            }
-            if (!placeAutocompleteInput || !placeAutocompleteInput.isConnected) {
-                placeAutocompleteInput = placeAutocompleteElement.querySelector('input');
-            }
-            return placeAutocompleteInput;
-        };
-
-        const getAddressFieldValue = () => {
-            if (typeof placeAutocompleteElement?.value === 'string') {
-                return placeAutocompleteElement.value;
-            }
-            const input = ensurePlaceAutocompleteInput();
-            if (typeof input?.value === 'string') {
-                return input.value;
-            }
-            return ($mckLocAddress.val() || '').toString();
-        };
-
-        const setAddressFieldValue = (address) => {
-            const value = address || '';
-            $mckLocAddress.val(value);
-            if (placeAutocompleteElement) {
-                if ('value' in placeAutocompleteElement) {
-                    placeAutocompleteElement.value = value;
-                } else if (typeof placeAutocompleteElement.setAttribute === 'function') {
-                    placeAutocompleteElement.setAttribute('value', value);
-                }
-            }
-            const input = ensurePlaceAutocompleteInput();
-            if (input && typeof input.value !== 'undefined') {
-                input.value = value;
-            }
-        };
-
-        const getMarkerLatLng = (fallbackLatLng) => {
-            if (fallbackLatLng) {
-                return fallbackLatLng;
-            }
-            if (!mapMarker) {
-                return null;
-            }
-            if (typeof mapMarker.getPosition === 'function') {
-                return mapMarker.getPosition();
-            }
-            return mapMarker.position || null;
-        };
-
-        const updateMarkerPosition = (target) => {
-            if (!mapMarker || !target) {
-                return;
-            }
-            if (typeof mapMarker.setPosition === 'function') {
-                mapMarker.setPosition(target);
-            } else {
-                mapMarker.position = target;
-            }
-        };
-
-        const geocodeAddress = (address) => {
-            if (!geocoder || !address) {
-                return;
-            }
-            geocoder.geocode(
-                {
-                    address,
-                },
-                (results, status) => {
-                    if (status !== 'OK' || !Array.isArray(results) || !results.length) {
-                        return;
-                    }
-                    const result = results[0];
-                    syncMarkerPosition(result.geometry.location, {
-                        pan: true,
-                        address: result.formatted_address,
-                    });
-                }
-            );
-        };
-
-        const reverseGeocodeLatLng = (latLng) => {
-            if (!geocoder || !latLng) {
-                return;
-            }
-            const target = toPlainLatLng(latLng);
-            geocoder.geocode(
-                {
-                    location: target,
-                },
-                (results, status) => {
-                    if (status !== 'OK' || !Array.isArray(results) || !results.length) {
-                        return;
-                    }
-                    currentAddress = results[0].formatted_address;
-                    setAddressFieldValue(currentAddress);
-                }
-            );
-        };
-
-        const syncMarkerPosition = (latLng, options) => {
-            if (!latLng) {
-                return;
-            }
-            const target = updateStoredLocation(latLng);
-            $mckLocLat.val(target.lat);
-            $mckLocLon.val(target.lng);
-            $mckLocLat.trigger('change');
-            $mckLocLon.trigger('change');
-
-            if (options && Object.prototype.hasOwnProperty.call(options, 'address')) {
-                currentAddress = options.address || '';
-                setAddressFieldValue(currentAddress);
-            } else if (currentAddress) {
-                setAddressFieldValue(currentAddress);
-            } else {
-                setAddressFieldValue(formatLatLng(target));
-            }
-
-            updateMarkerPosition(target);
-
-            if (mapInstance && (!options || options.pan !== false)) {
-                mapInstance.panTo(target);
-            }
+            postToMap(MSG_RESIZE, {});
         };
 
         const updateStoredLocation = (latLng) => {
@@ -531,15 +270,6 @@
                 lat: Number.isFinite(Number(lat)) ? parseFloat(lat) : 0,
                 lng: Number.isFinite(Number(lng)) ? parseFloat(lng) : 0,
             };
-        };
-
-        const formatLatLng = (latLng) => {
-            const latNum = Number(latLng.lat);
-            const lngNum = Number(latLng.lng);
-            if (!Number.isFinite(latNum) || !Number.isFinite(lngNum)) {
-                return '';
-            }
-            return `${latNum.toFixed(6)}, ${lngNum.toFixed(6)}`;
         };
 
         const extractCoordinates = (position) => {
