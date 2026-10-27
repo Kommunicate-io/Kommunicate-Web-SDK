@@ -6912,20 +6912,20 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class ="km-conversation-container-right ${kmAttchMsg}">' +
-                '{{html replyQuoteExpr}}' +
                 '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>' +
                 '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">' +
                 '<div class="move-right mck-msg-text"></div>' +
+                '{{html replyQuoteExpr}}' +
                 '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1">' +
                 '<div class="mck-msg-feedback-sticker ${showFeedbackSticker}">{{html feedbackStickerExpr}}</div>' +
                 '</div>' +
+                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="18" height="18" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button>' +
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
-                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span>' +
-                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="16" height="16" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg><span>${msgReplyExpr}</span></button></div>' +
+                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
                 '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
@@ -8129,7 +8129,8 @@ const firstVisibleMsg = {
                     !msg.message ||
                     msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                 ) {
-                    messageClass = 'n-vis';
+                    // an attachment-only reply still needs the bubble to carry its quote
+                    messageClass = replyKey ? 'vis' : 'n-vis';
                 }
                 var botMessageDelayClass = 'vis';
                 if (

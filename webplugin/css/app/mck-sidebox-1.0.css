@@ -38,33 +38,22 @@
 
 .mck-reply-quote {
     cursor: pointer;
-    margin-bottom: 4px;
-    padding: 4px 8px;
-    border-left: 3px solid rgba(0, 0, 0, 0.35);
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    border-left: 3px solid currentColor;
     border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.08);
     text-align: left;
     overflow: hidden;
 }
 
-.mck-msg-right .mck-reply-quote {
-    margin-left: auto;
-    width: fit-content;
-    max-width: 80%;
-}
-
-.mck-msg-left .mck-reply-quote {
-    width: fit-content;
-    max-width: 80%;
-}
-
-.mck-reply-quote-sender {
-    font-weight: 600;
-    color: #333;
+.mck-reply-quote-sender::before {
+    content: '\21B3';
+    margin-right: 6px;
 }
 
 .mck-reply-quote-text {
-    color: #555;
+    opacity: 0.75;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -84,6 +73,7 @@
 #mck-reply-preview {
     flex: 1;
     min-width: 0;
+    color: #333;
 }
 
 #mck-reply-preview .mck-reply-quote {
@@ -107,30 +97,58 @@
 }
 
 .mck-reply-action {
-    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    display: flex;
     align-items: center;
-    gap: 4px;
-    margin-left: 8px;
-    padding: 2px 8px;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     border: 1px solid #d0d5dd;
-    border-radius: 12px;
+    border-radius: 50%;
     background: #fff;
     color: #475467;
-    font-size: 12px;
-    line-height: 18px;
     cursor: pointer;
-    vertical-align: middle;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.15s ease-in-out;
 }
 
-.mck-reply-action:hover,
+.mck-msg-left .mck-reply-action {
+    left: 100%;
+    margin-left: 8px;
+}
+
+.mck-msg-right .mck-reply-action {
+    right: 100%;
+    margin-right: 8px;
+}
+
+.mck-m-b:hover .mck-reply-action,
 .mck-reply-action:focus-visible {
+    opacity: 1;
+}
+
+@media (hover: none) {
+    .mck-reply-action {
+        opacity: 1;
+    }
+}
+
+.mck-reply-action:hover {
     color: #000;
     border-color: #98a2b3;
 }
 
-.mck-m-b.mck-reply-highlight {
-    background-color: rgba(0, 0, 0, 0.06);
-    transition: background-color 0.3s ease-in-out;
+/* keeps the icon visible when the message row's focus style recolours its svgs */
+#mck-message-cell .mck-m-b .mck-msg-box .mck-reply-action svg path {
+    fill: currentColor;
+}
+
+.mck-m-b.mck-reply-highlight .mck-msg-box {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .mck-sidebox {
