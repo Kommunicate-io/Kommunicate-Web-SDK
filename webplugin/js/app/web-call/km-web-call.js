@@ -6,6 +6,12 @@ class KmWebCall {
     _ASSIGNEE_WAIT_MS = 15000;
     _ASSIGNEE_POLL_MS = 500;
     _END_MESSAGE_MS = 6000;
+    // Usual two-tone ringback: 440 + 480 Hz, 2 s on, 4 s off.
+    _RINGBACK_FREQUENCIES = [440, 480];
+    _RINGBACK_VOLUME = 0.1;
+    _RINGBACK_ON_S = 2;
+    _RINGBACK_CYCLE_MS = 6000;
+    _ringback = null;
     _attempt = 0;
     _active = false;
     _answered = false;
@@ -132,11 +138,19 @@ class KmWebCall {
     // With answerOnBridge, "accept" fires only when the agent accepts in the Dashboard.
     bindCallEvents(call) {
         const isCurrentCall = () => call === this._call;
-        call.on('ringing', () => isCurrentCall() && this.setStatus(this.labels.ringing));
+        // Without early media from Twilio (the Dashboard is a browser) the SDK plays nothing while it rings.
+        call.on('ringing', (hasEarlyMedia) => {
+            if (!isCurrentCall()) {
+                return;
+            }
+            this.setStatus(this.labels.ringing);
+            hasEarlyMedia || this.startRingback();
+        });
         call.on('accept', () => {
             if (!isCurrentCall()) {
                 return;
             }
+            this.stopRingback();
             this._answered = true;
             this.setStatus(this.labels.inCall);
             this.updateMuteButton(false);
@@ -161,6 +175,7 @@ class KmWebCall {
         this._answered = false;
         this._call = null;
         clearInterval(this._timerId);
+        this.stopRingback();
         // destroy() disconnects the call too; its "disconnect" event is ignored as _call is cleared.
         this._device && this._device.destroy();
         this._device = null;
@@ -196,6 +211,40 @@ class KmWebCall {
     updateMuteButton(muted) {
         this.muteButton.textContent = muted ? this.labels.unmute : this.labels.mute;
         this.muteButton.setAttribute('aria-pressed', String(muted));
+    }
+
+    // Twilio may report ringing more than once for a call; the tone is started only once.
+    startRingback() {
+        if (this._ringback) {
+            return;
+        }
+        const context = new AudioContext();
+        const gain = context.createGain();
+        gain.gain.value = 0;
+        gain.connect(context.destination);
+        this._RINGBACK_FREQUENCIES.forEach((frequency) => {
+            const oscillator = context.createOscillator();
+            oscillator.frequency.value = frequency;
+            oscillator.connect(gain);
+            oscillator.start();
+        });
+        const ring = () => {
+            const now = context.currentTime;
+            gain.gain.setValueAtTime(this._RINGBACK_VOLUME, now);
+            gain.gain.setValueAtTime(0, now + this._RINGBACK_ON_S);
+        };
+        ring();
+        this._ringback = { context, intervalId: setInterval(ring, this._RINGBACK_CYCLE_MS) };
+    }
+
+    // Closing the context stops its oscillators.
+    stopRingback() {
+        if (!this._ringback) {
+            return;
+        }
+        clearInterval(this._ringback.intervalId);
+        this._ringback.context.close();
+        this._ringback = null;
     }
 
     startTimer() {
