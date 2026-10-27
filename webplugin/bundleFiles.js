@@ -143,6 +143,18 @@ const THIRD_PARTY_FILE_INFO = [
         shouldMinify: true,
     },
     {
+        source: path.join(__dirname, 'lib/js/twilio-voice-sdk-2.18.5.min.js'),
+        outputName: `twilio-voice-sdk-2.18.5.min.js`,
+        type: 'js',
+        shouldMinify: false,
+    },
+    {
+        source: path.join(__dirname, 'js/app/web-call/km-web-call.js'),
+        outputName: `web-call-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
+    {
         source: path.join(__dirname, 'lib/js/crypto-js.4.0.min.js'),
         outputName: `crypto.min.js`,
         type: 'js',
@@ -181,6 +193,10 @@ exports.getDynamicLoadFiles = function (dir) {
         },
         voiceChat: {
             js: `${dir}/voice-chat-${version}.min.js`,
+        },
+        webCall: {
+            sdk: `${dir}/twilio-voice-sdk-2.18.5.min.js`,
+            js: `${dir}/web-call-${version}.min.js`,
         },
     };
 

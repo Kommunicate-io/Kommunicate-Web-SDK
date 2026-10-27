@@ -687,6 +687,7 @@ function ApplozicSidebox() {
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
+            options.connectViaCallEnabled = isSettingEnable('connectViaCallEnabled');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
             options.googleApiKey =

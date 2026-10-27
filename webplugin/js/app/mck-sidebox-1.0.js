@@ -3221,6 +3221,8 @@ const firstVisibleMsg = {
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                     stopVoiceOnWidgetClose();
+                    // kmWebCall exists only after a "Connect via call" click has loaded it.
+                    typeof kmWebCall !== 'undefined' && kmWebCall.hangUp();
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
