@@ -385,6 +385,10 @@ class KMLabel {
         var textBindings = {
             'km-csat-trigger-text': 'conversation.header.dropdown.CSAT_RATING_TEXT',
             'km-restart-conversation-text': 'conversation.header.dropdown.RESTART_CONVERSATION',
+            'km-download-transcript-text-label':
+                'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT',
+            'km-download-transcript-pdf-label':
+                'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF',
             'km-voice-note-trigger-text': 'micOptions.dropup.VOICE_NOTE_TRIGGER',
             'km-voice-input-trigger-text': 'micOptions.dropup.VOICE_INPUT_TRIGGER',
             'km-bottom-tab-conversations-text': 'modern.nav.conversations',

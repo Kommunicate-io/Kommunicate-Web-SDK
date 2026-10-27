@@ -705,6 +705,7 @@ const firstVisibleMsg = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
+        transcriptDownloadService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -4970,6 +4971,15 @@ const firstVisibleMsg = {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
+                // Download conversation transcript (TXT / PDF)
+                $applozic(d).on('click', '.km-download-transcript', function (e) {
+                    e.preventDefault();
+                    transcriptDownloadService.download(this.dataset.format);
+                });
+                $applozic(d).on('keydown', '.km-download-transcript', function (e) {
+                    handleActivationKey(e, this.click.bind(this));
+                });
+
                 document.getElementById('km-csat-close-button').onclick = function (e) {
                     e.preventDefault();
 
@@ -7264,6 +7274,11 @@ const firstVisibleMsg = {
                         // Primary CTA is Restart Conversation: ensure dropdown item stays hidden
                         kommunicateCommons.hide('.km-option-restart-conversation');
                     }
+                }
+
+                if (!appOptions.disableTranscriptDownload) {
+                    enableDropdown = true;
+                    kommunicateCommons.show('.km-download-transcript');
                 }
 
                 // For voice output user override
