@@ -386,6 +386,7 @@ const firstVisibleMsg = {
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
+        var REPLY_MESSAGE_MAP = {};
         var USER_DEVICE_KEY;
         var IS_LOGGED_IN = true;
         var MCK_CONTACT_MAP = [];
@@ -3744,6 +3745,7 @@ const firstVisibleMsg = {
             const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
+            var MESSAGE_DETAIL_URL = '/rest/ws/message/detail';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
             var MESSAGE_LIST_URL = '/rest/ws/message/v3/list';
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
@@ -5952,6 +5954,24 @@ const firstVisibleMsg = {
                 });
             };
 
+            _this.getMessagesDetail = function (keys, callback) {
+                window.Applozic.ALApiService.ajax({
+                    type: 'GET',
+                    url:
+                        MCK_BASE_URL +
+                        MESSAGE_DETAIL_URL +
+                        '?keys=' +
+                        keys.map(encodeURIComponent).join('&keys='),
+                    global: false,
+                    success: function (data) {
+                        if (data.status === 'success') {
+                            callback(data.response);
+                        }
+                    },
+                    error: function () {},
+                });
+            };
+
             _this.deleteMessage = function (msgKey) {
                 var tabId = $mck_msg_inner.data('mck-id');
                 if (typeof tabId !== 'undefined') {
@@ -6905,7 +6925,7 @@ const firstVisibleMsg = {
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
                 '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span>' +
-                '<button type="button" class="mck-message-reply mck-reply-action" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button></div>' +
+                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="16" height="16" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg><span>${msgReplyExpr}</span></button></div>' +
                 '</div>' +
                 '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
@@ -6915,7 +6935,7 @@ const firstVisibleMsg = {
                 '<ul>' +
                 '<li><a class="mck-message-forward ${msgForwardVisibleExpr}">${msgForwardExpr}</a></li>' +
                 '<li><a class="mck-message-delete">${msgDeleteExpr}</a></li>' +
-                '<li><a class="mck-message-reply">${msgReplyExpr}</a></li>' +
+                '<li class="${replyActionClass}"><a class="mck-message-reply">${msgReplyExpr}</a></li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -7871,10 +7891,11 @@ const firstVisibleMsg = {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
-                if (msg.metadata && msg.metadata.AL_REPLY) {
-                    // quoted message may be outside the loaded page; getReplyMessageByKey fetches it from server
-                    var replyMsg = alMessageService.getReplyMessageByKey(msg.metadata.AL_REPLY);
-                    replyQuote = replyMsg ? _this.getReplyQuoteMarkup(replyMsg) : '';
+                REPLY_MESSAGE_MAP[msg.key] = msg;
+                var replyKey = msg.metadata && msg.metadata.AL_REPLY;
+                if (replyKey) {
+                    replyQuote = _this.getReplyQuoteMarkup(replyKey);
+                    _this.scheduleReplyQuoteRender();
                 }
                 const replaceTokenizedStreamElementAfterRender =
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
@@ -8160,6 +8181,12 @@ const firstVisibleMsg = {
                     {
                         kmAttchMsg: kmAttchMsg,
                         replyQuoteExpr: replyQuote,
+                        replyActionClass:
+                            WIDGET_SETTINGS &&
+                            WIDGET_SETTINGS.quoteReplyEnabled &&
+                            floatWhere !== 'mck-msg-center'
+                                ? ''
+                                : 'n-vis',
                         msgKeyExpr: msg.key,
                         msgDeliveredExpr: msg.delivered,
                         msgSentExpr: msg.sent,
@@ -9050,35 +9077,89 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.getReplyQuoteMarkup = function (replyMsg) {
+            _this.getReplyQuoteMarkup = function (replyKey) {
+                // filled by renderReplyQuotes once the quoted message is available
                 var quote = d.createElement('div');
                 quote.className = 'mck-reply-quote';
-                quote.setAttribute('data-reply-key', replyMsg.key);
-                var sender = d.createElement('div');
-                sender.className = 'mck-reply-quote-sender';
-                sender.textContent =
-                    replyMsg.type === 5
-                        ? MCK_LABELS['you']
-                        : _this.getTabDisplayName(replyMsg.to, false);
-                var text = d.createElement('div');
-                text.className = 'mck-reply-quote-text';
-                text.textContent =
-                    _this.getPlainTextForMessage(replyMsg) ||
-                    MCK_LABELS['rich.message']['notification.preview'];
-                quote.append(sender, text);
+                quote.setAttribute('data-reply-key', replyKey);
                 return quote.outerHTML;
             };
 
-            _this.setReplyMessage = function (msgKey) {
-                var message = alMessageService.getReplyMessageByKey(msgKey);
-                if (!message) {
-                    // message is still pending or could not be fetched from server
+            _this.fillReplyQuote = function (quote, message) {
+                var sender = d.createElement('div');
+                sender.className = 'mck-reply-quote-sender';
+                sender.textContent =
+                    message.type === 5
+                        ? MCK_LABELS['you']
+                        : _this.getTabDisplayName(message.to, false);
+                var text = d.createElement('div');
+                text.className = 'mck-reply-quote-text';
+                text.textContent =
+                    _this.getPlainTextForMessage(message) ||
+                    MCK_LABELS['rich.message']['notification.preview'];
+                quote.replaceChildren(sender, text);
+            };
+
+            _this.loadReplyMessages = function (keys, callback) {
+                var missingKeys = keys.filter(function (key) {
+                    return !REPLY_MESSAGE_MAP[key];
+                });
+                if (!missingKeys.length) {
+                    callback();
                     return;
                 }
-                $applozic('#mck-reply-preview').html(_this.getReplyQuoteMarkup(message));
-                $mck_text_box.data('AL_REPLY', msgKey);
-                kommunicateCommons.show('#mck-reply-to-div');
-                $mck_text_box.focus();
+                mckMessageService.getMessagesDetail(missingKeys, function (messages) {
+                    messages.forEach(function (message) {
+                        REPLY_MESSAGE_MAP[message.key] = message;
+                    });
+                    callback();
+                });
+            };
+
+            var isReplyQuoteRenderScheduled = false;
+            _this.scheduleReplyQuoteRender = function () {
+                // deferred so quoted messages rendered later in the same batch are already cached
+                if (isReplyQuoteRenderScheduled) {
+                    return;
+                }
+                isReplyQuoteRenderScheduled = true;
+                setTimeout(function () {
+                    isReplyQuoteRenderScheduled = false;
+                    _this.renderReplyQuotes();
+                });
+            };
+
+            _this.renderReplyQuotes = function () {
+                var $quotes = $applozic('#mck-message-cell .mck-reply-quote:empty');
+                var keys = [];
+                $quotes.each(function () {
+                    var key = this.getAttribute('data-reply-key');
+                    keys.indexOf(key) === -1 && keys.push(key);
+                });
+                if (!keys.length) {
+                    return;
+                }
+                _this.loadReplyMessages(keys, function () {
+                    $quotes.each(function () {
+                        var message = REPLY_MESSAGE_MAP[this.getAttribute('data-reply-key')];
+                        message ? _this.fillReplyQuote(this, message) : this.remove();
+                    });
+                });
+            };
+
+            _this.setReplyMessage = function (msgKey) {
+                _this.loadReplyMessages([msgKey], function () {
+                    var message = REPLY_MESSAGE_MAP[msgKey];
+                    if (!message) {
+                        return;
+                    }
+                    var quote = $applozic(_this.getReplyQuoteMarkup(msgKey))[0];
+                    _this.fillReplyQuote(quote, message);
+                    $applozic('#mck-reply-preview').html(quote);
+                    $mck_text_box.data('AL_REPLY', msgKey);
+                    kommunicateCommons.show('#mck-reply-to-div');
+                    $mck_text_box.focus();
+                });
             };
 
             _this.clearReplyMessage = function () {
