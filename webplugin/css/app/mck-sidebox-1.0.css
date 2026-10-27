@@ -104,18 +104,22 @@
     cursor: pointer;
 }
 
-.mck-reply-action {
+.mck-sidebox .mck-reply-action {
     position: absolute;
     top: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     border: 1px solid #d0d5dd;
     border-radius: 50%;
     background: #fff;
     color: #475467;
+    appearance: none;
+    -webkit-appearance: none;
     cursor: pointer;
     opacity: 0;
     transform: translateY(-50%);
@@ -140,9 +144,8 @@
     }
 }
 
-/* keeps the icon visible when the message row's focus style recolours its svgs */
 #mck-message-cell .mck-m-b .mck-msg-box .mck-reply-action svg path {
-    fill: currentColor;
+    fill: #475467;
 }
 
 .mck-m-b.mck-reply-highlight .mck-msg-box {

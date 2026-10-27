@@ -9072,7 +9072,9 @@ const firstVisibleMsg = {
                 // snapshot of the quoted bubble; stored with the reply so it renders without fetching the original
                 var quotedMessage = {
                     key: $message.attr('data-msgkey'),
-                    from: $message.attr('data-contact'),
+                    from: $message.hasClass('mck-msg-right')
+                        ? MCK_USER_ID
+                        : $message.attr('data-contact'),
                     message:
                         $applozic
                             .trim($message.find('.mck-msg-content').first().text())
