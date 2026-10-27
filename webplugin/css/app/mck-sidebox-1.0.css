@@ -36,6 +36,32 @@
     color: #333;
 }
 
+.mck-msg-reply {
+    background-color: #0073b7;
+}
+
+.mck-msgto {
+    color: chartreuse;
+    padding: 3px;
+    text-align: left;
+}
+
+#mck-reply-msg {
+    padding-left: 3px;
+}
+
+.mck-vertical-line {
+    border-left: thick solid white;
+    border-left-width: medium;
+}
+
+.mck-msgreply-border {
+    color: white;
+    padding: 2px;
+    text-align: center;
+    overflow: hidden;
+}
+
 .mck-reply-quote {
     cursor: pointer;
     margin-bottom: 6px;
@@ -44,7 +70,6 @@
     border-radius: 6px;
     background-color: rgba(0, 0, 0, 0.08);
     text-align: left;
-    overflow: hidden;
 }
 
 .mck-reply-quote-sender::before {
@@ -66,34 +91,17 @@
     padding: 6px 10px 0;
 }
 
-#mck-reply-to-div.n-vis {
-    display: none;
-}
-
 #mck-reply-preview {
     flex: 1;
     min-width: 0;
     color: #333;
 }
 
-#mck-reply-preview .mck-reply-quote {
-    margin-bottom: 0;
-}
-
-#mck-reply-close {
-    flex-shrink: 0;
-    padding: 0 4px;
+#mck-reply-to-div #close {
     border: none;
     background: none;
-    color: #555;
     font-size: 22px;
-    line-height: 1;
     cursor: pointer;
-}
-
-#mck-reply-close:hover,
-#mck-reply-close:focus-visible {
-    color: #000;
 }
 
 .mck-reply-action {
@@ -104,7 +112,6 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    padding: 0;
     border: 1px solid #d0d5dd;
     border-radius: 50%;
     background: #fff;
@@ -112,17 +119,14 @@
     cursor: pointer;
     opacity: 0;
     transform: translateY(-50%);
-    transition: opacity 0.15s ease-in-out;
 }
 
 .mck-msg-left .mck-reply-action {
-    left: 100%;
-    margin-left: 8px;
+    left: calc(100% + 8px);
 }
 
 .mck-msg-right .mck-reply-action {
-    right: 100%;
-    margin-right: 8px;
+    right: calc(100% + 8px);
 }
 
 .mck-m-b:hover .mck-reply-action,
@@ -136,11 +140,6 @@
     }
 }
 
-.mck-reply-action:hover {
-    color: #000;
-    border-color: #98a2b3;
-}
-
 /* keeps the icon visible when the message row's focus style recolours its svgs */
 #mck-message-cell .mck-m-b .mck-msg-box .mck-reply-action svg path {
     fill: currentColor;
@@ -148,7 +147,6 @@
 
 .mck-m-b.mck-reply-highlight .mck-msg-box {
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
-    transition: box-shadow 0.3s ease-in-out;
 }
 
 .mck-sidebox {
@@ -2243,6 +2241,21 @@ ul.mck-intent-menu > li:hover {
     vertical-align: middle;
     background-size: 20px;
     opacity: 0.4;
+}
+
+.mck-imagereply {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.mck-image-reply {
+    height: 50px;
+    width: 50px;
+}
+
+.mck-attachmentmsgto {
+    color: white;
+    padding: 3px;
 }
 
 .mck-alpha-contact-image {
