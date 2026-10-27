@@ -28,7 +28,9 @@ class KmWebCall {
         return MCK_LABELS.webCall;
     }
 
-    async start(groupId) {
+    // botId: the bot the chat was with at the click ('' if already with an agent); Omni-Channel gives
+    // the chat back to it when the agent does not answer.
+    async start(groupId, botId) {
         if (this._active) {
             return;
         }
@@ -54,7 +56,7 @@ class KmWebCall {
             this._device.on('error', (error) => console.error('Web call device error', error));
             // Omni-Channel checks appId and userId against the token identity, so they are the token's own.
             const call = await this._device.connect({
-                params: { appId: applicationId, userId: userId, groupId: String(groupId) },
+                params: { appId: applicationId, userId, groupId: String(groupId), botId },
             });
             if (isCancelled()) {
                 call.disconnect();
