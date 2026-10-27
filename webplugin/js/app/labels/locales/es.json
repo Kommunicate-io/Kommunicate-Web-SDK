@@ -233,5 +233,13 @@
   "voiceInterface.transcribing": "Transcribiendo...",
   "voiceInterface.didNotCatchThat": "No entendí eso. Inténtalo de nuevo.",
   "voiceInterface.noActiveConversation": "Primero abre una conversación.",
-  "voiceInterface.silenceTimeout": "No se detectó voz. Sigo escuchando..."
+  "voiceInterface.silenceTimeout": "No se detectó voz. Sigo escuchando...",
+  "webCall.connecting": "Conectando tu llamada...",
+  "webCall.ringing": "Llamando...",
+  "webCall.inCall": "En llamada",
+  "webCall.mute": "Silenciar",
+  "webCall.unmute": "Activar sonido",
+  "webCall.hangUp": "Colgar",
+  "webCall.failed": "No se pudo conectar la llamada, continúa en el chat",
+  "webCall.micDenied": "Permite el acceso al micrófono para llamar. Puedes continuar en el chat."
 }
