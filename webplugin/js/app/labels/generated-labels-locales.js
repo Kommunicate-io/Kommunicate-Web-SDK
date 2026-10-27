@@ -189,6 +189,10 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON': 'تشغيل النص إلى صوت',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': 'إيقاف النص إلى صوت',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'أعد بدء المحادثة',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT': 'تنزيل نص المحادثة (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'تنزيل نص المحادثة (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'المحادثة',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'أنت',
             'conversation.header.dropdown.HANDOFF': 'تحدث إلى إنسان',
             'conversation.header.dropdown.FAQ': 'الأسئلة الشائعة',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'أرسل رسالة صوتية',
@@ -402,6 +406,12 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON': 'Sprache aktivieren',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': 'Sprache deaktivieren',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Unterhaltung neu starten',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'Transkript herunterladen (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF':
+                'Transkript herunterladen (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Unterhaltung',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Sie',
             'conversation.header.dropdown.HANDOFF': 'Mit Mensch sprechen',
             'conversation.header.dropdown.FAQ': 'FAQ',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Sprachnachricht senden',
@@ -615,6 +625,11 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON': 'Activar texto a voz',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': 'Desactivar texto a voz',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Reiniciar conversación',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'Descargar transcripción (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'Descargar transcripción (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Conversación',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Tú',
             'conversation.header.dropdown.HANDOFF': 'Hablar con un humano',
             'conversation.header.dropdown.FAQ': 'Preguntas frecuentes',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Enviar mensaje de voz',
@@ -832,6 +847,12 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF':
                 'Désactiver la synthèse vocale',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Relancer la conversation',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'Télécharger la transcription (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF':
+                'Télécharger la transcription (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Conversation',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Vous',
             'conversation.header.dropdown.HANDOFF': 'Parler à un humain',
             'conversation.header.dropdown.FAQ': 'FAQ',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Envoyer un message vocal',
@@ -1048,6 +1069,12 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF':
                 'टेक्स्ट से स्पीच बंद करें',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'बातचीत पुनः शुरू करें',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'ट्रांसक्रिप्ट डाउनलोड करें (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF':
+                'ट्रांसक्रिप्ट डाउनलोड करें (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'बातचीत',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'आप',
             'conversation.header.dropdown.HANDOFF': 'मानव से बात करें',
             'conversation.header.dropdown.FAQ': 'FAQ',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'वॉइस संदेश भेजें',
@@ -1262,6 +1289,10 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON': 'Attiva testo in voce',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': 'Disattiva testo in voce',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Riavvia conversazione',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT': 'Scarica trascrizione (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'Scarica trascrizione (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Conversazione',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Tu',
             'conversation.header.dropdown.HANDOFF': 'Parla con un umano',
             'conversation.header.dropdown.FAQ': 'FAQ',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Invia messaggio vocale',
@@ -1475,6 +1506,10 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF':
                 'Desativar texto para fala',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Reiniciar conversa',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT': 'Baixar transcrição (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'Baixar transcrição (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Conversa',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Você',
             'conversation.header.dropdown.HANDOFF': 'Falar com humano',
             'conversation.header.dropdown.FAQ': 'Perguntas frequentes',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Enviar mensagem de voz',
@@ -1686,6 +1721,11 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF':
                 'Inaktivera text-till-tal',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'Starta om samtalet',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'Ladda ner transkription (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'Ladda ner transkription (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'Konversation',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'Du',
             'conversation.header.dropdown.HANDOFF': 'Prata med en människa',
             'conversation.header.dropdown.FAQ': 'FAQ',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'Skicka röstmeddelande',
@@ -1899,6 +1939,11 @@
                 'متن کو تقریر میں تبدیل کریں',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': 'متن کو تقریر بند کریں',
             'conversation.header.dropdown.RESTART_CONVERSATION': 'گفتگو دوبارہ شروع کریں',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT':
+                'ٹرانسکرپٹ ڈاؤن لوڈ کریں (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': 'ٹرانسکرپٹ ڈاؤن لوڈ کریں (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': 'گفتگو',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': 'آپ',
             'conversation.header.dropdown.HANDOFF': 'انسان سے بات کریں',
             'conversation.header.dropdown.FAQ': 'عمومی سوالات',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': 'آواز کا پیغام بھیجیں',
@@ -2105,6 +2150,10 @@
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_ON': '开启语音播报',
             'conversation.header.dropdown.USER_OVERIDE_VOICE_OUTPUT_OFF': '关闭语音播报',
             'conversation.header.dropdown.RESTART_CONVERSATION': '重启会话',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_TEXT': '下载对话记录 (TXT)',
+            'conversation.header.dropdown.DOWNLOAD_TRANSCRIPT_PDF': '下载对话记录 (PDF)',
+            'conversation.header.dropdown.TRANSCRIPT_TITLE': '对话',
+            'conversation.header.dropdown.TRANSCRIPT_SENDER_YOU': '你',
             'conversation.header.dropdown.HANDOFF': '转接客服',
             'conversation.header.dropdown.FAQ': '常见问题',
             'micOptions.dropup.VOICE_NOTE_TRIGGER': '发送语音消息',

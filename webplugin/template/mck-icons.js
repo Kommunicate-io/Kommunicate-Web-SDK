@@ -431,6 +431,12 @@ var KM_MESSAGE_STATUS_ICON_SVG_PATHS =
         />
         <path d="M0 0h24v24H0z" fill="none" />
     </symbol>
+    <symbol id="icon-77" viewBox="0 0 16 16">
+        <path
+            d="M8 10.667 4.667 7.333l.933-.966 1.733 1.733V2.667h1.334V8.1L10.4 6.367l.933.966L8 10.667ZM4 13.333c-.367 0-.68-.13-.942-.391A1.284 1.284 0 0 1 2.667 12v-2H4v2h8v-2h1.333v2c0 .367-.13.68-.391.942a1.284 1.284 0 0 1-.942.391H4Z"
+            fill="#8F8F8F"
+        />
+    </symbol>
 </svg>
 `;
         document.body.insertBefore(div, document.body.firstChild);
