@@ -307,7 +307,7 @@ class KMLabel {
                 selector: '#mck-tab-option-panel [data-toggle="mckdropdown"]',
                 path: 'conversation.options',
             },
-            { selector: '#close', path: 'reply.preview.close' },
+            { selector: '#mck-reply-close', path: 'reply.preview.close' },
             { selector: '.km-faqsearch-clear-action', path: 'search.clear' },
             { selector: '#km-empty-faq-search-clear', path: 'search.clear' },
             { selector: '.voiceNote', path: 'micOptions.dropup.VOICE_NOTE_TRIGGER' },

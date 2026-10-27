@@ -36,30 +36,89 @@
     color: #333;
 }
 
-.mck-msg-reply {
-    background-color: #0073b7;
-}
-
-.mck-msgto {
-    color: chartreuse;
-    padding: 3px;
+.mck-reply-quote {
+    cursor: pointer;
+    margin-bottom: 4px;
+    padding: 4px 8px;
+    border-left: 3px solid rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.05);
     text-align: left;
-}
-
-#mck-reply-msg {
-    padding-left: 3px;
-}
-
-.mck-vertical-line {
-    border-left: thick solid white;
-    border-left-width: medium;
-}
-
-.mck-msgreply-border {
-    color: white;
-    padding: 2px;
-    text-align: center;
     overflow: hidden;
+}
+
+.mck-msg-right .mck-reply-quote {
+    margin-left: auto;
+    width: fit-content;
+    max-width: 80%;
+}
+
+.mck-msg-left .mck-reply-quote {
+    width: fit-content;
+    max-width: 80%;
+}
+
+.mck-reply-quote-sender {
+    font-weight: 600;
+    color: #333;
+}
+
+.mck-reply-quote-text {
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#mck-reply-to-div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px 0;
+}
+
+#mck-reply-to-div.n-vis {
+    display: none;
+}
+
+#mck-reply-preview {
+    flex: 1;
+    min-width: 0;
+}
+
+#mck-reply-preview .mck-reply-quote {
+    margin-bottom: 0;
+}
+
+.mck-reply-action {
+    padding: 0 2px;
+    border: none;
+    background: none;
+    color: #888;
+    cursor: pointer;
+    vertical-align: middle;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.mck-m-b:hover .mck-reply-action,
+.mck-reply-action:focus-visible {
+    opacity: 1;
+}
+
+@media (hover: none) {
+    .mck-reply-action {
+        opacity: 1;
+    }
+}
+
+.mck-msg-center .mck-reply-action {
+    display: none;
+}
+
+.mck-m-b.mck-reply-highlight {
+    background-color: rgba(0, 0, 0, 0.06);
+    transition: background-color 0.3s ease-in-out;
 }
 
 .mck-sidebox {
@@ -2154,21 +2213,6 @@ ul.mck-intent-menu > li:hover {
     vertical-align: middle;
     background-size: 20px;
     opacity: 0.4;
-}
-
-.mck-imagereply {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.mck-image-reply {
-    height: 50px;
-    width: 50px;
-}
-
-.mck-attachmentmsgto {
-    color: white;
-    padding: 3px;
 }
 
 .mck-alpha-contact-image {

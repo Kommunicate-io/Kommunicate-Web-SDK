@@ -4342,7 +4342,17 @@ const firstVisibleMsg = {
             });
 
             $applozic(d).on('click', '.mck-message-reply', function () {
-                _this.replyMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
+                mckMessageLayout.setReplyMessage(
+                    $applozic(this).parents('.mck-m-b').data('msgkey')
+                );
+            });
+
+            $applozic(d).on('click', '#mck-reply-close', function () {
+                mckMessageLayout.clearReplyMessage();
+            });
+
+            $applozic(d).on('click', '.mck-reply-quote', function () {
+                mckMessageLayout.scrollToMessage($applozic(this).data('reply-key'));
             });
 
             $applozic(d).on('click', '.mck-message-forward', function () {
@@ -5479,9 +5489,9 @@ const firstVisibleMsg = {
                 if (originalMessage && originalMessage !== messagePxy.message) {
                     metadata.KM_SENSITIVE_INFO_MASKED = 'true';
                 }
-                var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
-                if (typeof msgKeys !== 'undefined' && msgKeys !== '' && !messagePxy.forward) {
-                    metadata.AL_REPLY = msgKeys;
+                var replyKey = $mck_text_box.data('AL_REPLY');
+                if (replyKey && !messagePxy.forward) {
+                    metadata.AL_REPLY = replyKey;
                 }
                 messagePxy.metadata = metadata;
                 if (
@@ -5781,11 +5791,6 @@ const firstVisibleMsg = {
                 // keeping for future reference
                 // $mck_business_hours_box.addClass('n-vis');
 
-                var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
-                if (typeof msgKeys !== 'undefined' && msgKeys !== '' && !messagePxy.forward) {
-                    metadata.AL_REPLY = msgKeys;
-                    $applozic('#mck-text-box').data('AL_REPLY', '');
-                }
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic(
                     "#mck-message-cell .mck-message-inner div[name='message']." + randomId
@@ -5927,7 +5932,6 @@ const firstVisibleMsg = {
                         Kommunicate.richMsgEventHandler.handleEnableCTA();
                     },
                 });
-                kommunicateCommons.hide('#mck-reply-to-div');
             };
 
             _this.updateMessageMetadata = function (messagePxy) {
@@ -5947,33 +5951,6 @@ const firstVisibleMsg = {
                     error: function () {},
                 });
             };
-
-            _this.replyMessage = function (msgKey) {
-                var displayName = '';
-                var tabId = $mck_msg_inner.data('mck-id');
-                var message = alMessageService.getReplyMessageByKey(msgKey);
-                $mck_text_box.focus().select();
-                kommunicateCommons.show('#mck-reply-to-div');
-                if (message.type === 5) {
-                    displayName = 'You';
-                } else {
-                    displayName = mckMessageLayout.getTabDisplayName(message.to, false);
-                }
-                $applozic('#mck-reply-to').html(displayName);
-                if (typeof message.fileMeta === 'object' || message.contentType === 2) {
-                    $applozic('#mck-reply-msg').html(
-                        mckMessageLayout.getImageForMessagePreview(message)
-                    );
-                } else {
-                    $applozic('#mck-reply-msg').html(message.message);
-                }
-                $applozic('#mck-text-box').data('AL_REPLY', msgKey);
-            };
-
-            $applozic('#close').click(function () {
-                kommunicateCommons.hide('#mck-reply-to-div');
-                $applozic('#mck-text-box').data('AL_REPLY', '');
-            });
 
             _this.deleteMessage = function (msgKey) {
                 var tabId = $mck_msg_inner.data('mck-id');
@@ -6915,16 +6892,10 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class ="km-conversation-container-right ${kmAttchMsg}">' +
+                '{{html replyQuoteExpr}}' +
                 '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>' +
                 '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">' +
                 '<div class="move-right mck-msg-text"></div>' +
-                '<div class="mck-msg-reply mck-vertical-line ${msgReplyToVisibleExpr}">' +
-                '<div class="mck-msgto">${msgReplyTo} </div>' +
-                '</div>' +
-                '<div class="mck-msg-reply mck-vertical-line ${msgReplyDivExpr}">' +
-                '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
-                '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
-                '</div>' +
                 '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1">' +
                 '<div class="mck-msg-feedback-sticker ${showFeedbackSticker}">{{html feedbackStickerExpr}}</div>' +
                 '</div>' +
@@ -6933,7 +6904,8 @@ const firstVisibleMsg = {
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
-                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
+                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span>' +
+                '<button type="button" class="mck-message-reply mck-reply-action" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button></div>' +
                 '</div>' +
                 '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
@@ -7868,13 +7840,7 @@ const firstVisibleMsg = {
                 if (msg && msg.metadata && msg.metadata.hasOwnProperty('KM_SUMMARY')) {
                     return;
                 }
-                var metadatarepiledto = '';
-                var replyMsg = '';
-                var msgpreview = '';
-                var textreply = 'vis';
-                var msgpreviewVis = 'n-vis';
-                var replyTo = '';
-                var msgReplyToVisible = 'n-vis';
+                var replyQuote = '';
                 var emailMsgIndicator = 'n-vis';
                 var messageClass = 'vis';
                 var progressMeterClass = 'n-vis';
@@ -7899,38 +7865,16 @@ const firstVisibleMsg = {
                 }
 
                 if (
-                    typeof msg.metadata === 'object' &&
-                    typeof msg.metadata.AL_REPLY !== 'undefined'
-                ) {
-                    metadatarepiledto = msg.metadata.AL_REPLY;
-                    replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
-                    if (typeof replyMsg !== 'undefined') {
-                        if (
-                            (contact.isGroup && replyMsg) ||
-                            (!contact.isGroup && typeof replyMsg.fileMeta === 'undefined')
-                        ) {
-                            msgReplyToVisible = 'vis';
-                        }
-                        if (replyMsg.type === 5) {
-                            replyTo = 'You';
-                        } else {
-                            replyTo = mckMessageLayout.getTabDisplayName(replyMsg.to, false);
-                        }
-                        if (typeof replyMsg.fileMeta === 'object' || replyMsg.contentType === 2) {
-                            msgpreview = _this.getImageForReplyMessage(replyMsg);
-                            textreply = 'n-vis';
-                            msgpreviewVis = 'vis';
-                            msgReplyToVisible = 'n-vis';
-                        }
-                    }
-                }
-
-                if (
                     $applozic('#mck-message-cell .' + msg.key).length > 0 &&
                     !(msg.tokenMessage && msg.type !== 5)
                 ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
+                }
+                if (msg.metadata && msg.metadata.AL_REPLY) {
+                    // quoted message may be outside the loaded page; getReplyMessageByKey fetches it from server
+                    var replyMsg = alMessageService.getReplyMessageByKey(msg.metadata.AL_REPLY);
+                    replyQuote = replyMsg ? _this.getReplyQuoteMarkup(replyMsg) : '';
                 }
                 const replaceTokenizedStreamElementAfterRender =
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
@@ -8215,13 +8159,7 @@ const firstVisibleMsg = {
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
-                        msgReply: replyMsg ? replyMsg.message + '\n' : '',
-                        msgReplyTo: replyMsg ? replyTo + '\n' : '',
-                        msgReplyDivExpr: replyMsg ? 'vis' : 'n-vis',
-                        msgReplyToVisibleExpr: msgReplyToVisible,
-                        msgPreview: msgpreview ? _this.getImageForReplyMessage(replyMsg) : '',
-                        msgpreviewvisExpr: msgpreviewVis,
-                        textreplyVisExpr: textreply,
+                        replyQuoteExpr: replyQuote,
                         msgKeyExpr: msg.key,
                         msgDeliveredExpr: msg.delivered,
                         msgSentExpr: msg.sent,
@@ -9112,93 +9050,53 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.getImageForMessagePreview = function (message) {
-                if (typeof message.fileMeta === 'object') {
-                    var meta = message.fileMeta;
-                    var size = alFileService.getFilePreviewSize(meta.size);
-                    if (meta.contentType.indexOf('image') !== -1) {
-                        return (
-                            '<span>photo</span> <img src="' +
-                            MCK_FILE_URL +
-                            FILE_PREVIEW_URL +
-                            meta.blobKey +
-                            '" class="mck-image-reply move-right"/>'
-                        );
-                    }
-                    var fileDetail =
-                        '<span class="mck-file-detail move-right"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
-                        meta.name +
-                        '</span>&nbsp;<span class="file-size">' +
-                        size +
-                        '</span></span>';
-                    return meta.contentType.indexOf('audio') !== -1
-                        ? '<span>audio</span>' + fileDetail
-                        : fileDetail;
-                }
-                if (message.contentType === 2) {
-                    var geoLoc = $applozic.parseJSON(message.message);
-                    var coords = geoLoc.lat + ',' + geoLoc.lon;
-                    return (
-                        '<span>location</span><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
-                        coords +
-                        '&maptype=roadmap&markers=color:red|' +
-                        coords +
-                        '" class="mck-image-reply move-right"/>'
-                    );
-                }
-                return '';
+            _this.getReplyQuoteMarkup = function (replyMsg) {
+                var quote = d.createElement('div');
+                quote.className = 'mck-reply-quote';
+                quote.setAttribute('data-reply-key', replyMsg.key);
+                var sender = d.createElement('div');
+                sender.className = 'mck-reply-quote-sender';
+                sender.textContent =
+                    replyMsg.type === 5
+                        ? MCK_LABELS['you']
+                        : _this.getTabDisplayName(replyMsg.to, false);
+                var text = d.createElement('div');
+                text.className = 'mck-reply-quote-text';
+                text.textContent =
+                    _this.getPlainTextForMessage(replyMsg) ||
+                    MCK_LABELS['rich.message']['notification.preview'];
+                quote.append(sender, text);
+                return quote.outerHTML;
             };
 
-            _this.getImageForReplyMessage = function (message) {
-                var displayName = mckMessageLayout.getTabDisplayName(message.to, false);
-                if (typeof message.fileMeta === 'object') {
-                    if (message.fileMeta.contentType.indexOf('image') !== -1) {
-                        return (
-                            '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
-                            displayName +
-                            '</div><div><span class="mck-icon-camera mck-camera"></span><span>Photo</span></div></div><div class="mck-imagereply"><img src="' +
-                            alFileService.getFileurl(message) +
-                            '" class="mck-image-reply mck-msg-text mck-msg-content"/></div></div>'
-                        );
-                    } else if (message.fileMeta.contentType.indexOf('audio') !== -1) {
-                        return (
-                            '<div class="mck-attachmentmsgto">' +
-                            displayName +
-                            '</div><span class="mck-file-detail mck-msg-text mck-msg-content"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
-                            message.fileMeta.name +
-                            '</span>&nbsp;<span class="file-size">' +
-                            alFileService.getFilePreviewSize(message.fileMeta.size) +
-                            '</span></span>'
-                        );
-                    } else {
-                        return (
-                            '<div class="mck-attachmentmsgto">' +
-                            displayName +
-                            '</div><span class="mck-file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
-                            message.fileMeta.name +
-                            '</span>&nbsp;<span class="file-size">' +
-                            alFileService.getFilePreviewSize(message.fileMeta.size) +
-                            '</span></span>'
-                        );
-                    }
-                    return '';
+            _this.setReplyMessage = function (msgKey) {
+                var message = alMessageService.getReplyMessageByKey(msgKey);
+                if (!message) {
+                    // message is still pending or could not be fetched from server
+                    return;
                 }
-                if (message.contentType === 2) {
-                    var geoLoc = $applozic.parseJSON(message.message);
-                    return (
-                        '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
-                        displayName +
-                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
-                        geoLoc.lat +
-                        ',' +
-                        geoLoc.lon +
-                        '&maptype=roadmap&markers=color:red|' +
-                        geoLoc.lat +
-                        ',' +
-                        geoLoc.lon +
-                        '" class="mck-image-reply mck-msg-text "/></div></div>'
-                    );
+                $applozic('#mck-reply-preview').html(_this.getReplyQuoteMarkup(message));
+                $mck_text_box.data('AL_REPLY', msgKey);
+                kommunicateCommons.show('#mck-reply-to-div');
+                $mck_text_box.focus();
+            };
+
+            _this.clearReplyMessage = function () {
+                $mck_text_box.data('AL_REPLY', '');
+                kommunicateCommons.hide('#mck-reply-to-div');
+                $applozic('#mck-reply-preview').html('');
+            };
+
+            _this.scrollToMessage = function (msgKey) {
+                var $message = $applozic('#mck-message-cell .mck-m-b.' + msgKey);
+                if (!$message.length) {
+                    return;
                 }
+                $message[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                $message.addClass('mck-reply-highlight');
+                setTimeout(function () {
+                    $message.removeClass('mck-reply-highlight');
+                }, 1500);
             };
 
             _this.getImageUrlForGroupType = function (contact, displayName) {
@@ -9885,6 +9783,7 @@ const firstVisibleMsg = {
             };
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
+                _this.clearReplyMessage();
                 $mck_box_form.removeClass('mck-text-req');
                 kommunicateCommons.hide('.mck-text-req-error');
                 $mck_msg_sbmt.attr('disabled', false);
@@ -10133,27 +10032,28 @@ const firstVisibleMsg = {
                 }
                 return emoji_template;
             };
+            _this.getPlainTextForMessage = function (message) {
+                if (message.contentType === 2) {
+                    return 'Shared location';
+                }
+                if (message.message) {
+                    if (mckUtils.startsWith(message.message, '<img')) {
+                        return 'Image attachment';
+                    }
+                    var parsed = new DOMParser().parseFromString(message.message, 'text/html');
+                    return $applozic.trim(parsed.body.textContent).substring(0, 50);
+                }
+                if (message.fileMetaKey && typeof message.fileMeta === 'object') {
+                    return message.fileMeta.contentType.indexOf('image') !== -1
+                        ? 'Image attachment'
+                        : 'File attachment';
+                }
+                return '';
+            };
             _this.getTextForMessagePreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
-                    if (message.contentType === 2) {
-                        emoji_template = 'Shared location';
-                    } else if (message.message) {
-                        var msg = message.message;
-                        if (mckUtils.startsWith(msg, '<img')) {
-                            emoji_template = 'Image attachment';
-                        } else {
-                            var x = d.createElement('div');
-                            x.innerHTML = msg;
-                            msg = $applozic.trim(mckUtils.textVal(x));
-                            emoji_template = msg.substring(0, 50);
-                        }
-                    } else if (message.fileMetaKey && typeof message.fileMeta === 'object') {
-                        emoji_template =
-                            message.fileMeta.contentType.indexOf('image') !== -1
-                                ? 'Image attachment'
-                                : 'File attachment';
-                    }
+                    emoji_template = _this.getPlainTextForMessage(message);
                     if (contact.isGroup && contact.type !== 3) {
                         var msgFrom =
                             message.to.split(',')[0] === MCK_USER_ID
