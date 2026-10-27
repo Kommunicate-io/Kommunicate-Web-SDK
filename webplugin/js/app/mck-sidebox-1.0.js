@@ -6897,7 +6897,7 @@ const firstVisibleMsg = {
                 '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1">' +
                 '<div class="mck-msg-feedback-sticker ${showFeedbackSticker}">{{html feedbackStickerExpr}}</div>' +
                 '</div>' +
-                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="18" height="18" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button>' +
+                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="#475467" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button>' +
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
