@@ -3314,7 +3314,9 @@ const firstVisibleMsg = {
                     mckMessageService.stopBusinessHoursTimer();
                 });
 
-                var iframeMedia = parent.window.matchMedia('(max-width: 600px)');
+                var iframeMedia = parent.window.matchMedia(
+                    KommunicateConstants.FULL_SCREEN_WIDGET_MEDIA_QUERY
+                );
                 var sidebox = document.getElementById('mck-sidebox');
                 var updateIframeBorderRadiusForViewport = function () {
                     if (!sidebox) {
@@ -3324,6 +3326,10 @@ const firstVisibleMsg = {
                 };
                 updateIframeBorderRadiusForViewport();
                 iframeMedia.addListener(updateIframeBorderRadiusForViewport);
+                // The expand option depends on the viewport, so re-evaluate it across the breakpoint.
+                iframeMedia.addListener(function () {
+                    mckMessageLayout.loadDropdownOptions();
+                });
             };
 
             _this.restrictScrollOnHandHeldDevices = function () {
@@ -7299,6 +7305,7 @@ const firstVisibleMsg = {
                     KommunicateUI.setWidgetExpanded(KommunicateUI.isWidgetExpanded());
                     kommunicateCommons.show('.km-option-expand-window');
                 } else {
+                    KommunicateUI.isWidgetExpanded() && KommunicateUI.setWidgetExpanded(false);
                     kommunicateCommons.hide('.km-option-expand-window');
                 }
 
