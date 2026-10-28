@@ -179,6 +179,8 @@
   "conversation.header.dropdown.RESTART_CONVERSATION": "बातचीत पुनः शुरू करें",
   "conversation.header.dropdown.HANDOFF": "मानव से बात करें",
   "conversation.header.dropdown.FAQ": "FAQ",
+  "conversation.header.dropdown.EXPAND_WINDOW": "विंडो बड़ी करें",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "विंडो छोटी करें",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "वॉइस संदेश भेजें",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "वॉइस से टेक्स्ट",
   "conversation.handoff.ASSIGN_TO": "बातचीत स्थानांतरित की गई",

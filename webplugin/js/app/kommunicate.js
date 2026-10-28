@@ -766,6 +766,7 @@ $applozic.extend(true, Kommunicate, {
             kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
             kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
             kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
+            KommunicateUI.setWidgetExpanded(false);
         }
         var popUpCloseButton = parent.document.querySelector('#km-popup-close-button');
         popUpCloseButton && (popUpCloseButton.style.display = 'none');

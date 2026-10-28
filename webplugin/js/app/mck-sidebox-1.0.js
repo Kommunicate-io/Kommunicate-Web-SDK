@@ -4574,12 +4574,20 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     bottomTabManager.handleChange('faqs');
                 });
-                $applozic(d).on('keydown', '#km-faq-option, #km-talk-to-human', function (e) {
-                    var self = this;
-                    handleActivationKey(e, function () {
-                        $applozic(self).trigger('click');
-                    });
+                $applozic(d).on('click', '#km-expand-window', function (e) {
+                    e.preventDefault();
+                    KommunicateUI.toggleWidgetExpanded();
                 });
+                $applozic(d).on(
+                    'keydown',
+                    '#km-faq-option, #km-talk-to-human, #km-expand-window',
+                    function (e) {
+                        var self = this;
+                        handleActivationKey(e, function () {
+                            $applozic(self).trigger('click');
+                        });
+                    }
+                );
 
                 mck_text_box.addEventListener('input', function () {
                     _this.toggleMediaOptions(this);
@@ -7284,6 +7292,14 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('.km-option-faq');
                 } else {
                     kommunicateCommons.hide('.km-option-faq');
+                }
+
+                if (KommunicateUI.isExpandWindowAvailable()) {
+                    enableDropdown = true;
+                    KommunicateUI.setWidgetExpanded(KommunicateUI.isWidgetExpanded());
+                    kommunicateCommons.show('.km-option-expand-window');
+                } else {
+                    kommunicateCommons.hide('.km-option-expand-window');
                 }
 
                 if (enableDropdown) {
