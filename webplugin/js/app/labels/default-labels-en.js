@@ -47,6 +47,11 @@
         'file.error.default': 'File upload failed.',
         'message.sent.status': 'Message sent',
         'message.received.status': 'New message received',
+        'copy.message': {
+            COPY: 'Copy message',
+            COPIED: 'Copied',
+            FAILED: 'Unable to copy message',
+        },
         'voice.response.received.status': 'Response received',
         'empty.groups': 'No groups yet!',
         'empty.contacts': 'No contacts yet!',

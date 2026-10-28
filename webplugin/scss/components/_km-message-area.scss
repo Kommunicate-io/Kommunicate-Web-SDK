@@ -173,6 +173,31 @@
     }
 }
 
+.mck-sidebox .km-copy-message {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 6px;
+    vertical-align: middle;
+    display: inline-flex;
+    line-height: 1;
+    color: $text-primary-color;
+    opacity: 0.5;
+
+    &:hover,
+    &:focus-visible {
+        opacity: 1;
+    }
+}
+
+// Only the last message of a clubbed group shows the button; it copies the whole group.
+.mck-sidebox .km-clubbing-first .km-copy-message {
+    display: none;
+}
+
 .mck-rich-msg-box {
     width: $rich-msg-width;
     max-width: unset !important;

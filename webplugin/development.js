@@ -297,6 +297,22 @@ const generateBuildFiles = () => {
             generateFilesByVersion('build/plugin.js');
         });
     });
+    // Generate whatsapp-widget.min.js for build folder, substituting the
+    // environment's API host so the embed snippet never needs an apiUrl.
+    fs.readFile(path.join(__dirname, 'whatsapp-widget.js'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating whatsapp-widget.js', err);
+            return;
+        }
+        const whatsappWidget = data.replace(
+            'https://api.kommunicate.io',
+            config.urls.kommunicateBaseUrl
+        );
+        fs.writeFileSync(
+            path.join(buildDir, 'whatsapp-widget.min.js'),
+            minifyPluginContent(whatsappWidget)
+        );
+    });
     // Generate mck-app.js file for build folder.
     fs.readFile(path.join(__dirname, 'js/app/mck-app.js'), 'utf8', function (err, data) {
         if (err) {

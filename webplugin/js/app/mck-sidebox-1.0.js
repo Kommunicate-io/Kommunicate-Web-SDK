@@ -4337,6 +4337,38 @@ const firstVisibleMsg = {
                     }
                 });
             };
+            $applozic(d).on('click', '.km-copy-message', function () {
+                const $copyButton = $applozic(this);
+                const $messageBlock = $copyButton.closest('.mck-m-b');
+                // Every message of a clubbed group except the last carries km-clubbing-first.
+                const $messageBlocks = $messageBlock
+                    .prevUntil(':not(.km-clubbing-first)')
+                    .addBack();
+                const messageText = $messageBlocks
+                    .find(
+                        '.mck-msg-content > :not(.link-preview-wrapper), .mck-msg-box-rich-text-container.vis > :not(.email-message-indicator)'
+                    )
+                    .not('.mck-msg-reply *')
+                    .map(function () {
+                        return this.innerText.trim();
+                    })
+                    .get()
+                    .filter(Boolean)
+                    .join('\n\n');
+                const { ICONS, COPIED_VISIBLE_MS } = KommunicateConstants.COPY_MESSAGE;
+                const labels = MCK_LABELS['copy.message'];
+                const showLabel = (icon, label) =>
+                    $copyButton.html(icon).attr({ 'title': label, 'aria-label': label });
+                KommunicateUtils.copyToClipboard(messageText).then(
+                    () => {
+                        showLabel(ICONS.COPIED, labels.COPIED);
+                        mckMessageLayout.announceStatus(labels.COPIED);
+                        setTimeout(() => showLabel(ICONS.COPY, labels.COPY), COPIED_VISIBLE_MS);
+                    },
+                    () => mckMessageLayout.announceStatus(labels.FAILED)
+                );
+            });
+
             $applozic(d).on('click', '.mck-message-delete', function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
             });
@@ -6931,7 +6963,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div>{{if showCopyExpr}}<button type="button" class="km-copy-message" aria-label="${copyLabelExpr}" title="${copyLabelExpr}">{{html copyIconExpr}}</button>{{/if}}<span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
                 '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
@@ -8212,6 +8244,16 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
+                const hasCopyableText = !!(
+                    msg.message?.trim() ||
+                    (richText && $applozic('<div>').html(kmRichTextMarkup).text().trim())
+                );
+                // HTML rich messages render inside a shadow root, so their text can't be copied
+                const showCopyButton =
+                    !conversationTransferred &&
+                    msg.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                    hasCopyableText;
+
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
@@ -8274,6 +8316,9 @@ const firstVisibleMsg = {
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
                         feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
+                        showCopyExpr: showCopyButton,
+                        copyLabelExpr: MCK_LABELS['copy.message'].COPY,
+                        copyIconExpr: KommunicateConstants.COPY_MESSAGE.ICONS.COPY,
                     },
                 ];
 

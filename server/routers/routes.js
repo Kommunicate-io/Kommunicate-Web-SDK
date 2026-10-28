@@ -68,5 +68,8 @@ home.get('/kommunicate-widget-3.0.min.js', function (req, res) {
     req.params.version = 'v3';
     webpluginController.getPlugin(req, res);
 });
+home.get('/whatsapp-widget.min.js', function (req, res) {
+    res.sendFile(path.join(__dirname, '../../webplugin/build/whatsapp-widget.min.js'));
+});
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML);
