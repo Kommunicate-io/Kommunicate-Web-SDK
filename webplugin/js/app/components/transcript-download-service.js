@@ -13,6 +13,16 @@ class TranscriptDownloadService {
         this.appOptions = appOptions;
     }
 
+    isEnabled = () => !this.appOptions.disableTranscriptDownload;
+
+    // CURRENT_GROUP_DATA.tabId can be overwritten by events from other conversations,
+    // so read the conversation that is actually on screen. Only group conversations
+    // are supported by the groupId based list API.
+    getDisplayedGroupId = () => {
+        const $messageInner = $applozic('#mck-message-cell .mck-message-inner');
+        return $messageInner.data('isgroup') ? $messageInner.data('mck-id') : null;
+    };
+
     // Locale overrides are stored under flat keys ('a.b.KEY'), English defaults are nested.
     getLabel = (key) =>
         MCK_LABELS['conversation.header.dropdown.' + key] ||
@@ -73,18 +83,42 @@ class TranscriptDownloadService {
             metadata.hide !== 'true' &&
             metadata.show !== 'false' &&
             !metadata.KM_ASSIGN &&
-            !metadata.KM_STATUS
+            !metadata.KM_STATUS &&
+            !Object.prototype.hasOwnProperty.call(metadata, 'KM_SUMMARY')
         );
     };
 
-    getRichMessageOptions = (metadata) => {
+    stripHtml = (html) =>
+        (new DOMParser().parseFromString(html, 'text/html').body.textContent || '').trim();
+
+    // Quick replies/buttons send an array payload; list templates send
+    // { headerText, elements: [{ title, description }], buttons: [{ name | action.text }] }.
+    getRichMessageText = (metadata) => {
         if (!metadata.templateId || !metadata.payload) return '';
         try {
             const payload = JSON.parse(metadata.payload);
-            const options = Array.isArray(payload)
-                ? payload.map((item) => item.name || item.title).filter(Boolean)
+            const isList = !Array.isArray(payload) && payload && typeof payload === 'object';
+            const items = isList ? payload.buttons || [] : Array.isArray(payload) ? payload : [];
+            const options = items
+                .map((item) => item.name || item.title || (item.action && item.action.text))
+                .filter(Boolean);
+            const elements = isList
+                ? (payload.elements || [])
+                      .map((item) =>
+                          [item.title, item.description && this.stripHtml(item.description)]
+                              .filter(Boolean)
+                              .join(': ')
+                      )
+                      .filter(Boolean)
+                      .map((line) => '- ' + line)
                 : [];
-            return options.length ? '[Options: ' + options.join(', ') + ']' : '';
+            return [
+                isList && payload.headerText && this.stripHtml(payload.headerText),
+                ...elements,
+                options.length ? '[Options: ' + options.join(', ') + ']' : '',
+            ]
+                .filter(Boolean)
+                .join('\n');
         } catch (e) {
             return '';
         }
@@ -108,11 +142,8 @@ class TranscriptDownloadService {
                 return '[Location]';
             }
         }
-        const body =
-            contentType === TEXT_HTML
-                ? (new DOMParser().parseFromString(text, 'text/html').body.textContent || '').trim()
-                : text;
-        return [body, this.getRichMessageOptions(metadata)].filter(Boolean).join('\n');
+        const body = contentType === TEXT_HTML ? this.stripHtml(text) : text;
+        return [body, this.getRichMessageText(metadata)].filter(Boolean).join('\n');
     };
 
     buildEntries = ({ messages, userDetails }) =>
@@ -153,9 +184,16 @@ class TranscriptDownloadService {
         URL.revokeObjectURL(url);
     };
 
+    // YYYY-MM-DD in local time, independent of browser locale formatting
+    getFileDate = () => {
+        const now = new Date();
+        const pad = (value) => String(value).padStart(2, '0');
+        return now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+    };
+
     download = async () => {
-        const groupId = CURRENT_GROUP_DATA.tabId;
-        if (!groupId || this.isDownloading) return;
+        const groupId = this.getDisplayedGroupId();
+        if (!this.isEnabled() || !groupId || this.isDownloading) return;
         this.isDownloading = true;
         try {
             const { messages, userDetails } = await this.fetchConversationMessages(groupId);
@@ -163,9 +201,11 @@ class TranscriptDownloadService {
                 title: this.getLabel('TRANSCRIPT_TITLE'),
                 entries: this.buildEntries({ messages, userDetails }),
             };
-            // en-CA formats as YYYY-MM-DD; the conversation id is internal, so keep it out
-            const date = new Date().toLocaleDateString('en-CA');
-            this.downloadTextFile('conversation_' + date + '.txt', this.toText(transcript));
+            // The conversation id is internal, so the file is named by date instead
+            this.downloadTextFile(
+                'conversation_' + this.getFileDate() + '.txt',
+                this.toText(transcript)
+            );
         } catch (error) {
             console.error('Error while downloading the conversation transcript', error);
         } finally {

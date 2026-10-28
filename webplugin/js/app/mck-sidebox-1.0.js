@@ -1142,6 +1142,7 @@ const firstVisibleMsg = {
             appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
+                transcriptDownloadService.init(optns);
                 appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
                 appOptions.accessToken = appOptions.password || appOptions.accessToken;
             } else {
@@ -7262,9 +7263,14 @@ const firstVisibleMsg = {
                     }
                 }
 
-                if (!appOptions.disableTranscriptDownload) {
+                if (
+                    transcriptDownloadService.isEnabled() &&
+                    transcriptDownloadService.getDisplayedGroupId()
+                ) {
                     enableDropdown = true;
                     kommunicateCommons.show('#km-download-transcript');
+                } else {
+                    kommunicateCommons.hide('#km-download-transcript');
                 }
 
                 // For voice output user override
