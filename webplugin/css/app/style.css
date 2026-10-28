@@ -1334,6 +1334,10 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 1;
 }
 
+.mck-sidebox .km-clubbing-first .km-copy-message {
+  display: none;
+}
+
 .mck-rich-msg-box {
   width: 264px;
   max-width: unset !important;

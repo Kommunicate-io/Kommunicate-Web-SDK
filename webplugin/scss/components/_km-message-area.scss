@@ -193,6 +193,11 @@
     }
 }
 
+// Only the last message of a clubbed group shows the button; it copies the whole group.
+.mck-sidebox .km-clubbing-first .km-copy-message {
+    display: none;
+}
+
 .mck-rich-msg-box {
     width: $rich-msg-width;
     max-width: unset !important;
