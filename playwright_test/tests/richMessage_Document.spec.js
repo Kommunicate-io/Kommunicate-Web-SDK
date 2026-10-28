@@ -88,6 +88,7 @@ test('Document markup matches the agent document bubble structure', async () => 
             );
         };
         const url = 'https://cdn.kommunicate.io/guide.pdf';
+        // mck-sidebox renders agent attachments inside <div class="km-msg-box-attachment">.
         const agentDocument = Kommunicate.messageTemplate.getAttachmentContanier(
             { type: 4, fileMeta: { name: 'guide.pdf', url, contentType: 'application/pdf' } },
             '',
@@ -97,8 +98,20 @@ test('Document markup matches the agent document bubble structure', async () => 
         const botDocument = Kommunicate.markup.getDocumentMarkup({
             payload: [{ url, name: 'guide.pdf' }],
         });
-        return { agent: toClassTree(agentDocument), bot: toClassTree(botDocument) };
+        return {
+            agent: toClassTree(`<div class="km-msg-box-attachment">${agentDocument}</div>`),
+            bot: toClassTree(botDocument),
+        };
     });
 
     expect(classLists.bot).toEqual(classLists.agent);
+});
+
+test('Malformed document payloads render nothing instead of throwing', async () => {
+    const results = await page.evaluate(() =>
+        [undefined, null, {}, '[]', [null, { name: 'no-url.pdf' }]].map((payload) =>
+            Kommunicate.markup.getDocumentMarkup({ payload })
+        )
+    );
+    expect(results).toEqual(['', '', '', '', '']);
 });
