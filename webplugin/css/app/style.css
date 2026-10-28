@@ -3998,7 +3998,7 @@ div#mck-rated:before {
   text-align: center;
 }
 
-.mck-sidebox.mck-box.km-widget-expanded {
+#mck-sidebox.km-widget-expanded {
   top: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
@@ -4007,7 +4007,7 @@ div#mck-rated:before {
   height: auto !important;
   max-height: 100% !important;
 }
-.mck-sidebox.mck-box.km-widget-expanded .mck-box-sm {
+#mck-sidebox.km-widget-expanded .mck-box-sm {
   width: 100%;
   height: 100% !important;
 }
