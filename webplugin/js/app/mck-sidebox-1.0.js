@@ -4339,10 +4339,22 @@ const firstVisibleMsg = {
             };
             $applozic(d).on('click', '.km-copy-message', function () {
                 const $copyButton = $applozic(this);
-                const messageText = $copyButton
-                    .closest('.mck-m-b')
-                    .find('.mck-msg-content')[0]
-                    .innerText.trim();
+                const $messageBlock = $copyButton.closest('.mck-m-b');
+                const $messageStart = $messageBlock.hasClass('km-clubbing-last')
+                    ? $messageBlock.prevAll('.km-clubbing-first').first()
+                    : $messageBlock;
+                const $messageBlocks = $messageStart
+                    .nextUntil($messageBlock)
+                    .addBack()
+                    .add($messageBlock);
+                const messageText = $messageBlocks
+                    .find('.mck-msg-content, .mck-msg-box-rich-text-container')
+                    .map(function () {
+                        return this.innerText.trim();
+                    })
+                    .get()
+                    .filter(Boolean)
+                    .join('\n\n');
                 KommunicateUtils.copyToClipboard(messageText).then(() => {
                     const { ICONS, COPY_LABEL, COPIED_LABEL, COPIED_VISIBLE_MS } =
                         KommunicateConstants.COPY_MESSAGE;
@@ -8228,8 +8240,13 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
+                const accessibleMessageText = _this.getAccessibleMessageText(msg);
+                const accessibleRichText = richText
+                    ? $applozic('<div>').html(kmRichTextMarkup).text().trim()
+                    : '';
                 const showCopyButton =
-                    !richText && !conversationTransferred && !!_this.getAccessibleMessageText(msg);
+                    !conversationTransferred &&
+                    !!(accessibleMessageText || accessibleRichText);
 
                 var msgList = [
                     {
