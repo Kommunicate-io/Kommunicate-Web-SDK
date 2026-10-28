@@ -1084,18 +1084,29 @@ Kommunicate.markup.getVideoMarkup = function (options) {
 Kommunicate.markup.getDocumentMarkup = function (options) {
     var payload =
         typeof options.payload == 'string' ? JSON.parse(options.payload) : options.payload;
-    return payload
-        .filter((file) => /^https?:\/\//i.test(file.url))
-        .map((file) =>
-            Mustache.to_html(Kommunicate.messageTemplate.getAttachmentApplicationTemplate(), {
-                fileMeta: { name: file.name, url: file.url },
-                fileNameToShow: file.name || file.url,
-                previewContainerClass: 'km-attach-preview-container',
-                uploadIconClass: 'n-vis',
-                cancelIconClass: 'n-vis',
-                progressBarClass: 'n-vis',
-                downloadIconClass: 'vis',
-            })
-        )
-        .join('');
+    // The payload comes from bot/custom JSON, so skip malformed entries instead of failing the render.
+    var documents = (Array.isArray(payload) ? payload : []).filter(
+        (file) => file && /^https?:\/\//i.test(file.url)
+    );
+    if (!documents.length) {
+        return '';
+    }
+    // .km-msg-box-attachment applies the same layout rules as an agent attachment message.
+    return (
+        '<div class="km-msg-box-attachment">' +
+        documents
+            .map((file) =>
+                Mustache.to_html(Kommunicate.messageTemplate.getAttachmentApplicationTemplate(), {
+                    fileMeta: { name: file.name, url: file.url },
+                    fileNameToShow: file.name || file.url,
+                    previewContainerClass: 'km-attach-preview-container',
+                    uploadIconClass: 'n-vis',
+                    cancelIconClass: 'n-vis',
+                    progressBarClass: 'n-vis',
+                    downloadIconClass: 'vis',
+                })
+            )
+            .join('') +
+        '</div>'
+    );
 };
