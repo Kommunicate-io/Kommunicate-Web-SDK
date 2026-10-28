@@ -217,6 +217,8 @@ KommunicateConstants = {
         LEFT: 'left',
         RIGHT: 'right',
     },
+    // Parent viewport in which plugin.js renders the open widget full-screen.
+    FULL_SCREEN_WIDGET_MEDIA_QUERY: '(max-width: 600px)',
     KOMMUNICATE_DOMAINS: [
         'kommunicate.io',
         //use when testing locally
