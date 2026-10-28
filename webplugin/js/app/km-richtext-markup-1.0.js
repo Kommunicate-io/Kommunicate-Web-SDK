@@ -1080,3 +1080,22 @@ Kommunicate.markup.getVideoMarkup = function (options) {
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
     }
 };
+// Renders bot documents with the same bubble used for documents received from agents.
+Kommunicate.markup.getDocumentMarkup = function (options) {
+    var payload =
+        typeof options.payload == 'string' ? JSON.parse(options.payload) : options.payload;
+    return payload
+        .filter((file) => /^https?:\/\//i.test(file.url))
+        .map((file) =>
+            Mustache.to_html(Kommunicate.messageTemplate.getAttachmentApplicationTemplate(), {
+                fileMeta: { name: file.name, url: file.url },
+                fileNameToShow: file.name || file.url,
+                previewContainerClass: 'km-attach-preview-container',
+                uploadIconClass: 'n-vis',
+                cancelIconClass: 'n-vis',
+                progressBarClass: 'n-vis',
+                downloadIconClass: 'vis',
+            })
+        )
+        .join('');
+};
