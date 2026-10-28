@@ -211,13 +211,15 @@ class TranscriptDownloadService {
         try {
             const { messages, userDetails } = await this.fetchConversationMessages(groupId);
             const transcript = {
-                title: this.getLabel('TRANSCRIPT_TITLE') + ' #' + groupId,
+                title: this.getLabel('TRANSCRIPT_TITLE'),
                 entries: this.buildEntries({ messages, userDetails }),
             };
             if (format === this.FORMAT.PDF) {
                 this.printAsPdf(this.toHtml(transcript));
             } else {
-                this.downloadTextFile('conversation_' + groupId + '.txt', this.toText(transcript));
+                // en-CA formats as YYYY-MM-DD; the conversation id is internal, so keep it out
+                const date = new Date().toLocaleDateString('en-CA');
+                this.downloadTextFile('conversation_' + date + '.txt', this.toText(transcript));
             }
         } catch (error) {
             console.error('Error while downloading the conversation transcript', error);
