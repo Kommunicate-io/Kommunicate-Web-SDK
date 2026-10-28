@@ -1560,7 +1560,8 @@ KommunicateUI = {
             !kommunicate._globals.hideExpandWindowOption &&
             !!parent.document.getElementById('kommunicate-widget-iframe') &&
             !kommunicateCommons.checkIfDeviceIsHandheld() &&
-            !kommunicateCommons.isInContainerMode()
+            !kommunicateCommons.isInContainerMode() &&
+            !parent.window.matchMedia(KommunicateConstants.FULL_SCREEN_WIDGET_MEDIA_QUERY).matches
         );
     },
     isWidgetExpanded: function () {
