@@ -619,6 +619,7 @@ function ApplozicSidebox() {
                 'voiceOutput',
                 'attachment',
                 'hidePostCTA',
+                'disableTranscriptDownload',
             ].forEach(function (key) {
                 if (options[key] == null) {
                     options[key] = widgetSettings && widgetSettings[key];
