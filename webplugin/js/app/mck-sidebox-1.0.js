@@ -4971,12 +4971,12 @@ const firstVisibleMsg = {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
-                // Download conversation transcript (TXT / PDF)
-                $applozic(d).on('click', '.km-download-transcript', function (e) {
+                // Download conversation transcript (TXT)
+                $applozic(d).on('click', '#km-download-transcript', function (e) {
                     e.preventDefault();
-                    transcriptDownloadService.download(this.dataset.format);
+                    transcriptDownloadService.download();
                 });
-                $applozic(d).on('keydown', '.km-download-transcript', function (e) {
+                $applozic(d).on('keydown', '#km-download-transcript', function (e) {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
@@ -7278,7 +7278,7 @@ const firstVisibleMsg = {
 
                 if (!appOptions.disableTranscriptDownload) {
                     enableDropdown = true;
-                    kommunicateCommons.show('.km-download-transcript');
+                    kommunicateCommons.show('#km-download-transcript');
                 }
 
                 // For voice output user override

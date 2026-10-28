@@ -6,7 +6,6 @@ class TranscriptDownloadService {
         this.MAX_PAGES = 200;
         this.MESSAGE_LIST_URL = '/rest/ws/message/v3/list';
         this.RECEIVED_MESSAGE_TYPES = [0, 4, 6];
-        this.FORMAT = { TEXT: 'txt', PDF: 'pdf' };
         this.isDownloading = false;
     }
 
@@ -143,40 +142,6 @@ class TranscriptDownloadService {
             ),
         ].join('\n');
 
-    escapeHtml = (value) =>
-        String(value).replace(
-            /[&<>"']/g,
-            (char) =>
-                ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char])
-        );
-
-    toHtml = ({ title, entries }) =>
-        '<!doctype html><html><head><meta charset="utf-8"><title>' +
-        this.escapeHtml(title) +
-        '</title><style>' +
-        'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1f2937;margin:32px;font-size:13px}' +
-        'h1{font-size:18px;margin:0 0 24px;padding-bottom:12px;border-bottom:1px solid #e5e7eb}' +
-        '.msg{margin:0 0 16px;page-break-inside:avoid}' +
-        '.meta{color:#6b7280;font-size:11px;margin-bottom:4px}' +
-        '.meta b{color:#111827;font-size:13px;margin-right:8px}' +
-        '.text{white-space:pre-wrap;word-break:break-word}' +
-        '</style></head><body><h1>' +
-        this.escapeHtml(title) +
-        '</h1>' +
-        entries
-            .map(
-                ({ sender, time, text }) =>
-                    '<div class="msg"><div class="meta"><b>' +
-                    this.escapeHtml(sender) +
-                    '</b>' +
-                    this.escapeHtml(time) +
-                    '</div><div class="text">' +
-                    this.escapeHtml(text) +
-                    '</div></div>'
-            )
-            .join('') +
-        '</body></html>';
-
     downloadTextFile = (fileName, text) => {
         const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
         const link = document.createElement('a');
@@ -188,23 +153,7 @@ class TranscriptDownloadService {
         URL.revokeObjectURL(url);
     };
 
-    // Uses the browser's "Save as PDF" print target: no PDF library in the widget bundle
-    // and correct rendering for every script/language the conversation may contain.
-    printAsPdf = (html) => {
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('aria-hidden', 'true');
-        iframe.style.cssText = 'position:fixed;width:0;height:0;border:0;visibility:hidden';
-        document.body.appendChild(iframe);
-        const frameWindow = iframe.contentWindow;
-        frameWindow.document.open();
-        frameWindow.document.write(html);
-        frameWindow.document.close();
-        frameWindow.addEventListener('afterprint', () => iframe.remove());
-        frameWindow.focus();
-        frameWindow.print();
-    };
-
-    download = async (format) => {
+    download = async () => {
         const groupId = CURRENT_GROUP_DATA.tabId;
         if (!groupId || this.isDownloading) return;
         this.isDownloading = true;
@@ -214,13 +163,9 @@ class TranscriptDownloadService {
                 title: this.getLabel('TRANSCRIPT_TITLE'),
                 entries: this.buildEntries({ messages, userDetails }),
             };
-            if (format === this.FORMAT.PDF) {
-                this.printAsPdf(this.toHtml(transcript));
-            } else {
-                // en-CA formats as YYYY-MM-DD; the conversation id is internal, so keep it out
-                const date = new Date().toLocaleDateString('en-CA');
-                this.downloadTextFile('conversation_' + date + '.txt', this.toText(transcript));
-            }
+            // en-CA formats as YYYY-MM-DD; the conversation id is internal, so keep it out
+            const date = new Date().toLocaleDateString('en-CA');
+            this.downloadTextFile('conversation_' + date + '.txt', this.toText(transcript));
         } catch (error) {
             console.error('Error while downloading the conversation transcript', error);
         } finally {
