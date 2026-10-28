@@ -179,6 +179,8 @@
   "conversation.header.dropdown.RESTART_CONVERSATION": "أعد بدء المحادثة",
   "conversation.header.dropdown.HANDOFF": "تحدث إلى إنسان",
   "conversation.header.dropdown.FAQ": "الأسئلة الشائعة",
+  "conversation.header.dropdown.EXPAND_WINDOW": "توسيع النافذة",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "تصغير النافذة",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "أرسل رسالة صوتية",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "تحويل الصوت إلى نص",
   "conversation.handoff.ASSIGN_TO": "تم تحويل المحادثة إلى",

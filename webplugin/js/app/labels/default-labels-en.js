@@ -279,6 +279,8 @@
             RESTART_CONVERSATION: 'Restart conversation',
             HANDOFF: 'Talk to human',
             FAQ: 'FAQ',
+            EXPAND_WINDOW: 'Expand window',
+            COLLAPSE_WINDOW: 'Collapse window',
         },
         'micOptions.dropup': {
             VOICE_NOTE_TRIGGER: 'Send voice message',
