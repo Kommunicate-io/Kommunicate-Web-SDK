@@ -309,12 +309,12 @@ KommunicateConstants = {
         1: '<svg width="13" height="13" viewBox="0 0 13 13" class="km-answer-feedback-button" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.25 12.125H1.5C1.84375 12.125 2.125 11.8438 2.125 11.5V5.875C2.125 5.53125 1.84375 5.25 1.5 5.25H0.25V12.125ZM12.6438 7.675C12.7125 7.51875 12.75 7.35 12.75 7.175V6.5C12.75 5.8125 12.1875 5.25 11.5 5.25H8.0625L8.6375 2.34375C8.66875 2.20625 8.65 2.05625 8.5875 1.93125C8.44375 1.65 8.2625 1.39375 8.0375 1.16875L7.75 0.875L3.74375 4.88125C3.50625 5.11875 3.375 5.4375 3.375 5.76875V10.6687C3.375 11.4688 4.03125 12.125 4.8375 12.125H9.90625C10.3438 12.125 10.7563 11.8938 10.9812 11.5188L12.6438 7.675Z" fill="none"/></svg>',
     },
     COPY_MESSAGE: {
-        COPY_LABEL: 'Copy message',
-        COPIED_LABEL: 'Copied',
         COPIED_VISIBLE_MS: 1500,
         ICONS: {
-            COPY: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
-            COPIED: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+            COPY:
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
+            COPIED:
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"></polyline></svg>',
         },
     },
     FEATURE_ACCESS: {

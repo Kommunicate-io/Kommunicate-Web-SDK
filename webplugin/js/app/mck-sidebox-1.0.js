@@ -4340,29 +4340,33 @@ const firstVisibleMsg = {
             $applozic(d).on('click', '.km-copy-message', function () {
                 const $copyButton = $applozic(this);
                 const $messageBlock = $copyButton.closest('.mck-m-b');
-                const $messageStart = $messageBlock.hasClass('km-clubbing-last')
-                    ? $messageBlock.prevAll('.km-clubbing-first').first()
-                    : $messageBlock;
-                const $messageBlocks = $messageStart
-                    .nextUntil($messageBlock)
-                    .addBack()
-                    .add($messageBlock);
+                // Every message of a clubbed group except the last carries km-clubbing-first.
+                const $messageBlocks = $messageBlock
+                    .prevUntil(':not(.km-clubbing-first)')
+                    .addBack();
                 const messageText = $messageBlocks
-                    .find('.mck-msg-content, .mck-msg-box-rich-text-container')
+                    .find(
+                        '.mck-msg-content > :not(.link-preview-wrapper), .mck-msg-box-rich-text-container.vis > :not(.email-message-indicator)'
+                    )
+                    .not('.mck-msg-reply *')
                     .map(function () {
                         return this.innerText.trim();
                     })
                     .get()
                     .filter(Boolean)
                     .join('\n\n');
-                KommunicateUtils.copyToClipboard(messageText).then(() => {
-                    const { ICONS, COPY_LABEL, COPIED_LABEL, COPIED_VISIBLE_MS } =
-                        KommunicateConstants.COPY_MESSAGE;
-                    const showLabel = (icon, label) =>
-                        $copyButton.html(icon).attr({ title: label, 'aria-label': label });
-                    showLabel(ICONS.COPIED, COPIED_LABEL);
-                    setTimeout(() => showLabel(ICONS.COPY, COPY_LABEL), COPIED_VISIBLE_MS);
-                });
+                const { ICONS, COPIED_VISIBLE_MS } = KommunicateConstants.COPY_MESSAGE;
+                const labels = MCK_LABELS['copy.message'];
+                const showLabel = (icon, label) =>
+                    $copyButton.html(icon).attr({ 'title': label, 'aria-label': label });
+                KommunicateUtils.copyToClipboard(messageText).then(
+                    () => {
+                        showLabel(ICONS.COPIED, labels.COPIED);
+                        mckMessageLayout.announceStatus(labels.COPIED);
+                        setTimeout(() => showLabel(ICONS.COPY, labels.COPY), COPIED_VISIBLE_MS);
+                    },
+                    () => mckMessageLayout.announceStatus(labels.FAILED)
+                );
             });
 
             $applozic(d).on('click', '.mck-message-delete', function () {
@@ -8240,13 +8244,15 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
-                const accessibleMessageText = _this.getAccessibleMessageText(msg);
-                const accessibleRichText = richText
-                    ? $applozic('<div>').html(kmRichTextMarkup).text().trim()
-                    : '';
+                const hasCopyableText = !!(
+                    msg.message?.trim() ||
+                    (richText && $applozic('<div>').html(kmRichTextMarkup).text().trim())
+                );
+                // HTML rich messages render inside a shadow root, so their text can't be copied
                 const showCopyButton =
                     !conversationTransferred &&
-                    !!(accessibleMessageText || accessibleRichText);
+                    msg.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                    hasCopyableText;
 
                 var msgList = [
                     {
@@ -8311,7 +8317,7 @@ const firstVisibleMsg = {
                         feedbackStickerExpr: feedbackSvg,
                         feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
                         showCopyExpr: showCopyButton,
-                        copyLabelExpr: KommunicateConstants.COPY_MESSAGE.COPY_LABEL,
+                        copyLabelExpr: MCK_LABELS['copy.message'].COPY,
                         copyIconExpr: KommunicateConstants.COPY_MESSAGE.ICONS.COPY,
                     },
                 ];

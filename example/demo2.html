@@ -405,6 +405,9 @@
                                 WhatsApp widget and Kommunicate widget</label
                             >
                         </div>
+                        <p class="hint" style="margin: 4px 0 0">
+                            Not available with the legacy iframe embed.
+                        </p>
                     </fieldset>
 
                     <div>
@@ -545,7 +548,7 @@
                     authenticationTypeId: 0,
                     locShare: true,
                 },
-                globalSettingsEnabled: true,
+                globalSettingsEnabled: false,
                 preChat: [
                     {
                         field: 'Name',
@@ -590,6 +593,7 @@
             const appIdInput = document.getElementById('appId');
             const agentIdInput = document.getElementById('agentId');
             const voiceModeEnabledCheckbox = document.getElementById('voiceModeEnabled');
+            const whatsappModeRadios = document.querySelectorAll('input[name="whatsappMode"]');
             const recognitionModeRadios = document.querySelectorAll(
                 'input[name="recognitionMode"]'
             );
@@ -661,6 +665,9 @@
             function handlePlacementChange() {
                 const selected = document.querySelector('input[name="containerMode"]:checked')
                     .value;
+                whatsappModeRadios.forEach((radio) => {
+                    radio.disabled = selected === 'iframe';
+                });
                 if (selected === 'iframe') {
                     legacyIframe.style.display = 'block';
                     const currentAppId = (appIdInput.value || defaultState.appId).trim();
