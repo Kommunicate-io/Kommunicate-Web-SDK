@@ -1,6 +1,7 @@
 // The widget normally fills its iframe through the `max-width: 600px` rules, which stop
 // matching once the iframe is expanded beyond that width, so pin the sidebox explicitly.
-.mck-sidebox.mck-box.km-widget-expanded {
+// The id selector also outranks the `min-height: 1000px` rule that the taller iframe can match.
+#mck-sidebox.km-widget-expanded {
     top: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
