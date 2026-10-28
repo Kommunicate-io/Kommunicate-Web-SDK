@@ -705,6 +705,7 @@ const firstVisibleMsg = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
+        transcriptDownloadService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -1141,6 +1142,7 @@ const firstVisibleMsg = {
             appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
+                transcriptDownloadService.init(optns);
                 appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
                 appOptions.accessToken = appOptions.password || appOptions.accessToken;
             } else {
@@ -4956,6 +4958,15 @@ const firstVisibleMsg = {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
+                // Download conversation transcript (TXT)
+                $applozic(d).on('click', '#km-download-transcript', function (e) {
+                    e.preventDefault();
+                    transcriptDownloadService.download();
+                });
+                $applozic(d).on('keydown', '#km-download-transcript', function (e) {
+                    handleActivationKey(e, this.click.bind(this));
+                });
+
                 document.getElementById('km-csat-close-button').onclick = function (e) {
                     e.preventDefault();
 
@@ -7250,6 +7261,16 @@ const firstVisibleMsg = {
                         // Primary CTA is Restart Conversation: ensure dropdown item stays hidden
                         kommunicateCommons.hide('.km-option-restart-conversation');
                     }
+                }
+
+                if (
+                    transcriptDownloadService.isEnabled() &&
+                    transcriptDownloadService.getDisplayedGroupId()
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.show('#km-download-transcript');
+                } else {
+                    kommunicateCommons.hide('#km-download-transcript');
                 }
 
                 // For voice output user override
