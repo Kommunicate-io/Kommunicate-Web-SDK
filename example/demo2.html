@@ -288,7 +288,7 @@
                             id="appId"
                             name="appId"
                             required
-                            value="kommunicate-support"
+                            value="1883b190054b065cd3096b8179deb2e13"
                             style="flex: 1"
                         />
                     </div>
@@ -381,6 +381,28 @@
                             <label
                                 ><input type="radio" name="recognitionMode" value="native" />
                                 Native</label
+                            >
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>WhatsApp channel</legend>
+                        <div class="inline-options">
+                            <label
+                                ><input type="radio" name="whatsappMode" value="none" checked />
+                                None</label
+                            >
+                            <label
+                                ><input type="radio" name="whatsappMode" value="whatsappOnly" />
+                                Only WhatsApp widget</label
+                            >
+                            <label
+                                ><input
+                                    type="radio"
+                                    name="whatsappMode"
+                                    value="widgetAndWhatsapp"
+                                />
+                                WhatsApp widget and Kommunicate widget</label
                             >
                         </div>
                     </fieldset>
@@ -507,21 +529,23 @@
 
         <script>
             const defaultState = {
-                appId: 'kommunicate-support',
+                appId: '1883b190054b065cd3096b8179deb2e13',
                 agentId: '',
                 layout: 'modern',
                 containerMode: 'outside',
                 widgetPosition: 'right',
                 recognitionMode: 'omnichannel',
                 voiceModeEnabled: true,
+                whatsappMode: 'none',
                 containerId: 'widget-container',
                 widgetSettings: null,
                 globalSettings: {
                     userId: 'test-user-1',
                     password: 'ALLOW_TOKEN',
                     authenticationTypeId: 0,
+                    locShare: true,
                 },
-                globalSettingsEnabled: false,
+                globalSettingsEnabled: true,
                 preChat: [
                     {
                         field: 'Name',
@@ -541,6 +565,7 @@
             const allowedContainerModes = ['outside', 'inside', 'iframe'];
             const allowedWidgetPositions = ['left', 'right'];
             const allowedRecognitionModes = ['omnichannel', 'elevenlabs', 'native'];
+            const allowedWhatsappModes = ['none', 'whatsappOnly', 'widgetAndWhatsapp'];
 
             const form = document.getElementById('widget-config-form');
             const status = document.getElementById('config-status');
@@ -587,6 +612,9 @@
                 ).checked = true;
                 document.querySelector(
                     `input[name="recognitionMode"][value="${defaultState.recognitionMode}"]`
+                ).checked = true;
+                document.querySelector(
+                    `input[name="whatsappMode"][value="${defaultState.whatsappMode}"]`
                 ).checked = true;
                 voiceModeEnabledCheckbox.checked = defaultState.voiceModeEnabled;
                 widgetSettingsTextarea.value = defaultState.widgetSettings
@@ -705,6 +733,15 @@
                 if (recognitionModeOption) {
                     recognitionModeOption.checked = true;
                 }
+                const whatsappModeValue = allowedWhatsappModes.includes(config.whatsappMode)
+                    ? config.whatsappMode
+                    : defaultState.whatsappMode;
+                const whatsappModeOption = document.querySelector(
+                    `input[name="whatsappMode"][value="${whatsappModeValue}"]`
+                );
+                if (whatsappModeOption) {
+                    whatsappModeOption.checked = true;
+                }
                 if (typeof config.voiceModeEnabled === 'boolean') {
                     voiceModeEnabledCheckbox.checked = config.voiceModeEnabled;
                 } else {
@@ -755,6 +792,8 @@
                 const recognitionMode = document.querySelector(
                     'input[name="recognitionMode"]:checked'
                 ).value;
+                const whatsappMode = document.querySelector('input[name="whatsappMode"]:checked')
+                    .value;
 
                 const preChatEnabled = preChatEnabledCheckbox.checked;
                 let widgetSettings;
@@ -803,6 +842,7 @@
                     containerMode,
                     widgetPosition,
                     recognitionMode,
+                    whatsappMode,
                     voiceModeEnabled: voiceModeEnabledCheckbox.checked,
                     containerId: defaultState.containerId,
                     widgetSettings,
@@ -868,6 +908,13 @@
                     globalSettings.preLeadCollection = config.preChat;
                 }
 
+                if (config.whatsappMode === 'whatsappOnly') {
+                    globalSettings.channelUI = 'whatsapp';
+                } else if (config.whatsappMode === 'widgetAndWhatsapp') {
+                    globalSettings.channelUI = 'whatsapp';
+                    globalSettings.showChatWidget = true;
+                }
+
                 const globalSettingsOverrides =
                     config.globalSettingsEnabled !== false &&
                     config.globalSettings &&
@@ -911,7 +958,12 @@
                     existingScript.remove();
                 }
 
-                const disableCache = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+                const forceLocalWidget = new URLSearchParams(window.location.search).has(
+                    'localWidget'
+                );
+                const disableCache =
+                    !forceLocalWidget &&
+                    ['localhost', '127.0.0.1'].includes(window.location.hostname);
 
                 console.log(
                     'Injecting Kommunicate widget with kommunicateSettings:',

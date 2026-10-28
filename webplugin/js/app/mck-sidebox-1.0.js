@@ -4337,6 +4337,22 @@ const firstVisibleMsg = {
                     }
                 });
             };
+            $applozic(d).on('click', '.km-copy-message', function () {
+                const $copyButton = $applozic(this);
+                const messageText = $copyButton
+                    .closest('.mck-m-b')
+                    .find('.mck-msg-content')[0]
+                    .innerText.trim();
+                KommunicateUtils.copyToClipboard(messageText).then(() => {
+                    const { ICONS, COPY_LABEL, COPIED_LABEL, COPIED_VISIBLE_MS } =
+                        KommunicateConstants.COPY_MESSAGE;
+                    const showLabel = (icon, label) =>
+                        $copyButton.html(icon).attr({ title: label, 'aria-label': label });
+                    showLabel(ICONS.COPIED, COPIED_LABEL);
+                    setTimeout(() => showLabel(ICONS.COPY, COPY_LABEL), COPIED_VISIBLE_MS);
+                });
+            });
+
             $applozic(d).on('click', '.mck-message-delete', function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
             });
@@ -6931,7 +6947,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div>{{if showCopyExpr}}<button type="button" class="km-copy-message" aria-label="${copyLabelExpr}" title="${copyLabelExpr}">{{html copyIconExpr}}</button>{{/if}}<span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
                 '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
@@ -8212,6 +8228,9 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
+                const showCopyButton =
+                    !richText && !conversationTransferred && !!_this.getAccessibleMessageText(msg);
+
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
@@ -8274,6 +8293,9 @@ const firstVisibleMsg = {
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
                         feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
+                        showCopyExpr: showCopyButton,
+                        copyLabelExpr: KommunicateConstants.COPY_MESSAGE.COPY_LABEL,
+                        copyIconExpr: KommunicateConstants.COPY_MESSAGE.ICONS.COPY,
                     },
                 ];
 
