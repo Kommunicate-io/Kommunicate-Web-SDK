@@ -1896,8 +1896,10 @@ KommunicateUI = {
         if (!kommunicateIframe) {
             return;
         }
-        var playPopupTone = appOptionSession.getPropertyDataFromSession(
-            'playPopupNotificationTone'
+        // getPropertyDataFromSession returns '' for both a missing key and a stored
+        // false, so track a truthy "already played" flag instead.
+        var isPopupToneAlreadyPlayed = appOptionSession.getPropertyDataFromSession(
+            'popupNotificationTonePlayed'
         );
         var isOpen = kommunicateCommons.isWidgetOpen();
         console.log('togglePopupChatTemplate', {
@@ -1910,9 +1912,9 @@ KommunicateUI = {
             return;
         }
         if (showTemplate) {
-            if (playPopupTone == null || playPopupTone) {
+            if (!isPopupToneAlreadyPlayed) {
                 mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
-                appOptionSession.setSessionData('playPopupNotificationTone', false);
+                appOptionSession.setSessionData('popupNotificationTonePlayed', true);
             }
             var popupTemplateClass =
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
