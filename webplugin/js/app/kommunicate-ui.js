@@ -1896,9 +1896,6 @@ KommunicateUI = {
         if (!kommunicateIframe) {
             return;
         }
-        var playPopupTone = appOptionSession.getPropertyDataFromSession(
-            'playPopupNotificationTone'
-        );
         var isOpen = kommunicateCommons.isWidgetOpen();
         console.log('togglePopupChatTemplate', {
             showTemplate: showTemplate,
@@ -1910,10 +1907,7 @@ KommunicateUI = {
             return;
         }
         if (showTemplate) {
-            if (playPopupTone == null || playPopupTone) {
-                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
-                appOptionSession.setSessionData('playPopupNotificationTone', false);
-            }
+            mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
             var popupTemplateClass =
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
 
