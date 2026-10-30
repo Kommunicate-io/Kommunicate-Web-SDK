@@ -1361,14 +1361,8 @@ KommunicateUI = {
         mckChatPopupNotificationTone
     ) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
-        var playPopupTone = appOptionSession.getPropertyDataFromSession(
-            'playPopupNotificationTone'
-        );
         if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
-            if (playPopupTone == null || playPopupTone) {
-                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
-                appOptionSession.setSessionData('playPopupNotificationTone', false);
-            }
+            mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
             var popupTemplateClass =
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
 
