@@ -975,16 +975,13 @@ $applozic.extend(true, Kommunicate, {
         new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)),
     getUserLocation: async function () {
         try {
-            const api_key = kommunicate._globals.googleApiKey;
             const position = await this.getCurrentPosition();
             const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true&key=${api_key}`
+                `${KM_PLUGIN_SETTINGS.kommunicateApiUrl}/maps/geocode?lat=${position.coords.latitude}&lng=${position.coords.longitude}`
             );
             const result = await response.json();
 
-            return result?.results.length
-                ? result.results[0].formatted_address
-                : 'LOCATION_NOT_FOUND';
+            return result && result.address ? result.address : 'LOCATION_NOT_FOUND';
         } catch (error) {
             console.debug('Error while fetching location', error);
             return 'PERMISSION_DENIED';

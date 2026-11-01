@@ -34,14 +34,7 @@ function ApplozicSidebox() {
             alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.9.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
-        {
-            name: 'maps',
-            url: 'https://maps.googleapis.com/maps/api/js?libraries=places,marker',
-            googleApiKey:
-                typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey
-                    ? applozic._globals.googleApiKey
-                    : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
-        },
+        // Maps JS now loads only inside map-view.html's iframe, not here - see mck-map-integration.js.
     ];
     var mck_style_loader = [
         {
@@ -87,10 +80,6 @@ function ApplozicSidebox() {
 
     function loadExternalFiles(externalFileDetails) {
         try {
-            if (applozic._globals.excludeGoogleMap && externalFileDetails.name === 'maps') {
-                ++scriptCounter;
-                return;
-            }
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.async = true;
@@ -99,15 +88,7 @@ function ApplozicSidebox() {
             externalFileDetails &&
                 externalFileDetails.crossOrigin &&
                 (script.crossOrigin = externalFileDetails.crossOrigin);
-            if (externalFileDetails.name === 'maps') {
-                script.src =
-                    externalFileDetails.url +
-                    '&key=' +
-                    externalFileDetails.googleApiKey +
-                    '&callback=Function.prototype&loading=async';
-            } else {
-                script.src = externalFileDetails.url;
-            }
+            script.src = externalFileDetails.url;
             if (script.readyState) {
                 // IE
                 script.onreadystatechange = function () {
@@ -689,8 +670,6 @@ function ApplozicSidebox() {
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
-            options.googleApiKey =
-                isSettingEnable('googleApiKey') ?? 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
             options.anonymousUserIdForPreChatLead = isSettingEnable(
                 'anonymousUserIdForPreChatLead'
