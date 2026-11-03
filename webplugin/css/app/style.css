@@ -1316,6 +1316,28 @@ input[type=number]::-webkit-outer-spin-button {
   fill: #000;
 }
 
+.mck-sidebox .km-copy-message {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 6px;
+  vertical-align: middle;
+  display: inline-flex;
+  line-height: 1;
+  color: #1c1c1c;
+  opacity: 0.5;
+}
+.mck-sidebox .km-copy-message:hover, .mck-sidebox .km-copy-message:focus-visible {
+  opacity: 1;
+}
+
+.mck-sidebox .km-clubbing-first .km-copy-message {
+  display: none;
+}
+
 .mck-rich-msg-box {
   width: 264px;
   max-width: unset !important;
