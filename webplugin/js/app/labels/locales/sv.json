@@ -179,6 +179,8 @@
   "conversation.header.dropdown.RESTART_CONVERSATION": "Starta om samtalet",
   "conversation.header.dropdown.HANDOFF": "Prata med en människa",
   "conversation.header.dropdown.FAQ": "FAQ",
+  "conversation.header.dropdown.EXPAND_WINDOW": "Expandera fönstret",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "Minimera fönstret",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "Skicka röstmeddelande",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "Tal till text",
   "conversation.handoff.ASSIGN_TO": "Samtal överfört till",

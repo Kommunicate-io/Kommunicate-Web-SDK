@@ -55,6 +55,7 @@
                         noFocus: noFocus === 'true', // params will be string and we need noFocus value as boolean
                         appId: appId, // replace this with your application id
                         layout: selectedLayout,
+                        hideExpandWindowOption: true, // the chat already fills the page
                         onInit: function () {
                             if (JSON.stringify(defaultSettings) != '{}') {
                                 Kommunicate.updateSettings(defaultSettings);

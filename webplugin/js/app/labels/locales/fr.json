@@ -179,6 +179,8 @@
   "conversation.header.dropdown.RESTART_CONVERSATION": "Relancer la conversation",
   "conversation.header.dropdown.HANDOFF": "Parler à un humain",
   "conversation.header.dropdown.FAQ": "FAQ",
+  "conversation.header.dropdown.EXPAND_WINDOW": "Agrandir la fenêtre",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "Réduire la fenêtre",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "Envoyer un message vocal",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "Parole en texte",
   "conversation.handoff.ASSIGN_TO": "Conversation transférée à",
