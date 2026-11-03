@@ -639,6 +639,15 @@
             'location.coordinates.lat': 'Lat.:',
             'location.coordinates.lon': 'Long.:',
             'whatsnew.empty': "What's New coming soon.",
+            'webCall.connecting': 'Conectando tu llamada...',
+            'webCall.ringing': 'Llamando...',
+            'webCall.inCall': 'En llamada',
+            'webCall.mute': 'Silenciar',
+            'webCall.unmute': 'Activar sonido',
+            'webCall.hangUp': 'Colgar',
+            'webCall.failed': 'No se pudo conectar la llamada, continúa en el chat',
+            'webCall.micDenied':
+                'Permite el acceso al micrófono para llamar. Puedes continuar en el chat.',
         },
         fr: {
             'input.message': 'Tapez votre message...',
@@ -856,6 +865,15 @@
             'location.coordinates.lat': 'Lat.:',
             'location.coordinates.lon': 'Long.:',
             'whatsnew.empty': "What's New coming soon.",
+            'webCall.connecting': 'Connexion de votre appel...',
+            'webCall.ringing': 'Sonnerie en cours...',
+            'webCall.inCall': 'En appel',
+            'webCall.mute': 'Couper le micro',
+            'webCall.unmute': 'Réactiver le micro',
+            'webCall.hangUp': 'Raccrocher',
+            'webCall.failed': "Impossible de connecter l'appel, veuillez continuer dans le chat",
+            'webCall.micDenied':
+                "Autorisez l'accès au micro pour appeler. Vous pouvez continuer dans le chat.",
         },
         hi: {
             'input.message': 'अपना संदेश टाइप करें...',

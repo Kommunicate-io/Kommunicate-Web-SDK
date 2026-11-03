@@ -233,5 +233,13 @@
   "voiceInterface.transcribing": "Transcription en cours...",
   "voiceInterface.didNotCatchThat": "Je n'ai pas compris. Veuillez réessayer.",
   "voiceInterface.noActiveConversation": "Veuillez d'abord ouvrir une conversation.",
-  "voiceInterface.silenceTimeout": "Aucune parole détectée. Je continue d'écouter..."
+  "voiceInterface.silenceTimeout": "Aucune parole détectée. Je continue d'écouter...",
+  "webCall.connecting": "Connexion de votre appel...",
+  "webCall.ringing": "Sonnerie en cours...",
+  "webCall.inCall": "En appel",
+  "webCall.mute": "Couper le micro",
+  "webCall.unmute": "Réactiver le micro",
+  "webCall.hangUp": "Raccrocher",
+  "webCall.failed": "Impossible de connecter l'appel, veuillez continuer dans le chat",
+  "webCall.micDenied": "Autorisez l'accès au micro pour appeler. Vous pouvez continuer dans le chat."
 }

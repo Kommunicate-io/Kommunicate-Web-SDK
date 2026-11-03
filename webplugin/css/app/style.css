@@ -4785,6 +4785,52 @@ div#mck-rated:before {
     opacity: 1;
   }
 }
+/* ========================================
+   WEB CALL BAR ("Connect via call")
+   ======================================== */
+.mck-sidebox .km-web-call-bar:not(.n-vis) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 16px;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  color: var(--km-font-body-color, #334155);
+  background: var(--km-tabicon-bg, #edf0f5);
+  box-shadow: 0 4px 16px rgba(95, 70, 248, 0.08);
+}
+
+.km-web-call-status {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.km-web-call-timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.mck-sidebox .km-web-call-btn {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mck-sidebox .km-web-call-hangup {
+  border-color: #d64242;
+  color: #ffffff;
+  background: #d64242;
+}
+
 .km-bottom-tab-wrapper {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);

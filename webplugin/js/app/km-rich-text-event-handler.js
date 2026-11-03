@@ -659,6 +659,33 @@ Kommunicate.richMsgEventHandler = {
             metadata: metadata,
             languageCode: languageCode,
         });
+        // Read before the handover arrives: an unanswered call gives the chat back to this bot.
+        metadata.KM_CONNECT_VIA === 'call' &&
+            kommunicate._globals.connectViaCallEnabled &&
+            Kommunicate.richMsgEventHandler.startWebCall(
+                CURRENT_GROUP_DATA.tabId,
+                CURRENT_GROUP_DATA.isConversationAssigneeBot
+                    ? CURRENT_GROUP_DATA.conversationAssignee
+                    : ''
+            );
+    },
+    webCallModuleLoader: null,
+    startWebCall: function (groupId, botId) {
+        var handler = Kommunicate.richMsgEventHandler;
+        // Loaded once: loading the web-call module again would redeclare kmWebCall.
+        handler.webCallModuleLoader =
+            handler.webCallModuleLoader ||
+            Promise.all(
+                Object.values(THIRD_PARTY_SCRIPTS.webCall).map(applozicSideBox.loadResourceAsync)
+            );
+        handler.webCallModuleLoader
+            .then(function () {
+                kmWebCall.start(groupId, botId);
+            })
+            .catch(function (error) {
+                handler.webCallModuleLoader = null;
+                console.error(error);
+            });
     },
     processClickOnListItem: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);
