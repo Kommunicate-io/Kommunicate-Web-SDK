@@ -3716,6 +3716,7 @@ const firstVisibleMsg = {
 
         function MckMessageService() {
             var _this = this;
+            var assigneeAvailabilityRefreshTimer;
             var $mck_search = $applozic('#mck-search');
             var $mck_msg_to = $applozic('#mck-msg-to');
             var $mck_msg_new = $applozic('#mck-msg-new');
@@ -6595,6 +6596,38 @@ const firstVisibleMsg = {
                     data.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                 );
                 _this.processOnlineStatusChange(tabId, data, updateConversationHeaderParams);
+            };
+            _this.refreshAssigneeAvailability = function (tabId) {
+                clearTimeout(assigneeAvailabilityRefreshTimer);
+                assigneeAvailabilityRefreshTimer = setTimeout(function () {
+                    var assigneeId = CURRENT_GROUP_DATA.conversationAssignee;
+                    if (
+                        !assigneeId ||
+                        CURRENT_GROUP_DATA.tabId != tabId ||
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot
+                    ) {
+                        return;
+                    }
+
+                    mckContactService.getUsersDetail([assigneeId], {
+                        cached: false,
+                        callback: function (result) {
+                            if (
+                                CURRENT_GROUP_DATA.tabId != tabId ||
+                                CURRENT_GROUP_DATA.conversationAssignee != assigneeId ||
+                                !result ||
+                                !result.data ||
+                                !result.data.response
+                            ) {
+                                return;
+                            }
+                            var assigneeDetail = result.data.response.find(function (userDetail) {
+                                return userDetail.userId == assigneeId;
+                            });
+                            assigneeDetail && _this.updateAssigneeDetails(assigneeDetail, tabId);
+                        },
+                    });
+                }, 250);
             };
             _this.processOnlineStatusChange = function (
                 tabId,
@@ -12775,6 +12808,15 @@ const firstVisibleMsg = {
                             }
                         } else if (messageType === 'APPLOZIC_02') {
                             Kommunicate.KmEventHandler.onMessageSent(message);
+                        }
+                        if (
+                            (messageType === 'APPLOZIC_01' ||
+                                messageType === 'MESSAGE_RECEIVED' ||
+                                messageType === 'APPLOZIC_02') &&
+                            message.groupId &&
+                            message.groupId == CURRENT_GROUP_DATA.tabId
+                        ) {
+                            mckMessageService.refreshAssigneeAvailability(message.groupId);
                         }
                         if (typeof contact === 'undefined') {
                             var params = {
