@@ -174,6 +174,13 @@ function ZendeskChatService() {
         console.log('handleBotMessage: ', event);
         if (event.message.metadata.hasOwnProperty('KM_ASSIGN_TO')) {
             newConversationCreated = true;
+            // Mark the conversation as Zopim-handled only once it is actually handed off to Zendesk
+            Kommunicate.updateConversationMetadata({
+                groupId: CURRENT_GROUP_DATA.tabId,
+                metadata: {
+                    source: 'zopim',
+                },
+            });
             _this.initializeSDK();
             ZENDESK_SDK_INITIALIZED = true;
 
@@ -395,13 +402,6 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log('onTabClicked from zendesk: ', event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
-        var conversationInfo = {
-            groupId: event.tabId,
-            metadata: {
-                source: 'zopim',
-            },
-        };
-        Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo =
             currentGroupData &&
             currentGroupData.users &&
