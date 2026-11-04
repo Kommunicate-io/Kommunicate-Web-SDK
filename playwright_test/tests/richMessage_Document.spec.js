@@ -144,3 +144,36 @@ test('Document name falls back to the URL when it is not a string', async () => 
         ['https://cdn.kommunicate.io/guide.pdf', 'https://cdn.kommunicate.io/guide.pdf'],
     ]);
 });
+
+test('Document download link has the same accessible label as an agent attachment', async () => {
+    const labels = await page.evaluate(() => {
+        const url = 'https://cdn.kommunicate.io/guide.pdf';
+        const toDownloadLabel = (html) => {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = html;
+            const link = wrapper.querySelector('a[download]');
+            return [link.getAttribute('aria-label'), link.getAttribute('title')];
+        };
+        return {
+            bot: toDownloadLabel(
+                Kommunicate.markup.getDocumentMarkup({ payload: [{ url, name: 'guide.pdf' }] })
+            ),
+            agent: toDownloadLabel(
+                Kommunicate.messageTemplate.getAttachmentContanier(
+                    {
+                        type: 4,
+                        fileMeta: { name: 'guide.pdf', url, contentType: 'application/pdf' },
+                    },
+                    '',
+                    false,
+                    url
+                )
+            ),
+        };
+    });
+    expect(labels.bot).toEqual([
+        'Download attachment: guide.pdf',
+        'Download attachment: guide.pdf',
+    ]);
+    expect(labels.bot).toEqual(labels.agent);
+});

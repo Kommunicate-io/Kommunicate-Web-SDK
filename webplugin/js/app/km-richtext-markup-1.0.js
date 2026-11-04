@@ -1106,6 +1106,7 @@ Kommunicate.markup.getDocumentMarkup = function (options) {
                 return Mustache.to_html(
                     Kommunicate.messageTemplate.getAttachmentApplicationTemplate(),
                     {
+                        ...Kommunicate.messageTemplate.getAttachmentLabels(fileName),
                         fileMeta: { name: fileName, url: file.url },
                         fileNameToShow: fileName,
                         previewContainerClass: 'km-attach-preview-container',

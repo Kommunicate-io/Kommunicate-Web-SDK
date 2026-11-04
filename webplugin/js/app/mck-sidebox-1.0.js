@@ -12169,7 +12169,10 @@ const firstVisibleMsg = {
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.DOCUMENT:
                                 messageToShowInPreview =
                                     message.message ||
-                                    (payload && payload[0] && payload[0].name) ||
+                                    (payload &&
+                                        payload[0] &&
+                                        typeof payload[0].name == 'string' &&
+                                        payload[0].name) ||
                                     'File';
                                 imgIconToShowInPreview = KommunicateConstants.ATTACHMENT_ICON;
                                 break;
