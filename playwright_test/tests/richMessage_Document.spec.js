@@ -109,9 +109,38 @@ test('Document markup matches the agent document bubble structure', async () => 
 
 test('Malformed document payloads render nothing instead of throwing', async () => {
     const results = await page.evaluate(() =>
-        [undefined, null, {}, '[]', [null, { name: 'no-url.pdf' }]].map((payload) =>
-            Kommunicate.markup.getDocumentMarkup({ payload })
-        )
+        [
+            undefined,
+            null,
+            {},
+            '[]',
+            '[{',
+            [null, { name: 'no-url.pdf' }],
+            [{ url: { toString: null }, name: 'object-url.pdf' }],
+        ].map((payload) => Kommunicate.markup.getDocumentMarkup({ payload }))
     );
-    expect(results).toEqual(['', '', '', '', '']);
+    expect(results).toEqual(['', '', '', '', '', '', '']);
+});
+
+test('Document name falls back to the URL when it is not a string', async () => {
+    const names = await page.evaluate(() => {
+        const url = 'https://cdn.kommunicate.io/guide.pdf';
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = Kommunicate.markup.getDocumentMarkup({
+            payload: [
+                { url, name: 'guide.pdf' },
+                { url, name: { toString: null } },
+                { url, name: 42 },
+            ],
+        });
+        return Array.from(wrapper.querySelectorAll('.km-attachment-wrapper')).map((node) => [
+            node.querySelector('.km-attachment-file-name').textContent,
+            node.getAttribute('data-filename'),
+        ]);
+    });
+    expect(names).toEqual([
+        ['guide.pdf', 'guide.pdf'],
+        ['https://cdn.kommunicate.io/guide.pdf', 'https://cdn.kommunicate.io/guide.pdf'],
+        ['https://cdn.kommunicate.io/guide.pdf', 'https://cdn.kommunicate.io/guide.pdf'],
+    ]);
 });

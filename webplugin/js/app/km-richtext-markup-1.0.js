@@ -1082,11 +1082,17 @@ Kommunicate.markup.getVideoMarkup = function (options) {
 };
 // Renders bot documents with the same bubble used for documents received from agents.
 Kommunicate.markup.getDocumentMarkup = function (options) {
-    var payload =
-        typeof options.payload == 'string' ? JSON.parse(options.payload) : options.payload;
-    // The payload comes from bot/custom JSON, so skip malformed entries instead of failing the render.
+    // The payload comes from bot/custom JSON, so malformed input renders nothing instead of failing the render.
+    var payload = options.payload;
+    if (typeof payload == 'string') {
+        try {
+            payload = JSON.parse(payload);
+        } catch (e) {
+            return '';
+        }
+    }
     var documents = (Array.isArray(payload) ? payload : []).filter(
-        (file) => file && /^https?:\/\//i.test(file.url)
+        (file) => file && typeof file.url == 'string' && /^https?:\/\//i.test(file.url)
     );
     if (!documents.length) {
         return '';
@@ -1095,17 +1101,21 @@ Kommunicate.markup.getDocumentMarkup = function (options) {
     return (
         '<div class="km-msg-box-attachment">' +
         documents
-            .map((file) =>
-                Mustache.to_html(Kommunicate.messageTemplate.getAttachmentApplicationTemplate(), {
-                    fileMeta: { name: file.name, url: file.url },
-                    fileNameToShow: file.name || file.url,
-                    previewContainerClass: 'km-attach-preview-container',
-                    uploadIconClass: 'n-vis',
-                    cancelIconClass: 'n-vis',
-                    progressBarClass: 'n-vis',
-                    downloadIconClass: 'vis',
-                })
-            )
+            .map((file) => {
+                var fileName = (typeof file.name == 'string' && file.name) || file.url;
+                return Mustache.to_html(
+                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(),
+                    {
+                        fileMeta: { name: fileName, url: file.url },
+                        fileNameToShow: fileName,
+                        previewContainerClass: 'km-attach-preview-container',
+                        uploadIconClass: 'n-vis',
+                        cancelIconClass: 'n-vis',
+                        progressBarClass: 'n-vis',
+                        downloadIconClass: 'vis',
+                    }
+                );
+            })
             .join('') +
         '</div>'
     );

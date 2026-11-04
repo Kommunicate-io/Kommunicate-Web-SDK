@@ -12252,8 +12252,11 @@ const firstVisibleMsg = {
 
                 if (!messageToShowInPreview) return;
 
+                // Preview text comes from message content (text, captions, file names); escape it before .html().
                 var htmlPayload =
-                    '<span class="message-preview-text">' + messageToShowInPreview + '</span>';
+                    '<span class="message-preview-text">' +
+                    kommunicateCommons.formatHtmlTag(String(messageToShowInPreview)) +
+                    '</span>';
                 if (imgIconToShowInPreview) {
                     htmlPayload =
                         '<span class="mck-icon--rich-message">' +
