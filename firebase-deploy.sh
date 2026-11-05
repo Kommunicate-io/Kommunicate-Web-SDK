@@ -25,6 +25,8 @@ elif [ "$BUILD_ENV" = "prod-in" ]; then
     npm run build-prod-in
 elif [ "$BUILD_ENV" = "prod-eu" ]; then
     npm run build-prod-eu
+elif [ "$BUILD_ENV" = "prod-au" ]; then
+    npm run build-prod-au
 elif [ "$BUILD_ENV" = "prod-cn" ]; then
     npm run build-prod-cn
 else

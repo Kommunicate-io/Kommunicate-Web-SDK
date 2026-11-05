@@ -28,6 +28,7 @@
     "build-prod-enterprise": "export NODE_ENV=prod_enterprise && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
     "build-prod-in": "export NODE_ENV=prod_in && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
     "build-prod-eu": "export NODE_ENV=prod_eu && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
+    "build-prod-au": "export NODE_ENV=prod_au && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
     "build-prod-cn": "export NODE_ENV=prod_cn && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
     "build-staging": "export NODE_ENV=staging && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
     "build-beta": "export NODE_ENV=prod_beta && export PRODUCT=kommunicate && npm-run-all build-server gulp-build",
