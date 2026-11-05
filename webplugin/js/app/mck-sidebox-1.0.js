@@ -4334,6 +4334,44 @@ const firstVisibleMsg = {
                     }
                 });
             };
+            $applozic(d).on('click', 'a[download][data-blobkey]', function (event) {
+                var fileName = this.getAttribute('download');
+                var blobKey = this.getAttribute('data-blobkey');
+                var href = this.getAttribute('href') || '';
+                if (!fileName || !blobKey) {
+                    return;
+                }
+                event.preventDefault();
+                KommunicateUI.getUrlFromBlobKey(
+                    encodeURIComponent(blobKey),
+                    function (err, fileUrl) {
+                        if (err || !fileUrl) {
+                            window.open(href, '_blank', 'noopener,noreferrer');
+                            return;
+                        }
+                        fetch(fileUrl)
+                            .then(function (response) {
+                                if (!response.ok) {
+                                    throw new Error('download failed');
+                                }
+                                return response.blob();
+                            })
+                            .then(function (blob) {
+                                var anchor = document.createElement('a');
+                                var objectUrl = window.URL.createObjectURL(blob);
+                                anchor.href = objectUrl;
+                                anchor.download = fileName;
+                                document.body.appendChild(anchor);
+                                anchor.click();
+                                document.body.removeChild(anchor);
+                                window.URL.revokeObjectURL(objectUrl);
+                            })
+                            .catch(function () {
+                                window.open(href, '_blank', 'noopener,noreferrer');
+                            });
+                    }
+                );
+            });
             $applozic(d).on('click', '.mck-message-delete', function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
             });
