@@ -8152,15 +8152,10 @@ const firstVisibleMsg = {
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
-                        replyQuoteExpr: msg.metadata.KM_QUOTED_MESSAGE
-                            ? _this.getReplyQuoteMarkup(JSON.parse(msg.metadata.KM_QUOTED_MESSAGE))
-                            : '',
-                        replyActionClass:
-                            WIDGET_SETTINGS &&
-                            WIDGET_SETTINGS.quoteReplyEnabled &&
-                            floatWhere !== 'mck-msg-center'
-                                ? ''
-                                : 'n-vis',
+                        replyQuoteExpr: _this.getReplyQuoteMarkup(
+                            msg.metadata && msg.metadata.KM_QUOTED_MESSAGE
+                        ),
+                        replyActionClass: floatWhere !== 'mck-msg-center' ? '' : 'n-vis',
                         msgKeyExpr: msg.key,
                         msgDeliveredExpr: msg.delivered,
                         msgSentExpr: msg.sent,
@@ -9052,18 +9047,40 @@ const firstVisibleMsg = {
             };
 
             _this.getReplyQuoteMarkup = function (quotedMessage) {
+                if (!quotedMessage) {
+                    return '';
+                }
+                if (typeof quotedMessage === 'string') {
+                    try {
+                        quotedMessage = JSON.parse(quotedMessage);
+                    } catch (e) {
+                        return '';
+                    }
+                }
+                if (!quotedMessage || typeof quotedMessage !== 'object') {
+                    return '';
+                }
                 var quote = d.createElement('div');
                 quote.className = 'mck-reply-quote';
-                quote.setAttribute('data-reply-key', quotedMessage.key);
+                quote.setAttribute('data-reply-key', quotedMessage.key || '');
                 var sender = d.createElement('div');
                 sender.className = 'mck-reply-quote-sender';
-                sender.textContent =
-                    quotedMessage.from === MCK_USER_ID
-                        ? MCK_LABELS['you']
-                        : _this.getTabDisplayName(quotedMessage.from, false);
+                var senderName = '';
+                if (quotedMessage.from === MCK_USER_ID) {
+                    senderName = MCK_LABELS['you'];
+                } else if (quotedMessage.from) {
+                    try {
+                        senderName =
+                            _this.getTabDisplayName(quotedMessage.from, false) ||
+                            quotedMessage.from;
+                    } catch (e) {
+                        senderName = quotedMessage.from;
+                    }
+                }
+                sender.textContent = senderName;
                 var text = d.createElement('div');
                 text.className = 'mck-reply-quote-text';
-                text.textContent = quotedMessage.message;
+                text.textContent = quotedMessage.message || '';
                 quote.append(sender, text);
                 return quote.outerHTML;
             };
@@ -9094,7 +9111,12 @@ const firstVisibleMsg = {
             };
 
             _this.scrollToMessage = function (msgKey) {
-                var $message = $applozic('#mck-message-cell .mck-m-b.' + msgKey);
+                if (!msgKey) {
+                    return;
+                }
+                var $message = $applozic('#mck-message-cell .mck-m-b').filter(function () {
+                    return this.getAttribute('data-msgkey') === msgKey;
+                });
                 if (!$message.length) {
                     return;
                 }
