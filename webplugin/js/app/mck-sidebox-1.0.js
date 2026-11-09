@@ -8156,7 +8156,11 @@ const firstVisibleMsg = {
                         replyQuoteExpr: _this.getReplyQuoteMarkup(
                             msg.metadata && msg.metadata.KM_QUOTED_MESSAGE
                         ),
-                        replyActionClass: floatWhere !== 'mck-msg-center' ? '' : 'n-vis',
+                        replyActionClass:
+                            floatWhere === 'mck-msg-center' ||
+                            mckMessageLayout.isMessageSentByBot(msg, contact)
+                                ? 'n-vis'
+                                : '',
                         msgKeyExpr: msg.key,
                         msgDeliveredExpr: msg.delivered,
                         msgSentExpr: msg.sent,
@@ -9090,14 +9094,14 @@ const firstVisibleMsg = {
                 // snapshot of the quoted bubble; stored with the reply so it renders without fetching the original
                 var quotedMessage = {
                     key: $message.data('msgkey'),
-                    from: $message.hasClass('mck-msg-right')
-                        ? MCK_USER_ID
-                        : $message.attr('data-contact'),
                     message:
                         $applozic
                             .trim($message.find('.mck-msg-content').first().text())
                             .substring(0, 100) ||
                         MCK_LABELS['rich.message']['notification.preview'],
+                    from: $message.hasClass('mck-msg-right')
+                        ? MCK_USER_ID
+                        : $message.attr('data-contact'),
                 };
                 $applozic('#mck-reply-preview').html(_this.getReplyQuoteMarkup(quotedMessage));
                 $mck_text_box.data('quotedMessage', quotedMessage);
