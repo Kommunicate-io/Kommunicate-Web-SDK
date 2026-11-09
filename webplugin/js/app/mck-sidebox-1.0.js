@@ -5845,6 +5845,17 @@ const firstVisibleMsg = {
                                 $mck_msg_div.removeClass(randomId).addClass(messageKey);
                                 $mck_msg_div.data('msgkey', messageKey);
                                 $mck_msg_div.attr('data-msgkey', messageKey);
+                                var quotedMessage = $mck_text_box.data('quotedMessage');
+                                if (
+                                    quotedMessage &&
+                                    String(quotedMessage.key) === String(randomId)
+                                ) {
+                                    quotedMessage.key = messageKey;
+                                    $applozic('#mck-reply-preview .mck-reply-quote').attr(
+                                        'data-reply-key',
+                                        messageKey
+                                    );
+                                }
                                 $applozic('.' + messageKey + ' .mck-message-status')
                                     .removeClass('mck-pending-icon')
                                     .addClass('mck-sent-icon')
