@@ -8169,7 +8169,10 @@ const firstVisibleMsg = {
                         ),
                         replyActionClass:
                             floatWhere === 'mck-msg-center' ||
-                            mckMessageLayout.isMessageSentByBot(msg, contact)
+                            (contact.users &&
+                                contact.users[msg.to] &&
+                                contact.users[msg.to].role ===
+                                    KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT)
                                 ? 'n-vis'
                                 : '',
                         msgKeyExpr: msg.key,
@@ -9112,7 +9115,7 @@ const firstVisibleMsg = {
                         MCK_LABELS['rich.message']['notification.preview'],
                     from: $message.hasClass('mck-msg-right')
                         ? MCK_USER_ID
-                        : $message.attr('data-contact'),
+                        : ($message.attr('data-contact') || '').split(',')[0],
                 };
                 $applozic('#mck-reply-preview').html(_this.getReplyQuoteMarkup(quotedMessage));
                 $mck_text_box.data('quotedMessage', quotedMessage);
