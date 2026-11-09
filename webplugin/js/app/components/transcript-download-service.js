@@ -126,13 +126,12 @@ class TranscriptDownloadService {
 
     getMessageText = (message) => {
         const { ATTACHMENT, LOCATION, TEXT_HTML } = KommunicateConstants.MESSAGE_CONTENT_TYPE;
-        const { contentType, fileMeta, metadata = {} } = message;
+        const { contentType, metadata = {} } = message;
         const text = message.message || '';
 
+        // File URLs need an authenticated session to open, so only mark that a file was sent
         if (contentType === ATTACHMENT) {
-            const name = (fileMeta && fileMeta.name) || 'file';
-            const url = fileMeta && fileMeta.url ? ' ' + fileMeta.url : '';
-            return [text, '[Attachment: ' + name + ']' + url].filter(Boolean).join('\n');
+            return [text, '[Attachment]'].filter(Boolean).join('\n');
         }
         if (contentType === LOCATION) {
             try {
