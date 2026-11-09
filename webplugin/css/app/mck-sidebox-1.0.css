@@ -142,13 +142,13 @@
     right: calc(100% + 8px);
 }
 
-.mck-m-b:hover .mck-reply-action,
-.mck-reply-action:focus-visible {
+.mck-sidebox .mck-m-b:hover .mck-reply-action,
+.mck-sidebox .mck-msg-box > .mck-reply-action:focus-visible {
     opacity: 1;
 }
 
 @media (hover: none) {
-    .mck-reply-action {
+    .mck-sidebox .mck-msg-box > .mck-reply-action {
         opacity: 1;
     }
 }

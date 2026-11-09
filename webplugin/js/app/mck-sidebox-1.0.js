@@ -5689,10 +5689,10 @@ const firstVisibleMsg = {
                     forward: 'forward',
                 };
                 if (forwardMessage.metadata) {
-                    if (forwardMessage.metadata.AL_REPLY) {
-                        forwardMessage.metadata.AL_REPLY = '';
-                    }
-                    messagePxy.metadata = forwardMessage.metadata;
+                    var forwardMetadata = $applozic.extend({}, forwardMessage.metadata);
+                    delete forwardMetadata.AL_REPLY;
+                    delete forwardMetadata.KM_QUOTED_MESSAGE;
+                    messagePxy.metadata = forwardMetadata;
                 }
                 kommunicateCommons.setMessagePxyRecipient(messagePxy);
                 _this.sendMessage(messagePxy);
@@ -5844,6 +5844,7 @@ const firstVisibleMsg = {
                             if (currentTabId && currentTabId.toString() === optns.tabId) {
                                 $mck_msg_div.removeClass(randomId).addClass(messageKey);
                                 $mck_msg_div.data('msgkey', messageKey);
+                                $mck_msg_div.attr('data-msgkey', messageKey);
                                 $applozic('.' + messageKey + ' .mck-message-status')
                                     .removeClass('mck-pending-icon')
                                     .addClass('mck-sent-icon')
@@ -9088,7 +9089,7 @@ const firstVisibleMsg = {
             _this.setReplyMessage = function ($message) {
                 // snapshot of the quoted bubble; stored with the reply so it renders without fetching the original
                 var quotedMessage = {
-                    key: $message.attr('data-msgkey'),
+                    key: $message.data('msgkey'),
                     from: $message.hasClass('mck-msg-right')
                         ? MCK_USER_ID
                         : $message.attr('data-contact'),
@@ -9114,8 +9115,13 @@ const firstVisibleMsg = {
                 if (!msgKey) {
                     return;
                 }
+                var targetKey = String(msgKey);
                 var $message = $applozic('#mck-message-cell .mck-m-b').filter(function () {
-                    return this.getAttribute('data-msgkey') === msgKey;
+                    var dataKey = $applozic(this).data('msgkey');
+                    return (
+                        String(this.getAttribute('data-msgkey')) === targetKey ||
+                        (dataKey != null && String(dataKey) === targetKey)
+                    );
                 });
                 if (!$message.length) {
                     return;
