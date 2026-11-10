@@ -1322,8 +1322,8 @@ input[type=number]::-webkit-outer-spin-button {
   border: 0;
   background: transparent;
   cursor: pointer;
-  padding: 0;
-  margin-right: 6px;
+  padding: 6px;
+  margin: -6px 0 -6px -6px;
   vertical-align: middle;
   display: inline-flex;
   line-height: 1;
@@ -1332,6 +1332,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .mck-sidebox .km-copy-message:hover, .mck-sidebox .km-copy-message:focus-visible {
   opacity: 1;
+}
+.mck-sidebox .km-copy-message.km-copy-message--copied {
+  opacity: 1;
+  color: #2e7d32;
 }
 
 .mck-sidebox .km-clubbing-first .km-copy-message {

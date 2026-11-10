@@ -310,6 +310,10 @@ KommunicateConstants = {
     },
     COPY_MESSAGE: {
         COPIED_VISIBLE_MS: 1500,
+        CONTENT_SELECTOR: '.mck-msg-content, .mck-msg-box-rich-text-container.vis',
+        // Parts of a message that are not its body: previews, email tag, actions and forms.
+        EXCLUDED_SELECTOR:
+            '.link-preview-wrapper, .email-message-indicator, .km-cta-button, .km-quick-replies, form, style, script, svg',
         ICONS: {
             COPY:
                 '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
@@ -358,6 +362,35 @@ KommunicateUI = {};
 
 /**all  utilities*/
 KommunicateUtils = {
+    // Reads the text a user sees under `root`, including open shadow roots, skipping
+    // hidden elements and `excludedSelector` matches.
+    getRenderedText: function (root, excludedSelector) {
+        const walk = (node, whiteSpace) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                return whiteSpace.startsWith('pre')
+                    ? node.nodeValue
+                    : node.nodeValue.replace(/\s+/g, ' ');
+            }
+            if (node.nodeType !== Node.ELEMENT_NODE || node.matches(excludedSelector)) {
+                return '';
+            }
+            if (node.tagName === 'BR') {
+                return '\n';
+            }
+            const style = getComputedStyle(node);
+            if (style.display === 'none') {
+                return '';
+            }
+            const text = Array.from((node.shadowRoot || node).childNodes, (child) =>
+                walk(child, style.whiteSpace)
+            ).join('');
+            return style.display.startsWith('inline') ? text : `\n${text}\n`;
+        };
+        return walk(root, 'normal')
+            .replace(/[ \t]*\n[ \t]*/g, '\n')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+    },
     copyToClipboard: function (text) {
         const copyWithSelection = () => {
             const textarea = document.createElement('textarea');

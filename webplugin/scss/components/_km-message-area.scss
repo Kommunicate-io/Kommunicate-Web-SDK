@@ -179,8 +179,9 @@
     border: 0;
     background: transparent;
     cursor: pointer;
-    padding: 0;
-    margin-right: 6px;
+    // Padding enlarges the tap target; the negative margin keeps the icon where it was.
+    padding: 6px;
+    margin: -6px 0 -6px -6px;
     vertical-align: middle;
     display: inline-flex;
     line-height: 1;
@@ -190,6 +191,11 @@
     &:hover,
     &:focus-visible {
         opacity: 1;
+    }
+
+    &.km-copy-message--copied {
+        opacity: 1;
+        color: #2e7d32;
     }
 }
 
