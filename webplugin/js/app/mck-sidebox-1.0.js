@@ -8259,11 +8259,8 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
-                const hasCopyableText = !!(
-                    msg.message?.trim() ||
-                    (richText && $applozic('<div>').html(kmRichTextMarkup).text().trim())
-                );
-                const showCopyButton = !conversationTransferred && hasCopyableText;
+                // Removed after the message renders if it has no text to copy.
+                const showCopyButton = !conversationTransferred;
 
                 var msgList = [
                     {
@@ -8872,6 +8869,12 @@ const firstVisibleMsg = {
                         tokenizedStreamElementToReplace,
                         msg.key
                     );
+                }
+                // Email bodies and streamed text arrive after this point, so they keep the button.
+                if (!emlMessage && !msg.tokenMessage) {
+                    const $messageBlock = $applozic('#mck-message-cell .' + msg.key);
+                    KommunicateUtils.getCopyableMessageText($messageBlock) ||
+                        $messageBlock.find('.km-copy-message').remove();
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(

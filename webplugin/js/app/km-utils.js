@@ -311,9 +311,10 @@ KommunicateConstants = {
     COPY_MESSAGE: {
         COPIED_VISIBLE_MS: 1500,
         CONTENT_SELECTOR: '.mck-msg-content, .mck-msg-box-rich-text-container.vis',
-        // Parts of a message that are not its body: previews, email tag, actions and forms.
+        // Parts of a message that are not its body: previews, email tag, hidden parts and actions.
+        // Form labels stay, but its inputs and buttons are left out.
         EXCLUDED_SELECTOR:
-            '.link-preview-wrapper, .email-message-indicator, .km-cta-button, .km-quick-replies, form, style, script, svg',
+            '.link-preview-wrapper, .email-message-indicator, .n-vis, .km-cta-button, .km-quick-replies, button, input, textarea, select, style, script, svg',
         ICONS: {
             COPY:
                 '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
@@ -364,6 +365,18 @@ KommunicateUI = {};
 KommunicateUtils = {
     // Reads the text a user sees under `root`, including open shadow roots, skipping
     // hidden elements and `excludedSelector` matches.
+    // Text of the message blocks as copied: content under a hidden (n-vis) ancestor,
+    // such as the bubble of an email message, is left out.
+    getCopyableMessageText: function ($messageBlocks) {
+        const { CONTENT_SELECTOR, EXCLUDED_SELECTOR } = KommunicateConstants.COPY_MESSAGE;
+        return $messageBlocks
+            .find(CONTENT_SELECTOR)
+            .filter((index, element) => !element.closest('.n-vis'))
+            .map((index, element) => KommunicateUtils.getRenderedText(element, EXCLUDED_SELECTOR))
+            .get()
+            .filter(Boolean)
+            .join('\n\n');
+    },
     getRenderedText: function (root, excludedSelector) {
         const walk = (node, whiteSpace) => {
             if (node.nodeType === Node.TEXT_NODE) {
