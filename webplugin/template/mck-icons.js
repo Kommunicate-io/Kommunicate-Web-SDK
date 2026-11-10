@@ -433,6 +433,12 @@ var KM_MESSAGE_STATUS_ICON_SVG_PATHS =
     </symbol>
     <symbol id="icon-77" viewBox="0 0 16 16">
         <path
+            d="M8 10.667 4.667 7.333l.933-.966 1.733 1.733V2.667h1.334V8.1L10.4 6.367l.933.966L8 10.667ZM4 13.333c-.367 0-.68-.13-.942-.391A1.284 1.284 0 0 1 2.667 12v-2H4v2h8v-2h1.333v2c0 .367-.13.68-.391.942a1.284 1.284 0 0 1-.942.391H4Z"
+            fill="#8F8F8F"
+        />
+    </symbol>
+    <symbol id="icon-78" viewBox="0 0 16 16">
+        <path
             d="M9.5 2H14v4.5M14 2 9.25 6.75M6.5 14H2V9.5M2 14l4.75-4.75"
             stroke="#8F8F8F"
             stroke-width="1.5"
@@ -441,7 +447,7 @@ var KM_MESSAGE_STATUS_ICON_SVG_PATHS =
             fill="none"
         />
     </symbol>
-    <symbol id="icon-78" viewBox="0 0 16 16">
+    <symbol id="icon-79" viewBox="0 0 16 16">
         <path
             d="M14 2 9.5 6.5M9.5 2.75V6.5h3.75M2 14l4.5-4.5M6.5 13.25V9.5H2.75"
             stroke="#8F8F8F"

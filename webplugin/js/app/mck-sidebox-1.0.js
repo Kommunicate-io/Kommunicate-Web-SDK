@@ -77,7 +77,6 @@ const firstVisibleMsg = {
         genereateCloudFileUrl: 'https://googleupload.applozic.com/files/url?key={key}', // deprecated legacy file-url template kept for backward-compatible config surface
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
@@ -461,7 +460,6 @@ const firstVisibleMsg = {
         var MCK_INIT_AUTO_SUGGESTION = appOptions.initAutoSuggestions;
         var MCK_AUTHENTICATION_TYPE_ID = appOptions.authenticationTypeId;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
-        var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
@@ -627,7 +625,6 @@ const firstVisibleMsg = {
             getMapConfig: function () {
                 return {
                     isLocShare: IS_MCK_LOCSHARE,
-                    googleApiKey: MCK_GOOGLE_API_KEY,
                 };
             },
             logger: function () {
@@ -705,6 +702,7 @@ const firstVisibleMsg = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
+        transcriptDownloadService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -1141,6 +1139,7 @@ const firstVisibleMsg = {
             appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
+                transcriptDownloadService.init(optns);
                 appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
                 appOptions.accessToken = appOptions.password || appOptions.accessToken;
             } else {
@@ -4970,6 +4969,15 @@ const firstVisibleMsg = {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
+                // Download conversation transcript (TXT)
+                $applozic(d).on('click', '#km-download-transcript', function (e) {
+                    e.preventDefault();
+                    transcriptDownloadService.download();
+                });
+                $applozic(d).on('keydown', '#km-download-transcript', function (e) {
+                    handleActivationKey(e, this.click.bind(this));
+                });
+
                 document.getElementById('km-csat-close-button').onclick = function (e) {
                     e.preventDefault();
 
@@ -7266,6 +7274,16 @@ const firstVisibleMsg = {
                     }
                 }
 
+                if (
+                    transcriptDownloadService.isEnabled() &&
+                    transcriptDownloadService.getDisplayedGroupId()
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.show('#km-download-transcript');
+                } else {
+                    kommunicateCommons.hide('#km-download-transcript');
+                }
+
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED && HEADER_CTA.TTS !== primaryCTA) {
                     enableDropdown = true;
@@ -8905,16 +8923,16 @@ const firstVisibleMsg = {
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="' +
+                                KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                                '/maps/staticmap?zoom=17&size=200x150&center=' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '&maptype=roadmap&markers=color:red|' +
+                                '&markers=color:red|' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '&key=' +
-                                MCK_MAP_STATIC_API_KEY +
                                 '"/></a>'
                             );
                         }
@@ -8923,12 +8941,12 @@ const firstVisibleMsg = {
                             return (
                                 '<a href="https://maps.google.com/maps?z=17&t=m&q=loc:' +
                                 msg.message +
-                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="' +
+                                KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                                '/maps/staticmap?zoom=17&size=200x150&center=' +
                                 msg.message +
-                                '&maptype=roadmap&markers=color:red|' +
+                                '&markers=color:red|' +
                                 msg.message +
-                                '&key=' +
-                                MCK_MAP_STATIC_API_KEY +
                                 '" /></a>'
                             );
                         }
@@ -9162,9 +9180,11 @@ const firstVisibleMsg = {
                     var geoLoc = $applozic.parseJSON(message.message);
                     var coords = geoLoc.lat + ',' + geoLoc.lon;
                     return (
-                        '<span>location</span><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '<span>location</span><img alt="Location map" src="' +
+                        KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                        '/maps/staticmap?zoom=17&size=200x150&center=' +
                         coords +
-                        '&maptype=roadmap&markers=color:red|' +
+                        '&markers=color:red|' +
                         coords +
                         '" class="mck-image-reply move-right"/>'
                     );
@@ -9211,11 +9231,13 @@ const firstVisibleMsg = {
                     return (
                         '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
                         displayName +
-                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="' +
+                        KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                        '/maps/staticmap?zoom=17&size=200x150&center=' +
                         geoLoc.lat +
                         ',' +
                         geoLoc.lon +
-                        '&maptype=roadmap&markers=color:red|' +
+                        '&markers=color:red|' +
                         geoLoc.lat +
                         ',' +
                         geoLoc.lon +

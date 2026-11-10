@@ -69,6 +69,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/components/answer-feedback-service.js'),
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),
+    path.resolve(__dirname, 'js/app/components/transcript-download-service.js'),
     path.resolve(__dirname, 'js/app/conversation/gen-ai-service.js'),
     path.resolve(__dirname, 'js/app/voice/mck-voice-message-handler.js'),
     path.resolve(__dirname, 'js/app/map/mck-map-integration.js'),
