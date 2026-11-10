@@ -365,15 +365,26 @@ KommunicateUI = {};
 KommunicateUtils = {
     // Reads the text a user sees under `root`, including open shadow roots, skipping
     // hidden elements and `excludedSelector` matches.
-    // Text of the message blocks as copied: content under a hidden (n-vis) ancestor,
-    // such as the bubble of an email message, is left out.
+    // Text of the message blocks as copied. Content under a hidden (n-vis) element inside
+    // the block, such as the bubble of an email message, is left out; the block itself may
+    // be n-vis while a delayed bot message waits.
     getCopyableMessageText: function ($messageBlocks) {
         const { CONTENT_SELECTOR, EXCLUDED_SELECTOR } = KommunicateConstants.COPY_MESSAGE;
+        const isHiddenInside = (element, block) => {
+            for (let node = element.parentElement; node !== block; node = node.parentElement) {
+                if (node.classList.contains('n-vis')) {
+                    return true;
+                }
+            }
+            return false;
+        };
         return $messageBlocks
-            .find(CONTENT_SELECTOR)
-            .filter((index, element) => !element.closest('.n-vis'))
-            .map((index, element) => KommunicateUtils.getRenderedText(element, EXCLUDED_SELECTOR))
             .get()
+            .flatMap((block) =>
+                Array.from(block.querySelectorAll(CONTENT_SELECTOR))
+                    .filter((element) => !isHiddenInside(element, block))
+                    .map((element) => KommunicateUtils.getRenderedText(element, EXCLUDED_SELECTOR))
+            )
             .filter(Boolean)
             .join('\n\n');
     },

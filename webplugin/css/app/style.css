@@ -1338,7 +1338,8 @@ input[type=number]::-webkit-outer-spin-button {
   color: #2e7d32;
 }
 
-.mck-sidebox .km-clubbing-first .km-copy-message {
+.mck-sidebox .km-clubbing-first .km-copy-message,
+.mck-sidebox .km-copy-message.km-copy-message--empty {
   display: none;
 }
 

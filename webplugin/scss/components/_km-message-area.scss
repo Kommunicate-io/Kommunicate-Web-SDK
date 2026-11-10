@@ -200,7 +200,8 @@
 }
 
 // Only the last message of a clubbed group shows the button; it copies the whole group.
-.mck-sidebox .km-clubbing-first .km-copy-message {
+.mck-sidebox .km-clubbing-first .km-copy-message,
+.mck-sidebox .km-copy-message.km-copy-message--empty {
     display: none;
 }
 
