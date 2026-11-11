@@ -672,6 +672,8 @@ Kommunicate.richMsgEventHandler = {
     webCallModuleLoader: null,
     startWebCall: function (groupId, botId) {
         var handler = Kommunicate.richMsgEventHandler;
+        // Created during the click: browsers only let audio play from a user gesture (ringback tone).
+        var audioContext = new AudioContext();
         // Loaded once: loading the web-call module again would redeclare kmWebCall.
         handler.webCallModuleLoader =
             handler.webCallModuleLoader ||
@@ -680,10 +682,11 @@ Kommunicate.richMsgEventHandler = {
             );
         handler.webCallModuleLoader
             .then(function () {
-                kmWebCall.start(groupId, botId);
+                kmWebCall.start(groupId, botId, audioContext);
             })
             .catch(function (error) {
                 handler.webCallModuleLoader = null;
+                audioContext.close();
                 console.error(error);
             });
     },

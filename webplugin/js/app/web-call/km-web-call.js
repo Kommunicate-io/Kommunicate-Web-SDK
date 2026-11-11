@@ -11,6 +11,7 @@ class KmWebCall {
     _RINGBACK_VOLUME = 0.1;
     _RINGBACK_ON_S = 2;
     _RINGBACK_CYCLE_MS = 6000;
+    _audioContext = null;
     _ringback = null;
     _attempt = 0;
     _active = false;
@@ -35,12 +36,14 @@ class KmWebCall {
     }
 
     // botId: the bot the chat was with at the click ('' if already with an agent); Omni-Channel gives
-    // the chat back to it when the agent does not answer.
-    async start(groupId, botId) {
+    // the chat back to it when the agent does not answer. audioContext was created by the click, for the ringback.
+    async start(groupId, botId, audioContext) {
         if (this._active) {
+            audioContext.close();
             return;
         }
         this._active = true;
+        this._audioContext = audioContext;
         const attempt = this._attempt;
         const isCancelled = () => attempt !== this._attempt;
         this.showBar(this.labels.connecting);
@@ -176,6 +179,8 @@ class KmWebCall {
         this._call = null;
         clearInterval(this._timerId);
         this.stopRingback();
+        this._audioContext && this._audioContext.close();
+        this._audioContext = null;
         // destroy() disconnects the call too; its "disconnect" event is ignored as _call is cleared.
         this._device && this._device.destroy();
         this._device = null;
@@ -218,15 +223,17 @@ class KmWebCall {
         if (this._ringback) {
             return;
         }
-        const context = new AudioContext();
+        const context = this._audioContext;
+        context.resume();
         const gain = context.createGain();
         gain.gain.value = 0;
         gain.connect(context.destination);
-        this._RINGBACK_FREQUENCIES.forEach((frequency) => {
+        const oscillators = this._RINGBACK_FREQUENCIES.map((frequency) => {
             const oscillator = context.createOscillator();
             oscillator.frequency.value = frequency;
             oscillator.connect(gain);
             oscillator.start();
+            return oscillator;
         });
         const ring = () => {
             const now = context.currentTime;
@@ -234,16 +241,20 @@ class KmWebCall {
             gain.gain.setValueAtTime(0, now + this._RINGBACK_ON_S);
         };
         ring();
-        this._ringback = { context, intervalId: setInterval(ring, this._RINGBACK_CYCLE_MS) };
+        this._ringback = {
+            gain,
+            oscillators,
+            intervalId: setInterval(ring, this._RINGBACK_CYCLE_MS),
+        };
     }
 
-    // Closing the context stops its oscillators.
     stopRingback() {
         if (!this._ringback) {
             return;
         }
         clearInterval(this._ringback.intervalId);
-        this._ringback.context.close();
+        this._ringback.oscillators.forEach((oscillator) => oscillator.stop());
+        this._ringback.gain.disconnect();
         this._ringback = null;
     }
 
