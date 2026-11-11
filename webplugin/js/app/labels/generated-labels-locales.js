@@ -652,7 +652,7 @@
             'webCall.ringing': 'Llamando...',
             'webCall.inCall': 'En llamada',
             'webCall.mute': 'Silenciar',
-            'webCall.unmute': 'Activar sonido',
+            'webCall.unmute': 'Activar micrófono',
             'webCall.hangUp': 'Colgar',
             'webCall.failed': 'No se pudo conectar la llamada, continúa en el chat',
             'webCall.micDenied':

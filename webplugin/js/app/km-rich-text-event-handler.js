@@ -670,8 +670,14 @@ Kommunicate.richMsgEventHandler = {
             );
     },
     webCallModuleLoader: null,
+    // Bumped by cancelWebCall: a call whose scripts finish loading after a cancel is not started.
+    webCallAttempt: 0,
+    webCallFailedTimeoutId: null,
     startWebCall: function (groupId, botId) {
         var handler = Kommunicate.richMsgEventHandler;
+        var attempt = handler.webCallAttempt;
+        // A retry must not be hidden by the previous failed load's end message timer.
+        clearTimeout(handler.webCallFailedTimeoutId);
         // Created during the click: browsers only let audio play from a user gesture (ringback tone).
         var audioContext = new AudioContext();
         // Loaded once: loading the web-call module again would redeclare kmWebCall.
@@ -682,13 +688,33 @@ Kommunicate.richMsgEventHandler = {
             );
         handler.webCallModuleLoader
             .then(function () {
-                kmWebCall.start(groupId, botId, audioContext);
+                attempt === handler.webCallAttempt
+                    ? kmWebCall.start(groupId, botId, audioContext)
+                    : audioContext.close();
             })
             .catch(function (error) {
                 handler.webCallModuleLoader = null;
                 audioContext.close();
                 console.error(error);
+                // kmWebCall did not load, so its end message is shown here on the same call bar.
+                var callBar = document.getElementById('km-web-call-bar');
+                document.getElementById('km-web-call-status').textContent =
+                    MCK_LABELS.webCall.failed;
+                kommunicateCommons.hide(
+                    document.getElementById('km-web-call-mute'),
+                    document.getElementById('km-web-call-timer'),
+                    document.getElementById('km-web-call-hangup')
+                );
+                kommunicateCommons.show(callBar);
+                handler.webCallFailedTimeoutId = setTimeout(function () {
+                    kommunicateCommons.hide(callBar);
+                }, 6000);
             });
+    },
+    cancelWebCall: function () {
+        Kommunicate.richMsgEventHandler.webCallAttempt++;
+        // kmWebCall exists only after a "Connect via call" click has loaded it.
+        typeof kmWebCall !== 'undefined' && kmWebCall.hangUp();
     },
     processClickOnListItem: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick, e.target.innerText);

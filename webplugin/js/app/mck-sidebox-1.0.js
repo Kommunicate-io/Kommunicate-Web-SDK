@@ -3220,8 +3220,6 @@ const firstVisibleMsg = {
                 function runCloseChatBoxActions() {
                     kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                     stopVoiceOnWidgetClose();
-                    // kmWebCall exists only after a "Connect via call" click has loaded it.
-                    typeof kmWebCall !== 'undefined' && kmWebCall.hangUp();
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton && (popUpcloseButton.style.display = 'none');
@@ -5401,6 +5399,7 @@ const firstVisibleMsg = {
             };
 
             _this.closeSideBox = function () {
+                Kommunicate.richMsgEventHandler.cancelWebCall();
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
