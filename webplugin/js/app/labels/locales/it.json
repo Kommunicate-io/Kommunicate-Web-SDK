@@ -182,6 +182,8 @@
   "conversation.header.dropdown.TRANSCRIPT_SENDER_YOU": "Tu",
   "conversation.header.dropdown.HANDOFF": "Parla con un umano",
   "conversation.header.dropdown.FAQ": "FAQ",
+  "conversation.header.dropdown.EXPAND_WINDOW": "Espandi finestra",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "Comprimi finestra",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "Invia messaggio vocale",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "Voce in testo",
   "conversation.handoff.ASSIGN_TO": "Conversazione trasferita a",

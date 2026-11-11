@@ -182,6 +182,8 @@
   "conversation.header.dropdown.TRANSCRIPT_SENDER_YOU": "آپ",
   "conversation.header.dropdown.HANDOFF": "انسان سے بات کریں",
   "conversation.header.dropdown.FAQ": "عمومی سوالات",
+  "conversation.header.dropdown.EXPAND_WINDOW": "ونڈو بڑی کریں",
+  "conversation.header.dropdown.COLLAPSE_WINDOW": "ونڈو چھوٹی کریں",
   "micOptions.dropup.VOICE_NOTE_TRIGGER": "آواز کا پیغام بھیجیں",
   "micOptions.dropup.VOICE_INPUT_TRIGGER": "آواز کو متن میں تبدیل کریں",
   "conversation.handoff.ASSIGN_TO": "گفتگو منتقل کی گئی",

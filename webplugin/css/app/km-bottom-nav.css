@@ -137,6 +137,25 @@ $known-prefixes
     height: 17px;
   }
 }
+@media (min-width: 601px) {
+  .km-widget-expanded .km-bottom-tab {
+    font-size: 10px;
+    padding: 5px 0;
+    gap: 3px;
+  }
+  .km-widget-expanded .km-bottom-tab--collapse {
+    flex: 0 0 var(--km-minimize-width);
+    padding: 6px 4px;
+  }
+  .km-widget-expanded .km-bottom-tab-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .km-widget-expanded .km-bottom-tab-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+}
 @media (max-width: 380px) {
   .km-bottom-tab {
     font-size: 10px;
