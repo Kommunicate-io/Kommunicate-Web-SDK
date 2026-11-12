@@ -3828,6 +3828,12 @@ const firstVisibleMsg = {
                 }
             };
 
+            // Teams can switch off the out of business hours message from the dashboard.
+            // Older settings don't have the flag, so only an explicit `false` disables it.
+            _this.isAwayMessageEnabled = function (teamSettings) {
+                return !!teamSettings && teamSettings.awayMessageEnabled !== false;
+            };
+
             _this.handleBusinessHours = function () {
                 window.Applozic.ALApiService.ajax({
                     type: 'GET',
@@ -3852,7 +3858,7 @@ const firstVisibleMsg = {
                         BUSINESS_HOUR_SETTING = teamSettings;
                         if (
                             isBusinessHourAvailable &&
-                            teamSettings &&
+                            _this.isAwayMessageEnabled(teamSettings) &&
                             !_this.isWithinBusinessHours(teamSettings)
                         ) {
                             kommunicateCommons.show($mck_business_hours_box);
@@ -3875,7 +3881,9 @@ const firstVisibleMsg = {
                 if (!$mck_business_hours_box || !$mck_business_hours_box.length) {
                     return;
                 }
-                let isBusinessHour = _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
+                let isBusinessHour =
+                    !_this.isAwayMessageEnabled(BUSINESS_HOUR_SETTING) ||
+                    _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
                 let hasAnyClass = !!$mck_business_hours_box.attr('class')?.trim();
 
                 // Show/hide banner based on business hours
