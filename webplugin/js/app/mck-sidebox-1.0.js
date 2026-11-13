@@ -4342,6 +4342,38 @@ const firstVisibleMsg = {
                     }
                 });
             };
+            $applozic(d).on('click', '.km-copy-message', function () {
+                const $copyButton = $applozic(this);
+                const { ICONS, COPIED_VISIBLE_MS } = KommunicateConstants.COPY_MESSAGE;
+                const labels = MCK_LABELS['copy.message'];
+                const messageText = KommunicateUtils.getCopyableMessageText(
+                    mckMessageLayout.getClubbedMessages($copyButton.closest('.mck-m-b'))
+                );
+                if (!messageText) {
+                    mckMessageLayout.announceStatus(labels.FAILED);
+                    return;
+                }
+                const showState = (isCopied) => {
+                    const label = isCopied ? labels.COPIED : labels.COPY;
+                    $copyButton
+                        .html(isCopied ? ICONS.COPIED : ICONS.COPY)
+                        .attr({ 'title': label, 'aria-label': label })
+                        .toggleClass('km-copy-message--copied', isCopied);
+                };
+                KommunicateUtils.copyToClipboard(messageText).then(
+                    () => {
+                        showState(true);
+                        mckMessageLayout.announceStatus(labels.COPIED);
+                        clearTimeout($copyButton.data('copiedTimeout'));
+                        $copyButton.data(
+                            'copiedTimeout',
+                            setTimeout(() => showState(false), COPIED_VISIBLE_MS)
+                        );
+                    },
+                    () => mckMessageLayout.announceStatus(labels.FAILED)
+                );
+            });
+
             $applozic(d).on('click', '.mck-message-delete', function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
             });
@@ -6953,7 +6985,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div>{{if showCopyExpr}}<button type="button" class="km-copy-message" data-deferred="${copyDeferredExpr}" aria-label="${copyLabelExpr}" title="${copyLabelExpr}">{{html copyIconExpr}}</button>{{/if}}<span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
                 '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
@@ -8253,6 +8285,9 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
+                // Hidden by updateCopyButton when its group has no text to copy.
+                const showCopyButton = !conversationTransferred;
+
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
@@ -8315,6 +8350,10 @@ const firstVisibleMsg = {
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
                         feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
+                        showCopyExpr: showCopyButton,
+                        copyDeferredExpr: emlMessage || !!msg.tokenMessage,
+                        copyLabelExpr: MCK_LABELS['copy.message'].COPY,
+                        copyIconExpr: KommunicateConstants.COPY_MESSAGE.ICONS.COPY,
                     },
                 ];
 
@@ -8858,6 +8897,7 @@ const firstVisibleMsg = {
                         msg.key
                     );
                 }
+                _this.updateCopyButton($applozic('#mck-message-cell .' + msg.key));
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(
                         `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
@@ -10685,6 +10725,22 @@ const firstVisibleMsg = {
                 }
             };
 
+            // Every message of a clubbed group except the last carries km-clubbing-first.
+            _this.getClubbedMessages = function ($messageBlock) {
+                return $messageBlock.prevUntil(':not(.km-clubbing-first)').addBack();
+            };
+            // Only the last message of a group shows the button, and only when the group has
+            // text to copy. Email bodies and streamed text arrive later, so they keep it.
+            _this.updateCopyButton = function ($messageBlock) {
+                const $copyButton = $messageBlock.find('.km-copy-message');
+                $copyButton.data('deferred') ||
+                    $copyButton.toggleClass(
+                        'km-copy-message--empty',
+                        !KommunicateUtils.getCopyableMessageText(
+                            _this.getClubbedMessages($messageBlock)
+                        )
+                    );
+            };
             _this.messageClubbing = function (processAllMessages, resetExistingClubbing) {
                 var allMessages = $applozic(
                     '#mck-message-cell .mck-message-inner div[name="message"]'
@@ -10703,6 +10759,7 @@ const firstVisibleMsg = {
                         allMessages[_len - 2].classList.add('km-clubbing-first');
                         allMessages[_len - 1].classList.add('km-clubbing-last');
                     }
+                    _this.updateCopyButton($applozic(allMessages[_len - 1]));
                 } else {
                     resetExistingClubbing &&
                         allMessages.removeClass('km-clubbing-first km-clubbing-last');
@@ -10732,6 +10789,9 @@ const firstVisibleMsg = {
                             }
                         }
                     });
+                    allMessages
+                        .not('.km-clubbing-first')
+                        .each((key, message) => _this.updateCopyButton($applozic(message)));
                 }
             };
         }
