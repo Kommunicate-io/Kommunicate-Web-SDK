@@ -12270,6 +12270,16 @@ const firstVisibleMsg = {
                                     'Video';
                                 imgIconToShowInPreview = KommunicateConstants.VIDEO_ICON;
                                 break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.DOCUMENT:
+                                messageToShowInPreview =
+                                    message.message ||
+                                    (payload &&
+                                        payload[0] &&
+                                        typeof payload[0].name == 'string' &&
+                                        payload[0].name) ||
+                                    'File';
+                                imgIconToShowInPreview = KommunicateConstants.ATTACHMENT_ICON;
+                                break;
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                                 messageToShowInPreview =
                                     payload && payload.elements && payload.elements[0].title;
@@ -12349,8 +12359,11 @@ const firstVisibleMsg = {
 
                 if (!messageToShowInPreview) return;
 
+                // Preview text comes from message content (text, captions, file names); escape it before .html().
                 var htmlPayload =
-                    '<span class="message-preview-text">' + messageToShowInPreview + '</span>';
+                    '<span class="message-preview-text">' +
+                    kommunicateCommons.formatHtmlTag(String(messageToShowInPreview)) +
+                    '</span>';
                 if (imgIconToShowInPreview) {
                     htmlPayload =
                         '<span class="mck-icon--rich-message">' +

@@ -1080,3 +1080,44 @@ Kommunicate.markup.getVideoMarkup = function (options) {
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
     }
 };
+// Renders bot documents with the same bubble used for documents received from agents.
+Kommunicate.markup.getDocumentMarkup = function (options) {
+    // The payload comes from bot/custom JSON, so malformed input renders nothing instead of failing the render.
+    var payload = options.payload;
+    if (typeof payload == 'string') {
+        try {
+            payload = JSON.parse(payload);
+        } catch (e) {
+            return '';
+        }
+    }
+    var documents = (Array.isArray(payload) ? payload : []).filter(
+        (file) => file && typeof file.url == 'string' && /^https?:\/\//i.test(file.url)
+    );
+    if (!documents.length) {
+        return '';
+    }
+    // .km-msg-box-attachment applies the same layout rules as an agent attachment message.
+    return (
+        '<div class="km-msg-box-attachment">' +
+        documents
+            .map((file) => {
+                var fileName = (typeof file.name == 'string' && file.name) || file.url;
+                return Mustache.to_html(
+                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(),
+                    {
+                        ...Kommunicate.messageTemplate.getAttachmentLabels(fileName),
+                        fileMeta: { name: fileName, url: file.url },
+                        fileNameToShow: fileName,
+                        previewContainerClass: 'km-attach-preview-container',
+                        uploadIconClass: 'n-vis',
+                        cancelIconClass: 'n-vis',
+                        progressBarClass: 'n-vis',
+                        downloadIconClass: 'vis',
+                    }
+                );
+            })
+            .join('') +
+        '</div>'
+    );
+};
