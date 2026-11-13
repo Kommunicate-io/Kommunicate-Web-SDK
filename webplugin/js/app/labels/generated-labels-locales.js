@@ -655,6 +655,8 @@
             'webCall.unmute': 'Activar micrófono',
             'webCall.hangUp': 'Colgar',
             'webCall.failed': 'No se pudo conectar la llamada, continúa en el chat',
+            'webCall.agentsBusy':
+                'Todos los agentes están ocupados. Inténtalo más tarde o continúa en el chat.',
             'webCall.micDenied':
                 'Permite el acceso al micrófono para llamar. Puedes continuar en el chat.',
         },
@@ -884,6 +886,8 @@
             'webCall.unmute': 'Réactiver le micro',
             'webCall.hangUp': 'Raccrocher',
             'webCall.failed': "Impossible de connecter l'appel, veuillez continuer dans le chat",
+            'webCall.agentsBusy':
+                'Tous les agents sont occupés. Veuillez réessayer plus tard ou continuer dans le chat.',
             'webCall.micDenied':
                 "Autorisez l'accès au micro pour appeler. Vous pouvez continuer dans le chat.",
         },

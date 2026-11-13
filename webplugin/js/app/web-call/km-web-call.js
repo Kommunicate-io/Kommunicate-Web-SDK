@@ -168,8 +168,9 @@ class KmWebCall {
         });
     }
 
+    // Placed but never answered: the agent rejected it, was on another call, or did not pick up.
     endAfterCall() {
-        this.end(this._answered ? null : this.labels.failed);
+        this.end(this._answered ? null : this.labels.agentsBusy);
     }
 
     end(message) {

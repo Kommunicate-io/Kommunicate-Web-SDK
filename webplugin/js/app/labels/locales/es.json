@@ -244,5 +244,6 @@
   "webCall.unmute": "Activar micrófono",
   "webCall.hangUp": "Colgar",
   "webCall.failed": "No se pudo conectar la llamada, continúa en el chat",
+  "webCall.agentsBusy": "Todos los agentes están ocupados. Inténtalo más tarde o continúa en el chat.",
   "webCall.micDenied": "Permite el acceso al micrófono para llamar. Puedes continuar en el chat."
 }
