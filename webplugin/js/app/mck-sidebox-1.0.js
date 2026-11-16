@@ -5445,6 +5445,7 @@ const firstVisibleMsg = {
             };
 
             _this.closeSideBox = function () {
+                Kommunicate.richMsgEventHandler.cancelWebCall();
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');

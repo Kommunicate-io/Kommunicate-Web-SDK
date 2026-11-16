@@ -334,6 +334,18 @@
             muted: 'Microphone muted',
             unmuted: 'Listening...',
         },
+        'webCall': {
+            connecting: 'Connecting your call...',
+            ringing: 'Ringing...',
+            inCall: 'On call',
+            mute: 'Mute',
+            unmute: 'Unmute',
+            hangUp: 'Hang up',
+            failed: "Couldn't connect the call, please continue in chat",
+            agentsBusy:
+                'All agents are busy right now. Please try again after some time or continue in chat.',
+            micDenied: 'Allow microphone access to call. You can continue in chat.',
+        },
     };
     helpers.registerEnglishLabels(englishLabels);
 })(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : this);
