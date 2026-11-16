@@ -4184,6 +4184,34 @@ const firstVisibleMsg = {
                 return !!teamSettings && teamSettings.awayMessageEnabled !== false;
             };
 
+            const hasOwnBusinessHours = function (team) {
+                return (
+                    !!team && !!team.timezone && Object.keys(team.businessHourMap || {}).length > 0
+                );
+            };
+
+            // Teams without their own hours follow the default team's hours (same as the
+            // server). The team's own toggle and message still apply; the message falls
+            // back to the default team's message.
+            _this.getBusinessHourSetting = function (teams, teamId) {
+                const allTeams = teams || [];
+                const defaultTeam = allTeams.find((team) =>
+                    DEFAULT_TEAM_NAME.includes(team.teamName)
+                );
+                if (!teamId) {
+                    return defaultTeam;
+                }
+                const team = allTeams.find((item) => String(item.teamId) === String(teamId));
+                if (!team || team === defaultTeam || hasOwnBusinessHours(team) || !defaultTeam) {
+                    return team;
+                }
+                return Object.assign({}, team, {
+                    businessHourMap: defaultTeam.businessHourMap,
+                    timezone: defaultTeam.timezone,
+                    message: team.message || defaultTeam.message,
+                });
+            };
+
             _this.handleBusinessHours = function () {
                 window.Applozic.ALApiService.ajax({
                     type: 'GET',
@@ -4191,17 +4219,10 @@ const firstVisibleMsg = {
                     global: false,
                     contentType: 'application/json',
                     success: function (data) {
-                        let teamSettings = {};
-                        const response = data?.response;
-                        if (!CURRENT_GROUP_DATA.teamId) {
-                            teamSettings = response.find((team) =>
-                                DEFAULT_TEAM_NAME.includes(team.teamName)
-                            );
-                        } else {
-                            teamSettings = response.find(
-                                (team) => String(team.teamId) === String(CURRENT_GROUP_DATA.teamId)
-                            );
-                        }
+                        const teamSettings = _this.getBusinessHourSetting(
+                            data?.response,
+                            CURRENT_GROUP_DATA.teamId
+                        );
                         isBusinessHourAvailable = kommunicateCommons.hasBusinessHoursAccess(
                             INIT_APP_DATA
                         );
