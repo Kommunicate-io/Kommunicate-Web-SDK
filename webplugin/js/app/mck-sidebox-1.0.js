@@ -4191,8 +4191,8 @@ const firstVisibleMsg = {
             };
 
             // Teams without their own hours follow the default team's hours (same as the
-            // server). The team's own toggle and message still apply; the message falls
-            // back to the default team's message.
+            // server). The team's own toggle always applies; a team without its own
+            // message uses the default team's message.
             _this.getBusinessHourSetting = function (teams, teamId) {
                 const allTeams = teams || [];
                 const defaultTeam = allTeams.find((team) =>
@@ -4202,14 +4202,17 @@ const firstVisibleMsg = {
                     return defaultTeam;
                 }
                 const team = allTeams.find((item) => String(item.teamId) === String(teamId));
-                if (!team || team === defaultTeam || hasOwnBusinessHours(team) || !defaultTeam) {
+                if (!team || !defaultTeam || team === defaultTeam) {
                     return team;
                 }
-                return Object.assign({}, team, {
-                    businessHourMap: defaultTeam.businessHourMap,
-                    timezone: defaultTeam.timezone,
+                const setting = Object.assign({}, team, {
                     message: team.message || defaultTeam.message,
                 });
+                if (!hasOwnBusinessHours(team)) {
+                    setting.businessHourMap = defaultTeam.businessHourMap;
+                    setting.timezone = defaultTeam.timezone;
+                }
+                return setting;
             };
 
             _this.handleBusinessHours = function () {
