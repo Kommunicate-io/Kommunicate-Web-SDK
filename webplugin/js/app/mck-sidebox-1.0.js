@@ -8169,10 +8169,7 @@ const firstVisibleMsg = {
                         ),
                         replyActionClass:
                             floatWhere === 'mck-msg-center' ||
-                            (contact.users &&
-                                contact.users[msg.to] &&
-                                contact.users[msg.to].role ===
-                                    KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT)
+                            KommunicateUtils.isCurrentAssigneeBot()
                                 ? 'n-vis'
                                 : '',
                         msgKeyExpr: msg.key,
