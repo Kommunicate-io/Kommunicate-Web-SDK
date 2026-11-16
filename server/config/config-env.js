@@ -340,5 +340,7 @@ const getEnvId = function () {
 
 const config = configEnv[getEnvId()];
 
+config.pluginProperties.googleApiKey = 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
+
 module.exports = config;
 module.exports.getEnvId = getEnvId;

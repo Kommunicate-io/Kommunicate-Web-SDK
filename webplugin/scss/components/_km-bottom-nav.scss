@@ -101,7 +101,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@mixin km-compact-bottom-tabs {
     .km-bottom-tab {
         font-size: 10px;
         padding: 5px 0;
@@ -121,6 +121,17 @@
             width: 17px;
             height: 17px;
         }
+    }
+}
+
+@media (max-width: 600px) {
+    @include km-compact-bottom-tabs;
+}
+
+// The expanded window grows past the 600px breakpoint; keep the tabs the same size as the regular widget.
+@media (min-width: 601px) {
+    .km-widget-expanded {
+        @include km-compact-bottom-tabs;
     }
 }
 

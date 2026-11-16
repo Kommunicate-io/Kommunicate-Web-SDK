@@ -63,6 +63,15 @@ var kmCustomIframe =
     '    min-width: 390px; ' +
     '    max-width: 460px; ' +
     '} \n ' +
+    '@media only screen and (min-width:601px) { ' +
+    '.kommunicate-custom-iframe.km-iframe-expanded { ' +
+    '   width: min(720px, calc(100vw - 40px)) !important;' +
+    '   min-width: 0 !important;' +
+    '   max-width: none !important;' +
+    '   height: calc(100vh - 30px) !important;' +
+    '   max-height: none !important;' +
+    '} ' +
+    '} \n' +
     '.kommunicate-custom-iframe.km-iframe-dimension-with-popup.km-iframe-shadow-ready, ' +
     '.kommunicate-custom-iframe.km-iframe-dimension-no-popup.km-iframe-shadow-ready{ ' +
     '    box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3) !important;' +

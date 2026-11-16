@@ -143,6 +143,38 @@
                             >
                                 <li>
                                     <div
+                                        class="menu-item km-option-expand-window n-vis"
+                                        id="km-expand-window"
+                                        role="button"
+                                        tabindex="0"
+                                    >
+                                        <svg
+                                            class="km-expand-window-icon"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                            fill="none"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <use xlink:href="#icon-78" href="#icon-78"></use>
+                                        </svg>
+                                        <svg
+                                            class="km-collapse-window-icon"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                            fill="none"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <use xlink:href="#icon-79" href="#icon-79"></use>
+                                        </svg>
+                                        <span id="km-expand-window-text">Expand window</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div
                                         class="menu-item n-vis"
                                         id="km-csat-trigger"
                                         role="button"
@@ -256,6 +288,26 @@
                                         <span id="km-option-talk-to-human-text">Talk to human</span>
                                     </div>
                                 </li>
+                                <li>
+                                    <div
+                                        class="menu-item n-vis"
+                                        id="km-download-transcript"
+                                        role="button"
+                                        tabindex="0"
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 16 16"
+                                            fill="none"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                        >
+                                            <use xlink:href="#icon-77" href="#icon-77"></use>
+                                        </svg>
+                                        <span id="km-download-transcript-text"></span>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div class="blk-lg-2 mck-close-btn">
@@ -290,6 +342,26 @@
             <div id="km-business-hour-box" class="n-vis"></div>
             <div id="km-internet-disconnect-msg" class="km-offline-msg n-vis"></div>
             <div id="km-socket-disconnect-msg" class="km-offline-msg n-vis"></div>
+            <div id="km-web-call-bar" class="km-web-call-bar n-vis">
+                <span
+                    id="km-web-call-status"
+                    class="km-web-call-status"
+                    role="status"
+                    aria-live="polite"
+                ></span>
+                <span id="km-web-call-timer" class="km-web-call-timer n-vis"></span>
+                <button
+                    type="button"
+                    id="km-web-call-mute"
+                    class="km-web-call-btn km-custom-widget-text-color km-custom-widget-border-color n-vis"
+                    aria-pressed="false"
+                ></button>
+                <button
+                    type="button"
+                    id="km-web-call-hangup"
+                    class="km-web-call-btn km-web-call-hangup"
+                ></button>
+            </div>
             <div id="km-local-file-system-warning" class="n-vis">
                 <span id="km-local-file-system-warning-description">
                     Conversation will not be updated in real-time as you are running the

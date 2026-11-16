@@ -1555,6 +1555,41 @@ KommunicateUI = {
             voiceOutputButton.setAttribute('title', voiceOutputLabel);
         }
     },
+    isExpandWindowAvailable: function () {
+        return (
+            !kommunicate._globals.hideExpandWindowOption &&
+            !!parent.document.getElementById('kommunicate-widget-iframe') &&
+            !kommunicateCommons.checkIfDeviceIsHandheld() &&
+            !kommunicateCommons.isInContainerMode() &&
+            !parent.window.matchMedia(KommunicateConstants.FULL_SCREEN_WIDGET_MEDIA_QUERY).matches
+        );
+    },
+    isWidgetExpanded: function () {
+        return document.getElementById('mck-sidebox').classList.contains('km-widget-expanded');
+    },
+    setWidgetExpanded: function (isExpanded) {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        var expandButton = document.getElementById('km-expand-window');
+        var dropdownLabels = KommunicateUI.getLabel('conversation.header.dropdown', {});
+        var expandLabel = isExpanded
+            ? dropdownLabels.COLLAPSE_WINDOW || 'Collapse window'
+            : dropdownLabels.EXPAND_WINDOW || 'Expand window';
+
+        document.getElementById('mck-sidebox').classList.toggle('km-widget-expanded', isExpanded);
+        document.getElementById('km-expand-window-text').innerText = expandLabel;
+        expandButton.setAttribute('aria-label', expandLabel);
+        expandButton.setAttribute('title', expandLabel);
+        kommunicateIframe.classList.toggle('km-iframe-expanded', isExpanded);
+        // The expanded size is driven by CSS; restore the layout-based height when collapsing.
+        !isExpanded && kommunicateCommons.adjustIframeHeightForLayout(kommunicateIframe);
+    },
+    toggleWidgetExpanded: function () {
+        var isExpanded = !KommunicateUI.isWidgetExpanded();
+        KommunicateUI.setWidgetExpanded(isExpanded);
+        kmWidgetEvents.eventTracking(
+            isExpanded ? eventMapping.onWidgetExpand : eventMapping.onWidgetCollapse
+        );
+    },
     loadQuickReplies: function (quickReplies) {
         var getNormalizedLocale = function (locale) {
             return locale && locale.toLowerCase().replace(/_/g, '-');
@@ -1896,9 +1931,6 @@ KommunicateUI = {
         if (!kommunicateIframe) {
             return;
         }
-        var playPopupTone = appOptionSession.getPropertyDataFromSession(
-            'playPopupNotificationTone'
-        );
         var isOpen = kommunicateCommons.isWidgetOpen();
         console.log('togglePopupChatTemplate', {
             showTemplate: showTemplate,
@@ -1910,10 +1942,7 @@ KommunicateUI = {
             return;
         }
         if (showTemplate) {
-            if (playPopupTone == null || playPopupTone) {
-                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
-                appOptionSession.setSessionData('playPopupNotificationTone', false);
-            }
+            mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
             var popupTemplateClass =
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
 

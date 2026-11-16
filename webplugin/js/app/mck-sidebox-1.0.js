@@ -77,7 +77,6 @@ const firstVisibleMsg = {
         genereateCloudFileUrl: 'https://googleupload.applozic.com/files/url?key={key}', // deprecated legacy file-url template kept for backward-compatible config surface
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
@@ -461,7 +460,6 @@ const firstVisibleMsg = {
         var MCK_INIT_AUTO_SUGGESTION = appOptions.initAutoSuggestions;
         var MCK_AUTHENTICATION_TYPE_ID = appOptions.authenticationTypeId;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
-        var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
@@ -627,7 +625,6 @@ const firstVisibleMsg = {
             getMapConfig: function () {
                 return {
                     isLocShare: IS_MCK_LOCSHARE,
-                    googleApiKey: MCK_GOOGLE_API_KEY,
                 };
             },
             logger: function () {
@@ -705,6 +702,7 @@ const firstVisibleMsg = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails) || [];
         typingService.init(appOptions);
         ratingService.init(appOptions);
+        transcriptDownloadService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -1141,6 +1139,7 @@ const firstVisibleMsg = {
             appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
+                transcriptDownloadService.init(optns);
                 appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
                 appOptions.accessToken = appOptions.password || appOptions.accessToken;
             } else {
@@ -3314,7 +3313,9 @@ const firstVisibleMsg = {
                     mckMessageService.stopBusinessHoursTimer();
                 });
 
-                var iframeMedia = parent.window.matchMedia('(max-width: 600px)');
+                var iframeMedia = parent.window.matchMedia(
+                    KommunicateConstants.FULL_SCREEN_WIDGET_MEDIA_QUERY
+                );
                 var sidebox = document.getElementById('mck-sidebox');
                 var updateIframeBorderRadiusForViewport = function () {
                     if (!sidebox) {
@@ -3324,6 +3325,10 @@ const firstVisibleMsg = {
                 };
                 updateIframeBorderRadiusForViewport();
                 iframeMedia.addListener(updateIframeBorderRadiusForViewport);
+                // The expand option depends on the viewport, so re-evaluate it across the breakpoint.
+                iframeMedia.addListener(function () {
+                    mckMessageLayout.loadDropdownOptions();
+                });
             };
 
             _this.restrictScrollOnHandHeldDevices = function () {
@@ -4337,6 +4342,38 @@ const firstVisibleMsg = {
                     }
                 });
             };
+            $applozic(d).on('click', '.km-copy-message', function () {
+                const $copyButton = $applozic(this);
+                const { ICONS, COPIED_VISIBLE_MS } = KommunicateConstants.COPY_MESSAGE;
+                const labels = MCK_LABELS['copy.message'];
+                const messageText = KommunicateUtils.getCopyableMessageText(
+                    mckMessageLayout.getClubbedMessages($copyButton.closest('.mck-m-b'))
+                );
+                if (!messageText) {
+                    mckMessageLayout.announceStatus(labels.FAILED);
+                    return;
+                }
+                const showState = (isCopied) => {
+                    const label = isCopied ? labels.COPIED : labels.COPY;
+                    $copyButton
+                        .html(isCopied ? ICONS.COPIED : ICONS.COPY)
+                        .attr({ 'title': label, 'aria-label': label })
+                        .toggleClass('km-copy-message--copied', isCopied);
+                };
+                KommunicateUtils.copyToClipboard(messageText).then(
+                    () => {
+                        showState(true);
+                        mckMessageLayout.announceStatus(labels.COPIED);
+                        clearTimeout($copyButton.data('copiedTimeout'));
+                        $copyButton.data(
+                            'copiedTimeout',
+                            setTimeout(() => showState(false), COPIED_VISIBLE_MS)
+                        );
+                    },
+                    () => mckMessageLayout.announceStatus(labels.FAILED)
+                );
+            });
+
             $applozic(d).on('click', '.mck-message-delete', function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data('msgkey'));
             });
@@ -4582,12 +4619,20 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     bottomTabManager.handleChange('faqs');
                 });
-                $applozic(d).on('keydown', '#km-faq-option, #km-talk-to-human', function (e) {
-                    var self = this;
-                    handleActivationKey(e, function () {
-                        $applozic(self).trigger('click');
-                    });
+                $applozic(d).on('click', '#km-expand-window', function (e) {
+                    e.preventDefault();
+                    KommunicateUI.toggleWidgetExpanded();
                 });
+                $applozic(d).on(
+                    'keydown',
+                    '#km-faq-option, #km-talk-to-human, #km-expand-window',
+                    function (e) {
+                        var self = this;
+                        handleActivationKey(e, function () {
+                            $applozic(self).trigger('click');
+                        });
+                    }
+                );
 
                 mck_text_box.addEventListener('input', function () {
                     _this.toggleMediaOptions(this);
@@ -4961,6 +5006,15 @@ const firstVisibleMsg = {
                     KommunicateUI.triggerCSAT();
                 });
                 $applozic(d).on('keydown', '#km-csat-trigger', function (e) {
+                    handleActivationKey(e, this.click.bind(this));
+                });
+
+                // Download conversation transcript (TXT)
+                $applozic(d).on('click', '#km-download-transcript', function (e) {
+                    e.preventDefault();
+                    transcriptDownloadService.download();
+                });
+                $applozic(d).on('keydown', '#km-download-transcript', function (e) {
                     handleActivationKey(e, this.click.bind(this));
                 });
 
@@ -5399,6 +5453,7 @@ const firstVisibleMsg = {
             };
 
             _this.closeSideBox = function () {
+                Kommunicate.richMsgEventHandler.cancelWebCall();
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
@@ -6913,7 +6968,7 @@ const firstVisibleMsg = {
                 '</div>' +
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div><span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div>{{if showCopyExpr}}<button type="button" class="km-copy-message" data-deferred="${copyDeferredExpr}" aria-label="${copyLabelExpr}" title="${copyLabelExpr}">{{html copyIconExpr}}</button>{{/if}}<span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
                 '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
@@ -7234,6 +7289,16 @@ const firstVisibleMsg = {
                     }
                 }
 
+                if (
+                    transcriptDownloadService.isEnabled() &&
+                    transcriptDownloadService.getDisplayedGroupId()
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.show('#km-download-transcript');
+                } else {
+                    kommunicateCommons.hide('#km-download-transcript');
+                }
+
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED && HEADER_CTA.TTS !== primaryCTA) {
                     enableDropdown = true;
@@ -7266,6 +7331,15 @@ const firstVisibleMsg = {
                     kommunicateCommons.show('.km-option-faq');
                 } else {
                     kommunicateCommons.hide('.km-option-faq');
+                }
+
+                if (KommunicateUI.isExpandWindowAvailable()) {
+                    enableDropdown = true;
+                    KommunicateUI.setWidgetExpanded(KommunicateUI.isWidgetExpanded());
+                    kommunicateCommons.show('.km-option-expand-window');
+                } else {
+                    KommunicateUI.isWidgetExpanded() && KommunicateUI.setWidgetExpanded(false);
+                    kommunicateCommons.hide('.km-option-expand-window');
                 }
 
                 if (enableDropdown) {
@@ -8161,6 +8235,9 @@ const firstVisibleMsg = {
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[msg.metadata.KM_ANSWER_FEEDBACK]
                     : null;
 
+                // Hidden by updateCopyButton when its group has no text to copy.
+                const showCopyButton = !conversationTransferred;
+
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
@@ -8224,6 +8301,10 @@ const firstVisibleMsg = {
                         showFeedbackSticker: alreadyGivenFeedback ? 'vis' : 'n-vis',
                         feedbackStickerExpr: feedbackSvg,
                         feedbackMsgExpr: answerFeedbackService.getFeedbackTemplate(),
+                        showCopyExpr: showCopyButton,
+                        copyDeferredExpr: emlMessage || !!msg.tokenMessage,
+                        copyLabelExpr: MCK_LABELS['copy.message'].COPY,
+                        copyIconExpr: KommunicateConstants.COPY_MESSAGE.ICONS.COPY,
                     },
                 ];
 
@@ -8767,6 +8848,7 @@ const firstVisibleMsg = {
                         msg.key
                     );
                 }
+                _this.updateCopyButton($applozic('#mck-message-cell .' + msg.key));
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document.querySelector(
                         `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
@@ -8832,16 +8914,16 @@ const firstVisibleMsg = {
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="' +
+                                KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                                '/maps/staticmap?zoom=17&size=200x150&center=' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '&maptype=roadmap&markers=color:red|' +
+                                '&markers=color:red|' +
                                 geoLoc.lat +
                                 ',' +
                                 geoLoc.lon +
-                                '&key=' +
-                                MCK_MAP_STATIC_API_KEY +
                                 '"/></a>'
                             );
                         }
@@ -8850,12 +8932,12 @@ const firstVisibleMsg = {
                             return (
                                 '<a href="https://maps.google.com/maps?z=17&t=m&q=loc:' +
                                 msg.message +
-                                '" target="_blank"><img alt="Location map" src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' +
+                                '" target="_blank"><img alt="Location map" src="' +
+                                KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                                '/maps/staticmap?zoom=17&size=200x150&center=' +
                                 msg.message +
-                                '&maptype=roadmap&markers=color:red|' +
+                                '&markers=color:red|' +
                                 msg.message +
-                                '&key=' +
-                                MCK_MAP_STATIC_API_KEY +
                                 '" /></a>'
                             );
                         }
@@ -9059,6 +9141,99 @@ const firstVisibleMsg = {
                     }
                 } else {
                     return mckDateUtils.getDate(createdAtTime);
+                }
+            };
+
+            _this.getImageForMessagePreview = function (message) {
+                if (typeof message.fileMeta === 'object') {
+                    var meta = message.fileMeta;
+                    var size = alFileService.getFilePreviewSize(meta.size);
+                    if (meta.contentType.indexOf('image') !== -1) {
+                        return (
+                            '<span>photo</span> <img src="' +
+                            MCK_FILE_URL +
+                            FILE_PREVIEW_URL +
+                            meta.blobKey +
+                            '" class="mck-image-reply move-right"/>'
+                        );
+                    }
+                    var fileDetail =
+                        '<span class="mck-file-detail move-right"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
+                        meta.name +
+                        '</span>&nbsp;<span class="file-size">' +
+                        size +
+                        '</span></span>';
+                    return meta.contentType.indexOf('audio') !== -1
+                        ? '<span>audio</span>' + fileDetail
+                        : fileDetail;
+                }
+                if (message.contentType === 2) {
+                    var geoLoc = $applozic.parseJSON(message.message);
+                    var coords = geoLoc.lat + ',' + geoLoc.lon;
+                    return (
+                        '<span>location</span><img alt="Location map" src="' +
+                        KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                        '/maps/staticmap?zoom=17&size=200x150&center=' +
+                        coords +
+                        '&markers=color:red|' +
+                        coords +
+                        '" class="mck-image-reply move-right"/>'
+                    );
+                }
+                return '';
+            };
+
+            _this.getImageForReplyMessage = function (message) {
+                var displayName = mckMessageLayout.getTabDisplayName(message.to, false);
+                if (typeof message.fileMeta === 'object') {
+                    if (message.fileMeta.contentType.indexOf('image') !== -1) {
+                        return (
+                            '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
+                            displayName +
+                            '</div><div><span class="mck-icon-camera mck-camera"></span><span>Photo</span></div></div><div class="mck-imagereply"><img src="' +
+                            alFileService.getFileurl(message) +
+                            '" class="mck-image-reply mck-msg-text mck-msg-content"/></div></div>'
+                        );
+                    } else if (message.fileMeta.contentType.indexOf('audio') !== -1) {
+                        return (
+                            '<div class="mck-attachmentmsgto">' +
+                            displayName +
+                            '</div><span class="mck-file-detail mck-msg-text mck-msg-content"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
+                            message.fileMeta.name +
+                            '</span>&nbsp;<span class="file-size">' +
+                            alFileService.getFilePreviewSize(message.fileMeta.size) +
+                            '</span></span>'
+                        );
+                    } else {
+                        return (
+                            '<div class="mck-attachmentmsgto">' +
+                            displayName +
+                            '</div><span class="mck-file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' +
+                            message.fileMeta.name +
+                            '</span>&nbsp;<span class="file-size">' +
+                            alFileService.getFilePreviewSize(message.fileMeta.size) +
+                            '</span></span>'
+                        );
+                    }
+                    return '';
+                }
+                if (message.contentType === 2) {
+                    var geoLoc = $applozic.parseJSON(message.message);
+                    return (
+                        '<div><div class="mck-imagereply mck-margin"><div class="mck-msgto">' +
+                        displayName +
+                        '</div><span class="mck-icon-marker mck-location-icon"></span><span>Location</span></div><div class="mck-imagereply"><img alt="Location map" src="' +
+                        KM_PLUGIN_SETTINGS.kommunicateApiUrl +
+                        '/maps/staticmap?zoom=17&size=200x150&center=' +
+                        geoLoc.lat +
+                        ',' +
+                        geoLoc.lon +
+                        '&markers=color:red|' +
+                        geoLoc.lat +
+                        ',' +
+                        geoLoc.lon +
+                        '" class="mck-image-reply mck-msg-text "/></div></div>'
+                    );
                 }
             };
 
@@ -10588,6 +10763,22 @@ const firstVisibleMsg = {
                 }
             };
 
+            // Every message of a clubbed group except the last carries km-clubbing-first.
+            _this.getClubbedMessages = function ($messageBlock) {
+                return $messageBlock.prevUntil(':not(.km-clubbing-first)').addBack();
+            };
+            // Only the last message of a group shows the button, and only when the group has
+            // text to copy. Email bodies and streamed text arrive later, so they keep it.
+            _this.updateCopyButton = function ($messageBlock) {
+                const $copyButton = $messageBlock.find('.km-copy-message');
+                $copyButton.data('deferred') ||
+                    $copyButton.toggleClass(
+                        'km-copy-message--empty',
+                        !KommunicateUtils.getCopyableMessageText(
+                            _this.getClubbedMessages($messageBlock)
+                        )
+                    );
+            };
             _this.messageClubbing = function (processAllMessages, resetExistingClubbing) {
                 var allMessages = $applozic(
                     '#mck-message-cell .mck-message-inner div[name="message"]'
@@ -10606,6 +10797,7 @@ const firstVisibleMsg = {
                         allMessages[_len - 2].classList.add('km-clubbing-first');
                         allMessages[_len - 1].classList.add('km-clubbing-last');
                     }
+                    _this.updateCopyButton($applozic(allMessages[_len - 1]));
                 } else {
                     resetExistingClubbing &&
                         allMessages.removeClass('km-clubbing-first km-clubbing-last');
@@ -10635,6 +10827,9 @@ const firstVisibleMsg = {
                             }
                         }
                     });
+                    allMessages
+                        .not('.km-clubbing-first')
+                        .each((key, message) => _this.updateCopyButton($applozic(message)));
                 }
             };
         }

@@ -79,6 +79,8 @@ var createWidgetEvent = function (action, label) {
 var eventMapping = {
     onChatWidgetOpen: createWidgetEvent('km_widget_open', 'Chat Widget Open'),
     onChatWidgetClose: createWidgetEvent('km_widget_close', 'Chat Widget Close'),
+    onWidgetExpand: createWidgetEvent('km_widget_expand', 'Chat Widget Expand'),
+    onWidgetCollapse: createWidgetEvent('km_widget_collapse', 'Chat Widget Collapse'),
     onRichMessageButtonClick: createWidgetEvent(
         'km_widget_rich_message_button_click',
         'RichMessage Button Click'

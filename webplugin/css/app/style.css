@@ -1316,6 +1316,33 @@ input[type=number]::-webkit-outer-spin-button {
   fill: #000;
 }
 
+.mck-sidebox .km-copy-message {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  margin: -6px 0 -6px -6px;
+  vertical-align: middle;
+  display: inline-flex;
+  line-height: 1;
+  color: #1c1c1c;
+  opacity: 0.5;
+}
+.mck-sidebox .km-copy-message:hover, .mck-sidebox .km-copy-message:focus-visible {
+  opacity: 1;
+}
+.mck-sidebox .km-copy-message.km-copy-message--copied {
+  opacity: 1;
+  color: #2e7d32;
+}
+
+.mck-sidebox .km-clubbing-first .km-copy-message,
+.mck-sidebox .km-copy-message.km-copy-message--empty {
+  display: none;
+}
+
 .mck-rich-msg-box {
   width: 264px;
   max-width: unset !important;
@@ -3998,6 +4025,34 @@ div#mck-rated:before {
   text-align: center;
 }
 
+#mck-sidebox.km-widget-expanded {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100% !important;
+}
+#mck-sidebox.km-widget-expanded .mck-box-sm {
+  width: 100%;
+  height: 100% !important;
+}
+
+#km-widget-options .km-collapse-window-icon,
+.km-widget-expanded #km-widget-options .km-expand-window-icon {
+  display: none;
+}
+
+.km-widget-expanded #km-widget-options .km-collapse-window-icon {
+  display: inline;
+}
+
+.mck-sidebox.km-widget-expanded #mck-tab-title.mck-tab-title {
+  width: auto !important;
+  max-width: 400px;
+}
+
 .mcktypeahead {
   max-width: 100% !important;
   min-width: 255px !important;
@@ -4785,6 +4840,52 @@ div#mck-rated:before {
     opacity: 1;
   }
 }
+/* ========================================
+   WEB CALL BAR ("Connect via call")
+   ======================================== */
+.mck-sidebox .km-web-call-bar:not(.n-vis) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 16px;
+  font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  color: var(--km-font-body-color, #334155);
+  background: var(--km-tabicon-bg, #edf0f5);
+  box-shadow: 0 4px 16px rgba(95, 70, 248, 0.08);
+}
+
+.km-web-call-status {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.km-web-call-timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.mck-sidebox .km-web-call-btn {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mck-sidebox .km-web-call-hangup {
+  border-color: #d12d2d;
+  color: #ffffff;
+  background: #d12d2d;
+}
+
 .km-bottom-tab-wrapper {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);
@@ -4872,6 +4973,25 @@ div#mck-rated:before {
     height: 30px;
   }
   .km-bottom-tab-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+@media (min-width: 601px) {
+  .km-widget-expanded .km-bottom-tab {
+    font-size: 10px;
+    padding: 5px 0;
+    gap: 3px;
+  }
+  .km-widget-expanded .km-bottom-tab--collapse {
+    flex: 0 0 var(--km-minimize-width);
+    padding: 6px 4px;
+  }
+  .km-widget-expanded .km-bottom-tab-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .km-widget-expanded .km-bottom-tab-icon svg {
     width: 17px;
     height: 17px;
   }

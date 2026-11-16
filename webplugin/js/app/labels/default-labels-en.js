@@ -47,6 +47,11 @@
         'file.error.default': 'File upload failed.',
         'message.sent.status': 'Message sent',
         'message.received.status': 'New message received',
+        'copy.message': {
+            COPY: 'Copy message',
+            COPIED: 'Copied',
+            FAILED: 'Unable to copy message',
+        },
         'voice.response.received.status': 'Response received',
         'empty.groups': 'No groups yet!',
         'empty.contacts': 'No contacts yet!',
@@ -277,8 +282,13 @@
             USER_OVERIDE_VOICE_OUTPUT_ON: 'Turn on text to speech',
             USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
             RESTART_CONVERSATION: 'Restart conversation',
+            DOWNLOAD_TRANSCRIPT: 'Download transcript',
+            TRANSCRIPT_TITLE: 'Conversation',
+            TRANSCRIPT_SENDER_YOU: 'You',
             HANDOFF: 'Talk to human',
             FAQ: 'FAQ',
+            EXPAND_WINDOW: 'Expand window',
+            COLLAPSE_WINDOW: 'Collapse window',
         },
         'micOptions.dropup': {
             VOICE_NOTE_TRIGGER: 'Send voice message',
@@ -323,6 +333,18 @@
             unmuteAction: 'Unmute microphone',
             muted: 'Microphone muted',
             unmuted: 'Listening...',
+        },
+        'webCall': {
+            connecting: 'Connecting your call...',
+            ringing: 'Ringing...',
+            inCall: 'On call',
+            mute: 'Mute',
+            unmute: 'Unmute',
+            hangUp: 'Hang up',
+            failed: "Couldn't connect the call, please continue in chat",
+            agentsBusy:
+                'All agents are busy right now. Please try again after some time or continue in chat.',
+            micDenied: 'Allow microphone access to call. You can continue in chat.',
         },
     };
     helpers.registerEnglishLabels(englishLabels);

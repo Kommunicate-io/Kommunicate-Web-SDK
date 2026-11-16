@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <title>Kommunicate map</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+            #km-map-root {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #km-map-address {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 8px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-bottom: none;
+            }
+            #km-map-canvas {
+                flex: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="km-map-root">
+            <input
+                id="km-map-address"
+                type="text"
+                placeholder="Enter a location"
+                autocomplete="off"
+            />
+            <div id="km-map-canvas"></div>
+        </div>
+        <script type="text/javascript">
+            (function () {
+                'use strict';
+
+                var MSG_READY = 'km-map:ready';
+                var MSG_INIT = 'km-map:init';
+                var MSG_SET_LOCATION = 'km-map:set-location';
+                var MSG_LOCATION_CHANGED = 'km-map:location-changed';
+                var MSG_RESIZE = 'km-map:resize';
+
+                var state = { lat: 0, lng: 0 };
+                var map = null;
+                var marker = null;
+                var geocoder = null;
+                var autocompleteEl = null;
+                var mapsApiReady = false;
+                var isAddressSelectionFromAutocomplete = false;
+                // Lets a stale async geocode response (e.g. drag to A then B before A's reply lands) drop itself.
+                var geocodeRequestId = 0;
+
+                function post(type, payload) {
+                    var message = Object.assign({ type: type }, payload || {});
+                    window.parent.postMessage(message, '*');
+                }
+
+                function toPlainLatLng(latLng) {
+                    if (!latLng) {
+                        return { lat: 0, lng: 0 };
+                    }
+                    var lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
+                    var lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+                    return {
+                        lat: isFinite(Number(lat)) ? parseFloat(lat) : 0,
+                        lng: isFinite(Number(lng)) ? parseFloat(lng) : 0,
+                    };
+                }
+
+                function setAddressValue(value) {
+                    var input = document.getElementById('km-map-address');
+                    if (input) {
+                        input.value = value || '';
+                    }
+                    if (autocompleteEl && 'value' in autocompleteEl) {
+                        autocompleteEl.value = value || '';
+                    }
+                }
+
+                function syncLocation(latLng, address) {
+                    var target = toPlainLatLng(latLng);
+                    state.lat = target.lat;
+                    state.lng = target.lng;
+
+                    if (marker) {
+                        if (typeof marker.setPosition === 'function') {
+                            marker.setPosition(target);
+                        } else {
+                            marker.position = target;
+                        }
+                    }
+                    if (map) {
+                        map.panTo(target);
+                    }
+                    if (typeof address === 'string') {
+                        setAddressValue(address);
+                    }
+                    post(MSG_LOCATION_CHANGED, {
+                        lat: target.lat,
+                        lng: target.lng,
+                        address: typeof address === 'string' ? address : null,
+                    });
+                }
+
+                function reverseGeocode(latLng) {
+                    if (!geocoder) {
+                        return;
+                    }
+                    var target = toPlainLatLng(latLng);
+                    var requestId = ++geocodeRequestId;
+                    geocoder.geocode({ location: target }, function (results, status) {
+                        if (requestId !== geocodeRequestId) {
+                            return;
+                        }
+                        if (status !== 'OK' || !results || !results.length) {
+                            return;
+                        }
+                        var address = results[0].formatted_address;
+                        setAddressValue(address);
+                        post(MSG_LOCATION_CHANGED, {
+                            lat: target.lat,
+                            lng: target.lng,
+                            address: address,
+                        });
+                    });
+                }
+
+                function forwardGeocode(address) {
+                    if (!geocoder || !address) {
+                        return;
+                    }
+                    var requestId = ++geocodeRequestId;
+                    geocoder.geocode({ address: address }, function (results, status) {
+                        if (requestId !== geocodeRequestId) {
+                            return;
+                        }
+                        if (status !== 'OK' || !results || !results.length) {
+                            return;
+                        }
+                        var result = results[0];
+                        syncLocation(result.geometry.location, result.formatted_address);
+                    });
+                }
+
+                function bindManualAddressEntry() {
+                    var target = autocompleteEl || document.getElementById('km-map-address');
+                    if (!target) {
+                        return;
+                    }
+                    target.addEventListener(
+                        'keydown',
+                        function (event) {
+                            if (event.key !== 'Enter' && event.keyCode !== 13) {
+                                return;
+                            }
+                            event.preventDefault();
+                            var value = ((target.value || '') + '').trim();
+                            if (value) {
+                                forwardGeocode(value);
+                            }
+                        },
+                        true
+                    );
+                    target.addEventListener(
+                        'blur',
+                        function () {
+                            if (isAddressSelectionFromAutocomplete) {
+                                return;
+                            }
+                            var value = ((target.value || '') + '').trim();
+                            if (value) {
+                                forwardGeocode(value);
+                            }
+                        },
+                        true
+                    );
+                }
+
+                function initMap() {
+                    if (map) {
+                        return;
+                    }
+                    var googleMaps = window.google;
+                    geocoder = new googleMaps.maps.Geocoder();
+                    map = new googleMaps.maps.Map(document.getElementById('km-map-canvas'), {
+                        center: { lat: state.lat, lng: state.lng },
+                        zoom: 14,
+                        fullscreenControl: false,
+                        streetViewControl: false,
+                        mapTypeControl: false,
+                    });
+
+                    var handleDragEnd = function (event) {
+                        reverseGeocode(event.latLng);
+                        syncLocation(event.latLng);
+                    };
+
+                    // No AdvancedMarkerElement: it requires a configured Map ID we don't have; classic Marker needs none.
+                    marker = new googleMaps.maps.Marker({
+                        map: map,
+                        position: { lat: state.lat, lng: state.lng },
+                        draggable: true,
+                    });
+                    marker.addListener('dragend', handleDragEnd);
+
+                    map.addListener('click', function (event) {
+                        reverseGeocode(event.latLng);
+                        syncLocation(event.latLng);
+                    });
+
+                    if (
+                        googleMaps.maps.places &&
+                        typeof googleMaps.maps.places.PlaceAutocompleteElement === 'function'
+                    ) {
+                        try {
+                            autocompleteEl = new googleMaps.maps.places.PlaceAutocompleteElement();
+                            var original = document.getElementById('km-map-address');
+                            autocompleteEl.id = 'km-map-address-autocomplete';
+                            autocompleteEl.placeholder = 'Enter a location';
+                            original.parentNode.insertBefore(autocompleteEl, original);
+                            original.style.display = 'none';
+                            autocompleteEl.addEventListener('gmp-select', function (event) {
+                                var prediction = event && event.placePrediction;
+                                if (!prediction || typeof prediction.toPlace !== 'function') {
+                                    return;
+                                }
+                                var place = prediction.toPlace();
+                                var requestId = ++geocodeRequestId;
+                                isAddressSelectionFromAutocomplete = true;
+                                place
+                                    .fetchFields({
+                                        fields: ['location', 'formattedAddress', 'displayName'],
+                                    })
+                                    .then(function () {
+                                        if (requestId !== geocodeRequestId || !place.location) {
+                                            return;
+                                        }
+                                        var formatted =
+                                            place.formattedAddress || place.displayName || '';
+                                        syncLocation(place.location, formatted);
+                                    })
+                                    .catch(function () {})
+                                    .finally(function () {
+                                        setTimeout(function () {
+                                            isAddressSelectionFromAutocomplete = false;
+                                        }, 0);
+                                    });
+                            });
+                        } catch (error) {
+                            autocompleteEl = null;
+                        }
+                    }
+
+                    bindManualAddressEntry();
+                    reverseGeocode({ lat: state.lat, lng: state.lng });
+                }
+
+                window.kmMapsApiReady = function () {
+                    mapsApiReady = true;
+                    initMap();
+                };
+
+                window.addEventListener('message', function (event) {
+                    if (event.source !== window.parent) {
+                        return;
+                    }
+                    var data = event.data || {};
+                    if (data.type === MSG_INIT) {
+                        state.lat = Number(data.lat) || 0;
+                        state.lng = Number(data.lng) || 0;
+                        if (!map && mapsApiReady) {
+                            initMap();
+                        } else if (map) {
+                            map.setCenter({ lat: state.lat, lng: state.lng });
+                            syncLocation({ lat: state.lat, lng: state.lng });
+                            reverseGeocode({ lat: state.lat, lng: state.lng });
+                        }
+                        return;
+                    }
+                    if (data.type === MSG_SET_LOCATION) {
+                        var latLng = { lat: Number(data.lat) || 0, lng: Number(data.lng) || 0 };
+                        if (map) {
+                            syncLocation(latLng);
+                            reverseGeocode(latLng);
+                        }
+                        return;
+                    }
+                    if (data.type === MSG_RESIZE) {
+                        if (
+                            map &&
+                            window.google &&
+                            window.google.maps &&
+                            window.google.maps.event
+                        ) {
+                            window.google.maps.event.trigger(map, 'resize');
+                            map.setCenter({ lat: state.lat, lng: state.lng });
+                        }
+                        return;
+                    }
+                });
+
+                post(MSG_READY, {});
+            })();
+        </script>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?libraries=places&key=:GOOGLE_MAPS_API_KEY&callback=kmMapsApiReady&loading=async"
+            async
+        ></script>
+    </body>
+</html>

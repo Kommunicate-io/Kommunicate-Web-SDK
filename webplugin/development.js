@@ -40,6 +40,10 @@ Object.assign(PLUGIN_SETTING, {
     omnichannelBaseUrl: PLUGIN_SETTING.omnichannelBaseUrl || config.urls.omnichannelBaseUrl,
 });
 
+// googleApiKey ships via the dev-only /map-view.html route in server/app.js only, not in KM_PLUGIN_SETTINGS.
+const { googleApiKey: DEV_GOOGLE_MAPS_API_KEY, ...PLUGIN_SETTINGS_FOR_WIDGET } = PLUGIN_SETTING;
+void DEV_GOOGLE_MAPS_API_KEY;
+
 let PLUGIN_FILE_DATA = new Object();
 let BUILD_URL = MCK_STATIC_PATH + '/build';
 const BUNDLED_FONT_PATH = '../../css/app/fonts/';
@@ -297,6 +301,22 @@ const generateBuildFiles = () => {
             generateFilesByVersion('build/plugin.js');
         });
     });
+    // Generate whatsapp-widget.min.js for build folder, substituting the
+    // environment's API host so the embed snippet never needs an apiUrl.
+    fs.readFile(path.join(__dirname, 'whatsapp-widget.js'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating whatsapp-widget.js', err);
+            return;
+        }
+        const whatsappWidget = data.replace(
+            'https://api.kommunicate.io',
+            config.urls.kommunicateBaseUrl
+        );
+        fs.writeFileSync(
+            path.join(buildDir, 'whatsapp-widget.min.js'),
+            minifyPluginContent(whatsappWidget)
+        );
+    });
     // Generate mck-app.js file for build folder.
     fs.readFile(path.join(__dirname, 'js/app/mck-app.js'), 'utf8', function (err, data) {
         if (err) {
@@ -354,7 +374,7 @@ const generateFilesByVersion = (location) => {
                 )
                 .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
                 .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTINGS_FOR_WIDGET))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
                 .replace(
