@@ -4258,13 +4258,15 @@ const firstVisibleMsg = {
                 let isBusinessHour =
                     !_this.isAwayMessageEnabled(BUSINESS_HOUR_SETTING) ||
                     _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
-                let hasAnyClass = !!$mck_business_hours_box.attr('class')?.trim();
+                // The box always carries `vis` or `n-vis`, so check the actual visibility
+                // (checking for any class never let the timer hide the banner).
+                const isBannerVisible = $mck_business_hours_box.hasClass('vis');
 
                 // Show/hide banner based on business hours
                 if (isBusinessHour) {
-                    !hasAnyClass && hideBanner();
+                    isBannerVisible && hideBanner();
                 } else {
-                    hasAnyClass && showBanner();
+                    !isBannerVisible && showBanner();
                 }
 
                 function showBanner() {
