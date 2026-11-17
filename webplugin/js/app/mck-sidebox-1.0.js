@@ -4180,14 +4180,14 @@ const firstVisibleMsg = {
 
             // Teams can switch off the out of business hours message from the dashboard.
             // Older settings don't have the flag, so only an explicit `false` disables it.
-            _this.isAwayMessageEnabled = function (teamSettings) {
+            _this.isOutOfHoursBannerEnabled = function (teamSettings) {
                 return !!teamSettings && teamSettings.awayMessageEnabled !== false;
             };
 
+            // Same rule as the server (WaitingQueue): only a missing map means the
+            // team uses the default team's hours.
             const hasOwnBusinessHours = function (team) {
-                return (
-                    !!team && !!team.timezone && Object.keys(team.businessHourMap || {}).length > 0
-                );
+                return !!team && team.businessHourMap != null;
             };
 
             // Teams without their own hours follow the default team's hours (same as the
@@ -4232,7 +4232,7 @@ const firstVisibleMsg = {
                         BUSINESS_HOUR_SETTING = teamSettings;
                         if (
                             isBusinessHourAvailable &&
-                            _this.isAwayMessageEnabled(teamSettings) &&
+                            _this.isOutOfHoursBannerEnabled(teamSettings) &&
                             !_this.isWithinBusinessHours(teamSettings)
                         ) {
                             kommunicateCommons.show($mck_business_hours_box);
@@ -4242,7 +4242,15 @@ const firstVisibleMsg = {
                         } else {
                             kommunicateCommons.hide($mck_business_hours_box);
                         }
-                        isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
+                        // The timer only re-checks the hours, so skip it when the banner is off.
+                        if (
+                            isBusinessHourAvailable &&
+                            _this.isOutOfHoursBannerEnabled(teamSettings)
+                        ) {
+                            mckMessageService.startBusinessHoursTimer();
+                        } else {
+                            mckMessageService.stopBusinessHoursTimer();
+                        }
                     },
                     error: function (data) {
                         console.error(data);
@@ -4256,7 +4264,7 @@ const firstVisibleMsg = {
                     return;
                 }
                 let isBusinessHour =
-                    !_this.isAwayMessageEnabled(BUSINESS_HOUR_SETTING) ||
+                    !_this.isOutOfHoursBannerEnabled(BUSINESS_HOUR_SETTING) ||
                     _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
                 // The box always carries `vis` or `n-vis`, so check the actual visibility
                 // (checking for any class never let the timer hide the banner).
