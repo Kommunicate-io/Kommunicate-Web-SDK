@@ -157,6 +157,7 @@ KommunicateConstants = {
         FORM: '12',
         GENERIC_BUTTONS_V2: '13',
         VIDEO: '14',
+        DOCUMENT: '15',
     },
     FORM_SUPPORTED_FIELDS: ['text', 'hidden', 'radio', 'checkbox', 'dropdown', 'textarea'],
     FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS: ['password', 'hidden'],
