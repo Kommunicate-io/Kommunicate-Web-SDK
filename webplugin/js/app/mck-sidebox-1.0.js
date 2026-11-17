@@ -4178,6 +4178,43 @@ const firstVisibleMsg = {
                 }
             };
 
+            // Teams can switch off the out of business hours message from the dashboard.
+            // Older settings don't have the flag, so only an explicit `false` disables it.
+            _this.isOutOfHoursBannerEnabled = function (teamSettings) {
+                return !!teamSettings && teamSettings.awayMessageEnabled !== false;
+            };
+
+            // Same rule as the server (WaitingQueue): only a missing map means the
+            // team uses the default team's hours.
+            const hasOwnBusinessHours = function (team) {
+                return !!team && team.businessHourMap != null;
+            };
+
+            // Teams without their own hours follow the default team's hours (same as the
+            // server). The team's own toggle always applies; a team without its own
+            // message uses the default team's message.
+            _this.getBusinessHourSetting = function (teams, teamId) {
+                const allTeams = teams || [];
+                const defaultTeam = allTeams.find((team) =>
+                    DEFAULT_TEAM_NAME.includes(team.teamName)
+                );
+                if (!teamId) {
+                    return defaultTeam;
+                }
+                const team = allTeams.find((item) => String(item.teamId) === String(teamId));
+                if (!team || !defaultTeam || team === defaultTeam) {
+                    return team;
+                }
+                const setting = Object.assign({}, team, {
+                    message: team.message || defaultTeam.message,
+                });
+                if (!hasOwnBusinessHours(team)) {
+                    setting.businessHourMap = defaultTeam.businessHourMap;
+                    setting.timezone = defaultTeam.timezone;
+                }
+                return setting;
+            };
+
             _this.handleBusinessHours = function () {
                 window.Applozic.ALApiService.ajax({
                     type: 'GET',
@@ -4185,24 +4222,17 @@ const firstVisibleMsg = {
                     global: false,
                     contentType: 'application/json',
                     success: function (data) {
-                        let teamSettings = {};
-                        const response = data?.response;
-                        if (!CURRENT_GROUP_DATA.teamId) {
-                            teamSettings = response.find((team) =>
-                                DEFAULT_TEAM_NAME.includes(team.teamName)
-                            );
-                        } else {
-                            teamSettings = response.find(
-                                (team) => String(team.teamId) === String(CURRENT_GROUP_DATA.teamId)
-                            );
-                        }
+                        const teamSettings = _this.getBusinessHourSetting(
+                            data?.response,
+                            CURRENT_GROUP_DATA.teamId
+                        );
                         isBusinessHourAvailable = kommunicateCommons.hasBusinessHoursAccess(
                             INIT_APP_DATA
                         );
                         BUSINESS_HOUR_SETTING = teamSettings;
                         if (
                             isBusinessHourAvailable &&
-                            teamSettings &&
+                            _this.isOutOfHoursBannerEnabled(teamSettings) &&
                             !_this.isWithinBusinessHours(teamSettings)
                         ) {
                             kommunicateCommons.show($mck_business_hours_box);
@@ -4212,7 +4242,15 @@ const firstVisibleMsg = {
                         } else {
                             kommunicateCommons.hide($mck_business_hours_box);
                         }
-                        isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
+                        // The timer only re-checks the hours, so skip it when the banner is off.
+                        if (
+                            isBusinessHourAvailable &&
+                            _this.isOutOfHoursBannerEnabled(teamSettings)
+                        ) {
+                            mckMessageService.startBusinessHoursTimer();
+                        } else {
+                            mckMessageService.stopBusinessHoursTimer();
+                        }
                     },
                     error: function (data) {
                         console.error(data);
@@ -4225,14 +4263,18 @@ const firstVisibleMsg = {
                 if (!$mck_business_hours_box || !$mck_business_hours_box.length) {
                     return;
                 }
-                let isBusinessHour = _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
-                let hasAnyClass = !!$mck_business_hours_box.attr('class')?.trim();
+                let isBusinessHour =
+                    !_this.isOutOfHoursBannerEnabled(BUSINESS_HOUR_SETTING) ||
+                    _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
+                // The box always carries `vis` or `n-vis`, so check the actual visibility
+                // (checking for any class never let the timer hide the banner).
+                const isBannerVisible = $mck_business_hours_box.hasClass('vis');
 
                 // Show/hide banner based on business hours
                 if (isBusinessHour) {
-                    !hasAnyClass && hideBanner();
+                    isBannerVisible && hideBanner();
                 } else {
-                    hasAnyClass && showBanner();
+                    !isBannerVisible && showBanner();
                 }
 
                 function showBanner() {
