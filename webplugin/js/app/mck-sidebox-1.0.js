@@ -668,17 +668,13 @@ const firstVisibleMsg = {
         var kmNavBar = new KmNavBar(mckMessageLayout);
         const answerFeedbackService = new AnswerFeedback(appOptions);
         // Message templates used to be compiled by jQuery tmpl via `new Function`, which a strict CSP
-        // (no 'unsafe-eval') blocks. Mustache renders them without eval; the writer keeps tmpl's
-        // escaping (it leaves `&` as-is) so the generated markup stays the same.
+        // (no 'unsafe-eval') blocks. Mustache renders them without eval; the writer reuses tmpl's
+        // encoder (it leaves `&` as-is) so the generated markup stays the same.
         var tmplCompatibleWriter = new Mustache.Writer();
         tmplCompatibleWriter.escapedValue = function (token, context) {
             var value = context.lookup(token[1]);
             if (value != null) {
-                return String(value)
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&#34;')
-                    .replace(/'/g, '&#39;');
+                return $applozic.encode(value);
             }
         };
         function renderTemplate(template, data) {
