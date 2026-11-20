@@ -8273,6 +8273,18 @@ const firstVisibleMsg = {
                         imgsrctag = _this.getContactImageLink(fromContact, fromDisplayName);
                     }
                 }
+                // Sender identity configured on the dashboard (e.g. for the welcome message),
+                // so the message is not shown as typed by the assigned agent.
+                if (floatWhere === 'mck-msg-left' && msg.metadata && msg.metadata.KM_SENDER_NAME) {
+                    displayName = msg.metadata.KM_SENDER_NAME;
+                    nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
+                    if (MESSAGE_BUBBLE_AVATOR_ENABLED) {
+                        imgsrctag = _this.getImageUrlForGroupType(
+                            { imageUrl: msg.metadata.KM_SENDER_IMAGE },
+                            displayName
+                        );
+                    }
+                }
                 if (msg.groupId && msg.contentType === 10) {
                     displayName = '';
                     imgsrctag = '';
