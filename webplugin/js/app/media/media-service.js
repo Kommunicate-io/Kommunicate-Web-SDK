@@ -205,6 +205,7 @@ Kommunicate.mediaService = {
         var playPauseInterval;
         var recorderInterval;
         var recorderAudio = document.querySelector('#recorder-audio');
+        var isRecordingActive = false;
         var params = {};
         recorderAudio.onloadedmetadata = function () {
             wavAudioDuration = recorderAudio.duration;
@@ -241,6 +242,7 @@ Kommunicate.mediaService = {
             }
         }
         function startRecording() {
+            isRecordingActive = true;
             Kommunicate.typingAreaService.showRecorder();
             // show
             kommunicateCommons.modifyClassList(
@@ -300,6 +302,7 @@ Kommunicate.mediaService = {
             }, 1000);
         }
         function stopRecording(e) {
+            isRecordingActive = false;
             // show
             kommunicateCommons.modifyClassList(
                 {
@@ -334,7 +337,13 @@ Kommunicate.mediaService = {
             }, 'blob');
             Fr.voice.stop();
         }
+        function resetRecorderOnNavigation(e) {
+            if (isRecordingActive) {
+                resetRecorder(e);
+            }
+        }
         function resetRecorder(e, permissionDenied) {
+            isRecordingActive = false;
             Kommunicate.typingAreaService.hideRecorder();
             !permissionDenied && Fr.voice.stop();
             clearInterval(recorderInterval);
@@ -351,10 +360,10 @@ Kommunicate.mediaService = {
             document.querySelector('#send-btn').classList.add('disabled');
 
             // remove un-necessary eventListeners
-            $applozic('#mck-conversation-back-btn').off('click', resetRecorder);
-            $applozic('#km-faq').off('click', resetRecorder);
-            $applozic('#km-popup-close-button').off('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').off('click', resetRecorder);
+            $applozic('#mck-conversation-back-btn').off('click', resetRecorderOnNavigation);
+            $applozic('#km-faq').off('click', resetRecorderOnNavigation);
+            $applozic('#km-popup-close-button').off('click', resetRecorderOnNavigation);
+            $applozic('#km-chat-widget-close-button').off('click', resetRecorderOnNavigation);
         }
         function onPlayBtnClick(e) {
             var prevStateOfTimer = playPausetimerState;
@@ -375,10 +384,10 @@ Kommunicate.mediaService = {
             startRecording();
 
             // on click of back button, close btn, and faq btn recording should end
-            $applozic('#mck-conversation-back-btn').on('click', resetRecorder);
-            $applozic('#km-faq').on('click', resetRecorder);
-            $applozic('#km-popup-close-button').on('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').on('click', resetRecorder);
+            $applozic('#mck-conversation-back-btn').on('click', resetRecorderOnNavigation);
+            $applozic('#km-faq').on('click', resetRecorderOnNavigation);
+            $applozic('#km-popup-close-button').on('click', resetRecorderOnNavigation);
+            $applozic('#km-chat-widget-close-button').on('click', resetRecorderOnNavigation);
         };
         document.getElementById('mck-stop-recording').onclick = stopRecording;
         document.getElementById('play-btn').onclick = onPlayBtnClick;
