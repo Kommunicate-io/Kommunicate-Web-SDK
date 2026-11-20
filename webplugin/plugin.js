@@ -8,6 +8,10 @@ var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
+// Nonce from the host page's CSP (e.g. on the embed snippet). The <style> tags the widget injects
+// carry it so they still apply when the page's style-src does not allow 'unsafe-inline'.
+var kmNonceScript = document.querySelector('script[nonce]');
+var KM_CSP_NONCE = kmNonceScript ? kmNonceScript.nonce : '';
 
 var kmCustomElements = {
     iframe: {
@@ -429,7 +433,7 @@ function appendIframeAfterBodyLoaded() {
 }
 
 function appendIframe() {
-    createCustomClasses(kmCustomIframe); // Add class to document
+    createCustomClasses(kmCustomIframe, kmCustomElements.iframe.styleSheetId); // Add class to document
     createKommunicateIframe();
 }
 
@@ -437,11 +441,12 @@ function isV1Script() {
     return MCK_PLUGIN_VERSION === 'v1';
 }
 
-function createCustomClasses(classSettings) {
+function createCustomClasses(classSettings, styleSheetId) {
     // Create custom classes
     var style = document.createElement('style');
-    style.id = 'kommunicate-style-sheet';
+    style.id = styleSheetId;
     style.type = 'text/css';
+    style.nonce = KM_CSP_NONCE;
     style.innerHTML = classSettings;
     document.getElementsByTagName('head')[0].appendChild(style);
 }
@@ -584,7 +589,7 @@ function createKommunicateIframe() {
     );
     kommunicateIframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
-    kommunicateIframe.setAttribute('style', 'overflow:hidden;'); // to fix scrollbars appearing before the chat widget loads on slow connections
+    kommunicateIframe.style.overflow = 'hidden'; // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('scrolling', 'no'); // to fix scrollbars appearing before the chat widget loads on slow connections
     kommunicateIframe.setAttribute('id', 'kommunicate-widget-iframe');
     kommunicateIframe.setAttribute('title', 'Live chat');
@@ -784,6 +789,7 @@ function injectJquery() {
 
     addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
     addableWindow.MCK_ENV_DETAILS = MCK_ENV_DETAILS;
+    addableWindow.KM_CSP_NONCE = KM_CSP_NONCE;
 
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');
@@ -981,10 +987,6 @@ function addFullviewImageModal() {
     document.body.appendChild(fullscreenModal);
 
     // Append CSS of image fullview viewer modal to body of html page
-    var style = document.createElement('style');
-    style.id = 'km-fullscreen-image-modal-style-sheet';
-    style.type = 'text/css';
-    style.innerHTML = addFullviewImageModalCss;
-    document.getElementsByTagName('head')[0].appendChild(style);
+    createCustomClasses(addFullviewImageModalCss, kmCustomElements.imageModal.styleSheetId);
 }
 //<----------------------------CODE ENDS HERE---------------------------->
