@@ -37,6 +37,7 @@
         }
         var style = document.createElement('style');
         style.id = STYLE_ID;
+        style.nonce = KM_CSP_NONCE; // set by plugin.js, which loads this widget
         // z-index is kept just below the Kommunicate chat widget iframe's
         // 2243000, so the open chat panel naturally covers this launcher
         // instead of floating on top of it.

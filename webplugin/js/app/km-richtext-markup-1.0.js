@@ -163,7 +163,7 @@ Kommunicate.markup = {
             return (
                 '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
                 (data.images[0] || data.favicons[0]) +
-                '" onerror="this.classList.add(\'link-preview-image-broken\')"  alt="' +
+                '" alt="' +
                 title +
                 '"></div><div class="link-preview-content ' +
                 mckRightLinkClass +
@@ -264,7 +264,7 @@ Kommunicate.markup = {
         );
     },
     getListMarkup: function () {
-        return `<div class="km-message km-received km-chat-faq-list km-list-container" style="">
+        return `<div class="km-message km-received km-chat-faq-list km-list-container">
      <div class="km-faq-list--container"  >
              <div class="km-faq-list--header">
                      {{{headerImgSrc}}}
@@ -380,7 +380,7 @@ Kommunicate.markup = {
                                     {{#radio}}
                                         <p class="mck-radio-group-title">{{title}}</p>
                                         <div>
-                                        <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
+                                        <div class="mck-form-radio-wrapper">
                                         {{#options}}
                                         <div class="mck-radio-input-container">
                                             <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" {{#selected}}checked{{/selected}}>
@@ -393,7 +393,7 @@ Kommunicate.markup = {
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
                                                  <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
                                                 </svg>
-                                                <span class="mck-form-error-text mck-form-error-{{className}}" style="margin-top:0px"></span>
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
                                            </div
                                     {{/validation}}     
                                         </div>
@@ -559,7 +559,7 @@ Kommunicate.markup = {
          </video>
         {{/source}}
         {{#caption}}
-        <div class="km-template-video-caption-wrapper" style="width:{{width||100%}};">
+        <div class="km-template-video-caption-wrapper">
            <p class="km-template-video-caption">{{caption}}</p>
         </div>
         {{/caption}}

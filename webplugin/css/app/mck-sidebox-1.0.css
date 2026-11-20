@@ -5020,3 +5020,17 @@ div#mck-waiting-queue {
     white-space: nowrap;
     border: 0;
 }
+
+/* Replace inline style attributes, which a strict Content-Security-Policy blocks */
+#mck-tab-option-panel {
+    display: none !important;
+}
+
+.km-rating-star-svg {
+    margin: 0 !important;
+}
+
+.mck-search-result-text {
+    padding: 10px;
+    font-size: 1.5em;
+}

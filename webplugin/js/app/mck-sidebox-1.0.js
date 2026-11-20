@@ -3744,6 +3744,9 @@ const firstVisibleMsg = {
                 e.stopPropagation();
                 KommunicateUI.togglePopupChatTemplate();
             });
+            $applozic(d).on('click', '[data-popup-action]', function () {
+                Kommunicate.chatPopupActions[this.getAttribute('data-popup-action')]();
+            });
         }
 
         function MckMessageService() {
@@ -7019,7 +7022,7 @@ const firstVisibleMsg = {
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
                 '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">{{contNameExpr}}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:var(--km-font-meta-contrast-color);"><span class="mck-conversation-status-badge {{resolvedTagClass}}" title="{{resolvedTagText}}" aria-label="{{resolvedTagText}}">{{{resolvedTagIcon}}}</span>{{msgCreatedDateExpr}}</span></div></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time"><span class="mck-conversation-status-badge {{resolvedTagClass}}" title="{{resolvedTagText}}" aria-label="{{resolvedTagText}}">{{{resolvedTagIcon}}}</span>{{msgCreatedDateExpr}}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
@@ -8703,7 +8706,12 @@ const firstVisibleMsg = {
                     KommunicateUI.getLinkDataToPreview(
                         url,
                         function (template) {
-                            $textMessage.append(template);
+                            $applozic(template)
+                                .appendTo($textMessage)
+                                .find('.link-preview-image')
+                                .on('error', function () {
+                                    this.classList.add('link-preview-image-broken');
+                                });
                         },
                         floatWhere === 'mck-msg-right'
                     );
@@ -8741,8 +8749,7 @@ const firstVisibleMsg = {
                         KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
-                        const style = document.createElement('style');
-                        style.textContent = `
+                        const style = KommunicateUtils.createStyleElement(`
                             table {
                                 width: 100%;
                                 border-collapse: collapse;
@@ -8780,7 +8787,7 @@ const firstVisibleMsg = {
     }   
                         
                    
-                        `;
+                        `);
 
                         const shadow = kmElement.shadowRoot;
                         shadow.appendChild(style);
@@ -9799,7 +9806,7 @@ const firstVisibleMsg = {
                         replace: function (string) {
                             var value = message.searchKey;
                             return String.prototype.replace.apply(
-                                '<div style="padding: 10px; font-size: 1.5em;">' + value + '</div>',
+                                '<div class="mck-search-result-text">' + value + '</div>',
                                 arguments
                             );
                         },

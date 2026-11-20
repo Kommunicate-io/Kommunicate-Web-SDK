@@ -444,11 +444,13 @@ var KMPreChat = (function () {
                 if (preLeadCollection.type === 'email') {
                     kmChatInput.setAttribute('pattern', '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$');
                     kmChatInput.setAttribute('title', '');
-                    kmChatInput.setAttribute(
-                        'oninvalid',
-                        "setCustomValidity('" + getLeadCollectionLabel('errorEmail', '') + "')"
-                    );
-                    kmChatInput.setAttribute('oninput', "setCustomValidity('')");
+                    var emailErrorLabel = getLeadCollectionLabel('errorEmail', '');
+                    kmChatInput.addEventListener('invalid', function () {
+                        this.setCustomValidity(emailErrorLabel);
+                    });
+                    kmChatInput.addEventListener('input', function () {
+                        this.setCustomValidity('');
+                    });
                 }
             }
             $applozic(kmChatInputDiv).append(kmLabelDiv, kmChatInput);

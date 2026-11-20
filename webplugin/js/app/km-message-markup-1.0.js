@@ -172,11 +172,11 @@ Kommunicate.popupChatTemplate = {
         var actionableButtonTemplateMarkup =
             '<div id="chat-popup-actionable-btn-container">' +
             (actionButton[0].label &&
-                '<button id="chat-popup-actionable-btn-1" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[0]()">' +
+                '<button id="chat-popup-actionable-btn-1" class="km-custom-widget-text-color km-custom-widget-border-color" data-popup-action="0">' +
                     actionButton[0].label +
                     '</button>') +
             (actionButton[1].label &&
-                '<button id="chat-popup-actionable-btn-2" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[1]()">' +
+                '<button id="chat-popup-actionable-btn-2" class="km-custom-widget-text-color km-custom-widget-border-color" data-popup-action="1">' +
                     actionButton[1].label +
                     '</button></div>');
 
