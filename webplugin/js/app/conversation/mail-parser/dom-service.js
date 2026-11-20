@@ -24,9 +24,7 @@ class EmailDOMService {
         }
 
         const root = container.shadowRoot || container;
-        const style = document.createElement('style');
-        style.setAttribute('type', 'text/css');
-        style.innerHTML = kmMailProcessor.getEmailRichMsgStyle();
+        const style = KommunicateUtils.createStyleElement(kmMailProcessor.getEmailRichMsgStyle());
 
         const mailElement = document.createElement('div');
         mailElement.setAttribute(
