@@ -37,7 +37,10 @@
         }
         var style = document.createElement('style');
         style.id = STYLE_ID;
-        style.nonce = KM_CSP_NONCE; // set by plugin.js, which loads this widget
+        // Read the host page's CSP nonce here rather than from plugin.js, since this
+        // widget can also be loaded standalone.
+        var nonceScript = document.querySelector('script[nonce]');
+        style.nonce = nonceScript ? nonceScript.nonce : '';
         // z-index is kept just below the Kommunicate chat widget iframe's
         // 2243000, so the open chat panel naturally covers this launcher
         // instead of floating on top of it.
