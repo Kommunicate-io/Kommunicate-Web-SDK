@@ -2,10 +2,57 @@ Kommunicate.mediaService = {
     browserLocale: window.navigator.language || window.navigator.userLanguage || 'en-US',
     appOptions: appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals,
     userInActiveSec: 0,
+    voiceOutputMessageTracker: {},
+    voiceOutputMessageTrackerTtl: 30000,
     isAppleDevice: function () {
         var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
         var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         return isIOSDevice || isMacSafari;
+    },
+    getVoiceOutputMessageId: function (message) {
+        if (!message) {
+            return null;
+        }
+        if (message.key) {
+            return message.key;
+        }
+        if (message.metadata && message.metadata.messageKey) {
+            return message.metadata.messageKey;
+        }
+        if (message.createdAtTime) {
+            return [
+                message.createdAtTime,
+                message.groupId || message.to || '',
+                message.type || '',
+            ].join(':');
+        }
+        return null;
+    },
+    shouldSkipRepeatedVoiceOutput: function (message) {
+        var messageId = this.getVoiceOutputMessageId(message);
+        var now = Date.now();
+
+        if (!messageId) {
+            return false;
+        }
+
+        Object.keys(this.voiceOutputMessageTracker).forEach(
+            function (trackedMessageId) {
+                if (
+                    now - this.voiceOutputMessageTracker[trackedMessageId] >
+                    this.voiceOutputMessageTrackerTtl
+                ) {
+                    delete this.voiceOutputMessageTracker[trackedMessageId];
+                }
+            }.bind(this)
+        );
+
+        if (this.voiceOutputMessageTracker[messageId]) {
+            return true;
+        }
+
+        this.voiceOutputMessageTracker[messageId] = now;
+        return false;
     },
     endSttExplicitly: function (params) {
         var that = this;
@@ -119,6 +166,10 @@ Kommunicate.mediaService = {
 
             // if voiceOutput is enabled
             if (appOptions.voiceOutput) {
+                if (this.shouldSkipRepeatedVoiceOutput(message)) {
+                    return;
+                }
+
                 var textToSpeak = '';
 
                 if (message.hasOwnProperty('fileMeta')) {
