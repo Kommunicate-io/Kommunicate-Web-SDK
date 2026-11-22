@@ -9,7 +9,9 @@ var KmOfflineTicketForm = (function () {
     var SUBMIT_URL = '/rest/ws/offline-ticket';
     var AGENTS_ONLINE_URL = '/rest/ws/offline-ticket/agents-online';
     var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var LOCKED_FIELD_KEYS = ['email', 'message'];
+    // replies go to the visitor's email, so it is always collected
+    var LOCKED_FIELD_KEYS = ['email'];
+    var MULTI_LINE_TYPE = 'textarea';
     var SHOW_WHEN = {
         OUTSIDE_BUSINESS_HOURS: 'OUTSIDE_BUSINESS_HOURS',
         AGENTS_OFFLINE: 'AGENTS_OFFLINE',
@@ -80,6 +82,16 @@ var KmOfflineTicketForm = (function () {
         panel && panel.parentNode.removeChild(panel);
     }
 
+    // The widget lives in an about:blank iframe; the ticket should record the host page.
+    function getPageUrl() {
+        try {
+            var url = window.parent.location.href;
+            return /^https?:/.test(url) ? url : '';
+        } catch (e) {
+            return '';
+        }
+    }
+
     function renderField(field) {
         var id = 'km-offline-ticket-' + field.key;
         var wrapper = createElement('div', { class: 'km-offline-ticket-field' });
@@ -90,7 +102,8 @@ var KmOfflineTicketForm = (function () {
         var input = createElement(field.type === 'textarea' ? 'textarea' : 'input', {
             id: id,
             name: field.key,
-            maxlength: field.key === 'message' ? '5000' : '500',
+            // same limits as Kommunicate-Server
+            maxlength: field.type === MULTI_LINE_TYPE ? '5000' : '500',
         });
         if (field.type !== 'textarea') {
             input.setAttribute(
@@ -137,7 +150,7 @@ var KmOfflineTicketForm = (function () {
         return firstInvalid ? null : values;
     }
 
-    function showSuccess(panel, form, labels) {
+    function showSuccess(panel, form, labels, dismiss) {
         var body = panel.querySelector('.km-offline-ticket-body');
         body.innerHTML = '';
         body.appendChild(
@@ -152,7 +165,7 @@ var KmOfflineTicketForm = (function () {
             { type: 'button', class: 'km-offline-ticket-submit' },
             labels.close
         );
-        closeButton.addEventListener('click', close);
+        closeButton.addEventListener('click', dismiss);
         body.appendChild(closeButton);
         closeButton.focus();
     }
@@ -162,9 +175,14 @@ var KmOfflineTicketForm = (function () {
      * @param {Object} form offlineTicketForm settings
      * @param {Object} labels MCK_LABELS['offline.ticket']
      * @param {Function} onSubmitted called with the submitted values (e.g. to update the user)
+     * @param {Function} [onDismiss] called after the visitor closes the form
      */
-    function open(form, labels, onSubmitted) {
+    function open(form, labels, onSubmitted, onDismiss) {
         close();
+        var dismiss = function () {
+            close();
+            onDismiss && onDismiss();
+        };
         var container = document.getElementById('mck-sidebox-content');
         var fields = getVisibleFields(form);
         var panel = createElement('div', {
@@ -180,7 +198,7 @@ var KmOfflineTicketForm = (function () {
             { 'type': 'button', 'class': 'km-offline-ticket-close', 'aria-label': labels.close },
             '×'
         );
-        closeIcon.addEventListener('click', close);
+        closeIcon.addEventListener('click', dismiss);
         header.appendChild(closeIcon);
         panel.appendChild(header);
 
@@ -209,10 +227,10 @@ var KmOfflineTicketForm = (function () {
             submit.setAttribute('disabled', 'true');
             submit.textContent = labels.sending;
             formError.textContent = '';
-            request('POST', SUBMIT_URL, { values: values, pageUrl: window.location.href })
+            request('POST', SUBMIT_URL, { values: values, pageUrl: getPageUrl() })
                 .then(function () {
                     onSubmitted && onSubmitted(values);
-                    showSuccess(panel, form, labels);
+                    showSuccess(panel, form, labels, dismiss);
                 })
                 .catch(function (xhr) {
                     var code = xhr && xhr.responseJSON && xhr.responseJSON.code;

@@ -3890,9 +3890,10 @@ const firstVisibleMsg = {
                 });
             };
 
-            // Visitor-started chats: show the offline ticket form instead when the team is
-            // unavailable (Dashboard > Settings > Offline Ticket Form).
-            _this.startConversationOrTicket = function (params, callback) {
+            // Visitor-started chats: show the offline form instead when the team is unavailable
+            // (Dashboard > Settings > Offline Form). closeWidgetOnDismiss: nothing to go back to
+            // (no conversation yet), so dismissing the form closes the widget.
+            _this.startConversationOrTicket = function (params, callback, closeWidgetOnDismiss) {
                 var form = appOptions.appSettings?.chatWidget?.offlineTicketForm;
                 KmOfflineTicketForm.shouldShow(form, _this.isOutsideBusinessHours)
                     .catch(function (error) {
@@ -3912,7 +3913,8 @@ const firstVisibleMsg = {
                                 var data = { email: values.email };
                                 values.name && (data.displayName = values.name);
                                 $applozic.fn.applozic('updateUser', { data: data });
-                            }
+                            },
+                            closeWidgetOnDismiss ? _this.closeSideBox : undefined
                         );
                     });
             };
@@ -3984,7 +3986,8 @@ const firstVisibleMsg = {
                             function (groupId) {
                                 /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
                                 callback();
-                            }
+                            },
+                            result.response.length == 0
                         );
                     } else if (result.response.length == 1) {
                         var groupId = result.response[0].id;
@@ -5282,6 +5285,7 @@ const firstVisibleMsg = {
 
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
+                KmOfflineTicketForm.close();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
                 KommunicateUI.hideAwayMessage();
