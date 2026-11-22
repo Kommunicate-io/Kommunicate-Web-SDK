@@ -131,6 +131,16 @@ class KMLabel {
                 errorEmail: 'Please enter a valid email address',
                 commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
             },
+            'offline.ticket': {
+                submit: 'Send',
+                sending: 'Sending...',
+                close: 'Close',
+                required: 'This field is required',
+                invalidEmail: 'Please enter a valid email address',
+                error: "We couldn't send your message. Please try again.",
+                rateLimited: "You've sent several messages already. Please try again later.",
+                ticketNote: "We've received your message and will reply by email.",
+            },
             'csat.rating': {
                 RESOLVED_CONVERSATION_RATED: 'Conversation resolved and you rated it as',
                 NEW_RATING_EMPTY_LABEL: '',
