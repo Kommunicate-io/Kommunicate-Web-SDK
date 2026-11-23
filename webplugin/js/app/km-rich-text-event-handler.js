@@ -268,6 +268,7 @@ Kommunicate.richMsgEventHandler = {
                 ],
                 mouseDrag: true,
                 arrowKeys: true,
+                nonce: KM_CSP_NONCE,
                 onInit: function () {
                     console.log('tiny-slider initilized');
                 },

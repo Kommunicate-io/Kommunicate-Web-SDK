@@ -27,7 +27,7 @@ exports.SENTRY_SCRIPT = [path.resolve(__dirname, 'lib/js/sentry-error-tracker.js
 exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
     path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
-    path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
+    path.resolve(__dirname, 'lib/js/tiny-slider-2.9.4.js'),
     path.resolve(__dirname, 'lib/js/mustache.js'),
     path.resolve(__dirname, 'lib/js/card-validator-10.0.4.min.js'),
     // path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
