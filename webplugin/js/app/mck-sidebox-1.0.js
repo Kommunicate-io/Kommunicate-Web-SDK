@@ -8786,7 +8786,6 @@ const firstVisibleMsg = {
                         `);
 
                         const shadow = kmElement.shadowRoot;
-                        shadow.appendChild(style);
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(emoji_template, 'text/html');
                         const table = doc.querySelector('table');
@@ -8804,7 +8803,9 @@ const firstVisibleMsg = {
                             $textMessage.append(downloadBtn);
                         }
 
-                        shadow.innerHTML += emoji_template;
+                        // Added after the markup: re-serializing the style (innerHTML +=) would drop its CSP nonce.
+                        shadow.innerHTML = emoji_template;
+                        shadow.prepend(style);
 
                         $textMessage.append(kmElement);
                         table &&
