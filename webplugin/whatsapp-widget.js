@@ -4,6 +4,18 @@
     var STYLE_ID = 'kommunicate-whatsapp-widget-style';
     var LAUNCHER_ID = 'km-whatsapp-launcher';
     var DEFAULT_API_URL = 'https://api.kommunicate.io';
+    // Same lookup as plugin.js, duplicated because this widget can also be loaded standalone.
+    var CSP_NONCE = (function () {
+        var scripts = [document.getElementById('km-widget-script'), document.currentScript].concat(
+            Array.prototype.slice.call(document.querySelectorAll('script[nonce]'))
+        );
+        for (var i = 0; i < scripts.length; i++) {
+            if (scripts[i] && scripts[i].nonce) {
+                return scripts[i].nonce;
+            }
+        }
+        return '';
+    })();
 
     function escapeHtml(value) {
         return String(value).replace(/[&<>'"]/g, function (character) {
@@ -37,10 +49,7 @@
         }
         var style = document.createElement('style');
         style.id = STYLE_ID;
-        // Read the host page's CSP nonce here rather than from plugin.js, since this
-        // widget can also be loaded standalone.
-        var nonceScript = document.querySelector('script[nonce]');
-        style.nonce = nonceScript ? nonceScript.nonce : '';
+        style.nonce = CSP_NONCE;
         // z-index is kept just below the Kommunicate chat widget iframe's
         // 2243000, so the open chat panel naturally covers this launcher
         // instead of floating on top of it.

@@ -8,10 +8,20 @@ var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
-// Nonce from the host page's CSP (e.g. on the embed snippet). The <style> tags the widget injects
-// carry it so they still apply when the page's style-src does not allow 'unsafe-inline'.
-var kmNonceScript = document.querySelector('script[nonce]');
-var KM_CSP_NONCE = kmNonceScript ? kmNonceScript.nonce : '';
+// Nonce from the host page's CSP. The <style> tags the widget injects carry it so they still apply
+// when the page's style-src does not allow 'unsafe-inline'. The embed snippet (id="km-widget-script")
+// or this script wins; otherwise the first non-empty one, since other scripts may carry nonce="".
+var KM_CSP_NONCE = (function () {
+    var scripts = [document.getElementById('km-widget-script'), document.currentScript].concat(
+        Array.prototype.slice.call(document.querySelectorAll('script[nonce]'))
+    );
+    for (var i = 0; i < scripts.length; i++) {
+        if (scripts[i] && scripts[i].nonce) {
+            return scripts[i].nonce;
+        }
+    }
+    return '';
+})();
 
 var kmCustomElements = {
     iframe: {
