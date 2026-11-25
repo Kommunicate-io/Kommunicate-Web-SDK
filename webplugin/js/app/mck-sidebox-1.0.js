@@ -667,6 +667,26 @@ const firstVisibleMsg = {
         KommunicateUI.setBottomTabsManager(bottomTabManager);
         var kmNavBar = new KmNavBar(mckMessageLayout);
         const answerFeedbackService = new AnswerFeedback(appOptions);
+        // Message templates used to be compiled by jQuery tmpl via `new Function`, which a strict CSP
+        // (no 'unsafe-eval') blocks. Mustache renders them without eval; the writer reuses tmpl's
+        // encoder (it leaves `&` as-is) so the generated markup stays the same.
+        var tmplCompatibleWriter = new Mustache.Writer();
+        tmplCompatibleWriter.escapedValue = function (token, context) {
+            var value = context.lookup(token[1]);
+            if (value != null) {
+                return $applozic.encode(value);
+            }
+        };
+        function renderTemplate(template, data) {
+            return $applozic(
+                []
+                    .concat(data)
+                    .map(function (item) {
+                        return tmplCompatibleWriter.render(template, item);
+                    })
+                    .join('')
+            );
+        }
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -3719,6 +3739,9 @@ const firstVisibleMsg = {
                 e.preventDefault();
                 e.stopPropagation();
                 KommunicateUI.togglePopupChatTemplate();
+            });
+            $applozic(d).on('click', '[data-popup-action]', function () {
+                Kommunicate.chatPopupActions[this.getAttribute('data-popup-action')]();
             });
         }
 
@@ -6950,69 +6973,65 @@ const firstVisibleMsg = {
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
-                '<div tabindex="0" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
-                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
+                '<div tabindex="0" name="message" data-msgdelivered="{{msgDeliveredExpr}}" data-msgsent="{{msgSentExpr}}" data-msgtype="{{msgTypeExpr}}" data-msgtime="{{msgCreatedAtTime}}"' +
+                'data-msgcontent="{{replyIdExpr}}" data-msgkey="{{msgKeyExpr}}" data-contact="{{toExpr}}" class="mck-m-b {{msgKeyExpr}} {{msgFloatExpr}} {{msgAvatorClassExpr}} {{botMsgDelayExpr}} {{conversationTransferred}}">' +
                 '<div class="mck-clear">' +
-                '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name">${msgNameExpr}</div>' +
+                '<div class="{{nameTextExpr}} {{showNameExpr}} mck-conversation-name">{{msgNameExpr}}</div>' +
                 '<div class="blk-lg-12">' +
-                '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
-                '<div class ="km-conversation-container-right ${kmAttchMsg}">' +
-                '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>' +
-                '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">' +
+                '<div class="mck-msg-avator blk-lg-3">{{{msgImgExpr}}}</div>' +
+                '<div class ="km-conversation-container-right {{kmAttchMsg}}">' +
+                '<div class="km-msg-box-attachment {{attachmentBoxExpr}} ">{{{attachmentTemplate}}}<div class="km-msg-box-progressMeter {{progressMeterClassExpr}} ">{{{progressMeter}}}</div></div>' +
+                '<div class="mck-msg-box {{msgClassExpr}} {{msgBoxColor}}">' +
                 '<div class="move-right mck-msg-text"></div>' +
-                '{{html replyQuoteExpr}}' +
+                '{{{replyQuoteExpr}}}' +
                 '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1">' +
-                '<div class="mck-msg-feedback-sticker ${showFeedbackSticker}">{{html feedbackStickerExpr}}</div>' +
+                '<div class="mck-msg-feedback-sticker {{showFeedbackSticker}}">{{{feedbackStickerExpr}}}</div>' +
                 '</div>' +
-                '<button type="button" class="mck-message-reply mck-reply-action ${replyActionClass}" title="${msgReplyExpr}" aria-label="${msgReplyExpr}"><svg width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="#475467" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button>' +
+                '<button type="button" class="mck-message-reply mck-reply-action {{replyActionClass}}" title="{{msgReplyExpr}}" aria-label="{{msgReplyExpr}}"><svg width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="#475467" d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg></button>' +
                 '</div>' +
-                '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
-                '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><div>{{if showCopyExpr}}<button type="button" class="km-copy-message" data-deferred="${copyDeferredExpr}" aria-label="${copyLabelExpr}" title="${copyLabelExpr}">{{html copyIconExpr}}</button>{{/if}}<span class="mck-created-at-time notranslate">${createdAtTimeExpr} </span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
+                '<div class="mck-msg-box-rich-text-container notranslate {{kmRichTextMarkupVisibility}} {{containerType}}">' +
+                '<div class="email-message-indicator {{emailMsgIndicatorExpr}}"><span><svg width="12" height="11" viewBox="0 0 12 11" focusable="false" aria-hidden="true"><use xlink:href="#icon-70" href="#icon-70"></use></svg></span><span>via email</span></div>{{{kmRichTextMarkup}}}</div>' +
+                '<div class="{{msgFloatExpr}}-muted mck-text-light mck-text-xs mck-t-xs {{timeStampExpr}} vis"><div>{{#showCopyExpr}}<button type="button" class="km-copy-message" data-deferred="{{copyDeferredExpr}}" aria-label="{{copyLabelExpr}}" title="{{copyLabelExpr}}">{{{copyIconExpr}}}</button>{{/showCopyExpr}}<span class="mck-created-at-time notranslate">{{createdAtTimeExpr}} </span> <span class="mck-message-status notranslate" aria-hidden="{{msgStatusAriaTag}}"><svg viewBox="0 0 17.06103 10.90199" width="24" height="24" class="{{statusIconExpr}} mck-message-status notranslate" focusable="false" aria-hidden="true">' +
                 KM_MESSAGE_STATUS_ICON_SVG_PATHS +
-                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-${msgKeyExpr} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
+                '</svg><p class="mck-sending-failed">Sending failed</p><p class="mck-malicious-error malicious-error-{{msgKeyExpr}} n-vis">Upload failed due to security concerns. Try a different file.</p></span></div>' +
                 '</div>' +
-                '<div class="km-answer-feedback ${feedbackClass}" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
+                '<div class="km-answer-feedback {{feedbackClass}}" data-feedbackMsgKey="{{replyIdExpr}}" data-assigneeKey="{{groupAssigneeKey}}">{{{feedbackMsgExpr}}}</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="n-vis mck-context-menu">' +
                 '<ul>' +
-                '<li><a class="mck-message-forward ${msgForwardVisibleExpr}">${msgForwardExpr}</a></li>' +
-                '<li><a class="mck-message-delete">${msgDeleteExpr}</a></li>' +
-                '<li class="${replyActionClass}"><a class="mck-message-reply">${msgReplyExpr}</a></li>' +
+                '<li><a class="mck-message-forward {{msgForwardVisibleExpr}}">{{msgForwardExpr}}</a></li>' +
+                '<li><a class="mck-message-delete">{{msgDeleteExpr}}</a></li>' +
+                '<li class="{{replyActionClass}}"><a class="mck-message-reply">{{msgReplyExpr}}</a></li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
             var resolvedBadgeIcon =
                 '<svg class="mck-conversation-status-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use xlink:href="#icon-72" href="#icon-72"></use></svg>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}">' +
-                '<a class="${mckLauncherExpr}" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
-                '<div class="mck-row" title="${contNameExpr}">' +
-                '<div class="blk-lg-3">{{html contImgExpr}}' +
-                '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' +
+                '<li id="li-{{contHtmlExpr}}" class="{{contIdExpr}} {{conversationStatusClass}}" data-msg-time="{{msgCreatedAtTimeExpr}}" data-is-queued="{{isConversationInWaitingQueue}}">' +
+                '<a class="{{mckLauncherExpr}}" href="#" data-mck-id="{{contIdExpr}}" data-isgroup="{{contTabExpr}}">' +
+                '<div class="mck-row" title="{{contNameExpr}}">' +
+                '<div class="blk-lg-3">{{{contImgExpr}}}' +
+                '<div class="mck-unread-count-box move-right mck-truncate {{contUnreadExpr}}"><span class="mck-unread-count-text">{{{contUnreadCount}}}</span></div></div>' +
                 '<div class="blk-lg-9">' +
                 '<div class="mck-row">' +
-                '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">${contNameExpr}</strong></div>' +
-                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time" style="color:var(--km-font-meta-contrast-color);"><span class="mck-conversation-status-badge ${resolvedTagClass}" title="${resolvedTagText}" aria-label="${resolvedTagText}">{{html resolvedTagIcon}}</span>${msgCreatedDateExpr}</span></div></div>' +
+                '<div class="blk-lg-8 mck-cont-name mck-truncate"><strong class="mck-truncate">{{contNameExpr}}</strong></div>' +
+                '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4"><span class="mck-conversation-status-time"><span class="mck-conversation-status-badge {{resolvedTagClass}}" title="{{resolvedTagText}}" aria-label="{{resolvedTagText}}">{{{resolvedTagIcon}}}</span>{{msgCreatedDateExpr}}</span></div></div>' +
                 '<div class="mck-row">' +
                 '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' +
                 '</div></div></div></a></li>';
             var csatModule =
-                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' +
-                MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED +
-                '</span><br><div id="separator"><span id="mck-rated-text">' +
-                '${csatRatingLabel} <strong>${ratingTitle}</strong></span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class={{resolutionStatusClass}}>{{{conversationResolvedLabel}}}</span><br><div id="separator"><span id="mck-rated-text">' +
+                '{{csatRatingLabel}} <strong>{{ratingTitle}}</strong></span><span class="mck-rating-container">{{{ratingSmileSVG}}}</span></div></div><div class="mck-conversation-comment">{{ratingComment}}</div></div>';
             var staticMessageModule =
                 '<div id="km-static-message" class="km-custom-widget-background-color-secondary">' +
-                '<span id="km-static-message-icon">{{html staticIconSVG}}</span>' +
-                '<span id="km-static-message-text">${message}</span>' +
+                '<span id="km-static-message-icon">{{{staticIconSVG}}}</span>' +
+                '<span id="km-static-message-text">{{message}}</span>' +
                 '</div>';
             var assigneeModule =
-                '<div class="km-assignee-module"><div id="separator"> <span id="mck-assign-to-text">' +
-                MCK_LABELS['conversation.handoff'].ASSIGN_TO +
-                ' <strong>${assignee}</strong></span></div></div>';
+                '<div class="km-assignee-module"><div id="separator"> <span id="mck-assign-to-text">{{{assignToLabel}}} <strong>{{assignee}}</strong></span></div></div>';
             var SUBMITTED_FORMS = {};
             function getSafeInlineTemplateTitle(title) {
                 if (typeof title === 'string') {
@@ -7101,11 +7120,6 @@ const firstVisibleMsg = {
             }
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
-                $applozic.template('messageTemplate', markup);
-                $applozic.template('contactTemplate', contactbox);
-                $applozic.template('csatModule', csatModule);
-                $applozic.template('staticMessageTemplate', staticMessageModule);
-                $applozic.template('assigneeModule', assigneeModule);
                 bindDropdownKeyboardActivation();
                 bindRoleButtonKeyboardActivation();
             };
@@ -7132,9 +7146,9 @@ const firstVisibleMsg = {
                         message: staticMessage,
                         staticIconSVG: staticIcon,
                     };
-                    $applozic
-                        .tmpl('staticMessageTemplate', content)
-                        .prependTo('#mck-message-cell .mck-message-inner');
+                    renderTemplate(staticMessageModule, content).prependTo(
+                        '#mck-message-cell .mck-message-inner'
+                    );
                 }
             };
 
@@ -7904,9 +7918,9 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.getAssineeAndCsatTemplate = function (replyId, templateModule, data) {
+            _this.getAssineeAndCsatTemplate = function (replyId, template, data) {
                 $applozic('.' + replyId + ' .km-conversation-container-right').remove();
-                $applozic.tmpl(templateModule, data).appendTo('.' + replyId + ' .blk-lg-12');
+                renderTemplate(template, data).appendTo('.' + replyId + ' .blk-lg-12');
             };
 
             _this.addMessage = function (
@@ -8309,7 +8323,7 @@ const firstVisibleMsg = {
                 ];
 
                 if (!$applozic('#mck-message-cell .' + msg.key).length > 0) {
-                    const $messageTemplate = $applozic.tmpl('messageTemplate', msgList);
+                    const $messageTemplate = renderTemplate(markup, msgList);
                     if (tokenizedStreamElementToReplace) {
                         $messageTemplate.insertBefore(tokenizedStreamElementToReplace);
                     } else {
@@ -8422,15 +8436,18 @@ const firstVisibleMsg = {
                                 resolutionStatusClass: resolutionStatusClass,
                                 ratingTitle: ratingTitle,
                                 csatRatingLabel: MCK_LABELS['csat.rating'][csatRatingLabel],
+                                conversationResolvedLabel:
+                                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED,
                             },
                         ];
-                        _this.getAssineeAndCsatTemplate(replyId, 'csatModule', ratingData);
+                        _this.getAssineeAndCsatTemplate(replyId, csatModule, ratingData);
                     } else if (msg.metadata && msg.metadata.KM_ASSIGN) {
                         var moduleData = {
                             assignee: msg.metadata.LOCALIZATION_VALUE || msg.metadata.KM_ASSIGN,
+                            assignToLabel: MCK_LABELS['conversation.handoff'].ASSIGN_TO,
                         };
                         mckMessageService.handleBusinessHours();
-                        _this.getAssineeAndCsatTemplate(replyId, 'assigneeModule', moduleData);
+                        _this.getAssineeAndCsatTemplate(replyId, assigneeModule, moduleData);
                     }
                 }
 
@@ -8685,7 +8702,12 @@ const firstVisibleMsg = {
                     KommunicateUI.getLinkDataToPreview(
                         url,
                         function (template) {
-                            $textMessage.append(template);
+                            $applozic(template)
+                                .appendTo($textMessage)
+                                .find('.link-preview-image')
+                                .on('error', function () {
+                                    this.classList.add('link-preview-image-broken');
+                                });
                         },
                         floatWhere === 'mck-msg-right'
                     );
@@ -8723,8 +8745,7 @@ const firstVisibleMsg = {
                         KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
-                        const style = document.createElement('style');
-                        style.textContent = `
+                        const style = KommunicateUtils.createStyleElement(`
                             table {
                                 width: 100%;
                                 border-collapse: collapse;
@@ -8762,10 +8783,9 @@ const firstVisibleMsg = {
     }   
                         
                    
-                        `;
+                        `);
 
                         const shadow = kmElement.shadowRoot;
-                        shadow.appendChild(style);
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(emoji_template, 'text/html');
                         const table = doc.querySelector('table');
@@ -8783,7 +8803,9 @@ const firstVisibleMsg = {
                             $textMessage.append(downloadBtn);
                         }
 
-                        shadow.innerHTML += emoji_template;
+                        // Added after the markup: re-serializing the style (innerHTML +=) would drop its CSP nonce.
+                        shadow.innerHTML = emoji_template;
+                        shadow.prepend(style);
 
                         $textMessage.append(kmElement);
                         table &&
@@ -9781,7 +9803,7 @@ const firstVisibleMsg = {
                         replace: function (string) {
                             var value = message.searchKey;
                             return String.prototype.replace.apply(
-                                '<div style="padding: 10px; font-size: 1.5em;">' + value + '</div>',
+                                '<div class="mck-search-result-text">' + value + '</div>',
                                 arguments
                             );
                         },
@@ -9941,9 +9963,9 @@ const firstVisibleMsg = {
                     (message ? message.createdAtTime : '') >= latestCreatedAtTime ||
                     ($listId.indexOf('search') !== -1 && prepend)
                 ) {
-                    $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
+                    renderTemplate(contactbox, contactList).prependTo('#' + $listId);
                 } else {
-                    $applozic.tmpl('contactTemplate', contactList).appendTo('#' + $listId);
+                    renderTemplate(contactbox, contactList).appendTo('#' + $listId);
                     KommunicateUI.checkSingleThreadedConversationSettings(true);
                 }
                 var $textMessage = $applozic('#li-' + contHtmlExpr + ' .msgTextExpr');
@@ -11445,9 +11467,9 @@ const firstVisibleMsg = {
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
             var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
             var mck_filebox_tmpl =
-                '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' +
+                '<div id="mck-filebox-{{fileIdExpr}}" class="mck-file-box {{fileIdExpr}}">' +
                 '<div class="mck-file-expr">' +
-                '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="mck-file-sz">${fileSizeExpr}</span></span>' +
+                '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{{fileNameExpr}}}</span>&nbsp;<span class="mck-file-sz">{{fileSizeExpr}}</span></span>' +
                 '<span class="km-progress km-progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="km-progress-bar km-progress-bar-success km-bar" stye></span></span>' +
                 '<span class="move-right">' +
                 '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' +
@@ -11606,7 +11628,6 @@ const firstVisibleMsg = {
                 }
             };
             _this.init = function () {
-                $applozic.template('fileboxTemplate', mck_filebox_tmpl);
                 //ataching events for rich msg templates
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
@@ -11741,7 +11762,7 @@ const firstVisibleMsg = {
                             fileSizeExpr: alFileService.getFilePreviewSize(file.size),
                         },
                     ];
-                    $applozic.tmpl('fileboxTemplate', fileboxList).appendTo('#mck-file-box');
+                    renderTemplate(mck_filebox_tmpl, fileboxList).appendTo('#mck-file-box');
                     var $fileContainer = $applozic('.mck-file-box.' + randomId);
                     var $file_name = $applozic('.mck-file-box.' + randomId + ' .mck-file-lb');
                     var $file_progressbar = $applozic(
@@ -11900,7 +11921,7 @@ const firstVisibleMsg = {
                             fileSizeExpr: alFileService.getFilePreviewSize(file.size),
                         },
                     ];
-                    $applozic.tmpl('fileboxTemplate', fileboxList).appendTo('#mck-file-box');
+                    renderTemplate(mck_filebox_tmpl, fileboxList).appendTo('#mck-file-box');
                     var $fileContainer = $applozic('.mck-file-box.' + randomId);
                     var $file_name = $applozic('.mck-file-box.' + randomId + ' .mck-file-lb');
                     var $file_progressbar = $applozic(
@@ -12076,7 +12097,7 @@ const firstVisibleMsg = {
                         fileName: fileName,
                     },
                 ];
-                $applozic.tmpl('fileboxTemplate', fileboxList).appendTo('#mck-file-box');
+                renderTemplate(mck_filebox_tmpl, fileboxList).appendTo('#mck-file-box');
                 var $fileContainer = $applozic('.mck-file-box.' + fileboxId);
                 var $file_remove = $fileContainer.find('.mck-remove-file');
                 if (typeof file.fileMeta === 'object') {

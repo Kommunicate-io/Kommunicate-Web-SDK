@@ -90,13 +90,6 @@ function KmCustomTheme() {
         return '<img src=' + widgetImageLink + ' alt="Chat with us"></img>';
     };
 
-    _this.createCustomClasses = function (classSettings) {
-        var style = document.createElement('style');
-        style.type = 'text/css';
-        style.innerHTML = classSettings;
-        document.getElementsByTagName('head')[0].appendChild(style);
-    };
-
     _this.customSideboxWidget = function () {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
         var secondaryColor = DEFAULT_SECONDARY_BACKGROUND_COLOR;
@@ -136,14 +129,14 @@ function KmCustomTheme() {
                 primaryColor +
                 ') !important;}';
             // Pass all classes you want to create in a single array.
-            _this.createCustomClasses(kmCustomWidgetCustomCSS);
+            Kommunicate.customizeWidgetCss(kmCustomWidgetCustomCSS);
         } else {
             var kmChatWidgetBackgroundColor =
                 '.km-chat-widget-background-color { background: ' +
                 primaryColor +
                 ' !important' +
                 '}';
-            _this.createCustomClasses(kmChatWidgetBackgroundColor);
+            Kommunicate.customizeWidgetCss(kmChatWidgetBackgroundColor);
         }
         return (
             '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color' +

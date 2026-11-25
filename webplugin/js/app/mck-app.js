@@ -145,13 +145,12 @@ function ApplozicSidebox() {
                 if (this.readyState == 4 && this.status == 200) {
                     var body = document.getElementsByTagName('body')[0];
                     body.insertAdjacentHTML('beforeend', this.responseText);
-                    var scriptContent = addScriptInsideHtml();
-                    var kmScript =
-                        window.parent && window.parent.document.getElementById('km-widget-script');
-                    if (kmScript && kmScript.nonce) {
-                        scriptContent.nonce = kmScript.nonce;
-                    }
-                    body.appendChild(scriptContent);
+                    // Kept hidden until the widget initializes. Set here instead of an inline style
+                    // attribute in mck-sidebox.html, which a strict CSP blocks.
+                    ['mck-sidebox', 'mck-loc-box', 'km-chat-login-modal'].forEach(function (id) {
+                        document.getElementById(id).style.visibility = 'hidden';
+                    });
+                    detectBrowserAndMakeUiVisible();
                     mckInitPluginScript();
                 }
             };
@@ -165,45 +164,38 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function addScriptInsideHtml() {
-        var scriptData = function detectBrowserAndMakeUiVisible() {
-            function showAfterLoad() {
-                var mckSidebox = document.getElementById('mck-sidebox');
-                mckSidebox.style.visibility = 'visible';
-                var mckLocBox = document.getElementById('mck-loc-box');
-                mckLocBox.style.visibility = 'visible';
-            }
-            if (
-                navigator.userAgent.indexOf('MSIE') !== -1 ||
-                navigator.appVersion.indexOf('Trident/') > 0
-            ) {
-                showAfterLoad();
+    function detectBrowserAndMakeUiVisible() {
+        function showAfterLoad() {
+            var mckSidebox = document.getElementById('mck-sidebox');
+            mckSidebox.style.visibility = 'visible';
+            var mckLocBox = document.getElementById('mck-loc-box');
+            mckLocBox.style.visibility = 'visible';
+        }
+        if (
+            navigator.userAgent.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Trident/') > 0
+        ) {
+            showAfterLoad();
+        } else {
+            var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
+            if (isScriptV2) {
+                window.parent.document.addEventListener(
+                    'kmInitilized',
+                    function () {
+                        showAfterLoad();
+                    },
+                    false
+                );
             } else {
-                var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
-                if (isScriptV2) {
-                    window.parent.document.addEventListener(
-                        'kmInitilized',
-                        function () {
-                            showAfterLoad();
-                        },
-                        false
-                    );
-                } else {
-                    window.addEventListener(
-                        'kmInitilized',
-                        function () {
-                            showAfterLoad();
-                        },
-                        false
-                    );
-                }
+                window.addEventListener(
+                    'kmInitilized',
+                    function () {
+                        showAfterLoad();
+                    },
+                    false
+                );
             }
-        };
-
-        var script = String(scriptData) + 'detectBrowserAndMakeUiVisible();';
-        var tag = document.createElement('script');
-        tag.innerHTML = script;
-        return tag;
+        }
     }
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
