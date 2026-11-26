@@ -6974,7 +6974,7 @@ const firstVisibleMsg = {
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var markup =
                 '<div tabindex="0" name="message" data-msgdelivered="{{msgDeliveredExpr}}" data-msgsent="{{msgSentExpr}}" data-msgtype="{{msgTypeExpr}}" data-msgtime="{{msgCreatedAtTime}}"' +
-                'data-msgcontent="{{replyIdExpr}}" data-msgkey="{{msgKeyExpr}}" data-contact="{{toExpr}}" class="mck-m-b {{msgKeyExpr}} {{msgFloatExpr}} {{msgAvatorClassExpr}} {{botMsgDelayExpr}} {{conversationTransferred}}">' +
+                'data-msgcontent="{{replyIdExpr}}" data-msgkey="{{msgKeyExpr}}" data-contact="{{toExpr}}" data-sender-name="{{senderNameExpr}}" class="mck-m-b {{msgKeyExpr}} {{msgFloatExpr}} {{msgAvatorClassExpr}} {{botMsgDelayExpr}} {{conversationTransferred}}">' +
                 '<div class="mck-clear">' +
                 '<div class="{{nameTextExpr}} {{showNameExpr}} mck-conversation-name">{{msgNameExpr}}</div>' +
                 '<div class="blk-lg-12">' +
@@ -8069,6 +8069,8 @@ const firstVisibleMsg = {
                 var imgsrctag = '';
                 var nameTextExpr = '';
                 var showNameExpr = 'n-vis';
+                // Displayed sender when it differs from msg.to; used by clubbing and reply quotes.
+                var senderNameExpr = '';
                 var msgAvatorClassExpr = '';
                 var messageStatusAriaTag = '';
                 var conversationTransferred = '';
@@ -8128,6 +8130,8 @@ const firstVisibleMsg = {
                 // so the message is not shown as typed by the assigned agent.
                 if (floatWhere === 'mck-msg-left' && msg.metadata && msg.metadata.KM_SENDER_NAME) {
                     displayName = msg.metadata.KM_SENDER_NAME;
+                    senderNameExpr = displayName;
+                    showNameExpr = 'vis';
                     nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
                     if (MESSAGE_BUBBLE_AVATOR_ENABLED) {
                         imgsrctag = _this.getImageUrlForGroupType(
@@ -8292,6 +8296,7 @@ const firstVisibleMsg = {
                         msgAvatorClassExpr: msgAvatorClassExpr,
                         showNameExpr: showNameExpr,
                         msgNameExpr: displayName,
+                        senderNameExpr: senderNameExpr,
                         msgImgExpr: imgsrctag,
                         nameTextExpr: nameTextExpr,
                         msgFloatExpr: floatWhere,
@@ -9291,7 +9296,9 @@ const firstVisibleMsg = {
                 var sender = d.createElement('div');
                 sender.className = 'mck-reply-quote-sender';
                 var senderName = '';
-                if (quotedMessage.from === MCK_USER_ID) {
+                if (quotedMessage.fromName) {
+                    senderName = quotedMessage.fromName;
+                } else if (quotedMessage.from === MCK_USER_ID) {
                     senderName = MCK_LABELS['you'];
                 } else if (quotedMessage.from) {
                     try {
@@ -9322,6 +9329,8 @@ const firstVisibleMsg = {
                     from: $message.hasClass('mck-msg-right')
                         ? MCK_USER_ID
                         : ($message.attr('data-contact') || '').split(',')[0],
+                    // set when the bubble shows a custom sender instead of the assigned agent
+                    fromName: $message.attr('data-sender-name') || undefined,
                 };
                 $applozic('#mck-reply-preview').html(_this.getReplyQuoteMarkup(quotedMessage));
                 $mck_text_box.data('quotedMessage', quotedMessage);
@@ -10813,6 +10822,16 @@ const firstVisibleMsg = {
                         )
                     );
             };
+            // Messages club only when they come from the same contact and show the same sender,
+            // so a custom-sender message keeps its own name and avatar.
+            _this.isSameSender = function (message, otherMessage) {
+                return (
+                    message.getAttribute('data-contact') ==
+                        otherMessage.getAttribute('data-contact') &&
+                    message.getAttribute('data-sender-name') ==
+                        otherMessage.getAttribute('data-sender-name')
+                );
+            };
             _this.messageClubbing = function (processAllMessages, resetExistingClubbing) {
                 var allMessages = $applozic(
                     '#mck-message-cell .mck-message-inner div[name="message"]'
@@ -10823,8 +10842,7 @@ const firstVisibleMsg = {
                         allMessages[_len - 1].getAttribute('data-msgtime') -
                         allMessages[_len - 2].getAttribute('data-msgtime');
                     if (
-                        allMessages[_len - 2].getAttribute('data-contact') ==
-                            allMessages[_len - 1].getAttribute('data-contact') &&
+                        _this.isSameSender(allMessages[_len - 2], allMessages[_len - 1]) &&
                         timeOffset < KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME &&
                         !allMessages[_len - 1].classList.contains('mck-conversation-transferred')
                     ) {
@@ -10852,8 +10870,10 @@ const firstVisibleMsg = {
                                 return;
                             }
                             if (
-                                allMessages[key].nextSibling.getAttribute('data-contact') ==
-                                    allMessages[key].getAttribute('data-contact') &&
+                                _this.isSameSender(
+                                    allMessages[key],
+                                    allMessages[key].nextSibling
+                                ) &&
                                 timeOffset < KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME
                             ) {
                                 allMessages[key].classList.add('km-clubbing-first');
