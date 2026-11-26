@@ -4201,24 +4201,35 @@ const firstVisibleMsg = {
                 }
             };
 
+            // Business-hour settings of the given team, or of the default team when none is given.
+            _this.getTeamBusinessSettings = function (teamId) {
+                return new Promise(function (resolve, reject) {
+                    window.Applozic.ALApiService.ajax({
+                        type: 'GET',
+                        url: MCK_BASE_URL + BUSINESS_HOURS_URL,
+                        global: false,
+                        contentType: 'application/json',
+                        success: function (data) {
+                            const response = data?.response || [];
+                            resolve(
+                                teamId
+                                    ? response.find(
+                                          (team) => String(team.teamId) === String(teamId)
+                                      )
+                                    : response.find((team) =>
+                                          DEFAULT_TEAM_NAME.includes(team.teamName)
+                                      )
+                            );
+                        },
+                        error: reject,
+                    });
+                });
+            };
+
             _this.handleBusinessHours = function () {
-                window.Applozic.ALApiService.ajax({
-                    type: 'GET',
-                    url: MCK_BASE_URL + BUSINESS_HOURS_URL,
-                    global: false,
-                    contentType: 'application/json',
-                    success: function (data) {
-                        let teamSettings = {};
-                        const response = data?.response;
-                        if (!CURRENT_GROUP_DATA.teamId) {
-                            teamSettings = response.find((team) =>
-                                DEFAULT_TEAM_NAME.includes(team.teamName)
-                            );
-                        } else {
-                            teamSettings = response.find(
-                                (team) => String(team.teamId) === String(CURRENT_GROUP_DATA.teamId)
-                            );
-                        }
+                _this
+                    .getTeamBusinessSettings(CURRENT_GROUP_DATA.teamId)
+                    .then(function (teamSettings) {
                         isBusinessHourAvailable = kommunicateCommons.hasBusinessHoursAccess(
                             INIT_APP_DATA
                         );
@@ -4236,11 +4247,49 @@ const firstVisibleMsg = {
                             kommunicateCommons.hide($mck_business_hours_box);
                         }
                         isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    },
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            };
+
+            // A new conversation goes to the default team; business hours depend on the plan.
+            _this.isOutsideBusinessHours = function () {
+                if (!kommunicateCommons.hasBusinessHoursAccess(INIT_APP_DATA)) {
+                    return Promise.resolve(false);
+                }
+                return _this.getTeamBusinessSettings().then(function (teamSettings) {
+                    return !!teamSettings && !_this.isWithinBusinessHours(teamSettings);
                 });
+            };
+
+            // Visitor-started chats: show the offline form instead when the team is unavailable
+            // (Dashboard > Settings > Offline Form). closeWidgetOnDismiss: nothing to go back to
+            // (no conversation yet), so dismissing the form closes the widget.
+            _this.startConversationOrTicket = function (startConversation, closeWidgetOnDismiss) {
+                var form = appOptions.appSettings?.chatWidget?.offlineTicketForm;
+                KmOfflineTicketForm.shouldShow(form, _this.isOutsideBusinessHours)
+                    .catch(function (error) {
+                        // never block the chat because the availability check failed
+                        console.error('offline ticket availability check failed', error);
+                        return false;
+                    })
+                    .then(function (showForm) {
+                        if (!showForm) {
+                            startConversation();
+                            return;
+                        }
+                        KmOfflineTicketForm.open(
+                            form,
+                            MCK_LABELS['offline.ticket'],
+                            function (values) {
+                                var data = { email: values.email };
+                                values.name && (data.displayName = values.name);
+                                $applozic.fn.applozic('updateUser', { data: data });
+                            },
+                            closeWidgetOnDismiss ? _this.closeSideBox : undefined
+                        );
+                    });
             };
 
             _this.handleBusinessHoursBannerShow = function () {
@@ -4330,12 +4379,14 @@ const firstVisibleMsg = {
                         } else {
                             console.log('No conversation found, creating a new one.');
                             var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                            mckMessageService.createNewConversation(
-                                conversationDetail,
-                                function (groupId) {
-                                    callback();
-                                }
-                            );
+                            mckMessageService.startConversationOrTicket(function () {
+                                mckMessageService.createNewConversation(
+                                    conversationDetail,
+                                    function (groupId) {
+                                        callback();
+                                    }
+                                );
+                            }, result.response.length == 0);
                         }
                     } else if (result.response.length == 1) {
                         var isModernLayout =
@@ -4520,24 +4571,26 @@ const firstVisibleMsg = {
                 }
 
                 function startNewConversation(onConversationCreated) {
-                    KommunicateUI.toggleConversationsEmptyState &&
-                        KommunicateUI.toggleConversationsEmptyState(false);
-                    showConversationIndividual({
-                        skipEmptyStateToggle: true,
-                        skipConversationListView: true,
+                    _this.startConversationOrTicket(function () {
+                        KommunicateUI.toggleConversationsEmptyState &&
+                            KommunicateUI.toggleConversationsEmptyState(false);
+                        showConversationIndividual({
+                            skipEmptyStateToggle: true,
+                            skipConversationListView: true,
+                        });
+                        var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                        _this.createNewConversation(conversationDetail, function (conversationId) {
+                            if (typeof onConversationCreated === 'function') {
+                                onConversationCreated(conversationId);
+                            }
+                            KommunicateUI.setHasConversationHistory(true);
+                            typeof setActiveSubsectionState === 'function' &&
+                                setActiveSubsectionState('conversation-individual');
+                            KommunicateUI.showChat && KommunicateUI.showChat();
+                        });
+                        $applozic('#mck-msg-new').attr('disabled', true);
+                        mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     });
-                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                    _this.createNewConversation(conversationDetail, function (conversationId) {
-                        if (typeof onConversationCreated === 'function') {
-                            onConversationCreated(conversationId);
-                        }
-                        KommunicateUI.setHasConversationHistory(true);
-                        typeof setActiveSubsectionState === 'function' &&
-                            setActiveSubsectionState('conversation-individual');
-                        KommunicateUI.showChat && KommunicateUI.showChat();
-                    });
-                    $applozic('#mck-msg-new').attr('disabled', true);
-                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 }
                 function handleStartNewConversation(event) {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
@@ -5478,6 +5531,7 @@ const firstVisibleMsg = {
             _this.closeSideBox = function () {
                 Kommunicate.richMsgEventHandler.cancelWebCall();
                 kommunicateCommons.setWidgetStateOpen(false);
+                KmOfflineTicketForm.close();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
                 KommunicateUI.hideAwayMessage();
@@ -6185,6 +6239,7 @@ const firstVisibleMsg = {
                         assignee &&
                             groupUsers &&
                             KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
+                        KommunicateUI.toggleTicketComposer(data.groupFeeds[0]?.metadata);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {

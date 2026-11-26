@@ -2283,6 +2283,34 @@ KommunicateUI = {
             }
         }
     },
+    // Offline-form tickets are answered over email: hide the composer and show a note instead.
+    toggleTicketComposer: function (metadata) {
+        var composer = document.querySelector('.mck-box-form-container');
+        var note = document.getElementById('km-ticket-note');
+        if (!composer) {
+            return;
+        }
+        var isTicket = metadata && metadata.KM_TICKET === 'true';
+        if (isTicket) {
+            if (!note) {
+                note = document.createElement('div');
+                note.id = 'km-ticket-note';
+                note.className = 'km-ticket-note';
+                note.setAttribute('role', 'status');
+                note.textContent = MCK_LABELS['offline.ticket'].ticketNote;
+                composer.parentNode.insertBefore(note, composer);
+            }
+            kommunicateCommons.show(note);
+            composer.classList.add('n-vis', 'km-ticket-hidden');
+            composer.classList.remove('vis');
+        } else {
+            note && kommunicateCommons.hide(note);
+            // only undo our own hiding; other rules (e.g. bot-only text area) manage the rest
+            if (composer.classList.contains('km-ticket-hidden')) {
+                composer.classList.remove('n-vis', 'km-ticket-hidden');
+            }
+        }
+    },
     getHeaderCurrentCTAData: function () {
         var currentCTAKey;
         var currentCTA;
