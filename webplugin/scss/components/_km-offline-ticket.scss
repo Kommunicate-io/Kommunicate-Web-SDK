@@ -5,34 +5,61 @@ $km-ticket-text: #344054;
 $km-ticket-muted: #475467;
 $km-ticket-error: #d92d20;
 
+$km-ticket-surface: #f8fafc;
+$km-ticket-input-border: #d0d5dd;
+
+// Dimmed backdrop over the conversation; the form floats on it as a card.
 .km-offline-ticket-panel {
     position: absolute;
     inset: 0;
     z-index: 20;
     display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    box-sizing: border-box;
+    background: rgba(16, 24, 40, 0.35);
+}
+
+.km-offline-ticket-card {
+    display: flex;
     flex-direction: column;
+    width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    border: 1px solid $km-ticket-border;
+    border-radius: 12px;
     background: #fff;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.18);
 }
 
 .km-offline-ticket-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 20px;
+    gap: 10px;
+    padding: 14px 16px;
     border-bottom: 1px solid $km-ticket-border;
+    background: $km-ticket-surface;
 
     h2 {
+        flex: 1;
         margin: 0;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
-        color: var(--km-primary-variant, #1c2043);
+        color: #1d2939;
         word-break: break-word;
     }
 }
 
+.km-offline-ticket-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    fill: var(--km-primary-color, #5553b7);
+}
+
 .km-offline-ticket-close {
     border: none;
+    padding: 0 4px;
     background: transparent;
     font-size: 22px;
     line-height: 1;
@@ -40,15 +67,25 @@ $km-ticket-error: #d92d20;
     cursor: pointer;
 }
 
+.km-offline-ticket-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+}
+
 .km-offline-ticket-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
-    padding: 16px 20px 24px;
+    padding: 14px 16px 4px;
 }
 
 .km-offline-ticket-description {
-    margin: 0 0 16px;
-    font-size: 14px;
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.4;
     color: $km-ticket-muted;
     word-break: break-word;
 }
@@ -59,30 +96,40 @@ $km-ticket-error: #d92d20;
     label {
         display: block;
         margin-bottom: 4px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         color: $km-ticket-text;
     }
 
+    // explicit colours: the widget's global input styles would otherwise grey these out
     input,
     textarea {
         width: 100%;
         box-sizing: border-box;
+        margin: 0;
         padding: 8px 10px;
-        border: 1px solid #d0d5dd;
-        border-radius: 6px;
+        border: 1px solid $km-ticket-input-border;
+        border-radius: 8px;
         font-size: 14px;
         font-family: inherit;
+        color: #101828;
+        background: #fff;
+        box-shadow: none;
         resize: vertical;
 
         &:focus {
             outline: none;
             border-color: var(--km-primary-color, #5553b7);
+            box-shadow: 0 0 0 3px rgba(85, 83, 183, 0.12);
         }
 
         &[aria-invalid='true'] {
             border-color: $km-ticket-error;
         }
+    }
+
+    textarea {
+        min-height: 96px;
     }
 }
 
@@ -90,18 +137,41 @@ $km-ticket-error: #d92d20;
     margin-top: 4px;
     font-size: 12px;
     color: $km-ticket-error;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.km-offline-ticket-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid $km-ticket-border;
+    background: $km-ticket-surface;
+}
+
+.km-offline-ticket-cancel,
+.km-offline-ticket-submit {
+    min-width: 84px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.km-offline-ticket-cancel {
+    border: 1px solid $km-ticket-input-border;
+    color: $km-ticket-text;
+    background: #fff;
 }
 
 .km-offline-ticket-submit {
-    width: 100%;
-    margin-top: 8px;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border: 1px solid transparent;
     color: #fff;
     background: var(--km-primary-color, #5553b7);
-    cursor: pointer;
 
     &[disabled] {
         opacity: 0.6;
@@ -110,7 +180,7 @@ $km-ticket-error: #d92d20;
 }
 
 .km-offline-ticket-success {
-    margin: 24px 0 8px;
+    margin: 16px 0 20px;
     font-size: 15px;
     text-align: center;
     color: $km-ticket-text;

@@ -152,7 +152,9 @@ var KmOfflineTicketForm = (function () {
 
     function showSuccess(panel, form, labels, dismiss) {
         var body = panel.querySelector('.km-offline-ticket-body');
+        var footer = panel.querySelector('.km-offline-ticket-footer');
         body.innerHTML = '';
+        footer.innerHTML = '';
         body.appendChild(
             createElement(
                 'div',
@@ -166,8 +168,23 @@ var KmOfflineTicketForm = (function () {
             labels.close
         );
         closeButton.addEventListener('click', dismiss);
-        body.appendChild(closeButton);
+        footer.appendChild(closeButton);
         closeButton.focus();
+    }
+
+    function createTicketIcon() {
+        var svgNs = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(svgNs, 'svg');
+        svg.setAttribute('class', 'km-offline-ticket-icon');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('aria-hidden', 'true');
+        var path = document.createElementNS(svgNs, 'path');
+        path.setAttribute(
+            'd',
+            'M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6V6zm6 1v2h2V7H9zm0 4v2h2v-2H9zm0 4v2h2v-2H9z'
+        );
+        svg.appendChild(path);
+        return svg;
     }
 
     /**
@@ -185,13 +202,16 @@ var KmOfflineTicketForm = (function () {
         };
         var container = document.getElementById('mck-sidebox-content');
         var fields = getVisibleFields(form);
-        var panel = createElement('div', {
-            'id': PANEL_ID,
-            'class': 'km-offline-ticket-panel',
+        // dimmed backdrop over the conversation with the form as a floating card
+        var panel = createElement('div', { id: PANEL_ID, class: 'km-offline-ticket-panel' });
+        var card = createElement('div', {
+            'class': 'km-offline-ticket-card',
             'role': 'dialog',
+            'aria-modal': 'true',
             'aria-labelledby': 'km-offline-ticket-heading',
         });
         var header = createElement('div', { class: 'km-offline-ticket-header' });
+        header.appendChild(createTicketIcon());
         header.appendChild(createElement('h2', { id: 'km-offline-ticket-heading' }, form.heading));
         var closeIcon = createElement(
             'button',
@@ -200,9 +220,13 @@ var KmOfflineTicketForm = (function () {
         );
         closeIcon.addEventListener('click', dismiss);
         header.appendChild(closeIcon);
-        panel.appendChild(header);
+        card.appendChild(header);
 
-        var body = createElement('form', { class: 'km-offline-ticket-body', novalidate: 'true' });
+        var ticketForm = createElement('form', {
+            class: 'km-offline-ticket-form',
+            novalidate: 'true',
+        });
+        var body = createElement('div', { class: 'km-offline-ticket-body' });
         form.description &&
             body.appendChild(
                 createElement('p', { class: 'km-offline-ticket-description' }, form.description)
@@ -211,14 +235,25 @@ var KmOfflineTicketForm = (function () {
             body.appendChild(renderField(field));
         });
         var formError = createElement('div', { class: 'km-offline-ticket-error', role: 'alert' });
+        body.appendChild(formError);
+
+        var footer = createElement('div', { class: 'km-offline-ticket-footer' });
+        var cancel = createElement(
+            'button',
+            { type: 'button', class: 'km-offline-ticket-cancel' },
+            labels.cancel
+        );
+        cancel.addEventListener('click', dismiss);
         var submit = createElement(
             'button',
             { type: 'submit', class: 'km-offline-ticket-submit' },
             labels.submit
         );
-        body.appendChild(formError);
-        body.appendChild(submit);
-        body.addEventListener('submit', function (event) {
+        footer.appendChild(cancel);
+        footer.appendChild(submit);
+        ticketForm.appendChild(body);
+        ticketForm.appendChild(footer);
+        ticketForm.addEventListener('submit', function (event) {
             event.preventDefault();
             var values = validate(panel, fields, labels);
             if (!values) {
@@ -240,7 +275,8 @@ var KmOfflineTicketForm = (function () {
                     submit.textContent = labels.submit;
                 });
         });
-        panel.appendChild(body);
+        card.appendChild(ticketForm);
+        panel.appendChild(card);
         container.appendChild(panel);
         var firstInput = panel.querySelector('input, textarea');
         firstInput && firstInput.focus();

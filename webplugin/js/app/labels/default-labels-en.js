@@ -216,6 +216,7 @@
         'offline.ticket': {
             submit: 'Send',
             sending: 'Sending...',
+            cancel: 'Cancel',
             close: 'Close',
             required: 'This field is required',
             invalidEmail: 'Please enter a valid email address',
