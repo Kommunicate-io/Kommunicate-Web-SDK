@@ -268,6 +268,8 @@ Kommunicate.richMsgEventHandler = {
                 ],
                 mouseDrag: true,
                 arrowKeys: true,
+                nav: false, // .tns-nav is hidden by CSS; skipping it also avoids its inline styles
+                nonce: KM_CSP_NONCE,
                 onInit: function () {
                     console.log('tiny-slider initilized');
                 },

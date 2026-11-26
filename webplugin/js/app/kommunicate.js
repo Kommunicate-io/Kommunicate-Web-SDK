@@ -775,10 +775,9 @@ $applozic.extend(true, Kommunicate, {
     },
     // add css to style component in window
     customizeWidgetCss: function (classSettings) {
-        var style = document.createElement('style');
-        style.type = 'text/css';
-        style.innerHTML = classSettings;
-        document.getElementsByTagName('head')[0].appendChild(style);
+        document
+            .getElementsByTagName('head')[0]
+            .appendChild(KommunicateUtils.createStyleElement(classSettings));
     },
     // subscribe to custom events
     subscribeToEvents: function (events) {
