@@ -188,7 +188,8 @@ var KmOfflineTicketForm = (function () {
     }
 
     /**
-     * Renders the form over the conversation area.
+     * Renders the form as a sheet rising from the bottom of the conversation screen, in place
+     * of the chat box. The widget header stays visible above it.
      * @param {Object} form offlineTicketForm settings
      * @param {Object} labels MCK_LABELS['offline.ticket']
      * @param {Function} onSubmitted called with the submitted values (e.g. to update the user)
@@ -202,8 +203,9 @@ var KmOfflineTicketForm = (function () {
         };
         var container = document.getElementById('mck-sidebox-content');
         var fields = getVisibleFields(form);
-        // dimmed backdrop over the conversation with the form as a floating card
         var panel = createElement('div', { id: PANEL_ID, class: 'km-offline-ticket-panel' });
+        // starts below the header, whose height depends on the widget layout
+        panel.style.top = container.querySelector('.mck-box-top').offsetHeight + 'px';
         var card = createElement('div', {
             'class': 'km-offline-ticket-card',
             'role': 'dialog',

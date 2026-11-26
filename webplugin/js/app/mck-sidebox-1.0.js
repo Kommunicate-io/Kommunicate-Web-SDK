@@ -4263,10 +4263,10 @@ const firstVisibleMsg = {
                 });
             };
 
-            // Visitor-started chats: show the offline form instead when the team is unavailable
-            // (Dashboard > Settings > Offline Form). closeWidgetOnDismiss: nothing to go back to
-            // (no conversation yet), so dismissing the form closes the widget.
-            _this.startConversationOrTicket = function (startConversation, closeWidgetOnDismiss) {
+            // Visitor-started chats: when the team is unavailable (Dashboard > Settings > Offline
+            // Form), the conversation screen shows the offline form in place of the chat box.
+            // onDismiss: where the visitor goes after closing the form.
+            _this.startConversationOrTicket = function (startConversation, onDismiss) {
                 var form = appOptions.appSettings?.chatWidget?.offlineTicketForm;
                 KmOfflineTicketForm.shouldShow(form, _this.isOutsideBusinessHours)
                     .catch(function (error) {
@@ -4279,6 +4279,8 @@ const firstVisibleMsg = {
                             startConversation();
                             return;
                         }
+                        // no conversation exists yet: don't leave the previous one's messages behind
+                        $mck_msg_inner.html('');
                         KmOfflineTicketForm.open(
                             form,
                             MCK_LABELS['offline.ticket'],
@@ -4287,7 +4289,7 @@ const firstVisibleMsg = {
                                 values.name && (data.displayName = values.name);
                                 $applozic.fn.applozic('updateUser', { data: data });
                             },
-                            closeWidgetOnDismiss ? _this.closeSideBox : undefined
+                            onDismiss
                         );
                     });
             };
@@ -4379,14 +4381,19 @@ const firstVisibleMsg = {
                         } else {
                             console.log('No conversation found, creating a new one.');
                             var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                            mckMessageService.startConversationOrTicket(function () {
-                                mckMessageService.createNewConversation(
-                                    conversationDetail,
-                                    function (groupId) {
-                                        callback();
-                                    }
-                                );
-                            }, result.response.length == 0);
+                            mckMessageService.startConversationOrTicket(
+                                function () {
+                                    mckMessageService.createNewConversation(
+                                        conversationDetail,
+                                        function (groupId) {
+                                            callback();
+                                        }
+                                    );
+                                },
+                                result.response.length == 0
+                                    ? mckMessageService.closeSideBox
+                                    : undefined
+                            );
                         }
                     } else if (result.response.length == 1) {
                         var isModernLayout =
@@ -4571,13 +4578,14 @@ const firstVisibleMsg = {
                 }
 
                 function startNewConversation(onConversationCreated) {
+                    // the conversation screen opens as usual; the offline form, if shown, sits in it
+                    KommunicateUI.toggleConversationsEmptyState &&
+                        KommunicateUI.toggleConversationsEmptyState(false);
+                    showConversationIndividual({
+                        skipEmptyStateToggle: true,
+                        skipConversationListView: true,
+                    });
                     _this.startConversationOrTicket(function () {
-                        KommunicateUI.toggleConversationsEmptyState &&
-                            KommunicateUI.toggleConversationsEmptyState(false);
-                        showConversationIndividual({
-                            skipEmptyStateToggle: true,
-                            skipConversationListView: true,
-                        });
                         var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                         _this.createNewConversation(conversationDetail, function (conversationId) {
                             if (typeof onConversationCreated === 'function') {
@@ -4590,7 +4598,10 @@ const firstVisibleMsg = {
                         });
                         $applozic('#mck-msg-new').attr('disabled', true);
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
-                    });
+                    }, goBackToConversationList);
+                }
+                function goBackToConversationList() {
+                    $applozic('#mck-conversation-back-btn').trigger('click');
                 }
                 function handleStartNewConversation(event) {
                     event && typeof event.preventDefault === 'function' && event.preventDefault();
@@ -5269,6 +5280,7 @@ const firstVisibleMsg = {
                 });
                 $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
                     e.preventDefault();
+                    KmOfflineTicketForm.close();
                     mckMessageService.stopBusinessHoursTimer();
                     kommunicateCommons.hide($mck_business_hours_box, '.km-header-cta');
                     CURRENT_GROUP_DATA.isWaitingQueue = false;
