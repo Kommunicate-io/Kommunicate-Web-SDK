@@ -171,6 +171,12 @@ Kommunicate.client = {
             if (conversationDetail.metadata && conversationDetail.metadata.source) {
                 groupMetadata.source = conversationDetail.metadata.source;
             }
+            // offline form shown in the conversation: the server only converts conversations
+            // tagged with this top-level key into tickets
+            var ticketPendingKey = KmOfflineTicketForm.TICKET_PENDING_KEY;
+            if (conversationDetail.metadata && conversationDetail.metadata[ticketPendingKey]) {
+                groupMetadata[ticketPendingKey] = conversationDetail.metadata[ticketPendingKey];
+            }
 
             typeof conversationDetail.teamId != 'undefined' &&
                 (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
