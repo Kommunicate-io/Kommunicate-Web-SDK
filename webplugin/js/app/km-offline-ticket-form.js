@@ -1,8 +1,12 @@
 /**
- * Offline ticket form: shown instead of starting a chat when the team is unavailable.
- * Configured in Dashboard > Settings > Offline Ticket Form (appSettings.chatWidget.offlineTicketForm).
- * Kommunicate-Server creates the ticket conversation and emails it (POST /rest/ws/offline-ticket),
- * authenticated with the visitor's chat token.
+ * What the widget does when the team is unavailable, configured in Dashboard > Settings >
+ * Offline Form (appSettings.chatWidget.offlineTicketForm). `flow` picks one of FLOW:
+ * - FORM_BEFORE_CHAT: the ticket form replaces the chat; nothing exists until it is submitted.
+ * - FORM_IN_CONVERSATION: the conversation starts as usual (tagged TICKET_PENDING_KEY) and the
+ *   form takes the chat box's place until submitted; that conversation then becomes the ticket.
+ * - HIDE_WIDGET: the widget is hidden.
+ * Kommunicate-Server creates or converts the ticket conversation and emails it
+ * (POST /rest/ws/offline-ticket), authenticated with the visitor's chat token.
  */
 var KmOfflineTicketForm = (function () {
     var PANEL_ID = 'km-offline-ticket-panel';
@@ -16,6 +20,13 @@ var KmOfflineTicketForm = (function () {
         OUTSIDE_BUSINESS_HOURS: 'OUTSIDE_BUSINESS_HOURS',
         AGENTS_OFFLINE: 'AGENTS_OFFLINE',
     };
+    var FLOW = {
+        FORM_BEFORE_CHAT: 'FORM_BEFORE_CHAT',
+        FORM_IN_CONVERSATION: 'FORM_IN_CONVERSATION',
+        HIDE_WIDGET: 'HIDE_WIDGET',
+    };
+    // conversation metadata (same key in Kommunicate-Server): the form is still to be filled in
+    var TICKET_PENDING_KEY = 'KM_TICKET_PENDING';
 
     function request(type, path, data) {
         return new Promise(function (resolve, reject) {
@@ -54,27 +65,44 @@ var KmOfflineTicketForm = (function () {
         return field.required || LOCKED_FIELD_KEYS.indexOf(field.key) !== -1;
     }
 
+    function getFlow(form) {
+        return form.flow || FLOW.FORM_BEFORE_CHAT;
+    }
+
     /**
      * @param {Object} form offlineTicketForm settings
-     * @param {Function} isOutsideBusinessHours resolves true when the conversation's team is closed
-     * @returns {Promise<boolean>} whether the ticket form should replace the chat
+     * @param {Function} getTeamAvailability resolves { botRouting, outsideBusinessHours } of the
+     *     team new conversations go to
+     * @returns {Promise<boolean>} whether the configured offline flow applies
      */
-    function shouldShow(form, isOutsideBusinessHours) {
+    function isTeamUnavailable(form, getTeamAvailability) {
         if (!form || !form.enabled) {
             return Promise.resolve(false);
         }
         var checkHours = form.showWhen !== SHOW_WHEN.AGENTS_OFFLINE;
         var checkAgents = form.showWhen !== SHOW_WHEN.OUTSIDE_BUSINESS_HOURS;
         return Promise.all([
-            checkHours ? isOutsideBusinessHours() : false,
+            getTeamAvailability(),
             checkAgents
                 ? request('GET', AGENTS_ONLINE_URL).then(function (response) {
                       return !(response && response.data && response.data.agentsOnline);
                   })
                 : false,
         ]).then(function (results) {
-            return results[0] || results[1];
+            var team = results[0];
+            // a bot answers new conversations around the clock
+            if (form.skipWhenBotHandles && team.botRouting) {
+                return false;
+            }
+            return (checkHours && team.outsideBusinessHours) || results[1];
         });
+    }
+
+    // Replies go by email: keep the visitor's contact details on their user.
+    function updateVisitor(values) {
+        var data = { email: values.email };
+        values.name && (data.displayName = values.name);
+        window.$applozic.fn.applozic('updateUser', { data: data });
     }
 
     function close() {
@@ -174,14 +202,17 @@ var KmOfflineTicketForm = (function () {
      * The widget header (back/close) stays usable above it.
      * @param {Object} form offlineTicketForm settings
      * @param {Object} labels MCK_LABELS['offline.ticket']
-     * @param {Function} onSubmitted called with the submitted values (e.g. to update the user)
-     * @param {Function} [onDismiss] called after the visitor closes the form
+     * @param {Object} [options]
+     * @param {number} [options.conversationId] FORM_IN_CONVERSATION: the conversation to turn
+     *     into the ticket
+     * @param {Function} [options.onDismiss] called after the visitor closes the form
      */
-    function open(form, labels, onSubmitted, onDismiss) {
+    function open(form, labels, options) {
+        options = options || {};
         close();
         var dismiss = function () {
             close();
-            onDismiss && onDismiss();
+            options.onDismiss && options.onDismiss();
         };
         var container = document.getElementById('mck-sidebox-content');
         var fields = getVisibleFields(form);
@@ -229,9 +260,16 @@ var KmOfflineTicketForm = (function () {
             submit.setAttribute('disabled', 'true');
             submit.textContent = labels.sending;
             formError.textContent = '';
-            request('POST', SUBMIT_URL, { values: values, pageUrl: getPageUrl() })
+            request('POST', SUBMIT_URL, {
+                values: values,
+                pageUrl: getPageUrl(),
+                conversationId: options.conversationId,
+            })
                 .then(function () {
-                    onSubmitted && onSubmitted(values);
+                    updateVisitor(values);
+                    // the conversation is now the ticket: answered over email
+                    options.conversationId &&
+                        KommunicateUI.toggleTicketComposer({ KM_TICKET: 'true' });
                     showSuccess(body, form, labels, dismiss);
                 })
                 .catch(function (xhr) {
@@ -248,5 +286,12 @@ var KmOfflineTicketForm = (function () {
         firstInput && firstInput.focus();
     }
 
-    return { shouldShow: shouldShow, open: open, close: close };
+    return {
+        FLOW: FLOW,
+        TICKET_PENDING_KEY: TICKET_PENDING_KEY,
+        getFlow: getFlow,
+        isTeamUnavailable: isTeamUnavailable,
+        open: open,
+        close: close,
+    };
 })();

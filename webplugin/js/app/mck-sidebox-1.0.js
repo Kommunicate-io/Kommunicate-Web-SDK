@@ -2909,6 +2909,7 @@ const firstVisibleMsg = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
+                mckMessageService.hideWidgetIfTeamUnavailable();
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
@@ -4253,45 +4254,94 @@ const firstVisibleMsg = {
                     });
             };
 
-            // A new conversation goes to the default team; business hours depend on the plan.
-            _this.isOutsideBusinessHours = function () {
-                if (!kommunicateCommons.hasBusinessHoursAccess(INIT_APP_DATA)) {
-                    return Promise.resolve(false);
-                }
+            // New conversations go to the default team; business hours depend on the plan.
+            _this.getDefaultTeamAvailability = function () {
                 return _this.getTeamBusinessSettings().then(function (teamSettings) {
-                    return !!teamSettings && !_this.isWithinBusinessHours(teamSettings);
+                    return {
+                        botRouting: !!(teamSettings && teamSettings.botRouting),
+                        outsideBusinessHours:
+                            kommunicateCommons.hasBusinessHoursAccess(INIT_APP_DATA) &&
+                            !!teamSettings &&
+                            !_this.isWithinBusinessHours(teamSettings),
+                    };
                 });
             };
 
-            // Visitor-started chats: when the team is unavailable (Dashboard > Settings > Offline
-            // Form), the conversation screen shows the offline form in place of the chat box.
-            // onDismiss: where the visitor goes after closing the form.
+            var getOfflineTicketForm = function () {
+                return appOptions.appSettings?.chatWidget?.offlineTicketForm;
+            };
+
+            var isTeamUnavailableForOfflineFlow = function () {
+                return KmOfflineTicketForm.isTeamUnavailable(
+                    getOfflineTicketForm(),
+                    _this.getDefaultTeamAvailability
+                ).catch(function (error) {
+                    // never block the chat because the availability check failed
+                    console.error('offline availability check failed', error);
+                    return false;
+                });
+            };
+
+            // Visitor-started chats follow the offline flow chosen in Dashboard > Settings >
+            // Offline Form when the team is unavailable (see km-offline-ticket-form.js).
+            // startConversation(conversationDetail) creates the conversation; onDismiss: where the
+            // visitor goes after closing a FORM_BEFORE_CHAT form.
             _this.startConversationOrTicket = function (startConversation, onDismiss) {
-                var form = appOptions.appSettings?.chatWidget?.offlineTicketForm;
-                KmOfflineTicketForm.shouldShow(form, _this.isOutsideBusinessHours)
-                    .catch(function (error) {
-                        // never block the chat because the availability check failed
-                        console.error('offline ticket availability check failed', error);
-                        return false;
-                    })
-                    .then(function (showForm) {
-                        if (!showForm) {
-                            startConversation();
-                            return;
-                        }
+                var form = getOfflineTicketForm();
+                var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                isTeamUnavailableForOfflineFlow().then(function (unavailable) {
+                    var flow = unavailable && KmOfflineTicketForm.getFlow(form);
+                    if (flow === KmOfflineTicketForm.FLOW.FORM_BEFORE_CHAT) {
                         // no conversation exists yet: don't leave the previous one's messages behind
                         $mck_msg_inner.html('');
-                        KmOfflineTicketForm.open(
-                            form,
-                            MCK_LABELS['offline.ticket'],
-                            function (values) {
-                                var data = { email: values.email };
-                                values.name && (data.displayName = values.name);
-                                $applozic.fn.applozic('updateUser', { data: data });
-                            },
-                            onDismiss
-                        );
+                        KmOfflineTicketForm.open(form, MCK_LABELS['offline.ticket'], {
+                            onDismiss: onDismiss,
+                        });
+                        return;
+                    }
+                    if (flow === KmOfflineTicketForm.FLOW.FORM_IN_CONVERSATION) {
+                        // applyTicketState shows the form once the conversation opens
+                        conversationDetail.conversationMetadata = {};
+                        conversationDetail.conversationMetadata[
+                            KmOfflineTicketForm.TICKET_PENDING_KEY
+                        ] = 'true';
+                    }
+                    startConversation(conversationDetail);
+                });
+            };
+
+            // HIDE_WIDGET flow: no widget while the team is unavailable.
+            _this.hideWidgetIfTeamUnavailable = function () {
+                var form = getOfflineTicketForm();
+                if (
+                    !form ||
+                    KmOfflineTicketForm.getFlow(form) !== KmOfflineTicketForm.FLOW.HIDE_WIDGET
+                ) {
+                    return;
+                }
+                isTeamUnavailableForOfflineFlow().then(function (unavailable) {
+                    unavailable && Kommunicate.displayKommunicateWidget(false);
+                });
+            };
+
+            // Offline-form state of the conversation being opened: a pending ticket shows the form
+            // in place of the chat box (FORM_IN_CONVERSATION); a ticket is answered over email.
+            // A pending conversation whose form was since turned off is an ordinary chat.
+            _this.applyTicketState = function (groupFeed) {
+                var metadata = (groupFeed && groupFeed.metadata) || {};
+                var form = getOfflineTicketForm();
+                KommunicateUI.toggleTicketComposer(metadata);
+                if (
+                    metadata[KmOfflineTicketForm.TICKET_PENDING_KEY] === 'true' &&
+                    form &&
+                    form.enabled
+                ) {
+                    KmOfflineTicketForm.open(form, MCK_LABELS['offline.ticket'], {
+                        conversationId: groupFeed.id,
                     });
+                } else {
+                    KmOfflineTicketForm.close();
+                }
             };
 
             _this.handleBusinessHoursBannerShow = function () {
@@ -4380,9 +4430,8 @@ const firstVisibleMsg = {
                             }
                         } else {
                             console.log('No conversation found, creating a new one.');
-                            var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                             mckMessageService.startConversationOrTicket(
-                                function () {
+                                function (conversationDetail) {
                                     mckMessageService.createNewConversation(
                                         conversationDetail,
                                         function (groupId) {
@@ -4585,8 +4634,7 @@ const firstVisibleMsg = {
                         skipEmptyStateToggle: true,
                         skipConversationListView: true,
                     });
-                    _this.startConversationOrTicket(function () {
-                        var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                    _this.startConversationOrTicket(function (conversationDetail) {
                         _this.createNewConversation(conversationDetail, function (conversationId) {
                             if (typeof onConversationCreated === 'function') {
                                 onConversationCreated(conversationId);
@@ -6251,7 +6299,7 @@ const firstVisibleMsg = {
                         assignee &&
                             groupUsers &&
                             KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
-                        KommunicateUI.toggleTicketComposer(data.groupFeeds[0]?.metadata);
+                        mckMessageService.applyTicketState(data.groupFeeds[0]);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
