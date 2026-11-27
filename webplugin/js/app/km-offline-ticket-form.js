@@ -150,11 +150,8 @@ var KmOfflineTicketForm = (function () {
         return firstInvalid ? null : values;
     }
 
-    function showSuccess(panel, form, labels, dismiss) {
-        var body = panel.querySelector('.km-offline-ticket-body');
-        var footer = panel.querySelector('.km-offline-ticket-footer');
+    function showSuccess(body, form, labels, dismiss) {
         body.innerHTML = '';
-        footer.innerHTML = '';
         body.appendChild(
             createElement(
                 'div',
@@ -168,28 +165,13 @@ var KmOfflineTicketForm = (function () {
             labels.close
         );
         closeButton.addEventListener('click', dismiss);
-        footer.appendChild(closeButton);
+        body.appendChild(closeButton);
         closeButton.focus();
     }
 
-    function createTicketIcon() {
-        var svgNs = 'http://www.w3.org/2000/svg';
-        var svg = document.createElementNS(svgNs, 'svg');
-        svg.setAttribute('class', 'km-offline-ticket-icon');
-        svg.setAttribute('viewBox', '0 0 24 24');
-        svg.setAttribute('aria-hidden', 'true');
-        var path = document.createElementNS(svgNs, 'path');
-        path.setAttribute(
-            'd',
-            'M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6V6zm6 1v2h2V7H9zm0 4v2h2v-2H9zm0 4v2h2v-2H9z'
-        );
-        svg.appendChild(path);
-        return svg;
-    }
-
     /**
-     * Renders the form as a sheet rising from the bottom of the conversation screen, in place
-     * of the chat box. The widget header stays visible above it.
+     * Renders the form as a bottom sheet over the conversation screen, in place of the chat box.
+     * The widget header (back/close) stays usable above it.
      * @param {Object} form offlineTicketForm settings
      * @param {Object} labels MCK_LABELS['offline.ticket']
      * @param {Function} onSubmitted called with the submitted values (e.g. to update the user)
@@ -206,29 +188,22 @@ var KmOfflineTicketForm = (function () {
         var panel = createElement('div', { id: PANEL_ID, class: 'km-offline-ticket-panel' });
         // starts below the header, whose height depends on the widget layout
         panel.style.top = container.querySelector('.mck-box-top').offsetHeight + 'px';
-        var card = createElement('div', {
-            'class': 'km-offline-ticket-card',
-            'role': 'dialog',
-            'aria-modal': 'true',
+        var sheet = createElement('form', {
+            'class': 'km-offline-ticket-sheet',
+            'novalidate': 'true',
             'aria-labelledby': 'km-offline-ticket-heading',
         });
-        var header = createElement('div', { class: 'km-offline-ticket-header' });
-        header.appendChild(createTicketIcon());
-        header.appendChild(createElement('h2', { id: 'km-offline-ticket-heading' }, form.heading));
-        var closeIcon = createElement(
-            'button',
-            { 'type': 'button', 'class': 'km-offline-ticket-close', 'aria-label': labels.close },
-            '×'
+        sheet.appendChild(
+            createElement('div', { 'class': 'km-offline-ticket-handle', 'aria-hidden': 'true' })
         );
-        closeIcon.addEventListener('click', dismiss);
-        header.appendChild(closeIcon);
-        card.appendChild(header);
-
-        var ticketForm = createElement('form', {
-            class: 'km-offline-ticket-form',
-            novalidate: 'true',
-        });
         var body = createElement('div', { class: 'km-offline-ticket-body' });
+        body.appendChild(
+            createElement(
+                'h2',
+                { id: 'km-offline-ticket-heading', class: 'km-offline-ticket-heading' },
+                form.heading
+            )
+        );
         form.description &&
             body.appendChild(
                 createElement('p', { class: 'km-offline-ticket-description' }, form.description)
@@ -237,25 +212,15 @@ var KmOfflineTicketForm = (function () {
             body.appendChild(renderField(field));
         });
         var formError = createElement('div', { class: 'km-offline-ticket-error', role: 'alert' });
-        body.appendChild(formError);
-
-        var footer = createElement('div', { class: 'km-offline-ticket-footer' });
-        var cancel = createElement(
-            'button',
-            { type: 'button', class: 'km-offline-ticket-cancel' },
-            labels.cancel
-        );
-        cancel.addEventListener('click', dismiss);
         var submit = createElement(
             'button',
             { type: 'submit', class: 'km-offline-ticket-submit' },
             labels.submit
         );
-        footer.appendChild(cancel);
-        footer.appendChild(submit);
-        ticketForm.appendChild(body);
-        ticketForm.appendChild(footer);
-        ticketForm.addEventListener('submit', function (event) {
+        body.appendChild(formError);
+        body.appendChild(submit);
+        sheet.appendChild(body);
+        sheet.addEventListener('submit', function (event) {
             event.preventDefault();
             var values = validate(panel, fields, labels);
             if (!values) {
@@ -267,7 +232,7 @@ var KmOfflineTicketForm = (function () {
             request('POST', SUBMIT_URL, { values: values, pageUrl: getPageUrl() })
                 .then(function () {
                     onSubmitted && onSubmitted(values);
-                    showSuccess(panel, form, labels, dismiss);
+                    showSuccess(body, form, labels, dismiss);
                 })
                 .catch(function (xhr) {
                     var code = xhr && xhr.responseJSON && xhr.responseJSON.code;
@@ -277,8 +242,7 @@ var KmOfflineTicketForm = (function () {
                     submit.textContent = labels.submit;
                 });
         });
-        card.appendChild(ticketForm);
-        panel.appendChild(card);
+        panel.appendChild(sheet);
         container.appendChild(panel);
         var firstInput = panel.querySelector('input, textarea');
         firstInput && firstInput.focus();
